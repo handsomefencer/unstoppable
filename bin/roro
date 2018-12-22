@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'roro'
+
+Roro::CLI.start( ARGV )
