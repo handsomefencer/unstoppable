@@ -1,15 +1,12 @@
-require 'test_helper'
-
 module TestHelper
   module Files
     module Assertions
 
       def prepare_destination
 
-        if  Dir.pwd.split('/').last == "handsome_fencer-circle_c_i"
-          Dir.chdir('test/tmp')
-        end
-        # FileUtils.rm_rf('.')
+        FileUtils.rm_rf('tmp')
+        FileUtils.mkdir('tmp')
+        Dir.chdir('tmp')
       end
 
       def assert_file(file, *contents)
@@ -71,19 +68,3 @@ module TestHelper
     end
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-include TestHelper::Files::Assertions
