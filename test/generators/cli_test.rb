@@ -2,16 +2,6 @@ require "test_helper"
 
 describe Roro::CLI do
 
-  Given(:env_vars) { {
-    "APP_NAME"=>"greenfield",
-    "SERVER_HOST"=>"1234.1234.1234",
-    "DOCKERHUB_EMAIL"=>"jon.doe@gmail.com",
-    "DOCKERHUB_USER"=>"jondo",
-    "DOCKERHUB_ORG"=>"jondodojo",
-    "DOCKERHUB_PASS"=>"passw0rd",
-    "POSTGRES_USER"=>"jondo",
-    "POSTGRES_PASSWORD"=>"some-long-password" } }
-
   Given(:subject) { Roro::CLI.new }
 
   Given { prepare_destination }
@@ -23,35 +13,50 @@ describe Roro::CLI do
     And  { assert_includes Roro::CLI.commands.keys, "dockerize"}
   end
 
+  describe ":configurate" do
+
+    describe "without argument" do
+
+      Then { subject.configurate['APP_NAME'].must_equal "greenfield_app"}
+    end
+
+    describe "with an argument specified" do
+
+      Given { subject.env_vars = {
+        'APP_NAME' => "strawberry_field_app",
+        'DOCKERHUB_EMAIL' => "user@test.org" } }
+
+      Then {
+        subject.configurate['APP_NAME'].must_equal "strawberry_field_app"
+        subject.configurate['DOCKERHUB_EMAIL'].must_equal "user@test.org" }
+    end
+  end
+
   describe ":greenfield" do
 
-    Then do
-      Roro::CLI.stub_any_instance :configurate, env_vars do
-        subject.greenfield
-        assert_equal env_vars, env_vars
-        assert_file '.circleci'
-        assert_file '.circleci/config.yml'
-        assert_file '.circleci/config.yml.workflow-example'
-        assert_file 'docker'
-        assert_file 'docker/containers'
-        assert_file 'docker/containers/app'
-        assert_file 'docker/containers/app/Dockerfile', /LABEL maintainer=jon.doe@gmail.com/
-        assert_file 'docker/containers/app/development.env'
-        assert_file 'docker/containers/app/production.env'
-        assert_file 'docker/containers/database'
-        assert_file 'docker/containers/database/development.env'
-        assert_file 'docker/containers/database/production.env'
-        assert_file 'docker/containers/web'
-        assert_file 'docker/containers/web/app.conf'
-        assert_file 'docker/containers/web/production.env'
-        assert_file 'docker/env_files'
-        assert_file 'docker/env_files/circleci.env'
-        assert_file 'docker/keys'
-        assert_file 'docker/overrides'
-        assert_file 'docker/overrides/circleci.yml'
-        assert_file 'docker/overrides/production.yml'
-      end
-    end
+    Given { subject.greenfield }
+    Then {
+      assert_file '.circleci'
+      assert_file '.circleci/config.yml'
+      assert_file '.circleci/config.yml.workflow-example'
+      assert_file 'docker'
+      assert_file 'docker/containers'
+      assert_file 'docker/containers/app'
+      assert_file 'docker/containers/app/development.env'
+      assert_file 'docker/containers/app/production.env'
+      assert_file 'docker/containers/database'
+      assert_file 'docker/containers/database/development.env'
+      assert_file 'docker/containers/database/production.env'
+      assert_file 'docker/containers/web'
+      assert_file 'docker/containers/web/app.conf'
+      assert_file 'docker/containers/web/production.env'
+      assert_file 'docker/env_files'
+      assert_file 'docker/env_files/circleci.env'
+      assert_file 'docker/keys'
+      assert_file 'docker/overrides'
+      assert_file 'docker/overrides/circleci.yml'
+      assert_file 'docker/overrides/production.yml'
+      assert_file 'docker/containers/app/Dockerfile' }
 
 
 
