@@ -34,7 +34,7 @@ module Roro
 
     def greenfield
       prompts = configurate
-      directory "circleci", "./.circleci"
+      directory "circleci", "./.circleci", skip: true
       directory "docker/containers/database"
       directory "docker/env_files"
       directory "docker/keys"
