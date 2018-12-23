@@ -1,40 +1,31 @@
-
+require 'byebug'
 module Roro
 
   class CLI < Thor
+    
     include Thor::Actions
+
+    argument :env_vars, optional: true, type: :hash
 
     desc "configurate", "set environment variables for usage later"
 
     def configurate
-
-      default_values = {
-        "APP_NAME" => "greenfield",
-        "SERVER_HOST" => "ip-address-of-your-server",
-        "DOCKERHUB_EMAIL" => "your-docker-hub-emaill",
-        "DOCKERHUB_USER" => "your-docker-hub-user-name",
-        "DOCKERHUB_ORG" => "your-docker-hub-org-name",
-        "DOCKERHUB_PASS" => "your-docker-hub-password",
-        "POSTGRES_USER" => "your-postgres-username",
-        "POSTGRES_PASSWORD" => "your-postgres-password" }
-
-      prompts = {
-        "APP_NAME" => "the name of your app",
-        "SERVER_HOST" => "the ip address of your server",
-        "DOCKERHUB_EMAIL" => "your Docker Hub email",
-        "DOCKERHUB_USER" => "your Docker Hub username",
-        "DOCKERHUB_ORG" => "your Docker Hub organization name",
-        "DOCKERHUB_PASS" => "your Docker Hub password",
-        "POSTGRES_USER" => "your Postgres username",
-        "POSTGRES_PASSWORD" => "your Postgres password" }
-
-      prompts.map do |key, prompt|
-        prompts[key] = ask("Please provide #{prompt}:")
-        if prompts[key].size == 0
-          prompts[key] = default_values[key]
+      env_hash = get_defaults
+      if env_vars == :interactive
+        env_hash.map do |key, prompt|
+          # default = default_values[key]
+          prompts[key] = ask("Please provide #{prompt}:")
+          if prompts[key].size == 0
+            prompts[key] = default_values[key]
+          end
         end
+      else
+        env_hash.map { |key, hash| env_hash[key] = hash.values.last }
       end
-      prompts
+      if !env_vars.nil? && env_vars.size > 0
+        env_vars.map { |key, value| env_hash[key] = value }
+      end
+      env_hash
     end
 
     desc "dockerize", "Generates files necessary to dockerize your existing Rails project, along with a set of files for continuous deployment using CircleCI and deployment ussing sshkit."
@@ -59,17 +50,6 @@ module Roro
       append_to_file ".gitignore", "\ndocker/**/*.env"
       append_to_file ".gitignore", "\ndocker/**/*.key"
 
-
-      # account_type = ask("Will you be pushing images to Docker Hub under your user name or under your organization name instead?", :limited_to => ["org", "user", "skip"])
-      # case account_type
-      #
-      # when "o"
-      #   prompts['DOCKERHUB_ORG_NAME']= ask("Organization name:")
-      # when "u"
-      #   prompts['DOCKERHUB_ORG_NAME']= "${DOCKERHUB_USER}"
-      # when "s"
-      #   prompts['DOCKERHUB_ORG_NAME']= "${DOCKERHUB_USER}"
-      # end
       prompts.map do |key, value|
         append_to_file 'docker/env_files/circleci.env', "\nexport #{key}=#{value}"
       end
@@ -102,6 +82,28 @@ module Roro
         template("docker/containers/#{container}/Dockerfile.tt", "docker/containers/#{container}/Dockerfile", options)
       end
       template("docker/containers/web/app.conf.tt", "docker/containers/web/app.conf")
+    end
+
+    private
+
+    def get_defaults
+      { "APP_NAME" => {
+          "the name of your app" => "greenfield_app" },
+        "SERVER_HOST" => {
+          "the ip address of your server" => "ip-address-of-your-server"
+          },
+        "DOCKERHUB_EMAIL" => {
+          "your Docker Hub email" => "your-docker-hub-emaill"},
+        "DOCKERHUB_USER" => {
+          "your Docker Hub username" => "your-docker-hub-user-name" },
+        "DOCKERHUB_ORG" => {
+          "your Docker Hub organization name" => "your-docker-hub-org-name"},
+        "DOCKERHUB_PASS" => {
+          "your Docker Hub password" => "your-docker-hub-password"},
+        "POSTGRES_USER" => {
+          "your Postgres username" => "your-postgres-username"},
+        "POSTGRES_PASSWORD" => {
+          "your Postgres password" => "your-postgres-password"} }
     end
   end
 end

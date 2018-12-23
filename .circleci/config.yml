@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run: rake install
-      - run: roro greenfield
+      - run: roro greenfield --
       - run: docker-compose run --rm app rails new . --database=postgresql --skip
       - run: docker-compose up --build
       - run: docker-compose exec app bin/rails db:create db:migrate
