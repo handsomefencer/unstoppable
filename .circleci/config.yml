@@ -49,20 +49,17 @@ jobs:
 #
 #       - run: rake --rakefile .circleci/Rakefile
 #
-# workflows:
-#   version: 2
-#   build-and-deploy:
-#     jobs:
-#       - build
-#       - push:
-#           requires:
-#             - build
-#           filters:
-#             branches:
-#               only: master
-#       - deploy:
-#           requires:
-#             - push
-#           filters:
-#             branches:
-#               only: master
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+      # - deploy:
+      #     requires:
+      #       - push
+      #     filters:
+      #       branches:
+      #         only: master
