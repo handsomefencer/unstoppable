@@ -9,13 +9,13 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: mkdir -p greenfield
+      - run: mkdir -p newapp
       - run: rake install
-      - run: cd greenfield && roro greenfield
-      - run: cd greenfield && docker-compose run --rm app rails new . --database=postgresql --skip
-      - run: cd greenfield && docker-compose up --build
-      - run: cd greenfield && docker-compose exec app bin/rails db:create db:migrate
-      - run: cd greenfield && docker-compose exec app rake test
+      - run: rake test
+      - run: cd newapp && roro greenfield
+      - run: cd newapp && docker-compose run --rm app rails new . --database=postgresql --skip
+      - run: cd newapp && docker-compose up -d --build
+      - run: cd newapp && docker-compose exec app bin/rails db:create db:migrate
 
 #   push:
 #     machine: true

@@ -17,7 +17,7 @@ describe Roro::CLI do
 
     describe "without argument" do
 
-      # Then { subject.configurate['APP_NAME'].must_equal "greenfield_app"}
+      Then { subject.configurate['APP_NAME'].must_equal "greenfield_app"}
     end
 
     describe "with" do
@@ -38,8 +38,7 @@ describe Roro::CLI do
 
         Given { subject.env_vars = :interactive }
 
-        Then { skip
-          subject.configurate["POSTGRES_PASSWORD"].must_equal "getsome" }
+        # Then { subject.configurate["POSTGRES_PASSWORD"].must_equal "getsome" }
       end
     end
 
@@ -56,34 +55,48 @@ describe Roro::CLI do
           assert_file 'docker'
           assert_file 'docker/containers'
           assert_file 'docker/containers/app'
-          assert_file 'docker/containers/app/development.env'
-          assert_file 'docker/containers/app/production.env'
           assert_file 'docker/containers/database'
-          assert_file 'docker/containers/database/development.env'
-          assert_file 'docker/containers/database/production.env'
           assert_file 'docker/containers/web'
-          assert_file 'docker/containers/web/app.conf'
-          assert_file 'docker/containers/web/production.env'
           assert_file 'docker/env_files'
-          assert_file 'docker/env_files/circleci.env'
           assert_file 'docker/keys'
-          assert_file 'docker/overrides'
           assert_file 'docker/overrides/circleci.yml'
           assert_file 'docker/overrides/production.yml'
-          assert_file 'docker/containers/app/Dockerfile' }
+          assert_file 'docker/containers/app/Dockerfile'
+          assert_file 'docker/overrides' }
 
-      describe "interactive" do
+        And {
+          assert_file 'docker/containers/app/development.env',
+          /RAILS_ENV=development/
+          assert_file 'docker/containers/app/production.env',
+          /RAILS_ENV=production/
+          assert_file 'docker/containers/database/development.env',
+          /POSTGRES_PASSWORD=your-postgres-password/
+          assert_file 'docker/containers/database/production.env',
+          /POSTGRES_PASSWORD=your-postgres-password/
+          assert_file 'docker/containers/web/production.env',
+          /CA_SSL=true/ }
 
-        # Given { subject.env_vars = :interactive }
-        # Given { subject.greenfield }
-        # Given { any_instance_of(Roro::CLI) do |cli|
-        #   mock(cli).ask(anything) { "2" }
-        # end}
-        # Then {
-        #   assert_file '.circleci'
-        # }
+        And {
+          env_vars = %w(
+            APP_NAME=greenfield_app
+            DEPLOY_TAG=\${CIRCLE_SHA1:0:7}
+            DOCKERHUB_ORG=your-docker-hub-org-name
+            DOCKERHUB_PASS=your-docker-hub-password
+            DOCKERHUB_USER=your-docker-hub-user-name
+            SERVER_HOST=ip-address-of-your-server
+            SERVER_PORT=22
+            SERVER_USER=root )
+          env_vars.each { |env_var| assert_file 'docker/env_files/circleci.env', /export #{env_var}/ } }
+
+          And {
+            assert_file 'docker/containers/web/Dockerfile',
+            /tmp\/greenfield_app.nginx/
+            assert_file 'docker/containers/app/Dockerfile',
+            /your-docker-hub-email/ }
+          end
+        end
       end
-    end
+    # end
 #
 #   describe "generate_key" do
 #
@@ -158,5 +171,5 @@ describe Roro::CLI do
 #         Then { assert File.exist? 'docker/containers/database/development.env' }
 #       end
 #     end
-  end
-end
+#   end
+# end
