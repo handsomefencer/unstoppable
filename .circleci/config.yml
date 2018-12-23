@@ -10,6 +10,8 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p newapp
+      - run: gem install bundler
+      - run: bundle
       - run: rake install
       - run: rake test
       - run: cd newapp && roro greenfield
