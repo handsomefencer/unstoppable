@@ -1,3 +1,4 @@
+# require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -34,16 +35,16 @@ module Roro
 
     def greenfield
       prompts = configurate
-      directory "circleci", "./.circleci", skip: true
+      directory "circleci", "./.circleci"
       directory "docker/containers/database"
       directory "docker/env_files"
       directory "docker/keys"
       directory "lib", "lib", recursive: true
       copy_file "docker-compose.yml"
-      copy_file "Gemfile", skip: true
-      copy_file "Gemfile.lock", skip: true
+      copy_file "Gemfile"
+      copy_file "Gemfile.lock"
       copy_file "config/database.yml"
-      copy_file "gitignore", ".gitignore", skip: true
+      copy_file "gitignore", ".gitignore"
       append_to_file ".gitignore", "\ndocker/**/*.env"
       append_to_file ".gitignore", "\ndocker/**/*.key"
 
