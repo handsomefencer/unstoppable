@@ -42,7 +42,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "handsome_fencer-test"
-  spec.add_development_dependency "mocha"
-  spec.add_development_dependency "rr"
-  spec.add_development_dependency "minitest-stub_any_instance"
+  
 end
