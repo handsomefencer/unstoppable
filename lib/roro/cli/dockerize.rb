@@ -40,10 +40,10 @@ module Roro
       directory "docker/keys"
       directory "lib", "lib", recursive: true
       copy_file "docker-compose.yml"
-      copy_file "Gemfile"
-      copy_file "Gemfile.lock"
+      copy_file "Gemfile", skip: true
+      copy_file "Gemfile.lock", skip: true
       copy_file "config/database.yml"
-      copy_file "gitignore", ".gitignore"
+      copy_file "gitignore", ".gitignore", skip: true
       append_to_file ".gitignore", "\ndocker/**/*.env"
       append_to_file ".gitignore", "\ndocker/**/*.key"
 
