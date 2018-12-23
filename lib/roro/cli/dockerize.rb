@@ -2,7 +2,7 @@ require 'byebug'
 module Roro
 
   class CLI < Thor
-    
+
     include Thor::Actions
 
     argument :env_vars, optional: true, type: :hash
@@ -11,19 +11,17 @@ module Roro
 
     def configurate
       env_hash = get_defaults
-      if env_vars == :interactive
+      case
+      when env_vars == :interactive
         env_hash.map do |key, prompt|
-          # default = default_values[key]
-          prompts[key] = ask("Please provide #{prompt}:")
-          if prompts[key].size == 0
-            prompts[key] = default_values[key]
-          end
+          answer = ask("Please provide #{prompt.keys.first}:")
+          env_hash[key] = (answer == "") ? prompt.values.first : answer
         end
-      else
+      when env_vars.is_a?(Hash)
         env_hash.map { |key, hash| env_hash[key] = hash.values.last }
-      end
-      if !env_vars.nil? && env_vars.size > 0
         env_vars.map { |key, value| env_hash[key] = value }
+      when nil
+        env_hash.map { |key, hash| env_hash[key] = hash.values.last }
       end
       env_hash
     end
@@ -87,13 +85,14 @@ module Roro
     private
 
     def get_defaults
-      { "APP_NAME" => {
+      {
+        "APP_NAME" => {
           "the name of your app" => "greenfield_app" },
         "SERVER_HOST" => {
           "the ip address of your server" => "ip-address-of-your-server"
           },
         "DOCKERHUB_EMAIL" => {
-          "your Docker Hub email" => "your-docker-hub-emaill"},
+          "your Docker Hub email" => "your-docker-hub-email"},
         "DOCKERHUB_USER" => {
           "your Docker Hub username" => "your-docker-hub-user-name" },
         "DOCKERHUB_ORG" => {

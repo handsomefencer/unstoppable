@@ -17,51 +17,73 @@ describe Roro::CLI do
 
     describe "without argument" do
 
-      Then { subject.configurate['APP_NAME'].must_equal "greenfield_app"}
+      # Then { subject.configurate['APP_NAME'].must_equal "greenfield_app"}
     end
 
-    describe "with an argument specified" do
+    describe "with" do
 
-      Given { subject.env_vars = {
-        'APP_NAME' => "strawberry_field_app",
-        'DOCKERHUB_EMAIL' => "user@test.org" } }
+      describe "env_vars: {}" do
 
-      Then {
-        subject.configurate['APP_NAME'].must_equal "strawberry_field_app"
-        subject.configurate['DOCKERHUB_EMAIL'].must_equal "user@test.org" }
+        Given { subject.env_vars = {
+          'APP_NAME' => "strawberry_field_app",
+          'DOCKERHUB_EMAIL' => "user@test.org" } }
+
+        Then {
+          subject.configurate['APP_NAME'].must_equal "strawberry_field_app"
+          subject.configurate['DOCKERHUB_EMAIL'].must_equal "user@test.org" }
+        end
+      end
+
+      describe "env_vars: :interactive" do
+
+        Given { subject.env_vars = :interactive }
+
+        Then { skip
+          subject.configurate["POSTGRES_PASSWORD"].must_equal "getsome" }
+      end
     end
-  end
 
-  describe ":greenfield" do
+    describe ":greenfield" do
 
-    Given { subject.greenfield }
-    Then {
-      assert_file '.circleci'
-      assert_file '.circleci/config.yml'
-      assert_file '.circleci/config.yml.workflow-example'
-      assert_file 'docker'
-      assert_file 'docker/containers'
-      assert_file 'docker/containers/app'
-      assert_file 'docker/containers/app/development.env'
-      assert_file 'docker/containers/app/production.env'
-      assert_file 'docker/containers/database'
-      assert_file 'docker/containers/database/development.env'
-      assert_file 'docker/containers/database/production.env'
-      assert_file 'docker/containers/web'
-      assert_file 'docker/containers/web/app.conf'
-      assert_file 'docker/containers/web/production.env'
-      assert_file 'docker/env_files'
-      assert_file 'docker/env_files/circleci.env'
-      assert_file 'docker/keys'
-      assert_file 'docker/overrides'
-      assert_file 'docker/overrides/circleci.yml'
-      assert_file 'docker/overrides/production.yml'
-      assert_file 'docker/containers/app/Dockerfile' }
+      describe "without arguments" do
 
+        Given { subject.greenfield }
 
+        Then {
+          assert_file '.circleci'
+          assert_file '.circleci/config.yml'
+          assert_file '.circleci/config.yml.workflow-example'
+          assert_file 'docker'
+          assert_file 'docker/containers'
+          assert_file 'docker/containers/app'
+          assert_file 'docker/containers/app/development.env'
+          assert_file 'docker/containers/app/production.env'
+          assert_file 'docker/containers/database'
+          assert_file 'docker/containers/database/development.env'
+          assert_file 'docker/containers/database/production.env'
+          assert_file 'docker/containers/web'
+          assert_file 'docker/containers/web/app.conf'
+          assert_file 'docker/containers/web/production.env'
+          assert_file 'docker/env_files'
+          assert_file 'docker/env_files/circleci.env'
+          assert_file 'docker/keys'
+          assert_file 'docker/overrides'
+          assert_file 'docker/overrides/circleci.yml'
+          assert_file 'docker/overrides/production.yml'
+          assert_file 'docker/containers/app/Dockerfile' }
 
+      describe "interactive" do
 
-#   end
+        # Given { subject.env_vars = :interactive }
+        # Given { subject.greenfield }
+        # Given { any_instance_of(Roro::CLI) do |cli|
+        #   mock(cli).ask(anything) { "2" }
+        # end}
+        # Then {
+        #   assert_file '.circleci'
+        # }
+      end
+    end
 #
 #   describe "generate_key" do
 #
