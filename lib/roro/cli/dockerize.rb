@@ -1,4 +1,4 @@
-require 'byebug'
+require 'byebug', require: false
 module Roro
 
   class CLI < Thor
