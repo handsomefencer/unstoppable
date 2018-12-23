@@ -20,10 +20,12 @@ module Roro
       when env_vars.is_a?(Hash)
         env_hash.map { |key, hash| env_hash[key] = hash.values.last }
         env_vars.map { |key, value| env_hash[key] = value }
-      when nil
+      when env_vars.is_a?(NilClass)
+        # byebug
+
         env_hash.map { |key, hash| env_hash[key] = hash.values.last }
       end
-      env_hash
+      @env_hash = env_hash
     end
 
     desc "dockerize", "Generates files necessary to dockerize your existing Rails project, along with a set of files for continuous deployment using CircleCI and deployment ussing sshkit."
@@ -34,7 +36,8 @@ module Roro
     desc "greenfield", "Generates files necessary to greenfield a new app within a dockerized rails container, along with a set of files necessary for continuous deployment using CircleCI"
 
     def greenfield
-      prompts = configurate
+      configurate
+      # byebug
       directory "circleci", "./.circleci"
       directory "docker/containers/database"
       directory "docker/env_files"
@@ -48,7 +51,7 @@ module Roro
       append_to_file ".gitignore", "\ndocker/**/*.env"
       append_to_file ".gitignore", "\ndocker/**/*.key"
 
-      prompts.map do |key, value|
+      @env_hash.map do |key, value|
         append_to_file 'docker/env_files/circleci.env', "\nexport #{key}=#{value}"
       end
 
@@ -61,12 +64,12 @@ module Roro
 
         database_env = create_file "#{base}database/#{environment}.env"
         append_to_file database_env, "POSTGRES_USER=postgres\n"
-        append_to_file database_env, "POSTGRES_DB=#{prompts['APP_NAME']}_#{environment}\n"
-        append_to_file database_env, "POSTGRES_PASSWORD=#{prompts['POSTGRES_PASSWORD']}\n"
+        append_to_file database_env, "POSTGRES_DB=#{@env_hash['APP_NAME']}_#{environment}\n"
+        append_to_file database_env, "POSTGRES_PASSWORD=#{@env_hash['POSTGRES_PASSWORD']}\n"
 
         ssl = (environment == "production") ? true : false
         web_env = create_file "#{base}web/#{environment}.env"
-        append_to_file web_env, "CA_SSL=postgres#{ssl}\n"
+        append_to_file web_env, "CA_SSL=#{ssl}\n"
       end
       %w[circleci production].each do |environment|
         template "docker/overrides/#{environment}.yml.tt", "docker/overrides/#{environment}.yml", force: true
@@ -74,8 +77,8 @@ module Roro
 
       %w[app web].each do |container|
         options = {
-          email: prompts['DOCKERHUB_EMAIL'],
-          app_name: prompts['APP_NAME'] }
+          email: @env_hash['DOCKERHUB_EMAIL'],
+          app_name: @env_hash['APP_NAME'] }
 
         template("docker/containers/#{container}/Dockerfile.tt", "docker/containers/#{container}/Dockerfile", options)
       end
@@ -100,7 +103,7 @@ module Roro
         "DOCKERHUB_PASS" => {
           "your Docker Hub password" => "your-docker-hub-password"},
         "POSTGRES_USER" => {
-          "your Postgres username" => "your-postgres-username"},
+          "your Postgres username" => "postgres"},
         "POSTGRES_PASSWORD" => {
           "your Postgres password" => "your-postgres-password"} }
     end
