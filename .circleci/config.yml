@@ -18,10 +18,9 @@ jobs:
       - run: mkdir -p newapp
       - run: cd newapp && roro greenfield
       - run: cd newapp && docker-compose run --rm app rails new . --database=postgresql --skip
-      - run: chown -R $USER:$USER newapp
-      - run: cd newapp && docker-compose build
-      - run: cd newapp && docker-compose run app bin/rails db:create db:migrate
-      - run: cd newapp && docker-compose up
+      - run: cd newapp && chown -R $USER:$USER -R .
+      - run: cd newapp && docker-compose up -d --build
+      - run: cd newapp && docker-compose exec app bin/rails db:create db:migrate
 
 #   push:
 #     machine: true
