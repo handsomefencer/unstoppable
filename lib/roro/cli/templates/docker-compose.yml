@@ -16,7 +16,7 @@ services:
       - "35729:35729"
       - "3000:3000"
     volumes:
-      - .:/usr/src/app
+      - app-data:/usr/src/app
       - gem_cache:/gems
     env_file:
       - docker/containers/database/development.env
@@ -43,6 +43,7 @@ services:
 volumes:
   database-data:
   gem_cache:
+  app-data:
 
 secrets:
   host_ssh_key:
