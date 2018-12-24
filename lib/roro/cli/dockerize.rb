@@ -90,7 +90,7 @@ module Roro
     def get_defaults
       {
         "APP_NAME" => {
-          "the name of your app" => "greenfield_app" },
+          "the name of your app" => "sooperdooper" },
         "SERVER_HOST" => {
           "the ip address of your server" => "ip-address-of-your-server"
           },
