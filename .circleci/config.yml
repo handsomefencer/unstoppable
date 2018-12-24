@@ -15,15 +15,15 @@ jobs:
       - run: bundle
       - run: rake install
       - run: rake test
-      - run: mkdir -p sooperdooper
       - run:
-        command: |
-          cd sooperdooper
-          roro greenfield
-          docker-compose run app rails new . --skip
-          chown -R $USER:$USER -R .
-          docker-compose up --build
-          docker-compose exec app bin/rails db:create db:migrate
+          command: |
+            mkdir -p sooperdooper
+            cd sooperdooper
+            roro greenfield
+            docker-compose run app rails new . --skip
+            chown -R $USER:$USER -R .
+            docker-compose up --build
+            docker-compose exec app bin/rails db:create db:migrate
 
 #   push:
 #     machine: true
