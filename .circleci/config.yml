@@ -6,8 +6,11 @@ version: 2
 jobs:
 
   build:
-    machine: true
+    docker:
+      # specify the version you desire here
+       - image: circleci/ruby:2.5
     steps:
+
       - checkout
       - run: gem install bundler
       - run: bundle
