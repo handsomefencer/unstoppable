@@ -53,6 +53,8 @@ describe Roro::CLI do
           assert_file '.circleci/config.yml'
           assert_file '.circleci/config.yml.workflow-example'
           assert_file 'docker'
+          assert_file 'config'
+          assert_file 'config/database.yml'
           assert_file 'docker/containers'
           assert_file 'docker/containers/app'
           assert_file 'docker/containers/database'
