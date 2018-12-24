@@ -22,7 +22,7 @@ jobs:
             roro greenfield
             docker-compose run app rails new . --skip
             chown -R $USER:$USER -R .
-            docker-compose up --build
+            docker-compose up -d --build
             docker-compose exec app bin/rails db:create db:migrate
 
 #   push:
