@@ -15,12 +15,12 @@ jobs:
       - run: bundle
       - run: rake install
       - run: rake test
-      - run: mkdir -p newapp
-      - run: cd newapp && roro greenfield
-      - run: cd newapp && docker-compose run --rm app rails new . --database=postgresql --skip
-      - run: cd newapp && chown -R $USER:$USER -R .
-      - run: cd newapp && docker-compose up -d --build
-      - run: cd newapp && docker-compose exec app bin/rails db:create db:migrate
+      - run: mkdir -p sooperdooper
+      - run: cd sooperdooper && roro greenfield
+      - run: cd sooperdooper && docker-compose run --rm app rails new .
+      - run: cd sooperdooper && chown -R $USER:$USER -R .
+      - run: cd sooperdooper && docker-compose up --build
+      - run: cd sooperdooper && docker-compose exec app bin/rails db:create db:migrate
 
 #   push:
 #     machine: true
