@@ -8,8 +8,6 @@ WORKDIR $RAILS_ROOT
 
 RUN mkdir log
 
-COPY public/ public/
-
 # Copy Nginx config template
 COPY docker/containers/web/app.conf /tmp/<%= config[:app_name] %>.nginx
 
