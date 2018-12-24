@@ -17,7 +17,7 @@ describe Roro::CLI do
 
     describe "without argument" do
 
-      Then { subject.configurate['APP_NAME'].must_equal "greenfield_app"}
+      Then { subject.configurate['APP_NAME'].must_equal "sooperdooper"}
     end
 
     describe "with" do
@@ -78,7 +78,7 @@ describe Roro::CLI do
 
         And {
           env_vars = %w(
-            APP_NAME=greenfield_app
+            APP_NAME=sooperdooper
             DEPLOY_TAG=\${CIRCLE_SHA1:0:7}
             DOCKERHUB_ORG=your-docker-hub-org-name
             DOCKERHUB_PASS=your-docker-hub-password
@@ -90,7 +90,7 @@ describe Roro::CLI do
 
           And {
             assert_file 'docker/containers/web/Dockerfile',
-            /tmp\/greenfield_app.nginx/
+            /tmp\/sooperdooper.nginx/
             assert_file 'docker/containers/app/Dockerfile',
             /your-docker-hub-email/ }
           end
