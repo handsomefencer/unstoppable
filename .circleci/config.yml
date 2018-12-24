@@ -18,7 +18,7 @@ jobs:
       - run: mkdir -p sooperdooper
       - run: cd sooperdooper && roro greenfield
       - run: cd sooperdooper && chown -R $USER:$USER -R .
-      - run: cd sooperdooper && docker-compose run app rails new .
+      - run: cd sooperdooper && docker-compose run app rails new . --skip
       - run: cd sooperdooper && chown -R $USER:$USER -R .
       - run: cd sooperdooper && docker-compose up --build
       - run: cd sooperdooper && docker-compose exec app bin/rails db:create db:migrate
