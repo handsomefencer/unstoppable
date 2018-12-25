@@ -1,4 +1,3 @@
-require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -8,6 +7,8 @@ module Roro
     no_commands do
 
       def set_interactively
+        set_from_defaults
+        set_from_env_vars
         @env_hash.map do |key, prompt|
           answer = ask("Please provide #{prompt.keys.first}:")
           @env_hash[key] = (answer == "") ? prompt.values.first : answer
@@ -42,14 +43,7 @@ module Roro
     method_option :env_vars, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "key1:value1 key2:value2"
 
 
-    def greenfield(app=nil)
-      if app
-
-        # byebug
-        FileUtils.mkdir_p app
-        FileUtils.cd app
-
-      end
+    def greenfield
       configurate
       directory "circleci", "./.circleci"
       directory "docker/containers/database"
