@@ -9,7 +9,6 @@ describe Roro::CLI do
   describe "commands" do
 
     Then { assert_includes Roro::CLI.commands.keys, "greenfield"}
-    And  { assert_includes Roro::CLI.commands.keys, "configurate"}
     And  { assert_includes Roro::CLI.commands.keys, "dockerize"}
   end
 
@@ -23,22 +22,20 @@ describe Roro::CLI do
     describe "with" do
 
       describe "env_vars: {}" do
-
-        Given { subject.env_vars = {
+        # greenfield:
+        #   {"env_vars"=>{}}
+        # greenfield --interactive
+        #   {"env_vars"=>{}, "interactive"=>"interactive"}
+        # greenfield --interactive --env_vars sweet:log
+        #   {"env_vars"=>{"sweet"=>"log"}, "interactive"=>"interactive"}
+        Given { subject.options = { "env_vars" => {
           'APP_NAME' => "strawberry_field_app",
-          'DOCKERHUB_EMAIL' => "user@test.org" } }
+          'DOCKERHUB_EMAIL' => "user@test.org" } } }
 
         Then {
           subject.configurate['APP_NAME'].must_equal "strawberry_field_app"
           subject.configurate['DOCKERHUB_EMAIL'].must_equal "user@test.org" }
         end
-      end
-
-      describe "env_vars: :interactive" do
-
-        Given { subject.env_vars = :interactive }
-
-        # Then { subject.configurate["POSTGRES_PASSWORD"].must_equal "getsome" }
       end
     end
 
@@ -98,6 +95,8 @@ describe Roro::CLI do
           end
         end
       end
+
+
     # end
 #
 #   describe "generate_key" do

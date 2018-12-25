@@ -40,6 +40,7 @@ services:
     build:
       context: .
       dockerfile: docker/containers/web/Dockerfile
+
 volumes:
   database-data:
   gem_cache:
