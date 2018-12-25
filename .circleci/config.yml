@@ -24,6 +24,7 @@ jobs:
             chown -R $USER:$USER -R .
             docker-compose up -d --build
             docker-compose exec app bin/rails db:create db:migrate
+      - run: curl -Is localhost:3000 | head -n 1
 
 #   push:
 #     machine: true
