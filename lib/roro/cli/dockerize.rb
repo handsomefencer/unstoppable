@@ -1,43 +1,56 @@
-# require 'byebug'
+require 'byebug'
 module Roro
 
   class CLI < Thor
 
     include Thor::Actions
 
-    argument :env_vars, optional: true, type: :hash
+    no_commands do
 
-    desc "configurate", "set environment variables for usage later"
-
-    def configurate
-      env_hash = get_defaults
-      case
-      when env_vars == :interactive
-        env_hash.map do |key, prompt|
+      def set_interactively
+        @env_hash.map do |key, prompt|
           answer = ask("Please provide #{prompt.keys.first}:")
-          env_hash[key] = (answer == "") ? prompt.values.first : answer
+          @env_hash[key] = (answer == "") ? prompt.values.first : answer
         end
-      when env_vars.is_a?(Hash)
-        env_hash.map { |key, hash| env_hash[key] = hash.values.last }
-        env_vars.map { |key, value| env_hash[key] = value }
-      when env_vars.is_a?(NilClass)
-        # byebug
-
-        env_hash.map { |key, hash| env_hash[key] = hash.values.last }
       end
-      @env_hash = env_hash
-    end
 
-    desc "dockerize", "Generates files necessary to dockerize your existing Rails project, along with a set of files for continuous deployment using CircleCI and deployment ussing sshkit."
+      def set_from_env_vars
+        @env_hash.map { |key, hash| @env_hash[key] = hash.values.last }
+        options["env_vars"].map { |key, value| @env_hash[key] = value }
+      end
 
-    def dockerize
+      def set_from_defaults
+        @env_hash.map { |key, hash| @env_hash[key] = hash.values.last }
+      end
+
+      def configurate
+        @env_hash = get_defaults
+        case
+        when options["interactive"]
+          set_interactively
+        when options["env_vars"]
+          set_from_env_vars
+        when options.empty?
+          set_from_defaults
+        end
+        @env_hash
+      end
     end
 
     desc "greenfield", "Generates files necessary to greenfield a new app within a dockerized rails container, along with a set of files necessary for continuous deployment using CircleCI"
+    method_option :interactive, desc: "Set up your environment variables as you go."
+    method_option :env_vars, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "key1:value1 key2:value2"
 
-    def greenfield
+
+    def greenfield(app=nil)
+      if app
+
+        # byebug
+        FileUtils.mkdir_p app
+        FileUtils.cd app
+
+      end
       configurate
-      # byebug
       directory "circleci", "./.circleci"
       directory "docker/containers/database"
       directory "docker/env_files"
@@ -83,6 +96,11 @@ module Roro
         template("docker/containers/#{container}/Dockerfile.tt", "docker/containers/#{container}/Dockerfile", options)
       end
       template("docker/containers/web/app.conf.tt", "docker/containers/web/app.conf")
+    end
+
+    desc "dockerize", "Generates files necessary to dockerize your existing Rails project, along with a set of files for continuous deployment using CircleCI and deployment ussing sshkit."
+
+    def dockerize
     end
 
     private
