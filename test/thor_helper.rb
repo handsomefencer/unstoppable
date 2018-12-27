@@ -2,6 +2,11 @@ module TestHelper
   module Files
     module Assertions
 
+      def prepare_destination
+        gem_root = Gem::Specification.find_by_name('roro').gem_dir
+        Dir.chdir File.join(gem_root, 'tmp')
+      end
+
       def assert_file(file, *contents)
         assert File.exist?(file), "Expected #{file} to exist, but does not"
 
