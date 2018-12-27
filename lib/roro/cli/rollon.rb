@@ -9,13 +9,10 @@ module Roro
     def rollon
       configurate
       # self.destination_root = self.destination_root + "/#{app}" unless app.nil?
-      if !Dir.empty?('.')
+      if Dir.empty?('.')
         raise Roro::Error.new("Oops -- Roro can't roll itself onto a Rails app if it doesn't exist. Please either change into a directory with a Rails app or generate a new one using '$ roro greenfield'.")
       end
       copy_base_files
-      copy_file "new_rails_app/gitignore", ".gitignore"
-      copy_file "new_rails_app/Gemfile"
-      copy_file "new_rails_app/Gemfile.lock"
       append_to_existing_files
     end
   end

@@ -42,7 +42,7 @@ module Roro
         directory "docker/keys"
         directory "lib", "lib", recursive: true
         copy_file "docker-compose.yml"
-        copy_file "config/database.yml"
+        copy_file "config/database.yml", force: true
         %w[development circleci staging production].each do |environment|
           base = "docker/containers/"
 
