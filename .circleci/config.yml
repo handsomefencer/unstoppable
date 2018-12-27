@@ -7,12 +7,12 @@ jobs:
 
   build:
     docker:
-       - image: circleci/ruby:2.5
+       - image: circleci/ruby:2.5.1
     steps:
       - checkout
       - setup_remote_docker
       - run: gem install bundler
-      - run: rake install --local
+      - run: rake install 
       - run: bundle
       - run: mkdir 'tmp'
       - run: rake test
