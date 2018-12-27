@@ -4,14 +4,26 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given(:prepare) {
-    prepare_destination
+  Given do
+    case
+    when Dir.pwd.split('roro').last.match("/tmp/dummy")
+      Dir.chdir('../')
+    when Dir.pwd.split('roro').last.match("/tmp/greenfield")
+      Dir.chdir('../')
+    when Dir.pwd.split('/').last.match(/roro/)
+      Dir.chdir('tmp')
+    end
+    %w(dummy greenfield).each do |directory|
+      FileUtils.rm_rf(directory) if File.exist?(directory)
+      FileUtils.mkdir_p(directory)
+      FileUtils.copy_entry "../test/dummy", "dummy"
+    end
     Dir.chdir 'greenfield'
-  }
+  end
 
   describe "prepare" do
 
-    Given { prepare }
+    # Given { prepare }
 
     Then { Dir.pwd.split('roro').last.must_equal "/tmp/greenfield" }
     And { Dir.empty?(Dir.pwd).must_equal true}
@@ -19,7 +31,7 @@ describe Roro::CLI do
 
   describe "usage" do
 
-    Given { prepare }
+    # Given { prepare }
     Given { subject.greenfield }
 
     generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
