@@ -5,6 +5,11 @@ module TestHelper
       def prepare_destination
         gem_root = Gem::Specification.find_by_name('roro').gem_dir
         Dir.chdir File.join(gem_root, 'tmp')
+        FileUtils.rm_rf 'dummy'
+        FileUtils.rm_rf 'greenfield'
+        FileUtils.mkdir_p 'dummy'
+        FileUtils.mkdir_p 'greenfield'
+        FileUtils.copy_entry '../test/dummy', 'dummy'
       end
 
       def assert_file(file, *contents)
