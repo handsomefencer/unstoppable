@@ -4,20 +4,33 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given { prepare_destination }
+  Given(:prepare) {
+    prepare_destination
+    Dir.chdir 'greenfield'
+  }
 
-  Given { Dir.chdir 'greenfield'}
+  describe "prepare" do
 
-  Given { subject.greenfield }
+    Given { prepare }
 
-  generated_files = %w( docker-compose.yml Dockerfile Gemfile.lock)
-  generated_files.each do |generated_file|
+    Then { Dir.pwd.split('roro').last.must_equal "/tmp/greenfield" }
+    And { Dir.empty?(Dir.pwd).must_equal true}
+  end
 
-    describe "must generate #{generated_file}" do
+  describe "usage" do
 
-      Then do
+    Given { prepare }
+    Given { subject.greenfield }
 
-        assert_file generated_file
+    generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
+    generated_files.each do |generated_file|
+
+      describe "must generate #{generated_file}" do
+
+        Then do
+
+          assert_file generated_file
+        end
       end
     end
   end

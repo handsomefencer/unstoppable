@@ -5,14 +5,11 @@ describe Roro::CLI do
   Given(:subject) { Roro::CLI.new }
 
   Given { prepare_destination }
-
-  Given { Dir.chdir 'dummy'}
-
-  Given(:subject) { Roro::CLI.new }
-
-  Given { subject.rollon }
+  Given { Dir.chdir 'dummy' }
 
   describe "must create" do
+
+    Given { subject.rollon }
 
     describe "./.circleci" do
 
