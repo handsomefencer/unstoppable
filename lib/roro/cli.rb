@@ -1,6 +1,6 @@
 require 'thor'
 require 'roro/cli/base'
-require 'roro/cli/dockerize'
+require 'roro/cli/rollon'
 require 'roro/cli/greenfield'
 
 module Roro

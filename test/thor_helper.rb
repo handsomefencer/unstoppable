@@ -2,13 +2,6 @@ module TestHelper
   module Files
     module Assertions
 
-      def prepare_destination
-
-        FileUtils.rm_rf('tmp')
-        FileUtils.mkdir('tmp')
-        Dir.chdir('tmp')
-      end
-
       def assert_file(file, *contents)
         assert File.exist?(file), "Expected #{file} to exist, but does not"
 

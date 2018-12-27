@@ -9,3 +9,11 @@ require "generators/shared_expectations"
 
 # include Roro::Test::SharedExpectations
 include TestHelper::Files::Assertions
+Minitest.after_run do
+# puts Dir.pwd.upcase
+Dir.chdir('.')
+
+  # src = 'dummy'
+  # dest = '.'
+  # FileUtils.cp_r( src, dest )
+end
