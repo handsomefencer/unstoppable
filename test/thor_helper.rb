@@ -1,15 +1,27 @@
+require 'byebug'
+
 module TestHelper
   module Files
     module Assertions
 
+      def gem_root
+        Dir.pwd
+      end
+
       def prepare_destination
-        gem_root = Gem::Specification.find_by_name('roro').gem_dir
-        Dir.chdir File.join(gem_root, 'tmp')
-        FileUtils.rm_rf 'dummy'
-        FileUtils.rm_rf 'greenfield'
-        FileUtils.mkdir_p 'dummy'
-        FileUtils.mkdir_p 'greenfield'
-        FileUtils.copy_entry '../test/dummy', 'dummy'
+        case
+        when Dir.pwd.split('roro').last.match("/tmp/dummy")
+          Dir.chdir('../')
+        when Dir.pwd.split('roro').last.match("/tmp/greenfield")
+          Dir.chdir('../')
+        when Dir.pwd.split('/').last.match(/roro/)
+          Dir.chdir('tmp')
+        end
+        %w(dummy greenfield).each do |directory|
+          FileUtils.rm_rf(directory) if File.exist?(directory)
+          FileUtils.mkdir_p(directory)
+          FileUtils.copy_entry "../test/dummy", "dummy"
+        end
       end
 
       def assert_file(file, *contents)

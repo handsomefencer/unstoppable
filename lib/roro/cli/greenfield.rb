@@ -14,7 +14,6 @@ module Roro
       if app.nil? && !Dir.empty?('.')
         raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")
       end
-      # directory '.', '.'
       copy_file 'greenfield/Gemfile', 'Gemfile'
       copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
       copy_file 'greenfield/docker-compose.yml', 'docker-compose.yml'
