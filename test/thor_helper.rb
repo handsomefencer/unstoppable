@@ -3,10 +3,8 @@ module TestHelper
     module Assertions
 
       def prepare_destination
-
-        FileUtils.rm_rf('tmp')
-        FileUtils.mkdir('tmp')
-        Dir.chdir('tmp')
+        gem_root = Gem::Specification.find_by_name('roro').gem_dir
+        Dir.chdir File.join(gem_root, 'tmp')
       end
 
       def assert_file(file, *contents)
