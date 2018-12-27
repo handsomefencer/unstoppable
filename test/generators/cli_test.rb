@@ -4,7 +4,7 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given { prepare_destination }
+  # Given { prepare_destination }
 
   describe "commands" do
 
