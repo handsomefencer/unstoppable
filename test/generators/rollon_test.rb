@@ -1,25 +1,7 @@
-<<<<<<< HEAD
-=======
-require 'byebug'
->>>>>>> dummy
 require "test_helper"
 
 describe Roro::CLI do
 
-<<<<<<< HEAD
-
-  Given(:subject) { Roro::CLI.new }
-  Given { prepare_destination }
-
-  describe ":greenfield" do
-
-    describe "without arguments" do
-
-      Given { subject.greenfield }
-
-      # dockerized_app
-
-=======
   Given(:subject) { Roro::CLI.new }
 
   Given { prepare_destination }
@@ -126,7 +108,6 @@ describe Roro::CLI do
       Then { assert_file 'config' }
 
       And { assert_file 'config/database.yml' }
->>>>>>> dummy
     end
   end
 end
