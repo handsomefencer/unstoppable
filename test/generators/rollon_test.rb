@@ -4,7 +4,22 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given { prepare_destination }
+  Given do
+    case
+    when Dir.pwd.split('roro').last.match("/tmp/dummy")
+      Dir.chdir('../')
+    when Dir.pwd.split('roro').last.match("/tmp/greenfield")
+      Dir.chdir('../')
+    when Dir.pwd.split('/').last.match(/roro/)
+      Dir.chdir('tmp')
+    end
+    %w(dummy greenfield).each do |directory|
+      FileUtils.rm_rf(directory) if File.exist?(directory)
+      FileUtils.mkdir_p(directory)
+      FileUtils.copy_entry "../test/dummy", "dummy"
+    end
+  end
+
   Given { Dir.chdir 'dummy' }
 
   describe "must create" do
