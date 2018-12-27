@@ -7,5 +7,5 @@ require "thor_helper"
 
 require "generators/shared_expectations"
 
-include Roro::Test::SharedExpectations
+# include Roro::Test::SharedExpectations
 include TestHelper::Files::Assertions
