@@ -6,9 +6,6 @@ describe Roro::CLI do
 
   Given { prepare_destination }
 
-  Given { FileUtils.rm_rf 'dummy'}
-  Given { FileUtils.mkdir_p 'dummy'}
-  Given { FileUtils.copy_entry '../test/dummy', 'dummy'}
   Given { Dir.chdir 'dummy'}
 
   Given(:subject) { Roro::CLI.new }
@@ -24,6 +21,11 @@ describe Roro::CLI do
         assert_file '.circleci/config.yml'
         assert_file '.circleci/config.yml.workflow-example'
         assert_file '.circleci/Rakefile' }
+    end
+
+    describe "Gemfile" do
+
+      Then { assert_file 'Gemfile', /gem \'pg\'/ }
     end
 
     describe "./docker" do
