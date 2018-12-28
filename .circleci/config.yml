@@ -24,9 +24,9 @@ jobs:
             chown -R $USER:$USER -R .
             bundle
             bin/rails db:create db:migrate
-            bin/rails s
+            bin/rails s -d
       - run: curl -Is localhost:3000 | head -n 1
-      
+
 workflows:
   version: 2
   build-and-deploy:
