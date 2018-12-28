@@ -12,10 +12,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: gem install bundler
-      - run: rake install 
+      - run: rake install
       - run: bundle
-      - run: mkdir 'tmp'
-      - run: rake test
       - run:
           command: |
             mkdir -p sooperdooper
