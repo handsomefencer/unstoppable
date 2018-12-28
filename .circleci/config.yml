@@ -21,7 +21,6 @@ jobs:
             cd sooperdooper
             roro greenfield
             docker-compose run app rails new . --force --database=postgresql
-            roro rollon
             chown -R $USER:$USER -R .
             mv database.yml config/database.yml
             docker-compose build
