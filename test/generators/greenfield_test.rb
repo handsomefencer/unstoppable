@@ -8,7 +8,6 @@ describe Roro::CLI do
     prepare_destination
     # FileUtils.copy_entry "../test/dummy", "dummy"
     Dir.chdir 'greenfield'
-    puts Dir.pwd.upcase
   }
 
   describe "prepare" do
@@ -31,12 +30,12 @@ describe Roro::CLI do
     Given { subject.greenfield }
   #
     # generated_files = %w( )
-    generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
-    generated_files.each do |generated_file|
+    describe "must generate files" do
 
-      describe "must generate #{generated_file}" do
+      Then do
 
-        Then do
+        generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
+        generated_files.each do |generated_file|
 
           assert_file generated_file
         end
