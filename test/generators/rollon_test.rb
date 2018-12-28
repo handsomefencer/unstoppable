@@ -21,9 +21,15 @@ describe Roro::CLI do
         assert_file '.circleci/Rakefile' }
     end
 
-    describe "Gemfile" do
+    describe "application root files" do
 
-      Then { assert_file 'Gemfile', /gem \'pg\'/ }
+      Then {
+        assert_file 'Gemfile', /gem \'pg\'/
+        assert_file '.gitignore', /docker\/\*\*\/\*.key/
+        assert_file '.gitignore', /docker\/\*\*\/\*.env/
+        assert_file 'Gemfile', /gem \'sshkit\'/
+
+      }
     end
 
     describe "./docker" do
@@ -110,7 +116,7 @@ describe Roro::CLI do
 
       Then { assert_file 'config' }
 
-      And { assert_file 'config/database.yml' }
+      And { assert_file 'config/database.yml', /ENV.fetch\('POSTGRES_DB/ }
     end
   end
 end
