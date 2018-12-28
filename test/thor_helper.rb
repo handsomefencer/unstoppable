@@ -1,3 +1,5 @@
+require 'byebug'
+
 module TestHelper
   module Files
     module Assertions
@@ -6,6 +8,21 @@ module TestHelper
         Dir.pwd
       end
 
+      def prepare_destination
+        case
+        when Dir.pwd.split('roro').last.match("/tmp/dummy")
+          Dir.chdir('../')
+        when Dir.pwd.split('roro').last.match("/tmp/greenfield")
+          Dir.chdir('../')
+        when Dir.pwd.split('/').last.match(/roro/)
+          Dir.chdir('tmp')
+        end
+        %w(dummy greenfield).each do |directory|
+          FileUtils.rm_rf(directory) if File.exist?(directory)
+          FileUtils.mkdir_p(directory)
+          FileUtils.copy_entry "../test/dummy/", "dummy"
+        end
+      end
 
       def assert_file(file, *contents)
         assert File.exist?(file), "Expected #{file} to exist, but does not"
