@@ -19,7 +19,7 @@ jobs:
             mkdir -p sooperdooper
             cd sooperdooper
             roro greenfield
-            docker-compose run app rails new . --force
+            docker-compose run app rails new . --force --database=postgresql
             roro rollon
             chown -R $USER:$USER -R .
             docker-compose up -d --build

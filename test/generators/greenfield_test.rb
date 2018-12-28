@@ -39,6 +39,8 @@ describe Roro::CLI do
 
           assert_file generated_file
         end
+
+        assert_file 'config/database.example.yml'
       end
     end
   end
