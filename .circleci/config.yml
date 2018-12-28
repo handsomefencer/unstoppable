@@ -22,7 +22,7 @@ jobs:
             roro greenfield
             docker-compose run app rails new . --force --database=postgresql
             chown -R $USER:$USER -R .
-            mv database.yml config/database.yml
+            mv database.yml ./config/database.yml
             docker-compose build
             docker-compose app bin/rails db:create db:migrate
             docker-compose up -d
