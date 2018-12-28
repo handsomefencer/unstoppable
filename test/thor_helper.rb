@@ -20,7 +20,6 @@ module TestHelper
         %w(dummy greenfield).each do |directory|
           FileUtils.rm_rf(directory) if File.exist?(directory)
           FileUtils.mkdir_p(directory)
-          FileUtils.copy_entry "../test/dummy/", "dummy"
         end
       end
 
