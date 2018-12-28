@@ -36,13 +36,14 @@ module Roro
       end
 
       def copy_base_files
+        copy_file "docker-compose.yml"
+        copy_file "gitignore", ".gitignore", skip: true
+        copy_file "config/database.yml", force: true
         directory "circleci", "./.circleci"
         directory "docker/containers/database"
         directory "docker/env_files"
         directory "docker/keys"
         directory "lib", "lib", recursive: true
-        copy_file "docker-compose.yml"
-        copy_file "config/database.yml", force: true
         %w[development circleci staging production].each do |environment|
           base = "docker/containers/"
 
@@ -75,7 +76,6 @@ module Roro
         @env_hash.map do |key, value|
           append_to_file 'docker/env_files/circleci.env', "\nexport #{key}=#{value}"
         end
-
       end
 
       def append_to_existing_files

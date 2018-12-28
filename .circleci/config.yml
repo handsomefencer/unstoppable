@@ -14,12 +14,13 @@ jobs:
       - run: gem install bundler
       - run: rake install
       - run: bundle
-      - run:
+      e- run:
           command: |
             mkdir -p sooperdooper
             cd sooperdooper
             roro greenfield
-            docker-compose run app rails new . --skip
+            docker-compose run app rails new . --force
+            roro rollon
             chown -R $USER:$USER -R .
             docker-compose up -d --build
             docker-compose exec app bin/rails db:create db:migrate
