@@ -2,39 +2,45 @@ require "test_helper"
 
 describe Roro::CLI do
 
-  # let(:subject) { Roro::CLI.new }
+  Given(:subject) { Roro::CLI.new }
 
-  before do
-    case
-    when Dir.pwd.split('roro').last.match("/tmp/dummy")
-      Dir.chdir('../')
-    when Dir.pwd.split('roro').last.match("/tmp/greenfield")
-      Dir.chdir('../')
-    when Dir.pwd.split('/').last.match(/roro/)
-      Dir.chdir('tmp')
-    end
-    %w(dummy greenfield).each do |directory|
-      FileUtils.rm_rf(directory) if File.exist?(directory)
-      FileUtils.mkdir_p(directory)
-      FileUtils.copy_entry "../test/dummy", "dummy"
-    end
+  Given(:prepare) {
+    prepare_destination
+    # FileUtils.copy_entry "../test/dummy", "dummy"
     Dir.chdir 'greenfield'
-    @subject = Roro::CLI.new
+    puts Dir.pwd.upcase
+  }
+
+  describe "prepare" do
+
+    Given { prepare }
+    Then { Dir.pwd.split('roro').last.must_equal "/tmp/greenfield" }
+    And { Dir.empty?(Dir.pwd).must_equal true}
   end
 
-  it "prepare" do
+  # Given {
+  #   Dir.chdir('../') if Dir.pwd.match /greenfield/
+  #   prepare_destination
+  #
+  #   Dir.chdir 'tmp/greenfield'
+  # }
+  #
+  describe "usage" do
 
-     Dir.pwd.split('roro').last.must_equal "/tmp/greenfield"
-     Dir.empty?(Dir.pwd).must_equal true
-  end
+    Given { prepare }
+    Given { subject.greenfield }
+  #
+    # generated_files = %w( )
+    generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
+    generated_files.each do |generated_file|
 
-  generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
-  generated_files.each do |generated_file|
+      describe "must generate #{generated_file}" do
 
-    it "must generate #{generated_file}" do
+        Then do
 
-      @subject.greenfield
-      assert_file generated_file
+          assert_file generated_file
+        end
+      end
     end
   end
 end
