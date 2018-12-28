@@ -1,5 +1,3 @@
-require 'byebug'
-
 module TestHelper
   module Files
     module Assertions
@@ -14,7 +12,7 @@ module TestHelper
           Dir.chdir('../')
         when Dir.pwd.split('roro').last.match("/tmp/greenfield")
           Dir.chdir('../')
-        when Dir.pwd.split('/').last.match(/roro/)
+        when Dir.pwd.split('/').last.match("roro")
           Dir.chdir('tmp')
         end
         %w(dummy greenfield).each do |directory|
