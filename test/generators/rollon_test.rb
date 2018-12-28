@@ -60,7 +60,10 @@ describe Roro::CLI do
 
         describe "/web" do
 
-          Then { assert_file 'docker/containers/web' }
+          Then {
+            assert_file 'docker/containers/web'
+            assert_file 'docker/containers/web/app.conf'
+          }
 
           And {
             assert_file 'docker/containers/web/production.env',
