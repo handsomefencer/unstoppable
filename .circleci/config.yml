@@ -26,7 +26,7 @@ jobs:
             bin/rails db:create db:migrate
             bin/rails s
       - run: curl -Is localhost:3000 | head -n 1
-
+      
 workflows:
   version: 2
   build-and-deploy:
