@@ -23,8 +23,8 @@ jobs:
             docker-compose run app rails new . --force --database=postgresql
             chown -R $USER:$USER -R .
             bundle
-            bin/rails db:create db:migrate
-            bin/rails s -d
+            rails db:create db:migrate
+            rails s -d
       - run: curl -Is localhost:3000 | head -n 1
 
 workflows:
