@@ -2,9 +2,9 @@ require "test_helper"
 
 describe Roro::CLI do
 
-  Given(:subject) { Roro::CLI.new }
+  # let(:subject) { Roro::CLI.new }
 
-  Given do
+  before do
     case
     when Dir.pwd.split('roro').last.match("/tmp/dummy")
       Dir.chdir('../')
@@ -19,31 +19,22 @@ describe Roro::CLI do
       FileUtils.copy_entry "../test/dummy", "dummy"
     end
     Dir.chdir 'greenfield'
+    @subject = Roro::CLI.new
   end
 
-  describe "prepare" do
+  it "prepare" do
 
-    # Given { prepare }
-
-    Then { Dir.pwd.split('roro').last.must_equal "/tmp/greenfield" }
-    And { Dir.empty?(Dir.pwd).must_equal true}
+     Dir.pwd.split('roro').last.must_equal "/tmp/greenfield"
+     Dir.empty?(Dir.pwd).must_equal true
   end
 
-  describe "usage" do
+  generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
+  generated_files.each do |generated_file|
 
-    # Given { prepare }
-    Given { subject.greenfield }
+    it "must generate #{generated_file}" do
 
-    generated_files = %w( Gemfile docker-compose.yml Dockerfile Gemfile.lock)
-    generated_files.each do |generated_file|
-
-      describe "must generate #{generated_file}" do
-
-        Then do
-
-          assert_file generated_file
-        end
-      end
+      @subject.greenfield
+      assert_file generated_file
     end
   end
 end
