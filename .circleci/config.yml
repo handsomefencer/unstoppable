@@ -22,8 +22,10 @@ jobs:
             docker-compose run app rails new . --force --database=postgresql
             roro rollon
             chown -R $USER:$USER -R .
-            docker-compose up -d --build
-            docker-compose exec app bin/rails db:create db:migrate
+            mv database.yml config/database.yml
+            docker-compose build
+            docker-compose app bin/rails db:create db:migrate
+            docker-compose up -d
       - run: curl -Is localhost:3000 | head -n 1
 
 #   push:
