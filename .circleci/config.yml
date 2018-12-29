@@ -15,7 +15,6 @@ jobs:
       # - run: docker-compose run app rake test
       - run: bundle
       - run: rake install
-      - run: $PWD
       - run: rake test
       - run:
           name: Greenfield
