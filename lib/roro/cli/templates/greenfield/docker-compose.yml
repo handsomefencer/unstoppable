@@ -6,17 +6,6 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
   web:
     build: .
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
-    volumes:
-      - app-data:/myapp
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-
-  greenfield:
-    build: .
-    # command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
       - app-data:/myapp
     ports:
@@ -25,6 +14,16 @@ services:
       - db
     command: ["chmod", "+x", "greenfield-entrypoint.sh"]
     command: ["sh greenfield-entrypoint.sh"]
+
+  greenfield:
+    build: .
+    volumes:
+      - app-data:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
 
 volumes:
   app-data:
