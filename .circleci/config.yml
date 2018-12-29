@@ -7,25 +7,42 @@ jobs:
 
   build:
     docker:
-       - image: circleci/ruby:2.5.1
+       - image: circleci/ruby:2.5.3
     steps:
       - checkout
       - setup_remote_docker
       - run: gem install bundler
-      - run: rake install
       - run: bundle
-      - run:
-          name: Basic Greenfield
-          command: |
-            mkdir -p sooperdooper
-            cd sooperdooper
-            roro greenfield
-            docker-compose run app rails new . --force --database=postgresql
-            chown -R $USER:$USER -R .
-            bundle
-            rails db:create db:migrate
-            rails s -d
-      - run: curl -Is localhost:3000 | head -n 1
+      - run: rake install
+      - run: rake test
+
+      # - run:
+      #     name: Greenfield
+      #     command: |
+      #       mkdir -p sooperdooper
+      #       cd sooperdooper
+      #       roro greenfield
+      #       docker-compose run app rails new . --force --database=postgresql
+      #       chown -R $USER:$USER -R .
+      #       bundle
+      #       rails db:create db:migrate
+      #       rails s -d
+      #       curl -Is localhost:3000 | head -n 1
+      #       killall -9 rails
+      # - run:
+      #     name: Rollon
+      #     command: |
+      #       mkdir -p sooperdooper
+      #       cd sooperdooper
+      #       roro greenfield
+      #       rails new . --force --database=postgresql
+      #       chown -R $USER:$USER -R .
+      #       bundle
+      #       rails db:create db:migrate
+      #       rails s -d
+      #       curl -Is localhost:3000 | head -n 1
+      #       killall -9 rails
+      #
 
 workflows:
   version: 2
