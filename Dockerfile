@@ -4,3 +4,4 @@ RUN mkdir /roro
 WORKDIR /roro
 COPY . /roro/
 RUN bundle install
+RUN rake install
