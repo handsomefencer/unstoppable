@@ -11,10 +11,8 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: gem install bundler
-      - run: bundle
-      - run: rake install
-      - run: rake test
+      - run: docker-compose build
+      - run: docker-compose run app rake test
       # - run:
       #     name: Greenfield
       #     command: |
