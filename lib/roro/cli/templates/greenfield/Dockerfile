@@ -1,11 +1,8 @@
-FROM ruby:2.5-alpine
-
-RUN apk add --no-cache --update build-base linux-headers \
-    postgresql-dev nodejs tzdata libxml2-dev libxslt-dev
-
-RUN mkdir -p /usr/src/app/
-WORKDIR /usr/src/app
-
-COPY Gemfile /usr/src/app/Gemfile
+FROM ruby:2.5
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
+RUN mkdir /myapp
+WORKDIR /myapp
+COPY Gemfile /myapp/Gemfile
+COPY Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
-COPY . /usr/src/app/
+COPY . /myapp/
