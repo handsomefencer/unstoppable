@@ -3,7 +3,7 @@ module TestHelper
     module Assertions
 
       def gem_root
-        Dir.pwd
+        Dir.pwd + '/tmp'
       end
 
       def prepare_destination
