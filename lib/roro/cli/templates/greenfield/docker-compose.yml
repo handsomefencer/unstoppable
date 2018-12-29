@@ -23,4 +23,4 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    entrypoint:  ["/greenfield-entrypoint.sh"]
+    entrypoint:  ["greenfield-entrypoint.sh"]
