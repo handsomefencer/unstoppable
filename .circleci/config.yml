@@ -11,9 +11,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      # - run: printenv
-      # - run: ls
-      # - run: $PWD
       - run: mkdir tmp
       - run: docker-compose build
       - run: docker-compose run app rake test
