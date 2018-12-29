@@ -5,9 +5,10 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given(:prepare) {
+  Given!(:prepare) {
     prepare_destination
-    FileUtils.copy_entry "../dummy", "dummy"
+    puts Dir.pwd
+    FileUtils.cp_r "../dummy/.", "dummy"
     Dir.chdir 'dummy' }
 
   Given(:env_vars) { %w(
