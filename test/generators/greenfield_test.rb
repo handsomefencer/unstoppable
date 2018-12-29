@@ -4,17 +4,11 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given(:prepare) {
+  Given(:prepare) do
     prepare_destination
     Dir.chdir 'greenfield'
-  }
-
-  describe "prepare" do
-
-    Given { prepare }
-    Then { Dir.pwd.split('roro').last.must_equal "/tmp/greenfield" }
-    And { Dir.empty?(Dir.pwd).must_equal true}
   end
+
 
   describe "usage" do
 
