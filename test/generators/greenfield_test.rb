@@ -20,7 +20,7 @@ describe Roro::CLI do
 
         generated_files = [
           "Gemfile",
-          "database.yml.example",
+          "config/database.yml.example",
           "Dockerfile",
           "docker-compose.yml",
           "Gemfile.lock"]
