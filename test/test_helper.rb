@@ -8,4 +8,5 @@ require "thor_helper"
 include TestHelper::Files::Assertions
 
 Minitest.after_run do
+
 end
