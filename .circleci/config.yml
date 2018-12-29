@@ -22,10 +22,9 @@ jobs:
             roro greenfield
             sudo chown -R $USER:$USER .
 
-            docker-compose run --rm greenfield rails new . --force --database=postgresql
+            docker-compose run greenfield rails new . --force --database=postgresql
             sudo chown -R $USER:$USER .
             docker-compose build
-            mv -f config/database.yml.example config/database.yml
             sudo chown -R $USER:$USER .
             docker-compose up -d
             docker-compose run web bin/rails db:create db:migrate
