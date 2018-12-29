@@ -13,18 +13,18 @@ jobs:
       - setup_remote_docker
       - run: docker-compose build
       - run: docker-compose run app rake test
-      # - run:
-      #     name: Greenfield
-      #     command: |
-      #       mkdir -p sooperdooper
-      #       cd sooperdooper
-      #       roro greenfield
-      #       docker-compose run --rm web rails new . --database=postgresql --force
-      #       mv database.yml.example config/database.yml
-      #       docker-compose build
-      #       docker-compose run --rm web bin/rails db:create db:migrate
-      #       docker-compose up
-      #       curl -Is localhost:3000 | head -n 1
+      - run:
+          name: Greenfield
+          command: |
+            mkdir -p sooperdooper
+            cd sooperdooper
+            roro greenfield
+            docker-compose run --rm web rails new . --database=postgresql --force
+            mv database.yml.example config/database.yml
+            docker-compose build
+            docker-compose run --rm web bin/rails db:create db:migrate
+            docker-compose up
+            curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
       #       bundle
