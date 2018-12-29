@@ -8,6 +8,7 @@ describe Roro::CLI do
   Given!(:prepare) {
     prepare_destination
     puts Dir.pwd
+    puts Dir.entries('../dummy')
     FileUtils.cp_r "../dummy/.", "dummy"
     Dir.chdir 'dummy' }
 
