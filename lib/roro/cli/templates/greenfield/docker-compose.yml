@@ -23,4 +23,5 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    entrypoint:  ["sh greenfield-entrypoint.sh"]
+    command: ["chmod", "+x", "greenfield-entrypoint.sh"]
+    command: ["sh greenfield-entrypoint.sh"]
