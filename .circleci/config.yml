@@ -14,6 +14,7 @@ jobs:
       # - run: printenv
       # - run: ls
       # - run: $PWD
+      - run: mkdir tmp
       - run: docker-compose build
       - run: docker-compose run app rake test
       # - run:
