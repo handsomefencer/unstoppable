@@ -1,5 +1,5 @@
 defaults: &defaults
-  working_directory: /tmp
+  working_directory: /repo
 
 version: 2
 
