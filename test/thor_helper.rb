@@ -2,10 +2,6 @@ module TestHelper
   module Files
     module Assertions
 
-      def gem_root
-        Dir.pwd + '/tmp'
-      end
-
       def prepare_destination
         case
         when Dir.pwd.split('roro').last.match("/tmp/dummy")
