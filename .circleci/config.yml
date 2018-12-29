@@ -23,10 +23,9 @@ jobs:
             cd sooperdooper
             roro greenfield
             docker-compose run web rails new . --database=postgresql --force
-            mkdir config
             mv -f config/database.yml.example config/database.yml
             docker-compose build
-            docker-compose run --rm web bin/rails db:create db:migrate
+            docker-compose run web bin/rails db:create db:migrate
             docker-compose up
             curl -Is localhost:3000 | head -n 1
 
