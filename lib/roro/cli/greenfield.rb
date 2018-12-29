@@ -18,6 +18,7 @@ module Roro
       copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
       copy_file 'greenfield/docker-compose.yml', 'docker-compose.yml'
       copy_file 'greenfield/Dockerfile', 'Dockerfile'
+      copy_file 'greenfield/greenfield-entrypoint.sh', 'greenfield-entrypoint.sh'
       copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
     end
   end

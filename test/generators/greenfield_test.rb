@@ -14,7 +14,7 @@ describe Roro::CLI do
   after do
     $stdout = STDOUT
   end
-  
+
   Given(:subject) { Roro::CLI.new }
 
   Given(:prepare) do
@@ -36,7 +36,9 @@ describe Roro::CLI do
           "config/database.yml.example",
           "Dockerfile",
           "docker-compose.yml",
-          "Gemfile.lock"]
+          "Gemfile.lock",
+          "greenfield-entrypoint.sh"
+        ]
         generated_files.each do |generated_file|
 
           assert_file generated_file
