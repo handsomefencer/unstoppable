@@ -3,8 +3,8 @@ module TestHelper
     module Assertions
 
       def prepare_destination
+
         Dir.chdir(ENV.fetch("PWD") + '/tmp')
-        puts Dir.pwd
         # case
         # when Dir.pwd.split('roro').last.match("/tmp/dummy")
         #   Dir.chdir('../')

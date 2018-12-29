@@ -2,9 +2,23 @@ require "test_helper"
 require "fileutils"
 describe Roro::CLI do
 
+  before do
+    class Foo < StringIO
+      def puts s
+        super unless s.start_with?('[WARNING] Attempted to create command')
+      end
+    end
+    $stdout = Foo.new
+  end
+
+  after do
+    $stdout = STDOUT
+  end
+
   Given(:subject) { Roro::CLI.new }
 
   Given!(:prepare) {
+
     prepare_destination
     FileUtils.cp_r "../dummy/.", "dummy"
     Dir.chdir 'dummy' }
