@@ -5,7 +5,7 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given {
+  Given(:prepare) {
     prepare_destination
     FileUtils.copy_entry "../dummy", "dummy"
     Dir.chdir 'dummy' }
@@ -23,6 +23,7 @@ describe Roro::CLI do
 
   describe "must create" do
 
+    Given { prepare }
     Given { subject.rollon }
 
     Then {
