@@ -5,9 +5,10 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given { prepare_destination }
-  Given { FileUtils.copy_entry "../dummy", "dummy"}
-  Given { Dir.chdir 'dummy' }
+  Given {
+    prepare_destination
+    FileUtils.copy_entry "../dummy", "dummy"
+    Dir.chdir 'dummy' }
 
   Given(:env_vars) { %w(
     APP_NAME=sooperdooper
@@ -19,9 +20,10 @@ describe Roro::CLI do
     SERVER_PORT=22
     SERVER_USER=root ) }
 
-  Given { subject.rollon }
 
   describe "must create" do
+
+    Given { subject.rollon }
 
     Then {
 
