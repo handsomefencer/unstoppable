@@ -11,8 +11,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      # - run: docker-compose build
-      # - run: docker-compose run app rake test
       - run: bundle
       - run: rake install
       - run: rake test
@@ -22,11 +20,15 @@ jobs:
             mkdir -p sooperdooper
             cd sooperdooper
             roro greenfield
+            sudo chown -R $USER:$USER .
+
             docker-compose run web rails new . --database=postgresql --force
-            mv -f config/database.yml.example config/database.yml
+            sudo chown -R $USER:$USER .
             docker-compose build
+            mv -f config/database.yml.example config/database.yml
+            sudo chown -R $USER:$USER .
+            docker-compose up -d
             docker-compose run web bin/rails db:create db:migrate
-            docker-compose up
             curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
