@@ -1,6 +1,5 @@
 require "test_helper"
 require "fileutils"
-require "byebug"
 describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
