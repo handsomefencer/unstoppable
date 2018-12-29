@@ -11,8 +11,9 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: docker-compose build
-      - run: docker-compose run app rake test
+      # - run: docker-compose build
+      # - run: docker-compose run app rake test
+      - run: bundle
       - run: rake install
       - run:
           name: Greenfield
@@ -21,7 +22,8 @@ jobs:
             cd sooperdooper
             roro greenfield
             docker-compose run --rm web rails new . --database=postgresql --force
-            mv database.yml.example config/database.yml
+            ls -a
+            mv -f database.yml.example config/database.yml
             docker-compose build
             docker-compose run --rm web bin/rails db:create db:migrate
             docker-compose up
