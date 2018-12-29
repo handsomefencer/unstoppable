@@ -13,6 +13,7 @@ jobs:
       - setup_remote_docker
       - run: docker-compose build
       - run: docker-compose run app rake test
+      - run: rake install
       - run:
           name: Greenfield
           command: |
