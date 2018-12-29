@@ -3,14 +3,16 @@ module TestHelper
     module Assertions
 
       def prepare_destination
-        case
-        when Dir.pwd.split('roro').last.match("/tmp/dummy")
-          Dir.chdir('../')
-        when Dir.pwd.split('roro').last.match("/tmp/greenfield")
-          Dir.chdir('../')
-        when Dir.pwd.split('/').last.match("roro")
-          Dir.chdir('tmp')
-        end
+        Dir.chdir(ENV.fetch("PWD") + '/tmp')
+        puts Dir.pwd
+        # case
+        # when Dir.pwd.split('roro').last.match("/tmp/dummy")
+        #   Dir.chdir('../')
+        # when Dir.pwd.split('roro').last.match("/tmp/greenfield")
+        #   Dir.chdir('../')
+        # when Dir.pwd.split('/').last.match("roro")
+        #   Dir.chdir('tmp')
+        # end
         %w(dummy greenfield).each do |directory|
           FileUtils.rm_rf(directory) if File.exist?(directory)
           FileUtils.mkdir_p(directory)
