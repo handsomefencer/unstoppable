@@ -9,7 +9,6 @@ describe Roro::CLI do
     Dir.chdir 'greenfield'
   end
 
-
   describe "usage" do
 
     Given { prepare }
@@ -21,8 +20,9 @@ describe Roro::CLI do
 
         generated_files = [
           "Gemfile",
-          "docker-compose.yml",
+          "database.yml.example",
           "Dockerfile",
+          "docker-compose.yml",
           "Gemfile.lock"]
         generated_files.each do |generated_file|
 

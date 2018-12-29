@@ -4,7 +4,7 @@ module Roro
 
     include Thor::Actions
 
-    desc "greenfield", "Generates files necessary to greenfield a new app within a dockerized rails container, along with a set of files necessary for continuous deployment using CircleCI"
+    desc "greenfield", "Greenfield a brand new rails app using Docker's instructions"
 
     method_option :env_vars, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "key1:value1 key2:value2"
     method_option :interactive, desc: "Set up your environment variables as you go."
@@ -18,7 +18,7 @@ module Roro
       copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
       copy_file 'greenfield/docker-compose.yml', 'docker-compose.yml'
       copy_file 'greenfield/Dockerfile', 'Dockerfile'
-      copy_file 'greenfield/database.yml.example', 'database.yml'
+      copy_file 'greenfield/database.yml.example', 'database.yml.example'
     end
   end
 end
