@@ -1,12 +1,12 @@
 require "test_helper"
 require "fileutils"
-
+require "byebug"
 describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
   Given { prepare_destination }
-  Given { FileUtils.cp_r "../dummy/.", "dummy" }
+  Given { FileUtils.copy_entry "../dummy", "dummy"}
   Given { Dir.chdir 'dummy' }
 
   Given(:env_vars) { %w(
