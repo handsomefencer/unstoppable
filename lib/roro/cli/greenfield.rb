@@ -20,14 +20,25 @@ module Roro
       copy_file 'greenfield/Dockerfile', 'Dockerfile'
       copy_file 'greenfield/greenfield-entrypoint.sh', 'greenfield-entrypoint.sh'
       copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
+      system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
+      system 'sleep 2s'
       system 'docker-compose run web rails new . --force --database=postgresql'
+      system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
+      system 'sleep 2s'
       system 'docker-compose build'
+      system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
+      system 'sleep 2s'
       system 'mv -f config/database.yml.example config/database.yml'
+      system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
-      system 'docker-compose up'
+      system 'sleep 2s'
+      system 'docker-compose up -d'
+      system 'sleep 2s'
+      system 'docker-compose run web bin/rails db:create'
+
     end
   end
 end
