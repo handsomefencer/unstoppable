@@ -24,10 +24,10 @@ jobs:
 
             docker-compose run greenfield rails new . --force --database=postgresql
             sudo chown -R $USER:$USER .
-            docker-compose up --build web
+            docker-compose build web
             sudo chown -R $USER:$USER .
-            docker-compose up -d web
-            docker-compose exec web bin/rails db:create db:migrate
+            docker-compose build web
+            docker-compose run web bin/rails db:create
             curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
