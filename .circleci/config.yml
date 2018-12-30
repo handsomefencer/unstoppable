@@ -27,6 +27,11 @@ jobs:
             rake install
             sleep 2s
             roro greenfield
+            sleep 3s
+      - run:
+          name: db:create
+          working_directory: sooperdooper
+          command: docker-compose run web bin/rails db:create'
       - run: curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
