@@ -11,13 +11,13 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: bundle
-      - run: rake install
-      - run: rake test
-      - run: ls -a
-      - run: rm -rf tmp/*
-      - run: bundle
-      - run: rake install
+      # - run: bundle
+      # - run: rake install
+      # - run: rake test
+      # - run: ls -a
+      # - run: rm -rf tmp/*
+      # - run: bundle
+      # - run: rake install
       - run:
           name: Greenfield
           working_directory: sooperdooper
