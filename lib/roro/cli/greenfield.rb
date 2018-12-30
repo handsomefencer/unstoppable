@@ -30,7 +30,7 @@ module Roro
       system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
       system 'sleep 2s'
-      system 'docker-compose up -d'
+      system 'docker-compose up -d --force-recreate'
       system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
       system 'sleep 2s'
