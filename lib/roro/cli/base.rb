@@ -83,6 +83,16 @@ module Roro
         append_to_file ".gitignore", "\ndocker/**/*.env"
         append_to_file ".gitignore", "\ndocker/**/*.key"
       end
+
+      def copy_greenfield_files
+        copy_file 'greenfield/Gemfile', 'Gemfile'
+        copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
+        copy_file 'greenfield/docker-compose.yml', 'docker-compose.yml'
+        copy_file 'greenfield/Dockerfile', 'Dockerfile'
+        copy_file 'greenfield/greenfield-entrypoint.sh', 'greenfield-entrypoint.sh'
+        copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
+      end
+
     end
 
     private
