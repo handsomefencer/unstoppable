@@ -20,6 +20,7 @@ module Roro
       copy_file 'greenfield/Dockerfile', 'Dockerfile'
       copy_file 'greenfield/greenfield-entrypoint.sh', 'greenfield-entrypoint.sh'
       copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
+      system 'docker system prune'
       system 'sudo chown -R $USER:$USER .'
       system 'docker-compose run web rails new . --force --database=postgresql'
       system 'sudo chown -R $USER:$USER .'
@@ -28,7 +29,6 @@ module Roro
       system 'mv -f config/database.yml.example config/database.yml'
       system 'sudo chown -R $USER:$USER .'
       system 'docker-compose up'
-      system '"$SHELL docker-compose exec web bin/rails db:create'
 
     end
 
