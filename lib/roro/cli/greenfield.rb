@@ -34,7 +34,7 @@ module Roro
       system 'sleep 2s'
       system 'docker-compose run web bundle install'
       system 'docker-compose run web bin/rails db:create'
-      system 'docker-compose up'
+      
     end
   end
 end
