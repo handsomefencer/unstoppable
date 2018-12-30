@@ -14,13 +14,16 @@ jobs:
       - run: bundle
       - run: rake install
       - run: rake test
+      - run: rm -rf tmp/*
+      - run: bundle
+      - run: rake install
       - run:
           name: Greenfield
           command: |
             mkdir -p sooperdooper
             cd sooperdooper
             roro greenfield
-            
+
             curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
