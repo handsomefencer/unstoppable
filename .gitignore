@@ -5,6 +5,7 @@
 /doc/
 /pkg/
 /spec/reports/
-tmp/**/*
+tmp/docker/**/*
+tmp/greenfield/**/*
 greenfield/**/*
 .byebug_history
