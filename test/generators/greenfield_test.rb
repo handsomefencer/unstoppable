@@ -25,7 +25,7 @@ describe Roro::CLI do
   describe "usage" do
 
     Given { prepare }
-    Given { subject.greenfield }
+    Given { subject.copy_greenfield_files }
 
     describe "must generate files" do
 
