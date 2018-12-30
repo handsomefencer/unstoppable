@@ -26,8 +26,9 @@ module Roro
       system 'docker-compose build'
       system 'sudo chown -R $USER:$USER .'
       system 'mv -f config/database.yml.example config/database.yml'
-      system 'docker-compose up -d'
-      system 'docker-compose run web rake db:create'
+      system 'sudo chown -R $USER:$USER .'
+      system 'docker-compose up'
+
     end
 
 
