@@ -20,17 +20,14 @@ jobs:
       - run: rake install
       - run:
           name: Greenfield
+          working_directory: sooperdooper
           command: |
-            mkdir sooperdooper
+            bundle
             sleep 2s
-            ls -l
-            ls -a
-            cd sooperdooper
+            rake install
             sleep 2s
             roro greenfield
-            sleep 2s
-
-            curl -Is localhost:3000 | head -n 1
+      - run: curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
       #       bundle
