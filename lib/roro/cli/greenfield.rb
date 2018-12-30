@@ -30,7 +30,8 @@ module Roro
       system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
       system 'sleep 2s'
-      system 'docker-compose up'
+      system 'docker-compose up -d'
+      system 'docker-compose exec web bin/rails db:create'
     end
   end
 end
