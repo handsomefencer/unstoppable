@@ -14,14 +14,21 @@ jobs:
       - run: bundle
       - run: rake install
       - run: rake test
+      - run: ls -a
       - run: rm -rf tmp/*
       - run: bundle
       - run: rake install
       - run:
           name: Greenfield
           command: |
-            mkdir -p sooperdooper
-            cd sooperdooper && roro greenfield
+            mkdir sooperdooper
+            sleep 2s
+            ls -l
+            ls -a
+            cd sooperdooper
+            sleep 2s
+            roro greenfield
+            sleep 2s
 
             curl -Is localhost:3000 | head -n 1
 
