@@ -20,14 +20,7 @@ jobs:
             mkdir -p sooperdooper
             cd sooperdooper
             roro greenfield
-            sudo chown -R $USER:$USER .
-
-            docker-compose run greenfield rails new . --force --database=postgresql
-            sudo chown -R $USER:$USER .
-            docker-compose build web
-            sudo chown -R $USER:$USER .
-            docker-compose build web
-            docker-compose run web bin/rails db:create
+            
             curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
