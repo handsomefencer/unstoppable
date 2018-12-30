@@ -27,8 +27,8 @@ module Roro
       system 'sudo chown -R $USER:$USER .'
       system 'mv -f config/database.yml.example config/database.yml'
       system 'sudo chown -R $USER:$USER .'
-      system 'docker-compose run web bin/rails db:create'
       system 'docker-compose up'
+      system '"$SHELL docker-compose exec web bin/rails db:create'
 
     end
 
