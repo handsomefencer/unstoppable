@@ -36,8 +36,7 @@ describe Roro::CLI do
           "config/database.yml.example",
           "Dockerfile",
           "docker-compose.yml",
-          "Gemfile.lock",
-          "greenfield-entrypoint.sh"
+          "Gemfile.lock"
         ]
         generated_files.each do |generated_file|
 
