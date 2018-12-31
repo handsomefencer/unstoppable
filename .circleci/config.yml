@@ -10,28 +10,33 @@ jobs:
     steps:
       - checkout
       # - setup_remote_docker
+      - run: ruby -v
       # - run: bundle
       # - run: rake install
+      # - run: mkdir greenfield
+      # - run: cd greenfield
+      # - run: rake install
+      # - run: roro greenfield
       # - run: rake test
       # - run: ls -a
       # - run: rm -rf tmp/*
       # - run: bundle
-      # - run: rake install
-      - run:
-          name: Greenfield
-          working_directory: sooperdooper
-          command: |
-            bundle
-            sleep 2s
-            rake install
-            sleep 2s
-            roro greenfield
-            sleep 2s
-            curl -Is localhost:3000 | head -n 1
-      - run:
-          name: Greenfield
-          working_directory: sooperdooper
-          command: curl -Is localhost:3000 | head -n 1
+      # - run: gem list ruby
+      # - run:
+      #     name: Greenfield
+      #     working_directory: sooperdooper
+      #     command: |
+      #       bundle
+      #       sleep 2s
+      #       rake install
+      #       sleep 2s
+      #       roro greenfield
+      #       sleep 2s
+      #       curl -Is localhost:3000 | head -n 1
+      # - run:
+      #     name: Greenfield
+      #     working_directory: sooperdooper
+      #     command: curl -Is localhost:3000 | head -n 1
 
       #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
       #       bundle
