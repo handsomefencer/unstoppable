@@ -11,7 +11,7 @@ module Roro
 
     def greenfield
 
-      if Dir['./*'].empty?
+      if !Dir['./*'].empty?
         raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")
       end
       copy_greenfield_files
