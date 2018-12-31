@@ -27,14 +27,11 @@ module Roro
       system 'mv -f config/database.yml.example config/database.yml'
       system 'sleep 5s'
       system 'chmod 1777 /tmp'
-
       system 'sudo docker-compose up -d'
       system 'sleep 5s'
       system 'sudo chown -R $USER:$USER .'
       system 'sleep 5s'
-      # system 'docker-compose run web bundle install'
       system 'sudo docker-compose run web bin/rails db:create'
-
     end
   end
 end
