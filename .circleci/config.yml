@@ -6,11 +6,10 @@ version: 2
 jobs:
 
   build:
-    docker:
-       - image: circleci/ruby:2.5.3
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       # - run: bundle
       # - run: rake install
       # - run: rake test
