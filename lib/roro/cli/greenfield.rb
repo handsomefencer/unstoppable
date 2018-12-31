@@ -18,7 +18,7 @@ module Roro
       system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
       system 'sleep 2s'
-      system 'docker-compose run web rails new . --force --database=postgresql --skip-bundle'
+      system 'chown -r $(docker-compose run web rails new . --force --database=postgresql --skip-bundle) ./'
       system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
       system 'sleep 2s'
