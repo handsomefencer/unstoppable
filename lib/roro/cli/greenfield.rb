@@ -20,7 +20,7 @@ module Roro
       system 'sleep 2s'
       system 'docker-compose run web rails new . --force --database=postgresql --skip-bundle'
       system 'sleep 2s'
-      # system 'sudo chown -R $USER:$USER .'
+      system 'sudo chown -R $USER:$USER .'
       system 'sleep 2s'
       system 'mv -f config/database.yml.example config/database.yml'
       system 'sleep 2s'
