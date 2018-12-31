@@ -12,26 +12,26 @@ jobs:
       # - setup_remote_docker
       - run: bundle
       - run: rake install
-      - run: mkdir -p greenfield
-      - run: cd greenfield
-      - run: bundle
-      - run: rake install
-      - run: roro greenfield
+      # - run: mkdir -p greenfield
+      # - run: cd greenfield
+      # - run: gem list roro
+      # - run: bundle
+      # - run: rake install
+      # - run: roro greenfield
       # - run: rake test
       # - run: ls -a
       # - run: rm -rf tmp/*
       # - run: bundle
       # - run: gem list ruby
-      # - run:
-      #     name: Greenfield
-      #     working_directory: sooperdooper
-      #     command: |
-      #       bundle
-      #       sleep 2s
-      #       rake install
-      #       sleep 2s
-      #       roro greenfield
-      #       sleep 2s
+      - run:
+          name: Greenfield
+          working_directory: sooperdooper
+          command: |
+            bundle
+            sleep 2s
+            rake install
+            sleep 2s
+            roro greenfield
       #       curl -Is localhost:3000 | head -n 1
       # - run:
       #     name: Greenfield
