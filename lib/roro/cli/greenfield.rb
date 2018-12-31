@@ -1,4 +1,3 @@
-require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -12,7 +11,6 @@ module Roro
     method_option :force, desc: "force over-write of existing files"
 
     def greenfield
-      byebug
       if !Dir['./*'].empty? && options["force"].nil?
         raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")
       end
