@@ -26,7 +26,9 @@ module Roro
       system 'sleep 5s'
       system 'mv -f config/database.yml.example config/database.yml'
       system 'sleep 5s'
-      system 'sudo docker-compose up'
+      system 'chmod 1777 /tmp'
+
+      system 'sudo docker-compose up -d'
       system 'sleep 5s'
       system 'sudo chown -R $USER:$USER .'
       system 'sleep 5s'
