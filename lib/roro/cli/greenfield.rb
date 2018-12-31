@@ -1,4 +1,3 @@
-require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -11,7 +10,6 @@ module Roro
     method_option :interactive, desc: "Set up your environment variables as you go."
 
     def greenfield(app=nil)
-      byebug
       self.destination_root = self.destination_root + "/#{app}" unless app.nil?
       if app.nil? && !Dir.empty?('.')
         raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")

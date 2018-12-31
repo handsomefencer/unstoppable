@@ -11,12 +11,12 @@ jobs:
       - checkout
       # - setup_remote_docker
       - run: ruby -v
-      # - run: bundle
-      # - run: rake install
-      # - run: mkdir greenfield
-      # - run: cd greenfield
-      # - run: rake install
-      # - run: roro greenfield
+      - run: bundle
+      - run: rake install
+      - run: mkdir greenfield
+      - run: cd greenfield
+      - run: rake install
+      - run: roro greenfield
       # - run: rake test
       # - run: ls -a
       # - run: rm -rf tmp/*
