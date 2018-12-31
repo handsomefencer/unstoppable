@@ -31,7 +31,7 @@ module Roro
       system 'sudo docker-compose up -d'
       system 'sleep 2s'
       system 'sudo chown -R $USER:$USER .'
-      system 'sleep 2s'
+      system 'sleep 5s'
       # system 'docker-compose run web bundle install'
       system 'sudo docker-compose run web bin/rails db:create'
 
