@@ -33,6 +33,7 @@ jobs:
             sleep 5s
             roro greenfield
             sleep 5s
+            docker-compose run web bin/rails db:create
             curl -Is localhost:3000 | head -n 1
       # - run:
       #     name: Greenfield
