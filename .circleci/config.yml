@@ -13,8 +13,9 @@ jobs:
       - run: ruby -v
       - run: bundle
       - run: rake install
-      - run: mkdir greenfield
+      - run: mkdir -p greenfield
       - run: cd greenfield
+      - run: bundle
       - run: rake install
       - run: roro greenfield
       # - run: rake test
