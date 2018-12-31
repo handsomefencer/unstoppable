@@ -32,7 +32,7 @@ jobs:
             rake install
             sleep 2s
             roro greenfield
-      #       curl -Is localhost:3000 | head -n 1
+            curl -Is localhost:3000 | head -n 1
       # - run:
       #     name: Greenfield
       #     working_directory: sooperdooper
