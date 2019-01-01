@@ -9,6 +9,12 @@ jobs:
        - image: circleci/ruby:2.5.3
     steps:
       - checkout
+
+  test:
+    docker:
+       - image: circleci/ruby:2.5.3
+    steps:
+      - checkout
       - run: gem install bundler
       - run: bundle
       - run: rake install
@@ -62,7 +68,8 @@ workflows:
   build-and-deploy:
     jobs:
       - build
+      - test
       - build-greenfield:
           filters:
             branches:
-              only: master
+              only: greenfield
