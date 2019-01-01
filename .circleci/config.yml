@@ -71,8 +71,14 @@ workflows:
       - test:
           filters:
             branches:
-              ignore: greenfield
+              ignore:
+                - build-greenfield
+                - build-rollon
       - build-greenfield:
           filters:
             branches:
-              only: greenfield
+              only: build-greenfield
+      - build-rollon:
+          filters:
+            branches:
+              only: build-rollon
