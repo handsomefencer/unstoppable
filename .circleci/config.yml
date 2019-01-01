@@ -4,9 +4,9 @@ defaults: &defaults
 version: 2
 
 jobs:
-
   build:
-    machine: true
+    docker:
+       - image: circleci/ruby:2.5.3
     steps:
       - checkout
       - run: gem install bundler

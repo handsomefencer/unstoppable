@@ -1,0 +1,62 @@
+defaults: &defaults
+  working_directory: /tmp
+
+version: 2
+
+jobs:
+
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: gem install handsome_fencer-circle_c_i
+      - run: ruby .circleci/expose_env.rb
+      - run: docker-compose build dev_app database
+      - run: docker-compose run dev_app bin/rails db:create db:migrate test
+
+  push:
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+        environment:
+          BASH_ENV: .env/circle/deploy.env
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: gem install handsomefencer-environment
+      - run: ruby expose_env.rb
+      - run: docker-compose up -d --build
+      - run:
+          name: Tag web image
+          command: docker tag $(docker images | grep project_web | awk '{ print $3 }') rennmappe/bacchanal_web:$DEPLOY_TAG
+      - run: docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+      - run: docker push rennmappe/bacchanal_web:$DEPLOY_TAG
+
+  deploy:
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+        environment:
+          BASH_ENV: .env/circle/deploy.env
+    steps:
+      - checkout
+      - add_ssh_keys
+      - run: bundle install --without production
+      - run: ruby expose_env.rb
+      - run: bin/rails docker:deploy
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - push:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - push
+          filters:
+            branches:
+              only: master
