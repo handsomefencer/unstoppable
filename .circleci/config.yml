@@ -41,7 +41,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      # - setup_remote_docker
       - run: bundle
       - run: rake install
       - run:
@@ -49,6 +48,8 @@ jobs:
           working_directory: test_apps/dummy
           command: |
             roro rollon
+            docker-compose up -d
+            docker-compose exec app bundle exec guard
 
 workflows:
   version: 2
