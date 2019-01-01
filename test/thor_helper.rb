@@ -2,21 +2,14 @@ module TestHelper
   module Files
     module Assertions
 
-      def prepare_destination
+      def prepare_destination(test_app)
 
         Dir.chdir(ENV.fetch("PWD") + '/tmp')
-        # case
-        # when Dir.pwd.split('roro').last.match("/tmp/dummy")
-        #   Dir.chdir('../')
-        # when Dir.pwd.split('roro').last.match("/tmp/greenfield")
-        #   Dir.chdir('../')
-        # when Dir.pwd.split('/').last.match("roro")
-        #   Dir.chdir('tmp')
+        # %w(dummy dummy_roro greenfield).each do |directory|
+          FileUtils.rm_rf(test_app) if File.exist?(test_app)
+          FileUtils.cp_r "../test_apps/#{test_app}", "."
         # end
-        %w(dummy dummy_roro greenfield docker).each do |directory|
-          FileUtils.rm_rf(directory) if File.exist?(directory)
-          FileUtils.mkdir_p(directory)
-        end
+        Dir.chdir test_app
       end
 
       def assert_file(file, *contents)
