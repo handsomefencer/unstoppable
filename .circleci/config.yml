@@ -9,10 +9,16 @@ jobs:
     machine: true
     steps:
       - checkout
-      # - setup_remote_docker
       - run: bundle
       - run: rake install
       - run: rake test
+
+  build-greenfield:
+    machine: true
+    steps:
+      - checkout
+      - run: bundle
+      - run: rake install
       - run:
           name: Greenfield
           working_directory: sooperdooper
@@ -24,6 +30,7 @@ jobs:
             roro greenfield
             sleep 5s
             curl -Is localhost:3000 | head -n 1
+
       # - run:
       #     name: Greenfield
       #     working_directory: sooperdooper
@@ -53,7 +60,8 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build:
+      - build
+      - build-greenfield:
           filters:
             branches:
               only: master
