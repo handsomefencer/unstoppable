@@ -48,10 +48,6 @@ jobs:
           name: Rollon
           working_directory: test_apps/dummy
           command: |
-            bundle
-            sleep 2s
-            rake install
-            sleep 5s
             roro rollon
 
       # - run:
