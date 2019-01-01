@@ -38,10 +38,10 @@ jobs:
             sleep 5s
             curl -Is localhost:3000 | head -n 1
   build-rollon:
-    docker:
-       - image: circleci/ruby:2.5.3-node
+    machine: true
     steps:
       - checkout
+      # - setup_remote_docker
       - run: bundle
       - run: rake install
       - run:
@@ -49,31 +49,6 @@ jobs:
           working_directory: test_apps/dummy
           command: |
             roro rollon
-
-      # - run:
-      #     name: Greenfield
-      #     working_directory: sooperdooper
-      #     command: curl -Is localhost:3000 | head -n 1
-
-      #       docker-compose run web rails new . --force --database=postgresql --skip-bundle
-      #       bundle
-      #       rails db:create db:migrate
-      #       rails s -d
-      #       killall -9 rails
-      # - run:
-      #     name: Rollon
-      #     command: |
-      #       mkdir -p sooperdooper
-      #       cd sooperdooper
-      #       roro greenfield
-      #       rails new . --force --database=postgresql
-      #       chown -R $USER:$USER -R .
-      #       bundle
-      #       rails db:create db:migrate
-      #       rails s -d
-      #       curl -Is localhost:3000 | head -n 1
-      #       killall -9 rails
-      #
 
 workflows:
   version: 2
@@ -88,8 +63,12 @@ workflows:
       - build-greenfield:
           filters:
             branches:
-              only: build-greenfield
+              only:
+                - build-greenfield
+                - master
       - build-rollon:
           filters:
             branches:
-              only: build-rollon
+              only:
+                - build-rollon
+                - master
