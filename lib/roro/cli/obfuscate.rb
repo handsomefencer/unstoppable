@@ -14,8 +14,7 @@ module Roro
       default_environments = %w[circleci development staging production]
       environments = args.first ? [args.first] : default_environments
       environments.each do |environment|
-        # byebug
-        HandsomeFencer::Crypto.obfuscate(environment, '.')
+        HandsomeFencer::Crypto.obfuscate(environment, 'docker')
       end
     end
   end

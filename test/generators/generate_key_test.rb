@@ -1,19 +1,7 @@
 require "test_helper"
 
 describe Roro::CLI do
-  before do
-    class Foo < StringIO
-      def puts s
-        super #unless s.start_with?('[WARNING] Attempted to create command')
-      end
-    end
-    $stdout = Foo.new
-  end
-
-  after do
-    $stdout = STDOUT
-  end
-
+  
   Given(:subject) { Roro::CLI.new }
   Given!(:prepare) {
 
@@ -23,11 +11,23 @@ describe Roro::CLI do
 
   describe "generate_key" do
 
-    Given { FileUtils.rm('docker/keys/circleci.key') }
 
     Given { subject.generate_key('circleci') }
 
     Then { assert_file 'docker/keys/circleci.key' }
+
+    And { refute_file 'docker/keys/production.key' }
+  end
+
+  describe "generate_keys" do
+
+    Given { subject.generate_key }
+
+    Then {
+      assert_file 'docker/keys/circleci.key'
+      assert_file 'docker/keys/production.key'
+      assert_file 'docker/keys/staging.key'
+      assert_file 'docker/keys/development.key' }
   end
 
   describe "gather_environments" do
