@@ -14,6 +14,7 @@ module Roro
       copy_base_files
       append_to_existing_files
       insert_into_file 'Gemfile', "gem 'sshkit'\n\n", before: "group :development, :test do"
+      insert_into_file 'Gemfile', "gem 'handsome_fencer-test'\n\n", after: "group :development, :test do"
 
     end
   end
