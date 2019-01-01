@@ -9,6 +9,7 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: gem install bundler
       - run: bundle
       - run: rake install
       - run: rake test
