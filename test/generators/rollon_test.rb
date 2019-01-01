@@ -1,19 +1,6 @@
 require "test_helper"
-require "fileutils"
+
 describe Roro::CLI do
-
-  before do
-    class Foo < StringIO
-      def puts s
-        super unless s.start_with?('[WARNING] Attempted to create command')
-      end
-    end
-    $stdout = Foo.new
-  end
-
-  after do
-    $stdout = STDOUT
-  end
 
   Given(:subject) { Roro::CLI.new }
 
@@ -25,11 +12,11 @@ describe Roro::CLI do
 
   Given(:env_vars) { %w(
     APP_NAME=sooperdooper
-    DEPLOY_TAG=\${CIRCLE_SHA1:0:7}
     DOCKERHUB_ORG=your-docker-hub-org-name
     DOCKERHUB_PASS=your-docker-hub-password
     DOCKERHUB_USER=your-docker-hub-user-name
     SERVER_HOST=ip-address-of-your-server
+    DEPLOY_TAG=\${CIRCLE_SHA1:0:7}
     SERVER_PORT=22
     SERVER_USER=root ) }
 
@@ -40,9 +27,9 @@ describe Roro::CLI do
     Given { subject.rollon }
 
     Then {
-
       assert_file 'Gemfile', /gem \'pg\'/
       assert_file 'Gemfile', /gem \'sshkit\'/
+      assert_file 'Guardfile'
       assert_file '.gitignore', /docker\/\*\*\/\*.key/
       assert_file '.gitignore', /docker\/\*\*\/\*.env/
 

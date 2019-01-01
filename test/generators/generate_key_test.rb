@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Roro::CLI do
-  
+
   Given(:subject) { Roro::CLI.new }
   Given!(:prepare) {
 
@@ -10,8 +10,7 @@ describe Roro::CLI do
     Dir.chdir 'dummy_roro' }
 
   describe "generate_key" do
-
-
+    Given { prepare }
     Given { subject.generate_key('circleci') }
 
     Then { assert_file 'docker/keys/circleci.key' }
