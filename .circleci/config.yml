@@ -38,7 +38,8 @@ jobs:
             sleep 5s
             curl -Is localhost:3000 | head -n 1
   build-rollon:
-    machine: true
+    docker:
+       - image: circleci/ruby:2.5.3
     steps:
       - checkout
       - run: bundle
