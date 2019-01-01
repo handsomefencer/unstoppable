@@ -37,6 +37,21 @@ jobs:
             roro greenfield
             sleep 5s
             curl -Is localhost:3000 | head -n 1
+  build-rollon:
+    machine: true
+    steps:
+      - checkout
+      - run: bundle
+      - run: rake install
+      - run:
+          name: Rollon
+          working_directory: test_apps/dummy
+          command: |
+            bundle
+            sleep 2s
+            rake install
+            sleep 5s
+            roro rollon
 
       # - run:
       #     name: Greenfield
@@ -72,8 +87,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - build-greenfield
-                - build-rollon
+                - /build-.*/
       - build-greenfield:
           filters:
             branches:
