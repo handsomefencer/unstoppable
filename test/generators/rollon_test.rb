@@ -4,11 +4,7 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given!(:prepare) {
-
-    prepare_destination
-    FileUtils.cp_r "../dummy/.", "dummy"
-    Dir.chdir 'dummy' }
+  Given { prepare_destination( 'dummy') }
 
   Given(:env_vars) { %w(
     APP_NAME=sooperdooper
@@ -23,7 +19,6 @@ describe Roro::CLI do
 
   describe "must create" do
 
-    Given { prepare }
     Given { subject.rollon }
 
     Then {
