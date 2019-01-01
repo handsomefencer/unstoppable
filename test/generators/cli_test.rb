@@ -7,7 +7,7 @@ describe Roro::CLI do
   describe "commands" do
 
     Then { assert_includes Roro::CLI.commands.keys, "greenfield"}
-    Then { assert_includes Roro::CLI.commands.keys, "generate_keys"}
+    Then { assert_includes Roro::CLI.commands.keys, "generate_key"}
     And  { assert_includes Roro::CLI.commands.keys, "rollon"}
   end
 end

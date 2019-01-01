@@ -13,7 +13,7 @@ module TestHelper
         # when Dir.pwd.split('/').last.match("roro")
         #   Dir.chdir('tmp')
         # end
-        %w(dummy greenfield).each do |directory|
+        %w(dummy dummy_roro greenfield docker).each do |directory|
           FileUtils.rm_rf(directory) if File.exist?(directory)
           FileUtils.mkdir_p(directory)
         end
