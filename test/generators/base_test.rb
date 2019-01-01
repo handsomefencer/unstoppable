@@ -3,6 +3,7 @@ require "test_helper"
 describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
+  Given { prepare_destination 'dummy' }
 
   describe ":configurate" do
 
