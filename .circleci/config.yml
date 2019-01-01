@@ -49,7 +49,9 @@ jobs:
           command: |
             roro rollon
             docker-compose up -d
-            docker-compose exec app bundle exec guard
+            docker-compose exec app bin/rails db:create
+            docker-compose exec app rake test
+            curl -Is localhost:3000 | head -n 1
 
 workflows:
   version: 2
