@@ -42,6 +42,7 @@ module Roro
       def copy_base_files
         copy_file "docker-compose.yml", force: true
         copy_file "gitignore", ".gitignore", skip: true
+        copy_file "Guardfile"
         copy_file "config/database.yml", force: true
         copy_file "docker/containers/web/app.conf"
         directory "circleci", "./.circleci"
