@@ -35,6 +35,10 @@ module TestHelper
         end
       end
 
+      def refute_file(file, *contents)
+        refute File.exist?(file), "Expected #{file} to not exist, but it does."
+      end
+
       alias :assert_directory :assert_file
 
       def assert_no_file(relative)
