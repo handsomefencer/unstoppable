@@ -68,7 +68,10 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - test
+      - test:
+          filters:
+            branches:
+              ignore: greenfield
       - build-greenfield:
           filters:
             branches:
