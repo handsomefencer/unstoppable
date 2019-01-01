@@ -1,12 +1,13 @@
 module Roro
   class CLI < Thor
 
-    desc "expose", "expose .env files inside .circleci directory"
+    desc "expose", "Expose encrypted files"
 
     def expose(*args)
-      environment = args.first
-      @cipher = HandsomeFencer::CircleCI::Crypto.new(environment: environment)
-      @cipher.expose('docker', "#{environment}.env.enc")
+      environments = args.first ? [args.first] : gather_environments
+      environments.each do |environment|
+        HandsomeFencer::Crypto.expose(environment, 'docker')
+      end
     end
   end
 end

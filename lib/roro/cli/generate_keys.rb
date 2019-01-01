@@ -37,8 +37,11 @@ module Roro
 
       def gather_environments
         environments = []
-        HandsomeFencer::Crypto.source_files('.', '.env').each do |env_file|
-          environments << env_file.split('/').last.split('.env').last
+        ['.env', '.env.enc'].each do |extension|
+
+          HandsomeFencer::Crypto.source_files('.', extension).each do |env_file|
+            environments << env_file.split('/').last.split(extension).last
+          end
         end
         environments.uniq
       end

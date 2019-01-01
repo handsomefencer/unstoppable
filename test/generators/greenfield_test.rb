@@ -6,6 +6,7 @@ describe Roro::CLI do
 
   Given(:prepare) do
     prepare_destination
+    
     Dir.chdir 'greenfield'
   end
 

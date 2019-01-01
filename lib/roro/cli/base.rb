@@ -32,6 +32,10 @@ module Roro
         when options.empty?
           set_from_defaults
         end
+
+        @env_hash['DEPLOY_TAG'] = "${CIRCLE_SHA1:0:7}"
+        @env_hash['SERVER_PORT'] = "22"
+        @env_hash['SERVER_USER'] = "root"
         @env_hash
       end
 
@@ -73,7 +77,7 @@ module Roro
 
           template("docker/containers/#{container}/Dockerfile.tt", "docker/containers/#{container}/Dockerfile", options)
         end
-
+        create_file 'docker/env_files/circleci.env'
         @env_hash.map do |key, value|
           append_to_file 'docker/env_files/circleci.env', "\nexport #{key}=#{value}"
         end
@@ -91,7 +95,6 @@ module Roro
         copy_file 'greenfield/Dockerfile', 'Dockerfile'
         copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
       end
-
     end
 
     private

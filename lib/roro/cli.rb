@@ -4,6 +4,7 @@ require 'roro/cli/rollon'
 require 'roro/cli/greenfield'
 require 'roro/cli/generate_keys'
 require 'roro/cli/obfuscate'
+require 'roro/cli/expose'
 
 module Roro
   class CLI < Thor
