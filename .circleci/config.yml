@@ -39,7 +39,7 @@ jobs:
             curl -Is localhost:3000 | head -n 1
   build-rollon:
     docker:
-       - image: circleci/ruby:2.5.3
+       - image: circleci/ruby:2.5.3-node
     steps:
       - checkout
       - run: bundle
