@@ -8,8 +8,7 @@ module Roro
 
     def rollon
       configurate
-      # self.destination_root = self.destination_root + "/#{app}" unless app.nil?
-      if Dir.empty?('.')
+      if Dir['./*'].empty?
         raise Roro::Error.new("Oops -- Roro can't roll itself onto a Rails app if it doesn't exist. Please either change into a directory with a Rails app or generate a new one using '$ roro greenfield'.")
       end
       copy_base_files
