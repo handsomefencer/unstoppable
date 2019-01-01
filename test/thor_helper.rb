@@ -2,14 +2,13 @@ module TestHelper
   module Files
     module Assertions
 
-      def prepare_destination(test_app)
-
+      def prepare_destination(test_app=nil)
         Dir.chdir(ENV.fetch("PWD") + '/tmp')
-        # %w(dummy dummy_roro greenfield).each do |directory|
-          FileUtils.rm_rf(test_app) if File.exist?(test_app)
-          FileUtils.cp_r "../test_apps/#{test_app}", "."
-        # end
-        Dir.chdir test_app
+        unless test_app.nil?
+          FileUtils.rm_rf(test_app)
+          FileUtils.cp_r("../test_apps/#{test_app}", ".")
+          Dir.chdir(test_app)
+        end 
       end
 
       def assert_file(file, *contents)

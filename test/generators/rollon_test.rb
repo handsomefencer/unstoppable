@@ -4,7 +4,7 @@ describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
 
-  Given { prepare_destination( 'dummy') }
+  before { prepare_destination 'dummy' }
 
   Given(:env_vars) { %w(
     APP_NAME=sooperdooper
