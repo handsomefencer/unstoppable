@@ -7,32 +7,24 @@ module Roro
 
     desc "ruby_gem", "Prepare rubygem for CircleCI"
 
-    method_option :env_vars, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "key1:value1 key2:value2"
-    method_option :interactive, desc: "Set up your environment variables as you go."
-    method_option :force, desc: "force over-write of existing files"
+    argument :ruby_versions
+    # method_option :env_vars, type: :array, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "key1:value1 key2:value2"
+    # method_option :interactive, desc: "Set up your environment variables as you go."
+    # method_option :force, desc: "force over-write of existing files"
 
     def ruby_gem
-      if !Dir['./*'].empty? && options["force"].nil?
-        raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")
+      byebug
+      ruby_versions = ["2.5.3", "2.5.1"]
+      copy_file 'ruby_gem/config.yml', '.circleci/config.yml'
+      copy_file 'ruby_gem/setup-gem-credentials.sh', '.circleci/setup-gem-credentials.sh'
+      directory 'ruby_gem/docker', 'docker'
+      %w[app web].each do |container|
+        options = {
+          email: @env_hash['DOCKERHUB_EMAIL'],
+          app_name: @env_hash['APP_NAME'] }
+
+        template("docker/containers/#{container}/Dockerfile.tt", "docker/containers/#{container}/Dockerfile", options)
       end
-      copy_greenfield_files
-      system 'sleep 5s'
-      system 'sudo chown -R $USER:$USER .' if OS.linux?
-      system 'sleep 5s'
-      system 'sudo docker-compose run web rails new . --force --database=postgresql --skip-bundle'
-      system 'sleep 5s'
-      system 'sudo chown -R $USER:$USER .' if OS.linux?
-      system 'sleep 5s'
-      system 'sudo docker-compose build'
-      system 'sleep 5s'
-      system 'mv -f config/database.yml.example config/database.yml'
-      system 'sleep 5s'
-      system 'chmod 1777 /tmp'
-      system 'sudo docker-compose up -d'
-      system 'sleep 5s'
-      system 'sudo chown -R $USER:$USER .' if OS.linux?
-      system 'sleep 5s'
-      system 'sudo docker-compose run web bin/rails db:create'
     end
   end
 end
