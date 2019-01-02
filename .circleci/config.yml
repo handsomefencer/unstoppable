@@ -5,10 +5,6 @@ version: 2
 
 jobs:
   build:
-    docker:
-       - image: circleci/ruby:2.5.3
-    steps:
-      - checkout
 
   test:
     docker:
@@ -97,3 +93,4 @@ workflows:
             branches:
               only:
                 - release
+                - master
