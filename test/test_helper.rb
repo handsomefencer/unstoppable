@@ -4,11 +4,11 @@ require "minitest/autorun"
 require "minitest/spec"
 require "minitest/given"
 require "thor_helper"
-
 include TestHelper::Files::Assertions
 
 Minitest.after_run do
-  prepare_destination
+  Dir.chdir(ENV.fetch("PWD"))
+  FileUtils.rm_rf 'tmp/.'
   # after do
   # $stdout = STDOUT
 end
