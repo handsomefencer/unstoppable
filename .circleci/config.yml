@@ -38,6 +38,7 @@ jobs:
             roro greenfield
             sleep 5s
             curl -Is localhost:3000 | head -n 1
+
   build-rollon:
     machine: true
     steps:
@@ -53,6 +54,20 @@ jobs:
             docker-compose exec app bin/rails db:create
             docker-compose exec app rake test
             curl -Is localhost:3000 | head -n 1
+
+  release:
+    machine: true
+    steps:
+      - checkout
+      - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
+      - run: printenv
+      - run: bundle
+      - run: rake install
+      - run: roro expose
+      - run: gem install gem-release
+      - run: gem bump
+      - run: gem release --key=$RUBYGEMS_API_KEY
+
 
 workflows:
   version: 2
@@ -76,3 +91,8 @@ workflows:
               only:
                 - build-rollon
                 - master
+      - release:
+          filters:
+            branches:
+              only:
+                - release
