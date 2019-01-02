@@ -5,8 +5,6 @@ version: 2
 
 jobs:
   build:
-
-  test:
     docker:
        - image: circleci/ruby:2.5.3
     steps:
@@ -70,12 +68,6 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - test:
-          filters:
-            branches:
-              ignore:
-                - /build-.*/
-                - release
       - build-greenfield:
           filters:
             branches:
@@ -93,4 +85,3 @@ workflows:
             branches:
               only:
                 - release
-                - master
