@@ -26,14 +26,13 @@ describe "Roro::CLI" do
 
     describe "with ENV_KEY" do
 
-      Given(:passkey) { File.read 'docker/keys/development.key' }
-      Given { ENV['DEVELOPMENT_KEY'] = passkey }
-      Given { FileUtils.rm 'docker/keys/development.key' }
-      Given { subject.expose('development') }
+      Given(:passkey) { File.read 'docker/keys/circleci.key' }
+      Given { ENV['CIRCLECI_KEY'] = passkey }
+      Given { FileUtils.rm 'docker/keys/circleci.key' }
+      Given { subject.expose('circleci') }
 
-      Then { assert_file 'docker/containers/app/development.env' }
+      Then { assert_file 'docker/env_files/circleci.env' }
 
-      And { refute_file 'docker/containers/app/production.env' }
     end
   end
 
