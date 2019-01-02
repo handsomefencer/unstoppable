@@ -64,6 +64,7 @@ jobs:
       - run: rake install
       - run: roro expose
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
+      - run: bash .circleci/setup-rubygems.sh
       - run: gem install gem-release
       - run: gem release --key=$RUBYGEMS_API_KEY
 
