@@ -9,3 +9,6 @@ tmp/
 !tmp/.keep
 greenfield/**/*
 .byebug_history
+
+docker/**/*.env
+docker/**/*.key
