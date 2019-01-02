@@ -1,0 +1,87 @@
+defaults: &defaults
+  working_directory: /repo
+
+version: 2
+
+jobs:
+  build:
+    docker:
+       - image: circleci/ruby:2.5.3
+    steps:
+      - checkout
+      - run: gem install bundler
+      - run: bundle
+      - run: rake install
+      - run: mkdir tmp
+      - run: rake test
+
+  build-greenfield:
+    machine: true
+    steps:
+      - checkout
+      - run: bundle
+      - run: rake install
+      - run:
+          name: Greenfield
+          working_directory: sooperdooper
+          command: |
+            bundle
+            sleep 2s
+            rake install
+            sleep 5s
+            roro greenfield
+            sleep 5s
+            curl -Is localhost:3000 | head -n 1
+
+  build-rollon:
+    machine: true
+    steps:
+      - checkout
+      - run: bundle
+      - run: rake install
+      - run:
+          name: Rollon
+          working_directory: test_apps/dummy
+          command: |
+            roro rollon
+            docker-compose up -d
+            docker-compose exec app bin/rails db:create
+            docker-compose exec app rake test
+            curl -Is localhost:3000 | head -n 1
+
+  release:
+    machine: true
+    steps:
+      - checkout
+      - run: printenv
+      - run: bundle
+      - run: rake install
+      - run: roro expose
+      - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
+      - run: bash .circleci/setup-gem-credentials.sh
+      - run: gem install gem-release
+      - run: gem release
+
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - build-greenfield:
+          filters:
+            branches:
+              only:
+                - build-greenfield
+                - master
+      - build-rollon:
+          filters:
+            branches:
+              only:
+                - build-rollon
+                - master
+      - release:
+          filters:
+            branches:
+              only:
+                - release

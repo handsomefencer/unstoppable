@@ -3,6 +3,7 @@ PATH
   specs:
     roro (0.1.1)
       handsome_fencer-crypto (= 0.1.4)
+      os
       sshkit
       thor
 
@@ -110,6 +111,7 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    os (1.0.0)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
