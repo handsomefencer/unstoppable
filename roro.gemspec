@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "thor"
+  spec.add_dependency "os"
   spec.add_dependency "sshkit"
   spec.add_dependency "handsome_fencer-crypto", "0.1.4"
   spec.add_development_dependency "bundler", "~> 1.17"
