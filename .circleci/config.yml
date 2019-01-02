@@ -62,7 +62,7 @@ jobs:
       - run: printenv
       - run: bundle
       - run: rake install
-      - run: roro expose(circleci)
+      - run: roro expose circleci
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
       - run: printenv
       - run: gem install gem-release
