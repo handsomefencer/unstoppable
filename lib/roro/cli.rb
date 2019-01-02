@@ -5,6 +5,7 @@ require 'roro/cli/greenfield'
 require 'roro/cli/generate_keys'
 require 'roro/cli/obfuscate'
 require 'roro/cli/expose'
+require 'roro/cli/ruby_gem'
 
 module Roro
   class CLI < Thor
