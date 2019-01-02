@@ -26,7 +26,7 @@ describe "Roro::CLI" do
 
     describe "with ENV_KEY" do
 
-      Given(:passkey) { File.read 'docker/keys/circleci.key' }
+      Given(:passkey) { File.read('docker/keys/circleci.key').strip }
       Given { ENV['CIRCLECI_KEY'] = passkey }
       Given { FileUtils.rm 'docker/keys/circleci.key' }
       Given { subject.expose('circleci') }
