@@ -4,6 +4,7 @@ defaults: &defaults
 version: 2
 
 jobs:
+
   build:
     docker:
        - image: circleci/ruby:2.5.3
@@ -14,7 +15,19 @@ jobs:
       - run: bundle
       - run: rake install
       - run: mkdir tmp
-      - run: docker-compose up 
+      - run: docker-compose up app
+
+  test:
+    docker:
+       - image: circleci/ruby:2.5.3
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: gem install bundler
+      - run: bundle
+      - run: rake install
+      - run: mkdir tmp
+      - run: docker-compose up
 
   build-greenfield:
     machine: true
@@ -81,6 +94,12 @@ workflows:
               only:
                 - build-rollon
                 - master
+      - test:
+          filters:
+            branches:
+              only:
+                - master
+
       - release:
           filters:
             branches:
