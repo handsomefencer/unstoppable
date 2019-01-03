@@ -6,6 +6,11 @@ version: 2
 jobs:
 
   build:
+    machine: true
+    steps:
+      - checkout
+
+  test:
     docker:
        - image: circleci/ruby:2.5.3
     steps:
@@ -75,8 +80,7 @@ jobs:
       - run: roro expose
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
       - run: bash .circleci/setup-gem-credentials.sh
-      - run: gem install gem-release
-      - run: gem release
+      - run: rake release
 
 
 workflows:
@@ -84,6 +88,14 @@ workflows:
   build-and-deploy:
     jobs:
       - build
+      - test:
+          filters:
+            branches:
+              except:
+                - build-greenfield
+                - build-rollon
+                - release
+                - master
       - build-greenfield:
           filters:
             branches:
@@ -100,6 +112,7 @@ workflows:
           filters:
             branches:
               only:
+                - development
                 - master
 
       - release:
