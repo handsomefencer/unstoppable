@@ -14,17 +14,23 @@
 #  $ ln -s config/Guardfile .
 #
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
+options = {
+  cli: '',
+  all_after_run: false
+}
 
-
-guard :minitest, cli: '' do
+guard :minitest, options do
   # with Minitest::Unit
   watch(%r{^test/(.*)\/?test_(.*)\.rb$})
   watch(%r{^test/(.*)\/?(.*)_test\.rb$})
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}test_#{m[2]}.rb" }
-  watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { 'test' }
+
+  watch(%r{^lib/roro/cli/ruby_gem.rb$})     { |m| "test/generators/ruby_gem_test.rb" }
+  # watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { 'test' }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/thor_helper\.rb$})      { 'test' }
 
+  watch(%r{^test/fixtures/files/(.*/)?([^/]+)\.yml$})     { 'test/generators/ruby_gem_test.rb' }
   # with Minitest::Spec
   # watch(%r{^spec/(.*)_spec\.rb$})
   # watch(%r{^lib/(.+)\.rb$})         { |m| "spec/#{m[1]}_spec.rb" }
