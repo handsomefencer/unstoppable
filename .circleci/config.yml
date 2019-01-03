@@ -68,10 +68,12 @@ jobs:
             docker-compose exec app rake test
             curl -Is localhost:3000 | head -n 1
 
-  build-release:
-    machine: true
+  push-release:
+    docker:
+      - image: circleci/ruby:2.5.3
     steps:
       - checkout
+      - setup_remote_docker
       - git config credential.helper 'cache --timeout=120'
       - git config user.email $GIT_EMAIL
       - git config user.name $GIT_NAME
@@ -80,7 +82,7 @@ jobs:
       - git checkout -b release
       - git push -q --force https://${GITHUB_PERSONAL_TOKEN}@github.com/schadenfred/roro.git release
 
-  push-release:
+  release:
     docker:
       - image: circleci/ruby:2.5.3
     steps:
