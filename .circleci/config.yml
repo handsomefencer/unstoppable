@@ -103,10 +103,10 @@ workflows:
                 - build-rollon
                 - master
       - test:
-        filters:
-          branches:
-            except:
-              - master
+          filters:
+            branches:
+              except:
+                - master
       - test_all:
           filters:
             branches:
