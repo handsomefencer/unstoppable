@@ -1,5 +1,4 @@
 require 'os'
-require 'byebug'
 module Roro
 
   class CLI < Thor
