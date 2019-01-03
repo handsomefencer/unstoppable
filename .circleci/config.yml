@@ -10,12 +10,6 @@ jobs:
        - image: circleci/ruby:2.5.3
     steps:
       - checkout
-
-  test:
-    docker:
-       - image: circleci/ruby:2.5.3
-    steps:
-      - checkout
       - setup_remote_docker
       - run: gem install bundler
       - run: bundle
@@ -39,7 +33,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: gem install bundler
       - run: bundle
       - run: rake install
       - run:
@@ -58,7 +51,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: gem install bundler
       - run: bundle
       - run: rake install
       - run:
@@ -75,7 +67,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: gem install bundler
+      - run: gem install bunlder
       - run: bundle
       - run: rake install
       - run: roro expose
@@ -102,16 +94,12 @@ workflows:
               only:
                 - build-rollon
                 - master
-      - test:
-          filters:
-            branches:
-              except:
-                - master
       - test_all:
           filters:
             branches:
               only:
                 - master
+
       - release:
           filters:
             branches:
