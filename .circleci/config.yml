@@ -91,22 +91,21 @@ workflows:
       - test:
           filters:
             branches:
-              except:
-                - build-greenfield
-                - build-rollon
-                - release
-                - master
+              only:
+                - /feature-.*/
       - build-greenfield:
           filters:
             branches:
               only:
                 - build-greenfield
+                - development
                 - master
       - build-rollon:
           filters:
             branches:
               only:
                 - build-rollon
+                - development
                 - master
       - test_all:
           filters:
