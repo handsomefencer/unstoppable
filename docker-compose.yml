@@ -6,13 +6,16 @@ services:
     build:
       context: .
       dockerfile: docker/containers/app/Dockerfile
-  app-2-5-1:
-    build:
-      context: .
-      dockerfile: docker/containers/2-5-1/Dockerfile
+    command: rake test
 
   app-2-5-3:
     build:
       context: .
-      dockerfile: docker/containers/2-5-3/Dockerfile
+      dockerfile: docker/containers/2_5_3/Dockerfile
+    command: rake test
 
+  app-2-6-0:
+    build:
+      context: .
+      dockerfile: docker/containers/2_6_0/Dockerfile
+    command: rake test

@@ -1,4 +1,4 @@
-FROM ruby:2.5-alpine
+FROM ruby:2.5.3-alpine
 
 RUN apk add --no-cache --update build-base linux-headers \
     postgresql-dev nodejs tzdata libxml2-dev libxslt-dev git

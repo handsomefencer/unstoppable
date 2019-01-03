@@ -6,3 +6,4 @@ services:
     build:
       context: .
       dockerfile: docker/containers/app/Dockerfile
+    command: rake test

@@ -14,21 +14,23 @@ module Roro
 
     def ruby_gem(rubies = nil)
 
-      ruby_versions = ["2.5.1", "2.5.3"]
+      ruby_versions = ["2.5.3", "2.6.0"]
       copy_file 'ruby_gem/docker-compose.yml', 'docker-compose.yml'
       copy_file 'ruby_gem/config.yml', '.circleci/config.yml'
       copy_file 'ruby_gem/setup-gem-credentials.sh', '.circleci/setup-gem-credentials.sh'
       directory 'ruby_gem/docker', 'docker', { ruby_version: "2.5"}
       # service_blocks = "\n"
       ruby_versions.each do |ruby|
-        ruby = ruby.gsub('.', '-')
-        doc_loc = "docker/containers/#{ruby}/Dockerfile"
+        rubydash = ruby.gsub('.', '-')
+        rubyunderscore = ruby.gsub('.', '_')
+        doc_loc = "docker/containers/#{rubyunderscore}/Dockerfile"
         content = <<-EOM
 
-  app-#{ruby}:
+  app-#{rubydash}:
     build:
       context: .
       dockerfile: #{doc_loc}
+    command: rake test
         EOM
         # service_blocks = service_blocks + content
         append_to_file 'docker-compose.yml', content
@@ -36,7 +38,6 @@ module Roro
         # append_to_file 'docker-compose.yml', "\n  app-#{ruby}:\n    build:\n\s\s\s\s\s\scontext:"
       end
       # byebug
-
 
       # end
 #       <<EOF
