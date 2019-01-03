@@ -29,8 +29,8 @@ describe Roro::CLI do
 
         assert_file 'docker/containers/app'
         assert_file 'docker/containers/app/Dockerfile', /ruby:2.5-alpine/
-        assert_file 'docker/containers/2-5-1/Dockerfile'
-        assert_file 'docker/containers/2-5-3/Dockerfile', /ruby:2.5.3-alpine/
+        assert_file 'docker/containers/2_5_3/Dockerfile', /ruby:2.5.3-alpine/
+        assert_file 'docker/containers/2_6_0/Dockerfile', /ruby:2.6.0-alpine/
       end
 
       # describe ":ruby_gem" do
