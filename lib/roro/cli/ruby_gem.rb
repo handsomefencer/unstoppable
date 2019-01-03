@@ -24,11 +24,11 @@ module Roro
         ruby = ruby.gsub('.', '-')
         doc_loc = "docker/containers/#{ruby}/Dockerfile"
         content = <<-EOM
+
   app-#{ruby}:
     build:
       context: .
       dockerfile: #{doc_loc}
-
         EOM
         # service_blocks = service_blocks + content
         append_to_file 'docker-compose.yml', content
