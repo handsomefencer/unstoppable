@@ -8,7 +8,7 @@ module TestHelper
           FileUtils.rm_rf(test_app)
           FileUtils.cp_r("../test_apps/#{test_app}", ".")
           Dir.chdir(test_app)
-        end 
+        end
       end
 
       def assert_file(file, *contents)
