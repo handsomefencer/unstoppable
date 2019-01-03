@@ -85,6 +85,7 @@ jobs:
       - run: git config user.name $GIT_NAME
       - run: gem install gem-release
       - run: gem bump
+      - run: gem bundle
       - run: git add .
       - run: git commit -m "Update release branch via CircleCI"
       - run: git checkout -b release
