@@ -80,7 +80,8 @@ jobs:
       - run: roro expose
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
       - run: bash .circleci/setup-gem-credentials.sh
-      - run: rake release
+      - run: gem install gem-release
+      - run: gem release
 
 
 workflows:
