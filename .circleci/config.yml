@@ -67,7 +67,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: gem install bunlder
+      - run: gem install bundler
       - run: bundle
       - run: rake install
       - run: roro expose
