@@ -9,11 +9,12 @@ jobs:
        - image: circleci/ruby:2.5.3
     steps:
       - checkout
+      - setup_remote_docker
       - run: gem install bundler
       - run: bundle
       - run: rake install
       - run: mkdir tmp
-      - run: rake test
+      - run: docker-compose up 
 
   build-greenfield:
     machine: true
