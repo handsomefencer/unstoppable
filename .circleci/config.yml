@@ -64,9 +64,11 @@ jobs:
             curl -Is localhost:3000 | head -n 1
 
   release:
-    machine: true
+    docker:
+      - image: circleci/ruby:2.5.3
     steps:
       - checkout
+      - setup_remote_docker
       - run: gem install bundler
       - run: bundle
       - run: rake install
