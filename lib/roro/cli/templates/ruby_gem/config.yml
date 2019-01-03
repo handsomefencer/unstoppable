@@ -4,16 +4,35 @@ defaults: &defaults
 version: 2
 
 jobs:
+
   build:
+    machine: true
+    steps:
+      - checkout
+
+  test:
     docker:
        - image: circleci/ruby:2.5.3
     steps:
       - checkout
+      - setup_remote_docker
       - run: gem install bundler
       - run: bundle
       - run: rake install
       - run: mkdir tmp
-      - run: rake test
+      - run: docker-compose up app
+
+  test_all:
+    docker:
+       - image: circleci/ruby:2.5.3
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: gem install bundler
+      - run: bundle
+      - run: rake install
+      - run: mkdir tmp
+      - run: docker-compose up
 
   build-greenfield:
     machine: true
@@ -50,17 +69,18 @@ jobs:
             curl -Is localhost:3000 | head -n 1
 
   release:
-    machine: true
+    docker:
+      - image: circleci/ruby:2.5.3
     steps:
       - checkout
-      - run: printenv
+      - setup_remote_docker
+      - run: gem install bundler
       - run: bundle
       - run: rake install
       - run: roro expose
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
       - run: bash .circleci/setup-gem-credentials.sh
-      - run: gem install gem-release
-      - run: gem release
+      - run: rake release
 
 
 workflows:
@@ -68,6 +88,14 @@ workflows:
   build-and-deploy:
     jobs:
       - build
+      - test:
+          filters:
+            branches:
+              except:
+                - build-greenfield
+                - build-rollon
+                - release
+                - master
       - build-greenfield:
           filters:
             branches:
@@ -80,6 +108,13 @@ workflows:
               only:
                 - build-rollon
                 - master
+      - test_all:
+          filters:
+            branches:
+              only:
+                - development
+                - master
+
       - release:
           filters:
             branches:
