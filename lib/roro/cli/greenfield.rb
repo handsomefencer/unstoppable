@@ -1,4 +1,5 @@
 require 'os'
+require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -12,16 +13,17 @@ module Roro
     method_option :force, desc: "force over-write of existing files"
 
     def greenfield
+
       if !Dir['./*'].empty? && options["force"].nil?
         raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")
       end
       copy_greenfield_files
       system 'sleep 5s'
-      system 'sudo chown -R $USER:$USER .' if os.linux?
+      system 'sudo chown -R $USER:$USER .' if OS.linux?
       system 'sleep 5s'
       system 'sudo docker-compose run web rails new . --force --database=postgresql --skip-bundle'
       system 'sleep 5s'
-      system 'sudo chown -R $USER:$USER .' if os.linux?
+      system 'sudo chown -R $USER:$USER .' if OS.linux?
       system 'sleep 5s'
       system 'sudo docker-compose build'
       system 'sleep 5s'
@@ -30,7 +32,7 @@ module Roro
       system 'chmod 1777 /tmp'
       system 'sudo docker-compose up -d'
       system 'sleep 5s'
-      system 'sudo chown -R $USER:$USER .' if os.linux?
+      system 'sudo chown -R $USER:$USER .' if OS.linux?
       system 'sleep 5s'
       system 'sudo docker-compose run web bin/rails db:create'
     end
