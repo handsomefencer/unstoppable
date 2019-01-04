@@ -35,11 +35,9 @@ jobs:
       - run: docker-compose up
 
   build-greenfield:
-    docker:
-       - image: circleci/ruby:2.5.3
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
       - run: bundle
       - run: rake install
       - run:
