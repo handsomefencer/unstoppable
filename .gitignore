@@ -5,7 +5,10 @@
 /doc/
 /pkg/
 /spec/reports/
-tmp/**/*
+tmp/dummy/
+tmp/dummy_gem/
+tmp/dummy_roro/
+tmp/greenfield/
 !tmp/.keep
 greenfield/**/*
 .byebug_history
