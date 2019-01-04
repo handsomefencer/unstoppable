@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["schadenfred"]
   spec.email         = ["fred.schoeneman@gmail.com"]
 
-  spec.summary       = %q{Dockerize your Rails app, set it up for CI, roll it onto your image repository, and then roll it off to your staging and production hosts.}
-  spec.description   = %q{You've finished development of your Rails app and now it's time to deploy. You're looking at Docker and Docker Compose, and at difference CI/CD services, at integrating with Docker Hub, and at trying to figure out how to deploy safely. There are lots of things that can go wrong. You've found some of them, and they haven't been much fun to fix. This gem and the companion tutorial may prove helpful.}
-  spec.homepage      = "https://github.com/schadenfred/handsome_fencer-roro"
+  spec.summary       = %q{Containerization framwork for Ruby on Rails applications.}
+  spec.description   = %q{Roro is a containerization and continuous integration framework for Ruby on Rails applications. Like Rails, it favors convention over configuration with is similarly, we hope, "...for programmer happiness and sustainable productivity."}
+  spec.homepage      = "https://github.com/schadenfred/roro"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   if spec.respond_to?(:metadata)
 
     spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/schadenfred/handsome_fencer-roro"
+    spec.metadata["source_code_uri"] = "https://github.com/schadenfred/roro"
 
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
