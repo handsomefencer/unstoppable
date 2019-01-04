@@ -20,8 +20,11 @@ module Roro
       system 'sudo docker-compose run web rails new . --force --database=postgresql --skip-bundle'
       own_if_required
       system 'sudo docker-compose build'
+      own_if_required
       system 'mv -f config/database.yml.example config/database.yml'
+      own_if_required
       system 'sudo docker-compose up --build --force-recreate -d '
+      own_if_required
       system 'sudo docker-compose run web bin/rails db:create'
     end
   end
