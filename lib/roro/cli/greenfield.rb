@@ -18,13 +18,14 @@ module Roro
       end
       copy_greenfield_files
       system 'sudo docker-compose run web rails new . --force --database=postgresql --skip-bundle'
-      own_if_required
+      system 'sudo chown -R $USER .' if OS.linux?
+      # own_if_required
       system 'sudo docker-compose build'
-      own_if_required
+      # own_if_required
       system 'mv -f config/database.yml.example config/database.yml'
-      own_if_required
+      # own_if_required
       system 'sudo docker-compose up --build --force-recreate -d '
-      own_if_required
+      # own_if_required
       system 'sudo docker-compose run web bin/rails db:create'
     end
   end
