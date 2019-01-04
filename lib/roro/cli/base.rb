@@ -13,6 +13,16 @@ module Roro
         end
       end
 
+      def own_if_required
+        case
+        when ENV['CIRCLECI']
+           return
+        when OS.linux?
+          system 'sudo chown -R $USER .'
+        end
+      end
+
+
       def set_from_env_vars
         @env_hash.map { |key, hash| @env_hash[key] = hash.values.last }
         options["env_vars"].map { |key, value| @env_hash[key] = value }
