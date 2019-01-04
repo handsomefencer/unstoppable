@@ -17,6 +17,7 @@ module Roro
         raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")
       end
       copy_greenfield_files
+      system 'sudo chown -R $USER .' if OS.linux?
       system 'sudo docker-compose run web rails new . --force --database=postgresql --skip-bundle'
       system 'sudo chown -R $USER .' if OS.linux?
       system 'sudo docker-compose build'
