@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    roro (0.1.5)
+    roro (0.1.6)
       handsome_fencer-crypto (= 0.1.4)
       os
       sshkit
