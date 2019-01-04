@@ -14,7 +14,7 @@ module Roro
       end
 
       def own_if_required
-        case
+        # case
         # when ENV['CIRCLECI']
         #    return
         # when OS.linux?
