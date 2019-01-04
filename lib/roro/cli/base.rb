@@ -15,8 +15,8 @@ module Roro
 
       def own_if_required
         case
-        when ENV['CIRCLECI']
-           return
+        # when ENV['CIRCLECI']
+        #    return
         when OS.linux?
           system 'sudo chown -R $USER .'
         end
