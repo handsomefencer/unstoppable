@@ -18,6 +18,7 @@ module Roro
         when ENV['CIRCLECI']
            return
         when OS.linux?
+          byebug
           system 'sudo chown -R $USER .'
         end
       end
