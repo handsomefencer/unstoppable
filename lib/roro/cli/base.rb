@@ -17,9 +17,9 @@ module Roro
         case
         # when ENV['CIRCLECI']
         #    return
-        when OS.linux?
+        # when OS.linux?
           system 'sudo chown -R $USER .'
-        end
+        # end
       end
 
 
