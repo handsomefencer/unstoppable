@@ -63,22 +63,22 @@ jobs:
             roro greenfield
             sleep 5s
             curl -Is localhost:3000 | head -n 1
-  #
-  # build-rollon:
-  #   machine: true
-  #   steps:
-  #     - checkout
-  #     - run: bundle
-  #     - run: rake install
-  #     - run:
-  #         name: Rollon
-  #         working_directory: test_apps/dummy
-  #         command: |
-  #           roro rollon
-  #           docker-compose up -d
-  #           docker-compose exec app bin/rails db:create
-  #           docker-compose exec app rake test
-  #           curl -Is localhost:3000 | head -n 1
+
+  acceptance-rollon:
+    machine: true
+    steps:
+      - checkout
+      - run: bundle
+      - run: rake install
+      - run:
+          name: Rollon
+          working_directory: test_apps/dummy
+          command: |
+            roro rollon
+            docker-compose up -d
+            docker-compose exec app bin/rails db:create
+            docker-compose exec app rake test
+            curl -Is localhost:3000 | head -n 1
   #
   # push-release:
   #   docker:
@@ -123,6 +123,9 @@ workflows:
   build-test-feature:
     jobs:
       - build
+          filters:
+            branches:
+              only: /^feature-.*/
       - test:
           requires:
             - build
@@ -139,18 +142,18 @@ workflows:
       #         only:
       #           - development
       #           - master
-      - acceptance-greenfield:
-          filters:
-            branches:
-              only:
-                - development
-                - master
-      # - acceptance-rollon:
+      # - acceptance-greenfield:
       #     filters:
       #       branches:
       #         only:
       #           - development
       #           - master
+      - acceptance-rollon:
+          filters:
+            branches:
+              only:
+                - development
+                - master
 
 
 
