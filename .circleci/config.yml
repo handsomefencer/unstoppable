@@ -37,7 +37,7 @@ jobs:
           keys:
             - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
             - rails-demo-bundle-v2-
-      - run: bundle
+      - run: bundle install --local
       - run: rake test
 
   # test_all:
