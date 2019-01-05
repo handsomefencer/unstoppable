@@ -11,12 +11,12 @@ jobs:
     executor: executor-2-5-3
     steps:
       - checkout
-      - setup_remote_docker
       - restore_cache:
           keys:
             - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
             - rails-demo-bundle-v2-
-      - run: bundle check || bundle install
+      - run: gem install bundler
+      - run: bundle install
       - run: rake install
 
       - save_cache:
@@ -27,6 +27,8 @@ jobs:
   test:
     executor: executor-2-5-3
     steps:
+      - checkout
+      - setup_remote_docker
       - run: docker-compose up app
 
   # test_all:
