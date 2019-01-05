@@ -30,8 +30,8 @@ jobs:
   test:
     build:
       executor: executor-2-5-3
-    steps:
-      - run: docker-compose up app
+      steps:
+        - run: docker-compose up app
 
   # test_all:
   #   docker:
