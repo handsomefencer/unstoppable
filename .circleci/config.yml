@@ -24,8 +24,7 @@ jobs:
 
       - save_cache:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+          
 
   test:
     executor: executor-2-5-3
