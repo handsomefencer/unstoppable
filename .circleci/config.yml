@@ -39,17 +39,12 @@ jobs:
   #         key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
   #         paths:
   #           - vendor/cache
-  # test_all:
-  #   docker:
-  #      - image: circleci/ruby:2.5.3
-  #   steps:
-  #     - checkout
-  #     - setup_remote_docker
-  #     - run: gem install bundler
-  #     - run: bundle
-  #     - run: rake install
-  #     - run: mkdir tmp
-  #     - run: docker-compose up
+  test-all-rubies:
+    executor: executor-2-5-3
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker-compose up
 
   # build-greenfield:
   #   machine: true
@@ -135,16 +130,16 @@ workflows:
             branches:
               only: /^feature-.*/
 
-  # build-test-acceptance:
-  #   jobs:
-  #     - build
-  #     - test-all:
-  #         requires:
-  #           - build
-  #         filters:
-  #           branches:
-  #             only:
-  #               - development
+  build-test-acceptance:
+    jobs:
+      - build
+      - test-all:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - development
 
 
 
