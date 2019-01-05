@@ -82,20 +82,20 @@ jobs:
   #     - run: git checkout -b release
   #     - run: git push -q --force https://${GITHUB_PERSONAL_TOKEN}@github.com/schadenfred/roro.git release
   #
-  # release:
-  #   docker:
-  #     - image: circleci/ruby:2.5.3
-  #   steps:
-  #     - checkout
-  #     - setup_remote_docker
-  #     - run: gem install bundler
-  #     - run: bundle
-  #     - run: rake install
-  #     - run: roro expose
-  #     - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
-  #     - run: bash .circleci/setup-gem-credentials.sh
-  #     - run: gem install gem-release
-  #     - run: gem release
+  release:
+    docker:
+      - image: circleci/ruby:2.5.3
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: gem install bundler
+      - run: bundle
+      - run: rake install
+      - run: roro expose
+      - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
+      - run: bash .circleci/setup-gem-credentials.sh
+      - run: gem install gem-release
+      - run: gem release
 
 workflows:
   version: 2.1
@@ -118,19 +118,31 @@ workflows:
             branches:
               only:
                 - development
-                - master
       - acceptance-greenfield:
           filters:
             branches:
               only:
                 - development
-                - master
       - acceptance-rollon:
           filters:
             branches:
               only:
                 - development
                 - master
+
+  release:
+    jobs:
+      - build
+      - release:
+          # requires:
+          #   - test-all-rubies
+          #   - acceptance-greenfield
+          #   - acceptance-rollon
+          filters:
+            branches:
+              only:
+                - master
+
 
 
 
