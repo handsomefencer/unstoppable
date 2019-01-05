@@ -7,7 +7,6 @@ executors:
   executor-2-5-3:
     docker:
       - image: circleci/ruby:2.5.3
-    working_directory: /tmp
 
 
 jobs:
