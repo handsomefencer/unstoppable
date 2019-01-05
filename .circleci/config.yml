@@ -132,7 +132,7 @@ workflows:
           requires:
             - build
           filters:
-            branch:
+            branches:
               only: /^feature-.*/
 
   build-test-acceptance:
@@ -142,10 +142,10 @@ workflows:
           requires:
             - build
           filters:
-            branch:
+            branches:
               only:
                 - development
-                
+
 
 
 
