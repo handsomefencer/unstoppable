@@ -132,10 +132,10 @@ workflows:
 
   build-test-acceptance:
     jobs:
-      # - build
+      - build
       - test-all-rubies:
-          requires:
-            - build
+          # requires:
+          #   - build
           filters:
             branches:
               only:
