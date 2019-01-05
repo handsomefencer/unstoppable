@@ -116,33 +116,33 @@ workflows:
 
   build-test-acceptance:
     jobs:
-      # - build
-      # - build:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - development
-      # - acceptance-greenfield:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - development
-      # - acceptance-rollon:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - development
+      - build:
+          filters:
+            branches:
+              only:
+                - development
+      - acceptance-greenfield:
+          filters:
+            branches:
+              only:
+                - development
+      - acceptance-rollon:
+          filters:
+            branches:
+              only:
+                - development
       - test-all-rubies:
-          requires:
-            - acceptance-greenfield
-            - acceptance-rollon
           filters:
             branches:
               only:
                 - development
   release:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                - development
       - release:
           # requires:
           #   - test-all-rubies
