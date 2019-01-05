@@ -133,7 +133,7 @@ workflows:
   build-test-acceptance:
     jobs:
       - build
-      - test-all:
+      - test-all-rubies:
           requires:
             - build
           filters:
