@@ -3,13 +3,11 @@ version: 2.1
 executors:
 
   executor-2-5-3:
-
     docker:
       - image: circleci/ruby:2.5.3
     working_directory: /tmp
 
 jobs:
-
   build:
     executor: executor-2-5-3
     steps:
@@ -28,10 +26,9 @@ jobs:
             - vendor/bundle
 
   test:
-    build:
-      executor: executor-2-5-3
-      steps:
-        - run: docker-compose up app
+    executor: executor-2-5-3
+    steps:
+      - run: docker-compose up app
 
   # test_all:
   #   docker:
@@ -122,7 +119,9 @@ workflows:
   build-test:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
 #
 #   build-test-acceptance:
 #     jobs:
