@@ -1,4 +1,5 @@
 version: 2.1
+
 defaults: &defaults
   working_directory: /repo
 
@@ -8,8 +9,8 @@ executors:
     docker:
       - image: circleci/ruby:2.5.3
 
-
 jobs:
+
   build:
     executor: executor-2-5-3
     steps:
@@ -23,12 +24,9 @@ jobs:
       - run: docker-compose up app
 
   test-all-rubies:
-    # executor: executor-2-5-3
     machine: true
-
     steps:
       - checkout
-      # - setup_remote_docker
       - run: docker-compose up
 
   acceptance-greenfield:
@@ -127,18 +125,18 @@ workflows:
               only:
                 - development
                 - master
-      # - acceptance-greenfield:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - development
-      #           - master
-      # - acceptance-rollon:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - development
-      #           - master
+      - acceptance-greenfield:
+          filters:
+            branches:
+              only:
+                - development
+                - master
+      - acceptance-rollon:
+          filters:
+            branches:
+              only:
+                - development
+                - master
 
 
 
