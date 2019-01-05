@@ -46,23 +46,23 @@ jobs:
       - setup_remote_docker
       - run: docker-compose up
 
-  # build-greenfield:
-  #   machine: true
-  #   steps:
-  #     - checkout
-  #     - run: bundle
-  #     - run: rake install
-  #     - run:
-  #         name: Greenfield
-  #         working_directory: sooperdooper
-  #         command: |
-  #           bundle
-  #           sleep 2s
-  #           rake install
-  #           sleep 5s
-  #           roro greenfield
-  #           sleep 5s
-  #           curl -Is localhost:3000 | head -n 1
+  build-greenfield:
+    machine: true
+    steps:
+      - checkout
+      - run: bundle
+      - run: rake install
+      - run:
+          name: Greenfield
+          working_directory: sooperdooper
+          command: |
+            bundle
+            sleep 2s
+            rake install
+            sleep 5s
+            roro greenfield
+            sleep 5s
+            curl -Is localhost:3000 | head -n 1
   #
   # build-rollon:
   #   machine: true
@@ -133,22 +133,24 @@ workflows:
   build-test-acceptance:
     jobs:
       - build
-      - test-all-rubies:
-          # requires:
-          #   - build
+      # - test-all-rubies:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - development
+      #           - master
+      - acceptance-greenfield:
           filters:
             branches:
               only:
                 - development
                 - master
-      - test-all-rubies:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - development
-                - master
+      # - acceptance-rollon:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - development
+      #           - master
 
 
 
