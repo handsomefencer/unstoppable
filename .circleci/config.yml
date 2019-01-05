@@ -20,12 +20,13 @@ jobs:
             - rails-demo-bundle-v2-
       - run: gem install bundler
       - run: bundle
+      - run: bundle package
       - run: rake install
 
       - save_cache:
           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
           paths:
-            - vendor/bundle
+            - vendor/cache
 
   test:
     executor: executor-2-5-3
