@@ -1,11 +1,13 @@
 version: 2.1
+defaults: &defaults
+  working_directory: /repo
 
 executors:
 
   executor-2-5-3:
     docker:
       - image: circleci/ruby:2.5.3
-    working_directory: /repo
+    working_directory: /tmp
 
 
 jobs:
