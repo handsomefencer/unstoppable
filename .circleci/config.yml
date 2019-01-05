@@ -32,7 +32,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: gem install bundler
       - run: bundle
       - run: rake install
       - run:
@@ -40,8 +39,11 @@ jobs:
           working_directory: sooperdooper
           command: |
             bundle
+            sleep 2s
             rake install
+            sleep 5s
             roro greenfield
+            sleep 5s
             curl -Is localhost:3000 | head -n 1
 
   acceptance-rollon:
@@ -150,14 +152,10 @@ workflows:
     jobs:
       - build:
           filters:
-            branches:
-              only:
-                - master
+            tags:
+              only: /^v.*/
       - release:
           filters:
-            branches:
-              only:
-                - master
             tags:
               only: /^v.*/
 
