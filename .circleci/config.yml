@@ -143,24 +143,21 @@ workflows:
               only:
                 - development
                 - master
+
   release:
     jobs:
       - build:
           filters:
             branches:
               only:
-                - development
+                - master
       - release:
-          # requires:
-          #   - test-all-rubies
-          #   - acceptance-greenfield
-          #   - acceptance-rollon
           filters:
             branches:
               only:
                 - master
-            # tags:
-            #   only: /^v.*/
+            tags:
+              only: /^v.*/
 
 
 
