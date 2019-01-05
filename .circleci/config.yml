@@ -125,12 +125,30 @@ jobs:
 
 workflows:
   version: 2.1
-  build-test:
+  build-test-feature:
     jobs:
       - build
       - test:
           requires:
             - build
+          filters:
+            branch:
+              only: /^feature-.*/
+
+  build-test-acceptance:
+    jobs:
+      - build
+      - test-all:
+          requires:
+            - build
+          filters:
+            branch:
+              only:
+                - development
+                
+
+
+
 #
 #   build-test-acceptance:
 #     jobs:
