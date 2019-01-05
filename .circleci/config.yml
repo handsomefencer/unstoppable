@@ -146,11 +146,13 @@ workflows:
       - build:
           filters:
             tags:
-              only: /^v.*/
+              only: /.*/
       - release:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
 
 
 
