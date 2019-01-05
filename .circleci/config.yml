@@ -95,6 +95,10 @@ jobs:
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
       - run: bash .circleci/setup-gem-credentials.sh
       - run: gem install gem-release
+      - run: git add .
+      - run: git commit -m "Updated Gemfile.lock via CircleCI"
+      - run: git checkout -b release
+      - run: git push -q --force https://${GITHUB_PERSONAL_TOKEN}@github.com/schadenfred/roro.git release
       - run: gem release
 
 workflows:
@@ -112,32 +116,37 @@ workflows:
 
   build-test-acceptance:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - development
+      # - build
+      # - build:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - development
+      # - acceptance-greenfield:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - development
+      # - acceptance-rollon:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - development
       - test-all-rubies:
-          filters:
-            branches:
-              only:
-                - development
-      - acceptance-greenfield:
-          filters:
-            branches:
-              only:
-                - development
-      - acceptance-rollon:
-          filters:
-            branches:
-              only:
-                - development
+          requires:
 
+            - acceptance-greenfield
+            - acceptance-rollon
+
+        filters:
+          branches:
+            only:
+              - development
   release:
     jobs:
       - build
       - release:
-          # requires:
+          requires:
           #   - test-all-rubies
           #   - acceptance-greenfield
           #   - acceptance-rollon
@@ -145,6 +154,8 @@ workflows:
             branches:
               only:
                 - master
+            tags:
+              only: /^v.*/
 
 
 
