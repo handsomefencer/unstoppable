@@ -27,6 +27,7 @@ jobs:
   test:
     executor: executor-2-5-3
     steps:
+      - checkout
       - restore_cache:
           keys:
             - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
