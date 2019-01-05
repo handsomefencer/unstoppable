@@ -112,7 +112,11 @@ workflows:
 
   build-test-acceptance:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                - development
       - test-all-rubies:
           filters:
             branches:
