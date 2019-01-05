@@ -27,8 +27,10 @@ jobs:
   test:
     executor: executor-2-5-3
     steps:
-      - checkout
-      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
       - run: docker-compose up app
 
   # test_all:
