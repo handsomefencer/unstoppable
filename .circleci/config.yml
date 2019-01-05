@@ -46,7 +46,7 @@ jobs:
       - setup_remote_docker
       - run: docker-compose up
 
-  build-greenfield:
+  acceptance-greenfield:
     machine: true
     steps:
       - checkout
