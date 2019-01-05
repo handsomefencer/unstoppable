@@ -22,25 +22,10 @@ jobs:
       - setup_remote_docker
       - run: docker-compose up app
 
-  # build:
-  #   executor: executor-2-5-3
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys:
-  #           - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-  #           - rails-demo-bundle-v2-
-  #     - run: gem install bundler
-  #     - run: bundle
-  #     - run: bundle package
-  #     - run: rake install
-  #
-  #     - save_cache:
-  #         key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-  #         paths:
-  #           - vendor/cache
   test-all-rubies:
-    executor: executor-2-5-3
+    # executor: executor-2-5-3
+    machine: true
+
     steps:
       - checkout
       - setup_remote_docker
@@ -136,24 +121,24 @@ workflows:
   build-test-acceptance:
     jobs:
       - build
-      # - test-all-rubies:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - development
-      #           - master
+      - test-all-rubies:
+          filters:
+            branches:
+              only:
+                - development
+                - master
       # - acceptance-greenfield:
       #     filters:
       #       branches:
       #         only:
       #           - development
       #           - master
-      - acceptance-rollon:
-          filters:
-            branches:
-              only:
-                - development
-                - master
+      # - acceptance-rollon:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - development
+      #           - master
 
 
 
