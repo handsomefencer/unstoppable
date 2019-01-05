@@ -20,7 +20,6 @@ jobs:
     machine: true
     steps:
       - checkout
-      - setup_remote_docker
       - run: docker-compose up app
 
   test-all-rubies:
@@ -107,8 +106,6 @@ workflows:
             branches:
               only: /^feature-.*/
       - test:
-          requires:
-            - build
           filters:
             branches:
               only: /^feature-.*/
