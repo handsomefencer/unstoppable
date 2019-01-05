@@ -134,19 +134,17 @@ workflows:
       #           - development
       - test-all-rubies:
           requires:
-
             - acceptance-greenfield
             - acceptance-rollon
-
-        filters:
-          branches:
-            only:
-              - development
+          filters:
+            branches:
+              only:
+                - development
   release:
     jobs:
       - build
       - release:
-          requires:
+          # requires:
           #   - test-all-rubies
           #   - acceptance-greenfield
           #   - acceptance-rollon
