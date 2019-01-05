@@ -135,16 +135,16 @@ workflows:
             branches:
               only: /^feature-.*/
 
-  build-test-acceptance:
-    jobs:
-      - build
-      - test-all:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - development
+  # build-test-acceptance:
+  #   jobs:
+  #     - build
+  #     - test-all:
+  #         requires:
+  #           - build
+  #         filters:
+  #           branches:
+  #             only:
+  #               - development
 
 
 
