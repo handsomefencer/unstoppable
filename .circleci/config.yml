@@ -122,7 +122,7 @@ workflows:
   version: 2.1
   build-test-feature:
     jobs:
-      - build
+      - build:
           filters:
             branches:
               only: /^feature-.*/
