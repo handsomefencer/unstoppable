@@ -1,25 +1,35 @@
-defaults: &defaults
-  working_directory: /repo
+version: 2.1
 
-version: 2
+executors:
+
+  executor-2-5-3:
+
+    docker:
+      - image: circleci/ruby:2.5.3
+    working_directory: /tmp
 
 jobs:
 
   build:
-    machine: true
-    steps:
-      - checkout
-
-  test:
-    docker:
-       - image: circleci/ruby:2.5.3
+    executor: executor-2-5-3
     steps:
       - checkout
       - setup_remote_docker
-      - run: gem install bundler
-      - run: bundle
+      - restore_cache:
+          keys:
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
+      - run: bundle check || bundle install
       - run: rake install
-      - run: mkdir tmp
+
+      - save_cache:
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+  test:
+    executor-2-5-3:
+    steps:
       - run: docker-compose up app
 
   test_all:
@@ -107,44 +117,22 @@ jobs:
       - run: gem release
 
 workflows:
-  version: 2
-  build-and-deploy:
+  version: 2.1
+  build-test:
     jobs:
       - build
-      - test:
-          filters:
-            branches:
-              only:
-                - /feature-.*/
-      - build-greenfield:
-          filters:
-            branches:
-              only:
-                - build-greenfield
-                - development
-                - master
-      - build-rollon:
-          filters:
-            branches:
-              only:
-                - build-rollon
-                - development
-                - master
-      - test_all:
-          filters:
-            branches:
-              only:
-                - development
-                - master
-
-      - release:
-          filters:
-            branches:
-              only:
-                - release
-
-      - push-release:
-          filters:
-            branches:
-              only:
-                - push-release
+      - test
+#
+#   build-test-acceptance:
+#     jobs:
+#       - build:
+#           filters:
+#             branches:
+#               - development
+#               - master
+#   build-test-release:
+#     jobs:
+#       - build:
+#           filters:
+#             tags:
+#               only: /^v.*/
