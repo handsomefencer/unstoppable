@@ -12,12 +12,12 @@ executors:
 jobs:
 
   build:
-    executor: executor-2-5-3
+    machine: true
     steps:
       - checkout
 
   test:
-    executor: executor-2-5-3
+    machine: true
     steps:
       - checkout
       - setup_remote_docker
