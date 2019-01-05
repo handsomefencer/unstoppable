@@ -40,11 +40,8 @@ jobs:
           working_directory: sooperdooper
           command: |
             bundle
-            sleep 2s
             rake install
-            sleep 5s
             roro greenfield
-            sleep 5s
             curl -Is localhost:3000 | head -n 1
 
   acceptance-rollon:
