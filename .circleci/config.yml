@@ -14,32 +14,31 @@ jobs:
     executor: executor-2-5-3
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-            - rails-demo-bundle-v2-
-      - run: gem install bundler
-      - run: bundle
-      - run: bundle package
-      - run: rake install
-
-      - save_cache:
-          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/cache
 
   test:
     executor: executor-2-5-3
     steps:
       - checkout
       - setup_remote_docker
-      - restore_cache:
-          keys:
-            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-            - rails-demo-bundle-v2-
-      - run: bundle install --local
-      - run: rake test
+      - run: docker-compose up app
 
+  # build:
+  #   executor: executor-2-5-3
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys:
+  #           - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+  #           - rails-demo-bundle-v2-
+  #     - run: gem install bundler
+  #     - run: bundle
+  #     - run: bundle package
+  #     - run: rake install
+  #
+  #     - save_cache:
+  #         key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+  #         paths:
+  #           - vendor/cache
   # test_all:
   #   docker:
   #      - image: circleci/ruby:2.5.3
