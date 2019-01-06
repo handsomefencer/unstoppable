@@ -1,4 +1,5 @@
 require 'os'
+require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -13,11 +14,16 @@ module Roro
 
     def greenfield
 
+      if system 'which docker-composeee'
+        puts 'blahdedah'
+      end
       if !Dir['./*'].empty? && options["force"].nil?
         raise Roro::Error.new("Oops -- Roro can't greenfield a new Rails app for you unless the current directory is empty.")
       end
       copy_greenfield_files
+      # print_wrapped "getsome today"
       system 'sudo docker-compose run web rails new . --force --database=postgresql --skip-bundle'
+      no?("If you're running Docker on Linux, the files 'rails new' created are owned by root. This happens because the container runs as the root user. If this is the case, change the ownership of the new files.")
       system 'sudo chown -R $USER .' if OS.linux?
       # own_if_required
       system 'sudo docker-compose build'
