@@ -43,7 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "handsome_fencer-crypto", "0.1.4"
   spec.add_development_dependency "bundler", "~> 1.17"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "byebug"
   spec.add_development_dependency "handsome_fencer-test"
 
 end
