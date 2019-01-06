@@ -30,7 +30,6 @@ module Roro
         template 'ruby_gem/docker/containers/app/Dockerfile.tt', doc_loc, {ruby_version: ruby}
         # append_to_file 'docker-compose.yml', "\n  app-#{ruby}:\n    build:\n\s\s\s\s\s\scontext:"
       end
-      # byebug
 
       # end
 #       <<EOF
