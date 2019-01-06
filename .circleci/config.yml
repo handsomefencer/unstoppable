@@ -32,7 +32,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: gem install bundler -v 1.17.3
+      - run: gem install bundler
 
       - run: bundle
       - run: rake install
@@ -52,7 +52,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: gem install bundler -v 1.17.3
+      - run: gem install bundler
       - run: bundle
       - run: rake install
       - run:
