@@ -32,25 +32,33 @@ module Roro
       # system 'sudo docker-compose run web bin/rails db:create'
     end
 
-    no_conditions do
+    no_commands do
 
       def confirm_dependency(condition, suggestion, action=nil)
-        puts (suggestion) if system condition
+        puts (suggestion) if system(condition)
         action
       end
 
       def confirm_dependencies
-        dependencies = {
+        dependencies = [
           {
-            condition: "which docker",
+            condition: (system "which docker"),
             suggestion: "It looks like the Docker daemon isn't running -- '$ docker ps'. Please follow the instructions here to start it: https://docs.docker.com/config/daemon/#start-the-daemon-manually"
+          }, {
+            condition: "docker ps",
+            suggestion: "It looks like the Docker daemon isn't running -- '$ docker ps'. Please follow the instructions here to start it: https://docs.docker.com/config/daemon/#start-the-daemon-manually"
+          }, {
+            condition: "which docker-compose",
+            suggestion: "It looks like Docker Compose isn't installed -- '$ which docker-compose'. Please follow the instructions here to install it: https://docs.docker.com/compose/install/"
+          }, {
+            condition: "uname",
+            suggestion: "It looks like you're running Docker on some flavor of Linux, in which casee the files created by your containers are owned by the root user of the container and not by the user of your host machine. To finish , you will be asked for your password to change ownership of these newly generated files."
           }
-          # ,
-          #
-          # {
-          #   condition: "docker ps",
-          #   suggestion: "It looks like the Docker daemon isn't running -- '$ docker ps'. Please follow the instructions here to start it: https://docs.docker.com/config/daemon/#start-the-daemon-manually"
-          # },
+        ]
+
+        dependencies.each do |dependency|
+          confirm_dependency(dependency[:condition], dependency[:suggestion])
+        end
           #
           # {
           #   condition: "which docker-compose",
@@ -61,10 +69,8 @@ module Roro
           #   condition: "uname",
           #   suggestion: "It looks like you're running Docker on some flavor of Linux, in which casee the files created by your containers are owned by the root user of the container and not by the user of your host machine. To finish , you will be asked for your password to change ownership of these newly generated files."
           # }
-        }
-        dependencies.each do |key, value|
-          # confirm_dependency(key, value)
-        end
+        # }
+
         # if system 'which docker'
         #   say "It looks like Docker isn't installed -- '$ which docker'. Please follow the instructions here to install it: https://docs.docker.com/install/"
         # end
