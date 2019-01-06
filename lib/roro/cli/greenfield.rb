@@ -35,7 +35,7 @@ module Roro
     no_commands do
 
       def confirm_dependency(condition, suggestion, action=nil)
-        puts (suggestion) if system(condition)
+        puts (suggestion) if condition
         action
       end
 
