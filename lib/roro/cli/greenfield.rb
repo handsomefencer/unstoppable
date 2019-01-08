@@ -69,7 +69,7 @@ module Roro
             system_query: "ls -A",
             warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
             suggestion: "$ roro greenfield --force",
-            conditional: "Dir.empty? '.'"
+            conditional: "Dir.glob('*').empty?"
           }, {
 
             system_query: "which docker",
