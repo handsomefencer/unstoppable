@@ -37,9 +37,9 @@ Gem::Specification.new do |spec|
   # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "thor"
-  spec.add_dependency "os"
-  spec.add_dependency "sshkit"
+  spec.add_dependency "thor", "0.20.3"
+  spec.add_dependency "os", "1.0.0"
+  spec.add_dependency "sshkit", "1.18.2"
   spec.add_dependency "handsome_fencer-crypto", "0.1.6"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
