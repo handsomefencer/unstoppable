@@ -2,7 +2,7 @@
 
 Roro is a containerization and continuous integration framework for Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity." 
 
-## Docker and Docker Compose 
+### Docker and Docker Compose 
 
 You'll need [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/). To see if Docker is installed:
 
@@ -18,7 +18,7 @@ $ docker-compose -v
 docker-compose version 1.21.0, build 5920eb0
 ```
 
-## Install
+### Install
 
 ```bash
 $ gem install roro
@@ -80,7 +80,7 @@ $ docker-compose up --build
 As with greenfielding above, wait a few minutes, and when it's finished, open [http://localhost:3000/](http://localhost:3000/). 
 
 
-## Guard
+### Guard and tests
 
 From another terminal: 
 
@@ -91,7 +91,9 @@ $ docker-compose exec app bundle exec guard
 To use LiveReoload with Guard, install the Chrome [extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en):
 
 
-## Securing environment files 
+## Deployment 
+
+### Securing environment files 
 
 Roro provides conventions for securing sensitive variables between docker containers and environments. To store a variable for use in development, create a file with that variable inside, name it "development.env," and store it in docker/env_files. Here's a one-liner:
 
@@ -143,7 +145,9 @@ To verify the newly decrypted file's contents match those of its backup:
 $ diff docker/env_files/development.env docker/env_files/backup.env 
 ```
 
-## Linux notes
+## Notes 
+
+### Linux
 
 If you're running linux you may need to change ownership of the newly created files, prepend commands with sudo, or both. To change ownership of newly generated files:
 
@@ -153,9 +157,9 @@ $ sudo chown <username><user group> -R .
 
 If that doesn't work, Docker's [documentation](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) should get you pointed in the right direction.
 
-## Troubleshooting 
+### Troubleshooting 
 
-### Port in use 
+#### Port in use 
 
 Sometimes you will ge a message saying the port specified in your docker-compose.yml file is already in use. This may be because you have a server running on your host from normal development, or because another Docker container is running a server and piping it to your host. If the former you can shut it down using ctrl^c, and if the latter:
 
@@ -171,7 +175,7 @@ $ rm /tmp/pids/server.pid
 
 If that doesn't work, restart your machine.
 
-### Mismatched ruby versions 
+#### Mismatched ruby versions 
 
 Sometimes your Gemfile will specify a ruby version which doesn't match the ruby version of the image your container is using. There are three ways to handle this. The first way is to specify an image with the same version of ruby as is in your Gemfile. Open your Dockerfile and change:
 
@@ -190,7 +194,7 @@ ruby '2.5.x'
 
 The third way is to remove the ruby specification from your Gemfile, relying on your Dockerfile for ruby version management.
 
-### Get out of jail
+#### Get out of jail
 
 To remove all images, containers, and volumes from your system and start over:
 
