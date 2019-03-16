@@ -49,26 +49,45 @@ Instructions for installing [Docker Compose](https://docs.docker.com/compose/ins
 $ mkdir -p handsome_app
 $ cd handsome_app
 $ roro greenfield
-$ docker-compose up
 ```
 
 You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
 
-If you're on a linux machine and run into issues, please see the
-[linux notes](#linux-notes).
+## Rolling onto an existing app:
 
-
-### Rolling onto an existing app:
-
-Using your own app or one generated using the 'greenfield' instructions above: 
+Using your own app or one generated using the 'greenfield' instructions above, first shut down any running docker images: 
 
 ```bash
 $ docker-compose down
-$ roro rollon
-$ docker-compose up
 ```
 
-You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
+Roll roro onto the app:
+
+```bash
+$ roro rollon
+```
+
+If you're on a linux machine, make sure the host user owns the generated files:
+
+```bash
+$ sudo chown <username><user group> -R .
+```
+
+And spin it up:
+
+```bash
+$ docker-compose up --build
+``` 
+
+Relax for a few minutes while You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
+
+## Guard:
+
+From another terminal: 
+
+```bash
+$ docker-compose exec app bundle exec guard
+```
 
 ## Securing environment files 
 
@@ -112,19 +131,53 @@ If that doesn't work, Docker's [documentation](https://docs.docker.com/install/l
 
 ## Troubleshooting 
 
-Sometimes the port is in use. This could be because you have a server running on your host machine, or because Docker is running a server and piping it to the host. To shut down a server running in Docker, do:
+### Port in use 
+
+Sometimes the port specified in your docker-compose.yml file is already in use by the host. This could be because you have a server running on your host from normal rails development, or because another Docker container is running a server and piping it to your host. To shut down a server running in Docker, do:
 
 ```
 $ docker-compose down 
 ``` 
 
-Sometimes shutting down all servers doesn't work, because Rails still thinks a server is already running, which is usuall because there's a .pid file somewhere. 
+Sometimes shutting down all servers isn't enough, because Rails sees a .pid file for a server somewhere. you can usually remove it with: 
 
+```bash
 $ rm /tmp/pids/server.pid
+```
 
-Sometimes you just need a fresh start. To remove all images, containers, and volumes from your system:
+### Mismatched rubies 
 
+Sometimes your Gemfile will specify a ruby version that doesn't match the ruby image Docker is using. There are two ways to fix this. The first is to change the line at the top of your app's Dockerfile to specify the correct ruby image and the second is to change the line at the top of your app's Gemfile. 
+
+To use the Dockerfile method, change:
+
+```
+FROM ruby:2.5
+```
+
+to:
+
+```
+FROM ruby:2.5.x
+```
+where 2.5.x is the ruby specified in your Gemfile.
+
+To use the Gemfile method, comment out or remove the ruby specification in your Gemfile:
+
+```ruby 
+# ruby '2.5.3'
+``` 
+
+Which will cause your app to use the ruby version in the app container's Dockerfile.
+
+
+### Last resort
+
+Sometimes you just need a fresh start. To remove all images, containers, and volumes from your system and start over:
+
+```bash
 $ docker system prune -af --volumes
+```
 
 ## Contributing
 
