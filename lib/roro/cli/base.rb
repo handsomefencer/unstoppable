@@ -14,12 +14,11 @@ module Roro
       end
 
       def own_if_required
-        # case
-        # when ENV['CIRCLECI']
-        #    return
-        # when OS.linux?
-          system 'sudo chown -R $USER .'
-        # end
+        system 'sudo chown -R $USER .'
+      end
+
+      def comment_out_ruby_in_gemfile 
+
       end
 
 
@@ -109,10 +108,6 @@ module Roro
 
       def copy_ruby_gem_files
         copy_file 'ruby_gem/config.yml', '.circleci/config.yml'
-        # copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
-        # copy_file 'greenfield/docker-compose.yml', 'docker-compose.yml'
-        # copy_file 'greenfield/Dockerfile', 'Dockerfile'
-        # copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
       end
     end
 
