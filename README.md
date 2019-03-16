@@ -27,21 +27,19 @@ Commands:
 
 ## Installing Docker and Docker Compose 
 
-Before using Roro's 'greenfield' and 'rollon' commands, you'll need Docker and Docker Compose. To see if Docker is installed:
+Before using Roro's 'greenfield' and 'rollon' commands, you'll need [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/). To see if Docker is installed:
 
 ```bash
 $ docker -v
 Docker version 18.03.1-ce, build 9ee9f40
 ```
 
-Instructions for installing [Docker](https://docs.docker.com/install/). To see if Docker Compose is installed:
+To see if Docker Compose is installed:
 
 ```bash
 $ docker-compose -v
 docker-compose version 1.21.0, build 5920eb0
 ```
-
-Instructions for installing [Docker Compose](https://docs.docker.com/compose/install/).
 
 ## Greenfielding a dockerized app:
 
@@ -55,19 +53,19 @@ You should now be able to see the Rails welcome screen upon clicking [http://loc
 
 ## Rolling onto an existing app:
 
-Using your own app or one generated using the 'greenfield' instructions above, first shut down any running docker images: 
+Using your own app or one generated using the 'greenfield' instructions above, first shut down any running docker containers: 
 
 ```bash
 $ docker-compose down
 ```
 
-Roll roro onto the app:
+Then, roll roro on:
 
 ```bash
 $ roro rollon
 ```
 
-If you're on a linux machine, make sure the host user owns the generated files:
+If your host machine is running linux, make sure the logged in user owns the generated files:
 
 ```bash
 $ sudo chown <username><user group> -R .
@@ -79,7 +77,7 @@ And spin it up:
 $ docker-compose up --build
 ``` 
 
-Relax for a few minutes while You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
+Relax for a few minutes while docker downloads the specified images, copies the files, and builds your application. Once it has finished, you should be able to see the Rails welcome screen at [http://localhost:3000/](http://localhost:3000/). 
 
 ## Guard:
 
@@ -88,6 +86,9 @@ From another terminal:
 ```bash
 $ docker-compose exec app bundle exec guard
 ```
+
+To use LiveReoload with Guard, install the [https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en](Chrome extension):
+
 
 ## Securing environment files 
 
