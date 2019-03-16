@@ -1,15 +1,16 @@
 # Roro
 
-Roro provides developers a handsome way to create, test, integrate, and deploy Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose.
+Roro gives developers a handsome way to create, test, integrate, and deploy Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose.
 
 ## Installation
 
 ```bash
 $ gem install roro
 ```
+
 ## Usage
 
-Once installed, Roro provides you a Thor CLI with a number of commands:
+Once installed, Roro provides a CLI:
 
 ```bash
 $ roro --help
@@ -24,107 +25,9 @@ Commands:
   roro ruby_gem        # Generate files for containerized gem testing, Circle...
 ```
 
-### Greenfielding a dockerized app:
-
-Please [install](#install-docker-and-docker-compose) Docker and Docker Compose if you have not already done so and then:
-
-1) Create a directory with the name of your app and change into it:
-
-```bash
-$ mkdir -p handsome_app
-$ cd handsome_app
-```
-
-2) Run the 'greenfield' command:
-
-```bash
-$ roro greenfield
-```
-
-2) Start it up:
-
-```bash
-$ docker-compose up
-```
-
-You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). If you're on a linux machine and run into issues, please see the
-[linux notes](#linux-notes) below.
-
-
-### Rolling onto an existing app:
-
-Using the app generated using the 'greenfield' instructions above, lets shut down any running containers: 
-
-```bash
-$ docker-compose down
-```
-
-Now lets rollon:
-
-```bash
-$ roro rollon
-```
-And tell docker to build and start it up:
-
-```bash
-$ docker-compose up
- ```
-
-You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
-
-If you're on a linux machine and run into issues, please see the
-[linux notes](#linux-notes) below.
-
-## Using Roro to secure environment files 
-
-Roro gives you a special place to put environment files for use in dockerized environments. If you want to store a variable called EXAMPLE_KEY for use in your development environment, create a file with that variable, name it "development.env," and store it in docker/env_files like so:
-
-```bash 
-$ echo "export export EXAMPLE_KEY=example_value" > docker/env_files/development.env
-```
-
-To encrypt an environment file, using the example above, first generate a key for your development environment like so:
-
-```bash 
-$ roro generate key development
-```
-
-Second, verify that the key has been generated:
-
-```bash 
-$ ls docker/keys
-development.key
-```
-
-And third, use the generated key to obuscate its matching environment file:
-
-```bash 
-$ roro obfuscate development
-```
-
-You should now see an encrypted version of the environment file alongside the unencrypted one like so:
-
-```bash 
-$ ls docker/env_files
-development.env  development.env.enc
-```
-
-And to expose a previously obfuscated file:
-
-```bash 
-$ mv docker/env_files/development.env
-$ roro expose development
-```
-
-To verify the contents match:
-
-```bash 
-$ diff docker/env_files/development.env docker/env_files/backup.env 
-```
-
 ## Install Docker and Docker Compose 
 
-If you wish to use either the greenfield or rollon commands, you'll need Docker and Docker Compose installed.
+To use greenfield or rollon commands, you'll need Docker and Docker Compose.
 
 [installing Docker](https://docs.docker.com/install/)
 [installing Docker Compose](https://docs.docker.com/compose/install/)
@@ -143,6 +46,65 @@ docker-compose version 1.21.0, build 5920eb0
 ```
 
 ...you should be set.
+
+
+## Greenfielding a dockerized app:
+
+```bash
+$ mkdir -p handsome_app
+$ cd handsome_app
+$ roro greenfield
+$ docker-compose build
+$ docker-compose up
+```
+
+You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
+
+If you're on a linux machine and run into issues, please see the
+[linux notes](#linux-notes) below.
+
+
+### Rolling onto an existing app:
+
+Using the app generated using the 'greenfield' instructions above, lets shut down any running containers: 
+
+```bash
+$ cd handsome_app
+$ docker-compose down
+$ roro rollon
+$ docker-compose up
+
+```
+
+## Securing environment files 
+
+Roro gives you a special place to put environment files for use in dockerized environments. To store a variable called EXAMPLE_KEY for use in your development environment, create a file with that variable, name it "development.env," and store it in docker/env_files like so:
+
+```bash 
+$ echo "export export EXAMPLE_KEY=example_value" > docker/env_files/development.env
+$ roro generate_key development
+$ roro obfuscate development
+```
+
+You should now see an encrypted version of the environment file alongside the unencrypted one:
+
+```bash 
+$ ls docker/env_files
+development.env  development.env.enc
+```
+
+And to expose a previously obfuscated file:
+
+```bash 
+$ mv docker/env_files/development.env
+$ roro expose development
+```
+
+To verify the contents match:
+
+```bash 
+$ diff docker/env_files/development.env docker/env_files/backup.env 
+```
 
 ## Linux notes
 
