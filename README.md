@@ -24,8 +24,6 @@ docker-compose version 1.21.0, build 5920eb0
 $ gem install roro
 ```
 
-## Usage
-
 Once installed, Roro provides a CLI:
 
 ```bash
@@ -51,7 +49,7 @@ $ cd handsome_app
 $ roro greenfield
 ```
 
-It'll take a few minutes for Docker to download your images, copy your files, and build your application but once finished, you'll see the Rails welcome screen at [http://localhost:3000/](http://localhost:3000/). 
+It'll take a few minutes for Docker to download your images, copy your files, and build your application but once finished, you'll see the Rails welcome screen at [http://localhost:3000](http://localhost:3000/). 
 
 ### Rolling onto an existing app
 
@@ -90,7 +88,7 @@ From another terminal:
 $ docker-compose exec app bundle exec guard
 ```
 
-To use LiveReoload with Guard, install the [Chrome extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en):
+To use LiveReoload with Guard, install the Chrome [extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en):
 
 
 ## Securing environment files 
@@ -175,28 +173,22 @@ If that doesn't work, restart your machine.
 
 ### Mismatched ruby versions 
 
-Sometimes your Gemfile will specify a ruby version which doesn't match the ruby version of the image your container is using. There are three ways to handle this. 
-
-The first way is to specify an image with the same version of ruby as is in your Gemfile. Open your Dockerfile and change:
+Sometimes your Gemfile will specify a ruby version which doesn't match the ruby version of the image your container is using. There are three ways to handle this. The first way is to specify an image with the same version of ruby as is in your Gemfile. Open your Dockerfile and change:
 
 ```
 FROM ruby:2.5
 ```
-
 to:
-
 ```
 FROM ruby:2.5.x
 ```
-where 2.5.x is the ruby specified in your Gemfile. 
-
-The second way is to specify the version of ruby in your app container's image at the top of your Gemfile:
+...where 2.5.x is the ruby specified in your Gemfile. The second way is to specify the same version of ruby in your app container's image as at the top of your Gemfile:
 
 ```ruby 
 ruby '2.5.x'
 ``` 
 
-The third way, and my preferred way, is to comment out or remove the specification from the Gemfile entirely, relying on your Dockerfile for ruby version management.
+The third way is to remove the ruby specification from your Gemfile, relying on your Dockerfile for ruby version management.
 
 ### Get out of jail
 
