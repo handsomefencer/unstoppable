@@ -1,6 +1,6 @@
 # Roro
 
-Roro gives developers a handsome way to create, test, integrate, and deploy Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose.
+Roro is a containerization and continuous integration framework for Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity." 
 
 ## Docker and Docker Compose 
 
@@ -41,7 +41,9 @@ Commands:
   roro ruby_gem        # Generate files for containerized gem testing, Circle...
 ```
 
-### Greenfielding a dockerized app:
+## Getting started
+
+### Greenfielding a dockerized app
 
 ```bash
 $ mkdir -p handsome_app
@@ -51,7 +53,7 @@ $ roro greenfield
 
 You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
 
-### Rolling onto an existing app:
+### Rolling onto an existing app
 
 Whether using your own app or one greenfielded using instructions above, first shut down any running docker containers: 
 
@@ -79,7 +81,7 @@ $ docker-compose up --build
 
 It will take a few minutes for Docker to download your images, copy your files, and build your application. Afterward you should see the Rails welcome screen at [http://localhost:3000/](http://localhost:3000/). 
 
-## Guard:
+## Guard
 
 From another terminal: 
 
@@ -143,7 +145,7 @@ To verify the newly decrypted file contents match its backup:
 $ diff docker/env_files/development.env docker/env_files/backup.env 
 ```
 
-### Linux notes
+## Linux notes
 
 If you're running linux you may need to change ownership of the newly created files, prepend commands with sudo, or both. To change ownership of newly generated files:
 
@@ -171,7 +173,7 @@ $ rm /tmp/pids/server.pid
 
 If that doesn't work, restart your machine.
 
-### Mismatched rubies 
+### Mismatched ruby versions 
 
 Sometimes your Gemfile will specify a ruby version which doesn't match the ruby image your app container is using. There are three ways to handle this. 
 
@@ -196,7 +198,7 @@ ruby '2.5.x'
 
 The third way is to comment out or remove the specification from the Gemfile and rely on Docker for ruby version management.
 
-### Last resort
+### Get out of jail
 
 To remove all images, containers, and volumes from your system and start over:
 
@@ -206,16 +208,7 @@ $ docker system prune -af --volumes
 
 ## Contributing
 
-This gem and its associated practices are just one way of using these tools, and certainly not the canonical way. My purpose in publishing it is to get a conversation started about what that looks like. If you have  ideas, please fork the repo, make your changes, write your tests, and send me a pull request. I'd very much appreciate it.    
+This gem and its associated practices are just one way of using these tools, and certainly not the canonical way. My purpose in publishing it is to get a conversation started about what that looks like. If you have ideas, please put in an issue or fork the repo, make your changes, write your tests, and send me a pull request. I'd very much appreciate it.    
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-
- should get you pointed in the right direction. , you may need to prepend 'sudo' to the above command, or chown newly created files:
-
-```bash
-$ sudo chown <username><user group> -R .
-```
-
-If that doesn't work, Docker's [documentation](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) should get you pointed in the right direction.
