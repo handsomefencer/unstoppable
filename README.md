@@ -25,28 +25,27 @@ Commands:
   roro ruby_gem        # Generate files for containerized gem testing, Circle...
 ```
 
-## Install Docker and Docker Compose 
+## Installing Docker and Docker Compose 
 
-To use greenfield or rollon commands, you'll need Docker and Docker Compose.
+Before using Roro's 'greenfield' and 'rollon' commands, you'll need Docker and Docker Compose. 
 
-[installing Docker](https://docs.docker.com/install/)
-[installing Docker Compose](https://docs.docker.com/compose/install/)
-
-Once you can do:
+Check to see if Docker is installed:
 
 ```bash
-$ docker-compose -v
+$ docker -v
+Docker version 18.03.1-ce, build 9ee9f40
 ```
 
-...and see output similar to:
+Instructions for installing [Docker](https://docs.docker.com/install/).
+
+Check to see if Docker Compose is installed:
 
 ```bash
 $ docker-compose -v
 docker-compose version 1.21.0, build 5920eb0
 ```
 
-...you should be set.
-
+Instructions for installing [Docker Compose](https://docs.docker.com/compose/install/).
 
 ## Greenfielding a dockerized app:
 
