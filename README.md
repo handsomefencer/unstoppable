@@ -96,7 +96,7 @@ docker-compose version 1.21.0, build 5920eb0
 
 ## Greenfielding a fully dockerized Rails application:
 
-1) Create a directory with the name of your app and change into it like so:
+1) Create a directory with the name of your app and change into it:
 
 ```bash
 $ mkdir -p sooperdooper
@@ -115,17 +115,8 @@ $ roro greenfield
 $ docker-compose up
 ```
 
-```bash
-$ docker-compose run app rails new . --database=postgresql --skip
-```
-
-3a) If you're on a linux machine, you may need to chown the newly created files:
-
-```bash
-$ sudo chown <username><user group> -R .
-```
-
-If that doesn't work, Docker's [documentation](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) should get you pointed in the right direction.
+If you're on a linux machine and run into issues, please see the
+[linux notes](roro#development) below.
 
 4) Ask Docker to build the necessary images for our app and spool up containers using them:
 
@@ -141,20 +132,24 @@ $ docker-compose up --build
 
 You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/).
 
-## Dockerizing an existing Rails application:
 
-1) Execute the install command:
+## Use rollon with an existing rails app:
+
+You can roll roro onto an existing rails app. For demonstration purposes, let's use the one we generated using the 'greenfield' instructions above. First, let's tell Docker to shut down: 
 
 ```bash
-$ roro dockerize
+$ docker-compose down
 ```
 
-2) You'll be asked which files to write over. Keep your Gemfile and let it write over everything else, including your .gitignore, any existing docker-compose.yml, .circleci/config.yml, and Gemfile.lock files.
-
-3) Ask Docker to build the necessary images for our app and spool up containers using them:
+Now lets roll roro onto that app:
 
 ```bash
-$ docker-compose up --build
+$ roro rollon
+```
+And 
+
+```bash
+$ docker-compose up
  ```
 
 If you're on a linux machine, you may need to chown the newly created files using:
@@ -180,3 +175,12 @@ This gem and the associated practices are just a way of deploying your applicati
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+
+ should get you pointed in the right direction. , you may need to prepend 'sudo' to the above command, or chown newly created files:
+
+```bash
+$ sudo chown <username><user group> -R .
+```
+
+If that doesn't work, Docker's [documentation](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) should get you pointed in the right direction.
