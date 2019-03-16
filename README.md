@@ -87,7 +87,7 @@ From another terminal:
 $ docker-compose exec app bundle exec guard
 ```
 
-To use LiveReoload with Guard, install the [https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en](Chrome extension):
+To use LiveReoload with Guard, install the [Chrome extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en):
 
 
 ## Securing environment files 
