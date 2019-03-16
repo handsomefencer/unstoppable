@@ -1,6 +1,6 @@
 # Roro
 
-Roro provides you handsome way to create, test, integrate, and deploy Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose.
+Roro provides developers a handsome way to create, test, integrate, and deploy Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose.
 
 ## Installation
 
@@ -24,7 +24,7 @@ Commands:
   roro ruby_gem        # Generate files for containerized gem testing, Circle...
 ```
 
-## Greenfielding a fully dockerized Rails application using 'greenfield':
+### Greenfielding a dockerized app:
 
 Please [install](#install-docker-and-docker-compose) Docker and Docker Compose if you have not already done so and then:
 
@@ -51,9 +51,9 @@ You should now be able to see the Rails welcome screen upon clicking [http://loc
 [linux notes](#linux-notes) below.
 
 
-## Rolling onto an existing rails app using 'rollon':
+### Rolling onto an existing app:
 
-Using the app generated using the 'greenfield' instructions above, start by shutting down any running containers: 
+Using the app generated using the 'greenfield' instructions above, lets shut down any running containers: 
 
 ```bash
 $ docker-compose down
@@ -70,7 +70,9 @@ And tell docker to build and start it up:
 $ docker-compose up
  ```
 
-You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). If you're on a linux machine and run into issues, please see the
+You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
+
+If you're on a linux machine and run into issues, please see the
 [linux notes](#linux-notes) below.
 
 ## Using Roro to secure environment files 
