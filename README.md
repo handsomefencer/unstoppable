@@ -1,6 +1,6 @@
 # Roro
 
-Roro provides developers a handsome way to create, test, integrate and deploy applications Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose, and the server of their choice. It's written in Ruby, uses Thor, and admires the Rails philosophy of convention over configuration.
+Roro provides you handsome way to create, test, integrate, and deploy Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose.
 
 ## Installation
 
@@ -9,7 +9,7 @@ $ gem install roro
 ```
 ## Usage
 
-Once installed, Roro provides you a CLI with a number of commands:
+Once installed, Roro provides you a Thor CLI with a number of commands:
 
 ```bash
 $ roro --help
@@ -23,6 +23,55 @@ Commands:
   roro rollon          # Generates files necessary to greenfield a new app wi...
   roro ruby_gem        # Generate files for containerized gem testing, Circle...
 ```
+
+## Greenfielding a fully dockerized Rails application using 'greenfield':
+
+Please [install](#install-docker-and-docker-compose) Docker and Docker Compose if you have not already done so and then:
+
+1) Create a directory with the name of your app and change into it:
+
+```bash
+$ mkdir -p handsome_app
+$ cd handsome_app
+```
+
+2) Run the 'greenfield' command:
+
+```bash
+$ roro greenfield
+```
+
+2) Start it up:
+
+```bash
+$ docker-compose up
+```
+
+You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). If you're on a linux machine and run into issues, please see the
+[linux notes](#linux-notes) below.
+
+
+## Rolling onto an existing rails app using 'rollon':
+
+Using the app generated using the 'greenfield' instructions above, start by shutting down any running containers: 
+
+```bash
+$ docker-compose down
+```
+
+Now lets rollon:
+
+```bash
+$ roro rollon
+```
+And tell docker to build and start it up:
+
+```bash
+$ docker-compose up
+ ```
+
+You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). If you're on a linux machine and run into issues, please see the
+[linux notes](#linux-notes) below.
 
 ## Using Roro to secure environment files 
 
@@ -93,64 +142,7 @@ docker-compose version 1.21.0, build 5920eb0
 
 ...you should be set.
 
-
-## Greenfielding a fully dockerized Rails application:
-
-1) Create a directory with the name of your app and change into it:
-
-```bash
-$ mkdir -p sooperdooper
-$ cd sooperdooper
-```
-
-2) Run the greenfield command:
-
-```bash
-$ roro greenfield
-```
-
-2) Start it up:
-
-```bash
-$ docker-compose up
-```
-
-If you're on a linux machine and run into issues, please see the
-[linux notes](#development) below.
-
-4) Ask Docker to build the necessary images for our app and spool up containers using them:
-
-```bash
-$ docker-compose up --build
- ```
-
-4) Now we need to ask Docker to execute a command on the container we asked Docker to run in the previous step. Issue the following command in a new terminal:
-
- ```bash
- $ docker-compose run app bin/rails db:create db:migrate
-  ```
-
-You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/).
-
-
-## Use rollon with an existing rails app:
-
-You can roll roro onto an existing rails app. For demonstration purposes, let's use the one we generated using the 'greenfield' instructions above. First, let's tell Docker to shut down: 
-
-```bash
-$ docker-compose down
-```
-
-Now lets roll roro onto that app:
-
-```bash
-$ roro rollon
-```
-And 
-
-```bash
-$ docker-compose up
- ```
+## Linux notes
 
 If you're on a linux machine, you may need to chown the newly created files using:
 
@@ -167,6 +159,8 @@ If that doesn't work, Docker's [documentation](https://docs.docker.com/install/l
   ```
 
 You should now be able to see your app running upon clicking [http://localhost:3000/](http://localhost:3000/).
+
+
 
 
 ## Contributing
