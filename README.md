@@ -27,18 +27,14 @@ Commands:
 
 ## Installing Docker and Docker Compose 
 
-Before using Roro's 'greenfield' and 'rollon' commands, you'll need Docker and Docker Compose. 
-
-Check to see if Docker is installed:
+Before using Roro's 'greenfield' and 'rollon' commands, you'll need Docker and Docker Compose. To see if Docker is installed:
 
 ```bash
 $ docker -v
 Docker version 18.03.1-ce, build 9ee9f40
 ```
 
-Instructions for installing [Docker](https://docs.docker.com/install/).
-
-Check to see if Docker Compose is installed:
+Instructions for installing [Docker](https://docs.docker.com/install/). To see if Docker Compose is installed:
 
 ```bash
 $ docker-compose -v
@@ -53,53 +49,52 @@ Instructions for installing [Docker Compose](https://docs.docker.com/compose/ins
 $ mkdir -p handsome_app
 $ cd handsome_app
 $ roro greenfield
-$ docker-compose build
 $ docker-compose up
 ```
 
 You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
 
 If you're on a linux machine and run into issues, please see the
-[linux notes](#linux-notes) below.
+[linux notes](#linux-notes).
 
 
 ### Rolling onto an existing app:
 
-Using the app generated using the 'greenfield' instructions above, lets shut down any running containers: 
+Using your own app or one generated using the 'greenfield' instructions above: 
 
 ```bash
-$ cd handsome_app
 $ docker-compose down
 $ roro rollon
 $ docker-compose up
-
 ```
+
+You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
 
 ## Securing environment files 
 
-Roro gives you a special place to put environment files for use in dockerized environments. To store a variable called EXAMPLE_KEY for use in your development environment, create a file with that variable, name it "development.env," and store it in docker/env_files like so:
+Roro gives provides conventions for securing your environment files. To store a variable for use in your development environment, create a file with that variable, name it "development.env," and store it in docker/env_files like so:
 
 ```bash 
-$ echo "export export EXAMPLE_KEY=example_value" > docker/env_files/development.env
+$ echo "export export EXplace to put environment files for use in dockerized environments. AMPLE_KEY=example_value" > docker/env_files/development.env
 $ roro generate_key development
 $ roro obfuscate development
 ```
 
-You should now see an encrypted version of the environment file alongside the unencrypted one:
+You should now see an environment file and its encrypted counterpart in docker/env_files: 
 
 ```bash 
 $ ls docker/env_files
 development.env  development.env.enc
 ```
 
-And to expose a previously obfuscated file:
+To expose a previously obfuscated file:
 
 ```bash 
-$ mv docker/env_files/development.env
+$ mv docker/env_files/development.env docker/env_files/backup.env
 $ roro expose development
 ```
 
-To verify the contents match:
+To verify the newly decrypted file contents match its backup:
 
 ```bash 
 $ diff docker/env_files/development.env docker/env_files/backup.env 
@@ -107,7 +102,7 @@ $ diff docker/env_files/development.env docker/env_files/backup.env
 
 ## Linux notes
 
-If you're on a linux machine, you may need to chown the newly created files using:
+If you're on a linux machine, you may need to change ownership of the newly created files:
 
 ```bash
 $ sudo chown <username><user group> -R .
@@ -115,16 +110,21 @@ $ sudo chown <username><user group> -R .
 
 If that doesn't work, Docker's [documentation](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) should get you pointed in the right direction.
 
-4) Ask Docker to set up your database by executing the following commands inside the app container:
+## Troubleshooting 
 
- ```bash
- $ docker-compose exec app bin/rails db:setup
-  ```
+Sometimes the port is in use. This could be because you have a server running on your host machine, or because Docker is running a server and piping it to the host. To shut down a server running in Docker, do:
 
-You should now be able to see your app running upon clicking [http://localhost:3000/](http://localhost:3000/).
+```
+$ docker-compose down 
+``` 
 
+Sometimes shutting down all servers doesn't work, because Rails still thinks a server is already running, which is usuall because there's a .pid file somewhere. 
 
+$ rm /tmp/pids/server.pid
 
+Sometimes you just need a fresh start. To remove all images, containers, and volumes from your system:
+
+$ docker system prune -af --volumes
 
 ## Contributing
 
