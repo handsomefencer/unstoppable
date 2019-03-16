@@ -51,7 +51,7 @@ $ cd handsome_app
 $ roro greenfield
 ```
 
-You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/). 
+It'll take a few minutes for Docker to download your images, copy your files, and build your application but once finished, you'll see the Rails welcome screen at [http://localhost:3000/](http://localhost:3000/). 
 
 ### Rolling onto an existing app
 
@@ -79,7 +79,8 @@ And spin it up:
 $ docker-compose up --build
 ``` 
 
-It will take a few minutes for Docker to download your images, copy your files, and build your application. Afterward you should see the Rails welcome screen at [http://localhost:3000/](http://localhost:3000/). 
+As with greenfielding above, wait a few minutes, and when it's finished, open [http://localhost:3000/](http://localhost:3000/). 
+
 
 ## Guard
 
@@ -121,7 +122,6 @@ development.env  development.env.enc
 
 To see how decryption works, first back up a copy of your development.env file:
 
-
 ```bash 
 $ mv docker/env_files/development.env docker/env_files/backup.env
 ```
@@ -139,7 +139,7 @@ $ ls docker/env_files
 backup.env  development.env  development.env.enc 
 ```
 
-To verify the newly decrypted file contents match its backup:
+To verify the newly decrypted file's contents match those of its backup:
 
 ```bash 
 $ diff docker/env_files/development.env docker/env_files/backup.env 
@@ -175,9 +175,9 @@ If that doesn't work, restart your machine.
 
 ### Mismatched ruby versions 
 
-Sometimes your Gemfile will specify a ruby version which doesn't match the ruby image your app container is using. There are three ways to handle this. 
+Sometimes your Gemfile will specify a ruby version which doesn't match the ruby version of the image your container is using. There are three ways to handle this. 
 
-The first is to specify an image with the same version of ruby in your Gemfile as specified at the top of your Dockerfile. Open your Dockerfile and change:
+The first way is to specify an image with the same version of ruby as is in your Gemfile. Open your Dockerfile and change:
 
 ```
 FROM ruby:2.5
@@ -190,13 +190,13 @@ FROM ruby:2.5.x
 ```
 where 2.5.x is the ruby specified in your Gemfile. 
 
-The second way is to specify the version of ruby used in your app container's image at the top of your Gemfile:
+The second way is to specify the version of ruby in your app container's image at the top of your Gemfile:
 
 ```ruby 
 ruby '2.5.x'
 ``` 
 
-The third way is to comment out or remove the specification from the Gemfile and rely on Docker for ruby version management.
+The third way, and my preferred way, is to comment out or remove the specification from the Gemfile entirely, relying on your Dockerfile for ruby version management.
 
 ### Get out of jail
 
@@ -208,7 +208,7 @@ $ docker system prune -af --volumes
 
 ## Contributing
 
-This gem and its associated practices are just one way of using these tools, and certainly not the canonical way. My purpose in publishing it is to get a conversation started about what that looks like. If you have ideas, please put in an issue or fork the repo, make your changes, write your tests, and send me a pull request. I'd very much appreciate it.    
+This gem and its associated practices are just one way of using these tools and not the canonical way. My purpose in publishing it is to get a conversation started about what conventions around these tools might look like. If you have ideas on how to make it better please put in an issue -- or fork the repo, make your changes, write your tests, and send me a pull request. I'll make me feel warm inside.    
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
