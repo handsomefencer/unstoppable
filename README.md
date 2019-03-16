@@ -95,7 +95,7 @@ To use LiveReoload with Guard, install the [Chrome extension](https://chrome.goo
 Roro gives provides conventions for securing your environment files. To store a variable for use in your development environment, create a file with that variable, name it "development.env," and store it in docker/env_files like so:
 
 ```bash 
-$ echo "export export EXplace to put environment files for use in dockerized environments. AMPLE_KEY=example_value" > docker/env_files/development.env
+$ echo "export EXAMPLE_KEY=example_value" > docker/env_files/development.env
 $ roro generate_key development
 $ roro obfuscate development
 ```
