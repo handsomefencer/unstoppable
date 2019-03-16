@@ -96,11 +96,21 @@ Roro gives provides conventions for securing your environment files. To store a 
 
 ```bash 
 $ echo "export EXAMPLE_KEY=example_value" > docker/env_files/development.env
+```
+
+Next, generate a key for the environment:
+
+```bash 
 $ roro generate_key development
+```
+
+Then encrypt the environment file using the generated key:
+
+```bash 
 $ roro obfuscate development
 ```
 
-You should now see an environment file and its encrypted counterpart in docker/env_files: 
+You should now have an environment file and its encrypted counterpart: 
 
 ```bash 
 $ ls docker/env_files
@@ -112,6 +122,14 @@ To expose a previously obfuscated file:
 ```bash 
 $ mv docker/env_files/development.env docker/env_files/backup.env
 $ roro expose development
+```
+
+You should now have three files:
+
+```bash 
+
+$ ls docker/env_files
+backup.env  development.env  development.env.enc 
 ```
 
 To verify the newly decrypted file contents match its backup:
