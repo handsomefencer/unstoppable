@@ -15,12 +15,7 @@ describe Roro::CLI do
     describe "with" do
 
       describe "env_vars: {}" do
-        # roro greenfield:
-        #   {"env_vars"=>{}}
-        # roro greenfield --interactive
-        #   {"env_vars"=>{}, "interactive"=>"interactive"}
-        # roro greenfield --interactive --env_vars sweet:log
-        #   {"env_vars"=>{"sweet"=>"log"}, "interactive"=>"interactive"}
+        
         Given { subject.options = { "env_vars" => {
           'APP_NAME' => "strawberry_field_app",
           'DOCKERHUB_EMAIL' => "user@test.org" } } }

@@ -1,43 +1,182 @@
 # Roro
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/roro`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Roro provides developers a handsome way to create, test, integrate and deploy applications Ruby on Rails applications using Guard, CircleCI, Docker, Docker Compose, and the server of their choice. It's written in Ruby, uses Thor, and admires the Rails philosophy of convention over configuration.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'roro'
+```bash
+$ gem install roro
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install roro
-
 ## Usage
 
-TODO: Write usage instructions here
+Once installed, Roro provides you a CLI with a number of commands:
 
-## Development
+```bash
+$ roro --help
+Commands:
+  roro expose          # Expose encrypted files
+  roro generate_key    # Generate a key for each environment
+  roro generate_keys   # Generates keys for all environments. If you have .en...
+  roro greenfield      # Greenfield a brand new rails app using Docker's inst...
+  roro help [COMMAND]  # Describe available commands or one specific command
+  roro obfuscate       # obfuscates any files matching the pattern ./docker/*...
+  roro rollon          # Generates files necessary to greenfield a new app wi...
+  roro ruby_gem        # Generate files for containerized gem testing, Circle...
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Using Roro to secure environment files 
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Roro gives you a special place to put environment files for use in dockerized environments. If you want to store a variable called EXAMPLE_KEY for use in your development environment, create a file with that variable, name it "development.env," and store it in docker/env_files like so:
+
+```bash 
+$ echo "export export EXAMPLE_KEY=example_value" > docker/env_files/development.env
+```
+
+To encrypt an environment file, using the example above, first generate a key for your development environment like so:
+
+```bash 
+$ roro generate key development
+```
+
+Second, verify that the key has been generated:
+
+```bash 
+$ ls docker/keys
+development.key
+```
+
+And third, use the generated key to obuscate its matching environment file:
+
+```bash 
+$ roro obfuscate development
+```
+
+You should now see an encrypted version of the environment file alongside the unencrypted one like so:
+
+```bash 
+$ ls docker/env_files
+development.env  development.env.enc
+```
+
+And to expose a previously obfuscated file:
+
+```bash 
+$ mv docker/env_files/development.env
+$ roro expose development
+```
+
+To verify the contents match:
+
+```bash 
+$ diff docker/env_files/development.env docker/env_files/backup.env 
+```
+
+## Install Docker and Docker Compose 
+
+If you wish to use either the greenfield or rollon commands, you'll need Docker and Docker Compose installed.
+
+[installing Docker](https://docs.docker.com/install/)
+[installing Docker Compose](https://docs.docker.com/compose/install/)
+
+Once you can do:
+
+```bash
+$ docker-compose -v
+```
+
+...and see output similar to:
+
+```bash
+$ docker-compose -v
+docker-compose version 1.21.0, build 5920eb0
+```
+
+...you should be set.
+
+
+## Greenfielding a fully dockerized Rails application:
+
+1) Create a directory with the name of your app and change into it like so:
+
+```bash
+$ mkdir -p sooperdooper
+$ cd sooperdooper
+```
+
+2) Run the greenfield command:
+
+```bash
+$ roro greenfield
+```
+
+2) Start it up:
+
+```bash
+$ docker-compose up
+```
+
+```bash
+$ docker-compose run app rails new . --database=postgresql --skip
+```
+
+3a) If you're on a linux machine, you may need to chown the newly created files:
+
+```bash
+$ sudo chown <username><user group> -R .
+```
+
+If that doesn't work, Docker's [documentation](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) should get you pointed in the right direction.
+
+4) Ask Docker to build the necessary images for our app and spool up containers using them:
+
+```bash
+$ docker-compose up --build
+ ```
+
+4) Now we need to ask Docker to execute a command on the container we asked Docker to run in the previous step. Issue the following command in a new terminal:
+
+ ```bash
+ $ docker-compose run app bin/rails db:create db:migrate
+  ```
+
+You should now be able to see the Rails welcome screen upon clicking [http://localhost:3000/](http://localhost:3000/).
+
+## Dockerizing an existing Rails application:
+
+1) Execute the install command:
+
+```bash
+$ roro dockerize
+```
+
+2) You'll be asked which files to write over. Keep your Gemfile and let it write over everything else, including your .gitignore, any existing docker-compose.yml, .circleci/config.yml, and Gemfile.lock files.
+
+3) Ask Docker to build the necessary images for our app and spool up containers using them:
+
+```bash
+$ docker-compose up --build
+ ```
+
+If you're on a linux machine, you may need to chown the newly created files using:
+
+```bash
+$ sudo chown <username><user group> -R .
+```
+
+If that doesn't work, Docker's [documentation](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user) should get you pointed in the right direction.
+
+4) Ask Docker to set up your database by executing the following commands inside the app container:
+
+ ```bash
+ $ docker-compose exec app bin/rails db:setup
+  ```
+
+You should now be able to see your app running upon clicking [http://localhost:3000/](http://localhost:3000/).
+
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/roro. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+This gem and the associated practices are just a way of deploying your application, not the canonical or best way. If you have suggestions on how to make it easier, more secure, quicker or better, please share them. If you have specific ideas, please fork the repo, make your changes, write your tests, and send me a pull request.    
 
 ## License
-
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Roro project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/roro/blob/master/CODE_OF_CONDUCT.md).
