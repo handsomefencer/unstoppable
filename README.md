@@ -116,7 +116,7 @@ $ docker-compose up
 ```
 
 If you're on a linux machine and run into issues, please see the
-[linux notes](roro#development) below.
+[linux notes](readme/roro#development) below.
 
 4) Ask Docker to build the necessary images for our app and spool up containers using them:
 
