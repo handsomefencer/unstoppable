@@ -1,25 +1,18 @@
 # Roro
 
-Roro is a containerization and continuous integration framework for Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity." 
+Roro is a containerization and continuous integration framework for Ruby and Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity." 
 
-### Docker and Docker Compose 
+Roro aims to provide everything you need to:
 
-You'll need [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/). To see if Docker is installed:
-
-```bash
-$ docker -v
-Docker version 18.03.1-ce, build 9ee9f40
-```
-
-To see if Docker Compose is installed:
-
-```bash
-$ docker-compose -v
-docker-compose version 1.21.0, build 5920eb0
-```
+1. Greenfield a new, fully dockerized Rails app.
+2. Containerize your existing application and database in development, using Docker and Docker Compose.
+3. Run your tests with Guard in a separate test container.
+4. Set up continuous integration between Github or BitBucket using CircleCI.
+5. Deploy your application from CircleCI once your tests have passed to the server of your choice.
 
 ### Install
 
+roro can installed using your Gemfile
 ```bash
 $ gem install roro
 ```
@@ -40,6 +33,22 @@ Commands:
 ```
 
 ## Getting started
+
+### Docker and Docker Compose 
+
+You'll need [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/). To confirm Docker is installed:
+
+```bash
+$ docker -v
+Docker version 18.03.1-ce, build 9ee9f40
+```
+
+To confirm Docker Compose is installed:
+
+```bash
+$ docker-compose -v
+docker-compose version 1.21.0, build 5920eb0
+```
 
 ### Greenfielding a dockerized app
 
@@ -204,7 +213,7 @@ $ docker system prune -af --volumes
 
 ## Contributing
 
-This gem and its associated practices are just one way of using these tools and not the canonical way. My purpose in publishing it is to get a conversation started about what conventions around these tools might look like. If you have ideas on how to make it better please put in an issue -- or fork the repo, make your changes, write your tests, and send me a pull request. I'll make me feel warm inside.    
+This gem and its associated practices are just one way of using these tools and not the canonical way. My purpose in publishing it is to get a conversation started about what conventions around these tools might look like. If you have ideas on how to make it better please put in an issue -- or fork the repo, make your changes, write your tests, and send me a pull request. It'll make me feel warm inside.    
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
