@@ -1,23 +1,23 @@
-# Roro
+# RoRo
 
-Roro is a containerization and continuous integration framework for Ruby and Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity." 
+RoRo is a containerization and continuous integration framework for Ruby applications. Like Rails, it favors convention over configuration. It aims to provide everything you need to:
 
-Roro aims to provide everything you need to:
+1. Greenfield a Rails app in its own container that can talk to a separate Postgresql container.
+2. Containerize your existing application and database in development.
+3. Run your tests with Guard in a separate container.
+4. Roll your containers onto CircleCI for testing.
+5. Roll your containers off of CircleCI to your servers.
 
-1. Greenfield a new, fully dockerized Rails app.
-2. Containerize your existing application and database in development, using Docker and Docker Compose.
-3. Run your tests with Guard in a separate test container.
-4. Set up continuous integration between Github or BitBucket using CircleCI.
-5. Deploy your application from CircleCI once your tests have passed to the server of your choice.
+## Getting started
 
 ### Install
 
-roro can installed using your Gemfile
+RoRo can be installed
 ```bash
 $ gem install roro
 ```
 
-Once installed, Roro provides a CLI:
+Once installed, RoRo provides a CLI:
 
 ```bash
 $ roro --help
@@ -32,7 +32,8 @@ Commands:
   roro ruby_gem        # Generate files for containerized gem testing, Circle...
 ```
 
-## Getting started
+However to use RoRo
+
 
 ### Docker and Docker Compose 
 
@@ -68,7 +69,7 @@ Whether using your own app or one greenfielded using instructions above, first s
 $ docker-compose down
 ```
 
-Then, roll roro on:
+Then, roll RoRo on:
 
 ```bash
 $ roro rollon
