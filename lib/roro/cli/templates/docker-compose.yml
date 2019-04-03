@@ -30,6 +30,7 @@ services:
 
   database:
     image: postgres
+    
     env_file:
       - docker/containers/database/development.env
 
@@ -37,10 +38,11 @@ services:
       - database-data:/var/lib/postgresql/data
 
   web:
+    depends_on:
+      - app
     build:
       context: .
       dockerfile: docker/containers/web/Dockerfile
-
 volumes:
   database-data:
   gem_cache:
