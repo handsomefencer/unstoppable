@@ -29,7 +29,7 @@ describe Roro::CLI do
 
     Given(:actual) { subject.gather_environments }
 
-    Then { %w(circleci production).each { |env| actual.must_include env } }
+    Then { %w(circleci production).each { |env| assert_includes actual, env } }
   end
 
   describe ":confirm_files_decrypted()" do
