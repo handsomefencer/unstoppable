@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    roro (0.2.3)
+    roro (0.2.5)
       handsome_fencer-crypto (= 0.1.6)
       os (= 1.0.0)
       sshkit (= 1.18.2)
@@ -102,8 +102,8 @@ GEM
       railties (~> 5.0)
     multi_json (1.13.1)
     nenv (0.3.0)
-    net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
+    net-scp (2.0.0)
+      net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     nokogiri (1.9.1)
       mini_portile2 (~> 2.4.0)
