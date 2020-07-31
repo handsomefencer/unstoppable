@@ -5,7 +5,7 @@ PATH
       handsome_fencer-crypto (= 0.1.6)
       os (= 1.0.0)
       sshkit (= 1.18.2)
-      thor (= 0.20.3)
+      thor
 
 GEM
   remote: https://rubygems.org/
@@ -162,4 +162,4 @@ DEPENDENCIES
   roro!
 
 BUNDLED WITH
-   1.17.3
+   2.1.4
