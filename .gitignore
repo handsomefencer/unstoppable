@@ -5,13 +5,5 @@
 /doc/
 /pkg/
 /spec/reports/
-tmp/dummy/
-tmp/dummy_gem/
-tmp/dummy_roro/
-tmp/greenfield/
-!tmp/.keep
-greenfield/**/*
-.byebug_history
-
-docker/**/*.env
-docker/**/*.key
+/tmp/
+Gemfile.lock
