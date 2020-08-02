@@ -16,7 +16,7 @@ module Roro
     end
 
     desc "generate_key", "Generate a key for each environment"
-    method_option :environment, type: :string, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "development, staging"
+    method_option :environment, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "development, staging"
 
     def generate_key(*args)
       environments = args.first ? [args.first] : gather_environments
