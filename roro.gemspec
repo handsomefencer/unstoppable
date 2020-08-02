@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   end
  
   spec.executables << 'roro'
+  # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   # spec.bindir        = "exe"
   # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
