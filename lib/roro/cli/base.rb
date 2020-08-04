@@ -33,45 +33,48 @@ module Roro
       end  
       
       def copy_docker_compose 
-        copy_file "docker-compose.yml", force: true
+        copy_file "docker-compose.yml", skip: true
       end
       
-      def modify_gitignore 
-        append_to_file ".gitignore", "\ndocker/**/*.env"
-        append_to_file ".gitignore", "\ndocker/**/*.key"
-        
+      
+      def config_std_out_true
+        prepend_to_file('config/boot.rb', "$stdout.sync = true\n\n")
+      end 
+      
+      def gitignore_sensitive_files 
+        append_to_file ".gitignore", "\nroro/**/*.env\nroro/**/*.key"
       end
-
+      
       def copy_base_files
-        copy_file "gitignore", ".gitignore", skip: true
-        copy_file "Guardfile"
-        copy_file "config/database.yml", force: true
-        copy_file "docker/containers/web/app.conf"
-        directory "roro"
-        directory "docker/containers/database"
-        directory "docker/env_files"
-        directory "docker/keys"
-        directory "lib", "lib", recursive: true
-        %w[development circleci staging production].each do |environment|
-          base = "docker/containers/"
+        # copy_file "gitignore", ".gitignore", skip: true
+        # copy_file "Guardfile"
+        # copy_file "config/database.yml", force: true
+        # copy_file "docker/containers/web/app.conf"
+        # directory "roro"
+        # directory "docker/containers/database"
+        # directory "docker/env_files"
+        # directory "docker/keys"
+        # directory "lib", "lib", recursive: true
+        # %w[development circleci staging production].each do |environment|
+        #   base = "docker/containers/"
 
-          app_env = create_file "#{base}app/#{environment}.env"
-          append_to_file app_env, "DATABASE_HOST=database\n"
-          append_to_file app_env, "RAILS_ENV=#{environment}\n"
+        #   app_env = create_file "#{base}app/#{environment}.env"
+        #   append_to_file app_env, "DATABASE_HOST=database\n"
+        #   append_to_file app_env, "RAILS_ENV=#{environment}\n"
 
-          database_env = create_file "#{base}database/#{environment}.env"
-          append_to_file database_env, "POSTGRES_USER=postgres\n"
-          # append_to_file database_env, "POSTGRES_DB=#{@env_hash['APP_NAME']}_#{environment}\n"
-          # append_to_file database_env, "POSTGRES_PASSWORD=#{@env_hash['POSTGRES_PASSWORD']}\n"
+        #   database_env = create_file "#{base}database/#{environment}.env"
+        #   append_to_file database_env, "POSTGRES_USER=postgres\n"
+        #   # append_to_file database_env, "POSTGRES_DB=#{@env_hash['APP_NAME']}_#{environment}\n"
+        #   # append_to_file database_env, "POSTGRES_PASSWORD=#{@env_hash['POSTGRES_PASSWORD']}\n"
 
-          # ssl = (environment == "production") ? true : false
-          # web_env = create_file "#{base}web/#{environment}.env"
-          # append_to_file web_env, "CA_SSL=#{ssl}\n"
-        end
+        #   # ssl = (environment == "production") ? true : false
+        #   # web_env = create_file "#{base}web/#{environment}.env"
+        #   # append_to_file web_env, "CA_SSL=#{ssl}\n"
+        # end
 
-        %w[circleci production].each do |environment|
-          template "docker/overrides/#{environment}.yml.tt", "docker/overrides/#{environment}.yml", force: true
-        end
+        # %w[circleci production].each do |environment|
+        #   template "docker/overrides/#{environment}.yml.tt", "docker/overrides/#{environment}.yml", force: true
+        # end
 
         # %w[app web].each do |container|
         #   options = {
@@ -86,10 +89,10 @@ module Roro
         # end
       end
 
-      def append_to_existing_files
-        append_to_file ".gitignore", "\ndocker/**/*.env"
-        append_to_file ".gitignore", "\ndocker/**/*.key"
-      end
+      # def append_to_existing_files
+      #   append_to_file ".gitignore", "\ndocker/**/*.env"
+      #   append_to_file ".gitignore", "\ndocker/**/*.key"
+      # end
     end
 
     private

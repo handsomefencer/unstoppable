@@ -38,6 +38,16 @@ describe Roro::CLI do
     end
   end 
   
+  describe '.unless_present(args)' do 
+    specify do 
+      
+      assert cli.unless_present?("config/boot.rb", /reqaauire/)
+      
+    end
+  end
+  
+  
+  
   describe '.copy_base_files' do 
     describe '.copy_docker_compose' do 
     

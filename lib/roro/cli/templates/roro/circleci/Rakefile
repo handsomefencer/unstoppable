@@ -1,4 +1,0 @@
-require 'sshkit'
-import '.circleci/deploy.rake'
-
-task :default => 'docker:deploy'
