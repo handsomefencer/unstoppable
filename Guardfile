@@ -7,7 +7,6 @@ options = {
 }
 
 guard :minitest, options do
-  # with Minitest::Unit
 
   watch(%r{^test/(.*)\/?test_(.*)\.rb$})
   watch(%r{^test/(.*)\/?(.*)_test\.rb$})

@@ -11,7 +11,17 @@ module Roro
     method_option :env_vars, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "key1:value1 key2:value2"
     method_option :interactive, desc: "Set up your environment variables as you go."
     method_option :force, desc: "force over-write of existing files"
-
+    
+    no_commands do
+      def copy_greenfield_files
+        copy_file 'greenfield/Gemfile', 'Gemfile'
+        copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
+        copy_file 'greenfield/docker-compose.yml', 'docker-compose.yml'
+        copy_file 'greenfield/Dockerfile', 'Dockerfile'
+        copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
+      end
+    end
+    
     def greenfield
 
       confirm_dependencies

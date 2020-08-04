@@ -7,6 +7,12 @@ module Roro
     desc "ruby_gem", "Generate files for containerized gem testing, CircleCI, and releasing to RubyGems."
     method_option :rubies, type: :array, banner: "2.5.3 2.4.2"
 
+    no_commands do
+      def copy_ruby_gem_files
+        copy_file 'ruby_gem/config.yml', '.circleci/config.yml'
+      end
+    end
+    
     def ruby_gem
       rubies = options["rubies"] || ["2.5.3", "2.6.0"]
       copy_file 'ruby_gem/docker-compose.yml', 'docker-compose.yml'
