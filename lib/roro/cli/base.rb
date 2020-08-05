@@ -61,7 +61,6 @@ module Roro
       end
   
       def insert_roro_gem_into_gemfile
-        # gem 'roro', path: './vendor/roro'
         insert_into_file 'Gemfile', "gem 'roro'", before: "group :development, :test do"
       end
 
