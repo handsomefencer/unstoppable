@@ -1,5 +1,6 @@
-FROM ruby:2.6
-LABEL maintainer="fred.schoeneman@gmail.com"
+FROM ruby:<%= config[:ruby_version] %>
+LABEL maintainer="<%= config[:dockerhub_email] %>"
+# COPY docker/containers/web/app.conf /tmp/<%= config[:app_name] %>.nginx
 
 # Allow apt to work with https-based sources
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
@@ -19,13 +20,13 @@ RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
   nodejs \
   yarn
 
-COPY Gemfile* /usr/src/app/
-WORKDIR /usr/src/app
+COPY Gemfile* /usr/src/<%= config[:app_name] %>/
+WORKDIR /usr/src/<%= config[:app_name] %>
 
 ENV BUNDLE_PATH /gems
 
 RUN bundle install
 
-COPY . /usr/src/app/
+COPY . /usr/src/<%= config[:app_name] %>/
 
-ENTRYPOINT [".roro/containers/web/docker-entrypoint.sh"]
+ENTRYPOINT ["roro/containers/web/docker-entrypoint.sh"]
