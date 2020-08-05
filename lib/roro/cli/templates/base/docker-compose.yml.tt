@@ -1,0 +1,53 @@
+version: '3.2'
+
+services:
+  chrome:
+    image: selenium/standalone-chrome-debug
+    volumes:
+      - /dev/shm:/dev/shm
+  <%= config[:app_name] %>:
+    build:
+      context: .
+      dockerfile: docker/containers/<%= config[:app_name] %>/Dockerfile
+
+    depends_on:
+      - <%= config[:database_container] %>
+    ports:
+      - "35729:35729"
+      - "3000:3000"
+    volumes:
+      - <%= config[:app_name] %>-data:/usr/src/<%= config[:app_name] %>
+      - gem_cache:/gems
+    env_file:
+      - docker/containers/<%= config[:database_container] %>/development.env
+      - docker/containers/<%= config[:app_name] %>/development.env
+    command: [ "bin/rails", "s" ]
+
+    stdin_open: true
+    tty: true
+    secrets:
+      - host_ssh_key
+
+  <%= config[:database_container] %>:
+    image: postgres
+    
+    env_file:
+      - docker/containers/<%= config[:database_container] %>/development.env
+
+    volumes:
+      - <%= config[:database_container] %>-data:/var/lib/postgresql/data
+
+  web:
+    depends_on:
+      - <%= config[:app_name] %>
+    build:
+      context: .
+      dockerfile: docker/containers/web/Dockerfile
+volumes:
+  <%= config[:database_container] %>-data:
+  gem_cache:
+  <%= config[:app_name] %>-data:
+
+secrets:
+  host_ssh_key:
+    file: ~/.ssh/id_rsa
