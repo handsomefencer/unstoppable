@@ -7,7 +7,7 @@ describe Roro::CLI do
   
   Given { prepare_destination 'dummy' }
   
-  Given(:env_vars) { {
+  Given(:configurable_env_vars) { {
     "APP_NAME"=>"dummy", 
     "RUBY_VERSION"=> /\.\d/, 
     "SERVER_HOST"=>"ip-address-of-your-server", 
@@ -18,65 +18,115 @@ describe Roro::CLI do
     "POSTGRES_USER"=>"postgres", 
     "POSTGRES_PASSWORD"=>"your-postgres-password"} }
   
-  describe "without interactivity" do
-    describe ".set_from_defaults" do 
+  Given(:env_vars) { configurable_env_vars.merge(     
+      "DEPLOY_TAG"=>"${CIRCLE_SHA1:0:7}", 
+      "SERVER_PORT"=>"22", 
+      "SERVER_USER"=>"root" ) } 
     
-      Given(:config) { cli.set_from_defaults } 
-
-      Then { env_vars.each { |key,value| assert_match value, config[key] } }
-    end
-
-    describe ".get_configuration_variables" do
-      
-      Given(:config) { cli.get_configuration_variables } 
-      Given { env_vars.merge(     
-        "DEPLOY_TAG"=>"${CIRCLE_SHA1:0:7}", 
-        "SERVER_PORT"=>"22", 
-        "SERVER_USER"=>"root" ) } 
+  describe '.set_from_defaults' do 
  
-      Then { env_vars.each { |key,value| assert_match value, config[key] } }
-    end
-  end 
-  
-  describe '.unless_present(args)' do 
-    specify do 
-      
-      assert cli.unless_present?("config/boot.rb", /reqaauire/)
-      
-    end
+    Given(:config) { cli.set_from_defaults }
+ 
+    Then { configurable_env_vars.each { |k,v| assert_match v, config[k] } } 
   end
   
-  
-  
-  describe '.copy_base_files' do 
-    describe '.copy_docker_compose' do 
+  describe ".get_configuration_variables" do
     
+    Given(:config) { cli.get_configuration_variables } 
+    
+    Given { env_vars.merge(     
+      "DEPLOY_TAG"=>"${CIRCLE_SHA1:0:7}", 
+      "SERVER_PORT"=>"22", 
+      "SERVER_USER"=>"root" ) } 
+
+    Then { env_vars.each { |key,value| assert_match value, config[key] } }
+  end 
+  
+  describe 'methods' do 
+      
+    # Given { cli.get_configuration_variables }
+ 
+    describe '.copy_docker_compose' do 
+      
       Given { cli.copy_docker_compose }
       
       Then { assert_file 'docker-compose.yml' }
+    end 
+
+    describe ".config_std_out" do 
+      
+      Given { cli.config_std_out_true }
+      
+      Then do assert_file 'config/boot.rb' do |c| 
+          assert_match("$stdout.sync = true", c )
+        end
+      end
+      
     end
     
-    describe '.modify_gitignore' do 
-      Given { cli.modify_gitignore }
+    describe '.gitignore_sensitive_files' do 
       
-      Then { assert_file '.gitignore' }
+      Given { cli.gitignore_sensitive_files }
       
+      Then do 
+        assert_file '.gitignore' do |c|
+          assert_match /roro\/\*\*\/\*.key/, c
+          assert_match /roro\/\*\*\/\*.env/, c
+        end
+      end
     end
     
-    # def copy_docker_compose
-    #   get_configuration_variables
-    #   copy_base_files
-    # end
+    describe '.copy_circleci' do 
+      
+      Given { cli.copy_circleci }
+      
+      Then do 
+        assert_directory '.circleci' 
+        assert_file '.circleci/config.yml' 
+      end
+    end
     
+    describe '.copy_roro' do 
+      
+      Given { cli.copy_roro }
+      
+      Then do 
+        assert_directory 'roro' 
+        assert_directory 'roro/containers' 
+      end
+    end
+    
+    describe '.insert_roro_gem_into_gemfile' do 
+      
+      Given { cli.insert_roro_gem_into_gemfile }
+      
+      Then do 
+        assert_file 'Gemfile' do |c| 
+          assert_match("gem 'roro'\n\n", c)
+        end
+      end
+    end
 
-    Then {
-      # assert_file 'Gemfile', /gem \'pg\'/
-    #   assert_file 'Gemfile', /gem \'sshkit\'/
-    #   assert_file 'Guardfile'
-    #   assert_file '.gitignore', /docker\/\*\*\/\*.key/
-    #   assert_file '.gitignore', /docker\/\*\*\/\*.env/
+    describe '.insert_hfci_gem_into_gemfile' do 
+      
+      Given { cli.insert_hfci_gem_into_gemfile }
+      
+      Then do 
+        assert_file 'Gemfile' do |c| 
+          assert_match("gem 'handsome_fencer-test'", c)
+        end
+      end
+    end
 
-    #   assert_file 'roro'
-    }
+    describe '.copy_config_database_yml' do 
+      
+      Given { cli.copy_config_database_yml }
+      
+      Then do 
+        assert_file 'config/database.yml' do |c| 
+          assert_match("<%= ENV.fetch('DATABASE_HOST') %>", c)
+        end
+      end
+    end
   end
 end
