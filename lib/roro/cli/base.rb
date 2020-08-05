@@ -54,15 +54,19 @@ module Roro
       end
       
       def copy_roro 
-        directory 'base/roro', 'roro', @env_hash
+        
+        directory 'base/roro/containers/app', "roro/containers/#{@env_hash[:app_name]}", @env_hash
+        directory 'base/roro/containers/database', "roro/containers/#{@env_hash[:database_container]}", @env_hash
+        directory 'base/roro/containers/frontend', "roro/containers/#{@env_hash[:frontend_container]}", @env_hash
       end
   
       def insert_roro_gem_into_gemfile
-        insert_into_file 'Gemfile', "gem 'roro'\n\n", before: "group :development, :test do"
+        # gem 'roro', path: './vendor/roro'
+        insert_into_file 'Gemfile', "gem 'roro'", before: "group :development, :test do"
       end
 
       def insert_hfci_gem_into_gemfile
-        insert_into_file 'Gemfile', "\n\tgem 'handsome_fencer-test'", after: "group :development, :test do"
+        insert_into_file 'Gemfile', "gem 'handsome_fencer-test'", after: "group :development, :test do"
       end
       
       def copy_config_database_yml 

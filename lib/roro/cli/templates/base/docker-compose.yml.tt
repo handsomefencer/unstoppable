@@ -8,7 +8,7 @@ services:
   <%= config[:app_name] %>:
     build:
       context: .
-      dockerfile: docker/containers/<%= config[:app_name] %>/Dockerfile
+      dockerfile: roro/containers/<%= config[:app_name] %>/Dockerfile
 
     depends_on:
       - <%= config[:database_container] %>
@@ -19,8 +19,8 @@ services:
       - <%= config[:app_name] %>-data:/usr/src/<%= config[:app_name] %>
       - gem_cache:/gems
     env_file:
-      - docker/containers/<%= config[:database_container] %>/development.env
-      - docker/containers/<%= config[:app_name] %>/development.env
+      - roro/containers/<%= config[:database_container] %>/development.env
+      - roro/containers/<%= config[:app_name] %>/development.env
     command: [ "bin/rails", "s" ]
 
     stdin_open: true
@@ -32,7 +32,7 @@ services:
     image: postgres
     
     env_file:
-      - docker/containers/<%= config[:database_container] %>/development.env
+      - roro/containers/<%= config[:database_container] %>/development.env
 
     volumes:
       - <%= config[:database_container] %>-data:/var/lib/postgresql/data
@@ -42,7 +42,7 @@ services:
       - <%= config[:app_name] %>
     build:
       context: .
-      dockerfile: docker/containers/web/Dockerfile
+      dockerfile: roro/containers/web/Dockerfile
 volumes:
   <%= config[:database_container] %>-data:
   gem_cache:
