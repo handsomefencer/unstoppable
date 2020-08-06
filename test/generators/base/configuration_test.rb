@@ -13,6 +13,8 @@ describe Roro::CLI do
   
   describe ".get_configuration_variables" do
     
+    Given(:config) { cli.get_configuration_variables }
+    
     Then { env_vars.each { |key,value| assert_match value, config[key] } }
   end
 end

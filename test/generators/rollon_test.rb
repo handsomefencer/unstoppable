@@ -3,10 +3,8 @@ require "test_helper"
 describe Roro::CLI do
 
   Given(:subject) { Roro::CLI.new }
-
-  Given(:rails_version) { 'rails_6_0_3' }
  
-    Given { prepare_destination rails_version }
+    # Given { prepare_destination rails_version }
   describe "must create" do
 Given { skip }
     Given { subject.rollon }
