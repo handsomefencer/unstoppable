@@ -4,7 +4,7 @@ class Minitest::Spec
 
   def self.get_configuration
  
-    Given { prepare_destination 'dummy' }
+    Given { prepare_destination 'rails_6_0_3' }
     Given(:cli) { Roro::CLI.new }
     Given(:configurable_env_vars) { {
       app_name: "dummy", 

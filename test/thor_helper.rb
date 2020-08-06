@@ -6,7 +6,7 @@ module TestHelper
         Dir.chdir(ENV.fetch("PWD") + '/tmp')
         unless test_app.nil?
           FileUtils.rm_rf(test_app)
-          FileUtils.cp_r("../test_apps/#{test_app}", ".")
+          FileUtils.cp_r("../test/dummies/#{test_app}", ".")
           Dir.chdir(test_app)
         end
       end
