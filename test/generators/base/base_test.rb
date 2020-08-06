@@ -3,11 +3,12 @@ require "test_helper"
 class Minitest::Spec
 
   def self.get_configuration
+    Given(:rails_version) { 'rails_6_0_3' }
  
-    Given { prepare_destination 'rails_6_0_3' }
+    Given { prepare_destination rails_version }
     Given(:cli) { Roro::CLI.new }
     Given(:configurable_env_vars) { {
-      app_name: "dummy", 
+      app_name: rails_version, 
       ruby_version:`ruby -v`.scan(/\d.\d/).first, 
       server_host: "ip-address-of-your-server", 
       dockerhub_email: "your-docker-hub-email",
