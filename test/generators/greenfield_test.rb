@@ -1,7 +1,6 @@
 require "test_helper"
 
 describe Roro::CLI do
-  Given { skip }
 
   Given(:subject) { Roro::CLI.new }
 
