@@ -53,7 +53,6 @@ module Roro
       end
       
       def copy_roro 
-        
         directory 'base/roro/containers/app', "roro/containers/#{@env_hash[:app_name]}", @env_hash
         directory 'base/roro/containers/database', "roro/containers/#{@env_hash[:database_container]}", @env_hash
         directory 'base/roro/containers/frontend', "roro/containers/#{@env_hash[:frontend_container]}", @env_hash
@@ -64,6 +63,8 @@ module Roro
       end
 
       def insert_pg_gem_into_gemfile
+        comment_lines 'Gemfile', /sqlite/
+        comment_lines 'Gemfile', /mysql/
         insert_into_file 'Gemfile', "gem 'pg'", before: "group :development, :test do"
       end
 
