@@ -18,10 +18,9 @@ describe Roro::CLI do
     describe '.insert_roro_gem_into_gemfile' do 
       
       Given { cli.insert_roro_gem_into_gemfile }
-      Given { skip }
       Then do 
         assert_file 'Gemfile' do |c| 
-          assert_match("gem 'roro'\n\n", c)
+          assert_match("gem 'roro'", c)
         end
       end
     end
