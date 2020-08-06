@@ -1,4 +1,3 @@
-require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -50,7 +49,7 @@ module Roro
       end
       
       def copy_circleci 
-        directory 'base/circleci', '.circleci'
+        directory 'base/circleci', '.circleci', @env_hash
       end
       
       def copy_roro 
@@ -62,6 +61,10 @@ module Roro
   
       def insert_roro_gem_into_gemfile
         insert_into_file 'Gemfile', "gem 'roro'", before: "group :development, :test do"
+      end
+
+      def insert_pg_gem_into_gemfile
+        insert_into_file 'Gemfile', "gem 'pg'", before: "group :development, :test do"
       end
 
       def insert_hfci_gem_into_gemfile

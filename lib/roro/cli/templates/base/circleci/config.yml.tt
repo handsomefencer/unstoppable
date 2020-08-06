@@ -13,9 +13,9 @@ jobs:
       - run: handsome_fencer-circle_c_i expose circleci
       - run: handsome_fencer-circle_c_i expose development
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
-      - run: docker-compose up -d app --build
-      - run: docker-compose exec app bin/rails db:create db:migrate
-      - run: docker-compose exec app bin/rails test
+      - run: docker-compose up -d <%= config[:app_name] %> --build
+      - run: docker-compose exec <%= config[:app_name] %> bin/rails db:create db:migrate
+      - run: docker-compose exec <%= config[:app_name] %> bin/rails test
 
   push:
     machine: true
@@ -25,11 +25,12 @@ jobs:
       - run: handsome_fencer-circle_c_i expose circleci
       - run: handsome_fencer-circle_c_i expose development
       - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
-      - run: docker-compose build app web
+      - run: docker-compose build <%= config[:app_name] %> web
+      - run: docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
       - run: docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
       - run:
-          name: Tag app image
-          command: docker tag $(docker images | grep project_app | awk '{ print $3 }') ${DOCKERHUB_ORG_NAME}/${APP_NAME}_app:$DEPLOY_TAG
+          name: Tag <%= config[:app_name] %> image
+          command: docker tag $(docker images | grep project_<%= config[:app_name] %> | awk '{ print $3 }') ${DOCKERHUB_ORG_NAME}/${APP_NAME}_app:$DEPLOY_TAG
       - run:
           name: Tag web image
           command: docker tag $(docker images | grep project_web | awk '{ print $3 }') ${DOCKERHUB_ORG_NAME}/${APP_NAME}_web:$DEPLOY_TAG
