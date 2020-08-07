@@ -3,7 +3,7 @@ require_relative 'continuous_integration.rb'
 require_relative 'utilities.rb'
 require_relative 'insertions.rb'
 require_relative 'insert_gems.rb'
-require_relative 'copy_files.rb'
+require_relative 'base_files.rb'
 
 module Roro
 
@@ -16,7 +16,7 @@ module Roro
       include Utilities
       include Insertions
       include InsertGems
-      include CopyFiles
+      include BaseFiles
     end
   end
 end
