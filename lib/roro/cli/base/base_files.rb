@@ -1,4 +1,4 @@
-module CopyFiles
+module BaseFiles
   
   def copy_docker_compose 
     template "base/docker-compose.yml", 'docker-compose.yml', @env_hash
