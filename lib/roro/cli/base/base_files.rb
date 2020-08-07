@@ -1,8 +1,12 @@
 module Roro
-
+  
   class CLI < Thor
     
     no_commands do
+      
+      def copy_dockerignore 
+        copy_file "base/dockerignore", './.dockerignore'
+      end 
 
       def copy_docker_compose 
         template "base/docker-compose.yml", 'docker-compose.yml', @env_hash

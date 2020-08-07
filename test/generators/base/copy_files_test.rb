@@ -3,7 +3,14 @@ require_relative "base_test"
 describe Roro::CLI do
   
   get_configuration
+
+  describe '.copy_dockerignore' do 
+
+    Given { cli.copy_dockerignore }
     
+    Then { assert_file '.dockerignore' }
+  end
+
   describe '.copy_config_database_yml' do 
     
     Given { cli.copy_config_database_yml }
