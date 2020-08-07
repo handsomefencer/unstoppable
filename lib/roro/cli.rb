@@ -1,5 +1,5 @@
 require 'thor'
-require 'roro/cli/base'
+require 'roro/cli/base/base'
 require 'roro/cli/rollon'
 require 'roro/cli/greenfield'
 require 'roro/cli/generate_keys'
