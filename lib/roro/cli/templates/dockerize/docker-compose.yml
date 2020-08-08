@@ -51,6 +51,7 @@ services:
     logging:
       driver: none
     ports:
+      - "35729:35729"
       - "5900:5900"
 
 volumes:

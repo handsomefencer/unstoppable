@@ -7,6 +7,10 @@ module Roro
       def copy_dockerignore 
         copy_file "base/dockerignore", './.dockerignore'
       end 
+      
+      def copy_host_example 
+        copy_file 'base/livereload/hosts.example', 'hosts.example' 
+      end
 
       def copy_docker_compose 
         template "base/docker-compose.yml", 'docker-compose.yml', @env_hash
