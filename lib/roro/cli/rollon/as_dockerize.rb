@@ -11,6 +11,7 @@ module Roro
 
         copy_file 'dockerize/docker-entrypoint.sh', 'docker-entrypoint.sh'
         directory 'dockerize/.env', '.env'
+        copy_host_example
         # if ask('Configure $stdout.sync for docker?', choices).eql?('y')
         #   config_std_out_true
         # end

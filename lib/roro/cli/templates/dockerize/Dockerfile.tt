@@ -10,15 +10,21 @@ ENV APP_HOME /usr/src/app/
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-RUN gem install bundler
-COPY Gemfile* $APP_HOME   
-RUN git init
-RUN git submodule init && git submodule update
 
-RUN bundle install --jobs=4 
+COPY Gemfile* $APP_HOME 
+COPY lib/jumpstart $APP_HOME 
+
+ENV BUNDLE_PATH /gems
+RUN bundle update --bundler
+
+RUN bundle install
 RUN yarn install --check-files 
+
+COPY . ./$APP_HOME
+RUN bundle install
+
           
-COPY . $APP_HOME
+COPY ./hosts.example /etc/hosts 
 
 
 CMD ["bin/rails", "s", "-b", "0.0.0.0"]
