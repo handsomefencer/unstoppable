@@ -5,26 +5,28 @@ services:
     build: .
     ports:
       - "3000:3000"
+      - "4000:4000"
+      
     volumes:
       - .:/usr/src/app
     env_file:
       - .env/development/web
       - .env/development/database
     environment:
-      - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server   # <label id="chapter.playing-nice-with-javascript.docker-compose.web.env_webpacker_dev_server_host" /> 
+      - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server   
 
   webpack_dev_server:
-    build: .                          # <label id="chapter.playing-nice-with-javascript.docker-compose.webpack-dev-server.build" />
-    command: ./bin/webpack-dev-server # <label id="chapter.playing-nice-with-javascript.docker-compose.webpack-dev-server.command" />
+    build: .                          
+    command: ./bin/webpack-dev-server 
     ports:
-      - 3035:3035                   # <label id="chapter.playing-nice-with-javascript.docker-compose.webpack-dev-server.port" />
+      - 3035:3035                   
     volumes:
-      - .:/usr/src/app              # <label id="chapter.playing-nice-with-javascript.docker-compose.webpack-dev-server.volume" />
-    env_file:                       # <label id="chapter.playing-nice-with-javascript.docker-compose.webpack-dev-server.start_env" />
+      - .:/usr/src/app              
+    env_file:                       
       - .env/development/web
-      - .env/development/database   # <label id="chapter.playing-nice-with-javascript.docker-compose.webpack-dev-server.end_env" />
+      - .env/development/database   
     environment:
-      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0 # <label id="chapter.playing-nice-with-javascript.docker-compose.webpack-dev-server.env_all_ips" /> 
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0 
 
   redis:
     image: redis
@@ -38,3 +40,5 @@ services:
 
 volumes:
   db_data:
+  gem_cache:
+
