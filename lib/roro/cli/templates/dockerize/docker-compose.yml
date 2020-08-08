@@ -4,15 +4,37 @@ services:
 
   web:
     build: .
+    depends_on:
+      - db
+      - redis
     entrypoint: ./docker-entrypoint.sh
+    command: ["bin/rails", "s", "-b", "0.0.0.0"]
+
     ports:
       - "3000:3000"
+      - "4000:4000"
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    env_file:
+      - .env/development/web
+      - .env/development/database
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server
+
+  webpack_dev_server:
+    build: .
+    command: ./bin/webpack-dev-server
+    ports:
+      - 3035:3035
     volumes:
       - .:/usr/src/app
       - gem_cache:/gems
     env_file:
       - .env/development/database
       - .env/development/web
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
 
   redis:
     image: redis
@@ -24,7 +46,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
-  chrome:
+  system_tests:
     image: selenium/standalone-chrome-debug
     logging:
       driver: none
