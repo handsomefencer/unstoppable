@@ -18,7 +18,11 @@ module Roro
 
       confirm_dependencies
       copy_greenfield_files
-      as_system("docker-compose build web")
+      as_system(`docker-compose build web`)
+      as_system(`docker-compose run web`)
+      # as_system('docker-compose run web gem install rails --no-document')
+      # as_system('docker-compose run web rails new . --force --no-deps --skip-bundle --skip-webpack-install')
+      # as_system()
       # rollon_as_dockerized
       # byebug
       # as_system('sudo roro rollon')
@@ -30,8 +34,10 @@ module Roro
     no_commands do
       
       def copy_greenfield_files
-        rollon_as_dockerized
         template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
+        template 'greenfield/docker-compose.yml', 'docker-compose.yml'
+        copy_file 'greenfield/Gemfile', 'Gemfile'
+        copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
       end
 
       def as_system(command)
