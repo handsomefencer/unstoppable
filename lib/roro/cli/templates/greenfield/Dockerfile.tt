@@ -14,7 +14,8 @@ ENV BUNDLE_PATH /gems
 COPY Gemfile* $APP_HOME 
 
 RUN gem install bundler
-RUN bundle
-RUN bundle exec rails new <%= config[:app_name] . --force --no-deps --skip-bundle --skip-webpack-install
+RUN bundle install
+RUN bundle exec rails new greenfield . --force --no-deps --skip-bundle --skip-webpack-install
       
 COPY . ./$APP_HOME
+CMD ["rails", "server", "-b", "0.0.0.0"]
