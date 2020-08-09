@@ -12,7 +12,7 @@ module Roro
       def insert_pg_gem_into_gemfile
         comment_lines 'Gemfile', /sqlite/
         comment_lines 'Gemfile', /mysql/
-        insert_into_file 'Gemfile', "gem 'pg'", before: "group :development, :test do"
+        insert_into_file 'Gemfile', "gem 'pg'\n", before: "group :development, :test do"
       end
 
       def insert_hfci_gem_into_gemfile

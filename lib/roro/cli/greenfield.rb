@@ -12,29 +12,27 @@ module Roro
     method_option :interactive, desc: "Set up your environment variables as you go."
     method_option :force, desc: "force over-write of existing files"
     
-    no_commands do
-      def copy_greenfield_files
-        copy_file 'greenfield/Gemfile', 'Gemfile'
-        copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
-        copy_file 'greenfield/docker-compose.yml', 'docker-compose.yml'
-        copy_file 'greenfield/Dockerfile', 'Dockerfile'
-        copy_file 'greenfield/config/database.yml.example', 'config/database.yml.example'
-      end
-    end
     
     def greenfield
+      get_configuration_variables
 
       confirm_dependencies
       copy_greenfield_files
-      as_system("docker-compose run web rails new . --force --database=postgresql --skip-bundle")
-      chown_if_required
-      as_system('sudo docker-compose build')
-      as_system('mv -f config/database.yml.example config/database.yml')
-      as_system('docker-compose up --build --force-recreate -d ')
-      as_system 'docker-compose run web bin/rails db:create'
+      as_system("docker-compose build web")
+      # rollon_as_dockerized
+      # byebug
+      # as_system('sudo roro rollon')
+      # as_system('mv -f config/database.yml.example config/database.yml')
+      # as_system('docker-compose up --build --force-recreate -d ')
+      # as_system 'docker-compose run web bin/rails db:create'
     end
-
+    
     no_commands do
+      
+      def copy_greenfield_files
+        rollon_as_dockerized
+        template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
+      end
 
       def as_system(command)
         command = OS.linux? ? "sudo #{command}" : command
