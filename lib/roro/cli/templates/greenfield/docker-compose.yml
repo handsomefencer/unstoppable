@@ -1,17 +1,60 @@
 version: '3'
+
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: password
+
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/myapp
+    depends_on:
+      - database
+      - webpack_dev_server
+      - redis
+    # entrypoint: ./docker-entrypoint.sh
+    command: ["bin/rails", "s", "-b", "0.0.0.0"]
+
     ports:
       - "3000:3000"
-    depends_on:
-      - db
+      - "4000:4000"
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    env_file:
+      - .env/development/web
+      - .env/development/database
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server
+
+  webpack_dev_server:
+    build: .
+    command: ./bin/webpack-dev-server
+    ports:
+      - 3035:3035
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    env_file:
+      - .env/development/database
+      - .env/development/web
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+
+  redis:
+    image: redis
+
+  database:
+    image: postgres
+    env_file:
+      - .env/development/database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  system_tests:
+    image: selenium/standalone-chrome-debug
+    logging:
+      driver: none
+    ports:
+      - "35729:35729"
+      - "5900:5900"
+
+volumes:
+  db_data:
+  gem_cache:

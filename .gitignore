@@ -8,4 +8,4 @@
 /tmp/*
 Gemfile.lock
 .byebug_history
-/sandbox/*
+/sandbox/**/*
