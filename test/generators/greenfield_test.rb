@@ -28,11 +28,11 @@ describe Roro::CLI do
       Then do
 
         generated_files = [
-          "Gemfile",
-          "config/database.yml.example",
+          # "Gemfile",
+          # "config/database.yml.example",
           "Dockerfile",
-          "docker-compose.yml",
-          "Gemfile.lock"
+          "docker-compose.yml"
+          # "Gemfile.lock"
         ]
         generated_files.each do |generated_file|
 
