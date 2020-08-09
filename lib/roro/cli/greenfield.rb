@@ -20,12 +20,13 @@ module Roro
       copy_file 'greenfield/Gemfile', 'Gemfile'
       copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
       copy_file 'dockerize/docker-entrypoint.sh', 'entrypoint.sh'
+      system "docker-compose run web rails new . --force --no-deps --database=postgresql"
       # confirm_dependencies
       # copy_greenfield_files
       # as_system("docker-compose build web")
       # as_system("docker-compose run web sh")
       # as_system('docker-compose run web gem install rails --no-document')
-      system "docker-compose run web rails new #{@env_hash[:app_name]} . --force --no-deps --skip-bundle --skip-webpack-install"
+      # system "docker-compose run web rails new #{@env_hash[:app_name]} . --force --no-deps --skip-bundle --skip-webpack-install"
       # as_system()
       # rollon_as_dockerized
       # byebug
