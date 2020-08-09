@@ -5,7 +5,7 @@ module Roro
     no_commands do
       
       def copy_dockerignore 
-        copy_file "base/dockerignore", './.dockerignore'
+        copy_file 'base/.dockerignore', '.dockerignore'
       end 
       
       def copy_host_example 
