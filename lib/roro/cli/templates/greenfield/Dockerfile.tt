@@ -11,11 +11,8 @@ WORKDIR $APP_HOME
 VOLUME $APP_HOME
 VOLUME /gems
 ENV BUNDLE_PATH /gems
-COPY Gemfile* $APP_HOME 
+COPY Gemfile $APP_HOMEGemfile 
 
-RUN gem install bundler
+COPY Gemfile.lock $APP_HOMEGemfile.lock
 RUN bundle install
-RUN bundle exec rails new greenfield . --force --no-deps --skip-bundle --skip-webpack-install
-      
-COPY . ./$APP_HOME
-CMD ["rails", "server", "-b", "0.0.0.0"]
+COPY . $APP_HOME
