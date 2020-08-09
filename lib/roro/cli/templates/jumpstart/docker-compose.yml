@@ -6,7 +6,6 @@ services:
     build: .
     depends_on:
       - database
-      - webpack_dev_server
       - redis
     entrypoint: ./docker-entrypoint.sh
     command: ["bin/rails", "s", "-b", "0.0.0.0"]
