@@ -19,7 +19,7 @@ module Roro
       confirm_dependencies
       copy_greenfield_files
       as_system("docker-compose build web")
-      as_system("docker-compose run web sh")
+      # as_system("docker-compose run web")
       # as_system('docker-compose run web gem install rails --no-document')
       # as_system('docker-compose run web rails new . --force --no-deps --skip-bundle --skip-webpack-install')
       # as_system()
