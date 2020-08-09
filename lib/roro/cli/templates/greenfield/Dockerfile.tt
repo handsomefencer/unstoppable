@@ -10,9 +10,12 @@ WORKDIR $APP_HOME
 VOLUME $APP_HOME
 VOLUME /gems
 
+COPY Gemfile* $APP_HOME 
+
+
 ENV BUNDLE_PATH /gems
 RUN gem install bundler
 RUN bundle
-RUN bundle exec rails new . --force --no-deps --skip-bundle --skip-webpack-install
+# RUN bundle exec rails new . --force --no-deps --skip-bundle --skip-webpack-install
       
 COPY . ./$APP_HOME
