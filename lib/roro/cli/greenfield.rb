@@ -20,7 +20,7 @@ module Roro
       copy_file 'greenfield/Gemfile', 'Gemfile'
       copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
       copy_file 'greenfield/docker-entrypoint.sh', 'entrypoint.sh'
-      system "docker-compose run web rails new . --force --no-deps --database=postgresql"
+      # system "docker-compose run web rails new . --force --no-deps --database=postgresql"
       # confirm_dependencies
       # copy_greenfield_files
       # as_system("docker-compose build web")
