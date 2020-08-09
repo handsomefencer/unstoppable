@@ -19,7 +19,7 @@ module Roro
       template 'greenfield/docker-compose.yml', 'docker-compose.yml'
       copy_file 'greenfield/Gemfile', 'Gemfile'
       copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
-      copy_file 'docker-ize/docker-entrypoint.sh', 'entrypoint.sh'
+      copy_file 'dockerize/docker-entrypoint.sh', 'entrypoint.sh'
       # confirm_dependencies
       # copy_greenfield_files
       # as_system("docker-compose build web")
