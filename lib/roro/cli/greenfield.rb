@@ -18,6 +18,8 @@ module Roro
       @env_hash[:is_greenfield] = { force: true }
       template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
       copy_file 'dockerize/docker-compose.yml', 'docker-compose.yml'
+      directory 'dockerize/.env', '.env'
+
 
       system "docker-compose build"
       rollon_as_dockerized
