@@ -21,11 +21,19 @@ module Roro
       copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
       copy_file 'greenfield/docker-entrypoint.sh', 'docker-entrypoint.sh'
       directory 'dockerize/.env', '.env'
-      as_system "docker-compose run --no-deps web rails new . greenfield --skip-webpack-install --skip-bundle"
-      chown_if_required
-      rollon_as_dockerized
-      chown_if_required
-      as_system "docker-compose run --no-deps web yarn"
+      # as_system "docker-compose build web"
+      # chown_if_required
+      # byebug
+      
+      system "docker-compose build"
+      system "docker-compose run --no-deps web rails new . --skip-bundler --skip-webpack-install"
+      # --skip-bundle
+      # --skip-webpack-install
+      # --skip-test
+      # chown_if_required
+      # rollon_as_dockerized
+      # chown_if_required
+      # as_system "docker-compose run --no-deps web yarn"
 
       # as_system "docker-compose build"
       # confirm_dependencies
