@@ -15,8 +15,8 @@ COPY Gemfile* $APP_HOME
 ENV BUNDLE_PATH /gems
 
 RUN bundle install
-RUN yarn install
 
+RUN yarn 
 COPY . ./$APP_HOME
 
 
