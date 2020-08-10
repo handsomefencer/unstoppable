@@ -15,13 +15,9 @@ module Roro
     
     def greenfield
       get_configuration_variables
-      @env_hash[:is_greenfield] = { force: true }
+      @env_hash[:use_force] = { force: true }
       template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
-      copy_file 'dockerize/docker-compose.yml', 'docker-compose.yml'
-      directory 'dockerize/.env', '.env'
-
-
-      system "docker-compose build"
+      system "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
       rollon_as_dockerized
     end
     
