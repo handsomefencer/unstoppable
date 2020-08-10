@@ -5,7 +5,8 @@ module Roro
     no_commands do
       
       def copy_dockerignore 
-        copy_file 'base/.dockerignore', '.dockerignore'
+        copy_file 'base/.dockerignore', '.dockerignore', @env_hash[:use_force]
+
       end 
       
       def copy_host_example 
@@ -13,7 +14,7 @@ module Roro
       end
 
       def copy_docker_compose 
-        template "base/docker-compose.yml", 'docker-compose.yml', @env_hash
+        template "base/docker-compose.yml", 'docker-compose.yml', @env_hash[:force]
       end
       
       def copy_roro 
@@ -23,7 +24,7 @@ module Roro
       end
       
       def copy_config_database_yml 
-        copy_file "base/config/database.yml", 'config/database.yml', force: true
+        copy_file "base/config/database.yml", 'config/database.yml', @env_hash[:use_force]
       end
 
       def copy_base_files
