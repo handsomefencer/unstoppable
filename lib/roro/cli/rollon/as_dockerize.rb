@@ -17,6 +17,9 @@ module Roro
 
         copy_file 'dockerize/docker-entrypoint.sh', 'docker-entrypoint.sh'
         directory 'dockerize/.env', '.env'
+        system 'docker-compose build'
+        system 'docker-compose run --no-deps web bin/rails webpacker:install'
+        system 'docker-compose up'
         copy_host_example
       end
     end

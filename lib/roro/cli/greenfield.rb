@@ -17,44 +17,8 @@ module Roro
       get_configuration_variables
       @env_hash[:is_greenfield] = { force: true }
       template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
-      template 'greenfield/docker-compose.yml', 'docker-compose.yml'
-      copy_file 'greenfield/Gemfile', 'Gemfile'
-      copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
-      copy_file 'greenfield/docker-entrypoint.sh', 'docker-entrypoint.sh'
-      directory 'dockerize/.env', '.env'
       system "docker-compose build"
-      system "docker build --file Dockerfile --output out ."
-      system "cat out/output.txt"
-      # system "docker-compose run --no-deps web rails new . --skip-bundler --skip-webpack-install"
-      # chown_if_required
-      
-      # rollon_as_dockerized
-      # --skip-bundle
-      # as_system "docker-compose build web"
-      # byebug
-      
-      # --skip-webpack-install
-      # --skip-test
-      # chown_if_required
-      # rollon_as_dockerized
-      # chown_if_required
-      # as_system "docker-compose run --no-deps web yarn"
-
-      # as_system "docker-compose build"
-      # confirm_dependencies
-      # copy_greenfield_files
-      # as_system("docker-compose build web")
-      # as_system("docker-compose run web sh")
-      # as_system('docker-compose run web gem install rails --no-document')
-      # system "docker-compose run web rails new #{@env_hash[:app_name]} . --force --no-deps --skip-bundle --skip-webpack-install"
-      # as_system()ls
-      
-      # rollon_as_dockerized
-      # byebug
-      # as_system('sudo roro rollon')
-      # as_system('mv -f config/database.yml.example config/database.yml')
-      # as_system('docker-compose up --build --force-recreate -d ')
-      # as_system 'docker-compose run web bin/rails db:create'
+      rollon_as_dockerized
     end
     
     no_commands do

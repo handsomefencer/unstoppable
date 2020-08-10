@@ -1,6 +1,13 @@
 FROM ruby:<%= config[:ruby_version] %> AS stage1
-WORKDIR /app
-RUN echo "hello world" > output.txt
 
+WORKDIR /usr/src/app
+RUN echo "source 'https://rubygems.org'\ngem 'rails'" > Gemfile
+ENV BUNDLE_PATH /gems
+
+RUN bundle
+RUN bundle exec rails new greenfield --skip-bundle --skip-webpack-install 
 FROM scratch AS export-stage
-COPY --from=stage1 /app/output.txt .
+
+COPY --from=stage1 /usr/src/app/greenfield .
+
+
