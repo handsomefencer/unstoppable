@@ -15,6 +15,7 @@ module Roro
     
     def greenfield
       get_configuration_variables
+      @env_hash[:is_greenfield] = { force: true }
       template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
       template 'greenfield/docker-compose.yml', 'docker-compose.yml'
       copy_file 'greenfield/Gemfile', 'Gemfile'
@@ -22,10 +23,12 @@ module Roro
       copy_file 'greenfield/docker-entrypoint.sh', 'docker-entrypoint.sh'
       directory 'dockerize/.env', '.env'
       system "docker-compose build"
-      system "docker-compose run --no-deps web rails new . --skip-bundler --skip-webpack-install"
-      chown_if_required
+      system "docker build --file Dockerfile --output out ."
+      system "cat out/output.txt"
+      # system "docker-compose run --no-deps web rails new . --skip-bundler --skip-webpack-install"
+      # chown_if_required
       
-      rollon_as_dockerized
+      # rollon_as_dockerized
       # --skip-bundle
       # as_system "docker-compose build web"
       # byebug
