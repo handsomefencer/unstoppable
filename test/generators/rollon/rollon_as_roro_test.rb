@@ -8,7 +8,8 @@ describe Roro::CLI do
   Given(:subject) { Roro::CLI.new }
   Given(:config_for_test) { { use_force: true, interactive: false } }
 
-  Given { subject.get_configuration_variables(config_for_test) } 
+  Given(:config) { subject.get_configuration_variables(config_for_test) }
+  Given { config } 
   Given(:asker) { Thor::Shell::Basic.any_instance }
   Given { asker.stubs(:ask).returns('y') }
   Given { subject.rollon_as_roro  }
@@ -33,16 +34,67 @@ describe Roro::CLI do
     
     describe 'containers' do 
       describe 'app' do 
-        
-        Then do 
-          assert_directory "roro/containers/app/development.env" do |c| 
-            assert_match 'DATABASE_HOST=database', c
+        describe 'env' do 
+          
+          Then do 
+            %w(development production test staging ci).each do |env| 
+              assert_directory( "roro/containers/app/#{env}.env" ) do |c| 
+                assert_match( 'DATABASE_HOST=database', c ) 
+              end
+            end
+          end
+        end
+      end 
+      
+      describe 'database' do
+        describe 'env' do
+
+          Then do 
+            %w(development production test staging ci).each do |env| 
+              config[:rails_env] = env
+              assert_directory( "roro/containers/database/#{env}.env" ) do |c| 
+                assert_match "POSTGRES_USER=#{config[:postgres_user]}", c 
+                assert_match "POSTGRES_PASSWORD=#{config[:postgres_password]}", c 
+                assert_match "POSTGRES_DB=#{config[:app_name] + "_" + env}", c 
+                assert_match "RAILS_ENV=#{config[:rails_env]}", c 
+              end
+            end
           end
         end
       end
     end
-  end
-  
+  end 
+end
+
+# assert_file 'config/database.yml' do |c|
+  # assert_match("<%= ENV.fetch('DATABASE_HOST') %>", c)
+  # assert_match("<%= ENV.fetch('POSTGRES_USER') %>", c)
+  # assert_match("<%= ENV.fetch('POSTGRES_PASSWORD') %>", c)
+  # assert_match("<%= ENV.fetch('POSTGRES_DB') %>", c)
+# end
+# hen do
+#   # database:\n    image: postgres\n    env_file:\n      - .env/development/database\n
+#       # volumes:\n      - db_data:/var/lib/postgresql/data\n\n  
+#   expected = [
+    
+    
+#     "database:",
+#     "    image: postgres",
+#     "    env_file:",
+#     "      - .env/development/database",
+#     "    volumes:",
+#     "      - db_data:/var/lib/postgresql/data"
+#   ].join("\n")
+#   assert_file "docker-compose.yml" do |c| 
+#     assert_match expected, c 
+#     # assert_match '\timage: postgres', c 
+#     # image: postgres
+# # env_file:
+# #   - .env/development/database
+# # volumes:
+# #   - db_data:/var/lib/postgresql/data
+
+    
   # describe 'docker-compose.yml' do
   #   describe 'postgres service' do 
   #     Then do
@@ -85,4 +137,4 @@ describe Roro::CLI do
   #     end
   #   end
   # end
-end
+# end

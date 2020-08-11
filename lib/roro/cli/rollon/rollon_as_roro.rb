@@ -6,7 +6,16 @@ module Roro
 
       def rollon_as_roro
         directory 'roro/roro', 'roro', @env_hash
-        copy_file 'base/.env/development/web', 'roro/containers/app/development.env'
+        %w(development production test staging ci).each do |environment| 
+          @env_hash[:rails_env] = environment
+          template(
+            'base/.env/web.env.tt',
+            "roro/containers/app/#{environment}.env", @env_hash)
+          template(
+            'base/.env/database.env.tt',
+            "roro/containers/database/#{environment}.env", @env_hash)
+        end
+        # copy_file 'base/.env/development/web', 'roro/containers/app/test.env'
         copy_file 'base/.dockerignore', '.dockerignore'
 
         

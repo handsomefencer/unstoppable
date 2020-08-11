@@ -1,32 +1,23 @@
 FROM ruby:<%= config[:ruby_version] %>
-LABEL maintainer="<%= config[:dockerhub_email] %>"
-# COPY docker/containers/web/app.conf /tmp/<%= config[:app_name] %>.nginx
 
-# Allow apt to work with https-based sources
-RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-  apt-transport-https
 
-# Ensure we install an up-to-date version of Node
-# See https://github.com/yarnpkg/yarn/issues/2888
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-
-# Ensure latest packages for Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | \
-  tee /etc/apt/sources.list.d/yarn.list
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update -qq && apt-get install -y build-essential git nodejs yarn
 
-# Install packages
-RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-  nodejs \
-  yarn
 
-COPY Gemfile* /usr/src/<%= config[:app_name] %>/
-WORKDIR /usr/src/<%= config[:app_name] %>
+ENV APP_HOME /usr/src/app/
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
+COPY Gemfile* $APP_HOME 
 
 ENV BUNDLE_PATH /gems
 
 RUN bundle install
+RUN yarn 
 
-COPY . /usr/src/<%= config[:app_name] %>/
+COPY . ./$APP_HOME
 
-ENTRYPOINT ["roro/containers/web/docker-entrypoint.sh"]
+
+

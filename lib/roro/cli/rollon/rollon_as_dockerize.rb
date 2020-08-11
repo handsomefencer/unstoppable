@@ -29,7 +29,7 @@ module Roro
       def rollon_dockerize_files 
         directory 'dockerize', '.', @env_hash
         copy_dockerignore
-        if ask('Configure $stdout.sync for docker?', choices).eql?('y')
+        if ask("Configure $stdout.sync in 'config/boot.rb' for docker?", choices).eql?('y')
           config_std_out_true
         end
         if ask('Configure your app to use Postgresql?', choices).eql?('y')
