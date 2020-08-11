@@ -28,8 +28,26 @@ describe Roro::CLI do
     end
     
     describe 'docker-compose.yml' do 
-      Given { skip }
-      Then { assert_file "docker-compose.yml" }
+      Given { config[:database_vendor] = 'postgres'}
+      Given(:expected) { [
+        "version: '3.2",
+        [
+          "  database:",
+          "    image: postgres",
+          "    env_file:",
+          "      - roro/containers/database/development.env",
+          "    volumes:",
+          "      - db_data:/var/lib/postgresql/data"
+        ].join("\n"),
+      ] }
+
+      Then do 
+        expected.each do |line|
+          assert_file "docker-compose.yml" do |c| 
+            assert_match line, c
+          end
+        end
+      end
     end
     
     describe 'containers' do 
@@ -38,8 +56,23 @@ describe Roro::CLI do
           
           Then do 
             %w(development production test staging ci).each do |env| 
-              assert_directory( "roro/containers/app/#{env}.env" ) do |c| 
-                assert_match( 'DATABASE_HOST=database', c ) 
+              assert_file( "roro/containers/app/#{env}.env" ) do |c| 
+                assert_match( "DATABASE_HOST=#{config[:database_host]}", c ) 
+              end
+            end
+          end
+        end
+        
+        describe 'Dockerfile' do 
+          
+          Given(:expected) { [
+            "FROM ruby:#{config[:ruby_version]}",
+            "maintainer=\"#{config[:dockerhub_email]}" ] }
+
+          Then do 
+            expected.each do |line|
+              assert_file "roro/containers/app/Dockerfile" do |c| 
+                assert_match line, c
               end
             end
           end
@@ -51,12 +84,11 @@ describe Roro::CLI do
 
           Then do 
             %w(development production test staging ci).each do |env| 
-              config[:rails_env] = env
-              assert_directory( "roro/containers/database/#{env}.env" ) do |c| 
+              assert_file( "roro/containers/database/#{env}.env" ) do |c| 
                 assert_match "POSTGRES_USER=#{config[:postgres_user]}", c 
                 assert_match "POSTGRES_PASSWORD=#{config[:postgres_password]}", c 
                 assert_match "POSTGRES_DB=#{config[:app_name] + "_" + env}", c 
-                assert_match "RAILS_ENV=#{config[:rails_env]}", c 
+                assert_match "RAILS_ENV=#{env}", c 
               end
             end
           end

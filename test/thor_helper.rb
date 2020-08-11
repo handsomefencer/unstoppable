@@ -1,3 +1,4 @@
+require 'byebug'
 module TestHelper
   module Files
     module Assertions
