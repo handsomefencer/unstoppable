@@ -8,7 +8,8 @@ describe Roro::CLI do
       
     Given { cli.config_std_out_true }
     
-    Then do assert_file 'config/boot.rb' do |c| 
+    Then do 
+      assert_file 'config/boot.rb' do |c| 
         assert_match("$stdout.sync = true", c )
       end
     end

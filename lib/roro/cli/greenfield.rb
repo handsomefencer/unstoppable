@@ -14,86 +14,29 @@ module Roro
     
     
     def greenfield
+      confirm_dependencies
+      # confirm_dependency({
+      #   system_query: "ls -A",
+      #   warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
+      #   suggestion: "$ roro greenfield --force",
+      #   conditional: "Dir.glob('*').empty?" })
       get_configuration_variables
+      configure_for_pg
+      copy_greenfield_files
+      # copy_greenfield_to_host
       @env_hash[:use_force] = { force: true }
-      template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
-      system "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
-      rollon_as_dockerized
+      # rollon
     end
     
     no_commands do
-      
+            
       def copy_greenfield_files
-        template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
-        template 'greenfield/docker-compose.yml', 'docker-compose.yml'
-        copy_file 'greenfield/Gemfile', 'Gemfile'
-        copy_file 'greenfield/Gemfile.lock', 'Gemfile.lock'
+        # template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
+        template 'greenfield/docker-compose.yml.tt', 'docker-compose.yml', @env_hash
       end
-
-      def as_system(command)
-        command = OS.linux? ? "sudo #{command}" : command
-        system command
-      end
-
-      def chown_if_required()
-        warning = "It looks like you're running Docker on some flavor of Linux, in which case the files created by your containers are owned by the root user of the container, and not by the user of the host machine. Please change their ownership by supplying your password at the prompt.",
-        action = "system 'sudo chown -R $USER .'"
-        msg = []
-        msg << ""
-        msg << delineator
-        msg << warning
-        msg << ""
-        msg.join("\n\n")
-        puts msg
-        eval(action)
-      end
-
-      def delineator
-        ("-" * 80)
-      end
-
-      def confirm_dependency(options)
-        msg = []
-        msg << ""
-        msg << delineator
-        msg << "It looks like #{options[:warning]}. The following bash command returns false:"
-        msg << "\t$ #{options[:system_query]}"
-        msg << "Please try these instructions:"
-        msg << ("\t" + options[:suggestion])
-        msg << delineator
-        conditional = options[:conditional] ? eval(options[:conditional]) : system(options[:system_query])
-        if conditional == false
-          raise(Roro::Error.new(msg.join("\n\n")))
-        end
-      end
-
-      def confirm_dependencies
-        dependencies = [
-          {
-            system_query: "ls -A",
-            warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
-            suggestion: "$ roro greenfield --force",
-            conditional: "Dir.glob('*').empty?"
-          }, {
-
-            system_query: "which docker",
-            warning: "Docker isn't installed",
-            suggestion: "https://docs.docker.com/install/"
-          }, {
-            system_query: "which docker-compose",
-            warning: "Docker Compose isn't installed",
-            suggestion: "https://docs.docker.com/compose/install/"
-
-          }, {
-            system_query: "docker info",
-            warning: "the Docker daemon isn't running",
-            suggestion: "https://docs.docker.com/config/daemon/#start-the-daemon-manually"
-          }
-        ]
-
-        dependencies.each do |dependency|
-          confirm_dependency(dependency)
-        end
+      
+      def copy_greenfield_to_host 
+        system "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
       end
     end
   end

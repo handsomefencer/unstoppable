@@ -1,13 +1,51 @@
-# Git
-.git            # <label id="chapter.fine-tuning-our-rails-image.dockerignore.git-history" /> 
-.gitignore      # <label id="chapter.fine-tuning-our-rails-image.dockerignore.gitignore" />
+.git
+.gitignore
+README.md
 
-# Logs
-log/*           # <label id="chapter.fine-tuning-our-rails-image.dockerignore.log_dir" />
+#
+# OS X
+#
+.DS_Store
+.AppleDouble
+.LSOverride
+# Icon must end with two \r
+Icon
+# Thumbnails
+._*
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
-# Temp files
-tmp/*           # <label id="chapter.fine-tuning-our-rails-image.dockerignore.tmp_dir" />
+#
+# Rails
+#
+.env
+.env.sample
+*.rbc
+capybara-*.html
+log
+tmp
+db/*.sqlite3
+db/*.sqlite3-journal
+public/system
+coverage/
+spec/tmp
+**.orig
 
-# Editor temp files
-*.swp           # <label id="chapter.fine-tuning-our-rails-image.dockerignore.vim_swp_files" />
-*.swo           # <label id="chapter.fine-tuning-our-rails-image.dockerignore.vim_swo_files" />
+.bundle
+
+.ruby-version
+.ruby-gemset
+
+.rvmrc
+
+# if using bower-rails ignore default bower_components path bower.json files
+vendor/assets/bower_components
+*.bowerrc
+bower.json
