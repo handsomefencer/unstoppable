@@ -3,14 +3,15 @@ version: '3.2'
 services:
 
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: roro/containers/app/Dockerfile
     depends_on:
       - database
       - webpack_dev_server
       - redis
     # entrypoint: ./docker-entrypoint.sh
     command: ["bin/rails", "s", "-b", "0.0.0.0"]
-
     ports:
       - "3000:3000"
       - "4000:4000"

@@ -17,7 +17,13 @@ module Roro
         end
         template 'base/Dockerfile.tt', 'roro/containers/app/Dockerfile', @env_hash
         copy_file 'base/.dockerignore', '.dockerignore'
+        copy_database_yml_pg
+        config_std_out_true
 
+        insert_pg_gem_into_gemfile
+        system 'docker-compose build'
+        system 'docker-compose run --no-deps web bin/rails webpacker:install'
+        system 'docker-compose up'
         
         # if ask('Configure $stdout.sync for docker?', choices).eql?('y')
         #   config_std_out_true
