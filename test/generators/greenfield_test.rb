@@ -13,30 +13,36 @@ describe Roro::CLI do
 
     describe "when not empty" do
 
-      Given { FileUtils.touch("blah.txt")  }
+      Given { FileUtils.touch("legacy_file.txt")  }
 
-      Then { assert_raises( error ) { subject.confirm_dependencies } }
+      Then { assert_raises( error ) { subject.greenfield } }
     end
   end
 
   describe "usage" do
 
-    Given { subject.copy_greenfield_files }
-
+    Given { subject.get_configuration_variables(test: true) }
+    
     describe "must generate files" do
+      describe '.copy_greenfield_to_host' do 
+      
+        Given { subject.copy_greenfield_files }
+        
+        Then do
+          assert_file 'Dockerfile' do |c|
+            assert_match 'bundle exec rails new greenfield', c
+          end          
+        end
+      end
 
-      Then do
-
-        generated_files = [
-          # "Gemfile",
-          # "config/database.yml.example",
-          "Dockerfile",
-          "docker-compose.yml"
-          # "Gemfile.lock"
-        ]
-        generated_files.each do |generated_file|
-
-          assert_file generated_file
+      describe './greenfield' do 
+        Given { skip }
+        Given { subject.greenfield }
+      
+        Then do
+          assert_file 'Dockerfile' do |c|
+            assert_match 'bundle exec rails new greenfield', c
+          end          
         end
       end
     end
