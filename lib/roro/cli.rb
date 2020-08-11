@@ -1,4 +1,3 @@
-require 'byebug'
 require 'thor'
 require 'roro/cli/base/base'
 require 'roro/cli/rollon'

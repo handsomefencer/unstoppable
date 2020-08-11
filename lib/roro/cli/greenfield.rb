@@ -15,23 +15,22 @@ module Roro
     
     def greenfield
       confirm_dependencies
-      # confirm_dependency({
-      #   system_query: "ls -A",
-      #   warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
-      #   suggestion: "$ roro greenfield --force",
-      #   conditional: "Dir.glob('*').empty?" })
+      confirm_dependency({
+        system_query: "ls -A",
+        warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
+        suggestion: "$ roro greenfield --force",
+        conditional: "Dir.glob('*').empty?" })
       get_configuration_variables
-      configure_for_pg
       copy_greenfield_files
-      # copy_greenfield_to_host
+      copy_greenfield_to_host
       @env_hash[:use_force] = { force: true }
-      # rollon
+      rollon
     end
     
     no_commands do
             
       def copy_greenfield_files
-        # template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
+        template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
         template 'greenfield/docker-compose.yml.tt', 'docker-compose.yml', @env_hash
       end
       

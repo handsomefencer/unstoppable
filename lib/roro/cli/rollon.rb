@@ -28,7 +28,7 @@ module Roro
       #   rollon_as_dockerized
       # when '3'
       # end
-      # rollon_as_dockerize
+      rollon_as_dockerize
     end
     
     no_commands do
