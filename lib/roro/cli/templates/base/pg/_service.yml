@@ -1,6 +1,0 @@
-  database:
-    image: postgres
-    env_file:
-      - .env/development/database
-    volumes:
-      - db_data:/var/lib/postgresql/data

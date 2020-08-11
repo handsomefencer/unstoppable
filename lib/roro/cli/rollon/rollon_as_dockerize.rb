@@ -6,10 +6,12 @@ module Roro
 
       def rollon_as_dockerize
         rollon_dockerize_files 
-        # system 'docker-compose build'
-        # system 'docker-compose run --no-deps web bin/rails webpacker:install'
-        # system 'docker-compose up'
+        system 'docker-compose build'
+        system 'docker-compose run --no-deps web bin/rails webpacker:install'
+        system 'docker-compose up'
       end
+      
+      def 
       
       def configure_for_pg 
         service = [
@@ -25,7 +27,6 @@ module Roro
       end
       
       def rollon_dockerize_files 
-        configure_for_pg
         directory 'dockerize', '.', @env_hash
         copy_dockerignore
         if ask('Configure $stdout.sync for docker?', choices).eql?('y')
