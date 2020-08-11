@@ -25,7 +25,7 @@ module Roro
       # when '1'
       #   rollon_as_quickstart
       # when '2'
-      #   rollon_as_dockerized
+        # rollon_as_dockerize
       # when '3'
       # end
       rollon_as_roro
