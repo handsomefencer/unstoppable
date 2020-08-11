@@ -1,53 +1,60 @@
 version: '3.2'
 
 services:
-  chrome:
-    image: selenium/standalone-chrome-debug
-    volumes:
-      - /dev/shm:/dev/shm
-  <%= config[:app_name] %>:
-    build:
-      context: .
-      dockerfile: roro/containers/<%= config[:app_name] %>/Dockerfile
-
-    depends_on:
-      - <%= config[:database_container] %>
-    ports:
-      - "35729:35729"
-      - "3000:3000"
-    volumes:
-      - <%= config[:app_name] %>-data:/usr/src/<%= config[:app_name] %>
-      - gem_cache:/gems
-    env_file:
-      - roro/containers/<%= config[:database_container] %>/development.env
-      - roro/containers/<%= config[:app_name] %>/development.env
-    command: [ "bin/rails", "s" ]
-
-    stdin_open: true
-    tty: true
-    secrets:
-      - host_ssh_key
-
-  <%= config[:database_container] %>:
-    image: postgres
-    
-    env_file:
-      - roro/containers/<%= config[:database_container] %>/development.env
-
-    volumes:
-      - <%= config[:database_container] %>-data:/var/lib/postgresql/data
 
   web:
+    build: .
     depends_on:
-      - <%= config[:app_name] %>
-    build:
-      context: .
-      dockerfile: roro/containers/web/Dockerfile
-volumes:
-  <%= config[:database_container] %>-data:
-  gem_cache:
-  <%= config[:app_name] %>-data:
+      - database
+      - webpack_dev_server
+      - redis
+    # entrypoint: ./docker-entrypoint.sh
+    command: ["bin/rails", "s", "-b", "0.0.0.0"]
 
-secrets:
-  host_ssh_key:
-    file: ~/.ssh/id_rsa
+    ports:
+      - "3000:3000"
+      - "4000:4000"
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    env_file:
+      - roro/containers/app/development.env
+      - roro/containers/database/development.env
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server
+
+  webpack_dev_server:
+    build: .
+    command: ./bin/webpack-dev-server
+    ports:
+      - 3035:3035
+    volumes:
+      - .:/usr/src/app
+      - gem_cache:/gems
+    env_file:
+      - roro/containers/app/development.env
+      - roro/containers/database/development.env
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+
+  redis:
+    image: redis
+
+  database:
+    image: postgres
+    env_file:
+      - roro/containers/database/development.env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  system_tests:
+    image: selenium/standalone-chrome-debug
+    logging:
+      driver: none
+    ports:
+      - "35729:35729"
+      - "5900:5900"
+
+volumes:
+  db_data:
+  gem_cache:
