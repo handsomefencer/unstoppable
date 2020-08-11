@@ -87,6 +87,9 @@ module Roro
           database_container: {
             "the name of your database container" => "database"
           },
+          database_host: {
+            "the name of your database host" => "database"
+          },
           frontend_container: {
             "the name of your frontend container" => "frontend"
           },
