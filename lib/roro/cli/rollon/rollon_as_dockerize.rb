@@ -11,7 +11,7 @@ module Roro
         system 'docker-compose up'
       end
       
-      def 
+       
       
       def configure_for_pg 
         service = [
@@ -36,6 +36,9 @@ module Roro
           copy_database_yml_pg
           insert_pg_gem_into_gemfile
         end
+        @env_hash[:rails_env] = 'development'
+        template 'base/.env/database.env.tt', '.env/development/database', @env_hash
+        template 'base/.env/web.env.tt', '.env/development/web', @env_hash
       end
     end
   end

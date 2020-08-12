@@ -15,6 +15,12 @@ module Roro
         insert_into_file 'Gemfile', "gem 'pg'\n", before: "group :development, :test do"
       end
 
+      def insert_mysql_gem_into_gemfile
+        comment_lines 'Gemfile', /sqlite/
+        comment_lines 'Gemfile', /pg/
+        insert_into_file 'Gemfile', "gem 'mysql2'\n", before: "group :development, :test do"
+      end
+
       def insert_hfci_gem_into_gemfile
         insert_into_file 'Gemfile', "gem 'handsome_fencer-test'", after: "group :development, :test do"
       end  

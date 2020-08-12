@@ -112,7 +112,7 @@ module Roro
             "your Postgres username" => "postgres"
           },
           postgres_password: {
-            "your Postgres password" => "your-postgres-password"
+            "your Postgres password" => "some-long-secure-password"
           } 
         }
       end

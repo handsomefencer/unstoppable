@@ -41,12 +41,7 @@ services:
   redis:
     image: redis
 
-  database:
-    image: postgres
-    env_file:
-      - roro/containers/database/development.env
-    volumes:
-      - db_data:/var/lib/postgresql/data
+<%= config[:database_service] %>
 
   system_tests:
     image: selenium/standalone-chrome-debug
