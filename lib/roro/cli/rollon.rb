@@ -25,10 +25,10 @@ module Roro
       # when '1'
       #   rollon_as_quickstart
       # when '2'
-        # rollon_as_dockerize
+        rollon_as_dockerize
       # when '3'
       # end
-      rollon_as_roro
+      # rollon_as_roro
     end
     
     no_commands do

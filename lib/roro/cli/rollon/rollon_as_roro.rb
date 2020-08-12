@@ -22,7 +22,7 @@ module Roro
 
         insert_pg_gem_into_gemfile
         system 'docker-compose build'
-        system 'docker-compose run --no-deps web bin/rails webpacker:install'
+        system 'docker-compose run web bin/rails webpacker:install'
         system 'docker-compose up'
         
         # if ask('Configure $stdout.sync for docker?', choices).eql?('y')
