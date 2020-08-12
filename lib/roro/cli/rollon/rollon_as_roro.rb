@@ -6,7 +6,8 @@ module Roro
     no_commands do
 
       def rollon_as_roro
-        rollon_as_roro_configure
+        # rollon_as_roro_configure
+        @env_hash[:database_vendor] = 'mysql'
         rollon_as_roro_copy_files
       end
 
@@ -65,7 +66,7 @@ module Roro
           )
           template(
             'base/.env/database.env.tt',
-            "roro/containers/database/#{environment}.pg.env", @env_hash
+            "roro/containers/database/#{environment}.env", @env_hash
           )
         end
         copy_file 'base/config/database.pg.yml', 'config/database.yml', force: true
@@ -84,14 +85,27 @@ module Roro
       def configure_for_mysql 
         insert_mysql_gem_into_gemfile
         copy_file 'base/config/database.mysql.yml', 'config/database.yml', force: true
-
+        %w(development production test staging ci).each do |environment| 
+          @env_hash[:rails_env] = environment
+          template(
+            'base/.env/web.env.tt',
+            "roro/containers/app/#{environment}.env", @env_hash
+          )
+          template(
+            'base/.env/database.mysql.env.tt',
+            "roro/containers/database/#{environment}.env", @env_hash
+          )
+        end
         service = [
           "  database:",
           "    image: 'mysql:latest'",
           "    env_file:",
           "      - roro/containers/database/development.env",
           "    volumes:",
-          "      - db_data:var/lib/postgresql/data"
+          "      - db_data:/var/lib/mysql",
+          "    restart: always",
+          "    ports:",
+          "      - '3307:3306'"
         ].join("\n")
         
         @env_hash[:database_service] = service

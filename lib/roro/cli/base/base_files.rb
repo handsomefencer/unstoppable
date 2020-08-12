@@ -23,7 +23,7 @@ module Roro
       end
       
       def copy_database_yml_pg 
-        copy_file "base/config/database.yml.pg", 'config/database.yml', force: @env_hash[:use_force]
+        copy_file "base/config/database.pg.yml", 'config/database.yml', force: @env_hash[:use_force]
       end
     end
   end 
