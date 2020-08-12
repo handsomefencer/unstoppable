@@ -7,7 +7,7 @@ module Roro
       def rollon_as_dockerize
         rollon_dockerize_files 
         system 'docker-compose build'
-        system 'docker-compose run --no-deps web bin/rails webpacker:install'
+        system 'docker-compose run --no-deps web yarn'
         system 'docker-compose up'
       end
       
