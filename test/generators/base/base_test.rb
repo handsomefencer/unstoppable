@@ -16,7 +16,7 @@ class Minitest::Spec
       frontend_container: 'frontend',
       server_container: 'nginx',
       postgres_user: "postgres", 
-      postgres_password: "your-postgres-password"} }
+      postgres_password: "some-long-secure-password"} }
       
     Given(:env_vars) { configurable_env_vars.merge(     
       deploy_tag: "${CIRCLE_SHA1:0:7}", 

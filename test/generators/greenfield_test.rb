@@ -30,7 +30,7 @@ describe Roro::CLI do
         
         Then do
           assert_file 'Dockerfile' do |c|
-            assert_match 'bundle exec rails new greenfield', c
+            assert_match 'bundle exec rails new .', c
           end          
         end
       end

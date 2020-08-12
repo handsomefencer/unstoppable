@@ -27,11 +27,7 @@ describe Roro::CLI do
   describe 'docker-compose.yml' do
     describe 'postgres service' do 
       Then do
-        # database:\n    image: postgres\n    env_file:\n      - .env/development/database\n
-            # volumes:\n      - db_data:/var/lib/postgresql/data\n\n  
         expected = [
-          
-          
           "database:",
           "    image: postgres",
           "    env_file:",
@@ -41,17 +37,8 @@ describe Roro::CLI do
         ].join("\n")
         assert_file "docker-compose.yml" do |c| 
           assert_match expected, c 
-          # assert_match '\timage: postgres', c 
-          # image: postgres
-      # env_file:
-      #   - .env/development/database
-      # volumes:
-      #   - db_data:/var/lib/postgresql/data
-   
         end
-  
       end
-      
     end
   end
   

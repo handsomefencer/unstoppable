@@ -15,10 +15,10 @@ module Roro
     
     def greenfield
       confirm_dependencies
-      # ensure_empty_directory 
+      ensure_empty_directory 
       get_configuration_variables
       copy_greenfield_files
-      copy_greenfield_to_host
+      # copy_greenfield_to_host
       @env_hash[:use_force] = { force: true }
       rollon
     end
@@ -31,7 +31,6 @@ module Roro
           warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
           suggestion: "$ roro greenfield --force",
           conditional: "Dir.glob('*').empty?" })
-        
       end
       
       def copy_greenfield_files
