@@ -9,13 +9,17 @@ ENV BUNDLE_PATH /gems
 ENV APP_HOME /usr/src/app/
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
+VOLUME ${APP_HOME}
+VOLUME /gems
 
 RUN echo "source 'https://rubygems.org'\ngem 'rails'" > Gemfile
+ENV BUNDLE_PATH /gems
+RUN bundle install
+RUN yarn install
+RUN bundle exec rails new . 
 
-RUN bundle
-RUN bundle exec rails new greenfield --skip-bundle --skip-webpack-install 
 FROM scratch AS export-stage
 
-COPY --from=stage1 /usr/src/app/greenfield .
+COPY --from=stage1 /usr/src/app/ .
 
 
