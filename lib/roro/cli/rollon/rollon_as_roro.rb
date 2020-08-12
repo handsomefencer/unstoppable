@@ -1,3 +1,4 @@
+require 'byebug' 
 module Roro
 
   class CLI < Thor
@@ -5,42 +6,95 @@ module Roro
     no_commands do
 
       def rollon_as_roro
+        rollon_as_roro_configure
+        rollon_as_roro_copy_files
+      end
+
+      def rollon_as_roro_configure
+        choices = []
+        hash = {
+          'config_std_out_true' => 
+            'Configure $stdout.sync for docker?',
+          'gitignore_sensitive_files' => 
+            'Configure .gitignore for roro?',
+          'insert_roro_gem_into_gemfile' => 
+            'Add RoRo to your Gemfile?',
+          'insert_hfci_gem_into_gemfile' =>
+            'Add handsome_fencer-test to your Gemfile?',
+          "FileUtils.mv 'config/database.yml', 'config/database.yml.backup'" =>
+            "Backup 'config/database.yml'?"}
+        
+        lines = ["Which database will you be using?"]
+        databases = {
+          '1' => 'PostgresQL', 
+          '2' => 'MySQL' 
+        } 
+        databases.each do |k,v|
+          lines << "(#{k}) #{v}"
+        end 
+        question = lines.join("\n\n")
+        choice = ask(question, {default: '1', limited_to: %w(1 2) } )
+        if choice.eql?(1) 
+          # @env_hash[:database_vendor] = 'postgres'
+        end
+      end
+      
+      def rollon_as_roro_copy_files 
+        configure_database
         directory 'roro/', './', @env_hash
+        template 'base/Dockerfile.tt', 'roro/containers/app/Dockerfile', @env_hash
+        copy_file 'base/.dockerignore', '.dockerignore'
+        config_std_out_true
+      end
+      
+      def configure_database 
+        if @env_hash[:database_vendor].eql?('postgres')
+          configure_for_pg
+        elsif @env_hash[:database_vendor].eql?('mysql')
+          configure_for_mysql 
+        end
+      end
+      
+      def configure_for_pg 
+        insert_pg_gem_into_gemfile
         %w(development production test staging ci).each do |environment| 
           @env_hash[:rails_env] = environment
           template(
             'base/.env/web.env.tt',
-            "roro/containers/app/#{environment}.env", @env_hash)
+            "roro/containers/app/#{environment}.env", @env_hash
+          )
           template(
             'base/.env/database.env.tt',
-            "roro/containers/database/#{environment}.env", @env_hash)
+            "roro/containers/database/#{environment}.pg.env", @env_hash
+          )
         end
-        template 'base/Dockerfile.tt', 'roro/containers/app/Dockerfile', @env_hash
-        copy_file 'base/.dockerignore', '.dockerignore'
-        copy_database_yml_pg
-        config_std_out_true
-
-        insert_pg_gem_into_gemfile
-        system 'docker-compose build'
-        system 'docker-compose run web bin/rails webpacker:install'
-        system 'docker-compose up'
+        copy_file 'base/config/database.pg.yml', 'config/database.yml', force: true
+        service = [
+          "  database:",
+          "    image: postgres",
+          "    env_file:",
+          "      - roro/containers/database/development.env",
+          "    volumes:",
+          "      - db_data:/var/lib/postgresql/data"
+        ].join("\n")
         
-        # if ask('Configure $stdout.sync for docker?', choices).eql?('y')
-        #   config_std_out_true
-        # end
-        # if ask('Configure .gitignore for roro?', choices).eql?('y')
-        #   gitignore_sensitive_files
-        # end
-        # if ask('Add RoRo to your Gemfile?', choices).eql?('y')
-        #   insert_roro_gem_into_gemfile
-        # end
-        # if ask('Add handsome_fencer-test to your Gemfile?', choices).eql?('y')
-        #   insert_hfci_gem_into_gemfile
-        # end
-        # if ask("Backup 'config/database.yml'?").eql?('y')
-        #   FileUtils.mv 'config/database.yml', "config/database.yml.backup"
-        # end
-        # copy_base_files
+        @env_hash[:database_service] = service
+      end
+      
+      def configure_for_mysql 
+        insert_mysql_gem_into_gemfile
+        copy_file 'base/config/database.mysql.yml', 'config/database.yml', force: true
+
+        service = [
+          "  database:",
+          "    image: 'mysql:latest'",
+          "    env_file:",
+          "      - roro/containers/database/development.env",
+          "    volumes:",
+          "      - db_data:var/lib/postgresql/data"
+        ].join("\n")
+        
+        @env_hash[:database_service] = service
       end
     end
   end

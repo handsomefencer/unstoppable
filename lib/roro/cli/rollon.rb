@@ -25,14 +25,20 @@ module Roro
       # when '1'
       #   rollon_as_quickstart
       # when '2'
-        rollon_as_dockerize
+        # rollon_as_dockerize
       # when '3'
       # end
-      # rollon_as_roro
+      rollon_as_roro
+      # startup_commands
+      
     end
     
     no_commands do
-    
+  
+      def startup_commands 
+        system 'docker-compose build'
+        system 'docker-compose up'
+      end
     end
   end
 end

@@ -2,7 +2,7 @@
 # More info at https://github.com/guard/guard#readme
 
 options = {
-  # cli: '',
+  cli: '',
   # all_after_run: true,
   # all_after_pass: true
 }
