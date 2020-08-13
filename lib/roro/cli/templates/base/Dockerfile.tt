@@ -1,26 +1,37 @@
 FROM ruby:<%= config[:ruby_version] %>
 LABEL maintainer="<%= config[:dockerhub_email] %>"
 
+
+## Make sure we have yarn properly sourced:
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | \
-  tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update -qq && apt-get install -y build-essential \
-  git \
-  nodejs \
-  yarn
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
+## Update OS and download yarm from source specified above:
+RUN apt-get update -qq && apt-get install -y build-essential git nodejs yarn
 
+## Set up our workspace directories:
 ENV APP_HOME /usr/src/app/
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+RUN mkdir ${APP_HOME}
 
-COPY Gemfile* $APP_HOME 
-
+## Tell bundler where to store downloaded gems:
 ENV BUNDLE_PATH /gems
+RUN mkdir ${BUNDLE_PATH}}
 
-RUN bundle install
+## Tell Docker to create volumes for our workspace and gems
+## so other containers can access them.
+VOLUME ${APP_HOME}
+VOLUME /gems
 
-COPY . ./$APP_HOME
+
+## To speed up development, copy Gemfile and Gemfile.lock from host
+## and then bundle so changing other parts of the app don't trigger 
+## a full gem install.
+COPY Gemfile* ./ 
+
+WORKDIR ${APP_HOME}
+RUN bundle 
+
+COPY . /usr/src/app/
 
 
 

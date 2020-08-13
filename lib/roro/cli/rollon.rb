@@ -29,7 +29,7 @@ module Roro
       # when '3'
       # end
       rollon_as_roro
-      # startup_commands
+      startup_commands
       
     end
     
@@ -37,6 +37,10 @@ module Roro
   
       def startup_commands 
         system 'docker-compose build'
+        system 'docker-compose run web bundle'
+        system 'docker-compose run web bin/rails webpacker:install'
+        system 'docker-compose run web bin/rails yarn:install'
+        system 'docker-compose run web bin/rails db:setup'
         system 'docker-compose up'
       end
     end
