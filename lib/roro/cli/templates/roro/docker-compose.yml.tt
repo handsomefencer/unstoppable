@@ -8,7 +8,6 @@ services:
       dockerfile: roro/containers/app/Dockerfile
     depends_on:
       - database
-      - webpack_dev_server
       - redis
     # entrypoint: ./docker-entrypoint.sh
     command: ["bin/rails", "s", "-b", "0.0.0.0"]
@@ -25,7 +24,10 @@ services:
       - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server
 
   webpack_dev_server:
-    build: .
+    build:
+      context: .
+      dockerfile: roro/containers/app/Dockerfile
+
     command: ./bin/webpack-dev-server
     ports:
       - 3035:3035

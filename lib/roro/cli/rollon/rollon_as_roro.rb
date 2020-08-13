@@ -98,9 +98,10 @@ module Roro
         end
         service = [
           "  database:",
-          "    image: 'mysql:latest'",
+          "    image: 'mysql:5.7'",
           "    env_file:",
           "      - roro/containers/database/development.env",
+          "      - roro/containers/app/development.env",
           "    volumes:",
           "      - db_data:/var/lib/mysql",
           "    restart: always",
