@@ -1,4 +1,3 @@
-require 'byebug' 
 module Roro
 
   class CLI < Thor

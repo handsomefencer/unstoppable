@@ -1,5 +1,6 @@
 require_relative 'rollon/stories'
 
+require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -46,6 +47,21 @@ module Roro
         system 'docker-compose run web bin/rails db:setup'
         system 'docker-compose up'
       end
+      
+      def confirm_dependency(options)
+                msg = []
+                msg << ""
+                msg << delineator
+                msg << "It looks like #{options[:warning]}. The following bash command returns false:"
+                msg << "\t$ #{options[:system_query]}"
+                msg << "Please try these instructions:"
+                msg << ("\t" + options[:suggestion])
+                msg << delineator
+                conditional = options[:conditional] ? eval(options[:conditional]) : system(options[:system_query])
+                if conditional == false
+                  raise(Roro::Error.new(msg.join("\n\n")))
+                end
+              end
     end
   end
 end
