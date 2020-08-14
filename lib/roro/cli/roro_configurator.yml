@@ -1,0 +1,110 @@
+---
+app_name: <%= Dir.pwd.split('/').last  %>
+developer: 
+  name: your-name
+  email: your.email@example.com
+
+services:
+  server_app:
+    name: app 
+    vendors: 
+      rails:
+        version: 
+        image: 
+          official_name: ruby
+          variants: 
+            - alpine
+            - buster 
+            - slim
+            - slim-buster
+            - stretch
+
+        choices:
+          config_std_out_true: 
+            question: Configure $stdout.sync for docker?
+            choices: {y: 'y', n: 'n'}
+            default: y
+
+          gitignore_sensitive_files:
+            question: Configure .gitignore for roro?
+            choices: {y: 'y', n: 'n'}
+            default: y
+              
+          insert_roro_gem_into_gemfile: 
+            question: Add RoRo to your Gemfile?
+            choices: {y: 'y', n: 'n'}
+            default: y
+              
+          insert_hfci_gem_into_gemfile: 
+            question: 'Add handsome_fencer-test to your Gemfile?'
+            choices: {y: 'y', n: 'n'}
+            default: y
+              
+          backup_existing_files: 
+            question: Backup existing files?
+            choices: {y: 'y', n: 'n'}
+            default: y
+            
+          configure_database:
+            question: Which database will you RollOn?
+            choices:  { p: 'PostgreSQL', m: 'MySQL' } 
+            default: p
+          
+  database:
+    name: database
+    vendor: postgresql
+    vendors: 
+      postgresql:
+        images: 
+          official_name: 
+          versions: 
+            - latest 
+        env_vars: 
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: your-postgres-password
+      mysql: 
+        env_vars: 
+          MYSQL_ROOT_PASSWORD: root 
+          MYSQL_PASSWORD: root
+          MYSQL_USERNAME: root
+          MYSQL_DATABASE: myapp_db
+          MYSQL_DATABASE_PORT: '3306'
+      
+  frontend:
+    name: frontend
+    vendors: 
+       
+      - frontend
+      - vuejs
+      - react
+      - angular
+  webserver: 
+    default: nginx
+    vendors: 
+      - nginx
+  application_server:
+    name: appserver 
+    vendors: 
+      - unicorn:
+      - puma: 
+registries: 
+  dockerhub:
+    env_vars: 
+      DOCKERHUB_EMAIL: your-docker-hub-email
+      DOCKERHUB_ORG: your-docker-hub-org-name
+      DOCKERHUB_PASSWORD: your-docker-hub-password
+      DOCKERHUB_USER: your-docker-hub-user-name
+    
+ci_cd:
+  semaphore:
+  circleci:
+    env_vars:
+      DEPLOY_TAG: "${CIRCLE_SHA1:0:7}"
+    # @env_hash[:deploy_tag] = "${CIRCLE_SHA1:0:7}"
+
+
+deployment:
+  env_vars: 
+    SERVER_HOST: "ip-address-of-your-server"
+    SERVER_PORT: 22
+    SERVER_USER: root

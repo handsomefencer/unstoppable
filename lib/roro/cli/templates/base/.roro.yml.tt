@@ -2,42 +2,49 @@
 developer: 
   name: your-name
   email: your.email@example.com
+  app_name: <%= Dir.pwd.split('/').last  %>
+
+
 services:
+
   server_apps:
+    container:
+      name: 
+      default: app
     rails:
-      container:
-        name: 
-          default: app
-      images:
-        language: ruby
-          version: 
-            stable: 2.7
-          variants: 
-            - alpine
-            - buster 
-            - slim
-            - slim-buster
-            - stretch
-          
-      images: 
-        
+      image: 
+        official_name: ruby
+        version: <%= `ruby -v`.scan(/\d.\d/).first %>
+        variants: 
+          - alpine
+          - buster 
+          - slim
+          - slim-buster
+          - stretch
   databases:
     container: 
       name: 
-        default: database
-    postgres: 
-      POSTGRES_USER: 
-        default: postgres
-      POSTGRES_PASSWORD: 
-        default: your-postgres-password
-      POSTGRES_DB: 
+      default: database
+    postgres:
+      images: 
+        official_name: 
+        versions: 
+          - latest 
+      env_vars: 
+        POSTGRES_USER: 
+          default: postgres
+        POSTGRES_PASSWORD: 
+          default: your-postgres-password
+        POSTGRES_DB: 
     mysql: 
       MYSQL_ROOT_PASSWORD: root 
       MYSQL_PASSWORD: root
       MYSQL_USERNAME: root
       MYSQL_DATABASE: myap_db
       MYSQL_DATABASE_PORT: 3306
-  frontend: frontend
+  
+  frontends: 
+    frontend
   servers: 
     application:
       unicorn:
