@@ -4,7 +4,9 @@ require "os"
 require "minitest/autorun"
 require "minitest/spec"
 require "minitest/given"
+require "mocha/minitest"
 require "thor_helper"
+
 include TestHelper::Files::Assertions
 
 Minitest.after_run do

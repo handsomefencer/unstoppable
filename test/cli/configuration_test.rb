@@ -16,7 +16,6 @@ describe Roro::Configuration do
     database_vendor: 'postgresql',
     frontend_container: 'frontend',
     webserver_service: 'nginx',
-    # postgres_user: "postgres",
     postgresql_env_vars: {
       'POSTGRES_USER' => 'postgres',           
       'POSTGRES_PASSWORD'  => 'your-postgres-password'
@@ -43,20 +42,40 @@ describe Roro::Configuration do
     
     Then { assert_equal Hash, config.app.class}  
   end
-  
-  describe '.set_from_defaults' do 
     
-    Given { config.set_from_defaults }
+  ["config.set_thor_actions_from_defaults", "config.set_from_defaults"].each do |command| 
 
-    env_vars.each do |key, value| 
-  
-      describe "key ':#{key}' must return value '#{value}' " do 
+    describe ".#{command}" do 
+      
+      Given { eval(command) }
+      
+      describe 'must set up correct thor actions' do 
+
+        Given { command }
         
-        Then do 
-          assert_equal value, config.app[key]          
-        end
-        
+        Then { assert_includes config.thor_actions["config_std_out_true"], 'y' }
       end
+    end     
+  end
+
+  ["config.set_app_variables_from_defaults", "config.set_from_defaults"].each do |command| 
+    
+    describe ".#{command}" do 
+      
+      Given { eval(command) }
+      
+      describe 'must set correct app variables' do 
+    
+        env_vars.each do |key, value| 
+          
+          describe "key ':#{key}' must return value '#{value}' " do 
+            
+            Then do 
+              assert_equal value, config.app[key]          
+            end
+          end
+        end
+      end 
     end
   end
   
