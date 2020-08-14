@@ -5,7 +5,7 @@ module Roro
     no_commands do
 
       def rollon_as_roro
-        rollon_as_roro_copy_files
+        # rollon_as_roro_copy_files
       end
       
       def rollon_as_roro_copy_files 

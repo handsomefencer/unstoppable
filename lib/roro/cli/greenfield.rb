@@ -7,38 +7,31 @@ module Roro
     include Thor::Actions
 
     desc "greenfield", "Greenfield a brand new rails app using Docker's instructions"
-
+    
     method_option :env_vars, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "key1:value1 key2:value2"
     method_option :interactive, desc: "Set up your environment variables as you go."
     method_option :force, desc: "force over-write of existing files"
     
     
     def greenfield
+      confirm_directory_empty
       confirm_dependencies
-      ensure_empty_directory 
       copy_greenfield_files
-      copy_greenfield_to_host
-      @env_hash[:use_force] = { force: true }
-      rollon
+      run_greenfield_commands
     end
     
     no_commands do
-    
-      def ensure_empty_directory 
-        confirm_dependency({
-          system_query: "ls -A",
-          warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
-          suggestion: "$ roro greenfield --force",
-          conditional: "Dir.glob('*').empty?" })
+      
+      def run_greenfield_commands
+        system "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
+        rollon
       end
       
       def copy_greenfield_files
-        template 'greenfield/Dockerfile.tt', 'Dockerfile', @env_hash
-      end
-      
-      def copy_greenfield_to_host 
-        system "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
-      end
+        @config = Roro::Configuration.new 
+        @config.set_from_defaults
+        template 'greenfield/Dockerfile.tt', 'Dockerfile', @config.app
+      end      
     end
   end
 end
