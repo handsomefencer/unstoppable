@@ -16,7 +16,6 @@ module Roro
     def greenfield
       confirm_dependencies
       ensure_empty_directory 
-      get_configuration_variables
       copy_greenfield_files
       copy_greenfield_to_host
       @env_hash[:use_force] = { force: true }

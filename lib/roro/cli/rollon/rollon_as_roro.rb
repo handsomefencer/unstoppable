@@ -6,38 +6,7 @@ module Roro
     no_commands do
 
       def rollon_as_roro
-        # rollon_as_roro_configure
-        @env_hash[:database_vendor] = 'mysql'
         rollon_as_roro_copy_files
-      end
-
-      def rollon_as_roro_configure
-        choices = []
-        hash = {
-          'config_std_out_true' => 
-            'Configure $stdout.sync for docker?',
-          'gitignore_sensitive_files' => 
-            'Configure .gitignore for roro?',
-          'insert_roro_gem_into_gemfile' => 
-            'Add RoRo to your Gemfile?',
-          'insert_hfci_gem_into_gemfile' =>
-            'Add handsome_fencer-test to your Gemfile?',
-          "FileUtils.mv 'config/database.yml', 'config/database.yml.backup'" =>
-            "Backup 'config/database.yml'?"}
-        
-        lines = ["Which database will you be using?"]
-        databases = {
-          '1' => 'PostgresQL', 
-          '2' => 'MySQL' 
-        } 
-        databases.each do |k,v|
-          lines << "(#{k}) #{v}"
-        end 
-        question = lines.join("\n\n")
-        choice = ask(question, {default: '1', limited_to: %w(1 2) } )
-        if choice.eql?(1) 
-          # @env_hash[:database_vendor] = 'postgres'
-        end
       end
       
       def rollon_as_roro_copy_files 
@@ -48,13 +17,6 @@ module Roro
         config_std_out_true
       end
       
-      def configure_database 
-        if @env_hash[:database_vendor].eql?('postgres')
-          configure_for_pg
-        elsif @env_hash[:database_vendor].eql?('mysql')
-          configure_for_mysql 
-        end
-      end
       
       def configure_for_pg 
         insert_pg_gem_into_gemfile
