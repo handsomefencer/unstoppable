@@ -16,11 +16,17 @@ module Roro
     def greenfield
       confirm_directory_empty
       confirm_dependencies
+      configure_for_greenfielding
       copy_greenfield_files
       run_greenfield_commands
     end
     
     no_commands do
+      
+      def configure_for_greenfielding
+        @config = Roro::Configuration.new 
+        @config.set_from_defaults
+      end 
       
       def run_greenfield_commands
         system "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
@@ -28,8 +34,6 @@ module Roro
       end
       
       def copy_greenfield_files
-        @config = Roro::Configuration.new 
-        @config.set_from_defaults
         template 'greenfield/Dockerfile.tt', 'Dockerfile', @config.app
       end      
     end

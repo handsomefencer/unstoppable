@@ -27,7 +27,12 @@ module TestHelper
           end
         end
       end
-
+      
+      def insert_file(src, dest) 
+        src = ENV.fetch("PWD") + "/lib/roro/cli/templates/#{src}"
+        FileUtils.cp(src, dest) 
+      end
+      
       def refute_file(file, *contents)
         refute File.exist?(file), "Expected #{file} to not exist, but it does."
       end

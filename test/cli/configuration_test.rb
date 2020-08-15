@@ -68,10 +68,10 @@ describe Roro::Configuration do
     
         env_vars.each do |key, value| 
           
-          describe "key ':#{key}' must return value '#{value}' " do 
+          describe "key '#{key}' must return value '#{value}' " do 
             
             Then do 
-              assert_equal value, config.app[key]          
+              assert_equal value, config.app[key.to_s]          
             end
           end
         end
@@ -91,6 +91,33 @@ describe Roro::Configuration do
           assert_equal value['default'].class, String
         end 
       end
+    end
+  end 
+    
+  describe '.set_from_roro_config' do 
+    
+    Given { insert_file 'base/.roro_config.yml.tt', ".roro_config.yml"}
+    
+    describe 'default values' do 
+      
+      Given { config.set_from_defaults }
+      
+      Then { assert_equal config.app['app_name'], '603' }
+      And  { assert_equal config.thor_actions['insert_hfci_gem_into_gemfile'], 'y' }
+    end
+    
+    describe 'over-writes default from file' do 
+      
+      Given { config.set_from_roro_config }
+      
+      Then  { assert_equal config.app['app_name'], 'your-project-name' }
+    end
+    
+    describe 'over-writes thor actions from file' do 
+      
+      Given { config.set_from_roro_config }
+      
+      Then  { assert_equal config.thor_actions['insert_hfci_gem_into_gemfile'], 'n' }
     end
   end
 end  

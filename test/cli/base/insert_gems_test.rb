@@ -1,7 +1,7 @@
 require_relative "base_test"
 
 describe Roro::CLI do
-  
+  Given { skip }
   get_configuration
       
   describe 'insertions' do 

@@ -1,0 +1,23 @@
+app_name: your-project-name 
+ruby_version: '2.5'
+dockerhub_email: 'your-docker-hub-email'
+dockerhub_org: 'your-docker-hub-org-name' 
+dockerhub_user: 'your-docker-hub-user-name'
+dockerhub_password: 'your-docker-hub-password'
+database_service: 'database'
+database_vendor: 'postgresql'
+frontend_container: 'frontend'
+webserver_service: 'nginx'
+postgresql_env_vars: 
+  POSTGRES_USER: 'postgres'        
+  POSTGRES_PASSWORD: 'your-postgres-password'
+mysql_env_vars: 
+  MYSQL_ROOT_PASSWORD: 'root'
+  MYSQL_PASSWORD: 'root'
+  MYSQL_USERNAME: 'root'
+  MYSQL_DATABASE: 'myapp_db'
+  MYSQL_DATABASE_PORT: '3306'
+thor_actions: 
+  insert_hfci_gem_into_gemfile: 'n'
+  
+    

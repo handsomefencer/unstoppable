@@ -43,7 +43,7 @@ services:
   redis:
     image: redis
 
-<%= config[:database_service] %>
+<%= yaml_from_template('stories/with_postgres/_service.yml') %>
 
   system_tests:
     image: selenium/standalone-chrome-debug

@@ -1,6 +1,5 @@
 require_relative 'rollon/stories'
 
-require 'byebug'
 module Roro
 
   class CLI < Thor
@@ -13,32 +12,38 @@ module Roro
     def rollon
       confirm_directory_not_empty
       confirm_dependencies
-      get_configuration_variables
-      # case ask("Configure using the Quickstart, Curated, or HandsomeFencer way?\n\n(1) Quikstart\n\n(2) Curated\n\n(3) HandsomeFencer\n\n", { default: '2', limited_to: %w(1 2 3) })
-      # when '1'
-      #   rollon_as_quickstart
-      # when '2'
-        # rollon_as_dockerize
-      # when '3'
-      # end
-      rollon_as_roro
-      startup_commands
+      configure_for_rollon
+      copy_roro_files
     end
     
     no_commands do
-      
-      def confirm_directory_not_empty 
-        confirm_dependency({
-          system_query: "ls -A",
-          warning: "This is an empty directory. You can generate a new and fully 
-            dockerized Rails app using the 'greenfield' command here here but if 
-            you want to containerize an existing app -- which is what the 'rollon'
-            command is for -- you'll need to navigate to a directory with an app we
-            can roll onto.",
-          suggestion: "$ roro greenfield",
-          conditional: "!Dir.glob('*').empty?" })
+     
+      def configure_for_rollon
+        case 
+        when File.exist?('.roro_config.yml')
+          @config = Roro::Configuration.new 
+          @config.set_from_config# puts 'no roro config file' 
+          YAML.load_file(Dir.pwd + '/.roro_config.yml') || false
+
+        when @config.nil? 
+          @config = Roro::Configuration.new 
+          @config.set_from_defaults
+        end
+        @config
       end
       
+      def yaml_from_template(file)
+        content = File.read(File.dirname(__FILE__) + "/templates/#{file}")
+      end
+      
+      def copy_roro_files 
+        directory 'roro/', './', @config.app
+        template 'base/Dockerfile.tt', 'roro/containers/app/Dockerfile', @config.app
+        copy_file 'base/.dockerignore', '.dockerignore'
+        # config_std_out_true
+        configure_database  
+      end
+              
       def startup_commands 
         system 'docker-compose build'
         system 'docker-compose run web bundle'
@@ -47,21 +52,6 @@ module Roro
         system 'docker-compose run web bin/rails db:setup'
         system 'docker-compose up'
       end
-      
-      def confirm_dependency(options)
-                msg = []
-                msg << ""
-                msg << delineator
-                msg << "It looks like #{options[:warning]}. The following bash command returns false:"
-                msg << "\t$ #{options[:system_query]}"
-                msg << "Please try these instructions:"
-                msg << ("\t" + options[:suggestion])
-                msg << delineator
-                conditional = options[:conditional] ? eval(options[:conditional]) : system(options[:system_query])
-                if conditional == false
-                  raise(Roro::Error.new(msg.join("\n\n")))
-                end
-              end
     end
   end
 end

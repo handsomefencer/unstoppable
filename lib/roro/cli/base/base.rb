@@ -1,4 +1,5 @@
-require_relative 'configuration.rb'
+
+require_relative 'check_dependencies.rb'
 require_relative 'continuous_integration.rb'
 require_relative 'utilities.rb'
 require_relative 'insertions.rb'
