@@ -1,4 +1,4 @@
-FROM ruby:<%= config[:ruby_version] %>
+FROM ruby:<%= config['ruby_version'] %>
 LABEL maintainer="<%= config[:dockerhub_email] %>"
 
 

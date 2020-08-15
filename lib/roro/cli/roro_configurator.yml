@@ -49,7 +49,9 @@ services:
             question: Which database will you RollOn?
             choices:  { p: 'PostgreSQL', m: 'MySQL' } 
             default: p
-          
+        env_vars: 
+          DATABASE_HOST: database
+  
   database:
     name: database
     vendor: postgresql
@@ -62,6 +64,7 @@ services:
         env_vars: 
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: your-postgres-password
+
       mysql: 
         env_vars: 
           MYSQL_ROOT_PASSWORD: root 
@@ -106,5 +109,5 @@ ci_cd:
 deployment:
   env_vars: 
     SERVER_HOST: "ip-address-of-your-server"
-    SERVER_PORT: 22
+    SERVER_PORT: '22'
     SERVER_USER: root

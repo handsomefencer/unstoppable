@@ -2,7 +2,7 @@ require "test_helper"
 require 'mocha/minitest'
 
 describe Roro::CLI do
-
+Given { skip }
   Given { prepare_destination 'rails/603' }
 
   Given(:subject) { Roro::CLI.new }
