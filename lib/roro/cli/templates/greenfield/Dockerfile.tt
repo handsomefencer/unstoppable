@@ -1,4 +1,4 @@
-FROM ruby:<%= config[:ruby_version] %> AS builder
+FROM ruby:<%= config['ruby_version'] %> AS builder
 
 ## Make sure we have yarn properly sourced:
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -

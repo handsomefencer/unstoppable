@@ -6,7 +6,9 @@ module Roro
     no_commands do 
           
       def config_std_out_true
-        prepend_to_file('config/boot.rb', "$stdout.sync = true\n\n", force: @env_hash[:use_force])
+        file = 'config/boot.rb'
+        line = "$stdout.sync = true\n\n"
+        prepend_to_file(file, line, force: true)
       end 
       
       def gitignore_sensitive_files

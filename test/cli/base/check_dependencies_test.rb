@@ -2,7 +2,6 @@ require 'test_helper'
 
 describe Roro::CLI do
 
-
   describe 'check dependencies' do 
     
     Given(:subject) { Roro::CLI.new }

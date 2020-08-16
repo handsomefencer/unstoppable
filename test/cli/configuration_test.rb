@@ -103,7 +103,7 @@ describe Roro::Configuration do
       Given { config.set_from_defaults }
       
       Then { assert_equal config.app['app_name'], '603' }
-      And  { assert_equal config.thor_actions['insert_hfci_gem_into_gemfile'], 'y' }
+      And  { assert_includes ['y', 'n'], config.thor_actions['insert_hfci_gem_into_gemfile'] }
     end
     
     describe 'over-writes default from file' do 

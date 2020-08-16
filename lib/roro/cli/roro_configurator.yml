@@ -27,28 +27,34 @@ services:
 
           gitignore_sensitive_files:
             question: Configure .gitignore for roro?
-            choices: {y: 'y', n: 'n'}
+            choices: { y: 'y', n: 'n' }
             default: y
               
           insert_roro_gem_into_gemfile: 
             question: Add RoRo to your Gemfile?
-            choices: {y: 'y', n: 'n'}
+            choices: { y: 'y', n: 'n' }
             default: y
               
           insert_hfci_gem_into_gemfile: 
             question: 'Add handsome_fencer-test to your Gemfile?'
-            choices: {y: 'y', n: 'n'}
-            default: y
+            choices: { y: 'y', n: 'n' }
+            default: n
               
           backup_existing_files: 
             question: Backup existing files?
-            choices: {y: 'y', n: 'n'}
+            choices: { y: 'y', n: 'n' }
+            default: n
+
+          copy_dockerignore:
+            question: Create a .dockerignore file?
+            choices: { y: 'y', n: 'n' }
             default: y
             
           configure_database:
             question: Which database will you RollOn?
             choices:  { p: 'PostgreSQL', m: 'MySQL' } 
-            default: p
+            default: m
+
         env_vars: 
           DATABASE_HOST: database
   
