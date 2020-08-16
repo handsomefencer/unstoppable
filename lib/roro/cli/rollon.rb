@@ -14,6 +14,7 @@ module Roro
       confirm_dependencies
       configure_for_rollon
       copy_roro_files
+      generate_roro_config
       startup_commands
     end
     
