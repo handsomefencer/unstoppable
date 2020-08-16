@@ -7,24 +7,31 @@ module Roro
       @master = YAML.load_file(File.dirname(__FILE__) + '/roro_configurator.yml')
       @master['services']['server_app']['vendors']['rails']['version'] = `ruby -v`.scan(/\d.\d/).first
       @services = @master['services']
-      @registry = @master['registries']['dockerhub']
       @app = {}
       @choices = @master['services']['server_app']['vendors']['rails']['choices'] 
       @thor_actions = {}
     end
     
+  #   case 
+  #   when File.exist?('.roro_config.yml')
+  #     @config = Roro::Configuration.new 
+  #     @config.set_from_config# puts 'no roro config file' 
+  #     YAML.load_file(Dir.pwd + '/.roro_config.yml') || false
+
+  #   when @config.nil? 
+  #     @config = Roro::Configuration.new 
+  #     @config.set_from_defaults
+  #   end
+  #   @config
+  # end
+    
     def set_app_variables_from_defaults 
       @app = {
-        'app_name' =>             Dir.pwd.split('/').last,
+        'main_app_name' =>             Dir.pwd.split('/').last,
         'deployment_image_tag' => @master['ci_cd']['circleci']['env_vars']['DEPLOY_TAG'], 
-        'dockerhub_email' =>      @registry['env_vars']['DOCKERHUB_EMAIL'],
-        'dockerhub_org' =>        @registry['env_vars']['DOCKERHUB_ORG'],
-        'dockerhub_user' =>       @registry['env_vars']['DOCKERHUB_USER'],
-        'dockerhub_password' =>   @registry['env_vars']['DOCKERHUB_PASSWORD'],
-        
         'database_host' =>        @services['server_app']['vendors']['rails']['env_vars']['DATABASE_HOST'],
         'ruby_version' =>         @services['server_app']['vendors']['rails']['version'],
-        'frontend_container' =>   @services['frontend']['name'],
+        'frontend_service' =>   @services['frontend']['name'],
         'webserver_service' =>    @services['webserver']['default'],
         'database_service' =>     @services['database']['name'],
         'database_vendor' =>      @services['database']['vendor'],

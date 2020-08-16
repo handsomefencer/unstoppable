@@ -5,16 +5,12 @@ describe Roro::Configuration do
   Given { prepare_destination "rails/603" }
   
   env_vars = {
-    app_name: '603', 
+    main_app_name: '603', 
     ruby_version: `ruby -v`.scan(/\d.\d/).first.to_s,
     deployment_image_tag: "${CIRCLE_SHA1:0:7}", 
-    dockerhub_email: "your-docker-hub-email",
-    dockerhub_org: "your-docker-hub-org-name", 
-    dockerhub_user: "your-docker-hub-user-name", 
-    dockerhub_password: "your-docker-hub-password", 
     database_service: 'database',
     database_vendor: 'postgresql',
-    frontend_container: 'frontend',
+    frontend_service: 'frontend',
     webserver_service: 'nginx',
     postgresql_env_vars: {
       'POSTGRES_USER' => 'postgres',           
@@ -102,7 +98,7 @@ describe Roro::Configuration do
       
       Given { config.set_from_defaults }
       
-      Then { assert_equal config.app['app_name'], '603' }
+      Then { assert_equal config.app['main_app_name'], '603' }
       And  { assert_includes ['y', 'n'], config.thor_actions['insert_hfci_gem_into_gemfile'] }
     end
     

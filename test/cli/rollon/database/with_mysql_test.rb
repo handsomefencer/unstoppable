@@ -39,7 +39,7 @@ describe Roro::CLI do
         assert_file( "roro/containers/database/#{env}.env" ) { |c| 
           assert_match "MYSQL_ROOT_PASSWORD=root", c 
           assert_match "MYSQL_PASSWORD=root", c 
-          assert_match "MYSQL_DATABASE=#{config.app['app_name'] + '_db'}", c 
+          assert_match "MYSQL_DATABASE=#{config.app['main_app_name'] + '_db'}", c 
           assert_match "MYSQL_USERNAME=root", c 
           assert_match "MYSQL_DATABASE_PORT=3306", c
           assert_match "RAILS_ENV=#{env}", c 
