@@ -28,15 +28,12 @@ module Roro
     def set_app_variables_from_defaults 
       @app = {
         'main_app_name' =>             Dir.pwd.split('/').last,
-        'deployment_image_tag' => @master['ci_cd']['circleci']['env_vars']['DEPLOY_TAG'], 
         'database_host' =>        @services['server_app']['vendors']['rails']['env_vars']['DATABASE_HOST'],
         'ruby_version' =>         @services['server_app']['vendors']['rails']['version'],
         'frontend_service' =>   @services['frontend']['name'],
         'webserver_service' =>    @services['webserver']['default'],
         'database_service' =>     @services['database']['name'],
         'database_vendor' =>      @services['database']['vendor'],
-        'mysql_env_vars' =>       @services['database']['vendors']['mysql']['env_vars'],
-        'postgresql_env_vars' =>  @services['database']['vendors']['postgresql']['env_vars'],
       }
     end 
     

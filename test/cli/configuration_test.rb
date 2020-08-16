@@ -7,22 +7,10 @@ describe Roro::Configuration do
   env_vars = {
     main_app_name: '603', 
     ruby_version: `ruby -v`.scan(/\d.\d/).first.to_s,
-    deployment_image_tag: "${CIRCLE_SHA1:0:7}", 
     database_service: 'database',
     database_vendor: 'postgresql',
     frontend_service: 'frontend',
     webserver_service: 'nginx',
-    postgresql_env_vars: {
-      'POSTGRES_USER' => 'postgres',           
-      'POSTGRES_PASSWORD'  => 'your-postgres-password'
-    },
-    mysql_env_vars: {
-      'MYSQL_ROOT_PASSWORD' => 'root', 
-        'MYSQL_PASSWORD' => 'root',
-        'MYSQL_USERNAME' => 'root',
-        'MYSQL_DATABASE' => 'myapp_db',
-        'MYSQL_DATABASE_PORT' => '3306'
-    }
   }
     
   Given(:config) { Roro::Configuration.new }
