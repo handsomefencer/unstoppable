@@ -14,6 +14,7 @@ module Roro
       confirm_dependencies
       configure_for_rollon
       copy_roro_files
+      startup_commands
     end
     
     no_commands do
@@ -57,7 +58,8 @@ module Roro
         system 'docker-compose run web bundle'
         system 'docker-compose run web bin/rails webpacker:install'
         system 'docker-compose run web bin/rails yarn:install'
-        system 'docker-compose run web bin/rails db:setup'
+        system 'docker-compose run web bin/rails db:create'
+        system 'docker-compose run web bin/rails db:migrate'
         system 'docker-compose up'
       end
     end

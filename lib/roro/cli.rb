@@ -8,8 +8,6 @@ require 'roro/cli/expose'
 require 'roro/cli/ruby_gem'
 require 'roro/cli/generate/config/rails'
 require 'roro/cli/configuration'
-require "byebug"
-
 
 module Roro
   

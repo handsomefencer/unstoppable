@@ -24,12 +24,12 @@ module Roro
         
         'database_host' =>        @services['server_app']['vendors']['rails']['env_vars']['DATABASE_HOST'],
         'ruby_version' =>         @services['server_app']['vendors']['rails']['version'],
+        'frontend_container' =>   @services['frontend']['name'],
+        'webserver_service' =>    @services['webserver']['default'],
         'database_service' =>     @services['database']['name'],
         'database_vendor' =>      @services['database']['vendor'],
         'mysql_env_vars' =>       @services['database']['vendors']['mysql']['env_vars'],
         'postgresql_env_vars' =>  @services['database']['vendors']['postgresql']['env_vars'],
-        'frontend_container' =>   @services['frontend']['name'],
-        'webserver_service' =>    @services['webserver']['default'],
       }
       
     end 

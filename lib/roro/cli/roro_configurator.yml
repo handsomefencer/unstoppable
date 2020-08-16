@@ -53,7 +53,7 @@ services:
           configure_database:
             question: Which database will you RollOn?
             choices:  { p: 'PostgreSQL', m: 'MySQL' } 
-            default: m
+            default: p
 
         env_vars: 
           DATABASE_HOST: database
