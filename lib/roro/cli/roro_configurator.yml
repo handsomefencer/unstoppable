@@ -1,5 +1,5 @@
 ---
-app_name: <%= Dir.pwd.split('/').last  %>
+main_app_name: <%= Dir.pwd.split('/').last  %>
 developer: 
   name: your-name
   email: your.email@example.com
@@ -53,7 +53,7 @@ services:
           configure_database:
             question: Which database will you RollOn?
             choices:  { p: 'PostgreSQL', m: 'MySQL' } 
-            default: p
+            default: m
 
         env_vars: 
           DATABASE_HOST: database
@@ -76,7 +76,6 @@ services:
           MYSQL_ROOT_PASSWORD: root 
           MYSQL_PASSWORD: root
           MYSQL_USERNAME: root
-          MYSQL_DATABASE: myapp_db
           MYSQL_DATABASE_PORT: '3306'
       
   frontend:
@@ -109,8 +108,6 @@ ci_cd:
   circleci:
     env_vars:
       DEPLOY_TAG: "${CIRCLE_SHA1:0:7}"
-    # @env_hash[:deploy_tag] = "${CIRCLE_SHA1:0:7}"
-
 
 deployment:
   env_vars: 
