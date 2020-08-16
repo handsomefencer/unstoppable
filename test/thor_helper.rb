@@ -50,6 +50,10 @@ module TestHelper
         assert file_name, "Expected migration #{relative} to exist, but was not found"
         assert_file file_name, *contents, &block
       end
+      
+      def yaml_from_template(file)
+        File.read(ENV['PWD'] + "/lib/roro/cli/templates/#{file}")
+      end
 
       def assert_no_migration(relative)
         file_name = migration_file_name(relative)

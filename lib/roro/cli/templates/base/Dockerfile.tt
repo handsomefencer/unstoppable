@@ -1,5 +1,5 @@
 FROM ruby:<%= config['ruby_version'] %>
-LABEL maintainer="<%= config[:dockerhub_email] %>"
+LABEL maintainer="<%= config['dockerhub_email'] %>"
 
 
 ## Make sure we have yarn properly sourced:

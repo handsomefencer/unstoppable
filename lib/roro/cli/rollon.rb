@@ -4,8 +4,8 @@ module Roro
 
   class CLI < Thor
 
-    desc "rollon", "Generates files and makes changes to your rails app 
-      necessary to run it using Docker containers."
+    desc "rollon", "Generates files for and makes changes to your app 
+      so it can run using Docker containers."
     method_option :interactive, desc: "Set up your environment variables as 
       you go."
 
@@ -33,15 +33,23 @@ module Roro
       end
       
       def yaml_from_template(file)
-        content = File.read(File.dirname(__FILE__) + "/templates/#{file}")
+        File.read(File.dirname(__FILE__) + "/templates/#{file}")
       end
       
       def copy_roro_files 
+        configure_database  
         directory 'roro/', './', @config.app
         template 'base/Dockerfile.tt', 'roro/containers/app/Dockerfile', @config.app
-        copy_file 'base/.dockerignore', '.dockerignore'
-        # config_std_out_true
-        configure_database  
+        take_thor_actions
+      end
+      
+      def take_thor_actions 
+        @config.thor_actions.each do |key, value|
+          case 
+          when value.eql?('y')
+            eval(key)
+          end
+        end
       end
               
       def startup_commands 

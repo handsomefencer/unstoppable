@@ -1,0 +1,6 @@
+  database:
+    image: postgres
+    env_file:
+      - roro/containers/database/development.env
+    volumes:
+      - db_data:/var/lib/postgresql/data

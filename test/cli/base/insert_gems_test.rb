@@ -1,9 +1,10 @@
-require_relative "base_test"
+require 'test_helper'
 
 describe Roro::CLI do
-  Given { skip }
-  get_configuration
-      
+  Given { prepare_destination "rails/603" }
+
+  Given(:cli) { Roro::CLI.new } 
+  
   describe 'insertions' do 
     describe '.insert_pg_gem_into_gemfile' do 
       

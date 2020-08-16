@@ -16,11 +16,11 @@ module Roro
         template "base/docker-compose.yml", 'docker-compose.yml', @env_hash
       end
       
-      def copy_roro 
-        directory 'base/roro/containers/app', "roro/containers/#{@env_hash[:app_name]}", @env_hash
-        directory 'base/roro/containers/database', "roro/containers/#{@env_hash[:database_container]}", @env_hash
-        directory 'base/roro/containers/frontend', "roro/containers/#{@env_hash[:frontend_container]}", @env_hash
-      end
+      # def copy_roro 
+      #   directory 'base/roro/containers/app', "roro/containers/#{@env_hash[:app_name]}", @env_hash
+      #   directory 'base/roro/containers/database', "roro/containers/#{@env_hash[:database_container]}", @env_hash
+      #   directory 'base/roro/containers/frontend', "roro/containers/#{@env_hash[:frontend_container]}", @env_hash
+      # end
       
       def copy_database_yml_pg 
         copy_file "base/config/database.pg.yml", 'config/database.yml', force: @env_hash[:use_force]

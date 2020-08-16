@@ -1,8 +1,11 @@
-require_relative "base_test"
+require "test_helper"
 
 describe Roro::CLI do
   
-  get_configuration
+  Given { prepare_destination "rails/603" }
+
+  Given(:cli) { Roro::CLI.new } 
+  
       
   describe ".config_std_out" do 
       

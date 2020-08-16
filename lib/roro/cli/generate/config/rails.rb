@@ -7,16 +7,9 @@ module Roro
     map "generate::config::rails" => "generate_config_rails"
 
     def generate_config_rails
-      master_config = YAML.load_file("lib/roro/cli/roro_configurator.yml")
-      byebug
-      template 'base/.roro.yml', '.roro.yml'
+      master_config = YAML.load_file(ENV['PWD'] + "/lib/roro/cli/roro_configurator.yml")
+      template 'base/.roro_config.yml', '.roro_config.yml'
     end
-    
-    # namespace :generate do 
-    #   namespace :config do 
-        
-    #   end 
-    # end
 
     no_commands do
     end
