@@ -31,7 +31,6 @@ module Roro
         'mysql_env_vars' =>       @services['database']['vendors']['mysql']['env_vars'],
         'postgresql_env_vars' =>  @services['database']['vendors']['postgresql']['env_vars'],
       }
-      
     end 
     
     def set_from_defaults 
