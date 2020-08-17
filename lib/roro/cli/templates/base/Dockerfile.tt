@@ -23,15 +23,24 @@ VOLUME ${APP_HOME}
 VOLUME /gems
 
 
+
 ## To speed up development, copy Gemfile and Gemfile.lock from host
 ## and then bundle so changing other parts of the app don't trigger 
 ## a full gem install.
 COPY Gemfile* ./ 
 
 WORKDIR ${APP_HOME}
+
 RUN bundle 
 
+COPY roro/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+RUN chmod +x /usr/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 COPY . /usr/src/app/
+
+# RUN chmod +x /usr/src/app/roro/docker-entrypoint.sh
+# ENTRYPOINT ["/usr/src/app/roro/docker-entrypoint.sh"]
 
 
 
