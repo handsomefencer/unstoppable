@@ -67,8 +67,6 @@ describe Roro::Configuration do
     Given(:default_answer)     { 'n' }
     Given(:config_answer)      { 'y' }
     Given(:interactive_answer) { 'z' }
-    Given(:asker) { Thor::Shell::Basic.any_instance }
-    Given { asker.stubs(:ask).returns(interactive_answer) }
     
     describe 'without config file' do
       describe 'must return default app name' do 
@@ -100,7 +98,9 @@ describe Roro::Configuration do
       
       Given(:config) { Roro::Configuration.new(options)}        
       Given(:options) { { "interactive"=>"interactive" } }
-      
+      Given(:asker) { Thor::Shell::Basic.any_instance }
+      Given { asker.stubs(:ask).returns(interactive_answer) }
+        
       describe 'must override default answer' do 
         
         Then  { assert_equal config.thor_actions[thor_action], interactive_answer }

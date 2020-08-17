@@ -53,8 +53,11 @@ module Roro
     
     def set_from_interactive 
       @choices.each do |key, v|
-        # byebug
-        answer = ask(v['question'], default: v['default'], choices: v['choices'] )
+        prompt = ["\n\n" + v['question']]
+        v['choices'].each { |k,v| prompt << "(#{k}) #{v.to_s}" }
+        answer = ask((prompt.join("\n\n") + "\n\n"), 
+        default: v['default'], 
+        limited_to: v['choices'].keys)
         @thor_actions[key] = answer
       end
     end

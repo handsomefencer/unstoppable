@@ -21,7 +21,7 @@ module Roro
     no_commands do
      
       def configure_for_rollon
-        @config = Roro::Configuration.new(options) 
+        @config ||= Roro::Configuration.new(options) 
       end
       
       def yaml_from_template(file)
