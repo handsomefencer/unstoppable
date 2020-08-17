@@ -9,7 +9,7 @@ services:
     depends_on:
       - database
       - redis
-    # entrypoint: ./docker-entrypoint.sh
+
     command: ["bin/rails", "s", "-b", "0.0.0.0"]
     ports:
       - "3000:3000"
@@ -27,6 +27,7 @@ services:
     build:
       context: .
       dockerfile: roro/containers/app/Dockerfile
+
 
     command: ./bin/webpack-dev-server
     ports:

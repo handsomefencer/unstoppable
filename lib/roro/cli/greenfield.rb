@@ -33,15 +33,6 @@ module Roro
         rollon
       end
       
-      def remove_roro_artifacts 
-        system "docker kill $(docker ps -q)"
-        appname = Dir.pwd.split('/').last 
-        volumes = %w(db_data gem_cache app)
-        volumes.each {|v| system "docker volume rm #{appname}_#{v}"}
-        images = ['postgres', 'postgresql', 'mysql']
-        images.each {|i| system "docker rmi #{i}"}
-      end
-      
       def copy_greenfield_files
         template 'greenfield/Dockerfile.tt', 'Dockerfile', @config.app
       end      

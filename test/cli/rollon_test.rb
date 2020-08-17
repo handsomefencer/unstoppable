@@ -25,8 +25,8 @@ describe Roro::CLI do
           }
         end 
         
-        
         describe '.copy_roro_files' do
+        
           Given { config.thor_actions['insert_hfci_gem_into_gemfile'] = 'y'}
           Given { subject.copy_roro_files }
           
@@ -58,7 +58,12 @@ describe Roro::CLI do
               end 
             end 
           end
+          
+          describe "'docker-entrypoint.sh'" do 
             
+            Then { assert_file 'roro/docker-entrypoint.sh' }
+          end
+
           describe "'.gitignore'" do 
             Given(:file) { ".gitignore" }
             Given(:lines) {["roro/**/*.env", "roro/**/*.key"] }
@@ -69,7 +74,7 @@ describe Roro::CLI do
               end 
             end 
           end
-
+        
           describe 'copies' do 
             describe 'docker-compose.yml' do 
               Given(:file) { "docker-compose.yml" }
