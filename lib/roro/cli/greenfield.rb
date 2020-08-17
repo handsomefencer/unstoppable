@@ -24,7 +24,7 @@ module Roro
     no_commands do
       
       def configure_for_greenfielding
-        @config = Roro::Configuration.new 
+        @config = Roro::Configuration.new(options) 
         @config.set_from_defaults
       end 
       

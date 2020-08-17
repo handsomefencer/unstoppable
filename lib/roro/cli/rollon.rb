@@ -21,17 +21,7 @@ module Roro
     no_commands do
      
       def configure_for_rollon
-        case 
-        when File.exist?('.roro_config.yml')
-          @config = Roro::Configuration.new 
-          @config.set_from_config# puts 'no roro config file' 
-          YAML.load_file(Dir.pwd + '/.roro_config.yml') || false
-
-        when @config.nil? 
-          @config = Roro::Configuration.new 
-          @config.set_from_defaults
-        end
-        @config
+        @config = Roro::Configuration.new(options) 
       end
       
       def yaml_from_template(file)
@@ -46,12 +36,7 @@ module Roro
       end
       
       def take_thor_actions 
-        @config.thor_actions.each do |key, value|
-          case 
-          when value.eql?('y')
-            eval(key)
-          end
-        end
+        @config.thor_actions.each {|k, v| eval(k) if v.eql?('y') }  
       end
               
       def startup_commands 

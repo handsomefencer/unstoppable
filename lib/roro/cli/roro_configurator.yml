@@ -20,6 +20,7 @@ services:
             - stretch
 
         choices:
+          
           config_std_out_true: 
             question: Configure $stdout.sync for docker?
             choices: {y: 'y', n: 'n'}
