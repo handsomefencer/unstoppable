@@ -34,7 +34,7 @@ describe Roro::CLI do
     end
     
     describe 'env_files' do 
-      
+
       Then { %w(development production test staging ci).each { |env| 
         assert_file( "roro/containers/database/#{env}.env" ) { |c| 
           assert_match "MYSQL_ROOT_PASSWORD=root", c 

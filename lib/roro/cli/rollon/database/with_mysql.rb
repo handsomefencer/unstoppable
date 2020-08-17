@@ -7,7 +7,7 @@ module Roro
       def configure_for_mysql 
         insert_mysql_gem_into_gemfile
         copy_file 'base/config/database.mysql.yml', 'config/database.yml', force: true
-        config = @config.app
+        config = @config.app.clone
 
         %w(development production test staging ci).each do |environment| 
           config['rails_env'] = environment

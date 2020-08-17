@@ -4,104 +4,115 @@ describe Roro::Configuration do
   
   Given { prepare_destination "rails/603" }
   
-  env_vars = {
-    main_app_name: '603', 
-    ruby_version: `ruby -v`.scan(/\d.\d/).first.to_s,
-    database_service: 'database',
-    database_vendor: 'postgresql',
-    frontend_service: 'frontend',
-    webserver_service: 'nginx',
-  }
-    
-  Given(:config) { Roro::Configuration.new }
+  describe 'initialization' do
   
-  Given { config }
-
-  describe '.master' do 
-
-    Then { assert_equal Hash, config.master.class }
-  end
-
-  describe '.app' do 
-    
-    Then { assert_equal Hash, config.app.class}  
-  end
-    
-  ["config.set_thor_actions_from_defaults", "config.set_from_defaults"].each do |command| 
-
-    describe ".#{command}" do 
-      
-      Given { eval(command) }
-      
-      describe 'must set up correct thor actions' do 
-
-        Given { command }
+    Given(:config) { Roro::Configuration.new }
+  
+    describe 'normal flow' do
+      describe '.master must get master config' do 
         
-        Then { assert_includes config.thor_actions["config_std_out_true"], 'y' }
+        Then { assert_equal Hash, config.master.class }
       end
-    end     
-  end
-
-  ["config.set_app_variables_from_defaults", "config.set_from_defaults"].each do |command| 
-    
-    describe ".#{command}" do 
       
-      Given { eval(command) }
+      describe '.app' do 
+        
+        Then { assert_equal Hash, config.app.class}  
+      end
       
-      describe 'must set correct app variables' do 
-    
-        env_vars.each do |key, value| 
+      describe '.choices' do 
+        describe 'must have question, choices, and default keys' do 
           
-          describe "key '#{key}' must return value '#{value}' " do 
+          Then { config.choices.each { |key, value| 
+            assert_equal value.keys, %w(question choices default)
+            assert_equal value['choices'].class, Hash
+            assert_equal value['default'].class, String
+          } }
+        end
+      end
+        
+      env_vars = {
+        main_app_name: '603', 
+        ruby_version: `ruby -v`.scan(/\d.\d/).first.to_s,
+        database_service: 'database',
+        database_vendor: 'postgresql',
+        frontend_service: 'frontend',
+        webserver_service: 'nginx',
+      }
+      
+      config_methods = [
+        "config.configure",
+        "config.set_from_defaults",
+      ].each do |cm| 
+        env_vars.each do |key, value| 
+          describe ".#{cm} must set #{key} to #{value}" do 
+        
+            Given { eval(cm) }
             
-            Then do 
-              assert_equal value, config.app[key.to_s]          
-            end
+            Then { assert_equal value, config.app[key.to_s] }          
           end
         end
-      end 
-    end
-  end
-  
-  describe '.choices' do 
-    describe 'must have question, choices, and default keys' do 
-   
-      Given(:questions) { config.choices } 
-      
-      Then do 
-        questions.each do |key, value| 
-          assert_equal value.keys, %w(question choices default)
-          assert_equal value['choices'].class, Hash
-          assert_equal value['default'].class, String
-        end 
+        
+        describe 'must set up default thor actions' do 
+
+          Then { assert_includes config.thor_actions.keys, thor_action }
+          And { assert_equal default_answer, config.thor_actions[thor_action]}
+        end
       end
     end
-  end 
     
-  describe '.set_from_roro_config' do 
+    Given(:config_file) { '.roro_config.yml' }
+    Given(:default_app_name)   { '603' }
+    Given(:config_app_name)    { 'greenfield' }
+    Given(:thor_action)        { 'insert_hfci_gem_into_gemfile' }
+    Given(:default_answer)     { 'n' }
+    Given(:config_answer)      { 'y' }
+    Given(:interactive_answer) { 'z' }
+    Given(:asker) { Thor::Shell::Basic.any_instance }
+    Given { asker.stubs(:ask).returns(interactive_answer) }
     
-    Given { insert_file 'base/.roro_config.yml.tt', ".roro_config.yml"}
-    
-    describe 'default values' do 
+    describe 'without config file' do
+      describe 'must return default app name' do 
+        
+        Then { assert_equal default_app_name, config.app['main_app_name'] }
+      end
       
-      Given { config.set_from_defaults }
-      
-      Then { assert_equal config.app['main_app_name'], '603' }
-      And  { assert_includes ['y', 'n'], config.thor_actions['insert_hfci_gem_into_gemfile'] }
+      describe 'must return default thor_actions' do
+        
+        Then { assert_equal default_answer, config.thor_actions[thor_action] }
+      end  
     end
     
-    describe 'over-writes default from file' do 
+    describe 'with config file' do
       
-      Given { config.set_from_roro_config }
+      Given { insert_file "base/#{config_file}", config_file }
+      describe 'must override default main_app_name using config' do 
+        
+        Then { assert_equal config_app_name, config.app['main_app_name']  }
+      end 
       
-      Then  { assert_equal config.app['app_name'], 'your-project-name' }
-    end
+      describe 'must override default thor_actions using config' do 
+        
+        Then  { assert_equal 'y', config.thor_actions[thor_action] }
+      end
+    end 
     
-    describe 'over-writes thor actions from file' do 
+    describe 'interactive path' do
       
-      Given { config.set_from_roro_config }
+      Given(:config) { Roro::Configuration.new(options)}        
+      Given(:options) { { "interactive"=>"interactive" } }
       
-      Then  { assert_equal config.thor_actions['insert_hfci_gem_into_gemfile'], 'n' }
+      describe 'must override default answer' do 
+        
+        Then  { assert_equal config.thor_actions[thor_action], interactive_answer }
+      end
+      
+      describe 'must override config answer' do 
+
+        Given { insert_file "base/#{config_file}", config_file }
+        Given(:expected) {config.thor_actions[thor_action] }
+        
+        Then  { assert_equal expected, interactive_answer }
+      end
     end
-  end
-end  
+  end  
+end

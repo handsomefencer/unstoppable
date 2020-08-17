@@ -30,12 +30,9 @@ describe Roro::CLI do
         Given { subject.expects(:system).times(1..20) }
         Given { subject.expects(:rollon).returns(true) }
         Given { subject.greenfield }
-      
-        Then do
-          assert_file 'Dockerfile' do |c|
-            assert_match 'bundle exec rails new ', c
-          end          
-        end
+        Given(:expected_line) { 'bundle exec rails new ' }
+        
+        Then { assert_file('Dockerfile') {|c| assert_match expected_line, c } }
       end
     end
   end
