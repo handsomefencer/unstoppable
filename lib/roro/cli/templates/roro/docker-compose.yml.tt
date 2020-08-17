@@ -15,7 +15,7 @@ services:
       - "3000:3000"
       - "4000:4000"
     volumes:
-      - .:/usr/src/app
+      - app:/usr/src/app
       - gem_cache:/gems
     env_file:
       - roro/containers/app/development.env
@@ -32,7 +32,7 @@ services:
     ports:
       - 3035:3035
     volumes:
-      - .:/usr/src/app
+      - app:/usr/src/app
       - gem_cache:/gems
     env_file:
       - roro/containers/app/development.env
@@ -56,3 +56,4 @@ services:
 volumes:
   db_data:
   gem_cache:
+  app:

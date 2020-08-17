@@ -22,38 +22,78 @@ services:
         choices:
           
           config_std_out_true: 
-            question: Configure $stdout.sync for docker?
-            choices: {y: 'y', n: 'n'}
+            question: |
+              The team at Heroku, among others, recommend logging to STDOUT 
+              and treating your logs as streams. We'll set this to 
+              true as an environment variable but it may also be helpful
+              to configure './config/boot.rb' with '$stdout.sync = true' 
+              just in case that doesn't work. 
+              Would you like to configure this? 
+            choices: 
+              y: 'Yes'
+              n: 'No'
             default: y
 
-          gitignore_sensitive_files:
-            question: Configure .gitignore for roro?
-            choices: { y: 'y', n: 'n' }
-            default: y
-              
           insert_roro_gem_into_gemfile: 
-            question: Add RoRo to your Gemfile?
-            choices: { y: 'y', n: 'n' }
+            question: |
+              Many developers believe it's good idea to secure sensitive 
+              environment files and variables. You can use RoRo to 
+              generate secret keys known only to you for use in any
+              environment, and then use them to encrypt and decrypt 
+              these files. Would you like to add RoRo to your Gemfile?
+            choices: 
+              y: 'Yes'
+              n: 'No'
+            default: y
+                
+          gitignore_sensitive_files:
+            question: | 
+              If you plan to use the environment files RoRo generates for 
+              your own environment variables, it's a good idea to keep 
+              these files out of source control. Would you like RoRo to 
+              modify your .gitignore file to accomplish this for you ?
+            choices: 
+              y: 'Yes'
+              n: 'No'
             default: y
               
           insert_hfci_gem_into_gemfile: 
-            question: 'Add handsome_fencer-test to your Gemfile?'
-            choices: { y: 'y', n: 'n' }
+            question: | 
+              Jim Weirich passed too soon and remains missed. In addition 
+              to Rake, Jim wrote a beautiful gem called 'Given' that makes 
+              Rspec and Minitest less ugly and thus your tests more easy to 
+              write. Would you like to install a gem called 
+              handsome_fencer-test that allows you to try it out?
+            choices: 
+              y: 'Yes'
+              n: 'No' 
             default: n
               
           backup_existing_files: 
-            question: Backup existing files?
-            choices: { y: 'y', n: 'n' }
+            question: |
+              RoRo will be generating a number of files, some of which will 
+              replace existing ones. Would you like to back them up?
+            choices: 
+              y: 'Yes'
+              n: 'No' 
             default: n
 
           copy_dockerignore:
-            question: Create a .dockerignore file?
-            choices: { y: 'y', n: 'n' }
+            question: |
+              Would you like to create a .dockerignore file?
+            choices: 
+              y: 'Yes'
+              n: 'No'
             default: y
             
           configure_database:
-            question: Which database will you RollOn?
-            choices:  { p: 'PostgreSQL', m: 'MySQL' } 
+            question: |
+              RoRo can reliably dockerize your Rails app with either 
+              MySQL or PostgreSQL stories. Which story would you prefer
+              to roll on?
+            choices:
+              p: PostgreSQL
+              m: MySQL 
             default: m
 
         env_vars: 

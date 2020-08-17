@@ -24,13 +24,22 @@ module Roro
     no_commands do
       
       def configure_for_greenfielding
-        @config = Roro::Configuration.new(options) 
-        @config.set_from_defaults
+        @config ||= Roro::Configuration.new(options) 
       end 
       
       def run_greenfield_commands
+        remove_roro_artifacts
         system "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
         rollon
+      end
+      
+      def remove_roro_artifacts 
+        system "docker kill $(docker ps -q)"
+        appname = Dir.pwd.split('/').last 
+        volumes = %w(db_data gem_cache app)
+        volumes.each {|v| system "docker volume rm #{appname}_#{v}"}
+        images = ['postgres', 'postgresql', 'mysql']
+        images.each {|i| system "docker rmi #{i}"}
       end
       
       def copy_greenfield_files
