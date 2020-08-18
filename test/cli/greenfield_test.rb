@@ -2,9 +2,11 @@ require "test_helper"
 
 describe Roro::CLI do
 
+  Given { IO.stubs(:popen).returns([])}  
+
   Given(:subject) { Roro::CLI.new }
+
   Given { prepare_destination 'greenfield' }
-  
   describe "usage" do
     describe "must generate files" do
       describe '.copy_greenfield_to_host' do 

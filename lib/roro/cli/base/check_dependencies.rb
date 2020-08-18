@@ -27,19 +27,20 @@ module Roro
       
       def startup_commands 
         system 'docker-compose build'
-        system 'docker-compose run web bundle'
-        system 'docker-compose run web bin/rails webpacker:install'
-        system 'docker-compose run web bin/rails yarn:install'
-        system 'docker-compose run web bin/rails db:setup'
-        system 'docker-compose up'
+        system 'docker-compose up web bundle'
+        system 'docker-compose exec web bundle'
+        system 'docker-compose exec web bundlebin/rails webpacker:install'
+        system 'docker-compose exec web bin/rails yarn:install'
+        system 'docker-compose exec web bin/rails db:setup'
       end
       
       def remove_roro_artifacts 
         appname = Dir.pwd.split('/').last 
         check_for_clashes = "docker ps --filter name=#{appname}* -aq"
-        byebug
-        unless IO.popen(check_for_clashes).count.eql?(0) 
-          remove_clashes = ["docker ps --filter name=greenfield* -aq | xargs docker stop | xargs docker rm"]
+        no_artifact_containers = IO.popen(check_for_clashes).count.eql?(0)
+        no_artifact_volumes = IO.popen("docker volume ls --filter name=greenfield*").count > (1)
+        unless (no_artifact_containers && no_artifact_volumes)
+          remove_clashes = ["docker ps --filter name=#{appname}* -aq | xargs docker stop | xargs docker rm"]
           volumes = %w(db_data app)
           volumes.each {|v| remove_clashes << "docker volume rm #{appname}_#{v}"}
           question = [

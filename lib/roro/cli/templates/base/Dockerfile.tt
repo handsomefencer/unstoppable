@@ -22,8 +22,6 @@ RUN mkdir ${BUNDLE_PATH}}
 VOLUME ${APP_HOME}
 VOLUME /gems
 
-
-
 ## To speed up development, copy Gemfile and Gemfile.lock from host
 ## and then bundle so changing other parts of the app don't trigger 
 ## a full gem install.

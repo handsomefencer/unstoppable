@@ -8,13 +8,12 @@ default: &default
   database: <%= ENV.fetch('MYSQL_DATABASE') %>
   port:     <%= ENV.fetch('MYSQL_DATABASE_PORT') %>
   socket: /var/run/mysqld/mysqlx.sock
-
-
+  
 development:
   <<: *default
 
 test:
   <<: *default
-  
+
 production:
   <<: *default

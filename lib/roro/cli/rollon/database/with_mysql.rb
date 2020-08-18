@@ -5,7 +5,7 @@ module Roro
     no_commands do
       
       def configure_for_mysql 
-        insert_mysql_gem_into_gemfile
+        insert_db_gem('mysql2')
         copy_file 'base/config/database.mysql.yml', 'config/database.yml', force: true
         config = @config.app.clone
 

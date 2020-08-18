@@ -9,12 +9,46 @@ describe Roro::CLI do
     describe '.insert_pg_gem_into_gemfile' do 
       
       Given { cli.insert_pg_gem_into_gemfile }
-      Then do 
-        assert_file 'Gemfile' do |c| 
-          assert_match("gem 'pg'", c)
-        end
+      
+      describe 'other vendor gems must be commented out' do 
+
+        Then { assert_file( 'Gemfile' ) { |c| 
+          assert_match /# gem\s['"]mysql2['"]/, c
+          assert_match /# gem\s['"]sqlite3['"]/, c
+        }}
+         
+      end 
+      
+      describe 'pg must be present and not commented' do 
+        
+        Then { assert_file( 'Gemfile' ) {|c| 
+          assert_match /gem\s['"]pg['"]/, c
+          refute_match /# gem\s['"]pg['"]/, c
+        }}
       end
     end
+    
+    describe '.insert_mysql2_gem_into_gemfile' do 
+      Given { cli.insert_mysql2_gem_into_gemfile }
+      
+      describe 'other vendor gems must be commented out' do 
+
+        Then { assert_file( 'Gemfile' ) { |c| 
+          assert_match /# gem\s['"]pg['"]/, c
+          assert_match /# gem\s['"]sqlite3['"]/, c
+        }}
+         
+      end 
+      
+      describe 'mysql2 must be present and not commented' do 
+        
+        Then { assert_file( 'Gemfile' ) {|c| 
+          assert_match /gem\s['"]mysql2['"]/, c
+          refute_match /# gem\s['"]mysql2['"]/, c
+        }}
+      end
+    end
+
 
     describe '.insert_roro_gem_into_gemfile' do 
       
