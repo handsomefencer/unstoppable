@@ -24,16 +24,7 @@ module Roro
           conditional: "Dir.glob('*').empty?" }) 
         confirm || true
       end
-      
-      def startup_commands 
-        system 'docker-compose build'
-        system 'docker-compose up web bundle'
-        system 'docker-compose exec web bundle'
-        system 'docker-compose exec web bundlebin/rails webpacker:install'
-        system 'docker-compose exec web bin/rails yarn:install'
-        system 'docker-compose exec web bin/rails db:setup'
-      end
-      
+          
       def remove_roro_artifacts 
         appname = Dir.pwd.split('/').last 
         check_for_clashes = "docker ps --filter name=#{appname}* -aq"

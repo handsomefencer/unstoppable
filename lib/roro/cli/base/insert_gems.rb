@@ -10,17 +10,17 @@ module Roro
       end
       
       def insert_db_gem(gem)
-        %w(sqlite pg mysql2).each { |vendor| comment_lines 'Gemfile', vendor } 
-        uncomment_lines 'Gemfile', gem
-        insert_into_file 'Gemfile', "gem '#{gem}'", above: "group :development, :test do"
-      end
-
-      def insert_pg_gem_into_gemfile
-        insert_db_gem('pg')
-      end
-      
-      def insert_mysql2_gem_into_gemfile
-        insert_db_gem('mysql2')
+        gem_lines = [
+          /gem\s['"]sqlite3['"]/,
+          /gem\s['"]mysql2['"]/,
+          /gem\s['"]pg['"]/,
+          
+        ]
+        gem_lines.each do |line| 
+          comment_lines 'Gemfile', line 
+          gsub_file 'Gemfile', line, 'gem copied over by roro'
+        end
+        insert_into_file 'Gemfile', "gem '#{gem}'\n\n", before: "group :development, :test"
       end
 
       def insert_hfci_gem_into_gemfile

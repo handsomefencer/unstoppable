@@ -6,11 +6,12 @@ describe Roro::CLI do
 
   describe "commands" do
 
-    Then {
+    Then do
       assert_includes Roro::CLI.commands.keys, "expose"
       assert_includes Roro::CLI.commands.keys, "greenfield"
       assert_includes Roro::CLI.commands.keys, "generate_key"
       assert_includes Roro::CLI.commands.keys, "obfuscate"
-      assert_includes Roro::CLI.commands.keys, "rollon" }
+      assert_includes Roro::CLI.commands.keys, "rollon" 
+    end
   end
 end

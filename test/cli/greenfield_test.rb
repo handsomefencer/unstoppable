@@ -3,6 +3,8 @@ require "test_helper"
 describe Roro::CLI do
 
   Given { IO.stubs(:popen).returns([])}  
+  Given { stub_system_calls }
+
 
   Given(:subject) { Roro::CLI.new }
 
