@@ -9,6 +9,21 @@ require "thor_helper"
 
 include TestHelper::Files::Assertions
 
+require 'test_helper'
+
+module RoroSystemStubs 
+  
+  def stub_system_calls
+    Roro::CLI.any_instance.stubs(:startup_commands)
+    Roro::CLI.any_instance.stubs(:remove_roro_artifacts)
+    Roro::CLI.any_instance.stubs(:confirm_dependencies)
+    Roro::CLI.any_instance.stubs(:confirm_directory_not_empty)
+    Roro::CLI.any_instance.stubs(:confirm_directory_empty)
+  end
+end
+
+include RoroSystemStubs
+
 Minitest.after_run do
   Dir.chdir(ENV.fetch("PWD"))
   FileUtils.rm_rf 'tmp/.'

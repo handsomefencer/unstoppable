@@ -3,13 +3,18 @@ require 'test_helper'
 describe Roro::CLI do
 
   Given { prepare_destination 'rails/603' }
-  Given(:subject) { Roro::CLI.new } 
-  Given(:config) { subject.configure_for_rollon }
-  
+  Given { stub_system_calls }
+
+  Given(:config) { Roro::Configuration.new }
+  Given(:subject){ Roro::CLI.new }
+  Given(:rollon) { 
+    subject.instance_variable_set(:@config, config)
+    subject.rollon }
+    
   describe '.rollon with mysql' do 
 
     Given { config.thor_actions['configure_database'] = 'm' }
-    Given { subject.copy_roro_files }
+    Given { rollon }
 
     describe 'must add mysql2 gem to gemfile' do 
     
@@ -47,7 +52,7 @@ describe Roro::CLI do
     end
 
     describe 'docker-compose.yml' do
-      
+ 
       Given(:expected) { yaml_from_template('stories/with_mysql/_service.yml')}
       
       Then { assert_file("docker-compose.yml") {|c| assert_match expected, c }}

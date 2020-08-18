@@ -5,7 +5,7 @@ module Roro
     no_commands do
       
       def configure_for_pg 
-        insert_pg_gem_into_gemfile
+        insert_db_gem('pg')
         copy_file 'base/config/database.pg.yml', 'config/database.yml', force: true
         config = @config.app.clone
         %w(development production test staging ci).each do |environment| 

@@ -5,7 +5,6 @@ describe Roro::CLI do
   Given { prepare_destination "rails/603" }
 
   Given(:cli) { Roro::CLI.new } 
-  
       
   describe ".config_std_out" do 
       

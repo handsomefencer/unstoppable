@@ -94,7 +94,7 @@ services:
             choices:
               p: PostgreSQL
               m: MySQL 
-            default: m
+            default: p
 
         env_vars: 
           DATABASE_HOST: database
