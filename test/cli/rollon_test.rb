@@ -3,8 +3,10 @@ require 'test_helper'
 describe Roro::CLI do
 
   Given { prepare_destination 'rails/603' }
-
+  Given(:io_checker) { IO.any_instance }
+  Given { io_checker.stubs(:popen).returns(0)}
   describe '.rollon' do 
+    
     ['m', 'p'].each do |db|
       Given { config.thor_actions['configure_database'] = db }
 
