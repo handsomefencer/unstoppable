@@ -18,5 +18,6 @@ tmp/*
 !tmp/.keep 
 sandbox/*
 !sandbox/.keep 
+!sandbox/greenfield
 sandbox/greenfield/*
 !sandbox/greenfield/.keep
