@@ -5,7 +5,6 @@
 /doc/
 /pkg/
 /spec/reports/
-tmp/*
 Gemfile.lock
 .byebug_history
 /sandbox/**/*
@@ -15,3 +14,10 @@ roro/**/*.key
 
 *.key
 *.env
+
+tmp/*
+!tmp/.keep 
+sandbox/*
+!sandbox/.keep 
+sandbox/greenfield/*
+!sandbox/greenfield/.keep
