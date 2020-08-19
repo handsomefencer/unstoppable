@@ -15,5 +15,3 @@ roro/**/*.key
 
 *.key
 *.env
-test_apps
-test/dummies/roro
