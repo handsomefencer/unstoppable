@@ -21,8 +21,9 @@ module Roro
     def generate_key(*args)
       environments = args.first ? [args.first] : gather_environments
       environments.each do |environment|
+        byebug
         confirm_files_decrypted?(environment)
-        create_file "docker/keys/#{environment}.key", encoded_key
+        create_file "roro/keys/#{environment}.key", encoded_key
       end
     end
 
