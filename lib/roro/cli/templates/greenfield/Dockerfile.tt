@@ -24,11 +24,11 @@ VOLUME /gems
 RUN echo "source 'https://rubygems.org'\ngem 'rails'" > Gemfile
 
 ## Bundle to install rails:
-RUN bundle install
 
 ## Switch to the the work directory from container root:
 WORKDIR ${APP_HOME}
 
+RUN bundle install
 ## Use Rails to generate a new app. We'll configure it later.
 RUN bundle exec rails new . --skip-webpack-install --skip-bundle
 
