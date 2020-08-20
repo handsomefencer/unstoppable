@@ -1,4 +1,3 @@
-require 'byebug'
 require "roro/version"
 require "thor"
 require "roro/cli"
