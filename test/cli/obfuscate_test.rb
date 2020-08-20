@@ -1,35 +1,41 @@
 require 'test_helper'
 
 describe "Roro::CLI" do
-  Given { skip }
-
+  Given { prepare_destination 'roro' }
+  Given(:asker) { Thor::Shell::Basic.any_instance }
+  Given { asker.stubs(:ask).returns('y') }
   Given(:subject) { Roro::CLI.new }
-  Given { prepare_destination 'dummy_roro' }
 
+  Given(:envs) { %w(development staging production) }
+  Given { insert_dot_env_files(envs) }
+  Given(:dotenv_dir) { 'roro/containers/app/' }
   Given { subject.generate_keys }
-
+     
+  describe 'starting point with .env but no .env.enc files' do
+    
+    Then { envs.each {|e| assert_file "roro/keys/#{e}.key" } }
+    And  { envs.each {|e| assert_file dotenv_dir + "#{e}.env" } }
+    And  { envs.each {|e| refute_file dotenv_dir + "#{e}.env.enc" } }
+  end
+  
   describe ":obfuscate(environment)" do
-
-    Given { refute_file 'docker/containers/app/development.env.enc' }
-    Given { assert_file 'docker/containers/app/production.env' }
-    Given { subject.obfuscate('development') }
-
-    Then {
-      assert_file 'docker/containers/app/development.env.enc'
-      assert_file 'docker/containers/web/development.env.enc' }
-
-    And {
-      refute_file 'docker/containers/app/production.env.enc'
-    }
+    describe 'with a key and an env.env file for an env' do 
+      describe 'must only obfuscate the environment specified' do 
+        Given { subject.obfuscate 'production' }
+        
+        Then { assert_file 'roro/containers/app/production.env.enc' }
+        And  { refute_file 'roro/containers/app/development.env.enc' }
+      end
+    end
   end
 
   describe ":obfuscate" do
-
-    Given { subject.obfuscate }
-
-    Then {
-      assert_file 'docker/containers/app/development.env.enc'
-      assert_file 'docker/containers/web/development.env.enc'
-      assert_file 'docker/containers/web/production.env.enc' }
+    describe 'all env keys and all files' do 
+    
+      Given { subject.obfuscate }
+      
+      Then { envs.each {|e| assert_file dotenv_dir + "#{e}.env.enc" } }
+      And { envs.each {|e| assert_file dotenv_dir + "#{e}.env" } }
+    end
   end
 end

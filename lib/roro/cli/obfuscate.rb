@@ -7,13 +7,12 @@ module Roro
     include Thor::Actions
     include HandsomeFencer::Crypto
 
-    desc "obfuscate", "obfuscates any files matching the pattern ./docker/**/*.env"
+    desc "obfuscate", "obfuscates any files matching the pattern ./roro/**/*.env"
 
     def obfuscate(*args)
-      default_environments = %w[circleci development staging production]
-      environments = args.first ? [args.first] : default_environments
+      environments = args.first ? [args.first] : gather_environments
       environments.each do |environment|
-        HandsomeFencer::Crypto.obfuscate(environment, 'docker')
+        HandsomeFencer::Crypto.obfuscate(environment, 'roro')
       end
     end
   end

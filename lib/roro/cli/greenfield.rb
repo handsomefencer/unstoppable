@@ -35,6 +35,7 @@ module Roro
       
       def copy_greenfield_files
         template 'greenfield/Dockerfile.tt', 'Dockerfile', @config.app
+        template 'roro/docker-compose.yml.tt', 'docker-compose.yml', @config.app
       end      
     end
   end
