@@ -10,7 +10,7 @@ describe "Roro::CLI" do
   Given(:dotenv_dir) { 'roro/containers/app/' }
   Given(:envs) { %w(development staging production) }
   Given { insert_dot_env_files(envs) }
-  Given { subject.generate_keys }
+  Given { subject.generate_key }
   Given { subject.obfuscate }
   
   describe 'starting point' do 

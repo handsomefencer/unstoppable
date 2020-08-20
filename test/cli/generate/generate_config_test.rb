@@ -8,7 +8,7 @@ describe Roro::CLI do
   describe "generate:config:roro" do
     
     Given { subject.configure_for_greenfielding }
-    Given { subject.generate_roro_config }
+    Given { subject.generate_config }
     
     describe "after greenfielding, before rolling on" do 
     

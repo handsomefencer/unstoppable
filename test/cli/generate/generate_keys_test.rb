@@ -54,7 +54,7 @@ describe Roro::CLI do
       
       describe 'must generate keys when env.env exists' do 
         
-        Given { subject.generate_keys }
+        Given { subject.generate_key }
         
         Then { envs.each { |e| assert_file "roro/keys/#{e}.key" } }
       end
@@ -69,7 +69,7 @@ describe Roro::CLI do
     
     describe 'when just a .env file present' do 
 
-      Given { subject.generate_keys }
+      Given { subject.generate_key }
       
       Then { assert subject.confirm_files_decrypted?('circleci') }
 
@@ -90,7 +90,7 @@ describe Roro::CLI do
 
         describe "when called from generate_key" do
 
-          Then { assert_raises( error ) { subject.generate_keys } }
+          Then { assert_raises( error ) { subject.generate_key } }
         end
       end
     end
