@@ -13,24 +13,12 @@ module Roro
       def ruby_gem_with_ci_cd(*args)
         configure_for_rollon
         directory 'ruby_gem', './', @config.app
-        
         gitignore_sensitive_files
+        insert_into_file ".gitignore", "Gemfile.lock\n"
       end
     end
   end
 end
-# # module Roro
-
-# #   class CLI < Thor
-
-    
-# #     no_commands do
-      
-# #       def copy_ruby_gem_files
-# #         copy_file 'ruby_gem/config.yml', '.circleci/config.yml'
-# #       end
-# #     end
-    
 # #     def ruby_gem
 # #       rubies = options["rubies"] || ["2.5.3", "2.6.0"]
 # #       copy_file 'ruby_gem/docker-compose.yml', 'docker-compose.yml'
