@@ -1,9 +1,9 @@
-version: '3.1'
+version: '3.2'
 
 services:
 
   app:
     build:
       context: .
-      dockerfile: docker/containers/app/Dockerfile
+      dockerfile: roro/containers/gem/Dockerfile
     command: rake test

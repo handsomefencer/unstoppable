@@ -1,6 +1,6 @@
 FROM ruby:<%= config['ruby_version'] %>-alpine
 
-RUN apk add --no-cache --update build-base linux-headers
+RUN apk add --no-cache --update build-base linux-headers git
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app/
