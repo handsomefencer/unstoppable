@@ -13,6 +13,8 @@ module Roro
       def ruby_gem_with_ci_cd(*args)
         configure_for_rollon
         directory 'ruby_gem', './', @config.app
+        
+        gitignore_sensitive_files
       end
     end
   end

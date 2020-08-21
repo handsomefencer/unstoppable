@@ -11,6 +11,15 @@ describe "Story::RubyGem::WithCICD" do
     subject.ruby_gem_with_ci_cd
   }
 
+  describe '.gitignore' do 
+    Then do 
+      assert_file '.gitignore' do |c|
+        assert_match /roro\/\*\*\/\*.key/, c
+        assert_match /roro\/\*\*\/\*.env/, c
+      end
+    end
+  end
+  
   describe '.circleci' do 
     
     Then { assert_file '.circleci/config.yml' }
