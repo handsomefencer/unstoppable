@@ -14,14 +14,6 @@ describe "Story::RubyGem::WithCICD" do
     subject.ruby_gem_with_ci_cd
   }
   
-  describe 'docker-compose.yml' do 
-          
-    Given(:file) { "docker-compose.yml" }
-    Given(:lines) {["version: '3.2", "  ruby_gem:"] }
-
-    Then { assert_file(file) {|c| lines.each {|l| assert_match l, c}}}
-  end
-
   describe 'must modify .gitignore' do
     
     Given(:keys)    { /roro\/\*\*\/\*.key/ } 
@@ -45,19 +37,14 @@ describe "Story::RubyGem::WithCICD" do
     Then { assert_equal ['2.7', '2.6', '2.5'], rubies } 
   end
  
-  describe 'roro/containers/ruby-x.x.x/Dockerfile' do 
+  describe 'roro/containers/ruby_gem/Dockerfile' do 
      
     Then do  
       rubies.each do |ruby|
-        from = "FROM ruby:#{ruby}-alpine" 
-        file = "roro/containers/ruby_#{ruby.gsub('.', '_')}/Dockerfile"
+        from = "FROM $RUBY_IMAGE" 
+        file = "roro/containers/ruby_image/Dockerfile"
         assert_file(file) { |c| assert_match from, c }  
       end
     end
-  end
-  
-  describe 'docker-compose' do 
-    
-    Then  { assert_file 'docker-compose.yml' }
   end
 end

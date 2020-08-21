@@ -22,17 +22,19 @@ module Roro
           newruby = @config.app['ruby_version'].gsub('.', '').to_i - index
           @config.app['rubies'] << newruby.to_s.split('').join('.')
         end
-        @config.app['rubies'].each do |ruby|
-          dest =  "./roro/containers/ruby_#{ruby.gsub('.', '_')}"
-          directory 'ruby_gem/rubies', dest, 'ruby_version'=> ruby
-        end
-        copy_file 'ruby_gem/docker-compose.yml', 'docker-compose.yml' 
+        
+        # @config.app['rubies'].each do |ruby|
+        #   dest =  "./roro/containers/ruby_#{ruby.gsub('.', '_')}"
+        #   directory 'ruby_gem/rubies', dest, 'ruby_version'=> ruby
+        # end
         directory 'ruby_gem/roro', './roro', @config.app
         directory 'ruby_gem/.circleci', './.circleci', @config.app
         @config.app['rubies'].each do |ruby| 
-          file = 'ruby_gem/.circleci/config.yml'
-          run_command = "  - run: docker build --build-arg RUBY_IMAGE=ruby:#{ruby}-alpine ."
-          append_to_file file, 'getsome'
+          file = '.circleci/config.yml'
+          run_build = "\n      - run: docker build -t #{@config.app['main_app_name'] + '_ruby:' + ruby}--build-arg RUBY_IMAGE=ruby:#{ruby}-alpine ."
+          run_test = "\n      - run: docker run #{@config.app['main_app_name']}_ruby_gem"
+          append_to_file file, run_build, after: 'gem install roro'
+          append_to_file file, run_test, after: run_build
         end
         append_to_file ".gitignore", "Gemfile.lock\n"
         gitignore_sensitive_files

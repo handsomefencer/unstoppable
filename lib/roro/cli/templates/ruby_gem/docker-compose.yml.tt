@@ -1,9 +1,0 @@
-version: '3.2'
-
-services:
-
-  ruby_gem:
-    build:
-      context: .
-      dockerfile: roro/containers/gem/Dockerfile
-    command: rake test
