@@ -7,3 +7,4 @@ COPY . /usr/src/app/
 RUN gem install bundler
 RUN bundle 
 RUN bundle exec rake install
+RUN bundl exec rake test
