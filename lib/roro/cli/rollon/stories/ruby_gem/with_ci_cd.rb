@@ -12,7 +12,23 @@ module Roro
     no_commands do 
       def ruby_gem_with_ci_cd(*args)
         configure_for_rollon
-        directory 'ruby_gem', './', @config.app
+        answer = ask("\nYou can add your rubygems api key in\n\t 
+          './roro/containers/gem/ci.env' \n\nlater, or we'll try to add it here:", 
+        default: '')
+        rubygems_api_key = (answer.eql?("") ? 'some-key' : answer)
+        @config.app['rubygems_api_key'] = rubygems_api_key
+        @config.app['rubies'] = [] 
+        3.times do |index| 
+          newruby = @config.app['ruby_version'].gsub('.', '').to_i - index
+          @config.app['rubies'] << newruby.to_s.split('').join('.')
+        end
+        @config.app['rubies'].each do |ruby|
+          dest =  "./roro/containers/ruby_#{ruby.gsub('.', '_')}"
+          directory 'ruby_gem/rubies', dest, 'ruby_version'=> ruby
+        end
+        copy_file 'ruby_gem/docker-compose.yml', 'docker-compose.yml' 
+        directory 'roro', './roro', @config.app
+        directory 'ruby_gem/.circleci', './.circleci', @config.app
         gitignore_sensitive_files
         append_to_file ".gitignore", "Gemfile.lock\n"
       end

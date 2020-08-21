@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor", "~> 1.0"
   spec.add_dependency "os", "1.0.0"
   spec.add_dependency "sshkit", "1.18.2"
-  spec.add_dependency "handsome_fencer-crypto", "0.1.6"
+  spec.add_dependency "handsome_fencer-crypto"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", ">= 12.3"
   spec.add_development_dependency "handsome_fencer-test", "0.1.1"
