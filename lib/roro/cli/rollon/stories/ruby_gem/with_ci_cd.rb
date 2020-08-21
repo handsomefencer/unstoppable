@@ -27,10 +27,15 @@ module Roro
           directory 'ruby_gem/rubies', dest, 'ruby_version'=> ruby
         end
         copy_file 'ruby_gem/docker-compose.yml', 'docker-compose.yml' 
-        directory 'roro', './roro', @config.app
+        directory 'ruby_gem/roro', './roro', @config.app
         directory 'ruby_gem/.circleci', './.circleci', @config.app
-        gitignore_sensitive_files
+        @config.app['rubies'].each do |ruby| 
+          file = 'ruby_gem/.circleci/config.yml'
+          run_command = "  - run: docker build --build-arg RUBY_IMAGE=ruby:#{ruby}-alpine ."
+          append_to_file file, 'getsome'
+        end
         append_to_file ".gitignore", "Gemfile.lock\n"
+        gitignore_sensitive_files
       end
     end
   end
