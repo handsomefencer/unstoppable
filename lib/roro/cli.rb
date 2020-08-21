@@ -18,14 +18,7 @@ module Roro
       File.dirname(__FILE__) + '/cli/templates'
     end
     
-    desc "rollon::ruby_gem", "Generate files for containerized gem testing, CircleCI, and releasing to RubyGems."
-    method_option :rubies, type: :array, banner: "2.5.3 2.4.2"
-    map "rollon::ruby_gem" => "rollon_ruby_gem"
-
-    def rollon_ruby_gem(*args) 
-      ruby_gem(*args)
-    end
-    
+   
     desc "rollon::rails", "Generates files for and makes changes to your app 
       so it can run using Docker containers."
     method_option :interactive, desc: "Set up your environment variables as 

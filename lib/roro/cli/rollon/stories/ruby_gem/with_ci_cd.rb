@@ -1,12 +1,19 @@
-module RubyGem 
-  class WithCICD < Roro::CLI
+module Roro 
+  class CLI < Thor 
        
     desc "rollon::ruby_gem::with_ci_cd", "Generate files for containerized gem testing, CircleCI, and releasing to RubyGems."
     method_option :rubies, type: :array, banner: "2.5.3 2.4.2"
-    map "rollon::ruby_gem" => "rollon_ruby_gem_with_ci_cd"
+    map "rollon::ruby_gem::with_ci_cd" => "rollon_ruby_gem_with_ci_cd"
 
     def rollon_ruby_gem_with_ci_cd(*args) 
-      ruby_gem(*args)
+      ruby_gem_with_ci_cd(*args)
+    end
+    
+    no_commands do 
+      def ruby_gem_with_ci_cd(*args)
+        configure_for_rollon
+        directory 'ruby_gem', './', @config.app
+      end
     end
   end
 end
@@ -17,10 +24,6 @@ end
     
 # #     no_commands do
       
-# #       def ruby_gem(*args) 
-        
-        
-# #       end
 # #       def copy_ruby_gem_files
 # #         copy_file 'ruby_gem/config.yml', '.circleci/config.yml'
 # #       end
