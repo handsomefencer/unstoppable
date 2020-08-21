@@ -47,4 +47,9 @@ describe "Story::RubyGem::WithCICD" do
       end
     end
   end
+  
+  describe 'docker-compose.yml' do 
+     
+    Then { assert_file 'docker-compose.yml' } 
+  end
 end

@@ -1,0 +1,11 @@
+version: '3.2'
+
+services:
+
+  ruby_gem:
+    build:
+      context: .
+      dockerfile: roro/containers/ruby_image/Dockerfile
+    environment:
+      - RUBY_IMAGE=${RUBY_IMAGE}
+    command: bundle exec rake test
