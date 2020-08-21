@@ -1,3 +1,4 @@
+require 'yaml'
 module Roro
   class Configuration < Thor
     

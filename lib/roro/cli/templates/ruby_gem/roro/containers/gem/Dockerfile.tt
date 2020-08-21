@@ -1,0 +1,9 @@
+FROM ruby:<%= config['ruby_version'] %>-alpine
+
+RUN apk add --no-cache --update build-base linux-headers
+
+WORKDIR /usr/src/app
+COPY . /usr/src/app/
+RUN rake install
+RUN gem install bundler
+RUN bundle
