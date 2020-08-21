@@ -1,4 +1,5 @@
-FROM ruby:<%= config['ruby_version'] %>-alpine
+ARG RUBY_IMAGE=ruby:<%= config['ruby_version'] %>-alpine
+FROM $RUBY_IMAGE
 
 RUN apk add --no-cache --update build-base linux-headers git
 
@@ -7,4 +8,4 @@ COPY . /usr/src/app/
 RUN gem install bundler
 RUN bundle 
 RUN bundle exec rake install
-RUN bundl exec rake test
+RUN bundle exec rake test
