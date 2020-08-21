@@ -1,3 +1,3 @@
-require_relative 'database/with_postgres.rb'
-require_relative 'database/with_mysql.rb'
-require_relative 'database/database.rb'
+require 'roro/cli/rollon/stories/ruby_gem'
+require 'roro/cli/rollon/stories/rails'
+require 'roro/cli/rollon/stories/database' 

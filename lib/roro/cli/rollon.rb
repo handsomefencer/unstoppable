@@ -1,4 +1,4 @@
-require_relative 'rollon/stories'
+require 'roro/cli/rollon/stories'
 
 module Roro
 
