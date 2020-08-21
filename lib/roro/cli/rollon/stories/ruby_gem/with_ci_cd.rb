@@ -14,7 +14,7 @@ module Roro
         configure_for_rollon
         directory 'ruby_gem', './', @config.app
         gitignore_sensitive_files
-        insert_into_file ".gitignore", "Gemfile.lock\n"
+        append_to_file ".gitignore", "Gemfile.lock\n"
       end
     end
   end
