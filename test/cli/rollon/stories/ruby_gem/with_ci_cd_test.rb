@@ -9,10 +9,8 @@ describe "Story::RubyGem::WithCICD" do
   Given(:asker) { Thor::Shell::Basic.any_instance }
   Given(:rubygems_api_key) { 'some-rubygems-api-key' }
   Given { asker.stubs(:ask).returns(rubygems_api_key) }    
-  Given { 
-    subject.instance_variable_set(:@config, config)
-    subject.ruby_gem_with_ci_cd
-  }
+  Given { subject.instance_variable_set( :@config, config ) }
+  Given { subject.ruby_gem_with_ci_cd }
   
   describe 'must modify .gitignore' do
     
@@ -25,9 +23,21 @@ describe "Story::RubyGem::WithCICD" do
     And  { assert_file(file) {|c| assert_match 'Gemfile.lock', c }}
   end
   
-  describe '.circleci' do 
+  describe '.circleci/config.yml' do 
     
-    Then { assert_file '.circleci/config.yml' }
+    Given(:file) { '.circleci/config.yml' }
+    Given(:expected) { r = rubies.first; [
+      "- checkout",
+      "- run: RUBY_IMAGE=ruby:#{r}-alpine docker-compose build ruby_gem",
+      "- run: RUBY_IMAGE=ruby:#{r}-alpine docker-compose run ruby_gem rake test",
+      "- run: gem install roro",
+      "- run: roro generate::exposed",
+      "- run: echo 'source roro/ci.env' >> $BASH_ENV",
+      "- run: gem install gem-release",
+      "- run: gem release --key $RUBYGEMS_API_K" 
+    ]}
+
+    Then { assert_file(file) {|c| expected.each {|e| assert_match e, c } }}
   end
   
   Given(:rubies) { config.app[ 'rubies' ] }
@@ -43,14 +53,10 @@ describe "Story::RubyGem::WithCICD" do
   end
  
   describe 'roro/containers/ruby_gem/Dockerfile' do 
-     
-    Then do  
-      rubies.each do |ruby|
-        from = "FROM $RUBY_IMAGE" 
-        file = "roro/containers/ruby_image/Dockerfile"
-        assert_file(file) { |c| assert_match from, c }  
-      end
-    end
+
+    Given(:file) { "roro/containers/ruby_image/Dockerfile" }    
+
+    Then { assert_file(file) { |c| assert_match "FROM $RUBY_IMAGE", c } }  
   end
   
   describe 'docker-compose.yml' do 

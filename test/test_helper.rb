@@ -6,10 +6,9 @@ require "minitest/spec"
 require "minitest/given"
 require "mocha/minitest"
 require "thor_helper"
+require "byebug"
 
 include TestHelper::Files::Assertions
-
-require 'test_helper'
 
 module RoroSystemStubs 
   
