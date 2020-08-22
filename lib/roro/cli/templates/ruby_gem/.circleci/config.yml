@@ -13,5 +13,5 @@ jobs:
       - run: roro expose ci
       - run: echo 'source roro/containers/gem/ci.env' >> $BASH_ENV
       - run: setup_gem_credentials.sh
-      - run: gem install gem-release
+      - run: gem install gem-release -k
       - run: gem release
