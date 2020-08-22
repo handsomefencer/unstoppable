@@ -68,6 +68,9 @@ module TestHelper
         assert_file file_name, *contents, &block
       end
       
+      def contents_from_file(file)
+        File.read(ENV['PWD'] + "/lib/roro/cli/templates/stories/#{file}")
+      end
       def yaml_from_template(file)
         File.read(ENV['PWD'] + "/lib/roro/cli/templates/#{file}")
       end

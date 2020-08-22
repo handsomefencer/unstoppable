@@ -66,4 +66,7 @@ describe "Story::RubyGem::WithCICD" do
      
     Then { assert_file 'docker-compose.yml' } 
   end
+  
+  Given(:expected) { contents_from_file('ruby_gem/with_ci_cd/_build.yml')}
+  Then { assert_equal 'blah', expected}
 end
