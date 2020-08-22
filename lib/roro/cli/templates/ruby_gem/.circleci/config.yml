@@ -10,9 +10,8 @@ jobs:
     steps:
       - checkout
       - run: gem install roro
-      - run: docker build --build-arg RUBY_IMAGE=ruby:2.5-alpine .
-      - run: docker-compose run test 
-      - run: roro expose circleci
+      - run: roro expose ci
       - run: echo 'source roro/containers/gem/ci.env' >> $BASH_ENV
+      - run: setup_gem_credentials.sh
       - run: gem install gem-release
       - run: gem release

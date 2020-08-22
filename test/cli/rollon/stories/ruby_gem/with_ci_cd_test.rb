@@ -36,6 +36,11 @@ describe "Story::RubyGem::WithCICD" do
   
     Then { assert_equal ['2.7', '2.6', '2.5'], rubies } 
   end
+  
+  describe 'roro/ci.env' do 
+    
+    Then { assert_file('roro/ci.env') {|c| assert_match rubygems_api_key, c} } 
+  end
  
   describe 'roro/containers/ruby_gem/Dockerfile' do 
      
