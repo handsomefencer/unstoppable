@@ -1,0 +1,28 @@
+defaults: &defaults
+  working_directory: /tmp
+
+version: 2
+
+jobs:
+  <%= yaml_from_template("stories/ruby_gem/with_ci_cd/_build.yml") %>
+
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: gem install roro
+      - run: roro generate::exposed ci
+      - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
+      - run: gem install gem-release
+      # - run: gem release --key $RUBYGEMS_API_KEY
+
+  release:
+    machine: true
+    steps:
+      - checkout
+      - run: gem install roro
+      - run: roro generate::exposed ci
+      - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
+      - run: gem install gem-release
+      # - run: gem release --key $RUBYGEMS_API_KEY
+    
