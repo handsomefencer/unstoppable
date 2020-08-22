@@ -17,7 +17,7 @@ module Roro
       configure_for_rollon
       
       copy_roro_files
-      generate_roro_config
+      generate_config
       startup_commands
     end
     
