@@ -31,8 +31,8 @@ describe "Story::RubyGem::WithCICD" do
       "- run: RUBY_IMAGE=ruby:#{r}-alpine docker-compose build ruby_gem",
       "- run: RUBY_IMAGE=ruby:#{r}-alpine docker-compose run ruby_gem rake test",
       "- run: gem install roro",
-      "- run: roro generate::exposed",
-      "- run: echo 'source roro/ci.env' >> $BASH_ENV",
+      "- run: roro generate::exposed ci",
+      # "- run: echo 'source roro/ci.env' >> $BASH_ENV",
       "- run: gem install gem-release",
       "- run: gem release --key $RUBYGEMS_API_K" 
     ]}
@@ -49,9 +49,10 @@ describe "Story::RubyGem::WithCICD" do
   
   describe 'roro/ci.env' do 
     
+    Given(:file) { 'roro/containers/ruby_image/ci.env' }
     Given(:expected) { "export RUBYGEMS_API_KEY=#{rubygems_api_key}"}
 
-    Then { assert_file('roro/ci.env') {|c| assert_match expected, c} } 
+    Then { assert_file(file) {|c| assert_match expected, c} } 
   end
  
   describe 'roro/containers/ruby_gem/Dockerfile' do 

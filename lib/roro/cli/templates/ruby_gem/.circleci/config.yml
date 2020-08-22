@@ -11,7 +11,6 @@ jobs:
       - checkout
       - run: gem install roro
       - run: roro generate::exposed ci
-      - run: echo 'source roro/ci.env' >> $BASH_ENV"
-      - run: setup_gem_credentials.sh
+      - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
       - run: gem install gem-release
       - run: gem release --key $RUBYGEMS_API_KEY

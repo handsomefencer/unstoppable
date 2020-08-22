@@ -12,7 +12,7 @@ module Roro
       def ruby_gem_with_ci_cd(*args)
         configure_for_rollon
         answer = ask("\nYou can add your rubygems api key in\n\t 
-          './roro/ci.env' \n\nlater, or we'll try to add it here:", 
+          './roro/containers/ruby_gem/ci.env' \n\nlater, or we'll try to add it here:", 
         default: '')
         rubygems_api_key = (answer.eql?("") ? 'some-key' : answer)
         @config.app['rubygems_api_key'] = rubygems_api_key
