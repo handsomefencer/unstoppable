@@ -49,7 +49,9 @@ describe "Story::RubyGem::WithCICD" do
   
   describe 'roro/ci.env' do 
     
-    Then { assert_file('roro/ci.env') {|c| assert_match rubygems_api_key, c} } 
+    Given(:expected) { "export RUBYGEMS_API_KEY=#{rubygems_api_key}"}
+
+    Then { assert_file('roro/ci.env') {|c| assert_match expected, c} } 
   end
  
   describe 'roro/containers/ruby_gem/Dockerfile' do 
