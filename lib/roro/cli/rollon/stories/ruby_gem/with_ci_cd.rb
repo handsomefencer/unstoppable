@@ -31,8 +31,9 @@ module Roro
           
           run_build = "\n      - run: RUBY_IMAGE=ruby:#{ruby}-alpine docker-compose build ruby_gem"
           run_test = "\n      - run: RUBY_IMAGE=ruby:#{ruby}-alpine docker-compose run ruby_gem rake test"
-          append_to_file file, run_build + run_test, after: "- checkout"
+          append_to_file file, run_build + run_test, after: "- placeholder"
         end
+        gsub_file '.circleci/config.yml', "- placeholder", "- checkout"
         append_to_file ".gitignore", "\nGemfile.lock"
         gitignore_sensitive_files
       end

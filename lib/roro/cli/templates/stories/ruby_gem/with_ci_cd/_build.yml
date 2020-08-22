@@ -1,9 +1,11 @@
-build:
-  machine: true
-  steps:
-    - checkout
-    - run: gem install roro
-    - run: roro generate::exposed ci
-    - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
-    - run: gem install gem-release
-    # - run: gem release --key $RUBYGEMS_API_KEY
+  build:
+    machine: true
+    steps:
+      - checkout
+      
+      <%= 'getsome' %>
+      - run: gem install roro
+      - run: roro generate::exposed ci
+      - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
+      - run: gem install gem-release
+      # - run: gem release --key $RUBYGEMS_API_KEY
