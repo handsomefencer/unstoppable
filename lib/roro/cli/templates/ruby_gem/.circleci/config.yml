@@ -10,8 +10,8 @@ jobs:
     steps:
       - checkout
       - run: gem install roro
-      - run: roro expose ci
+      - run: roro generate::exposed ci
       - run: echo 'source roro/containers/gem/ci.env' >> $BASH_ENV
       - run: setup_gem_credentials.sh
-      - run: gem install gem-release -k
-      - run: gem release
+      - run: gem install gem-release
+      - run: gem release -k
