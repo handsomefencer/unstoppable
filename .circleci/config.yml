@@ -43,7 +43,7 @@ jobs:
       - run: git checkout .
       - run: ${RUBYGEMS_API_KEY}
       - run: $RUBYGEMS_API_KEY
-      - run: gem release 
+      - run: gem release -k
   
 workflows:
   version: 2
