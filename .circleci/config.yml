@@ -27,17 +27,15 @@ jobs:
       - checkout
       - run: gem install roro
       - run: roro generate::exposed ci
-      - run: source ./roro/containers/ruby_image/ci.env
       - run: | 
           echo $(cat ./roro/containers/ruby_image/ci.env) >> $BASH_ENV
           source $BASH_ENV
-          echo "---\r\n:rubygems_api_key: "$RUBYGEMS_API_KEY > ~/.gem/credentials
-      # - run: chmod 0600 ~/.gem/credentials
-      # - run: chmod +x ./.circleci/setup-gem-credentials.sh
-      # - run: ./.circleci/setup-gem-credentials.sh
+      - run: chmod +x ./.circleci/setup-gem-credentials.sh
+      - run: ./.circleci/setup-gem-credentials.sh
+      - run: chmod 0600 ~/.gem/credentials
       - run: cat ~/.gem/credentials
       - run: git checkout .
-      - run: gem release -k rubygems_api_key: $RUBYGEMS_API_KEY
+      - run: gem release -k
   
 workflows:
   version: 2
