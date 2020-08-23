@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=<%= config['ruby_version'] %>
+ARG RUBY_VERSION=2.7
 ARG RUBY_IMAGE=ruby:${RUBY_VERSION}-alpine
 FROM $RUBY_IMAGE
 

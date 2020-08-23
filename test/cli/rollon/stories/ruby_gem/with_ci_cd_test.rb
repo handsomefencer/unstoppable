@@ -27,14 +27,8 @@ describe "Story::RubyGem::WithCICD" do
     
     Given(:file) { '.circleci/config.yml' }
     Given(:expected) { r = rubies.first; [
-      "- checkout",
-      "- run: RUBY_IMAGE=ruby:#{r}-alpine docker-compose build ruby_gem",
-      "- run: RUBY_IMAGE=ruby:#{r}-alpine docker-compose run ruby_gem rake test",
-      "- run: gem install roro",
-      "- run: roro generate::exposed ci",
-      # "- run: echo 'source roro/ci.env' >> $BASH_ENV",
-      "- run: gem install gem-release",
-      "- run: gem release --key $RUBYGEMS_API_K" 
+      "version: 2.1",
+      "- run: RUBY_VERSION=#{r} docker-compose up --build ruby_gem",
     ]}
 
     Then { assert_file(file) {|c| expected.each {|e| assert_match e, c } }}
@@ -66,7 +60,4 @@ describe "Story::RubyGem::WithCICD" do
      
     Then { assert_file 'docker-compose.yml' } 
   end
-  
-  Given(:expected) { contents_from_file('ruby_gem/with_ci_cd/_build.yml')}
-  Then { assert_equal 'blah', expected}
 end

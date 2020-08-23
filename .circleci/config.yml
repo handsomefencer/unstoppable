@@ -1,0 +1,43 @@
+version: 2.1
+
+jobs:
+
+  build:
+    machine: true
+    steps:
+      - checkout
+  
+  test:
+    machine: true
+    steps:
+      - checkout
+      - run: RUBY_VERSION=2.5 docker-compose up --build ruby_gem
+      - run: RUBY_VERSION=2.6 docker-compose up --build ruby_gem
+      - run: RUBY_VERSION=2.7 docker-compose up --build ruby_gem    
+      
+  release:
+    machine: true
+    steps:
+      - checkout
+      - run: gem install roro
+      - run: roro generate::exposed ci
+      - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
+      - run: chmod +x ./.circleci/setup-gem-credentials.sh
+      - run: ./.circleci/setup-gem-credentials.sh
+      - run: cat ~/.gem/credentials
+      - run: git checkout .
+      - run: gem release
+  
+workflows:
+  version: 2
+    
+  build-release: 
+    jobs: 
+      - build
+      - test
+      - release:
+          requires: 
+            - build
+          filters: 
+            branches: 
+              only: release

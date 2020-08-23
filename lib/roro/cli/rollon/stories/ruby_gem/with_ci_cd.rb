@@ -30,7 +30,7 @@ module Roro
           spacer = "\n      - run: "
           rv = "RUBY_VERSION=#{ruby} "
           up_build = "docker-compose up --build ruby_gem"
-          append_to_file file, spacer + ruby + up_build, after: "- placeholder"
+          append_to_file file, spacer + rv + up_build, after: "- placeholder"
         end
         gsub_file '.circleci/config.yml', "- placeholder", "- checkout"
         append_to_file ".gitignore", "\nGemfile.lock"
