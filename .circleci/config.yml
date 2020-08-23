@@ -32,7 +32,7 @@ jobs:
       - run: ./.circleci/setup-gem-credentials.sh
       - run: cat ~/.gem/credentials
       - run: git checkout .
-      - run: gem release
+      - run: "gem release --key rubygems_api_key: $RUBYGEMS_API_KEY"
   
 workflows:
   version: 2
@@ -40,7 +40,11 @@ workflows:
   build-release: 
     jobs: 
       - build
-      - test
+      - test:
+          filters: 
+            branches: 
+              except: release
+      
       - release:
           requires: 
             - build
