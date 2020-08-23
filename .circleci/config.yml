@@ -37,7 +37,7 @@ jobs:
       - run: source roro/containers/ruby_image/ci.env >> $BASH_ENV
       - run: | 
           FIRST_PART='---\r\n:rubygems_api_key: '
-          echo -e $FIRST_PART$RUBYGEMS_API_KEY > ~/.gem/credentials
+          echo -e '$FIRST_PART $RUBYGEMS_API_KEY' > ~/.gem/credentials
       # - run:  
       #     name: Create gem credentials
       #     command: [echo -e '---\r\n:rubygems_api_key: $RUBYGEMS_API_KEY' > ~/.gem/credentials]
