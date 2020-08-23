@@ -27,7 +27,7 @@ jobs:
       - checkout
       - run: gem install roro
       - run: roro generate::exposed ci
-      - run: source roro/containers/ruby_image/ci.env
+      - run: source ./roro/containers/ruby_image/ci.env
       - run: |
           KEYPART="---\r\n:rubygems_api_key: "
           echo $KEYPART$RUBYGEMS_API_KEY > ~/.gem/credentials
