@@ -35,7 +35,9 @@ jobs:
       #     echo 'cat roro/containers/ruby_image/ci.env' >> $BASH_ENV
       #     source $BASH_ENV
       - run: source roro/containers/ruby_image/ci.env >> $BASH_ENV
-      - run: echo -e '---\r\n:rubygems_api_key: $RUBYGEMS_API_KEY' > ~/.gem/
+      - run:  
+          name: Create gem credentials
+          command: echo -e '---\r\n:rubygems_api_key: $RUBYGEMS_API_KEY' > ~/.gem/
       - run: chmod 0600 ~/.gem/credentials
       # - run: chmod +x ./.circleci/setup-gem-credentials.sh
       # - run: ./.circleci/setup-gem-credentials.sh
