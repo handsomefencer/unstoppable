@@ -31,7 +31,7 @@ jobs:
       - run: chmod +x ./.circleci/setup-gem-credentials.sh
       - run: ./.circleci/setup-gem-credentials.sh
       - run: cat ~/.gem/credentials
-      - run: git checkout .
+      # - run: git checkout .
       - run: "gem release --key rubygems_api_key: $RUBYGEMS_API_KEY"
   
 workflows:
