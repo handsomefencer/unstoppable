@@ -26,13 +26,11 @@ module Roro
         copy_file 'ruby_gem/docker-compose.yml', './docker-compose.yml'
         
         @config.app['rubies'].each do |ruby| 
-          img_name = 'ruby_gem:' + ruby
           file = '.circleci/config.yml'
-          
-          run_build = "\n      - run: RUBY_IMAGE=ruby:#{ruby}-alpine docker-compose build ruby_gem"
-          which_ruby = "\n      - run: RUBY_IMAGE=ruby:#{ruby}-alpine docker-compose run ruby_gem ruby -v"
-          run_test = "\n      - run: RUBY_IMAGE=ruby:#{ruby}-alpine docker-compose run ruby_gem rake test"
-          append_to_file file, run_build + which_ruby + run_test, after: "- placeholder"
+          spacer = "\n      - run: "
+          rv = "RUBY_VERSION=#{ruby} "
+          up_build = "docker-compose up --build ruby_gem"
+          append_to_file file, spacer + ruby + up_build, after: "- placeholder"
         end
         gsub_file '.circleci/config.yml', "- placeholder", "- checkout"
         append_to_file ".gitignore", "\nGemfile.lock"

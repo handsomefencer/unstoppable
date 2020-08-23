@@ -19,11 +19,12 @@ jobs:
       - run: gem install roro
       - run: roro generate::exposed ci
       - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
-      - run: printenv RUBYGEMS_API_KEY
+      - run: chmod +x ./.circleci/setup-gem-credentials.sh
       - run: ./.circleci/setup-gem-credentials.sh
       - run: cat ~/.gem/credentials
+      - run: git checkout .
       - run: gem release
-        
+  
 workflows:
   version: 2
     
@@ -32,6 +33,8 @@ workflows:
       - build
       - test
       - release:
+          requires: 
+            - build
           filters: 
             branches: 
               only: release
