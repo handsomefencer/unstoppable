@@ -11,9 +11,15 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: RUBY_VERSION=2.5 docker-compose up --build ruby_gem
-      - run: RUBY_VERSION=2.6 docker-compose up --build ruby_gem
-      - run: RUBY_VERSION=2.7 docker-compose up --build ruby_gem    
+      - run: RUBY_VERSION=2.5 docker-compose build ruby_gem
+      - run: RUBY_VERSION=2.5 docker-compose up -d --force-recreate ruby_gem
+      - run: RUBY_VERSION=2.5 docker-compose run ruby_gem bundle exec rake test
+      - run: RUBY_VERSION=2.6 docker-compose build ruby_gem
+      - run: RUBY_VERSION=2.6 docker-compose up -d --force-recreate ruby_gem
+      - run: RUBY_VERSION=2.6 docker-compose run ruby_gem bundle exec rake test
+      - run: RUBY_VERSION=2.7 docker-compose build ruby_gem
+      - run: RUBY_VERSION=2.7 docker-compose up -d --force-recreate ruby_gem
+      - run: RUBY_VERSION=2.7 docker-compose run ruby_gem bundle exec rake test    
       
   release:
     machine: true

@@ -28,7 +28,9 @@ describe "Story::RubyGem::WithCICD" do
     Given(:file) { '.circleci/config.yml' }
     Given(:expected) { r = rubies.first; [
       "version: 2.1",
-      "- run: RUBY_VERSION=#{r} docker-compose up --build ruby_gem",
+      "- run: RUBY_VERSION=#{r} docker-compose build ruby_gem",
+      "- run: RUBY_VERSION=#{r} docker-compose up -d --force-recreate",
+      "- run: RUBY_VERSION=#{r} docker-compose run ruby_gem bundle exec rake",
     ]}
 
     Then { assert_file(file) {|c| expected.each {|e| assert_match e, c } }}

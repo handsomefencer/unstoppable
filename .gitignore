@@ -15,7 +15,7 @@ roro/**/*.key
 *.env
 
 tmp/*
-!tmp/.gitkeep 
+!tmp/.keep 
 sandbox/*
 !sandbox/.keep 
 !sandbox/greenfield
