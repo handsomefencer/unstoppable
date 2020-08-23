@@ -27,7 +27,7 @@ jobs:
       - checkout
       - run: gem install roro
       - run: roro generate::exposed ci
-      - run: source project/roro/containers/ruby_image/ci.env
+      - run: source roro/containers/ruby_image/ci.env
       - run: chmod +x ./.circleci/setup-gem-credentials.sh
       - run: ./.circleci/setup-gem-credentials.sh
       - run: cat ~/.gem/credentials
