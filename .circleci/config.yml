@@ -35,7 +35,7 @@ jobs:
       - run: chmod 0600 ~/.gem/credentials
       - run: cat ~/.gem/credentials
       - run: git checkout .
-      - run: gem release -k
+      - run: gem release
   
 workflows:
   version: 2
