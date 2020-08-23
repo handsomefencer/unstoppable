@@ -29,7 +29,8 @@ Temporary Items
 *.rbc
 capybara-*.html
 log
-tmp
+tmp/*
+!tmp/.keep
 db/*.sqlite3
 db/*.sqlite3-journal
 public/system
