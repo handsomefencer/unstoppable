@@ -35,7 +35,7 @@ jobs:
       - run: printenv ${RUBYGEMS_API_KEY}
       - run: printenv $RUBYGEMS_API_KEY
       # - run: printenv RUBYGEMS_API_KEY
-      - run: "gem release --key rubygems_api_key: ${RUBYGEMS_API_KEY}"
+      - run: gem release --key ${RUBYGEMS_API_KEY}
   
 workflows:
   version: 2
