@@ -33,7 +33,6 @@ jobs:
       - run: chmod +x ./.circleci/setup-gem-credentials.sh
       - run: ./.circleci/setup-gem-credentials.sh
       - run: chmod 0600 ~/.gem/credentials
-      - run: cat ~/.gem/credentials
       - run: git checkout .
       - run: gem release
   
@@ -46,7 +45,7 @@ workflows:
       - test:
           filters: 
             branches: 
-              only: development, master
+              only: master
       
       - release:
           requires: 
