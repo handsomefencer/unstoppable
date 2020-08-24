@@ -51,8 +51,7 @@ module Roro
         system 'docker-compose run web bin/rails db:create'
         system 'docker-compose run web bin/rails db:migrate'
         system 'docker-compose up -d'
-        system 'sleep 5'
-        system "docker-compose exec web echo '\n\nYour Rails app is available at http://localhost:3000/'"
+        system "docker-compose run web echo '\n\nYour Rails app is available at http://localhost:3000/'"
       end
       
       def confirm_directory_empty 
