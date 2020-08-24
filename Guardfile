@@ -13,5 +13,8 @@ guard :minitest, options do
   watch(%r{^test/(.*)\/?(.*)_test\.rb$})
   watch(%r{^lib/roro/(.+)\.rb$}) { |m| "test/#{m[1]}_test.rb" }
   watch(%r{^test/thor_helper\.rb$})      { 'test' }
-  watch(%r{^test/fixtures/files/(.*/)?([^/]+)\.yml$})     { 'test' }
+  # watch(%r{^lib/roro/templates/(.*)\.tt$}) { 'test' }
+  
+  watch(%r{^lib/roro/cli/templates/(.*)\.tt$}) { 'test' }
+  watch(%r{^lib/roro/cli/templates/(.*)\.yml$}) { 'test' }
 end

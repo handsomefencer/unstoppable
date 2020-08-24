@@ -1,40 +1,16 @@
-version: 2.1
+<%= yaml_from_template("base/.circle_config/_version.yml") %>
 
-jobs:
-
-  build:
-    machine: true
-    steps:
-      - checkout
+<%= yaml_from_template("base/.circle_config/jobs/_build.yml") %>
   
   test:
     machine: true
     steps:
-      - placeholder    
+      - placeholder
+ 
+<%= yaml_from_template("base/.circle_config/jobs/_release.yml") %>
       
-  release:
-    machine: true
-    steps:
-      - checkout
-      - run: gem install roro
-      - run: roro generate::exposed ci
-      - run: echo 'source roro/containers/ruby_image/ci.env' >> $BASH_ENV
-      - run: chmod +x ./.circleci/setup-gem-credentials.sh
-      - run: ./.circleci/setup-gem-credentials.sh
-      - run: cat ~/.gem/credentials
-      - run: git checkout .
-      - run: gem release
+<%= yaml_from_template("base/.circle_config/_workflow.yml") %>
+
+<%= yaml_from_template("base/.circle_config/workflows/_build_release.yml") %>
+
   
-workflows:
-  version: 2
-    
-  build-release: 
-    jobs: 
-      - build
-      - test
-      - release:
-          requires: 
-            - build
-          filters: 
-            branches: 
-              only: release

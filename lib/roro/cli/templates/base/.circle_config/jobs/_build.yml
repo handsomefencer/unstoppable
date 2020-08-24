@@ -1,0 +1,4 @@
+  build:
+    machine: true
+    steps:
+      - checkout

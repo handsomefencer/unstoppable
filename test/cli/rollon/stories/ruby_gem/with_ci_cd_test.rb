@@ -26,6 +26,20 @@ describe "Story::RubyGem::WithCICD" do
   describe '.circleci/config.yml' do 
     
     Given(:file) { '.circleci/config.yml' }
+    
+    describe 'must have the correct structure' do
+      
+      Given(:structure) { YAML.load_file('.circleci/config.yml')}
+      
+      Then { 
+        assert_equal ['version', 'jobs', 'workflows'], structure.keys 
+        assert structure['jobs']['build'] 
+        assert structure['jobs']['test'] 
+        assert structure['jobs']['release'] 
+        assert structure['workflows']['build-release'] 
+      }
+    end 
+    
     Given(:expected) { r = rubies.first; [
       "version: 2.1",
       "- run: RUBY_VERSION=#{r} docker-compose build ruby_gem",
