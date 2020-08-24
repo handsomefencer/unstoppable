@@ -19,7 +19,6 @@ jobs:
           mkdir greenfield
           cd greenfield
           yes "" | roro greenfield
-          yes "" | roro rollon
           echo 'success'
   
   test:
