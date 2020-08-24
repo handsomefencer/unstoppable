@@ -8,8 +8,8 @@ jobs:
       - checkout
   
   test-cli: 
-    
-    machine: true 
+    docker:
+      - image: cimg/ruby:2.7
     steps: 
       - checkout 
       - setup_remote_docker:
