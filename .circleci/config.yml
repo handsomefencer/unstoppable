@@ -15,7 +15,7 @@ jobs:
           rake install 
           mkdir greenfield
           cd greenfield
-          echo "" | roro greenfield
+          yes "" | roro greenfield
 
   
   test:
