@@ -8,8 +8,11 @@ jobs:
       - checkout
   
   test-cli: 
+    
     machine: true 
     steps: 
+      - setup_remote_docker:
+        version: 18.09.3
       - checkout 
       - run: |
           rake install 
