@@ -7,6 +7,14 @@ jobs:
     steps:
       - checkout
   
+  test-cli: cli 
+    machine: true 
+    steps: 
+      - checkout 
+      - run: gem install --local pkg/roro-0.3.12.gem 
+      - run: roro greenfield --force
+
+  
   test:
     machine: true
     steps:
@@ -42,6 +50,10 @@ workflows:
   build-release: 
     jobs: 
       - build
+      - test-cli: 
+          filters: 
+            branches: 
+              only: development
       - test:
           filters: 
             branches: 
