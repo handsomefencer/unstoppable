@@ -19,10 +19,7 @@ jobs:
           mkdir greenfield
           cd greenfield
           yes "" | roro greenfield
-          docker-compose exec web echo 'Container success!' 
           yes "" | roro rollon
-          docker-compose exec web echo 'Container success!' 
-
   
   test:
     machine: true

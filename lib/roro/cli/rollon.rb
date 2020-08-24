@@ -43,6 +43,7 @@ module Roro
       end
               
       def startup_commands
+        success_msg = "'\n\n#{'*' * 5 }\n\nYour Rails app is available at http://localhost:3000/'\n\n#{'*' * 5 }"
         system 'docker-compose build'
         system 'docker-compose run web bundle'
         system 'docker-compose run web bin/rails webpacker:install'
@@ -50,6 +51,7 @@ module Roro
         system 'docker-compose run web bin/rails db:create'
         system 'docker-compose run web bin/rails db:migrate'
         system 'docker-compose up -d'
+        system "docker-compose exec web echo '\n\nYour Rails app is available at http://localhost:3000/'"
       end
       
       def confirm_directory_empty 

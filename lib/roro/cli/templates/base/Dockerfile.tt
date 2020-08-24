@@ -58,11 +58,12 @@ VOLUME ${BUNDLE_PATH}
 ## with slow-building layers that don't change often underneath smaller, 
 ## lighter, qucker oens that might change a lot. 
 
-## Build your big, slow gem layer by first copying your Gemfile && Gemfile.lock:  
-COPY Gemfile* ./ 
-
 ## Set your work directory:
 WORKDIR ${APP_HOME}
+
+## Build your big, slow gem layer by first copying your Gemfile && Gemfile.lock:  
+COPY Gemfile* ./ 
+COPY package.json ./ 
 
 ## build the bundle layer, which now only runs if your Gemfile changes:
 RUN bundle 
