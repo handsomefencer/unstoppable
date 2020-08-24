@@ -19,7 +19,7 @@ jobs:
           mkdir greenfield
           cd greenfield
           yes "" | roro greenfield
-          echo 'success'
+      - run: echo 'success'
   
   test:
     machine: true
