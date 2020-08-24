@@ -19,7 +19,7 @@ module Roro
       def confirm_directory_empty 
         confirm = confirm_dependency({
           system_query: "ls -A",
-          warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
+          warning: "This is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
           suggestion: "$ roro greenfield --force",
           conditional: "Dir.glob('*').empty?" }) 
         confirm || true

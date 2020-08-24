@@ -1,10 +1,11 @@
+require 'byebug' 
 module Roro
 
   class CLI < Thor
         
     no_commands do
     
-      def greenfield
+      def greenfield(*args)
         confirm_directory_empty
         confirm_dependencies
         remove_roro_artifacts

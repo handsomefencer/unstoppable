@@ -52,6 +52,7 @@ module Roro
     def greenfield_rails(*args) 
       greenfield(*args)
     end
+
     desc "generate::exposed", "Generate private .env files from 
       encrypted .env.enc files inside the roro directory."
     map "generate::exposed" => "generate_exposed"
