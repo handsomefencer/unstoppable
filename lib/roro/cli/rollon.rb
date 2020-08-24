@@ -12,7 +12,7 @@ module Roro
     def rollon
       confirm_directory_not_empty
       confirm_dependencies
-      remove_roro_artifacts 
+      # remove_roro_artifacts 
 
       configure_for_rollon
       

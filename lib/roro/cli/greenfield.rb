@@ -7,7 +7,7 @@ module Roro
       def greenfield(*args)
         confirm_directory_empty
         confirm_dependencies
-        remove_roro_artifacts
+        # remove_roro_artifacts
         configure_for_greenfielding
         copy_greenfield_files
         run_greenfield_commands
