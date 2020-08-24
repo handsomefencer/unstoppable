@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
   
-  test-cli: cli 
+  test-cli: 
     machine: true 
     steps: 
       - checkout 
