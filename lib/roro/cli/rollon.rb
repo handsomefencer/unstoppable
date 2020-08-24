@@ -49,7 +49,7 @@ module Roro
         system 'docker-compose run web bin/rails yarn:install'
         system 'docker-compose run web bin/rails db:create'
         system 'docker-compose run web bin/rails db:migrate'
-        system 'docker-compose up'
+        system 'docker-compose up -d'
       end
       
       def confirm_directory_empty 
