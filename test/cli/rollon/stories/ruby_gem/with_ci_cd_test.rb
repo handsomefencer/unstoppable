@@ -32,7 +32,7 @@ describe "Story::RubyGem::WithCICD" do
       Given(:structure) { YAML.load_file('.circleci/config.yml')}
       
       Then { 
-        assert_equal %w(version executors jobs workflows), structure.keys 
+        assert_includes structure.keys, 'version'  
         assert structure['jobs']['build'] 
         assert structure['jobs']['test'] 
         assert structure['jobs']['release'] 

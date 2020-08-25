@@ -1,0 +1,23 @@
+  push:
+    machine: true
+    steps:
+      - checkout
+      - run: gem install handsome_fencer-circle_c_i
+      - run: handsome_fencer-circle_c_i expose circleci
+      - run: handsome_fencer-circle_c_i expose development
+      - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
+      - run: cp docker/overrides/circleci.yml docker-compose.override.yml
+      - run: docker-compose build
+      - run: docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+      - run:
+          name: Tag app image
+          command: docker tag $(docker images | grep project_app | awk '{ print $3 }') ${DOCKERHUB_ORG}/${APP_NAME}_app:$DEPLOY_TAG
+      # - run: docker tag $(docker images | grep project_app | awk '{ print $3 }') ${DOCKERHUB_ORG}/${APP_NAME}_app:latest
+      - run:
+          name: Tag app image
+          command: docker tag $(docker images | grep project_web | awk '{ print $3 }') ${DOCKERHUB_ORG}/${APP_NAME}_web:$DEPLOY_TAG
+      # - run: docker tag $(docker images | grep project_web | awk '{ print $3 }') ${DOCKERHUB_ORG}/${APP_NAME}_web:latest
+      - run: docker push ${DOCKERHUB_ORG}/${APP_NAME}_app:$DEPLOY_TAG
+      - run: docker push ${DOCKERHUB_ORG}/${APP_NAME}_app:latest
+      - run: docker push ${DOCKERHUB_ORG}/${APP_NAME}_web:$DEPLOY_TAG
+      - run: docker push ${DOCKERHUB_ORG}/${APP_NAME}_web:latest

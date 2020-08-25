@@ -32,7 +32,7 @@ module Roro
       end
       
       def copy_roro_files
-        directory 'rails/.circleci', './.circleci' 
+        template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
         configure_database  
         directory 'roro', './', @config.app
         template 'base/Dockerfile.tt', 'roro/containers/app/Dockerfile', @config.app

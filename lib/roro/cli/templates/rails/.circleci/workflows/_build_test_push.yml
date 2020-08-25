@@ -1,0 +1,34 @@
+  build-and-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+
+  build-and-push:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - push:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
+      - staging-deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: staging
+      - production-deploy:
+          requires:
+            - push
+          filters:
+            branches:
+              only: master

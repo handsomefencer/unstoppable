@@ -1,3 +1,6 @@
+defaults: &defaults
+  working_directory: /tmp
+
 version: 2.1
 
 executors:

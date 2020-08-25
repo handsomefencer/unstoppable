@@ -1,0 +1,15 @@
+<%= yaml_from_template("base/.circle_config/_version.yml") %>
+
+<%= yaml_from_template("base/.circle_config/jobs/_build.yml") %>
+  
+<%= yaml_from_template("rails/.circleci/jobs/_test.yml") %>
+
+<%= yaml_from_template("rails/.circleci/jobs/_push.yml") %>
+ 
+<%= yaml_from_template("base/.circle_config/jobs/_release.yml") %>
+      
+<%= yaml_from_template("base/.circle_config/_workflow.yml") %>
+
+<%= yaml_from_template("rails/.circleci/workflows/_build_test_push.yml") %>
+
+  
