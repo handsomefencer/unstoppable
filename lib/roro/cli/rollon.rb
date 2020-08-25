@@ -31,7 +31,8 @@ module Roro
         File.read(File.dirname(__FILE__) + "/templates/#{file}")
       end
       
-      def copy_roro_files 
+      def copy_roro_files
+        directory 'rails/.circleci', './.circleci' 
         configure_database  
         directory 'roro', './', @config.app
         template 'base/Dockerfile.tt', 'roro/containers/app/Dockerfile', @config.app
