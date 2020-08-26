@@ -89,27 +89,27 @@ describe Roro::CLI do
               Given(:file) { "roro/containers/app/Dockerfile" }
               Given(:line1) { "FROM ruby:#{config.app['ruby_version']}"} 
               Given(:line2) { "maintainer=\"#{config.app['dockerhub_email']}"} 
-              Then { assert_file file}
-              # Then { assert_file(file) { |c| 
-                # assert_match line1, c 
-                # assert_match line2, c 
-              # }}
+    
+              Then { assert_file(file) { |c| 
+                assert_match line1, c 
+                assert_match line2, c 
+              }}
             end 
           end
         end
         
-  #       # %w(development production test staging ci).each do |env| 
+        %w(development production test staging ci).each do |env| 
         
-  #       #   describe "must create .env file for #{env}" do 
-  #       #     Given(:line) { "DATABASE_HOST=#{config.app['database_host']}" }
+          describe "must create .env file for #{env}" do 
+            Given(:line) { "DATABASE_HOST=#{config.app['database_host']}" }
 
-  #       #     Then do 
-  #       #       assert_file "roro/containers/app/#{env}.env" do |c| 
-  #       #         assert_match line, c 
-  #       #       end 
-  #       #     end
-  #       #   end
-  #       # end 
+            Then do 
+              assert_file "roro/containers/app/#{env}.env" do |c| 
+                assert_match line, c 
+              end 
+            end
+          end
+        end 
       end
     end 
   end

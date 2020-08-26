@@ -29,7 +29,7 @@ module TestHelper
       end
       
       def insert_dot_env_files(envs)
-        src = 'base/.env/database.pg.env.tt'
+        src = 'rails/.env/database.pg.env.tt'
         envs.each do |e| 
           dest = "roro/containers/app/#{e}.env"
           envs.each { |e| insert_file src, dest } 

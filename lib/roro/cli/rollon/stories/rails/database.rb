@@ -22,7 +22,7 @@ module Roro
         
         %w(development production test staging ci).each do |environment| 
           template(
-            'base/.env/web.env.tt',
+            'rails/.env/web.env.tt',
             "roro/containers/app/#{environment}.env", @config.app
           )
         end

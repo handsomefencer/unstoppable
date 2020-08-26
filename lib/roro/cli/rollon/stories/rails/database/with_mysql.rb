@@ -6,13 +6,13 @@ module Roro
       
       def configure_for_mysql 
         insert_db_gem('mysql2')
-        copy_file 'base/config/database.mysql.yml', 'config/database.yml', force: true
+        copy_file 'rails/config/database.mysql.yml', 'config/database.yml', force: true
         config = @config.app.clone
 
         %w(development production test staging ci).each do |environment| 
           config['rails_env'] = environment
           
-          source = 'base/.env/database.mysql.env.tt'
+          source = 'rails/.env/database.mysql.env.tt'
           target = "roro/containers/database/#{environment}.env" 
           template( source, target, config )
         end
