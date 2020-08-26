@@ -59,6 +59,14 @@ describe Roro::CLI do
 
           Then { assert_file(file) {|c| lines.each {|l| assert_match l, c}}}
         end
+        
+        describe '.env file for docker-compose.yml' do 
+          
+          Given(:file) { ".env" }
+          Given(:line) { 'RAILS_ENV=development' } 
+
+          Then { assert_file(file) {|c| assert_match line, c}}}
+        end
 
         describe "'.dockerignore'" do 
     

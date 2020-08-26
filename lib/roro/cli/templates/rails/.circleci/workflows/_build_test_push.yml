@@ -1,34 +1,29 @@
+workflows:
+  version: 2
+
   build-and-test:
     jobs:
       - build
-      - test:
-          requires:
-            - build
+      filters:
+        branches:
+          only: master
 
   build-and-push:
     jobs:
       - build
       - test:
-          requires:
-            - build
           filters:
             branches:
-              only: master
+              only: release
       - push:
-          requires:
-            - test
           filters:
             branches:
-              only: master
+              only: release
       - staging-deploy:
-          requires:
-            - build
           filters:
             branches:
               only: staging
       - production-deploy:
-          requires:
-            - push
           filters:
             branches:
-              only: master
+              only: release

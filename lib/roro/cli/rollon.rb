@@ -18,7 +18,7 @@ module Roro
       
       copy_roro_files
       generate_config
-      startup_commands
+      # startup_commands
     end
     
     no_commands do

@@ -2,12 +2,6 @@
     machine: true
     steps:
       - checkout
-      - run: gem install handsome_fencer-circle_c_i
-      - run: handsome_fencer-circle_c_i expose circleci
-      - run: handsome_fencer-circle_c_i expose development
-      - run: echo 'source docker/env_files/circleci.env' >> $BASH_ENV
-      - run: cp docker/overrides/circleci.yml docker-compose.override.yml
-      - run: docker-compose build
       - run: docker-compose up -d
       - run: docker-compose exec app bin/rails db:setup
       - run: docker-compose exec app bin/rails test

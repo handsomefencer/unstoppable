@@ -61,23 +61,31 @@ VOLUME ${BUNDLE_PATH}
 ## Set your work directory:
 WORKDIR ${APP_HOME}
 
+## You may need to adjust the bundler version based on your app Gemfile.lock's 
+## bundler version:
+RUN gem install bundler:2.1.4
+
+## Set your work directory. After this line you will be running commands in 
+## ${APP_HOME}. COPY instructions will move files from host to ${APP_HOME}:
+WORKDIR ${APP_HOME}
+
 ## Build your big, slow gem layer by first copying your Gemfile && Gemfile.lock:  
-COPY Gemfile* ./ 
 COPY package.json ./ 
+COPY Gemfile* ./ 
 
 ## build the bundle layer, which now only runs if your Gemfile changes:
 RUN bundle 
 
-## Now build a layer layer with everything in your app that's likely to change
+## Now build a layer with everything in your app that's likely to change
 ## frequently. If you make a change to any of these files, only this layer has
-## to rebuild. smaller, lighter layer
+## to rebuild:
 COPY . ${APP_HOME}
 
+## Now make your entrypoint executable.  
+RUN chmod +x roro/docker-entrypoint.sh
 
-COPY roro/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
-RUN chmod +x /usr/bin/docker-entrypoint.sh
-ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
-
+## Now update node modules: 
+RUN yarn
 
 
 
