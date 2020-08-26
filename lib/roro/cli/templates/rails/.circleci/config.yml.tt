@@ -1,13 +1,10 @@
 <%= yaml_from_template("base/.circleci/_defaults.yml") %>
 
 <%= yaml_from_template("rails/.circleci/jobs/_build.yml") %>
-
       - run: |
           RORO_ENV=ci docker-compose up -d --build
-      
   
 <%= yaml_from_template("rails/.circleci/jobs/_test.yml") %>
-
       - run: |
           RORO_ENV=ci docker-compose run web yarn
           RORO_ENV=ci docker-compose run web bin/rails test
