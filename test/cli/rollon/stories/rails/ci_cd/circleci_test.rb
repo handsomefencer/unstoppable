@@ -6,7 +6,7 @@ describe "Story::Rails::WithCICD" do
   Given { stub_system_calls }
 
   Given(:config)  { Roro::Configuration.new }
-    
+  Given { config.app['force'] = true}  
   Given(:subject) { Roro::CLI.new }
   Given(:rollon)  { 
     subject.instance_variable_set(:@config, config)

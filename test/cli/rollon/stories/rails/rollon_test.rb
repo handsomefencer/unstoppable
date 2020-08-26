@@ -73,30 +73,30 @@ describe Roro::CLI do
           Then { assert_file ".dockerignore" }
         end
               
-  #       describe 'roro directories' do 
+        describe 'roro directories' do 
     
-  #         Then { assert_directory "roro" }
-  #         And  { assert_directory "roro/containers" }
-  #         And  { assert_directory "roro/containers/app" } 
-  #         And  { assert_directory "roro/containers/database" } 
-  #         And  { assert_directory "roro/containers/frontend" } 
-  #       end
+          Then { assert_directory "roro" }
+          And  { assert_directory "roro/containers" }
+          And  { assert_directory "roro/containers/app" } 
+          And  { assert_directory "roro/containers/database" } 
+          And  { assert_directory "roro/containers/frontend" } 
+        end
             
-  #       describe 'containers' do 
-  #         describe 'app' do 
-  #           describe 'Dockerfile' do 
+        describe 'containers' do 
+          describe 'app' do 
+            describe 'Dockerfile' do 
               
-  #             Given(:file) { "roro/containers/app/Dockerfile" }
-  #             Given(:line1) { "FROM ruby:#{config.app['ruby_version']}"} 
-  #             Given(:line2) { "maintainer=\"#{config.app['dockerhub_email']}"} 
-    
-  #             Then { assert_file(file) { |c| 
-  #               assert_match line1, c 
-  #               assert_match line2, c 
-  #             }}
-  #           end 
-  #         end
-  #       end
+              Given(:file) { "roro/containers/app/Dockerfile" }
+              Given(:line1) { "FROM ruby:#{config.app['ruby_version']}"} 
+              Given(:line2) { "maintainer=\"#{config.app['dockerhub_email']}"} 
+              Then { assert_file file}
+              # Then { assert_file(file) { |c| 
+                # assert_match line1, c 
+                # assert_match line2, c 
+              # }}
+            end 
+          end
+        end
         
   #       # %w(development production test staging ci).each do |env| 
         
