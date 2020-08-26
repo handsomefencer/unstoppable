@@ -1,0 +1,17 @@
+  build:
+    <<: *defaults 
+    steps:
+      - checkout
+      - run: |
+          gem install roro 
+          roro generate::exposed ci
+      - run: | 
+          echo 'source roro/containers/app/ci.env' >> $BASH_ENV
+          source $BASH_ENV
+      - run: | 
+          mkdir -p workspace 
+          cp -r roro workspace/
+      - persist_to_workspace: 
+          root: workspace 
+          paths:  
+            - roro

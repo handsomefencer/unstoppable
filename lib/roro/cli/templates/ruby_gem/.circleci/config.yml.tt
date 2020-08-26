@@ -1,16 +1,16 @@
-<%= yaml_from_template("base/.circle_config/_version.yml") %>
+<%= yaml_from_template("base/.circleci/_defaults.yml") %>
 
-<%= yaml_from_template("base/.circle_config/jobs/_build.yml") %>
+<%= yaml_from_template("base/.circleci/jobs/_build.yml") %>
   
   test:
     machine: true
     steps:
       - placeholder
  
-<%= yaml_from_template("base/.circle_config/jobs/_release.yml") %>
+<%= yaml_from_template("base/.circleci/jobs/_release.yml") %>
       
-<%= yaml_from_template("base/.circle_config/_workflow.yml") %>
+<%= yaml_from_template("base/.circleci/_workflow.yml") %>
 
-<%= yaml_from_template("base/.circle_config/workflows/_build_release.yml") %>
+<%= yaml_from_template("base/.circleci/workflows/_build_release.yml") %>
 
   

@@ -13,10 +13,5 @@ executors:
       - image: cimg/ruby:2.7
 
 setup_workspace: &setup_workspace
-  - checkout
-  - attach_workspace:
-      at: /tmp/workspace
-  - run: |
-      cp -rf /tmp/workspace/roro .
-      echo 'source roro/containers/app/ci.env' >> $BASH_ENV
-      source $BASH_ENV
+
+jobs:

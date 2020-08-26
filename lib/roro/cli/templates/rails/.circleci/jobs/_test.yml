@@ -1,7 +1,11 @@
   test:
-    machine: true
+    <<: *defaults 
     steps:
       - checkout
-      - run: docker-compose up -d
-      - run: docker-compose exec app bin/rails db:setup
-      - run: docker-compose exec app bin/rails test
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: |
+          cp -rf /tmp/workspace/roro .
+          echo 'source roro/containers/app/ci.env' >> $BASH_ENV
+          source $BASH_ENV
+
