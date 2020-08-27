@@ -1,3 +1,4 @@
+<%= yaml_from_template("rails/.circleci/_aliases.yml") %>
 <%= yaml_from_template("base/.circleci/_defaults.yml") %>
 
 <%= yaml_from_template("rails/.circleci/jobs/_build.yml") %>

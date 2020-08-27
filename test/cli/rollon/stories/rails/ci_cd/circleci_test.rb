@@ -26,6 +26,7 @@ describe "Story::Rails::WithCICD" do
       Given(:structure) { YAML.load_file('.circleci/config.yml')}
           
       Then { 
+        assert_includes structure.keys, 'aliases' 
         assert_includes structure.keys, 'version' 
         assert_includes structure.keys, 'jobs' 
         assert_includes structure.keys, 'workflows' 
