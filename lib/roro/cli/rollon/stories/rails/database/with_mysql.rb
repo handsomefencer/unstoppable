@@ -12,7 +12,7 @@ module Roro
         %w(development production test staging ci).each do |environment| 
           config['rails_env'] = environment
           
-          source = 'rails/.env/database.mysql.env.tt'
+          source = 'rails/dotenv/database.mysql.env.tt'
           target = "roro/containers/database/#{environment}.env" 
           template( source, target, config )
         end

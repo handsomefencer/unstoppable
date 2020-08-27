@@ -11,7 +11,7 @@ module Roro
         %w(development production test staging ci).each do |environment| 
           config['rails_env'] = environment
           
-          source = 'rails/.env/database.pg.env.tt'
+          source = 'rails/dotenv/database.pg.env.tt'
           target = "roro/containers/database/#{environment}.env" 
           template( source, target, config )
         end
