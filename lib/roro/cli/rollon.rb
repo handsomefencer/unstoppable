@@ -35,7 +35,7 @@ module Roro
         template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
         configure_database  
         directory 'roro', './', @config.app
-        template 'base/.env', './.env', @config.app
+        template 'base/dotenv', './.env', @config.app
         directory 'rails/roro', './roro', @config.app
         take_thor_actions
       end
