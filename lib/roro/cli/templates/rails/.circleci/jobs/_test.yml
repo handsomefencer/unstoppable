@@ -2,9 +2,9 @@
     <<: *defaults 
     steps:
       - checkout
-      - attach_workspace:
-          at: /tmp/workspace
+      - attach_workspace: *workspace-location
+      - run: *copy-ci-dotenv
+      - run: *source-ci-variables
       - run: |
-          cp -rf /tmp/workspace/roro .
-          echo 'source roro/containers/app/ci.env' >> $BASH_ENV
-          source $BASH_ENV
+          RORO_ENV=ci docker-compose run web yarn
+          RORO_ENV=ci docker-compose run web bin/rails test

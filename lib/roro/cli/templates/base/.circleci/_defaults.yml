@@ -12,6 +12,4 @@ executors:
     docker:
       - image: cimg/ruby:2.7
 
-setup_workspace: &setup_workspace
-
 jobs:
