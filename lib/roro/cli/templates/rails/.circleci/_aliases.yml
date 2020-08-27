@@ -1,0 +1,8 @@
+aliases:
+  - &workspace-location
+    at: /tmp/workspace
+  - &copy-ci-dotenv | 
+    cp -rf /tmp/workspace/roro .
+  - &source-ci-variables | 
+    echo 'source roro/containers/app/ci.env' >> $BASH_ENV
+    source $BASH_ENV
