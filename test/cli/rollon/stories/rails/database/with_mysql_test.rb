@@ -9,7 +9,7 @@ describe Roro::CLI do
   Given(:subject){ Roro::CLI.new }
   Given(:rollon) { 
     subject.instance_variable_set(:@config, config)
-    subject.rollon }
+    subject.rollon_rails }
     
   describe '.rollon with mysql' do 
 

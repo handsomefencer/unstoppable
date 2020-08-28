@@ -3,13 +3,14 @@ require 'roro/cli/rollon/stories'
 module Roro
 
   class CLI < Thor
-
-    desc "rollon", "Generates files for and makes changes to your app 
+        
+    desc "rollon::rails", "Generates files for and makes changes to your app 
       so it can run using Docker containers."
     method_option :interactive, desc: "Set up your environment variables as 
       you go."
-
-    def rollon
+    map "rollon::rails" => "rollon_rails"
+    
+    def rollon_rails(*args) 
       confirm_directory_not_empty
       confirm_dependencies
       # remove_roro_artifacts 
@@ -24,6 +25,7 @@ module Roro
     no_commands do
      
       def configure_for_rollon
+        confirm_dependencies
         @config ||= Roro::Configuration.new(options) 
       end
       

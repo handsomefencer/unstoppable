@@ -74,7 +74,7 @@ describe Roro::CLI do
 
       describe "when .env.enc file has no matching .env file" do
        
-        Given { subject.obfuscate }
+        Given { subject.generate_obfuscated }
         Given { remove_dot_env_files(['development']) }
         Given { refute_file 'roro/containers/app/development.env' }
         

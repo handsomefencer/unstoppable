@@ -11,7 +11,7 @@ describe "Roro::CLI" do
   Given(:envs) { %w(development staging production) }
   Given { insert_dot_env_files(envs) }
   Given { subject.generate_key }
-  Given { subject.obfuscate }
+  Given { subject.generate_obfuscated }
   
   describe 'starting point' do 
 
@@ -20,7 +20,7 @@ describe "Roro::CLI" do
     And  { envs.each {|e| assert_file dotenv_dir + "#{e}.env.enc" } }
   end
   
-  describe '.expose' do
+  describe '.generate_exposed' do
     
     Given { remove_dot_env_files(envs) }
     
@@ -29,7 +29,7 @@ describe "Roro::CLI" do
     describe "with key_file" do
       describe 'expose one environment' do 
         
-        Given { subject.expose 'production' }
+        Given { subject.generate_exposed 'production' }
         
         Then  { assert_file 'roro/containers/app/production.env' }
         And   { refute_file 'roro/containers/app/development.env' }
@@ -37,7 +37,7 @@ describe "Roro::CLI" do
       
       describe 'expose all environments' do 
 
-        Given { subject.expose }
+        Given { subject.generate_exposed }
         Then  { envs.each {|e| assert_file dotenv_dir + "#{e}.env" } }
       end
     end
@@ -49,7 +49,7 @@ describe "Roro::CLI" do
 
       describe 'expose one environment' do 
         
-        Given { subject.expose 'development' }
+        Given { subject.generate_exposed 'development' }
         
         Then  { assert_file 'roro/containers/app/development.env' }
         And   { refute_file 'roro/containers/app/production.env' }

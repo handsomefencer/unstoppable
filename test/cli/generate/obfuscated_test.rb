@@ -18,10 +18,10 @@ describe "Roro::CLI" do
     And  { envs.each {|e| refute_file dotenv_dir + "#{e}.env.enc" } }
   end
   
-  describe ":obfuscate(environment)" do
+  describe ":generate_obfuscated(environment)" do
     describe 'with a key and an env.env file for an env' do 
       describe 'must only obfuscate the environment specified' do 
-        Given { subject.obfuscate 'production' }
+        Given { subject.generate_obfuscated 'production' }
         
         Then { assert_file 'roro/containers/app/production.env.enc' }
         And  { refute_file 'roro/containers/app/development.env.enc' }
@@ -29,10 +29,10 @@ describe "Roro::CLI" do
     end
   end
 
-  describe ":obfuscate" do
+  describe ":generate_obfuscated" do
     describe 'all env keys and all files' do 
     
-      Given { subject.obfuscate }
+      Given { subject.generate_obfuscated }
       
       Then { envs.each {|e| assert_file dotenv_dir + "#{e}.env.enc" } }
       And { envs.each {|e| assert_file dotenv_dir + "#{e}.env" } }

@@ -1,5 +1,5 @@
-require "roro/version"
 require "thor"
+require "roro/version"
 require "roro/cli"
 
 module Roro
