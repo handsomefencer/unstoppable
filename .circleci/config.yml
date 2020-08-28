@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
   
-  test-cli: 
+  test-rollon-rails: 
     docker:
       - image: cimg/ruby:2.7
     steps: 
@@ -18,7 +18,7 @@ jobs:
           rake install 
           mkdir greenfield
           cd greenfield
-          yes "" | roro greenfield
+          (yes || true) | roro greenfield
       - run: echo 'success'
   
   test:
@@ -53,10 +53,10 @@ jobs:
 workflows:
   version: 2
     
-  build-release: 
+  build-cli: 
     jobs: 
       - build
-      - test-cli: 
+      - test-rollon-rails: 
           filters: 
             branches: 
               only: development

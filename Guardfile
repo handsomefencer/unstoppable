@@ -1,7 +1,7 @@
 options = {
   cli: '-f',
   all_on_start: true,
-  all_after_pass: true
+  all_after_pass: true, 
 }
 
 guard :minitest, options do
