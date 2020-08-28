@@ -1,15 +1,35 @@
+aliases:
+  - &workspace-location
+    at: /tmp/workspace
+  - &copy-ci-dotenv | 
+    cp -rf /tmp/workspace/roro .
+  - &source-ci-variables | 
+    echo 'source roro/containers/app/ci.env' >> $BASH_ENV
+    source $BASH_ENV
+
+defaults: &defaults
+  executor: machine-executor
+  working_directory: ~/project
+ 
 version: 2.1
 
+executors:
+  machine-executor: 
+    machine:
+      docker_layer_caching: true
+  ruby-executor: 
+    docker:
+      - image: cimg/ruby:2.7
+      
 jobs:
 
   build:
-    machine: true
+    <<: *defaults
     steps:
       - checkout
   
   test-rollon-rails: 
-    docker:
-      - image: cimg/ruby:2.7
+    executor: ruby-executor
     steps: 
       - checkout 
       - setup_remote_docker:
@@ -22,7 +42,7 @@ jobs:
       - run: echo 'success'
   
   test:
-    machine: true
+    <<: *defaults
     steps:
       - checkout
       - run: RUBY_VERSION=2.5 docker-compose build ruby_gem
