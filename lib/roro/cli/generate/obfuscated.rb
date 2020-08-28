@@ -3,9 +3,6 @@ require 'handsome_fencer/crypto'
 module Roro
 
   class CLI < Thor
-        
-    include Thor::Actions
-    include HandsomeFencer::Crypto
 
     desc "generate::obfuscated", "obfuscates any files matching the pattern ./roro/**/*.env"
     map "generate::obfuscated" => "generate_obfuscated"

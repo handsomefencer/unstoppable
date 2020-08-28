@@ -1,5 +1,3 @@
-require 'roro/cli/rollon/rails/database/with_mysql'
-require 'roro/cli/rollon/rails/database/with_postgresql'
 module Roro
 
   class CLI < Thor
@@ -21,10 +19,9 @@ module Roro
         end
         
         %w(development production test staging ci).each do |environment| 
-          template(
-            'rails/dotenv/web.env.tt',
-            "roro/containers/app/#{environment}.env", @config.app
-          )
+          src = 'rails/dotenv/web.env.tt'
+          dest = "roro/containers/app/#{environment}.env"
+          template src, dest, @config.app
         end
       end
     end 

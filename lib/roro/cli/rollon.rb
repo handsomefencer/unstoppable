@@ -1,7 +1,4 @@
-require 'roro/cli/rollon'
-
 module Roro
-
   class CLI < Thor
         
     no_commands do

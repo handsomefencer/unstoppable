@@ -1,4 +1,3 @@
-
 module Roro
 
   class CLI < Thor
