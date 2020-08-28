@@ -8,6 +8,7 @@ require 'roro/cli/generate/keys'
 require 'roro/cli/generate/obfuscated'
 require 'roro/cli/greenfield/stories/rails'
 require 'roro/cli/rollon'
+require 'roro/cli/rollon/rails'
 require 'roro/cli/rollon/stories'
 require 'roro/cli/rollon/stories/ruby_gem'
 
