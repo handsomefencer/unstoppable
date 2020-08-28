@@ -12,5 +12,7 @@ guard :minitest, options do
   watch(%r{^lib/roro/cli/(.+)\.rb$}) { |m| "test/cli/#{m[1]}_test.rb" }
   watch(%r{^lib/roro/cli/templates/base(.+)\.yml$}) { |m| "test/cli" }
   watch(%r{^lib/roro/cli/templates/rollon(.+)\.yml$}) { |m| "test/cli/rollon" }
+  watch(%r{^lib/roro/cli/templates/rollon(.+)\.tt$}) { |m| "test/cli/rollon" }
   watch(%r{^lib/roro/cli/templates/greenfield(.+)\.yml$}) { |m| "test/cli/greenfield" }
+  watch(%r{^lib/roro/cli/templates/greenfield(.+)\.tt$}) { |m| "test/cli/greenfield" }
 end

@@ -1,5 +1,5 @@
-require 'roro/cli/rollon/stories/rails/database/with_mysql'
-require 'roro/cli/rollon/stories/rails/database/with_postgresql'
+require 'roro/cli/rollon/rails/database/with_mysql'
+require 'roro/cli/rollon/rails/database/with_postgresql'
 module Roro
 
   class CLI < Thor

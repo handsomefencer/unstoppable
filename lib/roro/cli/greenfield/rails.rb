@@ -23,7 +23,8 @@ module Roro
     
       def copy_greenfield_files
         @config.app['force'] = true
-        directory 'rails/roro', 'roro', @config.app
+        ## copy rails/roro so we get directory structure 
+        # directory 'rails/roro', 'roro', @config.app
         template  'rails/Dockerfile.greenfield.tt', 
         'roro/containers/app/Dockerfile', @config.app
       end

@@ -1,4 +1,5 @@
 require 'roro/cli/rollon/stories'
+require 'roro/cli/rollon/rails/database'
 
 module Roro
 
