@@ -15,14 +15,14 @@ module Roro
       confirm_dependencies
       configure_for_rollon
       
-      copy_roro_files
+      copy_rails_files
       generate_config
       startup_commands
     end
     
     no_commands do
      
-      def copy_roro_files
+      def copy_rails_files
         template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
         configure_database  
         directory 'roro', './', @config.app

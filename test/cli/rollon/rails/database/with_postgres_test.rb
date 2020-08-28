@@ -10,7 +10,7 @@ describe Roro::CLI do
 
     Given { config.thor_actions['configure_database'] = 'p' }
 
-    Given { subject.copy_roro_files }
+    Given { subject.copy_rails_files }
 
     describe 'pg gem in gemfile' do 
   
