@@ -56,7 +56,7 @@ jobs:
       - run: RUBY_VERSION=2.7 docker-compose run ruby_gem bundle exec rake test    
       
   release:
-    machine: true
+    <<: *defaults
     steps:
       - checkout
       - run: gem install roro
