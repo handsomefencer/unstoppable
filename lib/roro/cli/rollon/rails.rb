@@ -15,7 +15,6 @@ module Roro
       confirm_directory_not_empty
       confirm_dependencies
       configure_for_rollon
-      
       copy_rails_files
       generate_config
       startup_commands

@@ -3,6 +3,7 @@ require "test_helper"
 describe "Story::RubyGem::WithCICD" do 
 
   Given { prepare_destination 'ruby_gem/dummy_gem' }
+  Given { stub_system_calls }
 
   Given(:config)  { Roro::Configuration.new }
   Given(:subject) { Roro::CLI.new }
