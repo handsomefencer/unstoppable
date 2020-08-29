@@ -44,7 +44,7 @@ services:
   redis:
     image: redis
 
-<%= yaml_from_template("stories/with_#{config['database_vendor']}/_service.yml") %>
+<%= yaml_from_template("rails/database/with_#{config['database_vendor']}/_service.yml") %>
 
   system_tests:
     image: selenium/standalone-chrome-debug

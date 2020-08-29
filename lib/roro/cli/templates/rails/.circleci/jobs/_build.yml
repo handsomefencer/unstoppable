@@ -13,4 +13,4 @@
           paths:  
             - roro
       - run: *source-ci-variables
-      - run: RORO_ENV=ci docker-compose up -d --build
+      - run: RORO_ENV=ci docker-compose build

@@ -11,5 +11,3 @@
 <%= yaml_from_template("base/.circleci/_workflow.yml") %>
 
 <%= yaml_from_template("rails/.circleci/workflows/_build_test_push.yml") %>
-
-  

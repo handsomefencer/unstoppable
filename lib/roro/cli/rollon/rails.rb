@@ -25,7 +25,7 @@ module Roro
       def copy_rails_files
         template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
         configure_database  
-        directory 'roro', './', @config.app
+        template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.app
         template 'base/dotenv', './.env', @config.app
         directory 'rails/roro', './roro', @config.app
         take_thor_actions

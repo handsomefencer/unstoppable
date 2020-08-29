@@ -53,7 +53,7 @@ describe Roro::CLI do
 
     describe 'docker-compose.yml' do
  
-      Given(:expected) { yaml_from_template('stories/with_mysql/_service.yml')}
+      Given(:expected) { yaml_from_template('rails/database/with_mysql/_service.yml')}
       
       Then { assert_file("docker-compose.yml") {|c| assert_match expected, c }}
     end 

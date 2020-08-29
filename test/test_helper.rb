@@ -1,6 +1,5 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "roro"
-require "os"
 require "minitest/autorun"
 require "minitest/spec"
 require "minitest/given"
@@ -20,7 +19,3 @@ module RoroSystemStubs
 end
 
 include RoroSystemStubs
-
-Minitest.after_run do
-  Dir.chdir(ENV.fetch("PWD"))
-end
