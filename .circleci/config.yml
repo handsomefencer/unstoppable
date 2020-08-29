@@ -15,6 +15,7 @@ version: 2.1
 
 executors:
   machine-executor: 
+    machine: true
   ruby-executor: 
     docker:
       - image: cimg/ruby:2.7
