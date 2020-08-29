@@ -84,8 +84,5 @@ COPY . ${APP_HOME}
 ## Now make your entrypoint executable.  
 RUN chmod +x roro/docker-entrypoint.sh
 
-## Now update node modules: 
-RUN yarn
-
 
 

@@ -46,7 +46,6 @@ describe Roro::CLI do
       end 
         
       describe 'copies' do
-          
         describe 'docker-entrypoint.sh' do 
           
           Then { assert_file 'roro/docker-entrypoint.sh' }

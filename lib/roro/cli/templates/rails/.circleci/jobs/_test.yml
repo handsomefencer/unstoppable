@@ -5,6 +5,9 @@
       - attach_workspace: *workspace-location
       - run: *copy-ci-dotenv
       - run: *source-ci-variables
-      - run: |
-          RORO_ENV=ci docker-compose run web yarn
-          RORO_ENV=ci docker-compose run web bin/rails test
+      - run: RORO_ENV=ci docker-compose build
+      - run: RORO_ENV=ci docker-compose run web bundle
+      - run: RORO_ENV=ci docker-compose run web yarn
+      - run: RORO_ENV=ci docker-compose run web bin/rails db:create
+      - run: RORO_ENV=ci docker-compose run web bin/rails db:migrate
+      - run: RORO_ENV=ci docker-compose run web bin/rails test

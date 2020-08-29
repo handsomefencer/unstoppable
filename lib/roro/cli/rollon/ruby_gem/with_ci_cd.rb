@@ -6,11 +6,11 @@ module Roro
 
     def rollon_ruby_gem_with_ci_cd(*args) 
       ruby_gem_with_ci_cd(*args)
+      configure_for_rollon
     end
     
     no_commands do 
       def ruby_gem_with_ci_cd(*args)
-        configure_for_rollon
         answer = ask("\nYou can add your rubygems api key in\n\t 
           './roro/containers/ruby_gem/ci.env' \n\nlater, or we'll try to add it here:", 
         default: '')

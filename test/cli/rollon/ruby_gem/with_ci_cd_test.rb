@@ -3,6 +3,7 @@ require "test_helper"
 describe "Story::RubyGem::WithCICD" do 
 
   Given { prepare_destination 'ruby_gem/dummy_gem' }
+  Given { stub_system_calls }
 
   Given(:config)  { Roro::Configuration.new }
   Given(:subject) { Roro::CLI.new }
@@ -14,8 +15,8 @@ describe "Story::RubyGem::WithCICD" do
   
   describe 'must modify .gitignore' do
     
-    Given(:keys)    { /roro\/\*\*\/\*.key/ } 
     Given(:dotenvs) { /roro\/\*\*\/\*.env/ } 
+    Given(:keys)    { /roro\/\*\*\/\*.key/ } 
     Given(:file)    { '.gitignore' }
       
     Then { assert_file(file) {|c| assert_match keys, c }}
