@@ -15,8 +15,6 @@ version: 2.1
 
 executors:
   machine-executor: 
-    machine:
-      docker_layer_caching: true
   ruby-executor: 
     docker:
       - image: cimg/ruby:2.7
