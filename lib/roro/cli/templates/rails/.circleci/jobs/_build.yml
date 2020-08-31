@@ -1,10 +1,10 @@
+jobs:
   build:
     <<: *defaults 
     steps:
       - checkout
-      - run: |
-          gem install roro 
-          roro generate::exposed ci
+      - run: gem install roro 
+      - run: roro generate::exposed ci
       - run: | 
           mkdir -p workspace 
           cp -r roro workspace/
@@ -12,5 +12,3 @@
           root: workspace 
           paths:  
             - roro
-      - run: *source-ci-variables
-      - run: RORO_ENV=ci docker-compose build

@@ -1,11 +1,11 @@
+<%= yaml_from_template("base/.circleci/_version.yml") %>
 <%= yaml_from_template("base/.circleci/_defaults.yml") %>
 
+jobs: 
 <%= yaml_from_template("base/.circleci/jobs/_build.yml") %>
+
+<%= yaml_from_template("ruby_gem/.circleci/jobs/_test.yml") %>
   
-  test:
-    machine: true
-    steps:
-      - placeholder
  
 <%= yaml_from_template("base/.circleci/jobs/_release.yml") %>
       

@@ -1,7 +1,7 @@
 ## The FROM instruction below builds our first layer using an official image:
 FROM ruby:<%= config['ruby_version'] %>
 
-LABEL maintainer="<%= config['dockerhub_email'] %>"
+LABEL maintainer="<%= config['dockerhub_email'] %> using RoRo"
 
 ## This is a rails app so, we will want to add node and yarn. In order for our 
 ## container to trust yarn as a source, we first need to add yarn's public key. 
@@ -59,7 +59,6 @@ VOLUME ${BUNDLE_PATH}
 ## lighter, qucker oens that might change a lot. 
 
 ## Set your work directory:
-WORKDIR ${APP_HOME}
 
 ## You may need to adjust the bundler version based on your app Gemfile.lock's 
 ## bundler version:
@@ -67,22 +66,16 @@ RUN gem install bundler:2.1.4
 
 ## Set your work directory. After this line you will be running commands in 
 ## ${APP_HOME}. COPY instructions will move files from host to ${APP_HOME}:
+
 WORKDIR ${APP_HOME}
 
-## Build your big, slow gem layer by first copying your Gemfile && Gemfile.lock:  
-COPY package.json ./ 
 COPY Gemfile* ./ 
 
-## build the bundle layer, which now only runs if your Gemfile changes:
 RUN bundle 
 
-## Now build a layer with everything in your app that's likely to change
-## frequently. If you make a change to any of these files, only this layer has
-## to rebuild:
-COPY . ${APP_HOME}
 
+COPY . ${APP_HOME}
 ## Now make your entrypoint executable.  
 RUN chmod +x roro/docker-entrypoint.sh
 
-
-
+ENTRYPOINT ["./roro/docker-entrypoint.sh"]

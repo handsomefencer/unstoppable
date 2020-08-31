@@ -14,7 +14,7 @@ roro/**/*.key
 *.key
 *.env
 !/.gitignore
-
+*.gem
 tmp/*
 !tmp/.keep 
 sandbox/*

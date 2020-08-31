@@ -1,4 +1,4 @@
-  build-and-test:
+  build-test-push:
     jobs:
       - build
       - test:
@@ -7,3 +7,9 @@
           filters:
             branches:
               only: development
+      - push:
+          requires: 
+            - build
+          filters:
+            branches:
+              only: deploy

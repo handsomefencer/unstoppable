@@ -2,12 +2,11 @@
     <<: *defaults 
     steps:
       - checkout
-      - attach_workspace: *workspace-location
-      - run: *copy-ci-dotenv
-      - run: *source-ci-variables
-      - run: RORO_ENV=ci docker-compose build
-      - run: RORO_ENV=ci docker-compose run web bundle
-      - run: RORO_ENV=ci docker-compose run web yarn
-      - run: RORO_ENV=ci docker-compose run web bin/rails db:create
-      - run: RORO_ENV=ci docker-compose run web bin/rails db:migrate
-      - run: RORO_ENV=ci docker-compose run web bin/rails test
+      - attach-roro
+      - run: docker-compose build
+      - run: docker-compose up -d
+      - run: docker-compose run app bundle
+      - run: docker-compose run app yarn
+      - run: docker-compose run app bin/rails db:create
+      - run: docker-compose run app bin/rails db:migrate
+      - run: docker-compose run app bin/rails test

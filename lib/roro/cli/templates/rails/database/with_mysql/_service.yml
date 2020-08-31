@@ -1,8 +1,8 @@
   database:
     image: mysql:5.7
     env_file:
-      - roro/containers/database/development.env
-      - roro/containers/app/development.env
+      - roro/containers/database/${RORO_ENV:-development}.env
+      - roro/containers/app/${RORO_ENV:-development}.env
     volumes:
       - db_data:/var/lib/mysql
     restart: always
