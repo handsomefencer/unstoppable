@@ -51,9 +51,8 @@ describe Roro::CLI do
           Given(:file) { 'roro/docker-entrypoint.sh' }
           Given(:lines) {[
             "#!/bin/sh", 
-            "set -e",
             "if [ -f tmp/pids/server.pid ]; then",
-            "rm tmp/pids/server.pid"
+            "exec \"$@\""
           ] }
           
           Then { assert_file(file) { |c| lines.each { |l| assert_match l, c } }}
