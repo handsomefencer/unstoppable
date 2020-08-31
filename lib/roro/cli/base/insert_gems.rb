@@ -10,16 +10,9 @@ module Roro
       end
       
       def insert_db_gem(gem)
-        gem_lines = [
-          /gem\s['"]sqlite3['"]/,
-          /gem\s['"]mysql2['"]/,
-          /gem\s['"]pg['"]/,
-          
-        ]
-        gem_lines.each do |line| 
-          comment_lines 'Gemfile', line 
-          gsub_file 'Gemfile', line, 'gem copied over by roro'
-        end
+        gems = %w(sqlite pg mysql2)
+        gems.delete(gem)
+        gems.each { |g| gsub_file('Gemfile', /.*#{g}.*/, '')}
         insert_into_file 'Gemfile', "gem '#{gem}'\n\n", before: "group :development, :test"
       end
 
