@@ -22,7 +22,7 @@ namespace :kube do
   desc 'Apply our Kubernete configurations to our cluster'
   task :setup do
   
-    kubectl "apply -f #{Rails.root}/kube/service.yml"
+    kubectl "apply -f #{Rails.root}/roro/kube/service.yml"
 
     # # Add our Docker Hub credentials to our cluster
     # kubectl(%Q{create secret docker-registry regcred \
