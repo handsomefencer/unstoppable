@@ -6,5 +6,5 @@ spec:
   ports:
     - port: 3000
   selector:
-    app: <%= config['main_app_name'] %>
+    app: <%= config['main_app_name'] %>-app
     tier: app

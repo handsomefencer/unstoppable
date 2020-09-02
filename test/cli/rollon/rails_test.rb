@@ -94,7 +94,7 @@ describe Roro::CLI do
               
               Given(:file) { "roro/containers/app/Dockerfile" }
               Given(:line1) { "FROM ruby:#{config.app['ruby_version']}"} 
-              Given(:line2) { "maintainer=\"#{config.app['dockerhub_email']}"} 
+              Given(:line2) { "maintainer=\"#{config.app['docker_email']}"} 
     
               Then { assert_file(file) { |c| 
                 assert_match line1, c 

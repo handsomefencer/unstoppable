@@ -25,7 +25,7 @@ commands:
     steps:
       - run: | 
           SOURCE=$(docker images | grep project_app | awk '{ print $3 }')
-          DOCKERHUB_REPO=${DOCKERHUB_ORG}/${APP_NAME}_app
-          TAGGED_IMAGE=${DOCKERHUB_REPO}:<< parameters.deploy_tag >>
+          DOCKER_REPO=${DOCKER_ORG}/${APP_NAME}_app
+          TAGGED_IMAGE=${DOCKER_REPO}:<< parameters.deploy_tag >>
           docker tag ${SOURCE} ${TAGGED_IMAGE}
           docker push ${TAGGED_IMAGE}

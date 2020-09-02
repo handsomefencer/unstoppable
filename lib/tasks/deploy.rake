@@ -6,9 +6,9 @@ include SSHKit::DSL
 deploy_tag =      ENV['DEPLOY_TAG']
 hostname =        ENV['SERVER_HOST']
 user =            ENV['SERVER_USER']
-dockerhub_user =  ENV['DOCKERHUB_USER']
-dockerhub_pass =  ENV['DOCKERHUB_PASS']
-dockerhub_org =   ENV['DOCKERHUB_ORG']
+docker_user =  ENV['DOCKER_USER']
+docker_pass =  ENV['DOCKER_PASS']
+docker_org =   ENV['DOCKER_ORG']
 port =            ENV['SERVER_PORT']
 deploy_env =      ENV['DEPLOY_ENV'] || :production
 deploy_path =     ENV['APP_NAME']
@@ -65,7 +65,7 @@ namespace :docker do
     on server do
       execute "mkdir -p #{deploy_path}"
       within deploy_path do
-        execute 'docker', 'login', '-u', dockerhub_user, '-p', dockerhub_pass
+        execute 'docker', 'login', '-u', docker_user, '-p', docker_pass
       end
     end
   end
@@ -102,7 +102,7 @@ namespace :docker do
     on server do
       within deploy_path do
         ["#{deploy_path}_app", "#{deploy_path}_web"].each do |image_name|
-          execute 'docker', 'pull', "#{dockerhub_org}/#{image_name}:#{deploy_tag}"
+          execute 'docker', 'pull', "#{docker_org}/#{image_name}:#{deploy_tag}"
         end
         execute 'docker', 'pull', 'postgres:9.4.5'
       end

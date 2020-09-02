@@ -137,12 +137,12 @@ services:
       - unicorn:
       - puma: 
 registries: 
-  dockerhub:
+  docker:
     env_vars: 
-      DOCKERHUB_EMAIL: your-docker-hub-email
-      DOCKERHUB_ORG: your-docker-hub-org-name
-      DOCKERHUB_PASSWORD: your-docker-hub-password
-      DOCKERHUB_USER: your-docker-hub-user-name
+      DOCKER_EMAIL: your-docker-hub-email
+      DOCKER_ORG: your-docker-hub-org-name
+      DOCKER_PASSWORD: your-docker-hub-password
+      DOCKER_USER: your-docker-hub-user-name
     
 ci_cd:
   semaphore:

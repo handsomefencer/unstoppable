@@ -26,7 +26,7 @@ module Roro
         template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.app
         template 'base/dotenv', './.env', @config.app
         directory 'rails/roro', './roro', @config.app
-        copy_file 'rails/kube.rake', './lib/tasks/kube.rake', @config.app
+        template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.app
       end
 
       def startup_commands

@@ -1,6 +1,6 @@
 FROM ruby:<%= config['ruby_version'] %>-alpine AS builder
 
-LABEL maintainer="<%= config['dockerhub_email'] %> using RoRo"
+LABEL maintainer="<%= config['docker_email'] %> using RoRo"
 
 # Add basic packages
 RUN apk add --no-cache \
