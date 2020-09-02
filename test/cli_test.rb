@@ -5,7 +5,6 @@ describe Roro::CLI do
   Given(:subject) { Roro::CLI.new }
 
   describe 'commands' do
-    
     { 
       generate_config: 'generate::config',
       generate_exposed: 'generate::exposed',
@@ -14,7 +13,7 @@ describe Roro::CLI do
       generate_obfuscated: 'generate::obfuscated',
       greenfield_rails: 'greenfield::rails',
       rollon_rails: 'rollon::rails',
-       
+      rollon_rails_kubernetes: 'rollon::rails::kubernetes',
     }.each do |k,v| 
       describe v do 
         describe 'command must exist' do 

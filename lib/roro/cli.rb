@@ -9,6 +9,7 @@ require 'roro/cli/rollon'
 require 'roro/cli/rollon/rails'
 require 'roro/cli/rollon/rails/database/with_mysql'
 require 'roro/cli/rollon/rails/database/with_postgresql'
+require 'roro/cli/rollon/rails/kubernetes'
 
 require 'roro/cli/rollon/ruby_gem'
 
