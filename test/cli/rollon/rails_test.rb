@@ -50,8 +50,8 @@ describe Roro::CLI do
           
           Given(:file) { 'roro/docker-entrypoint.sh' }
           Given(:lines) {[
-            "#!/bin/sh", 
-            "if [ -f tmp/pids/server.pid ]; then",
+            "#!/bin/bash", 
+            "rm -f /usr/src/app/tmp/pids/server.pid",
             "exec \"$@\""
           ] }
           
