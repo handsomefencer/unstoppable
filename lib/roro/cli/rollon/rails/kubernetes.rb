@@ -13,9 +13,9 @@ module Roro
     
     def rollon_rails_kubernetes(*args) 
       configure_for_rollon
-      copy_rails_files
+      # copy_rails_files
       copy_kubernetes_files
-      generate_config
+      # generate_config
       startup_commands
     end
     
@@ -27,7 +27,7 @@ module Roro
         template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.app
         template 'base/dotenv', './.env', @config.app
         directory 'rails/roro', './roro', @config.app
-        take_thor_actions
+        # take_thor_actions
       end
       
       def copy_kubernetes_files
