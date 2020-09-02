@@ -9,7 +9,7 @@ namespace :kube do
   desc 'Rollout a new deployment'
   task :deploy do
     apply "kube/deployment.yml"
-    puts `kubectl rollout restart deployment myapp-deployment`
+    puts `kubectl rollout restart deployment <%= config['main_app_name'] %>-deployment`
   end
 
   desc 'Print useful information aout our Kubernete setup'

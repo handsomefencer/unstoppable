@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: <%= config['app_name'] %>-service
+  name: <%= config['main_app_name'] %>-service
 spec:
   ports:
     - port: 3000
   selector:
-    app: <%= config['app_name'] %>
+    app: <%= config['main_app_name'] %>
     tier: app
