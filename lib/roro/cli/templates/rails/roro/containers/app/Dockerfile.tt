@@ -7,13 +7,10 @@ LABEL maintainer="<%= config['dockerhub_email'] %> using RoRo"
 RUN apk add --no-cache \
       build-base \
       postgresql-dev \
-      git \
       nodejs \
       yarn \
       tzdata \
-      file \
-      bash \ 
-      shadow
+      file 
       
 ## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
 ENV APP_HOME /usr/src/app/
@@ -35,7 +32,3 @@ COPY Gemfile* ./
 RUN bundle --jobs 4
 COPY . ${APP_HOME}
 
-## Now make your entrypoint executable.  
-RUN chmod 0755 ./roro/docker-entrypoint.sh
-
-ENTRYPOINT ["./roro/docker-entrypoint.sh"]

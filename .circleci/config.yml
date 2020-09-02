@@ -37,7 +37,13 @@ jobs:
           mkdir greenfield
           cd greenfield
           (yes || true) | roro greenfield
-      - run: echo 'success'
+      - run: echo 'succesfully greenfielded'
+      - run: docker-compose up -d
+      - run: echo 'successfully built greenfielded app'
+      - run: docker-compose exec app bin/rails db:create
+      - run: docker-compose exec app bin/rails db:migrate
+      - run: docker-compose exec app bin/rails test
+      - run: echo 'successfully ran (nonexistent) tests!'
   
   test:
     <<: *defaults
