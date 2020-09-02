@@ -1,24 +1,25 @@
-version: 2.1
+aliases:
+  - &workspace-location
+    at: /tmp/workspace
+  - &copy-ci-dotenv | 
+    cp -rf /tmp/workspace/roro .
+  - &source-ci-variables | 
+    echo 'source roro/containers/app/ci.env' >> $BASH_ENV
+    source $BASH_ENV
 
 defaults: &defaults
-  executor: exec-machine
+  executor: machine-executor
   working_directory: ~/project
-  environment:
-    RORO_ENV: ci
+ 
+version: 2.1
 
-major_only: &major_only
-  filters:
-    branches:
-      only: master
-      
-executors: 
-  exec-machine: 
-    machine: 
-      image: circleci/classic:latest
-  exec-ruby: 
+executors:
+  machine-executor: 
+    machine: true
+  ruby-executor: 
     docker:
       - image: cimg/ruby:2.7
-
+      
 jobs:
 
   build:
@@ -37,13 +38,7 @@ jobs:
           mkdir greenfield
           cd greenfield
           (yes || true) | roro greenfield
-      - run: echo 'succesfully greenfielded'
-      - run: docker-compose up -d
-      - run: echo 'successfully built greenfielded app'
-      - run: docker-compose exec app bin/rails db:create
-      - run: docker-compose exec app bin/rails db:migrate
-      - run: docker-compose exec app bin/rails test
-      - run: echo 'successfully ran (nonexistent) tests!'
+      - run: echo 'success'
   
   test:
     <<: *defaults
@@ -79,12 +74,16 @@ workflows:
     
   build-cli: 
     jobs: 
-      - build:
-        <<: *major_only
+      - build
       - test-rollon-rails: 
-        <<: *major_only
+          filters: 
+            branches: 
+              only: development
       - test:
-        <<: *major_only
+          filters: 
+            branches: 
+              only: master
+      
       - release:
           requires: 
             - build
