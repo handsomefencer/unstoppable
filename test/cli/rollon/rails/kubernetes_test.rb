@@ -19,10 +19,21 @@ describe Roro::CLI do
 
       Then { assert_directory "roro/kube" }
     end
-    
+
+    describe 'roro kube components' do 
+      
+      Then { assert_file "roro/kube/certificate.yml" }
+      Then { assert_file "roro/kube/cluster-issuer.yml" }
+      And  { assert_file "roro/kube/deployment.yml" }
+      And  { assert_file "roro/kube/ingress.yml" }
+      And  { assert_file "roro/kube/job-migrate.yml" }
+      And  { assert_file "roro/kube/secret-digital-ocean.yml" }
+      And  { assert_file "roro/kube/service.yml" }
+    end
+
     describe 'rakefile' do 
       
-      Then { assert_directory "roro/kube/Rakefile" }
+      Then { assert_file "lib/tasks/kube.rake" }
     end
   end
 end

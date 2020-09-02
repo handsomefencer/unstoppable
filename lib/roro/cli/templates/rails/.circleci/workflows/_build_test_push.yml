@@ -1,15 +1,12 @@
   build-test-push:
     jobs:
-      - build
+      - build:
+          <<: *major_only
       - test:
+          <<: *major_only
           requires: 
             - build
-          filters:
-            branches:
-              only: development
       - push:
+          <<: *major_only
           requires: 
             - build
-          filters:
-            branches:
-              only: deploy

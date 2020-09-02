@@ -221,6 +221,11 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 
 sudo rm -rf ./* ./.*
+# handsomefencer 
+(cd ../../opensource/gems/roro/ && gem build) && gem install --local ../../opensource/gems/roro/roro-0.3.17.gem && roro rollon::rails::kubernetes
+
+
+# sandboxer
 (cd ../../ && gem build) && gem install --local ../../roro-0.3.17.gem && roro help
 
 

@@ -29,8 +29,9 @@ module Roro
         directory 'rails/roro', './roro', @config.app
         take_thor_actions
       end
-
+      
       def copy_kubernetes_files
+        copy_file 'rails/kube.rake', './lib/tasks/kube.rake', @config.app
       end
 
       def startup_commands
