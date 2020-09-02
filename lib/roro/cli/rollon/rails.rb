@@ -32,15 +32,12 @@ module Roro
       end
                  
       def startup_commands
+        remove_roro_artifacts
         success_msg = "'\n\n#{'*' * 5 }\n\nYour Rails app is available at http://localhost:3000/'\n\n#{'*' * 5 }"
-        system 'docker-compose build'
-        system 'docker-compose up -d'
-        system 'docker-compose run app bundle'
-        system 'docker-compose run app bin/rails webpacker:install'
-        system 'docker-compose run app bin/rails yarn:install'
-        system 'docker-compose run app bin/rails db:create'
-        system 'docker-compose run app bin/rails db:migrate'
-        system "docker-compose run app echo '\n\nYour Rails app is available at http://localhost:3000/'"
+        # system 'docker-compose build'
+        # system 'docker-compose run app bin/rails db:create'
+        # system 'docker-compose run app bin/rails db:migrate'
+        # system "docker-compose run app echo #{success_msg}"
       end
     end
   end

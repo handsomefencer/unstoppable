@@ -11,7 +11,6 @@ module Roro
       
       def insert_db_gem(gem)
         gems = %w(sqlite pg mysql2)
-        gems.delete(gem)
         gems.each { |g| gsub_file('Gemfile', /.*#{g}.*/, '')}
         insert_into_file 'Gemfile', "gem '#{gem}'\n\n", before: "group :development, :test"
       end

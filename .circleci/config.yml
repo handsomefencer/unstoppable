@@ -1,25 +1,24 @@
-aliases:
-  - &workspace-location
-    at: /tmp/workspace
-  - &copy-ci-dotenv | 
-    cp -rf /tmp/workspace/roro .
-  - &source-ci-variables | 
-    echo 'source roro/containers/app/ci.env' >> $BASH_ENV
-    source $BASH_ENV
-
-defaults: &defaults
-  executor: machine-executor
-  working_directory: ~/project
- 
 version: 2.1
 
-executors:
-  machine-executor: 
-    machine: true
-  ruby-executor: 
+defaults: &defaults
+  executor: exec-machine
+  working_directory: ~/project
+  environment:
+    RORO_ENV: ci
+
+major_only: &major_only
+  filters:
+    branches:
+      only: master
+      
+executors: 
+  exec-machine: 
+    machine: 
+      image: circleci/classic:latest
+  exec-ruby: 
     docker:
       - image: cimg/ruby:2.7
-      
+
 jobs:
 
   build:
@@ -74,16 +73,12 @@ workflows:
     
   build-cli: 
     jobs: 
-      - build
+      - build:
+        <<: *major_only
       - test-rollon-rails: 
-          filters: 
-            branches: 
-              only: development
+        <<: *major_only
       - test:
-          filters: 
-            branches: 
-              only: master
-      
+        <<: *major_only
       - release:
           requires: 
             - build

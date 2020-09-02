@@ -27,5 +27,7 @@ describe Roro::CLI do
         assert_match /roro\/\*\*\/\*.env/, c
       end
     end
+    
+    And { assert_file('.gitignore') {|c| assert_match /\*kubeconfig.yaml/, c } }
   end
 end

@@ -29,7 +29,7 @@ module Roro
         appname = Dir.pwd.split('/').last 
         check_for_clashes = "docker ps --filter name=#{appname}* -aq"
         no_artifact_containers = IO.popen(check_for_clashes).count.eql?(0)
-        no_artifact_volumes = IO.popen("docker volume ls --filter name=greenfield*").count > (1)
+        no_artifact_volumes = IO.popen("docker volume ls --filter name=#{appname}*").count > (1)
         unless (no_artifact_containers && no_artifact_volumes)
           remove_clashes = ["docker ps --filter name=#{appname}* -aq | xargs docker stop | xargs docker rm"]
           volumes = %w(db_data app)
