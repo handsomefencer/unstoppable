@@ -13,7 +13,7 @@ module Roro
             command is for -- you'll need to navigate to a directory with an app we
             can roll onto.",
           suggestion: "$ roro greenfield",
-          conditional: "!Dir.glob('*').empty?" })
+          conditional: "!Dir.glob('*').empty? || (Dir.glob('*').size.eql?(1) && !Dir.glob('roro_configurator.yml'))" })
       end
       
       def confirm_directory_empty 
@@ -21,7 +21,7 @@ module Roro
           system_query: "ls -A",
           warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
           suggestion: "$ roro greenfield --force",
-          conditional: "Dir.glob('*').empty?" }) 
+          conditional: "Dir.glob('*').empty? || (Dir.glob('*').size.eql?(1) && Dir.glob('roro_configurator.yml'))" }) 
         confirm || true
       end
           

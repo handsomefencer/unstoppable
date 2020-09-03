@@ -18,6 +18,24 @@ describe Roro::CLI do
       end
     end 
     
+    describe 'for greenfield story' do
+      Given { prepare_destination "rails/greenfield" }
+
+      describe 'with roro_configurator.yml' do
+        Then { assert subject.confirm_directory_empty }
+        And { subject.confirm_directory_not_empty } 
+      end 
+    end
+    
+    describe 'for rollon story' do
+      describe 'must not rollon when just roro_configurator.yml' do
+        Given { prepare_destination "rails/greenfield" }
+  
+        Then { assert subject.confirm_directory_not_empty }
+        And { subject.confirm_directory_not_empty } 
+      end 
+    end
+  
     describe 'for rollon story' do  
       
       Given { prepare_destination 'rails/603' }

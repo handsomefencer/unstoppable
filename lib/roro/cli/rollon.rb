@@ -7,7 +7,12 @@ module Roro
         confirm_dependencies
         @config ||= Roro::Configuration.new(options) 
       end
-      
+
+      def configurator_for_rollon
+        confirm_dependencies
+        @config ||= Roro::Configurator.new(options) 
+      end
+
       def yaml_from_template(file)
         File.read(File.dirname(__FILE__) + "/templates/#{file}")
       end

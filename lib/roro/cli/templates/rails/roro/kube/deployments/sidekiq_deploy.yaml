@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: sidekiq-deployment
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1  
+  selector:
+    matchLabels: 
+      app: rails-kube-app
+      tier: queue
+  template:
+    metadata:
+      name: sidekiq
+      labels:
+        app: rails-kube-app
+        tier: queue
+    spec:
+      containers:
+      - name: sidekiq
+        image: tzumby/rails-app-alpine:latest
+        args: ["sidekiq -C config/sidekiq.yml"]
+        env:
+        - name: DATABASE_NAME
+          value: "rails-kube-demo_production"
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_URL
+          value: "postgres"
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: "db-user"
+              key: "username"
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: "db-user-pass"
+              key: "password"
+        - name: REDIS_URL
+          value: "redis"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: RAILS_ENV
+          value: "production"
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: "secret-key-base"
+              key: "secret-key-base"
