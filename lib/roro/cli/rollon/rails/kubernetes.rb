@@ -13,7 +13,7 @@ module Roro
     
     def rollon_rails_kubernetes(*args) 
       configure_for_rollon
-      # copy_rails_files
+      copy_rails_files
       copy_kubernetes_files
       # generate_config
       startup_commands

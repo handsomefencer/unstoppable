@@ -21,6 +21,7 @@ services:
       - roro/containers/database/${RORO_ENV:-development}.env
     environment:
       - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server
+    command: ["bin/rails", "s", "-b", "0.0.0.0"]
 
   webpack_dev_server:
     build:
