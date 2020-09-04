@@ -1,0 +1,2 @@
+env_vars:
+  deploy_tag: "${CIRCLE_SHA1:0:7}"

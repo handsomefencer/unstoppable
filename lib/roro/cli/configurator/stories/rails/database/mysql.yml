@@ -1,0 +1,7 @@
+env_vars:
+  mysql_root_password: root
+  mysql_password: your-mysql-password
+  mysql_username: root
+  mysql_database_port: '3306'
+
+  
