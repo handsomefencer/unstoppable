@@ -33,9 +33,9 @@ describe Roro::CLI do
       Then do 
         assert_file 'config/database.yml' do |c| 
           assert_match("<%= ENV.fetch('DATABASE_HOST') %>", c)
-          assert_match("<%= ENV.fetch('POSTGRES_USER') %>", c)
+          assert_match("<%= ENV.fetch('POSTGRES_USERNAME') %>", c)
           assert_match("<%= ENV.fetch('POSTGRES_PASSWORD') %>", c)
-          assert_match("<%= ENV.fetch('POSTGRES_DB') %>", c)
+          assert_match("<%= ENV.fetch('POSTGRES_DATABASE') %>", c)
         end
       end
     end
