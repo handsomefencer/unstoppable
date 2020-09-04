@@ -7,12 +7,13 @@ module Roro
     def initialize(opts=nil, story=nil)
       story = (opts && opts['story']) ? opts['story'] : { 'rails'=> {} }   
       story = story.is_a?(String) ? { story => {} } : story
-      @structure = {}
-      @structure['story'] = { 'stories' => story }
+      @structure = {
+        'intentions' => {},
+        'choices' => {},
+        'env_vars' => {},
+        'story' =>  { 'stories' => story } }
       build_layers(@structure['story'])
-      @env = @structure['env']
-      @choices = @structure['choices']
-      @intentions = @structure['intentions']
+      @env = @structure['env_vars']
     end
 
     def build_layers(story, location='')
@@ -20,20 +21,36 @@ module Roro
       story.each do |key, value|
         new_location = location + '/' + key
         layer = get_layer(new_location)
-        if layer
-          layer.each do |key, value|
-            next if key.eql?('story')
-            hash = @structure[key] ? @structure[key] : {}
-            @structure[key] = hash.merge!(value)
-          end
-        end
+        merge_layer_on_top(layer) if layer
         build_layers(value, new_location)  
       end
     end
-   
+    
+    def merge_layer_on_top(layer)
+      merge_intentions_on_top(layer) 
+      layer.each do |key, value|
+        next if key.eql?('story')
+        hash = @structure[key] ? @structure[key] : {}
+        @structure[key] = hash.merge!(value)
+      end
+    end
+    
+    def merge_intentions_on_top(layer) 
+      unless layer['choices'].nil?
+        layer['choices'].each do |key, value|
+          @structure['intentions'][key] = value['default'] 
+        end 
+      end
+    end
+    
     def get_layer(filename) 
-      filepath = File.dirname(__FILE__) + "/configurator/#{filename}.yml"
-      File.exist?(filepath) ? YAML.load_file(filepath) : false 
+      error_msg = 'Story in roro_configurator.yml incompatible'
+      filedir = File.dirname(__FILE__) + "/configurator/#{filename}"
+      filepath = "#{filedir}.yml"
+      unless File.exist?(filedir) || File.exist?(filepath)
+        raise (Roro::Error.new(error_msg)) 
+      end 
+      File.exist?(filepath) ? YAML.load_file(filepath) : false
     end
     
    
@@ -41,7 +58,6 @@ module Roro
 
       # if File.exist?(roro_configurator)
       #   curation = YAML.load_file(roro_configurator)
-      #   msg = 'Story in roro_configurator.yml incompatible'
       #   if !curation['story'].eql?(@story) || get_story(@story)
       #     raise(Roro::Error.new(msg + "\n\n"))
       #   end 
