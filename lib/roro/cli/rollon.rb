@@ -5,7 +5,7 @@ module Roro
      
       def configure_for_rollon
         confirm_dependencies
-        @config ||= Roro::Configuration.new(options) 
+        @config ||= Roro::Configurator.new(options) 
       end
 
       def configurator_for_rollon

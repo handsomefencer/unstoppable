@@ -22,10 +22,10 @@ module Roro
     no_commands do
     
       def copy_greenfield_files
-        @config.app['force'] = true
+        @config.env['force'] = true
         src = 'rails/Dockerfile.greenfield.tt'
         dest = 'roro/containers/app/Dockerfile'
-        template src, dest, @config.app
+        template src, dest, @config.env
       end
       
       def run_greenfield_commands
