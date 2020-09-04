@@ -5,7 +5,7 @@ module Roro
     map "generate::config" => "generate_config"
     
     def generate_config
-      create_file ".roro_config.yml", @config.app.to_yaml 
+      # create_file ".roro_config.yml", @config.app.to_yaml 
     end
   end 
 end

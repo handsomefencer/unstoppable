@@ -29,5 +29,7 @@ describe Roro::CLI do
     end
     
     And { assert_file('.gitignore') {|c| assert_match /\*kubeconfig.yaml/, c } }
+    And { assert_file('.gitignore') {|c| assert_match /\*kubeconfig.yml/, c } }
+    And { assert_file('.gitignore') {|c| assert_match /\*.roro_configurator.yml/, c } }
   end
 end

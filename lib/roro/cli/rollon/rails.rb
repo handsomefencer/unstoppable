@@ -16,7 +16,7 @@ module Roro
       confirm_dependencies
       configure_for_rollon
       copy_rails_files
-      generate_config
+      # generate_config
       startup_commands
     end
     

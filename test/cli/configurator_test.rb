@@ -80,10 +80,33 @@ describe Roro::Configurator do
   end
   
   describe 'story' do 
+    describe 'simple' do 
+      Given(:options) { { 'story'=> 'rails' }}
+      Given { rollon }
+      
+      Then { assert_equal 'stories', config.structure['story'].keys.first }  
+      And  { assert_equal 'rails', config.structure['story']['stories'].keys.first }  
+    end
     
-    Given(:options) { {'story'=> {'rails' => 'with_postgresql'}}}
-    Given { rollon }
-    Then { assert_equal 'blah', config.structure['story']}
-    
+    describe 'default' do 
+      Given(:options) { nil }
+      Given { rollon }
+      
+      Then { assert_equal 'stories', config.structure['story'].keys.first }  
+      And  { assert_equal 'rails', config.structure['story']['stories'].keys.first }
+    end
+
+    describe 'nested' do
+     
+      Given(:options) { { 'story' => { 'rails' => { 
+              'ci_cd' => 'circleci',
+              'database'=> 'postgresql' } } } }
+      Given { rollon }
+   
+      Then { assert_equal 'stories', config.structure['story'].keys.first }
+      And  { assert_equal 'rails', config.structure['story']['stories'].keys.first }
+      And { assert config.structure['env_vars']['deploy_tag'] }
+      And { assert config.structure['env_vars']['postgres_pass'] }
+    end
   end
 end
