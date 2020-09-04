@@ -23,10 +23,10 @@ module Roro
      
       def copy_kubernetes_files
         template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
-        template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.app
-        template 'base/dotenv', './.env', @config.app
-        directory 'rails/roro', './roro', @config.app
-        template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.app
+        template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
+        template 'base/dotenv', './.env', @config.env
+        directory 'rails/roro', './roro', @config.env
+        template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.env
       end
 
       def startup_commands

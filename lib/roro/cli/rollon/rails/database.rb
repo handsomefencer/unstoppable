@@ -9,19 +9,19 @@ module Roro
         vendor = @config.master['services']['database']['vendors']
         case database
         when 'p'
-          @config.app['database_vendor'] = 'postgresql'
-          @config.app['postgresql_env_vars'] = vendor['postgresql']['env_vars']
+          @config.env['database_vendor'] = 'postgresql'
+          @config.env['postgresql_env_vars'] = vendor['postgresql']['env_vars']
           configure_for_pg
         when 'm'
-          @config.app['database_vendor'] = 'mysql'
-          @config.app['mysql_env_vars'] = vendor['mysql']['env_vars']
+          @config.env['database_vendor'] = 'mysql'
+          @config.env['mysql_env_vars'] = vendor['mysql']['env_vars']
           configure_for_mysql
         end
         
         %w(development production test staging ci).each do |environment| 
           src = 'rails/dotenv/web.env.tt'
           dest = "roro/containers/app/#{environment}.env"
-          template src, dest, @config.app
+          template src, dest, @config.env
         end
       end
     end 

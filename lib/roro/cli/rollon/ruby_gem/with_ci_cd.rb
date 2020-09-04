@@ -15,17 +15,17 @@ module Roro
           './roro/containers/ruby_gem/ci.env' \n\nlater, or we'll try to add it here:", 
         default: '')
         rubygems_api_key = (answer.eql?("") ? 'some-key' : answer)
-        @config.app['rubygems_api_key'] = rubygems_api_key
-        @config.app['rubies'] = [] 
+        @config.env['rubygems_api_key'] = rubygems_api_key
+        @config.env['rubies'] = [] 
         3.times do |index| 
-          newruby = @config.app['ruby_version'].gsub('.', '').to_i - index
-          @config.app['rubies'] << newruby.to_s.split('').join('.')
+          newruby = @config.env['ruby_version'].gsub('.', '').to_i - index
+          @config.env['rubies'] << newruby.to_s.split('').join('.')
         end
-        directory 'ruby_gem/roro', './roro', @config.app
-        directory 'ruby_gem/.circleci', './.circleci', @config.app
+        directory 'ruby_gem/roro', './roro', @config.env
+        directory 'ruby_gem/.circleci', './.circleci', @config.env
         copy_file 'ruby_gem/docker-compose.yml', './docker-compose.yml'
         
-        @config.app['rubies'].each do |ruby| 
+        @config.env['rubies'].each do |ruby| 
           file = '.circleci/config.yml'
           spacer = "\n      - run: "
           rv = "RUBY_VERSION=#{ruby} docker-compose "

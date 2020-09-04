@@ -51,7 +51,7 @@ describe "Story::RubyGem::WithCICD" do
     Then { assert_file(file) {|c| expected.each {|e| assert_match e, c } }}
   end
   
-  Given(:rubies) { config.app[ 'rubies' ] }
+  Given(:rubies) { config.env[ 'rubies' ] }
   
   describe 'must have rubies set' do 
   

@@ -39,19 +39,19 @@ describe Roro::CLI do
     end
     
     describe 'env_files' do 
-      Given(:vars) { config.app['postgresql_env_vars'] }
+      Given(:vars) { config.env['postgresql_env_vars'] }
       %w(development production test staging ci).each do |env| 
         
         Then do 
           assert_file( "roro/containers/database/#{env}.env" ) do |c| 
             assert_match "POSTGRES_USER=#{vars['postgres_user']}", c 
             assert_match "POSTGRES_PASSWORD=#{vars['postgres_password']}", c 
-            assert_match "POSTGRES_DB=#{config.app['main_app_name'] + "_" + env}", c 
+            assert_match "POSTGRES_DB=#{config.env['main_app_name'] + "_" + env}", c 
             assert_match "RAILS_ENV=#{env}", c 
           end 
         end
       end
-      And { assert_nil config.app['rails_env'] }
+      And { assert_nil config.env['rails_env'] }
     end
 
     describe 'docker-compose.yml' do
