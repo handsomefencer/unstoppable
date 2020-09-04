@@ -13,15 +13,7 @@ describe Roro::Configurator do
   Given(:config) { Roro::Configurator.new(options) }
   Given(:rollon) { cli.instance_variable_set(:@config, config)
                    cli.configurator_for_rollon }
-  
-  describe 'must throw error if stories do not match' do 
     
-    Given { skip }
-    
-    When(:options) { { 'story' => 'ruby_gem'} }
-    Then  { assert_raises(  Roro::Error  ) { rollon } }
-  end
-  
   describe 'must throw error if story not recognized' do 
   
     When(:options) { { 'story' => 'nostory'} }
@@ -35,7 +27,7 @@ describe Roro::Configurator do
     Given(:structure)    { config.structure.keys }
     Given(:choices)      { config.structure['choices'].keys }
     Given { rollon }        
-    
+  
     describe 'base (stories.yml) keys and choices present' do 
       
       Then { base_keys.each { |k| assert_includes structure, k } }
@@ -67,7 +59,6 @@ describe Roro::Configurator do
         Given(:expected) { ['main_app_name', 'ruby_version'] }
 
         Then { expected.each { |e| assert_includes env_vars.keys, e } }
-      # end
       end
     end
   end
@@ -82,6 +73,7 @@ describe Roro::Configurator do
     end
     
     describe 'default' do 
+      
       Given(:options) { nil }
       Given { rollon }
       
@@ -89,17 +81,28 @@ describe Roro::Configurator do
       And  { assert_equal 'rails', config.structure['story']['stories'].keys.first }
     end
 
-    describe 'nested' do
-     
-      Given(:options) { { 'story' => { 'rails' => { 
-              'ci_cd' => 'circleci',
-              'database'=> 'postgresql' } } } }
-      Given { rollon }
-   
-      Then { assert_equal 'stories', config.structure['story'].keys.first }
-      And  { assert_equal 'rails', config.structure['story']['stories'].keys.first }
-      And  { assert config.structure['env_vars']['deploy_tag'] }
-      And  { assert config.structure['env_vars']['postgres_pass'] }
+    describe 'Only stores variables necessary for the story' do
+      
+      Given(:env_vars) { config.structure['env_vars'].keys } 
+      
+      describe 'will not add mysql env vars to pg story' do 
+        
+        Given { rollon }
+        
+        Then { assert_includes env_vars, 'postgres_password' }
+        And  { refute env_vars.include? 'mysql_password' }
+      end
+      
+      describe 'will not add pg env vars to myql story' do 
+        
+        Given { rollon }
+        Given(:options) { { 'story' => { 'rails' => { 'ci_cd' => 'circleci',
+          'database'=> 'mysql' } } } }
+    
+        Then { assert_includes env_vars, 'mysql_password' }
+        And  { refute env_vars.include? 'postgres_password' }
+      end
+
     end
   end
 end
