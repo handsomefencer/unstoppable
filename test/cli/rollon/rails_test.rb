@@ -6,7 +6,7 @@ describe Roro::CLI do
   Given { stub_system_calls }
   
   ['p', 'm'].each do |db|
-    Given(:config) { Roro::Configuration.new }
+    Given(:config) { Roro::Configurator.new }
     
     Given(:subject)     { Roro::CLI.new }
     Given(:rollon) { 

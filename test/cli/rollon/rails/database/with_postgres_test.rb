@@ -4,8 +4,13 @@ describe Roro::CLI do
 
   Given { prepare_destination 'rails/603' }
   Given { stub_system_calls }
-
-  Given(:config) { Roro::Configuration.new }
+  Given(:options) { { 
+    'story' => { 
+      'rails' => { 
+        'ci_cd' => 'circleci',
+        'database'=> 'postgresql' 
+  } } } }
+  Given(:config) { Roro::Configurator.new(options) }
   Given(:subject){ Roro::CLI.new }
   Given(:rollon) { 
     subject.instance_variable_set(:@config, config)
@@ -13,12 +18,9 @@ describe Roro::CLI do
 
   describe '.rollon with postgresql' do 
 
-    Given { config.thor_actions['configure_database'] = 'p' }
-
     Given { rollon }
 
     describe 'pg gem in gemfile' do 
-  
       Then do 
         assert_file 'Gemfile' do |c| 
           assert_match("gem 'pg'", c)
@@ -39,14 +41,14 @@ describe Roro::CLI do
     end
     
     describe 'env_files' do 
-      Given(:vars) { config.env['postgresql_env_vars'] }
+      Given(:vars) { config.env }
       %w(development production test staging ci).each do |env| 
         
         Then do 
           assert_file( "roro/containers/database/#{env}.env" ) do |c| 
-            assert_match "POSTGRES_USER=#{vars['postgres_user']}", c 
+            assert_match "POSTGRES_USERNAME=#{vars['postgres_username']}", c 
             assert_match "POSTGRES_PASSWORD=#{vars['postgres_password']}", c 
-            assert_match "POSTGRES_DB=#{config.env['main_app_name'] + "_" + env}", c 
+            assert_match "POSTGRES_DATABASE=#{config.env['main_app_name'] + "_" + env + "_db"}", c 
             assert_match "RAILS_ENV=#{env}", c 
           end 
         end

@@ -5,16 +5,13 @@ module Roro
     no_commands do
 
       def configure_database 
-        database = @config.thor_actions['configure_database']
-        vendor = @config.master['services']['database']['vendors']
+        database = @config.intentions['configure_database']
         case database
         when 'p'
           @config.env['database_vendor'] = 'postgresql'
-          @config.env['postgresql_env_vars'] = vendor['postgresql']['env_vars']
           configure_for_pg
         when 'm'
           @config.env['database_vendor'] = 'mysql'
-          @config.env['mysql_env_vars'] = vendor['mysql']['env_vars']
           configure_for_mysql
         end
         

@@ -4,8 +4,13 @@ describe Roro::CLI do
 
   Given { prepare_destination 'rails/603' }
   Given { stub_system_calls }
-
-  Given(:config) { Roro::Configuration.new }
+  Given(:options) { { 
+    'story' => { 
+      'rails' => { 
+        'ci_cd' => 'circleci',
+        'database'=> 'mysql' 
+  } } } }
+  Given(:config) { Roro::Configurator.new(options) }
   Given(:subject){ Roro::CLI.new }
   Given(:rollon) { 
     subject.instance_variable_set(:@config, config)
@@ -13,7 +18,7 @@ describe Roro::CLI do
     
   describe '.rollon with mysql' do 
 
-    Given { config.thor_actions['configure_database'] = 'm' }
+    Given { config.intentions['configure_database'] = 'm' }
     Given { rollon }
 
     describe 'must add mysql2 gem to gemfile' do 
@@ -39,12 +44,12 @@ describe Roro::CLI do
     end
     
     describe 'env_files' do 
-
+      Given(:env) { config.env }
       Then { %w(development production test staging ci).each { |env| 
         assert_file( "roro/containers/database/#{env}.env" ) { |c| 
-          assert_match "MYSQL_ROOT_PASSWORD=root", c 
-          assert_match "MYSQL_PASSWORD=root", c 
-          assert_match "MYSQL_DATABASE=#{config.env['main_app_name'] + '_db'}", c 
+          assert_match "MYSQL_ROOT_PASSWORD=root-mysql-password", c 
+          assert_match "MYSQL_PASSWORD=your-mysql-password", c 
+          assert_match "MYSQL_DATABASE=#{config.env['main_app_name'] + '_' + env + '_db'}", c 
           assert_match "MYSQL_USERNAME=root", c 
           assert_match "MYSQL_DATABASE_PORT=3306", c
           assert_match "RAILS_ENV=#{env}", c 

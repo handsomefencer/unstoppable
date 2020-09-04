@@ -9,11 +9,15 @@ module Roro
       story = story.is_a?(String) ? { story => {} } : story
       @structure = {
         'intentions' => {},
-        'choices' => {},
-        'env_vars' => {},
-        'story' =>  { 'stories' => story } }
+        'choices' =>    {},
+        'env_vars' =>   {},
+        'story' =>      { 'stories' => story } }
       build_layers(@structure['story'])
+      @intentions = @structure['intentions']
       @env = @structure['env_vars']
+      @env['main_app_name'] = Dir.pwd.split('/').last 
+      @env['ruby_version'] = `ruby -v`.scan(/\d.\d/).first 
+
     end
 
     def build_layers(story, location='')

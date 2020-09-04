@@ -1,7 +1,9 @@
 require "test_helper"
 
 describe Roro::Configurator do
+
   Given { prepare_destination "greenfield/greenfield" }
+  Given { stub_system_calls }
 
   Given(:options) { { 
     'story' => { 
@@ -12,7 +14,7 @@ describe Roro::Configurator do
   Given(:cli)    { Roro::CLI.new}
   Given(:config) { Roro::Configurator.new(options) }
   Given(:rollon) { cli.instance_variable_set(:@config, config)
-                   cli.configurator_for_rollon }
+                   cli.configure_for_rollon }
     
   describe 'must throw error if story not recognized' do 
   
@@ -47,10 +49,10 @@ describe Roro::Configurator do
         
         Given(:intentions) { config.structure['intentions'] }
         Given(:choices) { config.structure['choices']}
-        Then { intentions.each { |k, v| 
-          assert_includes choices.keys, k
-          assert_equal choices[k]['default'], v 
-        }}
+        
+        Then { intentions.each { |k,v| assert_includes choices.keys, k } }
+        And  { intentions.each { |k,v| assert_equal choices[k]['default'], v } }
+        And  { assert_equal intentions['configure_database'], 'p' }
       end
         
       describe '.env' do 
@@ -59,6 +61,8 @@ describe Roro::Configurator do
         Given(:expected) { ['main_app_name', 'ruby_version'] }
 
         Then { expected.each { |e| assert_includes env_vars.keys, e } }
+        And  { assert_equal 'greenfield', config.env['main_app_name']}
+        And  { assert_equal '2.7', config.env['ruby_version']}
       end
     end
   end

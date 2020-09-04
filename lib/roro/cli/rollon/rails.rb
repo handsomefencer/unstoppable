@@ -28,7 +28,7 @@ module Roro
         template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
         template 'base/dotenv', './.env', @config.env
         directory 'rails/roro', './roro', @config.env
-        take_thor_actions
+        execute_intentions
       end
                  
       def startup_commands

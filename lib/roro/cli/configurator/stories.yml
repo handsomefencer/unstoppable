@@ -1,6 +1,6 @@
 ---
 env_vars: 
-  main_app_name: <%= Dir.pwd.split('/').last  %>
+  main_app_name: 
   developer: 
     name: your-name
     email: your.email@example.com

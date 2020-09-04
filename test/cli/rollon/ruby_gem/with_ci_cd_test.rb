@@ -5,7 +5,7 @@ describe "Story::RubyGem::WithCICD" do
   Given { prepare_destination 'ruby_gem/dummy_gem' }
   Given { stub_system_calls }
 
-  Given(:config)  { Roro::Configuration.new }
+  Given(:config)  { Roro::Configurator.new }
   Given(:subject) { Roro::CLI.new }
   Given(:asker) { Thor::Shell::Basic.any_instance }
   Given(:rubygems_api_key) { 'some-rubygems-api-key' }
