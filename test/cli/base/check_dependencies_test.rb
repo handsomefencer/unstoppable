@@ -9,12 +9,12 @@ describe Roro::CLI do
     
     describe 'for greenfield story' do 
 
-      Given { prepare_destination 'greenfield' }
+      Given { prepare_destination 'greenfield/greenfield' }
 
       describe 'current directory must be empty' do 
         
         Then { assert subject.confirm_directory_empty }
-        And { assert_raises( Roro::Error ) { subject.confirm_directory_not_empty } }
+        And  { assert_raises( Roro::Error ) { subject.confirm_directory_not_empty } }
       end
     end 
     
@@ -41,7 +41,7 @@ describe Roro::CLI do
       Given { prepare_destination 'rails/603' }
       
       describe 'directory must not be empty' do 
-        
+
         Then { assert subject.confirm_directory_not_empty }
         And  { assert_raises(  Roro::Error  ) { subject.confirm_directory_empty } }
       end

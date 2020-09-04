@@ -5,7 +5,7 @@ describe Roro::CLI do
   Given { stub_system_calls }
   Given(:subject) { Roro::CLI.new }
 
-  Given { prepare_destination 'greenfield' }
+  Given { prepare_destination 'greenfield/greenfield' }
   
   describe './greenfield' do 
     

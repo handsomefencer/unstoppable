@@ -1,5 +1,5 @@
 ---
-environment: 
+env_vars: 
   main_app_name: <%= Dir.pwd.split('/').last  %>
   developer: 
     name: your-name
@@ -8,25 +8,25 @@ environment:
 registries: 
   docker:
     env_vars: 
-      DOCKER_EMAIL: your-docker-hub-email
-      DOCKER_ORG: your-docker-hub-org-name
-      DOCKER_PASSWORD: your-docker-hub-password
-      DOCKER_USER: your-docker-hub-user-name
+      docker_email: your-docker-hub-email
+      docker_org: your-docker-hub-org-name
+      docker_pass: your-docker-hub-password
+      docker_token: your-docker-hub-token
+      docker_user: your-docker-hub-user-name
     
 ci_cd:
   semaphore:
   circleci:
     env_vars:
-      DEPLOY_TAG: "${CIRCLE_SHA1:0:7}"
+      deploy_tag: "${CIRCLE_SHA1:0:7}"
 
 deployment:
   env_vars: 
-    SERVER_HOST: "ip-address-of-your-server"
-    SERVER_PORT: '22'
-    SERVER_USER: root
+    server_host: "ip-address-of-your-server"
+    server_port: '22'
+    server_user: root
     
 choices:
-  
   backup_existing_files: 
     question: |
       RoRo will be generating a number of files, some of which will 
@@ -35,7 +35,6 @@ choices:
       y: 'Yes'
       n: 'No' 
     default: n
-
 
   copy_dockerignore:
     question: |

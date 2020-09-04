@@ -5,47 +5,53 @@ module Roro
     attr_reader :choices, :structure, :thor_actions, :env, :options
       
     def get_story(filename) 
+      roro_configurator =  Dir.pwd + '/roro_configurator.yml' 
+      if File.exist?(roro_configurator)
+        curation = YAML.load_file(roro_configurator)
+        msg = 'Story in roro_configurator.yml incompatible'
+        if !curation['story'].eql?(@story) || get_story(@story)
+          raise(Roro::Error.new(msg + "\n\n"))
+        end 
+      end
+
       story_directory = File.dirname(__FILE__) + '/configurators/'
-      YAML.load_file(story_directory + 'roro.yml')
+      YAML.load_file(story_directory + filename + '.yml')
     end
     
     def initialize(options={}) 
       @options = options || {}
-      @structure = get_story('roro.yml') 
-      @structure['story'] = @options['story'] || 'rails'
-      roro_configurator =  Dir.pwd + '/roro_configurator.yml' 
-      if File.exist?(roro_configurator)
-        curation = YAML.load_file(roro_configurator)
-        
-        @structure['story'] = curation['story']
-        unless @structure['story'].eql?(options['story'])
-          msg = 'Story in roro_configurator.yml incompatible'
-          raise(Roro::Error.new(msg + "\n\n"))
-        end 
-        # roro_configurator = YAML.load_file(Dir.pwd + '/roro_configurator.yml')
+      story = options['story']
+      case 
+      when story.nil?
+        @story = 'rails' 
+      when options['story'].is_a?(String)
+        @story = options['story']
+      when options['story'].is_a?(Hash)
+        @story = @options['story'].keys.first
       end
-      # story = YAML.load_file(File.dirname(__FILE__) + '/configurators/roro.yml')
-       
-      # base = YAML.load_file(File.dirname(__FILE__) + '/configurators/roro.yml')
-      # @deployer = base 
+      # story = @options['story'] 
+      # @story = (story.value.is_a?(Hash) ? story.keys.first : story ) #|| 'rails'
+      # unless @options['story'].nil?
+      #   byebug
+      # end 
+      # @story = @options['story'] || 'rails'
+      # if options['story'] = { 'rails' => 'with_postgresql' }
+      #   byebug 
+      #   end      
       
-      # byebug
-      # story = roro_configurator ? roro_configurator : {}
+      @structure = get_story('roro') 
+      @structure['story'] = get_story(@story)
+      @structure['choices'].merge!(@structure['story']['choices'])
+      @structure['intentions'] = {}
+      @structure['choices'].each do |key, value|
+        @structure['intentions'][key] = value['default'] 
+      end
+      @env = @structure['env_vars']
+      @env.merge!(@structure['registries']['docker']['env_vars'] )
+      @env.merge!(@structure['ci_cd']['circleci']['env_vars'] )
+      @env.merge!(@structure['deployment']['env_vars'] )
+      @env.merge!(@structure['story']['env_vars'] )
       
-      # @deployer = YAML.load_file(Dir.pwd + '/roro_configurator.yml')
-      # @deployer = get_deployer 
-      # @master = YAML.load_file(File.dirname(__FILE__) + '/roro_configurator.yml')
-      # @master['services']['server_app']['vendors']['rails']['version'] = `ruby -v`.scan(/\d.\d/).first
-      # @choices = @master['services']['server_app']['vendors']['rails']['choices'] 
-      # @app = {} 
-      # @thor_actions = {}
-      # configure
-      # roro_configurator =  Dir.pwd + '/roro_configurator.yml' 
-      # preconfigured = File.exist?(roro_configurator)
-      # base = YAML.load_file(File.dirname(__FILE__) + '/configurators/roro.yml')
-      # @deployer = base 
-      @configuration
-
     end
   end
 end
