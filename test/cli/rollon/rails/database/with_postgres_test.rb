@@ -46,8 +46,8 @@ describe Roro::CLI do
         
         Then do 
           assert_file( "roro/containers/database/#{env}.env" ) do |c| 
-            assert_match "POSTGRES_USERNAME=#{vars['postgres_username']}", c 
-            assert_match "POSTGRES_PASSWORD=#{vars['postgres_password']}", c 
+            assert_match "POSTGRES_USERNAME=postgres", c 
+            assert_match "POSTGRES_PASSWORD=your-postgres-password", c 
             assert_match "POSTGRES_DATABASE=#{config.env['main_app_name'] + "_" + env + "_db"}", c 
             assert_match "RAILS_ENV=#{env}", c 
           end 
