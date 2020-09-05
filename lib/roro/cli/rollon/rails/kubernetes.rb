@@ -16,7 +16,7 @@ module Roro
       copy_rails_files
       copy_kubernetes_files
       # generate_config
-      startup_commands
+      # startup_commands
     end
     
     no_commands do
@@ -29,14 +29,14 @@ module Roro
         template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.env
       end
 
-      def startup_commands
-        remove_roro_artifacts
-        success_msg = "'\n\n#{'*' * 5 }\n\nYour Rails app is available at http://localhost:3000/'\n\n#{'*' * 5 }"
-        # system 'docker-compose build'
-        # system 'docker-compose run app bin/rails db:create'
-        # system 'docker-compose run app bin/rails db:migrate'
-        # system "docker-compose run app echo #{success_msg}"
-      end
+      # def startup_commands
+      #   remove_roro_artifacts
+      #   success_msg = "'\n\n#{'*' * 5 }\n\nYour Rails app is available at http://localhost:3000/'\n\n#{'*' * 5 }"
+      #   # system 'docker-compose build'
+      #   # system 'docker-compose run app bin/rails db:create'
+      #   # system 'docker-compose run app bin/rails db:migrate'
+      #   # system "docker-compose run app echo #{success_msg}"
+      # end
     end
   end
 end

@@ -32,7 +32,7 @@ choices:
     choices: 
       y: 'Yes'
       n: 'No'
-    default: y
+    default: n
         
   gitignore_sensitive_files:
     question: | 
