@@ -24,44 +24,86 @@ module Roro
           conditional: "Dir.glob('*').empty? || (Dir.glob('*').size.eql?(1) && Dir.glob('roro_configurator.yml'))" }) 
         confirm || true
       end
+
+      # check_for_clashes = "docker ps --filter name=#{appname}* -aq"
+      #   no_artifact_containers = IO.popen(check_for_clashes).count.eql?(0)
+      #   no_artifact_volumes = IO.popen("docker volume ls --filter name=greenfield*").count > (1)
+
+      def artifacts? 
+        @artifacts = {
+          containers; {
+            list: "docker ps --filter name=#{@appname}* -aq",
+            remove: "docker ps --filter name=#{appname}* -aq | xargs docker stop | xargs docker rm"
+          }, 
+          volumes: {
+            list: "docker ps --filter name=#{@appname}* -aq",
+            remove: 
+          }
+        }
+        artifact_containers? || artifact_volumes? || artifact_networks?
+      end
+
+      def list_containers
+        "docker ps --filter name=#{@appname}* -aq"
+      end
+      
+      def artifacts?
+        @artifacts = {
+          containers: {
+            list: "docker ps --filter name=#{@appname}* -aq"
+            remove: "| xargs docker stop | xargs docker rm"
+          },
+          volumes: {
+            list: "docker volume ls --filter name=#{@appname}*",
+            remove: "| xargs docker rm"
+          } 
+          networks: {
+            list: "docker network ls --filter name=#{@appname}*",
+            remove: "| xargs docker rm"
+          },
+          images: {
+            list: "docker image ls --filter name=#{@appname}*",
+            remove: "| xargs docker rm"
+          }
+        }
+        present = (IO.popen(list_containers).count > 0) ? true : false
+        @artifacts['containers'] = {
+          list: "docker volume ls --filter name=#{@appname}*", 
+          remove: "docker volume rm $(docker volume ls --filter name=#{@appname}* -q)"
+
+        }
+        present
+      end 
+      def remove_roro_artifacts
+        @appname = @config.env['main_app_name']
+        @artifacts = {}
+        return unless artifacts? 
+        question = [
+          "\n\nWe found some docker artifacts which may clash",
+          "with RoRo moving forward. You can verify their existence with:"
+        ]
+        question << "\n\t$ #{list_containers}" if artifact_containers? 
+        
           
-      def remove_roro_artifacts 
-        appname = Dir.pwd.split('/').last 
-        volumes = ["#{appname}_db_data", "#{appname}_app"]
-        check_vol = "docker volume ls --filter name="
-        # check_vols = volumes.each do |volume| 
-        #   check = (IO.popen(check_vol + volume).count > (0))
-        #   if check ? (return true) : false  
-        # end
-        
-        # check_containers = "docker ps --filter name=#{appname}* -aq"
-        
-        # remove_containers = "docker ps --filter name=#{appname}* -aq | xargs docker stop | xargs docker rm"
+          # remove_containers = "docker ps --filter name=#{appname}* -aq | xargs docker stop | xargs docker rm"
+          # return unless (check_containers || check_vols)
+        # question << "\n\t$ #{check_vol + app_name + '*'}" if artifact_volumes 
+        # question << "You can remove these artifacts with something like:\n" 
+        # question << "\n\t$ #{remove_containers}" if artifact_containers 
         # byebug
-        # return unless (check_containers || check_vols)
-        # question = [
-        #   "\n\nWe found some docker artifacts which may clash",
-        #   "with RoRo moving forward. You can verify their existence in a ",
-        #   "separate terminal with:"
-        # ]
-        # #   question << "\n\t$ #{check_containers}" if artifact_containers 
-        # #   question << "\n\t$ #{check_vol + app_name + '*'}" if artifact_volumes 
-        # #   question << "You can remove these artifacts with something like:\n" 
-        # #   question << "\n\t$ #{remove_containers}" if artifact_containers 
-        # #   if artifact_volumes
-        # #     volumes.each do |v| 
-        # #       check = (IO.popen(check_vol + volume).count > (0))
-        # #       (question << "\n\t$ #{check_vol + app_name + '*'}") if check
-        # #     end
+        # # if artifact_volumes
+        # #   volumes.each do |v| 
+        # #     check = (IO.popen(check_vol + volume).count > (0))
+        # #     (question << "\n\t$ #{check_vol + app_name + '*'}") if check
         # #   end
-        # #   question << "\nWould you like RoRo to attempt to remove them for you?"
-        # #   question = question.join("\n")
-        # #   prompt = [question]
-        # #   choices = {'y' => 'Yes', 'n' => 'No'}
-        #   # choices.each { |k,v| prompt << "(#{k}) #{v.to_s}" }
-        #   # answer = ask((prompt.join("\n\n") + "\n\n"), 
-        #   # default: 'y', limited_to: choices.keys)
-        # end
+        # # end
+        # question << "\nWould you like RoRo to attempt to remove them for you?"
+        # question = question.join("\n")
+        # prompt = [question]
+        # choices = {'y' => 'Yes', 'n' => 'No'}
+        # choices.each { |k,v| prompt << "(#{k}) #{v.to_s}" }
+        # answer = ask((prompt.join("\n\n") + "\n\n"), 
+        # default: 'y', limited_to: choices.keys)
       end
       
       def confirm_dependency(options)

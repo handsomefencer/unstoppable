@@ -12,12 +12,12 @@ module Roro
     map "greenfield::rails" => "greenfield_rails"
     
     def greenfield_rails(*args) 
-      remove_roro_artifacts
       confirm_directory_empty
       configure_for_rollon
-      copy_greenfield_files
-      run_greenfield_commands
-      rollon_rails(*args)
+      remove_roro_artifacts
+      # copy_greenfield_files
+      # run_greenfield_commands
+      # rollon_rails(*args)
     end
         
     no_commands do
