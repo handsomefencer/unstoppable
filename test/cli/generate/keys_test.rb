@@ -79,7 +79,7 @@ describe Roro::CLI do
         Given { refute_file 'roro/containers/app/development.env' }
         
         Then do
-          assert_raises(error) {cli.confirm_files_decrypted? 'development'}
+          assert_raises(error) { cli.confirm_files_decrypted? 'development'}
         end
 
         describe "when called from generate_key" do

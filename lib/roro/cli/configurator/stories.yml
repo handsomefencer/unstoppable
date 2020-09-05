@@ -6,9 +6,9 @@ env_vars:
     email: your.email@example.com
   docker_email: your-docker-registry-email
   docker_org: your-docker-registry-org-name
-  docker_pass: your-docker-registry-password
+  docker_password: your-docker-registry-password
   docker_token: your-docker-registry-token
-  docker_user: your-docker-registry-user-name
+  docker_username: your-docker-registry-user-name
 
 registries: 
   dockerhub:

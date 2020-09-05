@@ -5,29 +5,27 @@ describe Roro::Configurator do
   Given { prepare_destination "greenfield/greenfield" }
   Given { stub_system_calls }
 
-  Given(:options) { { 
-    'story' => { 
-      'rails' => { 
-        'ci_cd' => 'circleci',
-        'database'=> 'postgresql' 
-  } } } }
-  Given(:cli)    { Roro::CLI.new}
-  Given(:config) { Roro::Configurator.new(options) }
-  Given(:rollon) { cli.instance_variable_set(:@config, config)
-                   cli.configure_for_rollon }
-    
+  Given(:options)   { { 'story' => { 'rails' => {} } } } 
+  Given(:config)    { Roro::Configurator.new(options) }
+  Given(:env_vars)  { config.structure['env_vars'].keys } 
+  Given(:structure) { config.structure.keys }
+  Given(:choices)   { config.structure['choices'].keys }
+  Given(:cli)       { Roro::CLI.new}
+  Given(:rollon)    { cli.instance_variable_set(:@config, config)
+                      cli.configure_for_rollon }  
+                      
   describe 'must throw error if story not recognized' do 
   
     When(:options) { { 'story' => 'nostory'} }
+  
     Then  { assert_raises(  Roro::Error  ) { rollon } }
   end
   
-  describe '.structure with rails story' do 
+  describe '.structure with rails (default) story' do 
     
     Given(:base_keys)    { %w( env_vars registries ci_cd deployment choices ) }
     Given(:base_choices) { %w( copy_dockerignore backup_existing_files ) }
-    Given(:structure)    { config.structure.keys }
-    Given(:choices)      { config.structure['choices'].keys }
+    
     Given { rollon }        
   
     describe 'base (stories.yml) keys and choices present' do 
@@ -67,9 +65,10 @@ describe Roro::Configurator do
     end
   end
   
-  describe 'story' do 
+  describe 'stories' do 
     describe 'simple' do 
-      Given(:options) { { 'story'=> 'rails' }}
+      
+      Given { options = { 'story' => { 'rails' => {}}}}
       Given { rollon }
       
       Then { assert_equal 'stories', config.structure['story'].keys.first }  
@@ -78,35 +77,35 @@ describe Roro::Configurator do
     
     describe 'default' do 
       
-      Given(:options) { nil }
+      Given { options = nil }
       Given { rollon }
       
       Then { assert_equal 'stories', config.structure['story'].keys.first }  
       And  { assert_equal 'rails', config.structure['story']['stories'].keys.first }
     end
-
-    describe 'Only stores variables necessary for the story' do
-      
-      Given(:env_vars) { config.structure['env_vars'].keys } 
-      
-      describe 'will not add mysql env vars to pg story' do 
-        
-        Given { rollon }
-        
-        Then { assert_includes env_vars, 'postgres_password' }
-        And  { refute env_vars.include? 'mysql_password' }
-      end
-      
-      describe 'will not add pg env vars to myql story' do 
-        
-        Given { rollon }
-        Given(:options) { { 'story' => { 'rails' => { 'ci_cd' => 'circleci',
-          'database'=> 'mysql' } } } }
+  end
     
-        Then { assert_includes env_vars, 'mysql_password' }
-        And  { refute env_vars.include? 'postgres_password' }
-      end
-
+  Given(:set_db) { options.merge!({'story' => {'rails' => { 'database' => db }} })}
+  
+  describe 'story specific variables' do
+    describe 'must not add mysql env vars to pg story' do \
+      
+      Given(:db) { 'postgresql' }
+      Given { set_db }
+      Given { rollon }
+      
+      Then { assert_includes env_vars, 'postgres_password' }
+      And  { refute env_vars.include? 'mysql_password' }
+    end
+      
+    describe 'will not add pg env vars to myql story' do 
+    
+      Given(:db) { 'mysql' }
+      Given { set_db }
+      Given { rollon }
+          
+      Then { assert_includes env_vars, 'mysql_password' }
+      And  { refute env_vars.include? 'postgres_password' }
     end
   end
 end
