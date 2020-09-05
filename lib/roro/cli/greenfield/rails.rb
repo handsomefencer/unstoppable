@@ -14,10 +14,10 @@ module Roro
     def greenfield_rails(*args) 
       confirm_directory_empty
       configure_for_rollon
-      remove_roro_artifacts
-      # copy_greenfield_files
-      # run_greenfield_commands
-      # rollon_rails(*args)
+      handle_roro_artifacts
+      copy_greenfield_files
+      run_greenfield_commands
+      rollon_rails(*args)
     end
         
     no_commands do

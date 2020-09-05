@@ -8,28 +8,43 @@ describe Roro::CLI do
   ['p', 'm'].each do |db|
     Given(:config) { Roro::Configurator.new }
     
-    Given(:subject)     { Roro::CLI.new }
+    Given(:cli)     { Roro::CLI.new }
     Given(:rollon) { 
-      subject.instance_variable_set(:@config, config)
-      subject.rollon_rails
+      cli.instance_variable_set(:@config, config)
+      cli.rollon_rails
     }
-    
-    Given { rollon }
     
     describe '.rollon' do 
       describe 'insertions' do
         describe 'only takes specified thor actions' do 
           
-          Given(:hfci) { "gem 'handsome_fencer-test'" }
           Given(:roro) { "gem 'roro'" }
-          Then { assert_file( 'Gemfile' ) { |c| 
-            refute_match(hfci, c)
-            assert_match(roro, c)
-          }}
+          Given(:hfci) { "gem 'handsome_fencer-test'" }
+          
+          describe 'yes' do 
+            
+            Given { config.intentions['insert_hfci_gem_into_gemfile'] = 'y'}
+            Given { config.intentions['insert_roro_gem_into_gemfile'] = 'y'}
+            Given { rollon }
+            
+            Then { assert_file( 'Gemfile' ) { |c| assert_match(hfci, c) } }
+            And  { assert_file( 'Gemfile' ) { |c| assert_match(roro, c) } }
+          end
+          
+          describe 'no' do 
+            
+            Given { config.intentions['insert_hfci_gem_into_gemfile'] = 'n'}
+            Given { config.intentions['insert_roro_gem_into_gemfile'] = 'n'}
+            Given { rollon }
+            
+            Then { assert_file( 'Gemfile' ) { |c| refute_match(hfci, c) } }
+            And  { assert_file( 'Gemfile' ) { |c| refute_match(roro, c) } }
+          end
         end
         
         describe 'configures stdout' do 
-            
+  
+          Given { rollon }
           Given(:file) { 'config/boot.rb' }
           Given(:line) { "$stdout.sync = true" }
           
@@ -38,6 +53,7 @@ describe Roro::CLI do
 
         describe 'configures .gitignore' do 
           
+          Given { rollon }
           Given(:file) { ".gitignore" }
           Given(:lines) {["roro/**/*.env", "roro/**/*.key"] }
           
@@ -46,6 +62,7 @@ describe Roro::CLI do
       end 
         
       describe 'copies' do
+        Given { rollon }
         describe 'docker-entrypoint.sh' do 
           
           Given(:file) { 'roro/docker-entrypoint.sh' }

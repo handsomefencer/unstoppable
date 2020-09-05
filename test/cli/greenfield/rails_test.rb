@@ -3,14 +3,14 @@ require "test_helper"
 describe Roro::CLI do
 
   Given { stub_system_calls }
-  Given(:subject) { Roro::CLI.new }
+  Given(:cli) { Roro::CLI.new }
 
   Given { prepare_destination 'greenfield/greenfield' }
   
   describe './greenfield' do 
     
-    Given { subject.stubs(:rollon_rails) }
-    Given { subject.greenfield_rails }
+    Given { cli.stubs(:rollon_rails) }
+    Given { cli.greenfield_rails }
     
     describe 'roro directories' do 
 

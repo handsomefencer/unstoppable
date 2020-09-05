@@ -4,7 +4,7 @@ describe Roro::CLI do
 
   describe 'check dependencies' do 
     
-    Given(:subject) { Roro::CLI.new }
+    Given(:cli) { Roro::CLI.new }
     Given(:error) { Roro::Error }
     
     describe 'for greenfield story' do 
@@ -13,8 +13,8 @@ describe Roro::CLI do
 
       describe 'current directory must be empty' do 
         
-        Then { assert subject.confirm_directory_empty }
-        And  { assert_raises( Roro::Error ) { subject.confirm_directory_not_empty } }
+        Then { assert cli.confirm_directory_empty }
+        And  { assert_raises( Roro::Error ) { cli.confirm_directory_not_empty } }
       end
     end 
     
@@ -22,8 +22,8 @@ describe Roro::CLI do
       Given { prepare_destination "rails/greenfield" }
 
       describe 'with roro_configurator.yml' do
-        Then { assert subject.confirm_directory_empty }
-        And { subject.confirm_directory_not_empty } 
+        Then { assert cli.confirm_directory_empty }
+        And { cli.confirm_directory_not_empty } 
       end 
     end
     
@@ -31,8 +31,8 @@ describe Roro::CLI do
       describe 'must not rollon when just roro_configurator.yml' do
         Given { prepare_destination "rails/greenfield" }
   
-        Then { assert subject.confirm_directory_not_empty }
-        And { subject.confirm_directory_not_empty } 
+        Then { assert cli.confirm_directory_not_empty }
+        And { cli.confirm_directory_not_empty } 
       end 
     end
   
@@ -42,8 +42,8 @@ describe Roro::CLI do
       
       describe 'directory must not be empty' do 
 
-        Then { assert subject.confirm_directory_not_empty }
-        And  { assert_raises(  Roro::Error  ) { subject.confirm_directory_empty } }
+        Then { assert cli.confirm_directory_not_empty }
+        And  { assert_raises(  Roro::Error  ) { cli.confirm_directory_empty } }
       end
     end
     
@@ -71,7 +71,7 @@ describe Roro::CLI do
           Then do
             dependencies.each do |d|
               Roro::CLI.any_instance.expects(:system).with(d[:system_query]).returns(true) 
-              assert subject.confirm_dependency(d) 
+              assert cli.confirm_dependency(d) 
             end
           end
         end 
@@ -81,7 +81,7 @@ describe Roro::CLI do
           Then do
             dependencies.each do |d| 
               Roro::CLI.any_instance.expects(:system).with(d[:system_query]).returns(false) 
-              assert_raises( Roro::Error ) { subject.confirm_dependency(d ) }
+              assert_raises( Roro::Error ) { cli.confirm_dependency(d ) }
             end
           end
         end

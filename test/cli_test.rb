@@ -2,7 +2,7 @@ require "test_helper"
 
 describe Roro::CLI do
 
-  Given(:subject) { Roro::CLI.new }
+  Given(:cli) { Roro::CLI.new }
 
   describe 'commands' do
     { 

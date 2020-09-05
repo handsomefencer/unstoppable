@@ -7,15 +7,15 @@
 
 #   Given(:config) { Roro::Configuration.new }
   
-#   Given(:subject)     { Roro::CLI.new }
+#   Given(:cli)     { Roro::CLI.new }
 #   Given(:rollon)      { 
-#     subject.instance_variable_set(:@config, config)
-#     subject.rollon_rails
+#     cli.instance_variable_set(:@config, config)
+#     cli.rollon_rails
 #   }
   
 #   describe "generate:config:rails" do
         
-#     # Given { subject.generate_config }
+#     # Given { cli.generate_config }
     
 #     # describe "after greenfielding, before rolling on" do 
     

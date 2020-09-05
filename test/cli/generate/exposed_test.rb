@@ -4,14 +4,14 @@ describe "Roro::CLI" do
 
   Given(:asker) { Thor::Shell::Basic.any_instance }
   Given { asker.stubs(:ask).returns('y') }
-  Given(:subject) { Roro::CLI.new }
+  Given(:cli) { Roro::CLI.new }
   Given { prepare_destination 'roro' }
   
   Given(:dotenv_dir) { 'roro/containers/app/' }
   Given(:envs) { %w(development staging production) }
   Given { insert_dot_env_files(envs) }
-  Given { subject.generate_key }
-  Given { subject.generate_obfuscated }
+  Given { cli.generate_key }
+  Given { cli.generate_obfuscated }
   
   describe 'starting point' do 
 
@@ -29,7 +29,7 @@ describe "Roro::CLI" do
     describe "with key_file" do
       describe 'expose one environment' do 
         
-        Given { subject.generate_exposed 'production' }
+        Given { cli.generate_exposed 'production' }
         
         Then  { assert_file 'roro/containers/app/production.env' }
         And   { refute_file 'roro/containers/app/development.env' }
@@ -37,7 +37,7 @@ describe "Roro::CLI" do
       
       describe 'expose all environments' do 
 
-        Given { subject.generate_exposed }
+        Given { cli.generate_exposed }
         Then  { envs.each {|e| assert_file dotenv_dir + "#{e}.env" } }
       end
     end
@@ -49,7 +49,7 @@ describe "Roro::CLI" do
 
       describe 'expose one environment' do 
         
-        Given { subject.generate_exposed 'development' }
+        Given { cli.generate_exposed 'development' }
         
         Then  { assert_file 'roro/containers/app/development.env' }
         And   { refute_file 'roro/containers/app/production.env' }

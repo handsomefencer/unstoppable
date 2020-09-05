@@ -11,10 +11,10 @@ describe Roro::CLI do
         'database'=> 'mysql' 
   } } } }
   Given(:config) { Roro::Configurator.new(options) }
-  Given(:subject){ Roro::CLI.new }
+  Given(:cli){ Roro::CLI.new }
   Given(:rollon) { 
-    subject.instance_variable_set(:@config, config)
-    subject.rollon_rails }
+    cli.instance_variable_set(:@config, config)
+    cli.rollon_rails }
     
   describe '.rollon with mysql' do 
 

@@ -7,10 +7,10 @@ describe "Story::Rails::WithCICD" do
 
   Given(:config)  { Roro::Configurator.new }
   Given { config.env['force'] = true}  
-  Given(:subject) { Roro::CLI.new }
+  Given(:cli) { Roro::CLI.new }
   Given(:rollon)  { 
-    subject.instance_variable_set(:@config, config)
-    subject.rollon_rails
+    cli.instance_variable_set(:@config, config)
+    cli.rollon_rails
   }
   
   Given { rollon }

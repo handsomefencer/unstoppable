@@ -6,12 +6,12 @@ describe "Story::RubyGem::WithCICD" do
   Given { stub_system_calls }
 
   Given(:config)  { Roro::Configurator.new }
-  Given(:subject) { Roro::CLI.new }
+  Given(:cli) { Roro::CLI.new }
   Given(:asker) { Thor::Shell::Basic.any_instance }
   Given(:rubygems_api_key) { 'some-rubygems-api-key' }
   Given { asker.stubs(:ask).returns(rubygems_api_key) }    
-  Given { subject.instance_variable_set( :@config, config ) }
-  Given { subject.ruby_gem_with_ci_cd }
+  Given { cli.instance_variable_set( :@config, config ) }
+  Given { cli.ruby_gem_with_ci_cd }
   
   describe 'must modify .gitignore' do
     
