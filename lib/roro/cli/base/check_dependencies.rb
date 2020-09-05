@@ -25,87 +25,58 @@ module Roro
         confirm || true
       end
 
-      # check_for_clashes = "docker ps --filter name=#{appname}* -aq"
-      #   no_artifact_containers = IO.popen(check_for_clashes).count.eql?(0)
-      #   no_artifact_volumes = IO.popen("docker volume ls --filter name=greenfield*").count > (1)
-
-      def artifacts? 
-        @artifacts = {
-          containers; {
-            list: "docker ps --filter name=#{@appname}* -aq",
-            remove: "docker ps --filter name=#{appname}* -aq | xargs docker stop | xargs docker rm"
-          }, 
-          volumes: {
-            list: "docker ps --filter name=#{@appname}* -aq",
-            remove: 
-          }
-        }
-        artifact_containers? || artifact_volumes? || artifact_networks?
-      end
-
-      def list_containers
-        "docker ps --filter name=#{@appname}* -aq"
-      end
-      
       def artifacts?
-        @artifacts = {
-          containers: {
-            list: "docker ps --filter name=#{@appname}* -aq"
-            remove: "| xargs docker stop | xargs docker rm"
-          },
-          volumes: {
-            list: "docker volume ls --filter name=#{@appname}*",
-            remove: "| xargs docker rm"
-          } 
-          networks: {
-            list: "docker network ls --filter name=#{@appname}*",
-            remove: "| xargs docker rm"
-          },
-          images: {
-            list: "docker image ls --filter name=#{@appname}*",
-            remove: "| xargs docker rm"
-          }
-        }
-        present = (IO.popen(list_containers).count > 0) ? true : false
-        @artifacts['containers'] = {
-          list: "docker volume ls --filter name=#{@appname}*", 
-          remove: "docker volume rm $(docker volume ls --filter name=#{@appname}* -q)"
-
-        }
-        present
-      end 
-      def remove_roro_artifacts
         @appname = @config.env['main_app_name']
         @artifacts = {}
-        return unless artifacts? 
-        question = [
-          "\n\nWe found some docker artifacts which may clash",
-          "with RoRo moving forward. You can verify their existence with:"
-        ]
-        question << "\n\t$ #{list_containers}" if artifact_containers? 
-        
-          
-          # remove_containers = "docker ps --filter name=#{appname}* -aq | xargs docker stop | xargs docker rm"
-          # return unless (check_containers || check_vols)
-        # question << "\n\t$ #{check_vol + app_name + '*'}" if artifact_volumes 
-        # question << "You can remove these artifacts with something like:\n" 
-        # question << "\n\t$ #{remove_containers}" if artifact_containers 
-        # byebug
-        # # if artifact_volumes
-        # #   volumes.each do |v| 
-        # #     check = (IO.popen(check_vol + volume).count > (0))
-        # #     (question << "\n\t$ #{check_vol + app_name + '*'}") if check
-        # #   end
-        # # end
-        # question << "\nWould you like RoRo to attempt to remove them for you?"
-        # question = question.join("\n")
-        # prompt = [question]
-        # choices = {'y' => 'Yes', 'n' => 'No'}
-        # choices.each { |k,v| prompt << "(#{k}) #{v.to_s}" }
-        # answer = ask((prompt.join("\n\n") + "\n\n"), 
-        # default: 'y', limited_to: choices.keys)
+        hash = {
+          containers: {
+            list: "docker ps --filter name=#{@appname}* -a",
+            remove: " -q | xargs docker stop | xargs docker rm -f"
+          }, 
+          volumes: {
+            list: "docker volume ls --filter name=#{@appname}*",
+            remove: " -q | xargs docker volume rm -f"
+          },
+          networks: {
+            list: "docker network ls --filter name=#{@appname}",
+            remove: " -q | xargs docker network rm"
+          },
+          images: {
+            list: "docker image ls #{@appname}*",
+            remove: " -q | xargs docker rmi -f"
+          }
+        }
+        hash.each do |k, v|
+          check = IO.popen(v[:list] + ' -q').count > 0
+          @artifacts[k] = v if check
+        end
+        true if @artifacts.empty?
       end
       
+      def handle_roro_artifacts
+        return if artifacts?
+        question = [
+          "\n\nThis machine has some docker artifacts which may clash with ",
+          "RoRo moving forward. You can verify their existence with:\n"
+        ]
+        @artifacts.each { |k,v| question << "\t$ #{v[:list]}" } 
+        question << "\nYou can remove these artifacts with something like:\n" 
+        @artifacts.each { |k,v| question << "\t$ #{v[:list]} #{v[:remove]}" }
+        question << "\nWould you like RoRo to attempt to remove them for you?"
+        prompt = [question.join("\n")]
+        choices = {'y' => 'Yes', 'n' => 'No'}
+        choices.each { |k,v| prompt << "(#{k}) #{v.to_s}" }
+        if (ask(
+            (prompt.join("\n\n") + "\n\n"), 
+              default: 'y', limited_to: choices.keys)
+          ).eql?('y')
+          @artifacts.each do |k,v| 
+            puts "Attempting to remove #{k}"  
+            system( v[:list] + v[:remove] )
+          end 
+        end
+      end
+
       def confirm_dependency(options)
         msg = []
         msg << ""
