@@ -3,7 +3,7 @@ require 'json'
 module Roro
   class Configurator < Thor::Shell::Basic
     
-    attr_reader :choices, :structure, :intentions, :env, :options
+    attr_reader :structure, :intentions, :env, :options
 
     def initialize(options=nil)
       options ||= {}
