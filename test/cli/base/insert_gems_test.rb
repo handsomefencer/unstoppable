@@ -60,7 +60,6 @@ describe Roro::CLI do
       end      
     end
 
-
     describe '.insert_roro_gem_into_gemfile' do 
       
       Given { cli.insert_roro_gem_into_gemfile }

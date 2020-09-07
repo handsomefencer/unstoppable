@@ -3,7 +3,7 @@ require 'open3'
 module Roro
   class Configurator < Thor::Shell::Basic
     
-    def confirm_directory_not_empty 
+    def confirm_directory_app 
       confirm_dependency({
         system_query: "ls -A",
         warning: "This is an empty directory. You can generate a new and fully 
@@ -20,7 +20,8 @@ module Roro
         system_query: "ls -A",
         warning: "this is not an empty directory. Roro will not greenfield a new Rails app unless either a) the current directory is empty or b) you run greenfield with the --force flag",
         suggestion: "$ roro greenfield --force",
-        conditional: "Dir.glob('*').empty? || (Dir.glob('*').size.eql?(1) && Dir.glob('roro_configurator.yml'))" }) 
+        conditional: "Dir.glob('*').empty?" # || (Dir.glob('*').size.eql?(1) && Dir.glob('roro_configurator.yml'))" 
+        }) 
       confirm || true
     end
 
@@ -29,7 +30,7 @@ module Roro
       @artifacts = {}
       hash = {
         containers: {
-          list: "docker ps --filter name=#{@appname}* -a",
+          list: "docker ps --filter name=#{@appname}\ -a",
           remove: " -q | xargs docker stop | xargs docker rm -f"
         }, 
         volumes: {
@@ -62,60 +63,65 @@ module Roro
       question << "\nYou can remove these artifacts with something like:\n" 
       @artifacts.each { |k,v| question << "\t$ #{v[:list]} #{v[:remove]}" }
       question << "\nWould you like RoRo to attempt to remove them for you?"
-      prompt = [question.join("\n")]
       choices = {'y' => 'Yes', 'n' => 'No'}
-      choices.each { |k,v| prompt << "(#{k}) #{v.to_s}" }
-      if (ask(
-          (prompt.join("\n\n") + "\n\n"), 
-            default: 'y', limited_to: choices.keys)
-        ).eql?('y')
+      
+      choices.each { |k,v| question << "(#{k}) #{v.to_s}" }
+      
+      prompt = question.join
+      answer = ask(prompt, default: 'y', limited_to: choices.keys)
+      
+      if answer.eql?('y')
+        
         @artifacts.each do |k,v| 
           puts "Attempting to remove #{k}"  
           system( v[:list] + v[:remove] )
         end 
       end
     end
-    def delineator
-      ("-" * 80)
-    end
+    
     def confirm_dependency(options)
       msg = []
       msg << ""
       msg << delineator
       msg << "It looks like #{options[:warning]}. The following bash command returns false:"
       msg << "\t$ #{options[:system_query]}"
-      msg << "Please try these instructions:"
+      msg << "Try this:"
       msg << ("\t" + options[:suggestion])
       msg << delineator
       conditional = options[:conditional] ? eval(options[:conditional]) : system(options[:system_query])
+      query = options[:system_query]
       if conditional == false
         raise(Roro::Error.new(msg.join("\n\n")))
       else 
         true 
       end    
     end
-  
+    
     def confirm_dependencies
-      dependencies = [
-        {
-          system_query: "which docker",
+      dependencies.each do |dependency|
+        confirm_dependency(dependency)
+      end
+    end
+    
+    private 
+    
+    def delineator
+      ("-" * 80)
+    end
+    
+    def dependencies
+      [ { system_query: "which docker",
           warning: "Docker isn't installed",
           suggestion: "https://docs.docker.com/install/"
         }, {
           system_query: "which docker-compose",
           warning: "Docker Compose isn't installed",
           suggestion: "https://docs.docker.com/compose/install/"
-
         }, {
           system_query: "docker info",
           warning: "the Docker daemon isn't running",
           suggestion: "https://docs.docker.com/config/daemon/#start-the-daemon-manually"
-        }
-      ]
-
-      dependencies.each do |dependency|
-        confirm_dependency(dependency)
-      end
-    end
+      } ]
+    end 
   end
 end

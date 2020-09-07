@@ -6,6 +6,8 @@ module Roro
     attr_reader :choices, :structure, :intentions, :env, :options
 
     def initialize(options)
+      options ||= {}
+      options[:story] ||=  { rails: {} } 
       sanitize(options)
       @structure = {
         choices:    {},
@@ -59,19 +61,24 @@ module Roro
     end
 
     def screen_target_directory
-      confirm_directory_empty
+      if options[:greenfield]
+        confirm_directory_empty
+      else 
+        confirm_directory_app
+      end
       handle_roro_artifacts
     end
     
     def sanitize(options)
-      options ||= { story: { rails: {} } }
       options.each do |k, v| 
         case v
         when Array
           v.each { |vs| sanitize(vs) }
         when Hash 
           sanitize(v)
-        when 
+        when true 
+          options[k] = {}
+        when
           options[k] = { v.to_sym => {}} 
         end
       end

@@ -10,7 +10,6 @@ require "byebug"
 include TestHelper::Files::Assertions
 
 module RoroSystemStubs 
-  # Given { IO.stubs(:popen).returns([])}  
   def stub_system_calls
     cli = Roro::CLI.any_instance
     cli.stubs(:system) 
