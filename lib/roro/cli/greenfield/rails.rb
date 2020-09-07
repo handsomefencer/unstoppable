@@ -11,13 +11,12 @@ module Roro
 
     map "greenfield::rails" => "greenfield_rails"
     
-    def greenfield_rails(*args) 
-      confirm_directory_empty
-      configure_for_rollon
-      handle_roro_artifacts
+    def greenfield_rails(options={})
+      options.merge!({ greenfield: true, story: :rails } )
+      configure_for_rollon(options)
       copy_greenfield_files
       run_greenfield_commands
-      rollon_rails(*args)
+      rollon_rails
     end
         
     no_commands do

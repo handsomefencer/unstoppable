@@ -3,8 +3,7 @@ module Roro
         
     no_commands do
      
-      def configure_for_rollon
-        confirm_dependencies
+      def configure_for_rollon(options=nil)
         @config ||= Roro::Configurator.new(options) 
       end
 

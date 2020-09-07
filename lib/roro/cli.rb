@@ -1,5 +1,6 @@
 require 'roro/cli/base/base'
-require 'roro/cli/configurator'
+require 'roro/cli/configurator/configurator'
+require 'roro/cli/configurator/dependencies'
 require 'roro/cli/generate/config'
 require 'roro/cli/generate/exposed'
 require 'roro/cli/generate/keys'

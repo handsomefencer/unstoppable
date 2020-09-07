@@ -11,10 +11,9 @@ module Roro
       you go."
     map "rollon::rails" => "rollon_rails"
     
-    def rollon_rails(*args) 
-      confirm_directory_not_empty
-      confirm_dependencies
-      configure_for_rollon
+    def rollon_rails(options={}) 
+      options.merge!({ story: :rails } )
+      configure_for_rollon(options)
       copy_rails_files
 
       # generate_config
