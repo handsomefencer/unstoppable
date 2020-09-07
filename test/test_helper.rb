@@ -15,6 +15,10 @@ module RoroSystemStubs
     cli.stubs(:system) 
     cli.stubs(:startup_commands) 
   end
+  
+  def stub_dependency_responses 
+    Roro::Configurator.any_instance.stubs(:screen_target_directory)
+  end
 end
 
 include RoroSystemStubs

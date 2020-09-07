@@ -1,4 +1,4 @@
-FROM ruby:<%= config['ruby_version'] %>-alpine AS builder
+FROM ruby:<%= config[:ruby_version] %>-alpine AS builder
 
 LABEL maintainer="<%= config['docker_email'] %> using RoRo"
 
