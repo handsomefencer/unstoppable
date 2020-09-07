@@ -12,7 +12,10 @@ module Roro
       end
       
       def execute_intentions 
-        @config.intentions.each {|k, v| eval(k) if v.eql?('y') }  
+        @config.intentions.each {|k, v|
+          # byebug
+           eval(k.to_s) if v.eql?('y') 
+          }  
       end
     end
   end

@@ -4,6 +4,7 @@ describe "Story::Rails::WithCICD" do
 
   Given { prepare_destination 'rails/603' }
   Given { stub_system_calls }
+  Given { stub_dependency_responses }
 
   Given(:config)  { Roro::Configurator.new }
   Given { config.env['force'] = true}  

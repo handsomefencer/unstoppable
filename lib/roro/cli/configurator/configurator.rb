@@ -5,7 +5,7 @@ module Roro
     
     attr_reader :choices, :structure, :intentions, :env, :options
 
-    def initialize(options)
+    def initialize(options=nil)
       options ||= {}
       options[:story] ||=  { rails: {} } 
       sanitize(options)
@@ -15,6 +15,7 @@ module Roro
         intentions: {} 
       }
       build_layers(stories: @options[:story])
+      @intentions = @structure[:intentions]
       @env = @structure[:env_vars]
       @env[:main_app_name] = Dir.pwd.split('/').last 
       @env[:ruby_version] = `ruby -v`.scan(/\d.\d/).first
@@ -31,7 +32,7 @@ module Roro
           layer = get_layer(filepath) 
           overlay(layer) unless layer.nil?
         when !File.exist?(filedir)
-          error_msg = 'Cannot find that story. Has it been written?' 
+          error_msg = "Cannot find that story #{key} at #{filepath}. Has it been written?" 
           raise (Roro::Error.new(error_msg)) 
         end
         if value.is_a?(Array)
@@ -70,6 +71,7 @@ module Roro
     end
     
     def sanitize(options)
+      options.transform_keys!{|k| k.to_sym}
       options.each do |k, v| 
         case v
         when Array

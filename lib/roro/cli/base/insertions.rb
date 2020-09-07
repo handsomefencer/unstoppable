@@ -11,6 +11,10 @@ module Roro
         prepend_to_file(file, line, force: true)
       end 
       
+      def copy_dockerignore 
+        copy_file 'base/.dockerignore', '.dockerignore'
+      end 
+      
       def gitignore_sensitive_files
         append_to_file ".gitignore", "\nroro/**/*.env\nroro/**/*.key"
         append_to_file ".gitignore", "\nroro/**/*.env\nroro/**/*.key"

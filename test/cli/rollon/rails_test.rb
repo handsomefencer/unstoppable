@@ -4,17 +4,17 @@ describe Roro::CLI do
 
   Given { prepare_destination 'rails/603' }
   Given { stub_system_calls }
+  Given { stub_dependency_responses }
+  Given(:cli)     { Roro::CLI.new }
+  Given(:config) { Roro::Configurator.new() }
+  Given(:rollon) { 
+    cli.instance_variable_set(:@config, config)
+    cli.rollon_rails
+  }
   
   ['p', 'm'].each do |db|
-    Given(:config) { Roro::Configurator.new }
     
-    Given(:cli)     { Roro::CLI.new }
-    Given(:rollon) { 
-      cli.instance_variable_set(:@config, config)
-      cli.rollon_rails
-    }
-    
-    describe '.rollon' do 
+    describe '.rollon_rails' do 
       describe 'insertions' do
         describe 'only takes specified thor actions' do 
           
@@ -23,8 +23,8 @@ describe Roro::CLI do
           
           describe 'yes' do 
             
-            Given { config.intentions['insert_hfci_gem_into_gemfile'] = 'y'}
-            Given { config.intentions['insert_roro_gem_into_gemfile'] = 'y'}
+            Given { config.intentions[:insert_hfci_gem_into_gemfile] = 'y'}
+            Given { config.intentions[:insert_roro_gem_into_gemfile] = 'y'}
             Given { rollon }
             
             Then { assert_file( 'Gemfile' ) { |c| assert_match(hfci, c) } }
@@ -62,6 +62,7 @@ describe Roro::CLI do
       end 
         
       describe 'copies' do
+  
         Given { rollon }
         describe 'docker-entrypoint.sh' do 
           

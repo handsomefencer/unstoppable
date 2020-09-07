@@ -1,9 +1,10 @@
 require "test_helper"
 
 describe Roro::Configurator do
-Given { skip }
+
   Given { prepare_destination "greenfield/greenfield" }
   Given { stub_system_calls }
+  Given { stub_dependency_responses }
 
   Given(:config) { Roro::Configurator.new(options) }
 

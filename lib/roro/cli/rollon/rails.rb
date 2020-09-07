@@ -12,7 +12,7 @@ module Roro
     map "rollon::rails" => "rollon_rails"
     
     def rollon_rails(options={}) 
-      options.merge!({ story: :rails } )
+      options.merge!({ rollon: true, story: :rails } )
       configure_for_rollon(options)
       copy_rails_files
 

@@ -4,10 +4,12 @@ describe "Story::RubyGem::WithCICD" do
 
   Given { prepare_destination 'ruby_gem/dummy_gem' }
   Given { stub_system_calls }
+  Given { stub_dependency_responses }
+
 
   Given(:config)  { Roro::Configurator.new }
-  Given(:cli) { Roro::CLI.new }
-  Given(:asker) { Thor::Shell::Basic.any_instance }
+  Given(:cli)     { Roro::CLI.new }
+  Given(:asker)   { Thor::Shell::Basic.any_instance }
   Given(:rubygems_api_key) { 'some-rubygems-api-key' }
   Given { asker.stubs(:ask).returns(rubygems_api_key) }    
   Given { cli.instance_variable_set( :@config, config ) }
@@ -51,7 +53,7 @@ describe "Story::RubyGem::WithCICD" do
     Then { assert_file(file) {|c| expected.each {|e| assert_match e, c } }}
   end
   
-  Given(:rubies) { config.env[ 'rubies' ] }
+  Given(:rubies) { config.env[:rubies] }
   
   describe 'must have rubies set' do 
   

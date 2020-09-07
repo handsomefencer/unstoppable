@@ -10,7 +10,7 @@ module Roro
         config = @config.env.clone
 
         %w(development production test staging ci).each do |environment| 
-          config['rails_env'] = environment
+          config[:rails_env] = environment
           
           source = 'rails/dotenv/database.mysql.env.tt'
           target = "roro/containers/database/#{environment}.env" 
