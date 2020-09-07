@@ -13,7 +13,8 @@ describe Roro::Configurator do
     Given(:expected) { {:greenfield=>{}, :story=>{:rails=>{}}}}
     
     describe 'greenfield' do
-      describe 'with story specified' do  
+      describe 'with story specified' do 
+         
         Given(:options) { { greenfield: true, story: :rails } }
         Given { config }
         
