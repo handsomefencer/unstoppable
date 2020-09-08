@@ -10,14 +10,30 @@ require "byebug"
 include TestHelper::Files::Assertions
 
 module RoroSystemStubs 
-  def stub_system_calls
-    cli = Roro::CLI.any_instance
-    cli.stubs(:system) 
-    cli.stubs(:startup_commands) 
+  
+  def stubs_system_calls
+    Roro::CLI.any_instance.stubs(:system) 
   end
   
-  def stub_dependency_responses 
+  def stubs_startup_commands
+    Roro::CLI.any_instance.stubs(:startup_commands) 
+  end
+  
+  def stubs_rollon 
+    Roro::CLI.any_instance.stubs(:rollon) 
+  end
+
+  def stubs_dependency_responses 
     Roro::Configurator.any_instance.stubs(:screen_target_directory)
+  end
+  
+  def greenfield_rails_test_base 
+    prepare_destination 'greenfield/greenfield'
+    stubs_rollon
+    stubs_system_calls
+    stubs_startup_commands
+    stubs_dependency_responses
+    @cli = Roro::CLI.new 
   end
 end
 

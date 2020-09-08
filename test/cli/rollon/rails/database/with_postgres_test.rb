@@ -3,8 +3,8 @@ require 'test_helper'
 describe Roro::CLI do
 
   Given { prepare_destination 'rails/603' }
-  Given { stub_system_calls }
-  Given { stub_dependency_responses }
+  Given { stubs_system_calls }
+  Given { stubs_dependency_responses }
   
   Given(:options) { { story: { rails: [
     { database: { postgresql: {} }},
