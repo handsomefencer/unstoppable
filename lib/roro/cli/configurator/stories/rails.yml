@@ -1,6 +1,14 @@
 story: 
   database: postgresql 
   ci_cd: circleci
+
+actions: 
+  - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
+  - configure_database  
+  - template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
+  - template 'base/dotenv', './.env', @config.env
+  - directory 'rails/roro', './roro', @config.env
+
 env_vars: 
   ruby_version: '2.7'
   database_host: database

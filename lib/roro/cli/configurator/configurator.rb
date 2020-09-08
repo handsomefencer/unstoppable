@@ -3,7 +3,7 @@ require 'json'
 module Roro
   class Configurator < Thor::Shell::Basic
     
-    attr_reader :structure, :intentions, :env, :options
+    attr_reader :structure, :intentions, :env, :options, :actions
 
     def initialize(options=nil)
       options ||= {}
@@ -44,15 +44,29 @@ module Roro
     end 
     
     def overlay(layer)
-      layer.each do |key, value|
-        @structure[key] ||= {}
-        @structure[key] = @structure[key].merge!(value)
-      end
-      return if layer[:choices].nil?
+
+      layer.each { |key, value| @structure[key] ||= value }
+              
+      overlay_choices(layer) if layer[:choices]
+      overlay_env_vars(layer) if layer[:env_vars]
+      overlay_actions(layer) if layer[:actions]
+    end
+    
+    def overlay_actions(layer)
+      @structure[:actions] + layer[:actions] 
+    end
+    
+    def overlay_env_vars(layer) 
+      layer[:env_vars].each do |key, value| 
+        @structure[:env_vars][key] = value
+      end    
+    end
+
+    def overlay_choices(layer)
       layer[:choices].each do |key, value|
-        @structure[:intentions][key] ||= {}
+        @structure[:choices][key] = value
         @structure[:intentions][key] = value[:default]  
-      end 
+      end
     end
 
     private 

@@ -11,12 +11,19 @@ module Roro
       you go."
     map "rollon::rails::kubernetes" => "rollon_rails_kubernetes"
     
-    def rollon_rails_kubernetes(*args) 
-      configure_for_rollon
-      copy_rails_files
-      copy_kubernetes_files
+    def rollon_rails_kubernetes(options={}) 
+      configure_for_rollon(options.merge!({ story: 
+        { rails: [
+          { database:   { postgresql:   {} }},
+          { kubernetes: { postgresql:   {} }},
+          { ci_cd:      { circleci:     {} }} 
+        ] } 
+      } ) )
+      @config.structure[:actions].each {|a| eval a }
+      
+      # copy_kubernetes_files
       # generate_config
-      # startup_commands
+      startup_commands
     end
     
     no_commands do

@@ -18,7 +18,6 @@ ci_cd:
   semaphore:
   circleci:
     
-
 deployment:
   env_vars: 
     server_host: "ip-address-of-your-server"
@@ -26,6 +25,16 @@ deployment:
     server_user: root
     
 choices:
+  
+  generate_config:
+    question: |
+      Would you like to create a Roro Config file to help with debugging, 
+      sharing your desired story, or both?
+    choices: 
+      y: 'Yes'
+      n: 'No'
+    default: y 
+      
   backup_existing_files: 
     question: |
       RoRo will be generating a number of files, some of which will 

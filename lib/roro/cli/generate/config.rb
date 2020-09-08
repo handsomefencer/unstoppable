@@ -5,7 +5,12 @@ module Roro
     map "generate::config" => "generate_config"
     
     def generate_config
-      # create_file ".roro_config.yml", @config.env.to_yaml 
+      configuration = {
+        env_vars: @config.env.keys,
+        intentions: @config.intentions,
+        story: @config.structure['story']
+      }
+      create_file ".roro_configurator.yml", @config.env.to_yaml 
     end
   end 
 end

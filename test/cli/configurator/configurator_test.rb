@@ -8,7 +8,7 @@ describe Roro::Configurator do
 
   Given(:config) { Roro::Configurator.new(options) }
 
-  describe 'sanitizing options' do 
+  describe 'sanitizing options' do
     
     Given(:expected) { {:greenfield=>{}, :story=>{:rails=>{}}}}
     
@@ -105,7 +105,7 @@ describe Roro::Configurator do
           :choices, :ci_cd, :deployment, :env_vars, :registries  ] } 
         Given(:rails_keys)    { [:story, :intentions] }
         Given(:base_choices) { [ 
-          :copy_dockerignore, :backup_existing_files ] }
+          :copy_dockerignore, :backup_existing_files, :generate_config ] }
         Given(:rails_choices) { [
           :backup_existing_files, :configure_database, :config_std_out_true, 
           :copy_dockerignore, :gitignore_sensitive_files, 
