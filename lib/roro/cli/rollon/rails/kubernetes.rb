@@ -12,38 +12,14 @@ module Roro
     map "rollon::rails::kubernetes" => "rollon_rails_kubernetes"
     
     def rollon_rails_kubernetes(options={}) 
-      configure_for_rollon(options.merge!({ story: 
-        { rails: [
-          { database:   { postgresql:   {} }},
-          { kubernetes: { postgresql:   {} }},
-          { ci_cd:      { circleci:     {} }} 
-        ] } 
-      } ) )
+      options.merge!({ story: { rails: [
+        { database: { postgresql: {} }},
+        { kubernetes: { postgresql: {} }},
+        { ci_cd:    { circleci:   {} }}
+      ] } } ) 
+      configure_for_rollon(options)
       @config.structure[:actions].each {|a| eval a }
-      
-      # copy_kubernetes_files
-      # generate_config
       startup_commands
-    end
-    
-    no_commands do
-     
-      def copy_kubernetes_files
-        template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
-        template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
-        template 'base/dotenv', './.env', @config.env
-        directory 'rails/roro', './roro', @config.env
-        template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.env
-      end
-
-      # def startup_commands
-      #   remove_roro_artifacts
-      #   success_msg = "'\n\n#{'*' * 5 }\n\nYour Rails app is available at http://localhost:3000/'\n\n#{'*' * 5 }"
-      #   # system 'docker-compose build'
-      #   # system 'docker-compose run app bin/rails db:create'
-      #   # system 'docker-compose run app bin/rails db:migrate'
-      #   # system "docker-compose run app echo #{success_msg}"
-      # end
     end
   end
 end

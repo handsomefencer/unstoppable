@@ -53,7 +53,7 @@ module Roro
     end
     
     def overlay_actions(layer)
-      @structure[:actions] + layer[:actions] 
+      @structure[:actions].concat(layer[:actions]) 
     end
     
     def overlay_env_vars(layer) 
