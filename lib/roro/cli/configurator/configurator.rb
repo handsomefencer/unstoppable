@@ -12,9 +12,11 @@ module Roro
       @structure = {
         choices:    {},
         env_vars:   {},
-        intentions: {} 
+        intentions: {}, 
+        story:      {} 
       }
       build_layers(stories: @options[:story])
+      # build_story(stories: @options[:story])
       @intentions = @structure[:intentions]
       @env = @structure[:env_vars]
       @env[:main_app_name] = Dir.pwd.split('/').last 

@@ -1,6 +1,7 @@
-story: 
-  database: postgresql 
-  ci_cd: circleci
+stories: 
+  database:  
+  ci_cd: 
+  kubernetes:
 
 actions: 
   - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
