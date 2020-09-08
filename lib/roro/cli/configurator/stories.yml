@@ -26,7 +26,7 @@ deployment:
     
 choices:
   
-  generate_config:
+  generate_config_story:
     question: |
       Would you like to create a Roro Config file to help with debugging, 
       sharing your desired story, or both?

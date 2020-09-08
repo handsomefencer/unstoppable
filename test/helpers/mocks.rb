@@ -16,5 +16,13 @@ module TestHelper
     def stubs_dependency_responses 
       Roro::Configurator.any_instance.stubs(:screen_target_directory)
     end
+    
+    def io_confirm 
+      IO.stubs(:popen).returns([]) 
+    end
+    
+    def io_deny
+      IO.stubs(:popen).returns([1]) 
+    end
   end 
 end

@@ -1,10 +1,8 @@
 require "test_helper"
 
 describe Roro::Configurator do
-
-  Given { prepare_destination "greenfield/greenfield" }
-  Given { stubs_system_calls }
-  Given { stubs_dependency_responses }
+  
+  Given { greenfield_rails_test_base }
 
   Given(:config) { Roro::Configurator.new(options) }
 
