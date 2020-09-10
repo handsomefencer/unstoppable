@@ -11,7 +11,7 @@ describe Roro::Configurator do
   describe '.default_story' do 
     
     Given(:expected)  { 
-      { stories: 
+      { rollon: 
         { rails: [
           { database: 'postgresql' },
           { ci_cd: 'circleci' },
@@ -24,7 +24,7 @@ describe Roro::Configurator do
   end 
   
   describe '.story_map for' do 
-    describe 'stories' do 
+    describe 'rollon' do 
       Given(:story_map) { [
         { rails: [
           { database: [
@@ -44,7 +44,7 @@ describe Roro::Configurator do
         { ruby_gem: []}
       ]}
 
-      Then { assert_equal( story_map, config.story_map(:stories) )}
+      Then { assert_equal( story_map, config.story_map(:rollon) )}
     end
   end  
 

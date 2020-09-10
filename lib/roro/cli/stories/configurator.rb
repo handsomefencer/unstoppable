@@ -15,8 +15,7 @@ module Roro
         intentions: {}, 
         story:      {} 
       }
-      build_layers(stories: @options[:story])
-      # build_story(stories: @options[:story])
+      build_layers(rollon: @options[:story])
       @intentions = @structure[:intentions]
       @env = @structure[:env_vars]
       @env[:main_app_name] = Dir.pwd.split('/').last 

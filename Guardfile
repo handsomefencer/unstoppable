@@ -1,6 +1,6 @@
 options = {
   all_on_start: true,
-  all_after_pass: false, 
+  all_after_pass: true, 
 }
 
 guard :minitest, options do

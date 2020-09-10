@@ -25,7 +25,7 @@ module Roro
       get_layer(location + ".yml")[:stories]
     end 
     
-    def golden(story='stories', loc=nil)
+    def golden(story='rollon', loc=nil)
       hash = {}
       loc = [(loc ||= configurator_root), story].join('/') 
       substory = get_story(loc)
