@@ -18,7 +18,7 @@ module Roro
       end
 
       def yaml_from_template(file)
-        File.read(File.dirname(__FILE__) + "/templates/#{file}")
+        File.read(find_in_source_paths(file))
       end
       
       def execute_intentions 

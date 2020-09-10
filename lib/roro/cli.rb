@@ -22,7 +22,7 @@ module Roro
     include Thor::Actions
     
     def self.source_root
-      File.dirname(__FILE__) + '/cli/templates'
+      File.dirname(__FILE__) + '/templates'
     end    
   end
 end

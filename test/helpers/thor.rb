@@ -46,7 +46,9 @@ module TestHelper
       end
       
       def insert_file(src, dest) 
-        src = ENV.fetch("PWD") + "/lib/roro/cli/templates/#{src}"
+        
+        Roro::CLI.source_root
+        src = [Roro::CLI.source_root, src].join('/')
         FileUtils.cp(src, dest) 
       end
       
@@ -69,7 +71,7 @@ module TestHelper
       end
             
       def yaml_from_template(file)
-        File.read(ENV['PWD'] + "/lib/roro/cli/templates/#{file}")
+        File.read([Roro::CLI.source_root, file].join('/'))
       end
 
       def assert_no_migration(relative)
