@@ -74,7 +74,8 @@ module Roro
     private 
 
     def get_layer(filepath) 
-      JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
+      json = JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
+      json ? json : ( raise (Roro::Error.new(error_msg))) 
     end
 
     def screen_target_directory

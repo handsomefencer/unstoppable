@@ -1,3 +1,7 @@
+stories: 
+  - default 
+  - edge
+
 actions: 
   - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
   - template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env

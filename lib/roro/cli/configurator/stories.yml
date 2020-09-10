@@ -1,5 +1,4 @@
-story: 
-  rails:
+stories: rails
 
 
 env_vars: 
