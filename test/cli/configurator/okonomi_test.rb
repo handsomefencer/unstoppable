@@ -13,14 +13,14 @@ describe Roro::Configurator do
     Given(:expected)  { 
       { stories: 
         { rails: [
-          { database: :postgresql },
-          { ci_cd: :circleci },
-          { kubernetes: :postgresql }
+          { database: 'postgresql' },
+          { ci_cd: 'circleci' },
+          { kubernetes: 'postgresql' }
         ] } 
       }
     }
     
-    Then { assert_equal expected, config.default_story }
+    Then { assert_equal expected, config.golden }
   end 
   
   describe '.story_map for' do 

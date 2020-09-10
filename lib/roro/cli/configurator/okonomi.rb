@@ -9,45 +9,45 @@ module Roro
       File.dirname(__FILE__)
     end
   
-    def story_map(map='stories')
+    def story_map(story='stories')
       array ||= []
-      story_root = configurator_root + "/#{map}"
-      validate_substories(story_root)
-      stories = Dir.glob(story_root + "/*.yml") 
-      stories.each do |story| 
-        name = story.split('/').last.split('.yml').first
-        array << { name.to_sym => story_map([map, name].join('/'))}
+      loc = configurator_root + "/#{story}"
+      validate_story(loc)
+      stories = Dir.glob(loc + "/*.yml") 
+      stories.each do |ss| 
+        name = ss.split('/').last.split('.yml').first
+        array << { name.to_sym => story_map([story, name].join('/'))}
       end   
       array
     end
     
-    def default_story(story='stories', location=nil)
-      hash ||= {}
-      location ||= configurator_root + '/' + story
-      stories = get_layer(location + ".yml")[:stories]
-      case stories
-      when String 
-        hash[story.to_sym] = default_story(stories, "#{location}/#{stories}")
-      when Array
+    def get_story(location)
+      get_layer(location + ".yml")[:stories]
+    end 
+    
+    def golden(story='stories', loc=nil)
+      hash = {}
+      loc = [(loc ||= configurator_root), story].join('/') 
+      substory = get_story(loc)
+      if substory.is_a?(Array)
         array = []
-        stories.each do |substory| 
-          if get_layer(location + '/' + substory + '.yml')[:stories].is_a? String
-            array << { substory.to_sym => get_layer(location + '/' + substory + '.yml')[:stories].to_sym }  
-          else   
-            array << default_story(substory, "#{location}/#{substory}" )  
-          end 
+        substory.each do |s| 
+          ss = get_story([loc, s].join('/'))
+          array << (ss.is_a?(String) ? { s.to_sym => ss } : golden( s, loc ) ) 
         end
         hash[story.to_sym] = array
+      else 
+        hash[story.to_sym] = golden(substory, loc)
       end
       hash
     end
     
-    def validate_substories(story)
+    def validate_story(story)
       substories = get_layer("#{story}.yml")[:stories]
       if substories.is_a? String
         File.exist?(story + substories + '.yml')
       elsif substories.is_a? Array 
-        substories.each { |substory| validate_substories(story + '/' + substory) }
+        substories.each { |substory| validate_story(story + '/' + substory) }
       end 
     end
     
