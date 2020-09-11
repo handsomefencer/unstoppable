@@ -26,7 +26,7 @@ module Roro
     def build_layers(story, location=nil)
       story.each do |key, value| 
         location = location ? (location + '/' + key.to_s ) : key.to_s
-        filedir = File.dirname(__FILE__) + "/#{location}"
+        filedir = Roro::CLI.story_root + "/#{location}"
         filepath = "#{filedir}.yml"
         case 
         when File.exist?(filepath)

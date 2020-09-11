@@ -5,13 +5,9 @@ require 'pathname'
 module Roro
   class Configurator < Thor::Shell::Basic
   
-    def configurator_root 
-      File.dirname(__FILE__)
-    end
-  
     def story_map(story='stories')
       array ||= []
-      loc = configurator_root + "/#{story}"
+      loc = Roro::CLI.story_root + "/#{story}"
       validate_story(loc)
       stories = Dir.glob(loc + "/*.yml") 
       stories.each do |ss| 
@@ -27,7 +23,7 @@ module Roro
     
     def golden(story='rollon', loc=nil)
       hash = {}
-      loc = [(loc ||= configurator_root), story].join('/') 
+      loc = [(loc ||= Roro::CLI.story_root), story].join('/') 
       substory = get_story(loc)
       if substory.is_a?(Array)
         array = []

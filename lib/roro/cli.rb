@@ -1,6 +1,6 @@
-require 'roro/stories/configurator'
-require 'roro/stories/dependencies'
-require 'roro/stories/okonomi'
+require 'roro/configurator/configurator'
+require 'roro/configurator/dependencies'
+require 'roro/configurator/okonomi'
 require 'roro/cli/generate/config/story'
 require 'roro/cli/generate/config/structure'
 require 'roro/cli/generate/exposed'
@@ -23,6 +23,10 @@ module Roro
     
     def self.source_root
       File.dirname(__FILE__) + '/templates'
-    end    
+    end
+    
+    def self.story_root
+      File.dirname(__FILE__) + '/stories'
+    end
   end
 end
