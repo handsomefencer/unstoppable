@@ -1,6 +1,6 @@
 require 'yaml'
 require 'json'
-require 'pathname'
+
 module Roro
   module Configurator
     module Okonomi  

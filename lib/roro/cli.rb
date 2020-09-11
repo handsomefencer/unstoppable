@@ -1,6 +1,4 @@
-require 'roro/configurator/configurator'
-require 'roro/configurator/dependencies'
-require 'roro/configurator/okonomi'
+
 require 'roro/cli/generate/config/story'
 require 'roro/cli/generate/config/structure'
 require 'roro/cli/generate/exposed'
