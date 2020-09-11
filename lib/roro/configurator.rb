@@ -14,4 +14,7 @@ module Roro
   class Configurator::Configuration < Thor::Shell::Basic
     include Roro::Configurator
   end
+  
+  class Configuration < Configurator::Configuration 
+  end
 end

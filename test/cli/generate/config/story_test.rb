@@ -4,7 +4,7 @@
 
 #   Given { greenfield_rails_test_base }
 
-#   Given(:config) { Roro::Configurator::Configuration.new }
+#   Given(:config) { Roro::Configuration.new }
 #   Given(:cli)     { Roro::CLI.new }
 #   # Given(:rollon)      { 
 #   #   cli.instance_variable_set(:@config, config)

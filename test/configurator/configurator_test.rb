@@ -1,10 +1,10 @@
 require "test_helper"
 
-describe Roro::Configurator::Configuration do
+describe Roro::Configuration do
   
   Given { greenfield_rails_test_base }
 
-  Given(:config) { Roro::Configurator::Configuration.new(options) }
+  Given(:config) { Roro::Configuration.new(options) }
 
   describe 'sanitizing options' do
     

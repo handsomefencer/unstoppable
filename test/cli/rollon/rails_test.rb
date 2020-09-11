@@ -6,7 +6,7 @@ describe Roro::CLI do
   Given { stubs_system_calls }
   Given { stubs_dependency_responses }
   Given(:cli)     { Roro::CLI.new }
-  Given(:config) { Roro::Configurator::Configuration.new() }
+  Given(:config) { Roro::Configuration.new() }
   Given(:rollon) { 
     cli.instance_variable_set(:@config, config)
     cli.rollon_rails

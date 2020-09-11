@@ -14,7 +14,7 @@ module TestHelper
       end
     
       def stubs_dependency_responses 
-        Roro::Configurator::Configuration.any_instance.stubs(:screen_target_directory)
+        Roro::Configuration.any_instance.stubs(:screen_target_directory)
       end
       
       def io_confirm 

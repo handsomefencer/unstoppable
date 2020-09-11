@@ -7,7 +7,7 @@ describe Roro::CLI do
     { database: { mysql: {} }},
     { ci_cd: { circleci:   {} }}
     ] } } }
-  Given(:config) { Roro::Configurator::Configuration.new(options) }
+  Given(:config) { Roro::Configuration.new(options) }
   Given(:cli){ Roro::CLI.new }
   Given(:rollon) { 
     cli.instance_variable_set(:@config, config)

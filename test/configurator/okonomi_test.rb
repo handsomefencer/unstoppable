@@ -1,12 +1,12 @@
 require "test_helper"
 
-describe Roro::Configurator::Configuration do
+describe Roro::Configuration do
     
   Given { greenfield_rails_test_base }
   Given(:asker) { Thor::Shell::Basic.any_instance }
   Given { asker.stubs(:ask).returns('y') }
   Given(:options) { nil }
-  Given(:config) { Roro::Configurator::Configuration.new(options) }
+  Given(:config) { Roro::Configuration.new(options) }
 
   describe '.default_story' do 
     
