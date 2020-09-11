@@ -3,7 +3,7 @@ require 'test_helper'
 describe Roro::CLI do
   
   Given(:cli)     { Roro::CLI.new }
-  Given(:config) { Roro::Configurator.new() }
+  Given(:config) { Roro::Configuration.new() }
   Given { prepare_destination 'rails/603' }
   Given { stubs_system_calls }
   Given { stubs_dependency_responses }

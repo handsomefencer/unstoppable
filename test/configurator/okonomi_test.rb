@@ -6,7 +6,7 @@ describe Roro::Configurator do
   Given(:asker) { Thor::Shell::Basic.any_instance }
   Given { asker.stubs(:ask).returns('y') }
   Given(:options) { nil }
-  Given(:config) { Roro::Configurator.new(options) }
+  Given(:config) { Roro::Configuration.new(options) }
 
   describe '.default_story' do 
     

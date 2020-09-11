@@ -11,7 +11,7 @@ describe Roro::CLI do
     { ci_cd:    { circleci:   {} }}
   ] } } }
  
-  Given(:config) { Roro::Configurator.new(options) }
+  Given(:config) { Roro::Configuration.new(options) }
   Given(:cli) { Roro::CLI.new }
   Given(:rollon) { 
     cli.instance_variable_set(:@config, config)

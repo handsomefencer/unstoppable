@@ -103,4 +103,9 @@ module Roro
       @options = options
     end
   end
+  
+  class Configuration < Roro::Configurator
+    
+  end
+
 end

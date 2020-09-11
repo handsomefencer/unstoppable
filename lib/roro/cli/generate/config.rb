@@ -5,7 +5,7 @@
 #     map "generate::config" => "generate_config"
     
 #     def generate_config
-#       @config ||= Roro::Configurator.new(options)
+#       @config ||= Roro::Configuration.new(options)
 #       configuration = {
 #         env_vars: @config.env.keys,
 #         intentions: @config.intentions,

@@ -7,7 +7,7 @@ describe Roro::CLI do
   Given { stubs_dependency_responses }
 
 
-  Given(:config) { Roro::Configurator.new }
+  Given(:config) { Roro::Configuration.new }
   Given(:cli){ Roro::CLI.new }
   Given(:rollon) { 
     cli.instance_variable_set(:@config, config)

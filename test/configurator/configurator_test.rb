@@ -4,7 +4,7 @@ describe Roro::Configurator do
   
   Given { greenfield_rails_test_base }
 
-  Given(:config) { Roro::Configurator.new(options) }
+  Given(:config) { Roro::Configuration.new(options) }
 
   describe 'sanitizing options' do
     

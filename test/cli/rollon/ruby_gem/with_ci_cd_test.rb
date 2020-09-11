@@ -7,7 +7,7 @@ describe "Story::RubyGem::WithCICD" do
   Given { stubs_dependency_responses }
 
 
-  Given(:config)  { Roro::Configurator.new }
+  Given(:config)  { Roro::Configuration.new }
   Given(:cli)     { Roro::CLI.new }
   Given(:asker)   { Thor::Shell::Basic.any_instance }
   Given(:rubygems_api_key) { 'some-rubygems-api-key' }
