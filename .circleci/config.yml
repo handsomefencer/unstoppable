@@ -10,6 +10,11 @@ aliases:
 defaults: &defaults
   executor: machine-executor
   working_directory: ~/project
+
+major_only: &major_only
+  filters:
+    branches:
+      only: master
  
 version: 2.1
 
@@ -74,19 +79,15 @@ workflows:
     
   build-cli: 
     jobs: 
-      - build
+      - build: 
+          <<: *major_only
       - test-rollon-rails: 
-          filters: 
-            branches: 
-              only: development
+          <<: *major_only
       - test:
-          filters: 
-            branches: 
-              only: master
+          <<: *major_only
       
       - release:
+          <<: *major_only
+      
           requires: 
             - build
-          filters: 
-            branches: 
-              only: release
