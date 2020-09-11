@@ -1,8 +1,11 @@
 require 'yaml'
 require 'json'
+require_relative 'dependencies'
+require_relative 'okonomi'
 module Roro
-  class Configurator < Thor::Shell::Basic
-    
+  module Configurator 
+    include Dependencies
+    include Okonomi
     attr_reader :structure, :intentions, :env, :options, :actions
 
     def initialize(options=nil)
@@ -104,8 +107,8 @@ module Roro
     end
   end
   
-  class Configuration < Roro::Configurator
-    
+  class Configurator::Configuration < Thor::Shell::Basic
+    include Roro::Configurator
   end
 
 end

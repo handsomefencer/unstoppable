@@ -1,10 +1,10 @@
 require 'test_helper'
 
-describe Roro::Configurator do
+describe Roro::Configurator::Configuration do
   
   Given { prepare_destination "rails/603" }
   Given(:options)    { nil }
-  Given(:config)     { Roro::Configuration.new(options) }
+  Given(:config)     { Roro::Configurator::Configuration.new(options) }
 
   describe '.confirm_directory_empty when' do 
     describe 'directory empty' do 
@@ -56,10 +56,10 @@ describe Roro::Configurator do
     describe '.confirm_dependencies' do
 
       Given(:deps) { config.send :dependencies}
-      Given { Roro::Configurator.any_instance.stubs(:handle_roro_artifacts) }
+      Given { Roro::Configurator::Configuration.any_instance.stubs(:handle_roro_artifacts) }
       
       Given(:mock_response) { deps.each { |d| 
-        Roro::Configurator
+        Roro::Configurator::Configuration
           .any_instance.expects(:system)
           .with(d[:system_query])
           .returns(system_response) 

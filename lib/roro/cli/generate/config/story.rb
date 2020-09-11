@@ -6,7 +6,7 @@ module Roro
     map "generate::config::story" => "generate_config_story"
 
     def generate_config_story
-      @config ||= Roro::Configuration.new(options)
+      @config ||= Roro::Configurator::Configuration.new(options)
       choices = @config.structure[:choices] 
       story = @config.structure[:story]
       # byebug

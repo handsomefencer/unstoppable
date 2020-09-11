@@ -6,7 +6,7 @@ describe "Story::Rails::WithCICD" do
   Given { stubs_system_calls }
   Given { stubs_dependency_responses }
 
-  Given(:config)  { Roro::Configuration.new }
+  Given(:config)  { Roro::Configurator::Configuration.new }
   Given { config.env['force'] = true}  
   Given(:cli) { Roro::CLI.new }
   Given(:rollon)  { 
