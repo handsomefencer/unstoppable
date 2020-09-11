@@ -2,9 +2,7 @@ require 'test_helper'
 
 describe Roro::CLI do
 
-  Given { prepare_destination 'rails/603' }
-  Given { stubs_system_calls }
-  Given { stubs_dependency_responses }
+  Given { rollon_rails_test_base }
   Given(:options) { { story: { rails: [
     { database: { mysql: {} }},
     { ci_cd: { circleci:   {} }}
@@ -21,45 +19,49 @@ describe Roro::CLI do
     Given { rollon }
 
     describe 'must add mysql2 gem to gemfile' do 
-    
-      Then do 
-        assert_file 'Gemfile' do |c| 
-          assert_match("gem 'mysql2'", c)
-        end
-      end
+      
+      Given(:file)      { 'Gemfile' }
+      Given(:insertion) { "gem 'mysql2'"} 
+      
+      Then { assert_insertion }
     end   
       
     describe "config/database.yml" do  
         
-      Then do 
-        assert_file 'config/database.yml' do |c| 
-          assert_match("<%= ENV.fetch('DATABASE_HOST') %>", c)
-          assert_match("<%= ENV.fetch('MYSQL_USERNAME') %>", c)
-          assert_match("<%= ENV.fetch('MYSQL_PASSWORD') %>", c)
-          assert_match("<%= ENV.fetch('MYSQL_DATABASE') %>", c)
-          assert_match("<%= ENV.fetch('MYSQL_DATABASE_PORT') %>", c)
-        end
-      end
+      Given(:file) { 'config/database.yml' }
+      Given(:insertions) { [ 
+        "<%= ENV.fetch('DATABASE_HOST') %>",
+        "<%= ENV.fetch('MYSQL_USERNAME') %>",
+        "<%= ENV.fetch('MYSQL_PASSWORD') %>",
+        "<%= ENV.fetch('MYSQL_DATABASE') %>",
+        "<%= ENV.fetch('MYSQL_DATABASE_PORT') %>" 
+      ]}
+      
+      Then { assert_insertions }
     end
     
     describe 'env_files' do 
-      Given(:env) { config.env }
-      Then { %w(development production test staging ci).each { |env| 
-        assert_file( "roro/containers/database/#{env}.env" ) { |c| 
-          assert_match "MYSQL_ROOT_PASSWORD=root-mysql-password", c 
-          assert_match "MYSQL_PASSWORD=your-mysql-password", c 
-          assert_match "MYSQL_DATABASE=#{config.env[:main_app_name] + '_' + env + '_db'}", c 
-          assert_match "MYSQL_USERNAME=root", c 
-          assert_match "MYSQL_DATABASE_PORT=3306", c
-          assert_match "RAILS_ENV=#{env}", c 
-      } } }
+      
+      Given(:environments) { %w(development production test staging ci) }
+      Given(:file)         { "roro/containers/database/#{config.env[:env]}.env" }
+      Given(:insertions)   { [
+        "MYSQL_ROOT_PASSWORD=root-mysql-password",
+        "MYSQL_PASSWORD=your-mysql-password",
+        "MYSQL_DATABASE=#{config.env[:main_app_name]}_#{config.env[:env]}_db",
+        "MYSQL_USERNAME=root",
+        "MYSQL_DATABASE_PORT=3306", 
+        "RAILS_ENV=#{config.env[:env]}"
+      ] }
+      
+      Then { assert_insertions_in_environments }
     end
 
     describe 'docker-compose.yml' do
- 
-      Given(:expected) { yaml_from_template('rails/database/with_mysql/_service.yml')}
       
-      Then { assert_file("docker-compose.yml") {|c| assert_match expected, c }}
+      Given(:file) { "docker-compose.yml" }
+      Given(:insertion) { yaml_from_template('rails/database/with_mysql/_service.yml')}
+      
+      Then { assert_insertion }
     end 
   end
 end

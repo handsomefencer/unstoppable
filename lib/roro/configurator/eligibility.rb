@@ -2,7 +2,13 @@ require 'open3'
 
 module Roro
   module Configurator
-    module Dependencies  
+    module Eligibility  
+      
+      def screen_target_directory
+        options[:greenfield] ? confirm_directory_empty : confirm_directory_app
+        handle_roro_artifacts
+      end
+     
       def confirm_directory_app 
         confirm_dependency({
           system_query: "ls -A",
