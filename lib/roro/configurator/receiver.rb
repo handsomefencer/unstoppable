@@ -2,21 +2,22 @@ module Roro
   module Configurator
     module Receiver 
       
-      attr_reader :structure, :intentions, :env, :options
+      attr_reader :structure, :intentions, :env, :options, :story
 
       def initialize(options=nil)
         @options = sanitize(options)
-        @options[:story] ||=  { rails: {} } 
         @structure = { choices:    {},
                        env_vars:   {},
                        intentions: {}, 
                        story:      {} 
         }
-        build_layers(default_story)
+        @story = @options[:story].nil? ? default_story : {rollon: @options[:story]}
+        build_layers(@story)
         @intentions = @structure[:intentions]
         @env = @structure[:env_vars]
         @env[:main_app_name] = Dir.pwd.split('/').last 
-        @env[:ruby_version] = `ruby -v`.scan(/\d.\d/).first
+        @env[:ruby_version] = RUBY_VERSION
+        @env[:force] = true
         screen_target_directory 
       end
   
@@ -43,6 +44,7 @@ module Roro
    
       def get_layer(filepath) 
         if !File.exist?(filepath)
+          key = filepath.split('/').last.split('.yml')
           error_msg = "Cannot find that story #{key} at #{filepath}. Has it been written?" 
           raise (Roro::Error.new(error_msg)) 
         end   

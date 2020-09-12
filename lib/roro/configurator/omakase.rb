@@ -65,7 +65,7 @@ module Roro
           array = []
           substory.each do |s| 
             ss = get_story([loc, s].join('/'))
-            array << (ss.is_a?(String) ? { s.to_sym => ss } : default_story( s, loc ) ) 
+            array << (ss.is_a?(String) ? { s.to_sym => ss.to_sym } : default_story( s, loc ) ) 
           end
           hash[story.to_sym] = array
         else 

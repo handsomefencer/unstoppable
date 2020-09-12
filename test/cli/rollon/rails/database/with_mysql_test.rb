@@ -15,7 +15,6 @@ Given { skip }
     
   describe '.rollon with mysql' do 
 
-    Given { config.intentions[:configure_database] = 'm' }
     Given { rollon }
 
     describe 'must add mysql2 gem to gemfile' do 

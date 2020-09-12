@@ -57,7 +57,7 @@ describe "Story::RubyGem::WithCICD" do
   
   describe 'must have rubies set' do 
   
-    Then { assert_equal ['2.7', '2.6', '2.5'], rubies } 
+    Then { rubies.each { |ruby| assert_match /\d.\d./, ruby } } 
   end
   
   describe 'roro/ci.env' do 

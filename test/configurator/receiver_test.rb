@@ -5,9 +5,9 @@ describe Roro::Configuration::Receiver do
   Given { greenfield_rails_test_base }
   Given(:options) { nil }
   Given(:config) { Roro::Configuration.new(options) }
-  
-  describe 'sanitizing options when options contain' do
     
+  describe 'sanitizing options when options contain' do
+
     Given(:expected) { { story: { rails: {} } } }
     Given(:actual) { config.sanitize(options) }
     
@@ -66,7 +66,7 @@ describe Roro::Configuration::Receiver do
   end
   
   describe '.default_story' do 
-    
+
     Given(:expected)  { 
       { rollon: 
         { rails: [
@@ -80,7 +80,15 @@ describe Roro::Configuration::Receiver do
     Then { assert_equal expected, config.default_story }
   end 
   
+  describe 'story not recognized' do 
+
+    Given(:options) { { story: :nostory} }
+  
+    Then  { assert_raises(  Roro::Error  ) { config } }
+  end
+  
   describe '.story_map' do 
+
     describe 'rollon' do 
       Given(:story_map) { [
         { rails: [

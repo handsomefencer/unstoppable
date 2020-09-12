@@ -11,10 +11,7 @@ module Roro
     include Omakase
   end
   
-  class Configurator::Configuration < Thor::Shell::Basic
+  class Configuration < Thor
     include Roro::Configurator
-  end
-  
-  class Configuration < Configurator::Configuration 
   end
 end

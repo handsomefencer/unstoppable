@@ -1,14 +1,14 @@
 require 'test_helper'
 
 describe Roro::CLI do
-Given { skip }
+
   Given { rollon_rails_test_base }
   Given(:options) { { story: { rails: [
     { database: { postgresql: {} }},
     { ci_cd: { circleci:   {} }}
     ] } } }
   Given(:config) { Roro::Configuration.new(options) }
-  Given(:cli){ Roro::CLI.new }
+  Given(:cli)    { Roro::CLI.new }
   Given(:rollon) { 
     cli.instance_variable_set(:@config, config)
     cli.rollon_rails }

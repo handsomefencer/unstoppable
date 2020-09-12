@@ -3,9 +3,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: <%= config['main_app_name'] %>-app-deployment
+  name: <%= config[:main_app_name] %>-app-deployment
   labels:
-    app: <%= config['main_app_name'] %>-app
+    app: <%= config[:main_app_name] %>-app
     tier: app
 spec:
   replicas: 2
@@ -17,7 +17,7 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: <%= config['main_app_name'] %>-app
+      app: <%= config[:main_app_name] %>-app
       tier: app
   template:
     metadata:
@@ -28,8 +28,8 @@ spec:
       imagePullSecrets:
         - name: docker-registry
       containers:
-      - name: <%= config['main_app_name'] %>-app
-        image: <%= config['docker_org'] %>/<%= config['main_app_name'] %>-app
+      - name: <%= config[:main_app_name] %>-app
+        image: <%= config[:docker_org] %>/<%= config[:main_app_name] %>-app
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

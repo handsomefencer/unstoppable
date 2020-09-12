@@ -36,7 +36,7 @@ describe Roro::Configurator::Omakase do
   
       Then { rails_keys.each { |k| assert_includes structure.keys, k } }
   
-      Then { rails_choices.each { |k| assert_includes choices, k } }
+      And { rails_choices.each { |k| assert_includes choices, k } }
     end 
       
     describe 'intentions must have default values' do 
@@ -87,7 +87,7 @@ describe Roro::Configurator::Omakase do
 
         Then { expected.each { |e| assert_includes config.env.keys, e } }
         And  { assert_equal 'greenfield', config.env[:main_app_name]}
-        And  { assert_equal '2.7', config.env[:ruby_version] }
+        And  { assert_match /\d.\d./, config.env[:ruby_version] }
       end
       
       describe 'database: :postgresql' do 

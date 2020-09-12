@@ -1,31 +1,25 @@
 require 'test_helper'
 
 describe Roro::CLI do
-Given { skip }
-  Given { prepare_destination 'rails/603' }
-  Given { stubs_system_calls }
-  Given { stubs_dependency_responses }
-
+  
+  Given { rollon_rails_test_base }
 
   Given(:config) { Roro::Configuration.new }
-  Given(:cli){ Roro::CLI.new }
+  Given(:cli)    { Roro::CLI.new }
   Given(:rollon) { 
     cli.instance_variable_set(:@config, config)
     cli.rollon_rails }
 
   describe '.rollon with postgresql' do 
 
-    Given { config.intentions['configure_database'] = 'p' }
-
     Given { rollon }
 
     describe 'pg gem in gemfile' do 
   
-      Then do 
-        assert_file 'Gemfile' do |c| 
-          assert_match("gem 'pg'", c)
-        end
-      end
+      Given(:file) { 'Gemfile' }
+      Given(:insertion) { "gem 'pg'" }
+      
+      Then { assert_insertion }
     end
   end
 end

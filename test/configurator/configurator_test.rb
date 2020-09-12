@@ -9,30 +9,27 @@ describe Roro::Configuration do
 
   Given(:config) { Roro::Configuration.new(options) }
   
-  describe 'when story' do
+  describe 'story when' do
     
-    Given(:expected) { { story: { rails: {} } } }
+    Given(:expected) { config.default_story }
+    Given(:story)    { config.story }
     
     describe 'nil' do  
         
       Given(:options)  { nil }
-      Given { config }
       
-      Then { assert_equal expected, config.options }
+      Then { assert_equal expected, story }
       And  { refute config.options.keys.include? :greenfield }
     end 
       
     describe 'contains arrays' do 
       
       Given(:options) { { story: { rails: [
-        { database: { postgresql: {} }},
-        { ci_cd:    { circleci:   {} }}
+        { database: :mysql },
+        { ci_cd:    :circleci }
       ] } } }
       
-      Given(:expected)  { options }
-      Given { config }
-    
-      Then { assert_equal expected, config.options }
+      Then { assert_equal 'blah', story }
                       
       describe '.structure' do 
         
@@ -76,7 +73,7 @@ describe Roro::Configuration do
 
             Then { expected.each { |e| assert_includes config.env.keys, e } }
             And  { assert_equal 'greenfield', config.env[:main_app_name]}
-            And  { assert_equal '2.7', config.env[:ruby_version]}
+            And  { assert_match /\d.\d./, config.env[:ruby_version] }
           end
           
           describe 'story specific variables' do

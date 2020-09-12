@@ -95,7 +95,7 @@ describe Roro::CLI do
         end
               
         describe 'roro directories' do 
-    Given { skip }
+
           Then { assert_directory "roro" }
           And  { assert_directory "roro/containers" }
           And  { assert_directory "roro/containers/app" } 
@@ -107,29 +107,24 @@ describe Roro::CLI do
           describe 'app' do 
             describe 'Dockerfile' do 
               
-              Given(:file) { "roro/containers/app/Dockerfile" }
-              Given(:line1) { "FROM ruby:#{config.env['ruby_version']}"} 
-              Given(:line2) { "maintainer=\"#{config.env['docker_email']}"} 
+              Given(:file)       { "roro/containers/app/Dockerfile" }
+              Given(:insertions) { [
+                "FROM ruby:#{config.env['ruby_version']}",
+                "maintainer=\"#{config.env['docker_email']}"
+              ] } 
     
-              Then { assert_file(file) { |c| 
-                assert_match line1, c 
-                assert_match line2, c 
-              }}
+              Then { assert_insertions }
             end 
           end
         end
         
-        %w(development production test staging ci).each do |env| 
-        
-          describe "must create .env file for #{env}" do 
-            Given(:line) { "DATABASE_HOST=#{config.env['database_host']}" }
+        describe "must create .env file for roro environments" do 
+          
+          Given(:file) { "roro/containers/app/#{config.env[:env]}.env" }
+          Given(:environments) { roro_environments }
+          Given(:insertions) { ["DATABASE_HOST=#{config.env[:database_host]}"] }
 
-            Then do 
-              assert_file "roro/containers/app/#{env}.env" do |c| 
-                assert_match line, c 
-              end 
-            end
-          end
+          Then { assert_insertions_in_environments }
         end 
       end
     end 

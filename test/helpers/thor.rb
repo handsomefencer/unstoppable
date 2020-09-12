@@ -12,6 +12,10 @@ module TestHelper
         end
       end
       
+      def roro_environments 
+        %w(development production test staging ci)
+      end
+      
       def remove_dot_env_files(envs, enc=nil)
         enc = enc ||= ''
         envs.each do |e|
@@ -22,7 +26,6 @@ module TestHelper
       end
       
       def insert_file(src, dest) 
-        
         Roro::CLI.source_root
         src = [Roro::CLI.source_root, src].join('/')
         FileUtils.cp(src, dest) 

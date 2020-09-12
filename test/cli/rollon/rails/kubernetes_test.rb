@@ -1,15 +1,14 @@
 require 'test_helper'
 
 describe Roro::CLI do
-Given { skip }  
-  Given(:cli)     { Roro::CLI.new }
-  Given { prepare_destination 'rails/603' }
-  Given { stubs_system_calls }
-  Given { stubs_dependency_responses }
+  
+  Given { rollon_rails_test_base }
 
+  Given(:cli)     { Roro::CLI.new }
   Given(:rollon) { cli.rollon_rails_kubernetes }
 
   describe 'rollon rails kubernetes' do 
+
     Given { rollon }
 
     describe 'roro kube folder' do 
