@@ -14,7 +14,6 @@ module Roro
           @config.env[:database_vendor] = 'mysql'
           configure_for_mysql
         end
-        
         %w(development production test staging ci).each do |environment| 
           src = 'rails/dotenv/web.env.tt'
           dest = "roro/containers/app/#{environment}.env"

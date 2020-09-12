@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe Roro::CLI do
-
+Given { skip }
   Given { rollon_rails_test_base }
   Given(:options) { { story: { rails: [
     { database: { postgresql: {} }},

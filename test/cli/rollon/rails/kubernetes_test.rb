@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe Roro::CLI do
-  
+Given { skip }  
   Given(:cli)     { Roro::CLI.new }
   Given { prepare_destination 'rails/603' }
   Given { stubs_system_calls }

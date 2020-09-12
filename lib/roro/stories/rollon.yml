@@ -1,6 +1,5 @@
 stories: rails
 
-
 env_vars: 
   main_app_name: 
   developer: 

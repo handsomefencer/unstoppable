@@ -12,7 +12,7 @@ module Roro
                        intentions: {}, 
                        story:      {} 
         }
-        build_layers(rollon: @options[:story])
+        build_layers(default_story)
         @intentions = @structure[:intentions]
         @env = @structure[:env_vars]
         @env[:main_app_name] = Dir.pwd.split('/').last 
@@ -40,8 +40,12 @@ module Roro
       def get_story(location)
         get_layer(location + ".yml")[:stories]
       end 
-      
+   
       def get_layer(filepath) 
+        if !File.exist?(filepath)
+          error_msg = "Cannot find that story #{key} at #{filepath}. Has it been written?" 
+          raise (Roro::Error.new(error_msg)) 
+        end   
         json = JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
         json ? json : ( raise (Roro::Error.new(error_msg))) 
       end

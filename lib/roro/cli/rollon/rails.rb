@@ -12,12 +12,8 @@ module Roro
     map "rollon::rails" => "rollon_rails"
     
     def rollon_rails(options={}) 
-      options.merge!({ story: { rails: [
-        { database: { postgresql: {} }},
-        { ci_cd:    { circleci:   {} }}
-      ] } } )
+      configure_for_rollon(nil)
       
-      configure_for_rollon(options)
       @config.structure[:actions].each {|a| eval a }
       execute_intentions
       startup_commands

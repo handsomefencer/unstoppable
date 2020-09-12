@@ -45,7 +45,7 @@ describe Roro::Configuration do
         Given(:base_choices) { [ 
           :copy_dockerignore, :backup_existing_files, :generate_config ] }
         Given(:rails_choices) { [
-          :backup_existing_files, :configure_database, :config_std_out_true, 
+          :backup_existing_files, :config_std_out_true, 
           :copy_dockerignore, :gitignore_sensitive_files, 
           :insert_hfci_gem_into_gemfile, :insert_roro_gem_into_gemfile ] }
 
@@ -67,7 +67,6 @@ describe Roro::Configuration do
           
           Then { intentions.each { |k,v| assert_includes choices.keys, k } }
           And  { intentions.each { |k,v| assert_equal choices[k][:default], v } }
-          And  { assert_equal intentions[:configure_database], 'p' }
         end
             
         describe '.env' do 
@@ -97,7 +96,7 @@ describe Roro::Configuration do
             end
             
             describe 'will not add pg env vars to myql story' do 
-              
+            Given { skip }  
               Given(:db) { { mysql: {}} }
               Given { config }
               

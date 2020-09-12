@@ -5,7 +5,6 @@ stories:
 
 actions: 
   - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
-  - configure_database  
   - template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
   - template 'base/dotenv', './.env', @config.env
   - directory 'rails/roro', './roro', @config.env
@@ -17,7 +16,6 @@ env_vars:
   database_service: database
 
 choices:
-  
   config_std_out_true: 
     question: |
       The team at Heroku, among others, recommend logging to STDOUT 
@@ -65,14 +63,3 @@ choices:
       y: 'Yes'
       n: 'No' 
     default: n
-
-
-  configure_database:
-    question: |
-      RoRo can reliably dockerize your Rails app with either 
-      MySQL or PostgreSQL stories. Which story would you prefer
-      to roll on?
-    choices:
-      p: PostgreSQL
-      m: MySQL 
-    default: p
