@@ -7,7 +7,7 @@ describe Roro::CLI do
   describe './greenfield' do 
     
     Given { @cli.stubs(:rollon_rails) }
-    Given { @cli.greenfield_rails }
+    Given { @cli.greenfield }
     
     describe 'roro directories' do 
 

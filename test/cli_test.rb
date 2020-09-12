@@ -12,6 +12,7 @@ describe Roro::CLI do
       generate_keys: 'generate::keys',
       generate_obfuscated: 'generate::obfuscated',
       greenfield_rails: 'greenfield::rails',
+      greenfield: 'greenfield',
       rollon_rails: 'rollon::rails',
       rollon_rails_kubernetes: 'rollon::rails::kubernetes',
     }.each do |k,v| 

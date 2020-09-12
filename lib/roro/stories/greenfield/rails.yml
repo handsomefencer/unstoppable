@@ -1,7 +1,6 @@
 actions: 
-  - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
-  - configure_database  
-  - template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
-  - template 'base/dotenv', './.env', @config.env
-  - directory 'rails/roro', './roro', @config.env
-
+  - @config.env['force'] = true
+  - src = 'rails/Dockerfile.greenfield.tt'
+  - dest = 'roro/containers/app/Dockerfile'
+  - template src, dest, @config.env
+  
