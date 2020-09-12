@@ -121,7 +121,7 @@ describe Roro::CLI do
         describe "must create .env file for roro environments" do 
           
           Given(:file) { "roro/containers/app/#{config.env[:env]}.env" }
-          Given(:environments) { roro_environments }
+          Given(:environments) { Roro::CLI.roro_environments }
           Given(:insertions) { ["DATABASE_HOST=#{config.env[:database_host]}"] }
 
           Then { assert_insertions_in_environments }

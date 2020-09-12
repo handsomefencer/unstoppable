@@ -26,5 +26,9 @@ module Roro
     def self.story_root
       File.dirname(__FILE__) + '/stories'
     end
+    
+    def self.roro_environments 
+      %w(development production test staging ci)
+    end
   end
 end

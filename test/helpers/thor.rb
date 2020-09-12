@@ -11,11 +11,7 @@ module TestHelper
           Dir.chdir(temp_name)
         end
       end
-      
-      def roro_environments 
-        %w(development production test staging ci)
-      end
-      
+            
       def remove_dot_env_files(envs, enc=nil)
         enc = enc ||= ''
         envs.each do |e|

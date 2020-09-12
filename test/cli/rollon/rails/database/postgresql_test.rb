@@ -32,7 +32,7 @@ describe Roro::CLI do
   describe 'env_files' do 
     
     Given(:file)         { "roro/containers/database/#{config.env[:env]}.env" }
-    Given(:environments) { roro_environments }
+    Given(:environments) { Roro::CLI.roro_environments }
     Given(:insertions)   { [
       "POSTGRES_USERNAME=postgres",
       "POSTGRES_PASSWORD=your-postgres-password",
