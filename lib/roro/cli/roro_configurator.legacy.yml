@@ -85,17 +85,7 @@ services:
               y: 'Yes'
               n: 'No'
             default: y
-            
-          configure_database:
-            question: |
-              RoRo can reliably dockerize your Rails app with either 
-              MySQL or PostgreSQL stories. Which story would you prefer
-              to roll on?
-            choices:
-              p: PostgreSQL
-              m: MySQL 
-            default: p
-
+        
         env_vars: 
           DATABASE_HOST: database
   

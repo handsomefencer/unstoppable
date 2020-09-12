@@ -29,7 +29,7 @@ describe Roro::Configuration do
         { ci_cd:    :circleci }
       ] } } }
       
-      Then { assert_equal 'blah', story }
+      # Then { assert_equal 'blah', story }
                       
       describe '.structure' do 
         

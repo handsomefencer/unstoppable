@@ -1,17 +1,16 @@
 require 'test_helper'
 
 describe Roro::CLI do
-Given { skip }
+
   Given { rollon_rails_test_base }
+  Given(:cli)     { Roro::CLI.new }
+  Given(:rollon)  { cli.rollon(options) }
+  Given(:config)  { cli.instance_variable_get("@config" ) }
+  
   Given(:options) { { story: { rails: [
-    { database: { mysql: {} }},
-    { ci_cd: { circleci:   {} }}
-    ] } } }
-  Given(:config) { Roro::Configuration.new(options) }
-  Given(:cli){ Roro::CLI.new }
-  Given(:rollon) { 
-    cli.instance_variable_set(:@config, config)
-    cli.rollon_rails }
+    { database: :mysql },
+    { ci_cd:    :circleci }
+  ] } } }
     
   describe '.rollon with mysql' do 
 
@@ -26,7 +25,6 @@ Given { skip }
     end   
       
     describe "config/database.yml" do  
-        
       Given(:file) { 'config/database.yml' }
       Given(:insertions) { [ 
         "<%= ENV.fetch('DATABASE_HOST') %>",

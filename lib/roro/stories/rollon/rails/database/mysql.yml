@@ -3,5 +3,15 @@ env_vars:
   mysql_password: your-mysql-password
   mysql_username: 'root'
   mysql_database_port: '3306'
-
+  database_vendor: mysql
   
+actions: 
+  - copy_file 'rails/config/database.mysql.yml', 'config/database.yml', @config.env
+  - |
+    ['development', 'production', 'test', 'staging', 'ci'].each do |e| 
+      @config.env[:rails_env] = e
+      source = 'rails/dotenv/database.mysql.env.tt'
+      target = "roro/containers/database/#{e}.env"
+      template( source, target, @config.env) 
+    end
+

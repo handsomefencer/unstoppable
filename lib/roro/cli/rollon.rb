@@ -8,9 +8,13 @@ module Roro
     method_option :interactive, desc: "Set up your environment variables as 
       you go."
       
-    def rollon(options=nil) 
-      
+    def rollon(options={})
+      configure_for_rollon(options)
+      @config.structure[:actions].each {|a| eval a }
+      execute_intentions
+      startup_commands 
     end
+    
     no_commands do 
      
       def configure_for_rollon(options=nil)

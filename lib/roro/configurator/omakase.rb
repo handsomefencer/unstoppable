@@ -10,6 +10,8 @@ module Roro
           case value 
           when Array
             value.each {|value| build_layers(value, location) }
+          when true 
+            next
           when  
             build_layers(value, location)
           end

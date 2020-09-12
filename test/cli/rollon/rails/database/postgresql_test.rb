@@ -3,17 +3,9 @@ require 'test_helper'
 describe Roro::CLI do
 
   Given { rollon_rails_test_base }
-  Given(:options) { { story: { rails: [
-    { database: { postgresql: {} }},
-    { ci_cd: { circleci:   {} }}
-    ] } } }
-  Given(:config) { Roro::Configuration.new(options) }
   Given(:cli)    { Roro::CLI.new }
-  Given(:rollon) { 
-    cli.instance_variable_set(:@config, config)
-    cli.rollon_rails }
-
-  Given { config.intentions[:configure_database] = 'p' }
+  Given(:rollon) { cli.rollon }
+  Given(:config) { cli.instance_variable_get("@config" ) }
   Given { rollon }
 
   describe 'must add pg gem in gemfile' do 
@@ -39,9 +31,9 @@ describe Roro::CLI do
   
   describe 'env_files' do 
     
-    Given(:environments) { %w(development production test staging ci) }
     Given(:file)         { "roro/containers/database/#{config.env[:env]}.env" }
-    Given(:insertions) { [
+    Given(:environments) { roro_environments }
+    Given(:insertions)   { [
       "POSTGRES_USERNAME=postgres",
       "POSTGRES_PASSWORD=your-postgres-password",
       "POSTGRES_DATABASE=#{config.env[:main_app_name]}_#{config.env[:env]}_db",

@@ -11,13 +11,14 @@ module Roro
                        intentions: {}, 
                        story:      {} 
         }
-        @story = @options[:story].nil? ? default_story : {rollon: @options[:story]}
+        @story = @options[:story].nil? ? default_story : { rollon: @options[:story] }
         build_layers(@story)
         @intentions = @structure[:intentions]
         @env = @structure[:env_vars]
         @env[:main_app_name] = Dir.pwd.split('/').last 
         @env[:ruby_version] = RUBY_VERSION
         @env[:force] = true
+        @env[:verbose] = false
         screen_target_directory 
       end
   
@@ -31,9 +32,9 @@ module Roro
           when Hash 
             sanitize(v)
           when true 
-            options[k] = {}
+            options[k] = true
           when
-            options[k] = { v.to_sym => {}} 
+            options[k] = v.to_sym 
           end
         end
       end

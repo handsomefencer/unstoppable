@@ -4,11 +4,8 @@ describe Roro::CLI do
   
   Given { rollon_rails_test_base }
 
-  Given(:config) { Roro::Configuration.new }
-  Given(:cli)    { Roro::CLI.new }
-  Given(:rollon) { 
-    cli.instance_variable_set(:@config, config)
-    cli.rollon_rails }
+  Given(:cli)       { Roro::CLI.new }
+  Given(:rollon)    { cli.rollon }
 
   describe '.rollon with postgresql' do 
 
@@ -16,7 +13,7 @@ describe Roro::CLI do
 
     describe 'pg gem in gemfile' do 
   
-      Given(:file) { 'Gemfile' }
+      Given(:file)      { 'Gemfile' }
       Given(:insertion) { "gem 'pg'" }
       
       Then { assert_insertion }

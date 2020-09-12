@@ -8,12 +8,19 @@ describe Roro::Configuration::Receiver do
     
   describe 'sanitizing options when options contain' do
 
-    Given(:expected) { { story: { rails: {} } } }
+    Given(:expected) { { story: :rails } }
     Given(:actual) { config.sanitize(options) }
+    
+    describe 'properly formatted' do 
+      
+      Given(:options) { expected }
+      
+      Then { assert_equal expected, actual }
+    end
     
     describe 'nested hashes' do 
         
-      Given(:options) { expected }
+      Given(:options) { { story: :rails } }
       
       Then { assert_equal expected, actual }
     end
@@ -42,7 +49,8 @@ describe Roro::Configuration::Receiver do
     
     describe 'booleans' do
 
-      Given(:options) { { story: { rails: true } } }
+      Given(:options)  { { story: { rails: true } } }
+      Given(:expected) { options }
       
       Then { assert_equal expected, actual }
     end
@@ -65,30 +73,7 @@ describe Roro::Configuration::Receiver do
     end
   end
   
-  describe '.default_story' do 
-
-    Given(:expected)  { 
-      { rollon: 
-        { rails: [
-          { database: 'postgresql' },
-          { ci_cd: 'circleci' },
-          { kubernetes: 'postgresql' }
-        ] } 
-      }
-    }
-    
-    Then { assert_equal expected, config.default_story }
-  end 
-  
-  describe 'story not recognized' do 
-
-    Given(:options) { { story: :nostory} }
-  
-    Then  { assert_raises(  Roro::Error  ) { config } }
-  end
-  
   describe '.story_map' do 
-
     describe 'rollon' do 
       Given(:story_map) { [
         { rails: [
@@ -112,5 +97,63 @@ describe Roro::Configuration::Receiver do
       Then { assert_equal( story_map, config.story_map(:rollon) )}
     end
   end
-end
   
+  describe 'story' do 
+    
+    Given(:default_story)  { 
+      { rollon: 
+        { rails: [
+          { database: :postgresql },
+          { ci_cd: :circleci },
+          { kubernetes: :postgresql }
+    ] } } }
+    
+    describe '.default_story' do 
+      
+      Given(:expected)  { default_story} 
+      
+      Then { assert_equal expected, config.default_story }
+      And  { assert_equal expected, config.story }
+    end
+    
+    describe 'custom story' do 
+
+      describe 'when same as default_story' do 
+      
+        Given(:options)  { 
+          { story: 
+            { rails: [
+              { database: :postgresql },
+              { ci_cd: :circleci },
+              { kubernetes: :postgresql }
+        ] } } }
+  
+        Given(:expected)  { default_story} 
+        
+        Then  { assert_equal default_story, config.story }
+      end
+      
+      describe 'when different substory' do 
+        
+        Given(:options)  { 
+          { story: 
+            { rails: [
+              { database: :mysql },
+              { ci_cd: :circleci },
+              { kubernetes: :postgresql }
+        ] } } }
+
+        Given(:expected)  { default_story} 
+        
+        Then { assert_equal options[:story], config.story[:rollon] }
+      end
+    end
+    
+    describe 'story not recognized' do 
+
+      Given(:options) { { story: :nostory} }
+    
+      Then  { assert_raises(  Roro::Error  ) { config } }
+    end
+  end
+end    
