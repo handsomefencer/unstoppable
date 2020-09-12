@@ -97,6 +97,7 @@ module Roro
         conditional = options[:conditional] ? eval(options[:conditional]) : system(options[:system_query])
         query = options[:system_query]
         if conditional == false
+          
           raise(Roro::Error.new(msg.join("\n\n")))
         else 
           true 

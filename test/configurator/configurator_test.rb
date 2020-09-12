@@ -2,42 +2,14 @@ require "test_helper"
 
 describe Roro::Configuration do
   
+  ## omakase needs to handle everything that is default. Okanomi handles 
+  ## everything that is configured via a) config file or b) interrogation. 
+  
   Given { greenfield_rails_test_base }
 
   Given(:config) { Roro::Configuration.new(options) }
-
-  describe 'sanitizing options' do
-    
-    Given(:expected) { {:greenfield=>{}, :story=>{:rails=>{}}}}
-    
-    describe 'greenfield' do
-      describe 'with story specified' do 
-         
-        Given(:options) { { greenfield: true, story: :rails } }
-        Given { config }
-        
-        Then { assert_equal expected, config.options }
-        And  { assert_includes config.options.keys, :greenfield }
-      end
-      
-      describe 'without story uses default' do 
-        
-        Given(:options) { { greenfield: true } }
-        Given { config }
-          
-        Then { assert_equal expected, config.options }
-        And  { assert_includes config.options.keys, :greenfield }
-      end
-    end
-  end
   
   describe 'when story' do
-    describe 'not recognized' do 
-    
-      Given(:options) { { story: :nostory} }
-    
-      Then  { assert_raises(  Roro::Error  ) { config } }
-    end
     
     Given(:expected) { { story: { rails: {} } } }
     
@@ -49,38 +21,6 @@ describe Roro::Configuration do
       Then { assert_equal expected, config.options }
       And  { refute config.options.keys.include? :greenfield }
     end 
-    
-    describe 'contains nested hashes' do 
-        
-      Given(:options) { { story: { rails: {} } } }
-      Given { config }
-      
-      Then { assert_equal expected, config.options }
-    end
-    
-    describe 'contains symbols' do
-
-      Given(:options) { { story: :rails } }
-      Given { config }
-      
-      Then { assert_equal expected, config.options }
-    end
-    
-    describe 'contains strings' do
-
-      Given(:options) { { 'story' =>  'rails' } }
-      Given { config }
-      
-      Then { assert_equal expected, config.options }
-    end
-    
-    describe 'contains strings' do
-
-      Given(:options) { { story: { rails: true } } }
-      Given { config }
-      
-      Then { assert_equal expected, config.options }
-    end
       
     describe 'contains arrays' do 
       

@@ -2,17 +2,15 @@ module Roro
   module Configurator
     module Receiver 
       
-      attr_reader :structure, :intentions, :env, :options, :actions
+      attr_reader :structure, :intentions, :env, :options
 
       def initialize(options=nil)
-        options ||= {}
-        options[:story] ||=  { rails: {} } 
-        sanitize(options)
-        @structure = {
-          choices:    {},
-          env_vars:   {},
-          intentions: {}, 
-          story:      {} 
+        @options = sanitize(options)
+        @options[:story] ||=  { rails: {} } 
+        @structure = { choices:    {},
+                       env_vars:   {},
+                       intentions: {}, 
+                       story:      {} 
         }
         build_layers(rollon: @options[:story])
         @intentions = @structure[:intentions]
@@ -23,6 +21,7 @@ module Roro
       end
   
       def sanitize(options)
+        options ||= {}
         options.transform_keys!{|k| k.to_sym}
         options.each do |k, v| 
           case v
@@ -36,9 +35,16 @@ module Roro
             options[k] = { v.to_sym => {}} 
           end
         end
-        @options = options
       end
       
+      def get_story(location)
+        get_layer(location + ".yml")[:stories]
+      end 
+      
+      def get_layer(filepath) 
+        json = JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
+        json ? json : ( raise (Roro::Error.new(error_msg))) 
+      end
     end 
   end 
 end

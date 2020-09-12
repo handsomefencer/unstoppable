@@ -48,13 +48,44 @@ module Roro
           @structure[:intentions][key] = value[:default]  
         end
       end
-  
-      private 
-  
-      def get_layer(filepath) 
-        json = JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
-        json ? json : ( raise (Roro::Error.new(error_msg))) 
+      
+      def story_map(story='stories')
+        array ||= []
+        loc = Roro::CLI.story_root + "/#{story}"
+        validate_story(loc)
+        stories = Dir.glob(loc + "/*.yml") 
+        stories.each do |ss| 
+          name = ss.split('/').last.split('.yml').first
+          array << { name.to_sym => story_map([story, name].join('/'))}
+        end   
+        array
       end
+            
+      def default_story(story='rollon', loc=nil)
+        hash = {}
+        loc = [(loc ||= Roro::CLI.story_root), story].join('/') 
+        substory = get_story(loc)
+        if substory.is_a?(Array)
+          array = []
+          substory.each do |s| 
+            ss = get_story([loc, s].join('/'))
+            array << (ss.is_a?(String) ? { s.to_sym => ss } : default_story( s, loc ) ) 
+          end
+          hash[story.to_sym] = array
+        else 
+          hash[story.to_sym] = default_story(substory, loc)
+        end
+        hash
+      end
+      
+      def validate_story(story)
+        substories = get_layer("#{story}.yml")[:stories]
+        if substories.is_a? String
+          File.exist?(story + substories + '.yml')
+        elsif substories.is_a? Array 
+          substories.each { |substory| validate_story(story + '/' + substory) }
+        end 
+      end 
     end 
   end 
 end

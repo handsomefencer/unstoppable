@@ -1,87 +1,48 @@
 require 'test_helper'
 
-describe Roro::Configuration do
+describe Roro::Configurator::Omakase do
   
-  Given { prepare_destination "rails/603" }
+  Given { greenfield_rails_test_base }
   Given(:options)    { nil }
   Given(:config)     { Roro::Configuration.new(options) }
-
-  describe '.confirm_directory_empty when' do 
-    describe 'directory empty' do 
-      
-      Given { prepare_destination "greenfield/greenfield" }
-      
-      describe 'succeeds when option :greenfield' do 
-        
-        Given(:options) { { greenfield: true } }
-          
-        Then { assert config }
-        And  { assert config.confirm_directory_empty }
-      end 
-      
-      describe 'errors when option :rollon' do 
-        
-        Given(:options) { { rollon: true } }           
-          
-        Then { assert_raises( Roro::Error ) { config } }
-      end 
-    end
-
-    describe 'directory holds an app' do 
-
-      Given { io_confirm }  
-
-      describe 'succeeds when option :rollon' do 
-        
-        Given(:options) { { rollon: true } }           
-
-        Then { assert config }
-        And  { assert config.confirm_directory_app }
-      end
-
-      describe 'errors when option :greenfield' do 
-
-        Given(:options) { { greenfield: true } }
-
-        Then { assert_raises( Roro::Error ) { config } }
-      end 
-    end
+  
+  describe '.default_story' do 
+    
+    Given(:expected)  { 
+      { rollon: 
+        { rails: [
+          { database: 'postgresql' },
+          { ci_cd: 'circleci' },
+          { kubernetes: 'postgresql' }
+        ] } 
+      }
+    }
+    
+    Then { assert_equal expected, config.default_story }
   end 
   
-  
-  describe '.confirm_dependencies' do
-    
-    Given { io_confirm }
+  describe '.story_map for' do 
+    describe 'rollon' do 
+      Given(:story_map) { [
+        { rails: [
+          { database: [
+            { postgresql: [] },
+            { mysql: [] }
+          ] },
+          { ci_cd: [
+            { circleci: [] }
+          ] },
+          { kubernetes: [
+            { postgresql: [
+              { edge: [] }, 
+              { default: [] }
+            ] }
+          ] }
+        ]}, 
+        { ruby_gem: []}
+      ]}
 
-    describe '.confirm_dependencies' do
-
-      Given(:deps) { config.send :dependencies}
-      Given { Roro::Configuration.any_instance.stubs(:handle_roro_artifacts) }
-      
-      Given(:mock_response) { deps.each { |d| 
-        Roro::Configuration
-          .any_instance.expects(:system)
-          .with(d[:system_query])
-          .returns(system_response) 
-      } }
-      
-      describe 'must succeed when response is true' do
-        
-        Given(:system_response ) { true }
-        Given { mock_response }
-        
-        Then { deps.each { |d| assert config.confirm_dependency(d) } }
-      end 
-      
-      describe 'must error when response is false' do
-        
-        Given(:system_response ) { false }
-        Given { mock_response }
-        
-        Then { deps.each { |d| assert_raises( Roro::Error ) { 
-          config.confirm_dependency(d ) 
-        } } }
-      end
+      Then { assert_equal( story_map, config.story_map(:rollon) )}
     end
-  end
+  end  
 end

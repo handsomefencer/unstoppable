@@ -1,87 +1,68 @@
 require 'test_helper'
 
-describe Roro::Configuration do
+describe Roro::Configuration::Receiver do
+
+  Given { greenfield_rails_test_base }
   
-  Given { prepare_destination "rails/603" }
-  Given(:options)    { nil }
-  Given(:config)     { Roro::Configuration.new(options) }
+  Given(:config) { Roro::Configuration.new(options) }
 
-  describe '.confirm_directory_empty when' do 
-    describe 'directory empty' do 
-      
-      Given { prepare_destination "greenfield/greenfield" }
-      
-      describe 'succeeds when option :greenfield' do 
+  describe 'sanitizing options when options contain' do
+    
+    Given(:expected) { { story: { rails: {} } } }
+    Given(:actual) { config.sanitize(options) }
+    
+    describe 'nested hashes' do 
         
-        Given(:options) { { greenfield: true } }
-          
-        Then { assert config }
-        And  { assert config.confirm_directory_empty }
-      end 
+      Given(:options) { expected }
       
-      describe 'errors when option :rollon' do 
-        
-        Given(:options) { { rollon: true } }           
-          
-        Then { assert_raises( Roro::Error ) { config } }
-      end 
+      Then { assert_equal expected, actual }
     end
-
-    describe 'directory holds an app' do 
-
-      Given { io_confirm }  
-
-      describe 'succeeds when option :rollon' do 
+    
+    describe 'nil' do 
         
-        Given(:options) { { rollon: true } }           
+      Given(:expected) { {} }
+      Given(:options) { nil }
+      
+      Then { assert_equal expected, actual }
+    end
+    
+    describe 'symbols' do
 
-        Then { assert config }
-        And  { assert config.confirm_directory_app }
-      end
+      Given(:options) { { story: :rails } }
+      
+      Then { assert_equal expected, actual }
+    end
+    
+    describe 'strings' do
 
-      describe 'errors when option :greenfield' do 
+      Given(:options) { { 'story' =>  'rails' } }
+      
+      Then { assert_equal expected, actual }
+    end
+    
+    describe 'booleans' do
 
-        Given(:options) { { greenfield: true } }
+      Given(:options) { { story: { rails: true } } }
+      
+      Then { assert_equal expected, actual }
+    end
+    
+    describe 'contains arrays' do 
 
-        Then { assert_raises( Roro::Error ) { config } }
-      end 
+      Given(:expected) { { story: { rails: [
+        { database: { postgresql: {} }},
+        { ci_cd:    { circleci:   {} }}
+      ] } } }
+
+      Given(:options) { { story: { rails: [
+        { database: { 'postgresql' => {} }},
+        { ci_cd:    { circleci:   {} }}
+      ] } } }
+      
+      Given(:expected)  { options }
+   
+      Then { assert_equal expected, actual } 
     end
   end 
-  
-  
-  describe '.confirm_dependencies' do
-    
-    Given { io_confirm }
-
-    describe '.confirm_dependencies' do
-
-      Given(:deps) { config.send :dependencies}
-      Given { Roro::Configuration.any_instance.stubs(:handle_roro_artifacts) }
-      
-      Given(:mock_response) { deps.each { |d| 
-        Roro::Configuration
-          .any_instance.expects(:system)
-          .with(d[:system_query])
-          .returns(system_response) 
-      } }
-      
-      describe 'must succeed when response is true' do
-        
-        Given(:system_response ) { true }
-        Given { mock_response }
-        
-        Then { deps.each { |d| assert config.confirm_dependency(d) } }
-      end 
-      
-      describe 'must error when response is false' do
-        
-        Given(:system_response ) { false }
-        Given { mock_response }
-        
-        Then { deps.each { |d| assert_raises( Roro::Error ) { 
-          config.confirm_dependency(d ) 
-        } } }
-      end
-    end
-  end
 end
+  
