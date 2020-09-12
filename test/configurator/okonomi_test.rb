@@ -8,6 +8,7 @@ describe Roro::Configuration::Okonomi do
   Given(:options) { nil }
   Given(:config) { Roro::Configuration.new(options) }
 
+  
   describe 'take_order' do
 
     Given(:questions)  { config.structure[:choices] }

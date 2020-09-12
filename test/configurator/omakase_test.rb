@@ -3,7 +3,8 @@ require 'test_helper'
 describe Roro::Configurator::Omakase do
   
   Given { greenfield_rails_test_base }
-  Given(:config) { Roro::Configuration.new(nil) }
+  Given(:options) { nil }
+  Given(:config)  { Roro::Configuration.new(options) }
   
   describe '.structure' do 
 
@@ -53,23 +54,58 @@ describe Roro::Configurator::Omakase do
       
       Given(:actions)    { config.structure[:actions] }
       
-      describe 'rails' do 
+      Given(:rails_actions) { [
+        "template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'", 
+        "template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env",
+        "template 'base/dotenv', './.env', @config.env",
+        "directory 'rails/roro', './roro', @config.env"
+      ] }
+      
+      
+      describe 'rollon' do 
         
-        Given(:expected) { "directory 'rails/roro', './roro', @config.env" }
+        Given(:options) { nil }  
         
-        Then { assert_includes actions, expected }
+        Then { rails_actions.each { |e| assert_includes actions, e } }
+      end
+      
+      describe 'greenfield' do 
+        
+        Given(:options) { { greenfield: :greenfield } }  
+        Given(:greenfield_actions)  { config.structure[:greenfield_actions] }
+        Given(:greenfield_commands) { config.structure[:greenfield_commands] }
+        
+        describe 'must store greenfield actions' do
+
+          Given(:expected) { [
+            "@config.env['force'] = true", 
+            "src = 'rails/Dockerfile.greenfield.tt'",
+            "dest = 'roro/containers/app/Dockerfile'",
+            "template src, dest, @config.env"
+          ] }
+    
+          Then { expected.each { |e| assert_includes greenfield_actions, e } }
+        end
+        
+        describe 'must store greenfield commands' do
+        
+          Given(:expected) { [
+            "system \"DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . .\""
+          ] }
+            
+          Then { expected.each { |e| assert_includes greenfield_commands, e } }
+        end
       end
       
       describe 'postgres' do 
-        
-        Given(:expected) { "copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.env" }
-        
-        Then { assert_includes actions, expected }
+        Given(:expected) { [
+          `Roro::Cli.roro_environments.each do |environment| 
+            src = 'rails/dotenv/web.env.tt'
+            dest = "roro/containers/app/#{environment}.env"
+            template src, dest, @config.env
+        end`
+      ]}
       end
-      
-      
-      # And  { intentions.each { |k,v| assert_equal choices[k][:default], v } }
-      # And  { rails_choices.each { |k| assert_includes intentions.keys, k } }
     end
         
     describe '.env' do 

@@ -1,6 +1,9 @@
-actions: 
-  - @config.env['force'] = true
-  - src = 'rails/Dockerfile.greenfield.tt'
-  - dest = 'roro/containers/app/Dockerfile'
-  - template src, dest, @config.env
+greenfield_actions:
+  - |
+    "@config.env['force'] = true"
+    src = 'rails/Dockerfile.greenfield.tt'
+    dest = 'roro/containers/app/Dockerfile'
+    template(src, dest, @config.env)
   
+greenfield_commands: 
+  - system "DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . ."
