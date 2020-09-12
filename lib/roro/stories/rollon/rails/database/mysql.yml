@@ -8,7 +8,7 @@ env_vars:
 actions: 
   - copy_file 'rails/config/database.mysql.yml', 'config/database.yml', @config.env
   - |
-    ['development', 'production', 'test', 'staging', 'ci'].each do |e| 
+    Roro::CLI.roro_environments.each do |e| 
       @config.env[:rails_env] = e
       source = 'rails/dotenv/database.mysql.env.tt'
       target = "roro/containers/database/#{e}.env"

@@ -6,12 +6,12 @@ describe Roro::Configuration::Receiver do
   Given(:options) { nil }
   Given(:config) { Roro::Configuration.new(options) }
     
-  describe 'sanitizing options when options contain' do
+  describe 'sanitizing when options contain' do
 
     Given(:expected) { { story: :rails } }
     Given(:actual) { config.sanitize(options) }
     
-    describe 'properly formatted' do 
+    describe 'proper formatting' do 
       
       Given(:options) { expected }
       

@@ -6,12 +6,11 @@ describe Roro::CLI do
   Given(:cli)     { Roro::CLI.new }
   Given(:rollon)  { cli.rollon(options) }
   Given(:config)  { cli.instance_variable_get("@config" ) }
-  
   Given(:options) { { story: { rails: [
     { database: :mysql },
     { ci_cd:    :circleci }
   ] } } }
-    
+  
   describe '.rollon with mysql' do 
 
     Given { rollon }

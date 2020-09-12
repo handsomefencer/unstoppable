@@ -3,9 +3,8 @@ require 'test_helper'
 describe Roro::CLI do
 
   Given { rollon_rails_test_base }
-  Given(:cli)    { Roro::CLI.new }
-  Given(:rollon) { cli.rollon }
-  Given(:config) { cli.instance_variable_get("@config" ) }
+  Given(:rollon) { @cli.rollon }
+  Given(:config) { @cli.instance_variable_get("@config" ) }
   Given { rollon }
 
   describe 'must add pg gem in gemfile' do 
