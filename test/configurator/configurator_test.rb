@@ -93,7 +93,7 @@ describe Roro::Configuration do
             end
             
             describe 'will not add pg env vars to myql story' do 
-            Given { skip }  
+            
               Given(:db) { { mysql: {}} }
               Given { config }
               

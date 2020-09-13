@@ -5,7 +5,7 @@ describe Roro::CLI do
   Given(:cli) { Roro::CLI.new }
 
   describe 'commands' do
-    { 
+    commands = { 
       generate_exposed: 'generate::exposed',
       generate_key: 'generate::key',
       generate_keys: 'generate::keys',
@@ -14,7 +14,9 @@ describe Roro::CLI do
       greenfield: 'greenfield',
       rollon_rails: 'rollon::rails',
       rollon_rails_kubernetes: 'rollon::rails::kubernetes',
-    }.each do |k,v| 
+    }
+    
+    commands.each do |k,v| 
       describe v do 
         describe 'command must exist' do 
 

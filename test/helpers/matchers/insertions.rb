@@ -7,7 +7,7 @@ module TestHelper
       end
       
       def assert_insertions 
-        insertions.each { |l| assert_file(file) { |c| assert_match(l,c)}}
+        insertions.each { |l| assert_file(file, insertions) } 
       end
       
       def assert_insertions_in_environments
@@ -20,8 +20,7 @@ module TestHelper
           }
         }
       end
-      
-      
+   
       def assert_removals 
         removals.each { |l| assert_file(file) { |c| refute_match(l,c)}}
       end

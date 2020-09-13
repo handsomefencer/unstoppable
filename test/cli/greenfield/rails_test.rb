@@ -4,25 +4,44 @@ describe Roro::CLI do
   
   Given { greenfield_rails_test_base }
   
-  describe './greenfield' do 
+  Given(:assert_roro_directories) { 
+    assert_directory "roro"
+    assert_directory "roro/containers"
+    assert_directory "roro/containers/app"
+  } 
+
+  Given(:lines) { [ 'bundle exec rails new .', 'ruby:2.7' ] }
+  Given(:file)  { 'roro/containers/app/Dockerfile' }
+
+  Given(:assert_dockerfile) { assert_file(file, lines)  } 
+  
+  describe 'greenfield' do 
     
-    Given(:cli) { Roro::CLI.new }
-    Given { cli.stubs(:rollon_rails) }
-    Given { cli.greenfield }
+    Given { @cli.greenfield }
     
     describe 'roro directories' do 
-
-      Then { assert_directory "roro" }
-      And  { assert_directory "roro/containers" }
-      And  { assert_directory "roro/containers/app" } 
+      
+      Then { assert_roro_directories }
     end
     
-    describe 'roro/containers/app/Dockerfile' do 
-
-      Given(:lines) { [ 'bundle exec rails new .', 'ruby:2.7' ] }
-      Given(:file)  { 'roro/containers/app/Dockerfile' }
+    describe 'roro/containers/app/Dockerfile' do
       
-      Then { assert_file(file) {|c| lines.each { |l| assert_match l, c } } }
+      Then { assert_dockerfile }
     end
   end
+      
+  describe 'greenfield::rails' do 
+    
+    Given { @cli.greenfield_rails }
+
+    describe 'roro directories' do 
+      
+      Then { assert_roro_directories }
+    end
+    
+    describe 'roro/containers/app/Dockerfile' do
+      
+      Then { assert_dockerfile }
+    end
+  end    
 end

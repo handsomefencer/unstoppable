@@ -11,26 +11,8 @@ module Roro
 
     map "greenfield::rails" => "greenfield_rails"
     
-    def greenfield_rails(options={})
-      options.merge!({ greenfield: true } )
-      configure_for_rollon(options)
-      copy_greenfield_files
-      run_greenfield_commands
-      rollon_rails
-    end
-        
-    no_commands do
-    
-      def copy_greenfield_files
-        @config.env['force'] = true
-        src = 'rails/Dockerfile.greenfield.tt'
-        dest = 'roro/containers/app/Dockerfile'
-        template src, dest, @config.env
-      end
-      
-      def run_greenfield_commands
-        system "DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . ."
-      end      
+    def greenfield_rails
+      greenfield
     end
   end
 end
