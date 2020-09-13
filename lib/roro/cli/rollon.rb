@@ -10,25 +10,41 @@ module Roro
       
     def rollon(options={})
       configure_for_rollon(options)
-      @config.structure[:actions].each {|a| eval a }
-      execute_intentions
-      startup_commands 
+      manifest_actions
+      manifest_intentions
+      run_startup_commands 
     end
     
     no_commands do 
-     
+    
+      def manifest_actions
+        @config.structure[:actions].each {|a| eval a }
+      end
+      
+      def manifest_intentions
+        @config.intentions.each {|k, v| eval(k.to_s) if v.eql?('y') }  
+      end 
+      
+      def run_startup_commands
+        startup_commands = @config.structure[:startup_commands]
+        commands = startup_commands[:commands] 
+        question = []
+        question << "\n\n You can start your app up with some combination of these commands:\n"
+        commands.each { |c| question << "\t#{c}"}
+        question << "\nOr if you'd like Roro to try and do it for you:"
+        question = question.join("\n")
+        if ask(question, default: 'y', limited_to: ['y', 'n']).eql?("y")
+          commands.each {|a| system(a) }
+          puts "\n\n#{startup_commands[:success]}\n\n" 
+        end
+      end
+      
       def configure_for_rollon(options=nil)
         @config ||= Roro::Configuration.new(options) 
       end
 
       def yaml_from_template(file)
         File.read(find_in_source_paths(file))
-      end
-      
-      def execute_intentions 
-        @config.intentions.each {|k, v|
-           eval(k.to_s) if v.eql?('y') 
-          }  
       end
       
       def generate_config_story 

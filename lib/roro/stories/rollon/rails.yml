@@ -8,6 +8,18 @@ actions:
   - template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
   - template 'base/dotenv', './.env', @config.env
   - directory 'rails/roro', './roro', @config.env
+  - chmod "roro/docker-entrypoint.sh", 0755
+
+
+startup_commands: 
+  success: "Your app should be available at http://localhost:3000"
+  commands: 
+    - docker-compose build --no-cache
+    - docker-compose up -d
+    - docker-compose run app bin/rails db:create
+    - docker-compose run app bin/rails db:migrate
+    - |
+      system "docker-compose run app echo #{success_msg}"
 
 env_vars: 
   ruby_version: '2.7'

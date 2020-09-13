@@ -79,6 +79,7 @@ module Roro
       def validate_story(story)
         substories = get_layer("#{story}.yml")[:stories]
         if substories.is_a? String
+          byebug
           File.exist?(story + substories + '.yml')
         elsif substories.is_a? Array 
           substories.each { |substory| validate_story(story + '/' + substory) }
