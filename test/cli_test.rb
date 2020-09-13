@@ -6,7 +6,6 @@ describe Roro::CLI do
 
   describe 'commands' do
     { 
-      generate_config_story: 'generate::config::story',
       generate_exposed: 'generate::exposed',
       generate_key: 'generate::key',
       generate_keys: 'generate::keys',

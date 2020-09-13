@@ -21,22 +21,7 @@ module Roro
       
       @config.structure[:greenfield_actions].each {|a| eval a }
       @config.structure[:greenfield_commands].each {|a| eval a }
-      
-      rollon_rails
-    end
-        
-    no_commands do
-    
-      def copy_greenfield_files
-        @config.env['force'] = true
-        src = 'rails/Dockerfile.greenfield.tt'
-        dest = 'roro/containers/app/Dockerfile'
-        template src, dest, @config.env
-      end
-      
-      def run_greenfield_commands
-        system "DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . ."
-      end      
+      rollon
     end
   end
 end

@@ -30,6 +30,10 @@ module Roro
            eval(k.to_s) if v.eql?('y') 
           }  
       end
+      
+      def generate_config_story 
+      
+      end
     end
   end
 end

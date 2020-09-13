@@ -78,10 +78,11 @@ describe Roro::Configurator::Omakase do
         describe 'must store greenfield actions' do
 
           Given(:expected) { [
-            "@config.env['force'] = true", 
-            "src = 'rails/Dockerfile.greenfield.tt'",
-            "dest = 'roro/containers/app/Dockerfile'",
-            "template src, dest, @config.env"
+            "@config.env['force'] = true",
+            [
+              "src = 'rails/Dockerfile.greenfield.tt'",
+              "dest = 'roro/containers/app/Dockerfile'",
+              "template src, dest, @config.env\n"].join("\n")
           ] }
     
           Then { expected.each { |e| assert_includes greenfield_actions, e } }

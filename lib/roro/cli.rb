@@ -1,6 +1,4 @@
 
-require 'roro/cli/generate/config/story'
-require 'roro/cli/generate/config/structure'
 require 'roro/cli/generate/exposed'
 require 'roro/cli/generate/keys'
 require 'roro/cli/generate/obfuscated'
