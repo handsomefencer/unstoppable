@@ -1,5 +1,7 @@
 stories: rails
 
+intentions: 
+
 env_vars: 
   main_app_name: 
   developer: 
@@ -10,20 +12,6 @@ env_vars:
   docker_password: your-docker-registry-password
   docker_token: your-docker-registry-token
   docker_username: your-docker-registry-user-name
-
-registries: 
-  dockerhub:
-  github:
-    
-ci_cd:
-  semaphore:
-  circleci:
-    
-deployment:
-  env_vars: 
-    server_host: "ip-address-of-your-server"
-    server_port: '22'
-    server_user: root
     
 choices:
   

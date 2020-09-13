@@ -20,8 +20,9 @@ describe Roro::Configuration::Okonomi do
     Then { intentions.each { |key, value| assert_equal 'n', value  } }
   end
   
-  # describe 'story specific variables' do
-        
+  describe 'story specific variables' do
+    # this should be moved into a database test?
+    
   #   describe 'must not add mysql env vars to pg story' do \
       
   #     Given(:db) { { postgresql: {} } }
@@ -39,5 +40,5 @@ describe Roro::Configuration::Okonomi do
   #     Then { assert_includes config.env, :mysql_password }
   #     And  { refute config.env.include? :postgres_password }
   #   end
-  # end
+  end
 end

@@ -11,7 +11,7 @@ actions:
   - chmod "roro/docker-entrypoint.sh", 0755
 
 
-startup_commands: 
+startup: 
   success: "Your app should be available at http://localhost:3000"
   commands: 
     - docker-compose build --no-cache

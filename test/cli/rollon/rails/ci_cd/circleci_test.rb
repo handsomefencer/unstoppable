@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe "Story::Rails::WithCICD" do 
-
+  Given { rollon_rails_test_base }
   Given { prepare_destination 'rails/603' }
   Given { stubs_system_calls }
   Given { stubs_dependency_responses }

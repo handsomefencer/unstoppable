@@ -12,7 +12,7 @@ module Roro
       configure_for_rollon(options)
       manifest_actions
       manifest_intentions
-      run_startup_commands 
+      startup_commands 
     end
     
     no_commands do 
@@ -25,9 +25,9 @@ module Roro
         @config.intentions.each {|k, v| eval(k.to_s) if v.eql?('y') }  
       end 
       
-      def run_startup_commands
-        startup_commands = @config.structure[:startup_commands]
-        commands = startup_commands[:commands] 
+      def startup_commands
+        cmd = @config.structure[:startup]
+        commands = cmd[:commands] 
         question = []
         question << "\n\n You can start your app up with some combination of these commands:\n"
         commands.each { |c| question << "\t#{c}"}
@@ -35,7 +35,7 @@ module Roro
         question = question.join("\n")
         if ask(question, default: 'y', limited_to: ['y', 'n']).eql?("y")
           commands.each {|a| system(a) }
-          puts "\n\n#{startup_commands[:success]}\n\n" 
+          puts "\n\n#{cmd[:success]}\n\n" 
         end
       end
       
@@ -48,7 +48,7 @@ module Roro
       end
       
       def generate_config_story 
-      
+        create_file ".roro_story.yml", @config.structure.to_yaml 
       end
     end
   end

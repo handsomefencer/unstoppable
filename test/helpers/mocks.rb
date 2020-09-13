@@ -5,6 +5,11 @@ module TestHelper
         Roro::CLI.any_instance.stubs(:system) 
       end
       
+      def stubs_asker 
+        asker = Thor::Shell::Basic.any_instance
+        asker.stubs(:ask).returns('y') 
+      end
+      
       def stubs_startup_commands
         Roro::CLI.any_instance.stubs(:startup_commands) 
       end
