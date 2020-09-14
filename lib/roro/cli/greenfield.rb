@@ -21,7 +21,7 @@ module Roro
       
       @config.structure[:greenfield_actions].each {|a| eval a }
       @config.structure[:greenfield_commands].each {|a| eval a }
-      rollon
+      # rollon
     end
   end
 end

@@ -3,8 +3,8 @@ require "test_helper"
 describe Roro::Configuration::Okonomi do
 
   Given { greenfield_rails_test_base }
-  Given(:asker) { Thor::Shell::Basic.any_instance }
-  Given { asker.stubs(:ask).returns('y') }
+  # Given(:asker) { Thor::Shell::Basic.any_instance }
+  # Given { asker.stubs(:ask).returns('y') }
   Given(:options) { nil }
   Given(:config) { Roro::Configuration.new(options) }
   
@@ -24,6 +24,8 @@ describe Roro::Configuration::Okonomi do
   end
   
   describe 'story specific variables' do
+  
+    # Then { cli.congratulations }
     # this should be moved into a database test?
     
   #   describe 'must not add mysql env vars to pg story' do \
