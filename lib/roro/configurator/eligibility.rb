@@ -8,7 +8,7 @@ module Roro
         @structure[:greenfield] ? confirm_directory_empty : confirm_directory_app
         handle_roro_artifacts
       end
-     
+      
       def confirm_directory_app 
         confirm_dependency({
           system_query: "ls -A",
@@ -117,7 +117,9 @@ module Roro
       end
       
       def dependencies
-        [ { system_query: "which docker",
+        [ 
+          { 
+            system_query: "which docker",
             warning: "Docker isn't installed",
             suggestion: "https://docs.docker.com/install/"
           }, {

@@ -11,8 +11,7 @@ module Roro
           env_vars:   {}
         }
         @story = @options[:story] ? { rollon: @options[:story] } : default_story 
-        greenfield if @options.keys.include?(:greenfield)
-        build_layers(@story)
+        build_story 
         @intentions = @structure[:intentions]
         @env = @structure[:env_vars]
         @env[:main_app_name] = Dir.pwd.split('/').last 
@@ -23,9 +22,26 @@ module Roro
         screen_target_directory 
       end
       
-      def greenfield 
+      def build_story 
+        layer_greenfield
+        layer_rollon
+        layer_story 
+      end
+      
+      def layer_greenfield
+        return unless @options.keys.include?(:greenfield) 
         @structure[:greenfield] = true
-        build_layers( { greenfield: :rails } ) 
+        build_layers( { greenfield: :rails } )
+      end
+      
+      def layer_rollon 
+        build_layers(@story)  
+      end
+      
+      def layer_story 
+        file = '.roro_story'
+        return unless File.exist?("#{file}.yml")
+        overlay(get_layer(file)) 
       end
       
       def build_layers(story, location=nil)
@@ -67,6 +83,12 @@ module Roro
         layer[:choices].each do |key, value|
           @structure[:choices][key] = value
           @structure[:intentions][key] = value[:default]  
+        end
+      end
+      
+      def overlay_intentions(layer) 
+        layer[:intentions].each do |key, value| 
+          @structure[:intentions][key] = value
         end
       end
   

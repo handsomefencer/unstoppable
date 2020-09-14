@@ -1,0 +1,132 @@
+---
+:intentions:
+  :config_std_out_true: y
+  :insert_roro_gem_into_gemfile: n
+  :gitignore_sensitive_files: y
+  :insert_hfci_gem_into_gemfile: n
+  :generate_config_story: y
+  :backup_existing_files: n
+  :copy_dockerignore: y
+:choices:
+  :config_std_out_true:
+    :question: "The team at Heroku, among others, recommend logging to STDOUT \nand
+      treating your logs as streams. We'll set this to \ntrue as an environment variable
+      but it may also be helpful\nto configure './config/boot.rb' with '$stdout.sync
+      = true' \njust in case that doesn't work. \nWould you like to configure this?
+      \n"
+    :choices:
+      :y: 'Yes'
+      :n: 'No'
+    :default: y
+  :insert_roro_gem_into_gemfile:
+    :question: "Many developers believe it's good idea to secure sensitive \nenvironment
+      files and variables. You can use RoRo to \ngenerate secret keys known only to
+      you for use in any\nenvironment, and then use them to encrypt and decrypt \nthese
+      files. Would you like to add RoRo to your Gemfile?\n"
+    :choices:
+      :y: 'Yes'
+      :n: 'No'
+    :default: n
+  :gitignore_sensitive_files:
+    :question: "If you plan to use the environment files RoRo generates for \nyour
+      own environment variables, it's a good idea to keep \nthese files out of source
+      control. Would you like RoRo to \nmodify your .gitignore file to accomplish
+      this for you ?\n"
+    :choices:
+      :y: 'Yes'
+      :n: 'No'
+    :default: y
+  :insert_hfci_gem_into_gemfile:
+    :question: "Jim Weirich passed too soon and remains missed. In addition \nto Rake,
+      Jim wrote a beautiful gem called 'Given' that makes \nRspec and Minitest less
+      ugly and thus your tests more easy to \nwrite. Would you like to install a gem
+      called \nhandsome_fencer-test that allows you to try it out?\n"
+    :choices:
+      :y: 'Yes'
+      :n: 'No'
+    :default: n
+  :generate_config_story:
+    :question: "Would you like to create a Roro Config file to help with debugging,
+      \nsharing your desired story, or both?\n"
+    :choices:
+      :y: 'Yes'
+      :n: 'No'
+    :default: y
+  :backup_existing_files:
+    :question: "RoRo will be generating a number of files, some of which will \nreplace
+      existing ones. Would you like to back them up?\n"
+    :choices:
+      :y: 'Yes'
+      :n: 'No'
+    :default: n
+  :copy_dockerignore:
+    :question: 'Would you like to create a .dockerignore file?
+
+'
+    :choices:
+      :y: 'Yes'
+      :n: 'No'
+    :default: y
+:env_vars:
+  :postgres_username: postgres
+  :postgres_password: your-postgres-password
+  :database_vendor: postgresql
+  :deploy_tag: "${CIRCLE_SHA1:0:7}"
+  :ruby_version: 2.7.1
+  :database_host: database
+  :frontend_service: frontend
+  :database_service: database
+  :main_app_name: sandboxer
+  :developer:
+    :name: your-name
+    :email: your.email@example.com
+  :docker_email: your-docker-registry-email
+  :docker_org: your-docker-registry-org-name
+  :docker_password: your-docker-registry-password
+  :docker_token: your-docker-registry-token
+  :docker_username: your-docker-registry-user-name
+  :force: true
+  :verbose: false
+  :roro_version: 0.3.17
+  :rails_env: ci
+:actions:
+- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.env
+- "Roro::CLI.roro_environments.each do |e| \n  @config.env[:rails_env] = e\n  source
+  = 'rails/dotenv/database.pg.env.tt'\n  target = \"roro/containers/database/#{e}.env\"\n
+  \ template( source, target, @config.env) \nend\n"
+- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.env
+- "Roro::CLI.roro_environments.each do |e| \n  @config.env[:rails_env] = e\n  source
+  = 'rails/dotenv/database.pg.env.tt'\n  target = \"roro/containers/database/#{e}.env\"\n
+  \ template( source, target, @config.env) \nend\n"
+- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.env
+- "Roro::CLI.roro_environments.each do |e| \n  @config.env[:rails_env] = e\n  source
+  = 'rails/dotenv/database.pg.env.tt'\n  target = \"roro/containers/database/#{e}.env\"\n
+  \ template( source, target, @config.env) \nend\n"
+- "Roro::CLI.roro_environments.each do |environment| \n  src = 'rails/dotenv/web.env.tt'\n
+  \ dest = \"roro/containers/app/#{environment}.env\"\n  template src, dest, @config.env\nend\n"
+- template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
+- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
+- template 'base/dotenv', './.env', @config.env
+- directory 'rails/roro', './roro', @config.env
+- template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.env
+- template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
+- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
+- template 'base/dotenv', './.env', @config.env
+- directory 'rails/roro', './roro', @config.env
+- template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.env
+- template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
+- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
+- template 'base/dotenv', './.env', @config.env
+- directory 'rails/roro', './roro', @config.env
+- chmod "roro/docker-entrypoint.sh", 0755
+:stories: postgresql
+:startup:
+  :success: Your app should be available at http://localhost:3000
+  :commands:
+  - docker-compose build --no-cache
+  - docker-compose up -d
+  - docker-compose run app bin/rails db:create
+  - docker-compose run app bin/rails db:migrate
+  - 'system "docker-compose run app echo #{success_msg}"
+
+'

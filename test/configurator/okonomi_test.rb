@@ -7,7 +7,10 @@ describe Roro::Configuration::Okonomi do
   Given { asker.stubs(:ask).returns('y') }
   Given(:options) { nil }
   Given(:config) { Roro::Configuration.new(options) }
-
+  
+  describe 'layer_story' do 
+    
+  end
   
   describe 'take_order' do
 
@@ -17,7 +20,7 @@ describe Roro::Configuration::Okonomi do
     Given { config.stubs(:ask).returns('n')}
     Given { config.take_order }
 
-    Then { intentions.each { |key, value| assert_equal 'n', value  } }
+    Then  { intentions.each { |key, value| assert_equal 'n', value  } }
   end
   
   describe 'story specific variables' do

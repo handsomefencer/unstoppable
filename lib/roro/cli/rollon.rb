@@ -47,8 +47,13 @@ module Roro
         File.read(find_in_source_paths(file))
       end
       
-      def generate_config_story 
-        create_file ".roro_story.yml", @config.structure.to_yaml 
+      def generate_config_story
+        roro_story = {
+          story: @config.story,
+          env_vars: @config.env,
+          intentions: @config.intentions
+        }
+        create_file ".roro_story.yml", roro_story 
       end
     end
   end
