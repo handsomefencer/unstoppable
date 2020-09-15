@@ -14,8 +14,14 @@ defaults: &defaults
 major_only: &major_only
   filters:
     branches:
-      only: master, release
- 
+      only: master
+
+release: &release
+  filters:
+    branches:
+      only: release
+      
+      
 version: 2.1
 
 executors:
@@ -79,7 +85,9 @@ workflows:
     
   build-cli: 
     jobs: 
-      - build 
+      - build: 
+          <<: *major_only
+          <<: *release
       - test-rollon-rails: 
           <<: *major_only
       - test:
@@ -88,6 +96,4 @@ workflows:
       - release:
           requires: 
             - build
-          filters:
-            branches:
-              only: release      
+          <<: *release
