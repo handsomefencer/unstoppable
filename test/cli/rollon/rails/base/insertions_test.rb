@@ -3,10 +3,10 @@ require "test_helper"
 describe Roro::CLI do
 
   Given { rollon_rails_test_base }
-
+  Given(:cli) { Roro::CLI.new }
   describe ".config_std_out" do 
       
-    Given { @cli.config_std_out_true }
+    Given { cli.config_std_out_true }
     Given(:file) { 'config/boot.rb'}
     Given(:insertion) { "$stdout.sync = true" }
     
@@ -23,7 +23,7 @@ describe Roro::CLI do
       /\*.roro_configurator.yml/
     ] }
     
-    When { @cli.gitignore_sensitive_files }
+    When { cli.gitignore_sensitive_files }
     
     Then { assert_insertions }
   end

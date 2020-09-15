@@ -3,8 +3,14 @@ require 'test_helper'
 describe Roro::CLI do
 
   Given { rollon_rails_test_base }
-  Given(:rollon) { @cli.rollon }
-  Given(:config) { @cli.instance_variable_get("@config" ) }
+  Given(:cli)     { Roro::CLI.new }
+  Given(:rollon)  { cli.rollon(options) }
+  Given(:config)  { cli.instance_variable_get("@config" ) }
+  Given(:options) { { story: { rails: [
+    { database: :postgresql },
+    { ci_cd:    :circleci }
+  ] } } }
+  
   Given { rollon }
 
   describe 'must add pg gem in gemfile' do 
@@ -45,7 +51,8 @@ describe Roro::CLI do
   describe 'docker-compose.yml' do
     
     Given(:file) { "docker-compose.yml" }
-    Given(:insertion) { yaml_from_template('rails/database/with_postgresql/_service.yml')}
+    Given(:insertion) { 
+      yaml_from_template('rails/database/with_postgresql/_service.yml')}
     
     Then { assert_insertion }
   end 

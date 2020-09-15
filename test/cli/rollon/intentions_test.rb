@@ -1,7 +1,10 @@
 require 'test_helper'
 
 describe Roro::CLI do
-  Given { skip } #this is a smell, should probably be testing in okanomi }
+  Given { skip }
+  
+  ## these tests seem redundant or misplaced at the moment. Maybe use 
+  ## .roro_story.yml files to test the same things?
   Given { rollon_rails_test_base }
   Given(:cli)    { Roro::CLI.new }
   Given(:rollon) { cli.rollon_rails  }
@@ -13,12 +16,12 @@ describe Roro::CLI do
     Given(:hfci) { "gem 'handsome_fencer-test'" }
     
     describe 'yes' do
-      Given { byebug } 
+
       Given { config.intentions[:insert_hfci_gem_into_gemfile] = 'y'}
       Given { config.intentions[:insert_roro_gem_into_gemfile] = 'y'}
       Given { rollon }
       
-      Then { assert_file( 'Gemfile' ) { |c| assert_match(hfci, c) } }
+      # Then { assert_file( 'Gemfile' ) { |c| assert_match(hfci, c) } }
       # And  { assert_file( 'Gemfile' ) { |c| assert_match(roro, c) } }
     end
       
@@ -70,7 +73,7 @@ describe Roro::CLI do
         "exec \"$@\""
       ] }
       
-      Then { assert_insertions }
+      # Then { assert_insertions }
     end
 
     describe 'docker-compose.yml' do 
@@ -78,7 +81,7 @@ describe Roro::CLI do
       Given(:file) { "docker-compose.yml" }
       Given(:insertions) {["version: '3.2", "  database:"] }
       
-      Then { assert_insertions }
+      # Then { assert_insertions }
     end
     
     describe '.env file for docker-compose.yml' do 
@@ -86,16 +89,16 @@ describe Roro::CLI do
       Given(:file) { ".env" }
       Given(:insertion) { 'RORO_ENV=development' } 
 
-      Then { assert_insertion }
+      # Then { assert_insertion }
     end
           
     describe 'roro directories' do 
 
-      Then { assert_directory "roro" }
-      And  { assert_directory "roro/containers" }
-      And  { assert_directory "roro/containers/app" } 
-      And  { assert_directory "roro/containers/database" } 
-      And  { assert_directory "roro/containers/frontend" } 
+      # Then { assert_directory "roro" }
+      # And  { assert_directory "roro/containers" }
+      # And  { assert_directory "roro/containers/app" } 
+      # And  { assert_directory "roro/containers/database" } 
+      # And  { assert_directory "roro/containers/frontend" } 
     end
         
     describe 'Dockerfile' do 

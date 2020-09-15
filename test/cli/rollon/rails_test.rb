@@ -1,11 +1,13 @@
 require 'test_helper'
 
 describe Roro::CLI do
-  
   Given { rollon_rails_test_base }
-  Given { @cli.rollon_rails }
-  Given(:config) { @cli.instance_variable_get("@config" ) } 
+  Given(:cli) { Roro::CLI.new }
+  Given(:rollon) { cli.rollon }
+  Given(:config) { cli.instance_variable_get("@config" ) } 
   
+  Given { rollon }
+
   describe 'actions' do
     describe 'docker-entrypoint.sh' do 
       

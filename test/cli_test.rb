@@ -5,45 +5,48 @@ describe Roro::CLI do
   Given(:cli) { Roro::CLI.new }
 
   describe 'options' do 
+    describe 'option groups' do 
       
-    Given(:cli) { Roro::CLI.commands }
-    Given(:assert_includes_options) {
-      class_options = Roro::CLI.class_options
-      assert_includes class_options.keys, :omakase 
-      assert_includes class_options.keys, :okonomi
-      assert_includes class_options.keys, :fatsutofodo
-      assert_equal class_options[:okonomi].aliases, ['-i', '--interactive']         
-      assert_equal class_options[:fatsutofodo].aliases, ['--fast', '-f']
-      assert class_options[:omakase].default
-      refute class_options[:okonomi].default
-    }
-    
-    describe 'with rollon' do 
+      Given(:cli) { Roro::CLI.commands }
+      Given(:assert_includes_options) {
+        assert_includes cli[command].options.keys, :omakase 
+        assert_includes cli[command].options.keys, :okonomi
+        assert_includes cli[command].options.keys, :fatsutofodo
+        assert_equal cli[command].options[:fatsutofodo].aliases, ['-f', '--fast']         
+        assert_equal cli[command].options[:okonomi].aliases, ['-i', '--interactive']         
+        assert_equal cli[command].options[:omakase].aliases, ['-d', '--default']         
+        assert_equal cli[command].options[:omakase].default, :omakase
+      }
       
-      Given(:command) { 'rollon' }
-    
-      Then { assert_includes_options }
-    end
-    
-    describe 'with greenfield' do 
+      describe 'with rollon' do 
+        
+        Given(:command) { 'rollon' }
       
-      Given(:command) { 'greenfield' }
-    
-      Then { assert_includes_options }
-    end
-    
-    describe 'with greenfield::rails' do 
+        Then { assert_includes_options }
+      end
+      
+      describe 'with rollon_rails' do 
+        
+        Given(:command) { 'rollon_rails' }
+      
+        Then { assert_includes_options }
+      end
 
-      Given(:command) { 'greenfield_rails' }
-    
-      Then { assert_includes_options }
-    end
-    
-    describe 'with rollon::rails' do 
+      
+      describe 'with greenfield' do 
+        
+        Given(:command) { 'greenfield' }
+      
+        Then { assert_includes_options }
+      end
+      
+      describe 'with greenfield::greenfield' do 
 
-      Given(:command) { 'rollon_rails' }
-    
-      Then { assert_includes_options }
+        Given(:command) { 'greenfield_rails' }
+      
+        Then { assert_includes_options }
+        
+      end
     end
   end
   

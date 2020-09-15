@@ -6,13 +6,13 @@ module TestHelper
         stubs_dependency_responses
         stubs_startup_commands
         stubs_system_calls
+        stubs_congratulations
         stubs_asker
-        @cli = Roro::CLI.new 
       end
 
       def greenfield_rails_test_base 
         prepare_destination 'greenfield/greenfield'
-        stubs_rollon
+        stubs_manifests
         rails_test_base
       end
       

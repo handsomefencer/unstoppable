@@ -1,10 +1,10 @@
 require 'test_helper'
 
 describe Roro::CLI do
-  
+
   Given { rollon_rails_test_base }
 
-  Given(:cli)     { Roro::CLI.new }
+  Given(:cli)    { Roro::CLI.new }
   Given(:rollon) { cli.rollon_rails_kubernetes }
 
   describe 'rollon rails kubernetes' do 

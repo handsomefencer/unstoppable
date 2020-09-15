@@ -14,8 +14,13 @@ module TestHelper
         Roro::CLI.any_instance.stubs(:startup_commands) 
       end
       
-      def stubs_rollon 
-        Roro::CLI.any_instance.stubs(:rollon) 
+      def stubs_congratulations 
+        Roro::CLI.any_instance.stubs(:congratulations) 
+      end 
+      
+      def stubs_manifests
+        Roro::CLI.any_instance.stubs(:manifest_actions) 
+        Roro::CLI.any_instance.stubs(:manifest_intentions) 
       end
     
       def stubs_dependency_responses 

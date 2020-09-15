@@ -11,9 +11,9 @@ describe Roro::CLI do
     { ci_cd:    :circleci }
   ] } } }
   
+  Given { rollon }
   describe '.rollon with mysql' do 
 
-    Given { rollon }
 
     describe 'must add mysql2 gem to gemfile' do 
       

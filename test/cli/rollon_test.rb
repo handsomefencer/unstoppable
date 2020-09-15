@@ -1,30 +1,57 @@
 require "test_helper"
 
 describe Roro::CLI do
-  
-  Given { prepare_destination 'greenfield/greenfield' }  
+
+  Given { rails_test_base }  
   Given(:cli) { Roro::CLI.new }
   
   describe 'calls rollon methods' do 
     
-    Given { cli.expects(:configure_for_rollon) }
     Given { cli.expects(:manifest_actions) }
     Given { cli.expects(:manifest_intentions) }
     Given { cli.expects(:congratulations) }
     Given { cli.expects(:startup_commands) }
-    Given { cli.rollon }
     
-    Then  { assert cli }
-  end
-  
-  describe 'rollon methods' do 
+    describe '.rollon' do 
+      
+      Given { cli.rollon }
+      
+      Then  { assert cli }
+    end
     
-    describe '.configure_for_rollon' do 
+    describe '.rollon_rails' do 
       
-      Given { Roro::Configuration.expects(:new).with({ story: :rails} ) }
-      Given { cli.configure_for_rollon({story: :rails}) }
+      Given { cli.rollon_rails }
       
-      Then  { cli }  
+      Then  { assert cli }
+    end
+    
+    describe '.rollon_rails_kubernetes' do 
+      
+      Given { cli.rollon_rails_kubernetes }
+      
+      Then  { assert cli }
+    end
+    
+    describe '.greenfield' do
+       
+      Given { cli.greenfield }
+      
+      Then  { assert cli }
+    end
+    
+    describe '.greenfield_rails' do
+       
+      Given { cli.greenfield_rails }
+      
+      Then  { assert cli }
+    end
+    
+    describe '.greenfield_rails_kubernetes' do
+       
+      Given { cli.greenfield_rails_kubernetes }
+      
+      Then  { assert cli }
     end
   end
 end

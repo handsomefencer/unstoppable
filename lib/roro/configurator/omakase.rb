@@ -3,7 +3,8 @@ module Roro
     module Omakase 
       attr_reader :structure, :intentions, :env, :options, :story
 
-      def initialize(args=nil)
+      def initialize(args={}, options={})
+
         @options = sanitize(args)
         @structure = {
           intentions: {},

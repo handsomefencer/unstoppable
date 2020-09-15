@@ -3,6 +3,7 @@ require "test_helper"
 describe Roro::CLI do
   
   Given { greenfield_rails_test_base }
+  Given(:cli) { Roro::CLI.new}
   
   Given(:assert_roro_directories) { 
     assert_directory "roro"
@@ -17,31 +18,17 @@ describe Roro::CLI do
   
   describe 'greenfield' do 
 
-    Given { @cli.greenfield_rails }
+    Given { cli.greenfield }
     
-    describe 'roro directories' do 
-      
-      Then { assert_roro_directories }
-    end
-    
-    describe 'roro/containers/app/Dockerfile' do
-      
-      Then { assert_dockerfile }
-    end
-  end
+    Then { assert_roro_directories }
+    And  { assert_dockerfile }
+  end    
       
   describe 'greenfield::rails' do 
-    
-    Given { @cli.greenfield_rails }
 
-    describe 'roro directories' do 
-      
-      Then { assert_roro_directories }
-    end
-    
-    describe 'roro/containers/app/Dockerfile' do
-      
-      Then { assert_dockerfile }
-    end
+    Given { cli.greenfield_rails }
+
+    Then { assert_roro_directories }
+    And  { assert_dockerfile }
   end    
 end

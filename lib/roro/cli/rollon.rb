@@ -1,28 +1,86 @@
 module Roro
   class CLI < Thor
-   
-    class_option :fatsutofodo, { desc: 'Uses the Roro setup but will not try to 
-      help you customize any files.', aliases: ['--fast', '-f']}
-    class_option :omakase,     { desc: "Uses the Roro setup. 'Omakase' is a 
-        Japanese phrase that means 'I'll leave it up to you.'", default: true}
-    class_option :okonomi,     { desc: "You choose what you like. 'Okonomi' 
-          has the opposite meaning of omkakase", aliases: ['-i', '--interactive'] }
- 
-    desc "rollon", "Roll an existing app."
+
+    class << self
+      private
+      def shared_options!
+        method_option :omakase, default: :omakase, desc: "Use the Roro setup with some configuring. 'Omakase' translates as 'I'll leave it up to you.'", aliases: ['-d', '--default']
+        method_option :fatsutofodo, desc: 'Use the Roro setup without having to think.', aliases: ['-f', '--fast']
+        method_option :okonomi, desc: "Use Roro how you like. 'Okonomi' has the opposite meaning of omakase.", aliases: ['-i', '--interactive'] 
+      end
   
-    def rollon(options={})
-      configure_for_rollon(options)
+      alias_method :orig_desc, :desc
+  
+      def desc(*args)
+        orig_desc(*args)
+        shared_options!
+      end
+    end
+    rollonto = ' into Roro.'
+    desc "rollon", "Roll an existing app#{rollonto}"
+    def rollon(args={})
+      @config ||= Roro::Configuration.new(args, options) 
+      greenfield_actions 
+      greenfield_commands
       manifest_actions
       manifest_intentions
-      
       congratulations
-
       startup_commands 
     end
     
+    desc "greenfield", "Greenfield a new app and roll it#{rollonto}"
+    def greenfield(args={})
+      args[:greenfield] = :greenfield
+
+      rollon(args)
+    end
+    
+    desc "greenfield::rails", "Greenfield a new Rails app and roll it#{rollonto}"
+  
+    map "greenfield::rails" => "greenfield_rails"
+    
+    def greenfield_rails
+      greenfield( { story: :rails } )
+    end
+    
+    desc "rollon::rails", "Roll an existing app#{rollonto}"
+    map "rollon::rails" => "rollon_rails"
+    
+    def rollon_rails(args={}) 
+      rollon( { story: :rails } )
+    end
+    
+    desc "rollon::rails::kubernetes", "Adds Kubernetes for production."
+    map "rollon::rails::kubernetes" => "rollon_rails_kubernetes"
+    
+    def rollon_rails_kubernetes(args={}) 
+      story = { 
+        rails: [
+          { database: :postgresql },
+          { kubernetes: :postgresql },
+          { ci_cd: :circleci}
+        ] 
+      }  
+      rollon( { story: story } )
+    end
+
+    desc "greenfield::rails::kubernetes", "Adds Kubernetes for production."
+    map "greenfield::rails::kubernetes" => "greenfield_rails_kubernetes"
+    
+    def greenfield_rails_kubernetes(args={}) 
+      story = { 
+        rails: [
+          { database: :postgresql },
+          { kubernetes: :postgresql },
+          { ci_cd: :circleci}
+        ] 
+      }  
+      rollon( { story: story } )
+    end
+
     no_commands do 
       
-      def configure_for_rollon(options=nil)
+      def configure_for_rollon(aroptions=nil)
         @config ||= Roro::Configuration.new(options) 
       end
 
@@ -34,6 +92,16 @@ module Roro
         @config.intentions.each {|k, v| eval(k.to_s) if v.eql?('y') }  
       end 
       
+      def greenfield_actions 
+        return unless @config.structure[:greenfield_actions] 
+        @config.structure[:greenfield_actions].each {|a| eval a }
+      end 
+      
+      def greenfield_commands 
+        return unless @config.structure[:greenfield_actions] 
+        @config.structure[:greenfield_commands].each {|a| eval a }
+      end
+
       def congratulations(story=nil)
         ( @config.story[:rollon]) 
         if @config.structure[:greenfield]
@@ -46,7 +114,6 @@ module Roro
         congrats = array.join("") 
         puts congrats
       end
-      
       
       def startup_commands
         congratulations( @config.story[:rollon])
