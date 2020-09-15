@@ -14,7 +14,7 @@ defaults: &defaults
 major_only: &major_only
   filters:
     branches:
-      only: master
+      only: master, release
  
 version: 2.1
 
@@ -79,8 +79,7 @@ workflows:
     
   build-cli: 
     jobs: 
-      - build: 
-          <<: *major_only
+      - build 
       - test-rollon-rails: 
           <<: *major_only
       - test:
