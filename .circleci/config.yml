@@ -87,7 +87,8 @@ workflows:
           <<: *major_only
       
       - release:
-          <<: *major_only
-      
           requires: 
             - build
+          filters:
+            branches:
+              only: master      
