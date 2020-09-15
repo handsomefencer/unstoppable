@@ -203,24 +203,23 @@ describe Roro::Configurator::Omakase do
   end
   
   describe '.story_map' do 
+    Given { skip }
     describe 'rollon' do 
       Given(:story_map) { [
-        { rails: [
-          { database: [
-            { postgresql: [] },
-            { mysql: [] }
-          ] },
-          { ci_cd: [
-            { circleci: [] }
-          ] },
-          { kubernetes: [
-            { postgresql: [
-              { edge: [] }, 
-              { default: [] }
-            ] }
-          ] }
-        ]}, 
-        { ruby_gem: []}
+        {:rails=>[
+          {:ci_cd=>[
+                  {:circleci=>[]}
+          ]}, 
+          {:kubernetes=>[
+                  {:postgresql=>[
+                          {:default=>[]}, 
+                          {:edge=>[]}]}
+                  ]}, 
+          {:database=>[
+                  {:postgresql=>[]}, 
+                  {:mysql=>[]}]}
+          ]}, 
+        {:ruby_gem=>[]}   
       ]}
 
       Then { assert_equal( story_map, config.story_map(:rollon) )}
