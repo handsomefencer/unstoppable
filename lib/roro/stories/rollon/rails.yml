@@ -18,8 +18,7 @@ startup:
     - docker-compose up -d
     - docker-compose run app bin/rails db:create
     - docker-compose run app bin/rails db:migrate
-    - |
-      system "docker-compose run app echo #{success_msg}"
+    - 'docker-compose run app echo #{success_msg}'
 
 env_vars: 
   ruby_version: '2.7'

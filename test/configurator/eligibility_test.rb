@@ -4,7 +4,7 @@ describe Roro::Configurator::Eligibility do
 
   Given(:options) { nil }
   Given(:config)  { Roro::Configuration.new(options) }
-
+  Given { Roro::Configuration.any_instance.stubs(:handle_roro_artifacts)}
   describe 'greenfield' do 
     
     Given { prepare_destination "greenfield/greenfield" }
