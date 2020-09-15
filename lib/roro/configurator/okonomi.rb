@@ -10,7 +10,8 @@ module Roro
       end
 
       def ask_questions
-        @structure[:choices].each do |key, value|
+        choices = @structure[:choices] 
+        choices.each do |key, value|
           @structure[:intentions][key] = ask_question(value)
         end
       end

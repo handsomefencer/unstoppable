@@ -2,48 +2,42 @@ require "test_helper"
 
 describe Roro::Configuration::Okonomi do
 
-  Given { greenfield_rails_test_base }
-  # Given(:asker) { Thor::Shell::Basic.any_instance }
-  # Given { asker.stubs(:ask).returns('y') }
+  Given { prepare_destination 'greenfield/greenfield' }
+  Given { stubs_dependency_responses }
+
+  Given(:config)  { Roro::Configuration.new(options) }
   Given(:options) { nil }
-  Given(:config) { Roro::Configuration.new(options) }
+  Given(:question)  { config.structure[:choices][:config_std_out_true]}
+  Given(:intention) { config.structure[:intentions][:config_std_out_true] } 
   
-  describe 'layer_story' do 
+  describe '.okonomi' do
+    describe 'when called with .ask_question must return answer' do 
+  
+      Given { Thor::Shell::Basic.any_instance.stubs(:ask)
+        .with(
+          question[:question], 
+          default: question[:default], 
+          limited_to: question[:choices].keys
+        ).returns('n') 
+      }
+      
+      Then { assert_equal 'n', config.ask_question(question) }
+    end
     
-  end
-  
-  describe 'take_order' do
+    describe 'when called with .ask_questions must change intention' do 
 
-    Given(:questions)  { config.structure[:choices] }
-    Given(:intentions) { config.structure[:intentions] }
-
-    Given { config.stubs(:ask).returns('n')}
-    Given { config.take_order }
-
-    Then  { intentions.each { |key, value| assert_equal 'n', value  } }
-  end
-  
-  describe 'story specific variables' do
-  
-    # Then { cli.congratulations }
-    # this should be moved into a database test?
+      Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('n') }
+      Given { config.ask_questions }
+      
+      Then  { assert_equal 'n', intention }
+    end
     
-  #   describe 'must not add mysql env vars to pg story' do \
+    describe 'when called with .new with :okonomi option' do 
       
-  #     Given(:db) { { postgresql: {} } }
-  #     Given { config }
+      Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('n') }
+      Given(:options) { { "okonomi" => "okonomi" } }
       
-  #     Then { assert_includes config.env, :postgres_password }
-  #     And  { refute config.env.include? :mysql_password }
-  #   end
-    
-  #   describe 'will not add pg env vars to myql story' do 
-      
-  #     Given(:db) { { mysql: {}} }
-  #     Given { config }
-      
-  #     Then { assert_includes config.env, :mysql_password }
-  #     And  { refute config.env.include? :postgres_password }
-  #   end
+      Then  { assert_equal 'n', intention }
+    end
   end
 end

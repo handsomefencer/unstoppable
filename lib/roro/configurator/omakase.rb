@@ -3,8 +3,8 @@ module Roro
     module Omakase 
       attr_reader :structure, :intentions, :env, :options, :story
 
-      def initialize(options=nil)
-        @options = sanitize(options)
+      def initialize(args=nil)
+        @options = sanitize(args)
         @structure = {
           intentions: {},
           choices:    {}, 
@@ -25,7 +25,14 @@ module Roro
       def build_story 
         layer_greenfield
         layer_rollon
-        layer_story 
+        layer_story
+        layer_okonomi 
+      end
+     
+      def layer_okonomi
+        return unless @options.keys.include?(:okonomi) 
+        @structure[:okonomi] = true
+        take_order 
       end
       
       def layer_greenfield

@@ -1,13 +1,15 @@
 module Roro
   class CLI < Thor
-        
-    desc "rollon", "Rolls RoRo, a collection of files that allows you to run 
-      your application in a containerized environment, optionally with CI/CD
-      and everything necessary to deploy with Kubernetes."
-    
-    method_option :interactive, desc: "Set up your environment variables as 
-      you go."
-      
+   
+    class_option :fatsutofodo, { desc: 'Uses the Roro setup but will not try to 
+      help you customize any files.', aliases: ['--fast', '-f']}
+    class_option :omakase,     { desc: "Uses the Roro setup. 'Omakase' is a 
+        Japanese phrase that means 'I'll leave it up to you.'", default: true}
+    class_option :okonomi,     { desc: "You choose what you like. 'Okonomi' 
+          has the opposite meaning of omkakase", aliases: ['-i', '--interactive'] }
+ 
+    desc "rollon", "Roll an existing app."
+  
     def rollon(options={})
       configure_for_rollon(options)
       manifest_actions
@@ -19,7 +21,7 @@ module Roro
     end
     
     no_commands do 
-    
+      
       def configure_for_rollon(options=nil)
         @config ||= Roro::Configuration.new(options) 
       end
@@ -32,17 +34,15 @@ module Roro
         @config.intentions.each {|k, v| eval(k.to_s) if v.eql?('y') }  
       end 
       
-      def congratulations(story)
+      def congratulations(story=nil)
         ( @config.story[:rollon]) 
         if @config.structure[:greenfield]
           usecase = 'greenfielded a new '
         else 
           usecase = 'rolled your existing ' 
         end 
-        # getsome = 
         array = ["You've successfully "]
         array << usecase
-        # array << @config.story[:rollon]
         congrats = array.join("") 
         puts congrats
       end

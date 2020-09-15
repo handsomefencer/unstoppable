@@ -2,6 +2,7 @@
 require 'roro/cli/generate/exposed'
 require 'roro/cli/generate/keys'
 require 'roro/cli/generate/obfuscated'
+require 'roro/cli/generate/story'
 require 'roro/cli/greenfield'
 require 'roro/cli/greenfield/rails'
 require 'roro/cli/rollon'
@@ -13,7 +14,6 @@ require 'roro/cli/rollon/rails/kubernetes'
 require 'roro/cli/rollon/ruby_gem'
 
 module Roro
-  
   class CLI < Thor
 
     include Thor::Actions

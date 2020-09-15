@@ -238,12 +238,15 @@ describe Roro::Configurator::Omakase do
     ] } } }
     
     describe '.default_story' do 
-      
-      Given(:expected)  { default_story} 
-      
-      Then { assert_equal expected, config.default_story }
-      And  { assert_equal expected, config.story }
-    end
+      describe 'no story specified' do 
+
+        Given(:expected)  { default_story} 
+        
+        Then { assert_equal expected, config.default_story }
+        And  { assert_equal expected, config.story }
+      end
+    end 
+    
     
     describe 'custom story' do 
 
@@ -261,7 +264,7 @@ describe Roro::Configurator::Omakase do
         
         Then  { assert_equal default_story, config.story }
       end
-      
+            
       describe 'when different substory' do 
         
         Given(:options)  { 
