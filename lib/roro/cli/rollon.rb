@@ -4,7 +4,7 @@ module Roro
     class << self
       private
       def shared_options!
-        method_option :omakase, default: :omakase, desc: "Use the Roro setup with some configuring. 'Omakase' translates as 'I'll leave it up to you.'", aliases: ['-d', '--default']
+        method_option :omakase, desc: "Use the Roro setup with some configuring. 'Omakase' translates as 'I'll leave it up to you.'", aliases: ['-d', '--default']
         method_option :fatsutofodo, desc: 'Use the Roro setup without having to think.', aliases: ['-f', '--fast']
         method_option :okonomi, desc: "Use Roro how you like. 'Okonomi' has the opposite meaning of omakase.", aliases: ['-i', '--interactive'] 
       end
