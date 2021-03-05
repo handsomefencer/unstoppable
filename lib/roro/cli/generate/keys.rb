@@ -45,7 +45,7 @@ module Roro
       def gather_environments
         environments = []
         ['.env', '.env.enc'].each do |extension|
-          HandsomeFencer::Crypto.source_files('roro', extension).each do |env_file|
+          Roro::Crypto.source_files('roro', extension).each do |env_file|
             environments << env_file.split('/').last.split(extension).last
           end
         end
@@ -54,7 +54,7 @@ module Roro
 
       def confirm_files_decrypted?(environment)
         orphan_encrypted = []
-        HandsomeFencer::Crypto.source_files('.', '.env.enc').each do |file|
+        Roro::Crypto.source_files('.', '.env.enc').each do |file|
           unless File.exist? file.split('.enc').first
             orphan_encrypted << file 
           end
