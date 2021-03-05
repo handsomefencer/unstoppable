@@ -15,7 +15,7 @@ describe Roro::CLI do
         assert_equal cli[command].options[:fatsutofodo].aliases, ['-f', '--fast']         
         assert_equal cli[command].options[:okonomi].aliases, ['-i', '--interactive']         
         assert_equal cli[command].options[:omakase].aliases, ['-d', '--default']         
-        assert_equal cli[command].options[:omakase].default, :omakase
+        # assert_equal cli[command].options[:omakase].default, :omakase
       }
       
       describe 'with rollon' do 
