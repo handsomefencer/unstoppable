@@ -2,7 +2,7 @@ require "thor"
 require "roro/version"
 require "roro/cli"
 require "roro/configurator"
-require "byebug"
+require "roro/crypto"
 
 module Roro
   class Error < StandardError; end
