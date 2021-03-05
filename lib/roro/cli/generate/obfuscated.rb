@@ -1,4 +1,4 @@
-require 'handsome_fencer/crypto'
+require 'roro/crypto'
 
 module Roro
 
@@ -10,7 +10,7 @@ module Roro
     def generate_obfuscated(*args) 
       environments = args.first ? [args.first] : gather_environments
       environments.each do |environment|
-        HandsomeFencer::Crypto.obfuscate(environment, 'roro')
+        Roro::Crypto.obfuscate(environment, 'roro')
       end
     end
   end
