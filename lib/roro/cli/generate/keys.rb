@@ -36,15 +36,25 @@ module Roro
         environments.uniq
       end
 
+      def check_for_environments(environments)
+        if environments.empty?
+          msg = "No environment specified and no .env files matching the
+          pattern roro/**/*.env'. Please either specify the environment name
+          for the key, or create a file in roro like
+            'roro/env/<environment_name>.env to generate a key."
+          raise Roro::Error.new(msg)
+        end
+      end
+
       def generate_key_or_keys(*args)
         environments = args.first ? [args.first] : gather_environments
+        check_for_environments(environments)
         environments.each do |environment|
           confirm_overwrite_key?(environment)
           confirm_files_decrypted?(environment)
           create_file "roro/keys/#{environment}.key", encoded_key
         end
       end
-
 
       def confirm_overwrite_key?(key)
         key_file = "./roro/keys/#{key}.key"

@@ -36,67 +36,33 @@ describe Roro::CLI do
 
   describe 'generate_keys' do
     context 'when environment specified' do
-      # Given(:generated_keys) {
-      #   assert_file 'roro/keys/ci.key'
-      #   refute_file 'roro/keys/production.key' }
       Given { cli.generate_key('ci') }
 
-      describe 'must only generate the specified key' do
+      describe 'must generate the specified key' do
 
-        # Then { assert_file 'roro/keys/ci.key' }
-        # And  { refute_file 'roro/keys/production.key' }
+        Then { assert_file 'roro/keys/ci.key' }
+      end
+
+      context 'when key with name exists' do
+
+        Invariant { assert_file 'roro/keys/ci.key' }
+
+        Then  { assert_raises(Roro::Error) { cli.generate_key('ci' ) } }
       end
     end
 
-    describe 'when key with name exists' do
-      Given { cli.generate_key('ci') }
-      Then  do
-        assert_raises Roro::Error do
-          cli.generate_key('ci' )
-        end
-      end
+    context 'when environments inferred' do
+
+      Given { insert_dotenv('roro/containers/database/env/test.1.env') }
+      Given { cli.generate_keys }
+
+      Then { assert_file 'roro/keys/test.key' }
+      And  { refute_file 'roro/keys/test.1.key' }
     end
 
-    describe 'must generate keys when env.env exists' do
+    context 'when no environment specified or inferrable' do
 
-      Given { cli.generate_key }
-
-      # Then { envs.each { |e| assert_file "roro/keys/#{e}.key" } }
+      Then  { assert_raises(Roro::Error) { cli.generate_keys } }
     end
   end
-
-  # describe '.confirm_files_decrypted()' do
-  #   describe 'without either .env or .env.enc' do
-
-  #     Then { assert cli.confirm_files_decrypted?('circleci') }
-  #   end
-
-  #   describe 'when just a .env file present' do
-
-  #     Given { cli.generate_key }
-
-  #     Then { assert cli.confirm_files_decrypted?('circleci') }
-
-  #     describe "when .env.enc file has no matching .env file" do
-
-  #       Given { cli.generate_obfuscated }
-  #       Given { remove_dot_env_files(['development']) }
-  #       Given { refute_file 'roro/containers/app/development.env' }
-
-  #       Then do
-  #         assert_raises(error) { cli.confirm_files_decrypted? 'development'}
-  #       end
-
-  #       describe "when called from generate_key" do
-
-  #         Then { assert_raises( error ) { cli.generate_key 'development' } }
-  #       end
-
-  #       describe "when called from generate_key" do
-
-  #         Then { assert_raises( error ) { cli.generate_key } }
-  #       end
-  #     end
-  #   end
-  # end
 end
