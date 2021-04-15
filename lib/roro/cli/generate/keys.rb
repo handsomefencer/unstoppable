@@ -29,8 +29,8 @@ module Roro
       def gather_environments
         environments = []
         ['.env', '.env.enc'].each do |extension|
-          HandsomeFencer::Crypto.source_files('roro', extension).each do |env_file|
-            environments << env_file.split('/').last.split(extension).last
+          Roro::Crypto.source_files('roro', extension).each do |env_file|
+            environments << env_file.split('/').last.split('.').first
           end
         end
         environments.uniq
@@ -39,9 +39,17 @@ module Roro
       def generate_key_or_keys(*args)
         environments = args.first ? [args.first] : gather_environments
         environments.each do |environment|
-
+          confirm_overwrite_key?(environment)
           confirm_files_decrypted?(environment)
           create_file "roro/keys/#{environment}.key", encoded_key
+        end
+      end
+
+
+      def confirm_overwrite_key?(key)
+        key_file = "./roro/keys/#{key}.key"
+        if File.exist?(key_file)
+          raise Roro::Error.new("You must remove #{key_file} before generating a new #{key} key")
         end
       end
 
