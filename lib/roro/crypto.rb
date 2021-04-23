@@ -20,6 +20,7 @@ module Roro::Crypto
     end
 
     def source_files(directory=nil, extension=nil)
+
       Dir.glob(directory + "/**/*#{extension}")
     end
 
@@ -48,13 +49,16 @@ module Roro::Crypto
     end
 
     def obfuscate(env=nil, dir=nil, ext=nil)
-      ext = ext || "#{env}.env"
+      ext = ext || "#{env}*.env"
       source_files(dir, ext).each { |file| encrypt(file, env) }
     end
 
     def expose(env=nil, dir=nil, ext=nil)
       ext = ext || "#{env}.env.enc"
-      source_files(dir, ext).each { |file| decrypt(file, env) }
+      source_files(dir, ext).each do |file|
+
+        decrypt(file, env)
+      end
     end
 
     def get_key(environment, directory=nil)

@@ -9,17 +9,32 @@ describe "Roro::CLI #generate_obfuscated" do
   Given(:envs) { %w(development staging production) }
 
   context 'when no .env files' do
+Given { skip }
+    Then  { assert_raises(Roro::Error) { cli.generate_obfuscated } }
+  end
+
+  context 'when .env file but no key' do
+    Given { skip }
+    Given { insert_dotenv('roro/containers/database/env/test.1.env') }
 
     Then  { assert_raises(Roro::Error) { cli.generate_obfuscated } }
   end
 
-  describe 'starting point with .env but no .env.enc files' do
-    Given { insert_dot_env_files(envs) }
-    Given { cli.generate_key }
+  context 'when .env file and same key' do
+    Given { insert_dotenv('roro/containers/database/env/test.1.env') }
+    Given { cli.generate_key('test')}
+    Given { cli.generate_obfuscated }
+    Then  { assert_file 'roro/containers/database/test.1.env.enc'  }
+  end
 
-    Then { envs.each {|e| assert_file "roro/keys/#{e}.key" } }
-    And  { envs.each {|e| assert_file env_dir + "#{e}.env" } }
-    And  { envs.each {|e| refute_file env_dir + "#{e}.env.enc" } }
+
+
+  describe 'starting point with .env but no .env.enc files' do
+    # Given { cli.generate_key }
+
+    # Then { envs.each {|e| assert_file "roro/keys/#{e}.key" } }
+    # And  { envs.each {|e| assert_file env_dir + "#{e}.env" } }
+    # And  { envs.each {|e| refute_file env_dir + "#{e}.env.enc" } }
   end
 
   describe ":generate_obfuscated(environment)" do
