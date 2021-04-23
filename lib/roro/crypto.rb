@@ -50,7 +50,10 @@ module Roro::Crypto
 
     def obfuscate(env=nil, dir=nil, ext=nil)
       ext = ext || "#{env}*.env"
-      source_files(dir, ext).each { |file| encrypt(file, env) }
+      source_files(dir, ext).each do |file| 
+        byebug 
+        encrypt(file, env)  
+      end 
     end
 
     def expose(env=nil, dir=nil, ext=nil)

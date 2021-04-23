@@ -5,7 +5,7 @@ describe Roro::Crypto do
   Given { FileUtils.rm_rf(Dir[ 'tmp/*'] ) }
 
   Given(:subject) { Roro::Crypto }
-  Given(:env_var) { 'export SWEET=candy' }
+  Given(:env_var) { 'export FOO=bar' }
 
   describe ":generate_key" do
 
@@ -16,21 +16,37 @@ describe Roro::Crypto do
 
     Given { subject.write_to_file(env_var, 'tmp/example.txt')}
 
-    # Then { assert File.read('tmp/example.txt').must_equal "export SWEET=candy"}
+    Then { assert File.read('tmp/example.txt').must_equal "export FOO=bar"}
   end
 
   describe ":generate_key_file(target)" do
 
     Given { subject.generate_key_file('tmp', "deploy") }
 
-    # Then { assert_equal File.read('./tmp/deploy.key').size, 25 }
+    Then { assert_equal File.read('./tmp/deploy.key').size, 25 }
   end
 
   describe ":source_files" do
+    context 'when .md extension' do 
 
-    Given(:source_files) { subject.source_files('.', 'md') }
+      Given(:source_files) { subject.source_files('.', '.md') }
 
-    # Then { source_files.must_include "./README.md"}
+      Then { source_files.must_include "./README.md"}
+    end
+    
+    context 'when .txt extension' do 
+
+      Given(:source_files) { subject.source_files('.', '.txt') }
+
+      Then { source_files.must_include "./LICENSE.txt"}
+    end
+    
+    context 'when child directory' do 
+
+      Given(:source_files) { subject.source_files('./sandbox/sandboxer', '.env') }
+
+      Then { source_files.must_include "./production.env"}
+    end
   end
 
   describe ":get_key" do
