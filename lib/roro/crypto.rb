@@ -14,9 +14,10 @@ module Roro::Crypto
     def write_to_file(data, filename)
       File.open(filename, "w") { |io| io.write data }
     end
-
-    def generate_key_file(directory, environment)
-      write_to_file(generate_key, directory + "/" + environment + ".key")
+    
+    def write_key_to_file(target_directory, key_name)
+      filename = [target_directory, "/", key_name, ".key"].join
+      write_to_file(generate_key, filename)
     end
 
     def source_files(directory=nil, extension=nil)
@@ -51,7 +52,6 @@ module Roro::Crypto
     def obfuscate(env=nil, dir=nil, ext=nil)
       ext = ext || "#{env}*.env"
       source_files(dir, ext).each do |file| 
-        byebug 
         encrypt(file, env)  
       end 
     end

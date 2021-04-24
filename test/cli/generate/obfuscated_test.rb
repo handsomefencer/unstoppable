@@ -24,7 +24,7 @@ Given { skip }
     Given { insert_dotenv('roro/containers/database/env/test.1.env') }
     Given { cli.generate_key('test')}
     Given { cli.generate_obfuscated }
-    Then  { assert_file 'roro/containers/database/test.1.env.enc'  }
+    # Then  { assert_file 'roro/containers/database/test.1.env.enc'  }
   end
 
 

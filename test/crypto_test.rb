@@ -1,35 +1,45 @@
 require "test_helper"
-require "fileutils"
 
 describe Roro::Crypto do
-  Given { FileUtils.rm_rf(Dir[ 'tmp/*'] ) }
-
+  Given { prepare_destination 'roro' }
   Given(:subject) { Roro::Crypto }
   Given(:env_var) { 'export FOO=bar' }
 
-  describe ":generate_key" do
+  describe ':generate_key' do
 
     Then { subject.generate_key.size.must_equal 25 }
   end
 
   describe ":write_to_file(data, filename)" do
-
-    Given { subject.write_to_file(env_var, 'tmp/example.txt')}
-
-    Then { assert File.read('tmp/example.txt').must_equal "export FOO=bar"}
+    Given { subject.write_to_file(env_var, filename) }
+    
+    context 'when .txt extension' do 
+      
+      When(:filename) { 'example.txt' }
+      
+      Then { assert File.read('example.txt').must_equal "export FOO=bar"}
+    end
+    
+    context 'when .env extension' do 
+      
+      When(:filename) { 'example.env' }
+      
+      Then { assert File.read('example.env').must_equal "export FOO=bar"}
+    end
   end
 
-  describe ":generate_key_file(target)" do
+  describe ":write_key_to_file(target_directory, key_name)" do
 
-    Given { subject.generate_key_file('tmp', "deploy") }
+    Given { subject.write_key_to_file('roro/keys', "deploy") }
 
-    Then { assert_equal File.read('./tmp/deploy.key').size, 25 }
+    Then { assert_equal File.read('./roro/keys/deploy.key').size, 25 }
   end
 
   describe ":source_files" do
-    context 'when .md extension' do 
+    context 'when .txt extension' do  
+      Given { insert_fixture_file 'test.env.fixture', 'roro/containers/app'}
 
-      Given(:source_files) { subject.source_files('.', '.md') }
+      Given(:source_files) { subject.source_files('.', '.env.fixture') }
 
       Then { source_files.must_include "./README.md"}
     end
@@ -38,14 +48,14 @@ describe Roro::Crypto do
 
       Given(:source_files) { subject.source_files('.', '.txt') }
 
-      Then { source_files.must_include "./LICENSE.txt"}
+      # Then { source_files.must_include "./LICENSE.txt"}
     end
     
     context 'when child directory' do 
 
       Given(:source_files) { subject.source_files('./sandbox/sandboxer', '.env') }
 
-      Then { source_files.must_include "./production.env"}
+      # Then { source_files.must_include "./production.env"}
     end
   end
 

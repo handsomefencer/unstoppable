@@ -39,7 +39,13 @@ module TestHelper
       end
 
       def insert_file(src, dest)
-        src = [Roro::CLI.source_root, src].join('/')
+        src = [Roro::CLI.test_fixture_root, src].join('/')
+        FileUtils.cp(src, dest)
+      end
+
+      def insert_fixture_file(src, dest)
+        src = [ENV.fetch("PWD"), src].join
+        # src = [Roro::CLI.source_root, src].join('/test/fixtures/files/')
         FileUtils.cp(src, dest)
       end
 
