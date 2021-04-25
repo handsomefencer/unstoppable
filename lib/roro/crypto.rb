@@ -3,6 +3,8 @@ require "base64"
 module Roro::Crypto
 
   class KeyError < StandardError; end
+  class SourceDirectoryError < StandardError; end
+  class DataDestructionError < StandardError; end
 
   class << self
 
@@ -14,15 +16,23 @@ module Roro::Crypto
     end
 
     def write_to_file(data, filename)
-      File.open(filename, "w") { |io| io.write data }
+      if File.exist?(filename)
+        raise DataDestructionError, "#{filename} exists. Please remove it and try again."
+      else
+        File.open(filename, "w") { |io| io.write data }
+      end
     end
-    
+
     def write_key_to_file(target_directory, key_name)
       filename = [target_directory, "/", key_name, ".key"].join
       write_to_file(generate_key, filename)
     end
 
     def source_files(directory=nil, extension=nil)
+      directory ||= './roro/'
+      unless directory.split('/')[1].eql?('roro')
+        raise SourceDirectoryError, "Can only obfuscate and expose files in './roro/'."
+      end
       Dir.glob(directory + "/**/*#{extension}")
     end
 
@@ -52,25 +62,25 @@ module Roro::Crypto
 
     def obfuscate(env=nil, dir=nil, ext=nil)
       ext = ext || "#{env}*.env"
-      source_files(dir, ext).each do |file| 
-        encrypt(file, env)  
-      end 
+
+      source_files(dir, ext).each do |file|
+        encrypt(file, env)
+      end
     end
 
     def expose(env=nil, dir=nil, ext=nil)
       ext = ext || "#{env}.env.enc"
       source_files(dir, ext).each do |file|
-
         decrypt(file, env)
       end
     end
 
-    def get_key(environment, directory=nil)
+    def get_key(environment, directory='roro')
       env_key = environment.upcase + '_KEY'
-      key_file = source_files('./.', "#{directory}/#{environment}.key").first
+      key_file = Dir.glob("roro/keys/#{environment}.key").first
       case
       when ENV[env_key].nil? && key_file.nil?
-        raise KeyError, "No #{env_key} set."
+        raise KeyError, "No #{env_key} set. Please set one as a variable or in a file."
       when ENV[env_key]
         ENV[env_key]
       when File.exist?(key_file)
