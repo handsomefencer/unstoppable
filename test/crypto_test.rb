@@ -36,62 +36,83 @@ describe Roro::Crypto do
   end
 
   describe ":source_files" do
-    context 'when .txt extension' do  
-      Given { insert_fixture_file 'test.env.fixture', 'roro/containers/app'}
-
-      Given(:source_files) { subject.source_files('.', '.env.fixture') }
-
-      Then { source_files.must_include "./README.md"}
+    
+    Given { insert_file 'dummy_env', expected }
+    Given(:pattern)      { '.env.fixture' }  
+    Given(:source_files) { subject.source_files('.', '.env' ) }
+    Given(:expected)     { destination_dir + 'dummy.env' }  
+    
+    context 'when base directory of app' do
+      When(:destination_dir) { './' }
+      
+      Then { source_files.must_include expected }
     end
     
-    context 'when .txt extension' do 
-
-      Given(:source_files) { subject.source_files('.', '.txt') }
-
-      # Then { source_files.must_include "./LICENSE.txt"}
+    context 'when nested one level' do 
+      When(:destination_dir) { './roro/dummy.env' }
+      
+      Then { source_files.must_include expected }
     end
     
-    context 'when child directory' do 
+    context 'when nested two levels' do 
+      When(:destination_dir) { './roro/containers/dummy.env' }
+      
+      Then { source_files.must_include expected }
+    end
 
-      Given(:source_files) { subject.source_files('./sandbox/sandboxer', '.env') }
-
-      # Then { source_files.must_include "./production.env"}
+    context 'when nested three levels' do 
+      When(:destination_dir) { './roro/containers/app/' }
+      
+      Then { source_files.must_include expected }
     end
   end
 
   describe ":get_key" do
+    Given(:key_from_env)    { "s0mk3y-fr0m-variable" }
+    Given(:key_from_key_file)   { "s0mk3y-fr0m-keyfile" }
+    Given(:key_in_key_file) {  insert_file 'dummy_key', './roro/keys/dummy.key'  }
 
-    Given(:env_key) { "some-long-key" }
+    describe 'when key is not set' do 
+      Given { ENV['DUMMY_KEY'] = nil }
 
-    describe "when set as env variable" do
+      Given(:key_error) { Roro::Crypto::KeyError }
+      
+      Then { assert_raises(key_error) { subject.get_key('dummy') } }
+    end  
+    
+    describe 'when key is set' do 
+      describe 'in an environment variable' do
+        Given { ENV['DUMMY_KEY'] = "s0mk3y-fr0m-variable" }
+        
+        Then  { assert_equal subject.get_key('dummy'), key_from_env }
+        
+        context 'in an environment variable and in a key file' do 
+          Given { key_in_key_file }
+          
+          Then  { assert_equal subject.get_key('dummy'), key_from_env }
+        end 
+      end 
+      
+      context 'in a key file' do 
+        Given { ENV['DUMMY_KEY'] = nil }
+        Given { key_in_key_file }
 
-      Given { ENV['PRODUCTION_KEY'] = env_key }
-
-      # Then { assert_equal env_key, subject.get_key('production') }
-    end
-
-    describe "when read from file" do
-
-      Given { ENV['PRODUCTION_KEY'] = nil }
-      Given { subject.generate_key_file('tmp', 'production') }
-      Given(:key_from_file) { File.read('./tmp/production.key').strip }
-
-      # Then {  assert_equal key_from_file, subject.get_key('production') }
-    end
+        Then  { assert_equal subject.get_key('dummy'), key_from_key_file }
+      end
+    end 
   end
 
   describe ":encrypt(file, key)" do
 
-    Given { subject.write_to_file(env_var, 'tmp/production.env')}
-    Given { subject.generate_key_file('tmp', 'production') }
-    Given { subject.encrypt('tmp/production.env', 'production')}
+    Given { insert_file 'dummy_env', './roro/dummy.env' } 
+    Given { insert_file 'dummy_key', './roro/keys/dummy.key' } 
+    Given { subject.encrypt('./roro/dummy.env', 'dummy')}
 
-    # Then { assert File.exist? 'tmp/production.env.enc' }
+    Then { assert File.exist? './roro/dummy.env.enc' }
 
     describe ":decrypt(file, key)" do
 
-      Given { File.delete('tmp/production.env') }
-      Given { refute File.exist?('tmp/production.env')  }
+      Given { File.delete('./roro/dummy.env') }
       Given { subject.decrypt('tmp/production.env.enc') }
 
       # Then { assert File.exist?('tmp/production.env')  }

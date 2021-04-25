@@ -8,7 +8,6 @@ require 'roro/cli/rollon'
 require 'roro/cli/rollon/rails/base/base'
 require 'roro/cli/rollon/rails/database/with_mysql'
 require 'roro/cli/rollon/rails/database/with_postgresql'
-
 require 'roro/cli/rollon/ruby_gem'
 
 module Roro

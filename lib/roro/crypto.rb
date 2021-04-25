@@ -2,6 +2,8 @@ require "openssl"
 require "base64"
 module Roro::Crypto
 
+  class KeyError < StandardError; end
+
   class << self
 
     def generate_key
@@ -21,7 +23,6 @@ module Roro::Crypto
     end
 
     def source_files(directory=nil, extension=nil)
-
       Dir.glob(directory + "/**/*#{extension}")
     end
 
@@ -69,7 +70,7 @@ module Roro::Crypto
       key_file = source_files('./.', "#{directory}/#{environment}.key").first
       case
       when ENV[env_key].nil? && key_file.nil?
-        raise DeployKeyError, "No #{env_key} set."
+        raise KeyError, "No #{env_key} set."
       when ENV[env_key]
         ENV[env_key]
       when File.exist?(key_file)
