@@ -35,24 +35,35 @@ describe Roro::Crypto do
       Then { assert_equal File.read('example.env'), "export FOO=bar"}
     end
 
-    context 'when file exists in same location' do
-      Given(:error) { assert_raises(Roro::Crypto::DataDestructionError) {
+    context 'when matching file exists must raise DataDestructionError' do
+      Given(:error)     { Roro::Crypto::DataDestructionError }
+      Given(:error_msg) { assert_raises(Roro::Crypto::DataDestructionError) { 
         insert_file 'dummy_key', file
         write_to_file[file] } }
+      
+      Given(:file) { './roro/keys/dummy.key'}
+      Given { insert_file 'dummy_key', file }
 
-      context 'when .key file' do
-        Given(:file) { './roro/keys/dummy.key'}
-        Then { assert_match "#{file} exists", error.message }
-      end
+      Then { assert_raises(error) { subject.write_to_file(env_var, file)  }} 
 
-      context 'when .env file' do
-        Given(:file) { './roro/env/dummy.env'}
-        Then { assert_match "#{file} exists", error.message }
-      end
+      describe 'with error message' do
+        context 'when .key file' do 
+          Given(:file) { './roro/keys/dummy.key'}
 
-      context 'when .env.enc file' do
-        Given(:file) { './roro/env/dummy.env.enc'}
-        Then { assert_match "#{file} exists", error.message }
+          Then { assert_match 'dummy.key exists', error_msg.message } 
+        end
+        
+        context 'when .env file' do 
+          Given(:file) { './roro/env/dummy.env'}
+
+          Then { assert_match 'dummy.env exists', error_msg.message } 
+        end
+        
+        context 'when .env.enc file' do 
+          Given(:file) { './roro/env/dummy.env.enc'}
+
+          Then { assert_match 'dummy.env.enc exists', error_msg.message } 
+        end
       end
     end
   end
@@ -65,7 +76,6 @@ describe Roro::Crypto do
   end
 
   describe ":source_files" do
-
     Given { insert_file 'dummy_env', destination }
     Given(:pattern)      { '.env.fixture' }
     Given(:source_files) { subject.source_files(destination_dir, '.env' ) }
@@ -164,67 +174,139 @@ describe Roro::Crypto do
 
       Given { encrypt['./roro/dummy.env'] }
 
-      Then  { assert File.exist? './roro/dummy.env.enc' }
+      Then  { assert_file './roro/dummy.env.enc' }
     end
 
     context 'when file is in ./roro/containers/' do
 
       Given { encrypt['./roro/containers/dummy.env'] }
 
-      Then  { assert File.exist? './roro/containers/dummy.env.enc' }
+      Then  { assert_file './roro/containers/dummy.env.enc' }
     end
 
-    context 'when file is a subenv' do
+    context 'when file is for a subenv' do
 
       Given { encrypt['./roro/containers/dummy.subenv.env'] }
 
-      Then  { assert File.exist? './roro/containers/dummy.subenv.env.enc' }
+      Then  { assert_file './roro/containers/dummy.subenv.env.enc' }
     end
   end
 
   describe ":decrypt(file, key)" do
+    Given { insert_file 'dummy_key', 'roro/keys/dummy.key' }
+
     Given(:decrypt) { -> (file) {
       insert_file 'dummy_env_enc', file
       subject.decrypt(file, 'dummy') } }
 
-    Given { insert_file 'dummy_key', 'roro/keys/dummy.key'}
+    context 'when encrypted file lives in' do 
+      context './roro/' do
+        Given { decrypt['./roro/dummy.env.enc'] }
 
+        Then { assert_file './roro/dummy.env' }
+      end
+      
+      context './roro/env/' do
+        Given { decrypt['./roro/env/dummy.env.enc'] }
 
-    # Given { insert_file 'dummy_env_enc', './roro/env/dummy.env.enc' }
-    # Given { insert_file 'dummy_key', './roro/keys/dummy.key' }
+        Then { assert_file './roro/env/dummy.env' }
+      end
 
-    # Given(:assert_encrypted_file) { -> (file) {
-    #   assert File.exist?(file) } }
+      context './roro/env/containers/database' do
+        Given { decrypt['./roro/containers/database/env/dummy.env.enc'] }
 
-    # Then { assert_encrypted_file['./roro/env/dummy.env.enc'] }
+        Then { assert_file './roro/containers/database/env/dummy.env' }
+      end
+    end
   end
+  
+  describe ':gather_environments' do
+    Given(:gather_environments) { subject.gather_environments('./roro', ['.env', '.enc']) }
+    Given(:args) { ['./roro', ['.env', '.enc']]  }
+    
+    context 'when .env file' do 
+      
+      Given { insert_file 'dummy_env', './roro/env/dummy.env' }
+    
+      Then { assert_equal gather_environments, ['dummy'] }
+    end
+    
+    context 'when .env.enc file' do 
+      
+      Given { insert_file 'dummy_env', './roro/env/dummy.env.enc' }
+    
+      Then { assert_equal gather_environments, ['dummy'] }
+    end 
   end
-
+  
+  describe ':generate_keys(environments, directory, extension' do
+    Given { insert_file 'dummy_env', './roro/env/dummy.env' }
+    
+    context 'without nil environment' do 
+      Given(:environments) { nil }
+    
+      Then { assert_equal subject.generate_keys(environments, './roro', '.env'), 'blah'} 
+    end
+  end
+  
   describe ":obfuscate(key, directory, extension" do
-
-    Given(:enc_files) { subject.source_files('tmp', '.env.enc')}
-    Given { FileUtils.mkdir_p('tmp/dokken/test' ) }
-    Given { subject.write_to_file(env_var, 'tmp/dokken/production.env')}
-    Given { subject.write_to_file(env_var, 'tmp/dokken/staging.env')}
-    Given { subject.write_to_file(env_var, 'tmp/dokken/test/production.env')}
-    Given { subject.generate_key_file('tmp', 'production') }
-    Given { subject.generate_key_file('tmp', 'staging') }
-    Given { enc_files.size.must_equal 0 }
-    Given { subject.obfuscate('production', 'tmp') }
-
-    # Then { assert enc_files.each { |ef| File.exist?(ef) } }
-    # Then { refute File.exist? 'tmp/dokken/staging.env.enc' }
-
-    describe "#expose(env, dir, ext)" do
-
-      Given { subject.obfuscate('staging', 'tmp') }
-      Given(:env_files) { subject.source_files('tmp', '.env') }
-      Given { env_files.each { |file| File.delete file } }
-      Given { env_files.each { |file| refute File.exist? file } }
-      Given { subject.expose('production', 'tmp') }
-      Given { subject.expose('staging', 'tmp') }
-
-      # Then { env_files.each { |file| assert File.exist? file } }
-    # end
+    Given { insert_file 'dummy_env', './roro/env/dummy.env' }
+    Given { insert_file 'dummy_key', './roro/keys/dummy.key' }
+    
+    context 'when called with key, directory, and extension arguments' do 
+      context 'when all match' do 
+        Given { subject.obfuscate('dummy', './roro/env', '.env') }
+        
+        Then  { assert_file './roro/env/dummy.env.enc' }
+      end
+      
+      context 'when different key' do 
+        Given { insert_file 'dummy_key', './roro/keys/production.key' }
+        Given { subject.obfuscate('production', './roro/env', '.env') }
+      
+        Then  { assert_file './roro/env/dummy.env.enc' }
+      end
+      
+      context 'when directory' do 
+        Given { insert_file 'dummy_env', './roro/containers/app/dummy.env' }
+        Given { subject.obfuscate(nil, './roro/containers/app', '.env') }
+      
+        describe 'must encrypt file in specified directory' do 
+          Then  { assert_file './roro/containers/app/dummy.env.enc' }
+        end 
+        
+        describe 'will not encrypt file in unspecified directory' do 
+          Then  { refute_file './roro/env/dummy.env.enc' }
+        end 
+      end
+      
+      context 'when called without arguments' do 
+        Given { insert_file 'dummy_key', './roro/keys/production.key' }
+        Given { insert_file 'dummy_key', './roro/keys/development.key' }
+        Given { insert_file 'dummy_key', './roro/keys/test.key' }
+        
+        context 'when multiple .env files' do 
+          Given { insert_file 'dummy_env', './roro/env/production.env' }
+          Given { insert_file 'dummy_env', './roro/env/development.env' }
+          Given { insert_file 'dummy_env', './roro/env/test.env' }
+          
+          describe 'must obfuscate all files' do 
+            Given { subject.obfuscate }
+          
+            Then  { assert_file './roro/env/production.env.enc' }
+            And   { assert_file './roro/env/development.env.enc' }
+            And   { assert_file './roro/env/test.env.enc' }
+          end
+        end 
+        
+        context 'when some .env files are subenvs' do
+          Given { insert_file 'dummy_key', './roro/keys/staging.key' }
+          Given { insert_file 'dummy_env', './roro/env/staging.sub.env.env' }
+          Given { subject.obfuscate }
+          
+          Then  { assert_file './roro/env/staging.sub.env.env.enc' }
+        end 
+      end
+    end
   end
 end

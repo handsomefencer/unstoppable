@@ -9,7 +9,6 @@ describe "Roro::CLI #generate_obfuscated" do
   Given(:envs) { %w(development staging production) }
 
   context 'when no .env files' do
-Given { skip }
     Then  { assert_raises(Roro::Error) { cli.generate_obfuscated } }
   end
 

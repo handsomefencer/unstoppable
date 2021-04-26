@@ -7,15 +7,9 @@ module Roro
     desc "generate::obfuscated", "obfuscates any files matching the pattern ./roro/**/*.env"
     map "generate::obfuscated" => "generate_obfuscated"
 
-    def generate_obfuscated(*args)
-      environments = args.first ? [args.first] : gather_environments
-      check_for_obfuscatable(environments)
-      check_for_keys(environments)
-      environments.each do |environment|
-        Roro::Crypto.obfuscate(environment, 'roro')
-      end
+    def generate_obfuscated(*environments)
+      Roro::Crypto.obfuscate(environments, './roro', '.env')
     end
-
 
     no_commands do
 

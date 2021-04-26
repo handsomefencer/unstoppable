@@ -2,10 +2,6 @@ require "openssl"
 require "base64"
 module Roro::Crypto
 
-  class KeyError < StandardError; end
-  class SourceDirectoryError < StandardError; end
-  class DataDestructionError < StandardError; end
-
   class << self
 
     def generate_key
@@ -15,6 +11,21 @@ module Roro::Crypto
       Base64.encode64(@new_key)
     end
 
+    def generate_keys(environments, directory, extension)
+    end
+
+    def obfuscate(environments, directory, extension)
+    end
+
+    # def generate_keys(environments = args.first ? [args.first] : gather_environments
+    #   check_for_environments(environments)
+    #   environments.each do |environment|
+    #     confirm_overwrite_key?(environment)
+    #     confirm_files_decrypted?(environment)
+    #     create_file "roro/keys/#{environment}.key", encoded_key
+    #   end 
+    # end 
+       
     def write_to_file(data, filename)
       if File.exist?(filename)
         raise DataDestructionError, "#{filename} exists. Please remove it and try again."
@@ -28,8 +39,21 @@ module Roro::Crypto
       write_to_file(generate_key, filename)
     end
 
+    def gather_environments(*args)
+      directory = args.first
+      extensions = args.last
+      
+      environments = []
+      extensions.each do |extension|
+        Roro::Crypto.source_files(nil, extension).each do |env_file|
+          environments << env_file.split('/').last.split('.').first
+        end
+      end
+      environments.uniq
+    end
+
     def source_files(directory=nil, extension=nil)
-      directory ||= './roro/'
+      directory ||= './roro'
       unless directory.split('/')[1].eql?('roro')
         raise SourceDirectoryError, "Can only obfuscate and expose files in './roro/'."
       end
@@ -44,7 +68,7 @@ module Roro::Crypto
     end
 
     def encrypt(file, environment=nil)
-      environment ||= file.split('.')[-2].split('/').last
+      environment ||= file.split('/').last.split('.').first
       build_cipher(environment)
       encrypted = @cipher.update(File.read file) + @cipher.final
       write_to_file(Base64.encode64(encrypted), file + '.enc')
@@ -62,7 +86,6 @@ module Roro::Crypto
 
     def obfuscate(env=nil, dir=nil, ext=nil)
       ext = ext || "#{env}*.env"
-
       source_files(dir, ext).each do |file|
         encrypt(file, env)
       end
