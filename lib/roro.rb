@@ -7,8 +7,10 @@ require "roro/crypto"
 module Roro
   module Crypto 
     class KeyError < StandardError; end
-    class SourceDirectoryError < StandardError; end
+    class EnvironmentError < StandardError; end
     class DataDestructionError < StandardError; end
+    class EncryptableError < StandardError; end
+    class DecryptableError < StandardError; end
   end 
 
   

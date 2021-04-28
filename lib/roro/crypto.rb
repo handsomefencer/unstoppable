@@ -11,53 +11,55 @@ module Roro::Crypto
       Base64.encode64(@new_key)
     end
 
-    def generate_keys(environments, directory, extension)
+    def source_files(directory, extension)
+      source_files = Dir.glob(directory + "/**/*#{extension}")
+      case  
+      when source_files.empty? 
+        # message = "No #{extension} files " 
+        if extension.eql?('.env')
+          raise EncryptableError, "No encryptable #{extension} files" 
+        else 
+          raise DecryptableError, "No decryptable #{extension} files"
+        end
+      end
+      source_files   
     end
 
+    def gather_environments(directory, extension)
+      environments = []
+      source_files(directory, extension).each do |source_file|
+        environments << source_file.split('/').last.split('.').first
+      end
+      if environments.empty? 
+        pattern = 'directory matching ' + extensions.join(' or ')
+        raise EnvironmentError, "No files in the #{directory} #{pattern}"
+      else 
+        environments.uniq
+      end
+    end
+
+    def generate_keys(environments, directory, extensions)
+      environments ||= gather_environments(directory, extensions)
+      environments.each do |environment|
+        write_to_file generate_key, "#{directory}/keys/#{environment}.key"
+      end
+    end
+    
     def obfuscate(environments, directory, extension)
+      environments ||= gather_environments(directory, [extension])
+      environments.each do |environment| 
+        source_files(directory, [extension]).each do |file|
+          encrypt(file, environment)
+        end
+      end 
     end
 
-    # def generate_keys(environments = args.first ? [args.first] : gather_environments
-    #   check_for_environments(environments)
-    #   environments.each do |environment|
-    #     confirm_overwrite_key?(environment)
-    #     confirm_files_decrypted?(environment)
-    #     create_file "roro/keys/#{environment}.key", encoded_key
-    #   end 
-    # end 
-       
     def write_to_file(data, filename)
       if File.exist?(filename)
-        raise DataDestructionError, "#{filename} exists. Please remove it and try again."
+        raise DataDestructionError, "Existing file at #{filename}. Please remove it and try again."
       else
         File.open(filename, "w") { |io| io.write data }
       end
-    end
-
-    def write_key_to_file(target_directory, key_name)
-      filename = [target_directory, "/", key_name, ".key"].join
-      write_to_file(generate_key, filename)
-    end
-
-    def gather_environments(*args)
-      directory = args.first
-      extensions = args.last
-      
-      environments = []
-      extensions.each do |extension|
-        Roro::Crypto.source_files(nil, extension).each do |env_file|
-          environments << env_file.split('/').last.split('.').first
-        end
-      end
-      environments.uniq
-    end
-
-    def source_files(directory=nil, extension=nil)
-      directory ||= './roro'
-      unless directory.split('/')[1].eql?('roro')
-        raise SourceDirectoryError, "Can only obfuscate and expose files in './roro/'."
-      end
-      Dir.glob(directory + "/**/*#{extension}")
     end
 
     def build_cipher(environment)
@@ -82,13 +84,6 @@ module Roro::Crypto
       decrypted = @cipher.update(encrypted) + @cipher.final
       decrypted_file = file.split('.enc').first
       write_to_file decrypted, decrypted_file
-    end
-
-    def obfuscate(env=nil, dir=nil, ext=nil)
-      ext = ext || "#{env}*.env"
-      source_files(dir, ext).each do |file|
-        encrypt(file, env)
-      end
     end
 
     def expose(env=nil, dir=nil, ext=nil)
