@@ -11,9 +11,9 @@ module Roro::Crypto
       Base64.encode64(@new_key)
     end
 
-    def source_files(directory, pattern)
-      source_files = Dir.glob(directory + "/**/*#{pattern}")
-      error_message = "#{pattern} files in #{directory}"
+    def source_files(dir, pattern)
+      source_files = Dir.glob(dir + "/**/*#{pattern}")
+      error_message = "#{pattern} files in #{dir}"
       case   
       when source_files.empty? && pattern.eql?('.env')
         raise EncryptableError, "No encryptable #{error_message}" 
@@ -24,36 +24,42 @@ module Roro::Crypto
       end   
     end
 
-    def gather_environments(directory, extension)
+    def gather_environments(dir, ext)
       environments = []
-      source_files(directory, extension).each do |source_file|
+      source_files(dir, ext).each do |source_file|
         environments << source_file.split('/').last.split('.').first
       end
       if environments.empty? 
-        raise EnvironmentError, "No files in the #{directory} directory matching #{extensions.join(' or ')}"
+        raise EnvironmentError, "No files in the #{dir} directory matching #{ext}"
       else 
         environments.uniq
       end
     end
 
-    def generate_keys(environments, directory, extension)
-      environments ||= gather_environments(directory, extension)
-      environments.each do |environment|
-        write_to_file generate_key, "#{directory}/keys/#{environment}.key"
+    def generate_keys(keys, dir, ext)
+      (keys.empty? ? gather_environments(dir, ext) : keys).each do |key|
+        write_to_file generate_key, "#{dir}/keys/#{key}.key"
       end
     end
-    
-    def obfuscate(environments, directory, pattern)
-      environments ||= gather_environments(directory, pattern)
-      environments.each do |environment| 
-        obfuscatable = source_files(directory, pattern)
-        case 
-        when obfuscatable.empty? 
-          byebug 
-        else   
-          source_files(directory, pattern).each do |file|
-            encrypt(file, environment)
-          end
+
+    def expose(environments, dir, pattern)
+      environments ||= gather_environments('./roro/keys', '.key') 
+      environments.each do |key| 
+        exposable = source_files(dir, pattern)
+        source_files(dir, pattern).each do |file|
+          decrypt(file, key)
+        end
+      end
+    end
+
+    def obfuscate(environments, dir, pattern)
+      if environments.empty? 
+        environments = gather_environments(dir, pattern)
+      end 
+      # environments ||= gather_environments(dir, pattern)
+      environments.each do |key| 
+        source_files(dir, pattern).each do |file|
+          encrypt(file, key)
         end
       end 
     end
@@ -73,15 +79,14 @@ module Roro::Crypto
       @cipher.encrypt.pkcs5_keyivgen @pass_phrase, @salt
     end
 
-    def encrypt(file, environment)
-      build_cipher(environment)
+    def encrypt(file, key)
+      build_cipher(key)
       encrypted = @cipher.update(File.read file) + @cipher.final
       write_to_file(Base64.encode64(encrypted), file + '.enc')
     end
 
-    def decrypt(file, environment=nil)
-      environment ||= file.split('.')[-3].split('/').last
-      build_cipher(environment)
+    def decrypt(file, key)
+      build_cipher(key)
       encrypted = Base64.decode64 File.read(file)
       @cipher.decrypt.pkcs5_keyivgen @pass_phrase, @salt
       decrypted = @cipher.update(encrypted) + @cipher.final
@@ -89,14 +94,7 @@ module Roro::Crypto
       write_to_file decrypted, decrypted_file
     end
 
-    def expose(env=nil, dir=nil, ext=nil)
-      ext = ext || "#{env}.env.enc"
-      source_files(dir, ext).each do |file|
-        decrypt(file, env)
-      end
-    end
-
-    def get_key(environment, directory='roro')
+    def get_key(environment, dir='roro')
       env_key = environment.upcase + '_KEY'
       key_file = Dir.glob("roro/keys/#{environment}.key").first
       case

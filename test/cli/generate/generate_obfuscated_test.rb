@@ -1,12 +1,12 @@
 require 'test_helper'
 
 describe "Roro::CLI #generate_obfuscated" do
-  Given           { prepare_destination 'roro' }
-  Given(:env_dir) { 'roro/containers/app/' }
+  Given           { prepare_destination 'crypto' }
+  # Given(:env_dir) { 'roro/containers/app/' }
   Given(:asker)   { Thor::Shell::Basic.any_instance.stubs(:ask).returns('y') }
   Given(:cli)     { Roro::CLI.new }
 
-  Given(:envs) { %w(development staging production) }
+  # Given(:envs) { %w(development staging production) }
 
   context 'when no .env files' do
     Then  { assert_raises(Roro::Error) { cli.generate_obfuscated } }
@@ -16,7 +16,7 @@ describe "Roro::CLI #generate_obfuscated" do
     Given { skip }
     Given { insert_dotenv('roro/containers/database/env/test.1.env') }
 
-    Then  { assert_raises(Roro::Error) { cli.generate_obfuscated } }
+    # Then  { assert_raises(Roro::Error) { cli.generate_obfuscated } }
   end
 
   context 'when .env file and same key' do

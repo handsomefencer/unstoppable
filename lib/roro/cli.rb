@@ -1,8 +1,8 @@
 
-require 'roro/cli/generate/exposed'
-require 'roro/cli/generate/keys'
-require 'roro/cli/generate/obfuscated'
-require 'roro/cli/generate/story'
+require 'roro/cli/generate/generate_exposed'
+require 'roro/cli/generate/generate_keys'
+require 'roro/cli/generate/generate_obfuscated'
+require 'roro/cli/generate/generate_story'
 require 'roro/cli/greenfield/rails'
 require 'roro/cli/rollon'
 require 'roro/cli/rollon/rails/base/base'

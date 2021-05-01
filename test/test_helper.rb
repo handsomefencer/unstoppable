@@ -11,6 +11,7 @@ require "roro"
 require "helpers/rails"
 require "helpers/matchers/files"
 require "helpers/matchers/insertions"
+require "helpers/matchers/crypto"
 require "helpers/mocks"
 require "helpers/thor"
 
@@ -19,5 +20,6 @@ include TestHelper::Stories::Rails
 include TestHelper::Mocks::Stubs
 include TestHelper::Mocks::Stubs
 include TestHelper::Matchers::Insertions
+include TestHelper::Matchers::Crypto
 include TestHelper::Matchers::Files
 
