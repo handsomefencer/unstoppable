@@ -4,7 +4,7 @@ module Roro
 
   class CLI < Thor
 
-    desc "generate::obfuscated", "obfuscates any files matching the pattern ./roro/**/*.env"
+    desc "generate::obfuscated", "Encrypts .env files for safe storage."
     map "generate::obfuscated" => "generate_obfuscated"
 
     def generate_obfuscated(*environments)

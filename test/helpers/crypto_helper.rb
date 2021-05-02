@@ -31,17 +31,6 @@ module TestHelper
         execute
         assert_equal File.read(destination), content 
       end    
-      
-      def assert_correctly_sourced
-        insert_dummy
-        assert_includes execute, source_file 
-      end 
-      
-      def assert_correctly_gathered 
-        insert_dummy
-        assert_equal ['dummy'], execute
-      end
-    
     end 
   end 
 end

@@ -345,20 +345,21 @@ describe Roro::Crypto do
   end
   
   describe ":obfuscate(environments, directory, extension" do
-    before { skip } 
     Given(:execute) { subject.obfuscate(environments, directory, extension) }
     
     context 'when no environments supplied and' do
       Given(:environments) { [] }
+      Given(:error) { Roro::Crypto::EnvironmentError }
       
       context 'when no encryptable files and no key' do 
-        Then { assert_raises(Roro::Crypto::EncryptableError) { execute } }
+      
+        Then { assert_raises(error) { execute } }
       end
       
       context 'when no encryptable files and a key' do 
         Given { insert_key_file }
         
-        Then  { assert_raises(Roro::Crypto::EncryptableError) { execute } }
+        Then  { assert_raises(error) { execute } }
       end
        
       context 'when encryptable files and no key' do 
@@ -368,62 +369,53 @@ describe Roro::Crypto do
       end
       
       context 'when encryptable files and a key' do
-        Given { insert_dummy }
+        Given { insert_dummy_encryptable }
         Given { insert_key_file }
         Given { execute } 
-       
+
         Then  { assert_file './roro/dummy.env.enc' }
       end
         
-      context 'when encryptable files and a key and deeply nested' do
-        Given(:directory) { './roro/containers/'}
-        Given { insert_dummy }
+      context 'when deeply nested encryptable files and a key' do
+        Given { insert_dummy_encryptable('./roro/containers/dummy.env') }
         Given { insert_key_file }
         Given { execute } 
-       
+        
         Then  { assert_file './roro/containers/dummy.env.enc' } 
       end
     end 
     
-    context 'when one environment supplied' do       
+    context 'when environment supplied has no matching key' do 
+      Given(:environments)  { ['getsome'] }
+      Given { insert_dummy_encryptable }
+    
+      Then  { assert_raises(Roro::Crypto::KeyError) { execute} }
+    end
+    
+    context 'when one environment supplied and matching key' do       
+      Given { insert_key_file }
+      
       context 'when key matches encryptable file' do 
-        Given { insert_key_file } 
-        Given { insert_dummy }
+        Given { insert_dummy_encryptable }
         Given { execute } 
         
         Then  { assert_file './roro/dummy.env.enc' }
       end
       
       context 'when key matches encryptable subenv file' do 
-        Given { insert_key_file } 
-        Given { insert_dummy('dummy.subenv') }
+        Given { insert_dummy_encryptable('./roro/dummy.subenv.env') }
         Given { execute } 
         
         Then  { assert_file './roro/dummy.subenv.env.enc' }
-      end
-      
-      context 'when environment has no matching key' do 
-        Given(:environment) { 'stupid' }
-        Given { insert_key_file } 
-        Given { insert_dummy }
-
-        Then { assert_raises(Roro::Crypto::KeyError) { execute } }
-      end
-      
-      context 'when environment does not match any encryptable files' do 
-        Given { insert_key_file } 
-
-        Then { assert_raises(Roro::Crypto::EncryptableError) { execute } }
       end
     end
   end
   
   describe ":expose(environments, directory, extension" do
-   before { skip } 
     Given(:execute) { subject.expose(environments, directory, '.env.enc') }
     
     context 'when no environments supplied and' do
-      Given(:environments) { nil }
+      Given(:environments) { [] }
       
       context 'when no decryptable files and no key' do 
 
@@ -437,7 +429,7 @@ describe Roro::Crypto do
       end 
       
       context 'when decryptable files and a key' do 
-        Given { insert_decryptable_file }
+        Given { insert_dummy_decryptable }
         Given { insert_key_file }
         Given { execute } 
   
@@ -447,48 +439,41 @@ describe Roro::Crypto do
     end 
     
     context 'when one environment supplied' do 
-      Given(:environment) { 'dummy' }
-      
-      context 'when no key and no decryptable files' do 
-
-        Then { assert_raises(Roro::Crypto::DecryptableError) { execute } }
-      end
-      
       context 'when no key and a decryptable file' do 
-        Given { insert_decryptable_file }
+        Given { insert_dummy_decryptable }
 
         Then { assert_raises(Roro::Crypto::KeyError) { execute } }
-      end
-      
-      context 'when key and no decryptable files' do 
-        Given { insert_key_file }
-
-        Then { assert_raises(Roro::Crypto::DecryptableError) { execute } }
       end
       
       context 'when key and decryptable file' do 
-        Given { insert_decryptable_file }
         Given { insert_key_file }
-        Given { execute }
+        Given { insert_dummy_decryptable }
         
-        Then  { assert_file './roro/dummy.env' }
-        And   { assert_file './roro/dummy.env.enc' }
-      end 
+        describe 'must decrypt file' do 
+          Given { execute }
+          
+          Then  { assert_file './roro/dummy.env' }
+        end
+        
+        describe 'will not decrypt any other file' do
+          Given(:environments) { ['dummy']}
+          Given { insert_dummy_decryptable('./roro/smart.env.enc') }
+          Given { insert_key_file('smart.key') }
+          Given { execute }
+          
+          Then  { refute_file './roro/smart.env' }
+          And   { assert_file './roro/smart.env.enc' }
+          And   { assert_file './roro/dummy.env' }
+          And   { assert_file './roro/dummy.env.enc' }
+        end
+      end
       
       context 'when environment matches encryptable subenv file' do 
         Given { insert_key_file } 
-        Given { insert_decryptable_file('dummy.subenv') }
+        Given { insert_dummy_decryptable('./roro/dummy.subenv.env.enc') }
         Given { execute } 
         
         Then  { assert_file './roro/dummy.subenv.env.enc' }
-      end
-      
-      context 'when environment has no key' do 
-        Given(:environment) { 'smart' } 
-        Given { insert_key_file }
-        Given { insert_decryptable_file }
-
-        Then { assert_raises(Roro::Crypto::KeyError) { execute } }
       end
     end
   end 

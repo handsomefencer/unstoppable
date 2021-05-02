@@ -1,7 +1,7 @@
 module Roro
   class CLI < Thor
     
-    desc "generate::exposed", "Generate private .env files from encrypted .env.enc files inside the roro directory."
+    desc "generate::exposed", "Decrypts .env.enc files for all environments or those specified."
     map "generate::exposed" => "generate_exposed"
     
     def generate_exposed(*args) 

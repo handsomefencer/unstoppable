@@ -10,7 +10,7 @@ describe Roro::CLI do
       Given(:generate) { cli.generate_keys }
 
       context 'when no .env files' do
-        Given(:error) { Roro::Crypto::EncryptableError }
+        Given(:error) { Roro::Crypto::EnvironmentError }
         Then  { assert_raises(error) { generate } }
       end
       
