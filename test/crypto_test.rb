@@ -200,11 +200,11 @@ describe Roro::Crypto do
   end
 
   describe ":encrypt(file, key)" do
-    Given(:encryptable_file) { "#{directory}/#{filename}.env" } 
-    Given(:execute) { subject.encrypt(encryptable_file, environment) }
+    Given(:encryptable) { "./roro/dummy.env" } 
+    Given(:execute) { subject.encrypt(encryptable, environment) }
       
     context 'when no key and no file' do
-      focus
+      
       Then { assert_raises(Roro::Crypto::KeyError) { execute } } 
     end
     
@@ -219,8 +219,8 @@ describe Roro::Crypto do
       end
       
       context 'when an encryptable subenvfile' do
-        Given(:filename) { 'dummy.subenv'}
-        Given { insert_dummy_encryptable(filename) }  
+        Given(:encryptable) { './roro/dummy.subenv.env'}
+        Given { insert_dummy_encryptable('./roro/dummy.subenv.env') }  
         Given { execute }
         
         Then  { assert_file './roro/dummy.subenv.env.enc' }
