@@ -19,131 +19,148 @@ describe Roro::Crypto do
 
     Then { assert_equal subject.generate_key.size, 25 }
   end
-
+  
   describe ":source_files(directory, pattern" do
-    Given(:pattern)     { "#{extension}" }
-    Given(:source_file) { directory + "/dummy#{pattern}" }
     Given(:execute)     { subject.source_files(directory, pattern) }
-
-    context 'when no files to source must return error' do
-      context 'when extension is .env' do
-        Given(:error)         { Roro::Crypto::EncryptableError } 
-        Given(:error_message) { "No encryptable .env files" }
-        
-        Then { assert_correct_error }
-      end
+    
+    context 'when pattern is .env.enc' do 
+      Given { insert_decryptable_file }
+      Given(:pattern) { '.env.enc' }
+    
+      Then { assert_includes execute, './roro/dummy.env.enc' }
+    end
+    
+    context 'when pattern is .env' do 
+      Given(:pattern) { '.env' }
       
-      context 'when extension is .env.enc' do
-        Given(:extension)     { '.env.enc' }
-        Given(:error)         { Roro::Crypto::DecryptableError } 
-        Given(:error_message) { "No decryptable \.env\.enc files" }
+      context 'when no files matching pattern' do
+        Then { assert_equal execute, [] }
+      end
+    
+      context 'when a file matches pattern' do 
+        context 'when nested one level deep' do
+          Given { insert_dummy_encryptable }
+                    
+          Then { assert_includes execute, './roro/dummy.env' }
+        end
         
-        Then { assert_correct_error }
+        context 'when nested two levels deep' do
+          Given { insert_dummy('./roro/env/dummy.env') }
+          Then { assert_file './roro/env/dummy.env'}
+        
+          Then { assert_includes execute, './roro/env/dummy.env' }
+        end
+        
+        context 'when nested three levels deep' do
+          Given { insert_dummy('./roro/containers/app/dummy.env') }
+          
+          Then { assert_includes execute, './roro/containers/app/dummy.env' }
+        end
       end
     end
     
-    context 'when file to source exists' do 
-      context 'when nested one level deep' do
-        context 'when file is .env' do 
-      
-          Then { assert_correctly_sourced }
-        end
-        
-        context 'when file is .env.enc' do 
-          Given(:extension) { '.env.enc' } 
-      
-          Then { assert_correctly_sourced }
-        end
-      end
-      
-      context 'when nested two levels deep' do
-        Given(:directory)  { './roro/env' }
-      
-        Then { assert_correctly_sourced }
-      end
+    context 'when pattern is dummy*.env' do 
+      Given(:pattern) { 'dummy*.env' }      
+      Given { insert_dummy('./roro/dummy.subenv.env') }
+      Given { insert_dummy }
 
-      context 'when nested three levels deep' do
-        Given(:directory)  { './roro/containers/app' }
-      
-        Then { assert_correctly_sourced }
-      end
+      Then  { assert_includes execute, './roro/dummy.subenv.env' }
+      And   { assert_includes execute, './roro/dummy.env' }
     end
   end
   
   describe ':gather_environments' do
-    Given(:execute)   { subject.gather_environments(directory, extension) }
+    Given(:execute) { subject.gather_environments(directory, extension) }
     
-    context 'when file extension is .env' do 
-      
-      Then { assert_correctly_gathered }
-    end    
-    
-    context 'when file extension is .env.enc' do 
+    context 'when file extension is .env.enc' do
+      Given { insert_dummy('./roro/dummy.env.enc') } 
       Given(:extension) { '.env.enc' }
-    
-      Then { assert_correctly_gathered }
-    end
-    
-    context 'when file is nested deeply' do 
-      Given(:directory) { './roro/containers/app' }
-  
-      Then { assert_correctly_gathered }
-    end
-    
-    context 'when file is subenv' do 
-      Given { insert_dummy('dummy.subenv') }
       
-      Then { assert_equal ['dummy'], execute }
+      Then { assert_equal execute, ['dummy'] }
+    end
+
+    context 'when file extension is .env' do
+      Given(:extension) { '.env' } 
+      Given { insert_dummy }
+      
+      Then  { assert_equal execute, ['dummy']}
+            
+      context 'when file is nested deeply' do 
+        Given { insert_dummy './roro/containers/app/dummy.env' }
+        
+        Then { assert_equal execute, ['dummy'] }
+      end
+      
+      context 'when file is subenv' do 
+        Given { insert_dummy('./roro/dummy.subenv.env') }
+        
+        Then { assert_equal execute, ['dummy'] }
+      end
+      
+      context 'when files are mixed and nested' do 
+        Given { insert_dummy('./roro/containers/app/dummy.subenv.env') }
+        Given { insert_dummy('./roro/smart.env') }
+        
+        Then { assert_equal execute, ['dummy', 'smart'] }
+      end
     end
     
-    context 'when file is a key' do
-      Given(:directory) { './roro/keys' } 
-      Given(:extension) { '.key' } 
-      Given { insert_key_file }
-      Given { insert_key_file('smart') }
+    context 'when files are keys' do
+      Given(:execute) { subject.gather_environments('./roro/keys', '.key')}
       
-      Then { assert_equal ['dummy', 'smart'], execute }
+      context 'when one key' do 
+        Given { insert_key_file }
+        
+        Then { assert_equal execute, ['dummy'] }
+      end
+      
+      context 'when multiple keys' do 
+        Given { insert_key_file }
+        Given { insert_key_file('smart.key') }
+        
+        Then { assert_equal execute, ['dummy', 'smart'] }
+      end
     end 
   end
 
   describe ":write_to_file(data, filename)" do
     Given(:content) { 'export FOO=bar' }
-    Given(:execute) { subject.write_to_file(content, file)  }
+    Given(:execute) { subject.write_to_file(content, destination)  }
   
     context 'when .txt extension' do
-      Given(:file) { 'example.txt' }
+      Given(:destination) { './roro/example.txt' }
  
       Then { assert_correctly_written }
     end
     
     context 'when .env extension' do
-      Given(:file) { 'example.env' }
+      Given(:destination) { 'example.env' }
  
       Then { assert_correctly_written }
     end
 
-    describe 'must raise error when file exists in destination' do 
+    context 'when matching file exists at destination' do 
       Given(:error) { Roro::Crypto::DataDestructionError }
+      Given(:destination) { './roro/dummy.env'}
       
-      context 'when file is .env' do
-        Given(:file) { './roro/dummy.env'}
+      context 'when destination is .env' do
+        Given { insert_dummy }
         Given(:error_message) { "Existing file at ./roro/dummy.env." }
 
         Then { assert_destruction_error }
       end
       
-      context 'when file is .env.enc' do
-        Given(:file)          { './roro/dummy.env.enc'}
-        Given(:extension)     { '.env.enc' }
+      context 'when destination is .env.enc' do
+        Given { insert_dummy_decryptable }
+        Given(:destination)   { './roro/dummy.env.enc'}
         Given(:error_message) { "Existing file at ./roro/dummy.env.enc." }
 
         Then { assert_destruction_error }
       end
       
-      context 'when file is .key' do
-        Given(:directory) { './roro/keys'}
-        Given(:extension) { '.key' }
-        Given(:file) { './roro/keys/dummy.key'}
+      context 'when destination is .key' do
+        Given { insert_key_file }
+        Given(:destination) { './roro/keys/dummy.key'}
         Given(:error_message) { "Existing file at ./roro/keys/dummy.key."}
 
         Then { assert_destruction_error }
@@ -187,7 +204,7 @@ describe Roro::Crypto do
     Given(:execute) { subject.encrypt(encryptable_file, environment) }
       
     context 'when no key and no file' do
-      
+      focus
       Then { assert_raises(Roro::Crypto::KeyError) { execute } } 
     end
     
@@ -195,7 +212,7 @@ describe Roro::Crypto do
       Given { insert_key_file } 
       
       context 'when an encryptable file' do
-        Given { insert_encryptable_file }  
+        Given { insert_dummy_encryptable }  
         Given { execute }
         
         Then  { assert_file './roro/dummy.env.enc' }
@@ -203,7 +220,7 @@ describe Roro::Crypto do
       
       context 'when an encryptable subenvfile' do
         Given(:filename) { 'dummy.subenv'}
-        Given { insert_encryptable_file(filename) }  
+        Given { insert_dummy_encryptable(filename) }  
         Given { execute }
         
         Then  { assert_file './roro/dummy.subenv.env.enc' }
@@ -212,6 +229,7 @@ describe Roro::Crypto do
   end
 
   describe ":decrypt(file, key)" do
+    before { skip } 
     Given(:decryptable_file) { "#{directory}/#{filename}.env.enc"}
     Given(:execute) { subject.decrypt(decryptable_file, 'dummy') }
 
@@ -249,6 +267,7 @@ describe Roro::Crypto do
   end
   
   describe ':generate_keys(environments, directory, extension' do
+    before { skip }
     Given(:args)         { [environments, './roro', extension] }
     Given(:execute)      { subject.generate_keys(*args) }
 
@@ -323,10 +342,11 @@ describe Roro::Crypto do
   end
   
   describe ":obfuscate(environments, directory, extension" do
+    before { skip } 
     Given(:execute) { subject.obfuscate(environments, directory, extension) }
     
     context 'when no environments supplied and' do
-      Given(:environments) { nil }
+      Given(:environments) { [] }
       
       context 'when no encryptable files and no key' do 
         Then { assert_raises(Roro::Crypto::EncryptableError) { execute } }
@@ -396,7 +416,7 @@ describe Roro::Crypto do
   end
   
   describe ":expose(environments, directory, extension" do
-    
+   before { skip } 
     Given(:execute) { subject.expose(environments, directory, '.env.enc') }
     
     context 'when no environments supplied and' do

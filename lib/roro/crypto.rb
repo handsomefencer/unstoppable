@@ -13,15 +13,16 @@ module Roro::Crypto
 
     def source_files(dir, pattern)
       source_files = Dir.glob(dir + "/**/*#{pattern}")
-      error_message = "#{pattern} files in #{dir}"
-      case   
-      when source_files.empty? && pattern.eql?('.env')
-        raise EncryptableError, "No encryptable #{error_message}" 
-      when source_files.empty? && pattern.eql?('.env.enc')
-        raise DecryptableError, "No decryptable #{error_message}"
-      else 
-        source_files
-      end   
+      # byebug
+      # error_message = "#{pattern} files in #{dir}"
+      # case   
+      # when source_files.empty? && pattern.eql?('.env')
+      #   raise EncryptableError, "No encryptable #{error_message}" 
+      # when source_files.empty? && pattern.eql?('.env.enc')
+      #   raise DecryptableError, "No decryptable #{error_message}"
+      # else 
+      #   source_files
+      # end   
     end
 
     def gather_environments(dir, ext)
@@ -52,12 +53,16 @@ module Roro::Crypto
       end
     end
 
-    def obfuscate(environments, dir, pattern)
+    def obfuscate(environments, dir, ext)
+      
       if environments.empty? 
-        environments = gather_environments(dir, pattern)
+        environments = gather_environments(dir, ext)
       end 
       # environments ||= gather_environments(dir, pattern)
-      environments.each do |key| 
+      environments.each do |key|
+        pattern = "#{key}*#{ext}" 
+        # source_files = Dir.glob(dir + "/**/*#{pattern}")
+
         source_files(dir, pattern).each do |file|
           encrypt(file, key)
         end

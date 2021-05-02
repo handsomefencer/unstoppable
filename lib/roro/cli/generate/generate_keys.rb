@@ -10,11 +10,6 @@ module Roro
     # map "generate::key" => "generate_key"
     # method_option :environment, type: :hash, default: {}, desc: "Pass a list of environment variables like so: env:var", banner: "development, staging"
 
-    # def generate_key(*args)
-    #   Roro::Crypto.generate_key('.', '.env.enc').each do |file|
-    #     generate_key_or_keys(*args)
-    # end
-
     desc "generate::keys", "Generate keys for each environment inside roro/keys.
       If you have .env files like 'roro/containers/app/[staging_env].env' and
       'roro/[circle_ci_env].env' it will generate '/roro/keys/[staging_env].key'
