@@ -1,14 +1,9 @@
 module TestHelper
   module Helpers
     module Crypto
-      def insert_decryptable_file(filename='dummy.env.enc') 
-        directory   ||= './roro'
-        destination ||= "#{directory}/#{filename}"
-        insert_file 'dummy_env', destination
-      end
       
       def insert_dummy_encryptable(filename='./roro/dummy.env') 
-        insert_dummy(filename) 
+        insert_file 'dummy_env', filename
       end
       
       def insert_dummy_decryptable(filename='./roro/dummy.env.enc') 
