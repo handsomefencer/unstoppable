@@ -16,10 +16,12 @@ roro/**/*.key
 !/.gitignore
 *.gem
 tmp/*
-!tmp/.keep 
+!tmp/.keep
 sandbox/*
-!sandbox/.keep 
+!sandbox/.keep
 !sandbox/greenfield
 sandbox/greenfield/*
 !sandbox/greenfield/.keep
 TUTORIAL.md
+
+.idea
