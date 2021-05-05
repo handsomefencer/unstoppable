@@ -7,6 +7,7 @@ describe Roro::CLI do
   
   Given(:assert_roro_directories) { 
     assert_directory "roro"
+    assert_directory "roro/keys"
     assert_directory "roro/containers"
     assert_directory "roro/containers/app"
   } 
