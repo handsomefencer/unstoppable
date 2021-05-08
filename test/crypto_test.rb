@@ -101,7 +101,7 @@ describe Roro::Crypto do
         Given { insert_dummy('./roro/containers/app/dummy.subenv.env') }
         Given { insert_dummy('./roro/smart.env') }
         
-        Then { assert_equal execute, ['dummy', 'smart'] }
+        Then { assert_equal execute.to_set, ['dummy', 'smart'].to_set }
       end
     end
     
@@ -118,7 +118,7 @@ describe Roro::Crypto do
         Given { insert_key_file }
         Given { insert_key_file('smart.key') }
         
-        Then { assert_equal execute, ['dummy', 'smart'] }
+        Then { assert_equal execute.to_set, ['dummy', 'smart'].to_set }
       end
     end 
   end
