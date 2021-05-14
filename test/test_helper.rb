@@ -18,7 +18,6 @@ require "helpers/thor"
 include TestHelper::Files::Assertions
 include TestHelper::Stories::Rails
 include TestHelper::Mocks::Stubs
-include TestHelper::Mocks::Stubs
 include TestHelper::Matchers::Insertions
 include TestHelper::Helpers::Crypto
 include TestHelper::Matchers::Files
