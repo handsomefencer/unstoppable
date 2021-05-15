@@ -112,15 +112,6 @@ module Roro
           returned = assert_raises(error) { execute }
           assert_match error_message, returned.message 
         end 
-        
-        def assert_destruction_error 
-          assert_correct_error
-        end
-        
-        def assert_correctly_written
-          execute
-          assert_equal File.read(destination), content 
-        end
       end
     end
   end

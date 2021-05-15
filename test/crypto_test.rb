@@ -21,51 +21,6 @@ describe Roro::Crypto do
   end
   
   
-  describe ":write_to_file(data, filename)" do
-    Given(:content) { 'export FOO=bar' }
-    Given(:execute) { subject.write_to_file(content, destination)  }
-  
-    context 'when .txt extension' do
-      Given(:destination) { './roro/example.txt' }
- 
-      Then { assert_correctly_written }
-    end
-    
-    context 'when .env extension' do
-      Given(:destination) { 'example.env' }
- 
-      Then { assert_correctly_written }
-    end
-
-    context 'when matching file exists at destination' do 
-      Given(:error) { Roro::Crypto::DataDestructionError }
-      Given(:destination) { './roro/dummy.env'}
-      
-      context 'when destination is .env' do
-        Given { insert_dummy }
-        Given(:error_message) { "Existing file at ./roro/dummy.env." }
-
-        Then { assert_destruction_error }
-      end
-      
-      context 'when destination is .env.enc' do
-        Given { insert_dummy_decryptable }
-        Given(:destination)   { './roro/dummy.env.enc'}
-        Given(:error_message) { "Existing file at ./roro/dummy.env.enc." }
-
-        Then { assert_destruction_error }
-      end
-      
-      context 'when destination is .key' do
-        Given { insert_key_file }
-        Given(:destination) { './roro/keys/dummy.key'}
-        Given(:error_message) { "Existing file at ./roro/keys/dummy.key."}
-
-        Then { assert_destruction_error }
-      end
-    end
-  end
-
   describe ":get_key" do
     Given(:key_in_env_var)  { "s0m3k3y-fr0m-variable" }
     Given(:execute)         { subject.get_key('dummy') }

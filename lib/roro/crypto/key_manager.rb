@@ -1,75 +1,24 @@
 require 'roro/crypto/file/reflection'
 module Roro::Crypto
     
-  class KeyManager < Thor
-    # include Roro::Crypto::FileReflection
-    include Roro::Crypto
-    include Thor::Actions
+  class KeyManager
+    include File::Reflection
 
-    no_commands do 
-
-      def generate_keyfile(environment) 
-        cipher = Roro::Crypto::Cipher.new
-        create_file "./roro/keys/#{environment}.key", cipher.generate_key 
-      end
-
+    def initialize 
+      @writer = File::Writer.new 
+      @cipher = Cipher.new 
+    end
+    
+    def write_keyfile(environment) 
+      destination = "./roro/keys/#{environment}.key"
+      @writer.write_to_file(destination, @cipher.generate_key)
+    end
+    
+    def write_keyfiles(environments, directory, ext)
+      environments = gather_environments(directory, ext) if environments.empty?
+      environments.each { |environment| write_keyfile(environment) }
     end
 
-
-    # def generate_keys(keys, dir, ext)
-    #   (keys.empty? ? gather_environments(dir, ext) : keys).each do |key|
-    #     write_to_file generate_key, "#{dir}/keys/#{key}.key"
-    #   end
-    # end
-
-    # def expose(environments, dir, ext)
-    #   if environments.empty? 
-    #     environments = gather_environments('./roro/keys', '.key')
-    #   end 
-    #   environments.each do |environment| 
-    #     pattern = "#{environment}*#{ext}" 
-
-    #     exposable = source_files(dir, pattern)
-    #     if exposable.empty?
-    #       puts "No #{environment} files in ./roro matching #{pattern}"
-    #     end
-    #     source_files(dir, pattern).each do |file|
-    #       decrypt(file, environment)
-    #     end
-    #   end
-    # end
-
-    # def obfuscate(envs, dir, ext)
-    #   environments = envs.empty? ? gather_environments(dir, ext) : envs
-    #   environments.each do |environment|
-    #     pattern = "#{environment}*#{ext}" 
-    #     get_key(environment)
-    #     encryptable_files = source_files(dir, pattern)
-    #     if encryptable_files.empty?
-    #       puts "No #{environment} files in ./roro matching #{pattern}"
-    #     end 
-    #     encryptable_files.each do |file|
-    #       encrypt(file, environment)
-    #     end
-    #   end 
-    # end
-
-    # def write_to_file(data, filename)
-    #   if File.exist?(filename)
-    #     raise DataDestructionError, "Existing file at #{filename}. Please remove it and try again."
-    #   else
-    #     File.open(filename, "w") { |io| io.write data }
-    #   end
-    # end
-
-    
-    # def encrypt(file, key)
-    #   build_cipher(key)
-    #   encrypted = @cipher.update(File.read file) + @cipher.final
-    #   write_to_file(Base64.encode64(encrypted), file + '.enc')
-    # end
-    
-    
     # def get_key(environment, dir='roro')
     #   env_key = environment.upcase + '_KEY'
     #   key_file = Dir.glob("roro/keys/#{environment}.key").first

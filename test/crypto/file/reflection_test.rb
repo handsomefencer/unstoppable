@@ -110,4 +110,35 @@ describe Roro::Crypto::File::Reflection do
       end
     end 
   end
+
+  describe ":get_key" do
+    Given(:key_in_env_var)  { "s0m3k3y-fr0m-variable" }
+    Given(:execute)         { subject.get_key('dummy') }
+
+    describe 'when no key set as an environment variable or in key file' do 
+      Given(:error)         { Roro::Crypto::KeyError }
+      Given(:error_message) { 'No DUMMY_KEY set' }
+      
+      Then { assert_correct_error }
+    end
+
+    context 'when key is set in an environment variable' do
+      Given { ENV['DUMMY_KEY']=key_in_env_var }
+
+      Then { assert_equal execute, key_in_env_var }
+    end 
+    
+    context 'when key is set in a key file' do
+      Given { insert_file 'dummy_key', key_file }
+        
+      # Then  { assert_equal execute, File.read(key_file).strip }
+    end
+    
+    context 'when key is set in a key file and an environment file' do
+      Given { ENV['DUMMY_KEY']=key_in_env_var }
+      Given { insert_key_file }
+      
+      # Then  { assert_equal execute, key_in_env_var }
+    end
+  end
 end
