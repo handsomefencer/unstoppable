@@ -7,7 +7,6 @@ describe Roro::Crypto::Cipher do
   Given(:encrypted) { subject.encrypt(plaintext, key) }
   Given(:decrypted) { subject.decrypt(encrypted, key) }
 
-
   describe '#generate_key' do 
 
     Then { assert_equal key.size, 25 }

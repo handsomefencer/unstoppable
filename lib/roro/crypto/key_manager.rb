@@ -1,47 +1,20 @@
+require 'roro/crypto/file/reflection'
 module Roro::Crypto
-  module FileReflection
-    def source_files(dir, pattern)
-      Dir.glob(dir + "/**/*#{pattern}")
-    end
-    def gather_environments(dir, ext)
-      environments = []
-      source_files(dir, ext).each do |source_file|
-        environments << source_file.split('/').last.split('.').first
-      end
-      if environments.empty? 
-        raise EnvironmentError, "No files in the #{dir} directory matching #{ext}"
-      else 
-        environments.uniq
-      end
-    end
-  end
     
   class KeyManager < Thor
-    include Roro::Crypto::FileReflection
+    # include Roro::Crypto::FileReflection
     include Roro::Crypto
     include Thor::Actions
 
     no_commands do 
 
-      def generate_key_file(environment) 
+      def generate_keyfile(environment) 
         cipher = Roro::Crypto::Cipher.new
         create_file "./roro/keys/#{environment}.key", cipher.generate_key 
       end
 
     end
 
-
-    # def gather_environments(dir, ext)
-    #   environments = []
-    #   source_files(dir, ext).each do |source_file|
-    #     environments << source_file.split('/').last.split('.').first
-    #   end
-    #   if environments.empty? 
-    #     raise EnvironmentError, "No files in the #{dir} directory matching #{ext}"
-    #   else 
-    #     environments.uniq
-    #   end
-    # end
 
     # def generate_keys(keys, dir, ext)
     #   (keys.empty? ? gather_environments(dir, ext) : keys).each do |key|
