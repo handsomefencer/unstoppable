@@ -1,4 +1,4 @@
-FROM ruby:2.7.0-alpine AS builder
+FROM ruby:2.7.2-alpine AS builder
 
 LABEL maintainer="your-docker-registry-email using RoRo"
 
@@ -28,7 +28,7 @@ RUN gem install bundler:2.1.4
 WORKDIR ${APP_HOME}
 
 ## Create a Gemfile with just the Rails gem inside:
-RUN echo -e "source 'https://rubygems.org'\ngem 'rails'" > Gemfile
+RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '6.1.3.1'" > Gemfile
 
 ## Bundle to install rails:
 RUN bundle install

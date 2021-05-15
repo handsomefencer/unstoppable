@@ -4,6 +4,7 @@ require "roro/cli"
 require "roro/configurator"
 require "roro/crypto"
 require "roro/crypto/cipher"
+require "roro/crypto/key_manager"
 
 module Roro
   module Crypto 

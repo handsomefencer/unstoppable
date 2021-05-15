@@ -2,11 +2,11 @@ require "test_helper"
 
 describe Roro::Crypto::Cipher do
   Given(:subject)   { Roro::Crypto::Cipher.new }
+  Given(:key)       { subject.generate_key }
   Given(:plaintext) { 'The Quick Brown Fox' }
   Given(:encrypted) { subject.encrypt(plaintext, key) }
   Given(:decrypted) { subject.decrypt(encrypted, key) }
 
-  Given(:key)     { subject.generate_key }
 
   describe '#generate_key' do 
 
