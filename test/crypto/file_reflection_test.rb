@@ -1,8 +1,9 @@
 require "test_helper"
+require "climate_control"
 
-class DummyClass ; include Roro::Crypto::File::Reflection ; end
+class DummyClass ; include Roro::Crypto::FileReflection ; end
 
-describe Roro::Crypto::File::Reflection do
+describe Roro::Crypto::FileReflection do
   before(:all) { prepare_destination 'workbench' }
   
   Given(:subject)   { DummyClass.new }
@@ -111,10 +112,31 @@ describe Roro::Crypto::File::Reflection do
     end 
   end
 
+  # scribe Thing, 'name' do
+  #   it 'appends ADDITIONAL_NAME' do
+  #     with_modified_env ADDITIONAL_NAME: 'bar' do
+  #       expect(Thing.new.name).to eq('John Doe Bar')
+  #     end
+  #   end
+  def with_env_set(options=nil, &block)
+    ClimateControl.modify(options || { DUMMY_KEY: var_from_ENV }, &block)
+  end
+
   describe ":get_key" do
-    Given(:key_in_env_var)  { "s0m3k3y-fr0m-variable" }
+    Given(:key_file)        {'./roro/keys/dummy.key'}
+    Given(:var_from_ENV)          { "s0m3k3y-fr0m-variable" }
     Given(:execute)         { subject.get_key('dummy') }
 
+    context 'when key not set and not in keyfile' do 
+      
+      Then { assert_nil ENV["DUMMY_KEY"] }
+    end
+
+    context 'when key set in ENV' do 
+      
+      Then { with_env_set { assert_equal execute, var_from_ENV } }
+    end
+    
     describe 'when no key set as an environment variable or in key file' do 
       Given(:error)         { Roro::Crypto::KeyError }
       Given(:error_message) { 'No DUMMY_KEY set' }
@@ -122,20 +144,14 @@ describe Roro::Crypto::File::Reflection do
       Then { assert_correct_error }
     end
 
-    context 'when key is set in an environment variable' do
-      Given { ENV['DUMMY_KEY']=key_in_env_var }
-
-      Then { assert_equal execute, key_in_env_var }
-    end 
-    
     context 'when key is set in a key file' do
       Given { insert_file 'dummy_key', key_file }
         
-      # Then  { assert_equal execute, File.read(key_file).strip }
+      Then  { assert_equal execute, File.read(key_file).strip }
     end
     
     context 'when key is set in a key file and an environment file' do
-      Given { ENV['DUMMY_KEY']=key_in_env_var }
+      # Given { ENV['DUMMY_KEY']=key_in_env_var }
       Given { insert_key_file }
       
       # Then  { assert_equal execute, key_in_env_var }

@@ -1,11 +1,10 @@
-require 'roro/crypto/file/reflection'
 module Roro::Crypto
-    
   class KeyManager
-    include File::Reflection
+
+    include FileReflection
 
     def initialize 
-      @writer = File::Writer.new 
+      @writer = FileWriter.new 
       @cipher = Cipher.new 
     end
     

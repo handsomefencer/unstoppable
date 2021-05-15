@@ -3,10 +3,10 @@ require "roro/version"
 require "roro/cli"
 require "roro/configurator"
 require "roro/crypto"
+require "roro/crypto/file_reflection"
+require "roro/crypto/file_writer"
 require "roro/crypto/cipher"
 require "roro/crypto/key_manager"
-require "roro/crypto/file/reflection"
-require "roro/crypto/file/writer"
 
 module Roro
   class Error < StandardError; end

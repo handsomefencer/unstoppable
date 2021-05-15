@@ -47,9 +47,10 @@ module Roro
           end
         end
   
-        def insert_file(src, dest)
-          src = [ENV.fetch("PWD"), 'test/fixtures/files', src].join('/')
-          FileUtils.cp(src, dest)
+        def insert_file(source, destination)
+          source = [ENV.fetch("PWD"), 'test/fixtures/files', source].join('/')
+          destination = [Dir.pwd, destination].join('/')
+          FileUtils.cp(source, destination)
         end
   
         def insert_dotenv(filename)
