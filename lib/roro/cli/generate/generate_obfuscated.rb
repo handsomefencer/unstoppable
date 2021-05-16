@@ -1,4 +1,4 @@
-require 'roro/crypto'
+# require 'roro/crypto'
 
 module Roro
 

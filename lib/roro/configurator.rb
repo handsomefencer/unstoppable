@@ -1,6 +1,6 @@
-require 'roro/configurator/eligibility'
-require 'roro/configurator/okonomi'
-require 'roro/configurator/omakase'
+require_rel 'configurator/eligibility'
+require_rel 'configurator/okonomi'
+require_rel 'configurator/omakase'
 
 module Roro 
   module Configurator 
