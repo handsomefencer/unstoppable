@@ -6,7 +6,7 @@ module Roro::Crypto
 
     def initialize(options={})
       @standard = options[:standard] || 'AES-128-CBC' 
-      @salt     = options[:salt]     ||'8 octets' 
+      @salt     = options[:salt]     || '8 octets' 
       @cipher   = OpenSSL::Cipher.new @standard
     end
 

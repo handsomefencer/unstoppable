@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe Roro::CLI do
-
+  before { skip }
   Given { rollon_rails_test_base }
   Given(:cli)     { Roro::CLI.new }
   Given(:rollon)  { cli.rollon(options) }

@@ -8,6 +8,8 @@ require "minitest/focus"
 require "minitest/pride"
 require "minitest/spec"
 require "mocha/minitest"
+require "climate_control"
+
 require "roro"
 
 # include TestHelper::Stories::Rails
@@ -21,3 +23,4 @@ end
 
 include Roro::Test::Helpers::Mocks
 include Roro::Test::Helpers::FilesHelper
+include Roro::Test::Helpers::Stories::Rails

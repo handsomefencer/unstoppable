@@ -1,45 +1,45 @@
 require 'test_helper'
 
-describe "Roro::CLI" do
-before { skip }
-  Given(:asker) { Thor::Shell::Basic.any_instance }
-  Given { asker.stubs(:ask).returns('y') }
+describe "Roro::CLI.generate_exposed" do
+  before(:all) do 
+    prepare_destination 'workbench'
+    Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
+  end 
+  
   Given(:cli) { Roro::CLI.new }
-  Given { prepare_destination 'crypto' }
-  
-  Given { cli.generate_key }
-  Given { cli.generate_obfuscated }
-  
-  describe ':generate_exposed' do
-    Given { insert_file 'dummy_key', './roro/keys/production.key'}
-    Given { insert_file 'dummy_env', './roro/env/production.env'}
+
+  Given(:setup_with_encrypted_files) do 
+    %w(development dummy staging production).each do |e|
+      insert_dummy_decryptable("./roro/env/#{e}.env.enc")
+      insert_dummy_decryptable("./roro/containers/app/#{e}.env.enc")
+    end
+  end
+
+  context 'when one environment specified' do 
+    Given { setup_with_encrypted_files }
     
-    describe 'expose one environment' do 
-      
+    describe 'must only expose matching files' do
+      Given { insert_key_file('production.key')} 
       Given { cli.generate_exposed 'production' }
-      
-      Then  { assert_file 'roro/env/production.env' }
-      # And   { refute_file 'roro/containers/app/development.env' }
+
+      Then { assert_file 'roro/env/production.env' }
+      And  { assert_file 'roro/containers/app/production.env' }
+      And  { refute_file 'roro/env/development.env' }    
     end
     
-    describe 'expose all environments' do 
-
-      Given { cli.generate_exposed }
-      # Then  { envs.each {|e| assert_file dotenv_dir + "#{e}.env" } }
-    end
-
     describe "with ENV_KEY" do
-
-      Given(:passkey) { File.read(Dir.pwd + '/roro/keys/development.key').strip }
-      Given { ENV['DEVELOPMENT_KEY'] = passkey }
-
+      Given(:var_from_ENV) { 
+        File.read(ENV['PWD'] + '/test/fixtures/files/dummy_key').strip}
+      
       describe 'expose one environment' do 
         
-        Given { cli.generate_exposed 'development' }
-        
-        # Then  { assert_file 'roro/containers/app/development.env' }
-        # And   { refute_file 'roro/containers/app/production.env' }
-      end
+        Then do 
+          with_env_set do 
+            cli.generate_exposed 'dummy'
+            assert_file 'roro/containers/app/dummy.env'
+          end 
+        end 
+      end    
     end
   end
 end

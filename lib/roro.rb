@@ -6,7 +6,9 @@ require "roro/crypto"
 require "roro/crypto/file_reflection"
 require "roro/crypto/file_writer"
 require "roro/crypto/cipher"
-require "roro/crypto/key_manager"
+require "roro/crypto/key_writer"
+require "roro/crypto/obfuscator"
+require "roro/crypto/exposer"
 
 module Roro
   class Error < StandardError; end

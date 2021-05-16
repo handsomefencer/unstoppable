@@ -1,9 +1,9 @@
 require "test_helper"
 
-describe Roro::Crypto::KeyManager do
+describe Roro::Crypto::KeyWriter do
   before(:all) { prepare_destination 'workbench' }
   
-  Given(:subject) { Roro::Crypto::KeyManager.new }
+  Given(:subject) { Roro::Crypto::KeyWriter.new }
 
   describe '#write_keyfile(environment)' do 
     Given { subject.write_keyfile('dummy') }

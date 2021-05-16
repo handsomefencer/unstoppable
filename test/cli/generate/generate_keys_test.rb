@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Roro::CLI do
-  Given { prepare_destination 'crypto' }
+  Given { prepare_destination 'workbench' }
   Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('y') }
   Given(:cli)   { Roro::CLI.new }
 
@@ -11,10 +11,12 @@ describe Roro::CLI do
 
       context 'when no .env files' do
         Given(:error) { Roro::Crypto::EnvironmentError }
+        
         Then  { assert_raises(error) { generate } }
       end
       
       context 'when one .env file' do
+
         Given { insert_file('dummy_env', './roro/ci.env' ) }
         Given { generate }
         
@@ -33,13 +35,6 @@ describe Roro::CLI do
         
     context 'when one environment supplied' do 
       Given(:generate) { cli.generate_keys('dummy') }
-      
-      context 'when existing key matches environment' do 
-        Given(:error) { Roro::Crypto::DataDestructionError }
-        Given { insert_key_file }
-        
-        Then { assert_raises(error) { generate } }
-      end 
       
       context 'when no key matches environment' do 
         Given { generate }

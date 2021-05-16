@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe Roro::Configurator::Eligibility do
-
+before { skip }
   Given(:options) { nil }
   Given(:config)  { Roro::Configuration.new(options) }
   Given { Roro::Configuration.any_instance.stubs(:handle_roro_artifacts)}

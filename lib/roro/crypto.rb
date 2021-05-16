@@ -89,19 +89,6 @@ module Roro::Crypto
       write_to_file decrypted, decrypted_file
     end
     
-    def get_key(environment, dir='roro')
-      env_key = environment.upcase + '_KEY'
-      key_file = Dir.glob("roro/keys/#{environment}.key").first
-      case
-      when ENV[env_key].nil? && key_file.nil?
-        raise KeyError, "No #{env_key} set. Please set one as a variable or in a file."
-      when ENV[env_key]
-        ENV[env_key]
-      when File.exist?(key_file)
-        File.read(key_file).strip
-      end
-    end
-    
     private 
     def build_cipher(environment)
       @cipher = OpenSSL::Cipher.new 'AES-128-CBC'

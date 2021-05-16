@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Roro::CLI do
-  
+  before { skip }
   Given { greenfield_rails_test_base }
   Given(:cli) { Roro::CLI.new}
   

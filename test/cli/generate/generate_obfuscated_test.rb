@@ -1,8 +1,11 @@
 require 'test_helper'
 
 describe "Roro::CLI #generate_obfuscated" do
-  Given           { prepare_destination 'crypto' }
-  Given(:asker)   { Thor::Shell::Basic.any_instance.stubs(:ask).returns('y') }
+  before(:all) do 
+    prepare_destination 'workbench'
+    Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')  
+  end
+
   Given(:cli)     { Roro::CLI.new }
 
   context 'when no environments supplied' do 

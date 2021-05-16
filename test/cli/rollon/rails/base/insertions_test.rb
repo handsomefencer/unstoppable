@@ -1,8 +1,9 @@
 require "test_helper"
 
 describe Roro::CLI do
-
-  Given { rollon_rails_test_base }
+  before { skip }
+  Given { skip 
+  rollon_rails_test_base }
   Given(:cli) { Roro::CLI.new }
   describe ".config_std_out" do 
       

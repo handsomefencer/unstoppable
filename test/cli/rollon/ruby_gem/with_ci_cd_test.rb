@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe "Story::RubyGem::WithCICD" do 
-
+  before { skip }
   Given { prepare_destination 'ruby_gem/dummy_gem' }
   Given { stubs_system_calls }
   Given { stubs_dependency_responses }

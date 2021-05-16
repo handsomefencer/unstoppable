@@ -6,9 +6,11 @@ module Roro
 
     desc "generate::obfuscated", "Encrypts .env files for safe storage."
     map "generate::obfuscated" => "generate_obfuscated"
-
+    map "generate:obfuscated"  => "generate_obfuscated"
+    
     def generate_obfuscated(*environments)
-      Roro::Crypto.obfuscate(environments, './roro', '.env')
+      obfuscator = Roro::Crypto::Obfuscator.new 
+      obfuscator.obfuscate(environments, './roro', '.env')
     end
 
     no_commands do

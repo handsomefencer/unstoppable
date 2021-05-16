@@ -29,41 +29,14 @@ module Roro
   
         alias :assert_directory :assert_file
   
-        def assert_no_file(relative)
-          absolute = File.expand_path(relative, destination_root)
-          assert !File.exist?(absolute), "Expected file #{relative.inspect} to not exist, but does"
-        end
-  
         def refute_file(file, *contents)
           refute File.exist?(file), "Expected #{file} to not exist, but it does."
-        end
-  
-        def remove_dot_env_files(envs, enc=nil)
-          enc = enc ||= ''
-          envs.each do |e|
-            file = "/roro/containers/app/#{e}.env#{enc}"
-            full = Dir.pwd + file
-            File.delete(Dir.pwd + file)
-          end
         end
   
         def insert_file(source, destination)
           source = [ENV.fetch("PWD"), 'test/fixtures/files', source].join('/')
           destination = [Dir.pwd, destination].join('/')
           FileUtils.cp(source, destination)
-        end
-  
-        def insert_dotenv(filename)
-          src = 'rails/dotenv/database.pg.env.tt'
-          insert_file src, filename
-        end
-  
-        def insert_dot_env_files(envs)
-          src = 'rails/dotenv/database.pg.env.tt'
-          envs.each do |e|
-            dest = "roro/containers/app/#{e}.env"
-            envs.each { |e| insert_file src, dest }
-          end
         end
   
         def yaml_from_template(file)
@@ -112,7 +85,11 @@ module Roro
         def assert_correct_error
           returned = assert_raises(error) { execute }
           assert_match error_message, returned.message 
-        end 
+        end
+        
+        def with_env_set(options=nil, &block)
+          ClimateControl.modify(options || { DUMMY_KEY: var_from_ENV }, &block)
+        end
       end
     end
   end
