@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Roro::Crypto::KeyWriter do
-  before(:all) { prepare_destination 'workbench' }
+  before(:all) { prepare_destination 'crypto' }
   
   Given(:subject) { Roro::Crypto::KeyWriter.new }
 

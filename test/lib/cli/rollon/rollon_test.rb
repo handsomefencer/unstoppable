@@ -33,7 +33,7 @@ describe Roro::CLI do
       Then  { assert cli }
     end
     
-    describe '.greenfield' do
+    describe '.omakase' do
        
       Given { cli.greenfield }
       

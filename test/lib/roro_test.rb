@@ -1,8 +1,9 @@
 require "test_helper"
-
+# TODO refactor folders and files so they follow namespacing in roro/lib e.g test/lib/roro/cli_test.rb
+#
 describe Roro do
-  it 'must have a version numbe' do 
-    assert ::Roro::VERSION 
+  it 'must have a version number' do
+    assert ::Roro::VERSION
   end
 
   it 'must include child modules' do 
@@ -13,5 +14,4 @@ describe Roro do
     assert_includes Roro.constants, :Configurator
     assert_includes Roro.constants, :VERSION
   end
-  
 end

@@ -3,7 +3,7 @@ require "test_helper"
 class DummyClass ; include Roro::Crypto::FileReflection ; end
 
 describe Roro::Crypto::FileReflection do
-  before(:all) { prepare_destination 'workbench' }
+  before(:all) { prepare_destination 'crypto' }
   
   Given(:subject)   { DummyClass.new }
   Given(:directory) { './roro' }

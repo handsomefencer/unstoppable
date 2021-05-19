@@ -1,6 +1,6 @@
 require "test_helper"
 describe Roro::Crypto::Obfuscator do
-  before(:all)           { prepare_destination 'workbench' }
+  before(:all)           { prepare_destination 'crypto' }
 
   Given(:subject)         { Roro::Crypto::Obfuscator.new }
   Given(:directory)       { './roro' }

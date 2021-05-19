@@ -66,18 +66,18 @@ describe Roro::Configurator::Omakase do
         Then { rails_actions.each { |e| assert_includes actions, e } }
       end
       
-      describe 'greenfield' do 
+      describe 'omakase' do
         
         Given(:options) { { greenfield: :greenfield } }  
         Given(:greenfield_actions)  { config.structure[:greenfield_actions] }
         Given(:greenfield_commands) { config.structure[:greenfield_commands] }
         
-        describe 'must store greenfield actions' do
+        describe 'must store omakase actions' do
 
           Given(:expected) { [
             "@config.env['force'] = true",
             [
-              "src = 'rails/Dockerfile.greenfield.tt'",
+              "src = 'rails/Dockerfile.omakase.tt'",
               "dest = 'roro/containers/app/Dockerfile'",
               "template src, dest, @config.env\n"].join("\n")
           ] }
@@ -85,7 +85,7 @@ describe Roro::Configurator::Omakase do
           Then { expected.each { |e| assert_includes greenfield_actions, e } }
         end
         
-        describe 'must store greenfield commands' do
+        describe 'must store omakase commands' do
         
           Given(:expected) { [
             "system \"DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . .\""
@@ -112,7 +112,7 @@ describe Roro::Configurator::Omakase do
         Given(:expected) { [:main_app_name, :docker_username] }
 
         Then { expected.each { |e| assert_includes config.env.keys, e } }
-        And  { assert_equal 'greenfield', config.env[:main_app_name]}
+        And  { assert_equal 'omakase', config.env[:main_app_name]}
       end
       
       describe 'rails' do 
@@ -120,7 +120,7 @@ describe Roro::Configurator::Omakase do
         Given(:expected) { [ :main_app_name, :ruby_version ] }
 
         Then { expected.each { |e| assert_includes config.env.keys, e } }
-        And  { assert_equal 'greenfield', config.env[:main_app_name]}
+        And  { assert_equal 'omakase', config.env[:main_app_name]}
         And  { assert_match /\d.\d./, config.env[:ruby_version] }
       end
       

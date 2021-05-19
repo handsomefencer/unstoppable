@@ -5,12 +5,12 @@ before { skip }
   Given(:options) { nil }
   Given(:config)  { Roro::Configuration.new(options) }
   Given { Roro::Configuration.any_instance.stubs(:handle_roro_artifacts)}
-  describe 'greenfield' do 
+  describe 'omakase' do
     
-    Given { prepare_destination "greenfield/greenfield" }
+    Given { prepare_destination "omakase/omakase" }
 
     describe '.confirm_directory_app must fail' do
-      describe 'errors with option :greenfield' do 
+      describe 'errors with option :omakase' do
 
         Given(:options) { { greenfield: true } }
 
@@ -19,7 +19,7 @@ before { skip }
     end
     
     describe '.confirm_directory_empty' do 
-      describe 'succeeds when empty and with option :greenfield' do 
+      describe 'succeeds when empty and with option :omakase' do
         
         Given(:options) { { greenfield: true } }
         
@@ -43,7 +43,7 @@ before { skip }
         end
         
         describe 'not empty and' do 
-          describe 'with option :greenfield' do 
+          describe 'with option :omakase' do
 
             Given { prepare_destination "rails/603" }
             Given(:options) { { greenfield: true } }
@@ -72,7 +72,7 @@ before { skip }
         Then { assert config.confirm_directory_app }
       end
       
-      describe 'errors with option :greenfield' do 
+      describe 'errors with option :omakase' do
 
         Given(:options) { { greenfield: true } }
 
@@ -81,7 +81,7 @@ before { skip }
       
       describe 'errors when directory empty' do 
 
-        Given { prepare_destination "greenfield/greenfield" }
+        Given { prepare_destination "omakase/omakase" }
         Given(:options) { { rollon: true } }
 
         Then { assert_raises( Roro::Error ) { config.confirm_directory_app } }
@@ -99,7 +99,7 @@ before { skip }
         .returns(system_response) 
     } }
 
-    describe 'greenfield' do 
+    describe 'omakase' do
 
       Given { greenfield_rails_test_base }
 

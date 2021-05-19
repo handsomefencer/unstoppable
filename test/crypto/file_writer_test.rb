@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Roro::Crypto::FileWriter do
-  before { prepare_destination 'workbench' }
+  before { prepare_destination 'crypto' }
   
   Given(:subject)   { Roro::Crypto::FileWriter.new }
   

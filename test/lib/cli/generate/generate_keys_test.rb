@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Roro::CLI do
-  Given { prepare_destination 'workbench' }
+  Given { prepare_destination 'crypto' }
   Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('y') }
   Given(:cli)   { Roro::CLI.new }
 

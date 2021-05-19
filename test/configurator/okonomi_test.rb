@@ -2,7 +2,7 @@ require "test_helper"
 
 describe Roro::Configuration::Okonomi do
   before { skip }
-  Given { prepare_destination 'greenfield/greenfield' }
+  Given { prepare_destination 'omakase/omakase' }
   Given { stubs_dependency_responses }
 
   Given(:config)  { Roro::Configuration.new(options) }

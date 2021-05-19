@@ -1,6 +1,6 @@
 require "test_helper"
 describe Roro::Crypto::Exposer do
-  before(:all)           { prepare_destination 'workbench' }
+  before(:all)           { prepare_destination 'crypto' }
   
   Given(:directory)       { './roro' }
   Given(:filename)        { 'dummy' }
