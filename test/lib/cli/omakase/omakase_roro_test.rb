@@ -2,12 +2,13 @@ require "test_helper"
 
 describe Roro::CLI do
 
-  before { prepare_destination 'crypto' }
+  before { prepare_destination 'workbench' }
   Given(:cli) { Roro::CLI.new }
-  Given(:generate) { cli.omakase_roro}
-  Invariant { assert_roro_generated }
+  Given(:generate) { cli.omakase_roro }
 
   Given { generate }
+
+  Then { assert_directory './roro' }
 
   # Then
   # describe 'omakase' do

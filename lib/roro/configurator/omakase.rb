@@ -20,7 +20,6 @@ module Roro
         @env[:force] = true
         @env[:verbose] = false
         @env[:roro_version] = VERSION
-        screen_target_directory 
       end
       
       def build_story 
@@ -118,14 +117,14 @@ module Roro
       end
    
       def get_layer(filedir)
-        filepath = filedir + '.yml' 
+        filepath = filedir + '.yml'
+        # key = filedir.split('/').last
+        # error_msg = "Cannot find that story #{key} at #{filepath}. Has it been written?"
         if !File.exist?(filepath)
-          key = filedir.split('/').last
-          error_msg = "Cannot find that story #{key} at #{filepath}. Has it been written?" 
-          raise (Roro::Error.new(error_msg)) 
+          raise (Roro::Error.new("Can't find story"))
         end   
         json = JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
-        json ? json : ( raise (Roro::Error.new(error_msg))) 
+        json ? json : ( raise (Roro::Story::StoryMissing.new("Is #{filepath} empty?")))
       end
 
       def story_map(story='stories')
