@@ -7,7 +7,7 @@ describe Roro::Configuration do
   ## everything that is configured via a) config file or b) interrogation.
 
   Given { skip
-  greenfield_rails_test_base }
+          greenfield_rails_test_base }
 
   Given(:config) { Roro::Configuration.new(options) }
 
