@@ -13,7 +13,7 @@ module Roro
           end
 
           def greenfield_rails_test_base 
-            prepare_destination 'omakase'
+            prepare_destination 'workbench'
             stubs_manifests
             rails_test_base
           end
