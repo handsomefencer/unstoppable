@@ -1,12 +1,11 @@
 # RoRo
 
-RoRo is a containerization and continuous integration framework for Ruby applications. Like Rails, it favors convention over configuration. It aims to provide everything you need to:
+RoRo is a set of tools and stories for building, running continuous integration tests on, and deploying your projects. It aims to provide everything you need to:
 
-1. Greenfield a Rails app in its own container that can talk to a separate Postgresql container.
-2. Containerize your existing application and database in development.
-3. Run your tests with Guard in a separate container.
-4. Roll your containers onto CircleCI for testing.
-5. Roll your containers off of CircleCI to your servers.
+1. Greenfield a new project with an app with any database or service it might depend on.
+2. Containerize your existing project into different application, database, and service containers development.
+3. Roll your project into ci/cd.
+4. Deploy your project into production.
 
 ## Getting started
 
