@@ -3,7 +3,7 @@
 RoRo is a set of tools and stories for building, running continuous integration tests on, and deploying your containerized projects. It aims to provide everything you need to:
 
 1. Greenfield a new project with a containerized app and database and other containers you might need.
-2. Containerize your projects existing application, database, and services.
+2. Containerize your project's existing application, database, and services.
 3. Roll your project into ci/cd.
 4. Roll your project onto production servers with kubernetes.
 
