@@ -4,16 +4,21 @@ module Roro
     module Helpers 
       module FilesHelper
 
-        def prepare_destination(dummy)
+        def prepare_destination(*dummy_apps)
           Dir.chdir ENV['PWD']
           tmpdir = Dir.mktmpdir
-          FileUtils.cp_r(Dir.pwd + "/test/dummies/#{dummy}", tmpdir)
-          Dir.chdir(tmpdir + '/' + dummy)
+          FileUtils.cp_r(Dir.pwd + "/test/dummies/workbench", tmpdir)
+
+          dummy_apps.each do |dummy_app|
+            FileUtils.cp_r(Dir.pwd + "/test/dummies/#{dummy_app}", "#{tmpdir}/workbench")
+          end
+          Dir.chdir("#{tmpdir}/workbench")
         end
 
         def assert_file(file, *contents)
-          assert File.exist?(file), "Expected #{file} to exist, but does not"
-  
+          actual = Dir.glob("#{Dir.pwd}/**/*")
+          assert File.exist?(file), "Expected #{file} to exist, but does not. actual: #{actual}"
+
           read = File.read(file) if block_given? || !contents.empty?
           yield read if block_given?
           contents.each do |content|
