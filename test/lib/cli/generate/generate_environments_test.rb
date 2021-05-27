@@ -66,6 +66,13 @@ describe 'Roro::CLI #generate_obfuscated' do
         Then { assert_directory './roro/containers/stamen/scripts' }
       end
 
+      describe 'will not generate sibling container for a file' do
+        Given { insert_file 'dummy_env', './dummy.env'  }
+        Given { assert_file './dummy.env' }
+
+        Then { refute_file './roro/containers/dummy'}
+      end
+
       describe 'must generate default .env files in sibling containers ' do
 
         Then { assert_directory './roro/containers/pistil/env/base.env' }
