@@ -7,11 +7,17 @@ module Roro
         def prepare_destination(*dummy_apps)
           Dir.chdir ENV['PWD']
           tmpdir = Dir.mktmpdir
-          FileUtils.cp_r(Dir.pwd + "/test/dummies/workbench", tmpdir)
-
+          FileUtils.mkdir_p("#{tmpdir}/workbench")
           dummy_apps.each do |dummy_app|
-            FileUtils.cp_r(Dir.pwd + "/test/dummies/#{dummy_app}", "#{tmpdir}/workbench")
+            source = Dir.pwd + "/test/dummies/#{dummy_app}"
+            if File.exist?(source)
+              FileUtils.cp_r(source, "#{tmpdir}/workbench")
+            else
+              FileUtils.mkdir_p("#{tmpdir}/workbench/#{dummy_app}")
+            end
           end
+          @tmpdir = tmpdir
+          files = Dir.glob("#{@tmpdir}/**/*")
           Dir.chdir("#{tmpdir}/workbench")
         end
 
@@ -22,7 +28,7 @@ module Roro
           read = File.read(file) if block_given? || !contents.empty?
           yield read if block_given?
           contents.each do |content|
-  
+
             case content
             when String
               assert_equal content, read
@@ -31,9 +37,8 @@ module Roro
             end
           end
         end
-  
         alias :assert_directory :assert_file
-  
+
         def refute_file(file, *contents)
           refute File.exist?(file), "Expected #{file} to not exist, but it does."
         end

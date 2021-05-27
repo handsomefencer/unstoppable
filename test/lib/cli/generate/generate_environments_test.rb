@@ -4,64 +4,97 @@ require 'test_helper'
 
 describe 'Roro::CLI #generate_obfuscated' do
   before(:all) do
-    prepare_destination('roro')
     Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
   end
 
-  Given(:cli) { Roro::CLI.new }
+  Given(:cli)      { Roro::CLI.new }
+  Given(:generate) { cli.generate_environments(*environments) }
 
-  Given(:generate) { cli.generate_environments }
+  context 'when no sibling folders and' do
+    Given { prepare_destination('roro') }
 
-  context 'when no arguments supplied' do
-
-    Then { assert_directory './database' }
-    And  { assert_directory './nginx' }
-    And  { assert_directory './pistil' }
-    And  { assert_directory './roro' }
-    And  { assert_directory './stamen' }
-
-    context 'when no breadcrumbs' do
+    context 'when no environments supplied' do
+      Given(:environments) { nil }
       Given { generate }
 
-      Then { assert_file './roro/keys/development.key' }
-    end
+      describe 'must generate default containers' do
 
-    context 'when no .env files and' do
-      context 'when no key' do
-        # Then  { assert_raises(Roro::Crypto::EnvironmentError) { generate } }
+        Then { assert_directory './roro/containers/backend/scripts' }
       end
 
-      context 'when key' do
-        Given { insert_key_file }
+      describe 'must generate default .env files ' do
 
-        # Then  { assert_raises(Roro::Crypto::EnvironmentError) { generate } }
-      end
-    end
-
-    context 'when .env files and' do
-      Given { insert_dummy }
-
-      context 'when no key' do
-        # Then  { assert_raises(Roro::Crypto::KeyError) { generate } }
+        Then { assert_directory './roro/containers/frontend/env/base.env' }
       end
 
-      context 'when matching key' do
-        Given { insert_key_file }
-        Given { generate }
+      describe 'must generate default keys' do
 
-        # Then  { assert_file './roro/dummy.env.enc' }
+        Then { assert_file './roro/keys/base.key' }
       end
     end
 
-    context 'when multiple .env files and keys' do
-      Given { insert_dummy }
-      Given { insert_key_file }
-      Given { insert_dummy('./roro/stupid.env') }
-      Given { insert_key_file('stupid.key') }
+    context 'when environments supplied' do
+      Given(:environments) { 'smart' }
       Given { generate }
 
-      # Then  { assert_file './roro/dummy.env.enc' }
-      # And   { assert_file './roro/stupid.env.enc' }
+      describe 'must generate default containers' do
+
+        Then { assert_directory './roro/containers/frontend/scripts' }
+      end
+
+      describe 'must generate specified .env files ' do
+
+        Then { assert_file './roro/containers/frontend/env/smart.env' }
+      end
+
+      describe 'must generate specified keys' do
+
+        Then { assert_file './roro/keys/smart.key' }
+      end
+    end
+  end
+
+  context 'when sibling folders and' do
+    Given { prepare_destination('roro', 'pistil', 'stamen') }
+
+    context 'when no environments supplied' do
+      Given(:environments) { nil }
+      Given { generate }
+
+      describe 'must generate sibling containers' do
+
+        Then { assert_directory './roro/containers/stamen/scripts' }
+      end
+
+      describe 'must generate default .env files in sibling containers ' do
+
+        Then { assert_directory './roro/containers/pistil/env/base.env' }
+      end
+
+      describe 'must generate default keys' do
+
+        Then { assert_file './roro/keys/base.key' }
+      end
+    end
+
+    context 'when environments supplied' do
+      Given(:environments) { 'smart' }
+      Given { generate }
+
+      describe 'must generate default containers' do
+
+        Then { assert_directory './roro/containers/stamen/scripts' }
+      end
+
+      describe 'must generate specified .env files ' do
+
+        Then { assert_file './roro/containers/pistil/env/smart.env' }
+      end
+
+      describe 'must generate specified keys' do
+
+        Then { assert_file './roro/keys/smart.key' }
+      end
     end
   end
 end
