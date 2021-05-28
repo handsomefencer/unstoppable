@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Roro::CLI #generate_obfuscated' do
+describe 'Roro::CLI#generate_environments' do
   before(:all) do
     Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
   end

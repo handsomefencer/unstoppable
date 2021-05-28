@@ -2,9 +2,9 @@
 
 require 'test_helper'
 
-describe 'Roro::CLI.generate_exposed' do
+describe 'Roro::CLI#generate_exposed' do
   before(:all) do
-    prepare_destination 'crypto'
+    prepare_destination 'roro'
     Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
   end
 

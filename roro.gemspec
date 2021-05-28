@@ -34,11 +34,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor', '~> 1.0', '>= 1.0.1'
   spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.4'
   spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
+  spec.add_development_dependency 'climate_control'
   spec.add_development_dependency 'handsome_fencer-test', '~> 0.2.2'
   spec.add_development_dependency 'minitest-focus'
+  spec.add_development_dependency 'minitest-hooks'
+  spec.add_development_dependency 'mocha', '~> 1.11', '>= 1.11.2'
   spec.add_development_dependency 'readline'
   spec.add_development_dependency 'require_all'
-  spec.add_development_dependency 'mocha', '~> 1.11', '>= 1.11.2'
-  spec.add_development_dependency 'climate_control'
 
 end

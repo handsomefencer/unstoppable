@@ -1,9 +1,9 @@
+# frozen_string_literal: true
 
 module Roro
-  module Test 
-    module Helpers 
+  module Test
+    module Helpers
       module FilesHelper
-
         def prepare_destination(*dummy_apps)
           Dir.chdir ENV['PWD']
           tmpdir = Dir.mktmpdir
@@ -17,7 +17,6 @@ module Roro
             end
           end
           @tmpdir = tmpdir
-          files = Dir.glob("#{@tmpdir}/**/*")
           Dir.chdir("#{tmpdir}/workbench")
         end
 
@@ -28,7 +27,6 @@ module Roro
           read = File.read(file) if block_given? || !contents.empty?
           yield read if block_given?
           contents.each do |content|
-
             case content
             when String
               assert_equal content, read
@@ -37,67 +35,71 @@ module Roro
             end
           end
         end
-        alias :assert_directory :assert_file
+        alias assert_directory assert_file
 
-        def refute_file(file, *contents)
+        def refute_file(file, *_contents)
           refute File.exist?(file), "Expected #{file} to not exist, but it does."
         end
-  
+
         def insert_file(source, destination)
-          source = [ENV.fetch("PWD"), 'test/fixtures/files', source].join('/')
+          source = [ENV.fetch('PWD'), 'test/fixtures/files', source].join('/')
           destination = [Dir.pwd, destination].join('/')
           FileUtils.cp(source, destination)
         end
-  
+
         def yaml_from_template(file)
           File.read([Roro::CLI.source_root, file].join('/'))
         end
 
-        def assert_insertion 
-          assert_file(file) { |c| assert_match( insertion, c ) } 
-        end
-        
-        def assert_insertions 
-          insertions.each { |l| assert_file(file, insertions) } 
-        end
-        
-        def assert_insertions_in_environments
-          environments.each { |env| 
-            config.env[:env] = env
-            insertions.each { |insertion| 
-              assert_file(file) { |c| 
-                assert_match(insertion,c)
-              }
-            }
-          }
-        end
-     
-        def assert_removals 
-          removals.each { |l| assert_file(file) { |c| refute_match(l,c)}}
+        def assert_insertion
+          assert_file(file) { |c| assert_match(insertion, c) }
         end
 
-        def insert_dummy_encryptable(filename='./roro/dummy.env') 
+        def assert_insertions
+          insertions.each { |_l| assert_file(file, insertions) }
+        end
+
+        def assert_insertions_in_environments
+          environments.each do |env|
+            config.env[:env] = env
+            insertions.each do |insertion|
+              assert_file(file) do |c|
+                assert_match(insertion, c)
+              end
+            end
+          end
+        end
+
+        def assert_removals
+          removals.each { |l| assert_file(file) { |c| refute_match(l, c) } }
+        end
+
+        def insert_dummy_encryptable(filename = './roro/dummy.env')
           insert_file 'dummy_env', filename
         end
-        
-        def insert_dummy_decryptable(filename='./roro/dummy.env.enc') 
-          insert_file 'dummy_env_enc', filename 
-        end
-        
-        def insert_dummy(filename='./roro/dummy.env')
+
+        def insert_dummy_env(filename = './roro/dummy.env')
           insert_file 'dummy_env', filename
         end
-        
-        def insert_key_file(filename='dummy.key')
+
+        def insert_dummy_decryptable(filename = './roro/dummy.env.enc')
+          insert_file 'dummy_env_enc', filename
+        end
+
+        def insert_dummy(filename = './roro/dummy.env')
+          insert_file 'dummy_env', filename
+        end
+
+        def insert_key_file(filename = 'dummy.key')
           insert_file 'dummy_key', "./roro/keys/#{filename}"
         end
-          
+
         def assert_correct_error
           returned = assert_raises(error) { execute }
-          assert_match error_message, returned.message 
+          assert_match error_message, returned.message
         end
-        
-        def with_env_set(options=nil, &block)
+
+        def with_env_set(options = nil, &block)
           ClimateControl.modify(options || { DUMMY_KEY: var_from_ENV }, &block)
         end
       end
