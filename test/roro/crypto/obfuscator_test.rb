@@ -5,16 +5,16 @@ require 'test_helper'
 describe Roro::Crypto::Obfuscator do
   let(:subject)      { Roro::Crypto::Obfuscator.new }
   let(:workbench)    { 'crypto/roro' }
-  let(:directory)    { 'roro' }
-  let(:extension)    { '.smart.env' }
+  let(:directory)    { './roro' }
+  let(:extension)    { '.env' }
   let(:environments) { ['dummy'] }
 
   describe '#obfuscate_file(file, key)' do
     let(:key) { dummy_key }
 
-    Given { insert_dummy_encryptable }
-    Given { subject.obfuscate_file 'roro/dummy.smart.env', key }
-    Then  { assert_file 'roro/dummy.smart.env.enc' }
+    Given { insert_dummy }
+    Given { subject.obfuscate_file 'roro/env/dummy.env', key }
+    Then  { assert_file 'roro/env/dummy.env.enc' }
   end
 
   describe '#obfuscate(envs, dir, ext)' do
@@ -28,33 +28,33 @@ describe Roro::Crypto::Obfuscator do
 
     context 'when obfuscatable but no matching key' do
 
-      Given { insert_dummy_encryptable }
+      Given { insert_dummy }
       Then  { assert_raises(Roro::Crypto::KeyError) { execute } }
     end
 
-    context 'when matching key and when' do
+    context 'when matching key and when obfuscatable' do
 
       Given { insert_dummy_key }
 
-      context 'obfuscatable' do
+      context 'exists' do
 
         Given { insert_dummy }
         Given { execute }
-        Then  { assert_file 'roro/dummy.smart.env.enc' }
+        Then  { assert_file 'roro/env/dummy.env.enc' }
       end
 
-      context 'when obfuscatable is subenv' do
+      context 'is a subenv' do
 
-        Given { insert_dummy 'roro/dummy.subenv.smart.env' }
+        Given { insert_dummy 'roro/env/dummy.subenv.env' }
         Given { execute }
-        Then  { assert_file 'roro/dummy.subenv.smart.env.enc' }
+        Then  { assert_file 'roro/env/dummy.subenv.env.enc' }
       end
 
-      context 'when obfuscatable is nested deeply' do
+      context 'is nested deeply' do
 
-        Given { insert_dummy 'roro/containers/app/dummy.subenv.smart.env' }
+        Given { insert_dummy 'roro/containers/app/env/dummy.subenv.env' }
         Given { execute }
-        Then  { assert_file 'roro/containers/app/dummy.subenv.smart.env.enc' }
+        Then  { assert_file 'roro/containers/app/env/dummy.subenv.env.enc' }
       end
     end
   end

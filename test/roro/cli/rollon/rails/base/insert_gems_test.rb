@@ -11,7 +11,7 @@ describe Roro::CLI do
     describe 'when legacy is' do 
       describe 'sqlite' do  
         
-        Given { prepare_destination "rails/603/with_sqlite" }
+        # Given { prepare_destination "rails/603/with_sqlite" }
         
         describe '.insert_db_gem(pg)' do 
           
@@ -39,7 +39,7 @@ describe Roro::CLI do
       
       describe 'pg' do  
         
-        Given { prepare_destination "rails/603/with_pg" }
+        # Given { prepare_destination "rails/603/with_pg" }
         
         describe '.insert_db_gem(pg)' do 
 

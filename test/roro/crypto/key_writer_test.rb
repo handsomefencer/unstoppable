@@ -13,7 +13,7 @@ describe Roro::Crypto::KeyWriter do
   end
 
   describe '#write_keyfiles(environments, directory, extension' do
-    let(:execute) { subject.write_keyfiles environments, './roro', '.smart.env' }
+    let(:execute) { subject.write_keyfiles environments, './roro', '.env' }
 
     context 'when no environments supplied and' do
       let(:environments) { [] }
@@ -57,7 +57,7 @@ describe Roro::Crypto::KeyWriter do
 
       context 'when no files matching' do
         let(:error)         { Roro::Crypto::EnvironmentError }
-        let(:error_message) { 'No .smart.env files in ./roro' }
+        let(:error_message) { 'No .env files in ./roro' }
 
         Then { assert_correct_error }
       end
