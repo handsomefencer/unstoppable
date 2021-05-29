@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_obfuscated' do
-  before(:all) do
+  before do
     prepare_destination 'crypto/roro'
     Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
   end

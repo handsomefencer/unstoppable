@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe Roro::CLI do
+describe 'Roro::CLI#generate_keys' do
   Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('y') }
   Given(:cli) { Roro::CLI.new }
 

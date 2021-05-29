@@ -12,10 +12,10 @@ require 'minitest/pride'
 require 'minitest/spec'
 require 'mocha/minitest'
 require 'climate_control'
-
 require 'roro'
 
 Dir.glob("#{Dir.pwd}/test/helpers/**/*.rb").sort.each { |h| require h }
+
 module Roro
   module Test
     module Mocks; end

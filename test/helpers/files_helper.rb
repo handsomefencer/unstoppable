@@ -4,20 +4,18 @@ module Roro
   module Test
     module Helpers
       module FilesHelper
+
         def prepare_destination(*dummy_apps)
-          Dir.chdir ENV['PWD']
-          tmpdir = Dir.mktmpdir
-          FileUtils.mkdir_p("#{tmpdir}/workbench")
+          @tmpdir = Dir.mktmpdir
+          FileUtils.mkdir_p("#{@tmpdir}/workbench")
           dummy_apps.each do |dummy_app|
             source = Dir.pwd + "/test/dummies/#{dummy_app}"
             if File.exist?(source)
-              FileUtils.cp_r(source, "#{tmpdir}/workbench")
+              FileUtils.cp_r(source, "#{@tmpdir}/workbench")
             else
-              FileUtils.mkdir_p("#{tmpdir}/workbench/#{dummy_app}")
+              FileUtils.mkdir_p("#{@tmpdir}/workbench/#{dummy_app}")
             end
           end
-          @tmpdir = tmpdir
-          Dir.chdir("#{tmpdir}/workbench")
         end
 
         def assert_file(file, *contents)
@@ -82,6 +80,10 @@ module Roro
           insert_file 'dummy_env', filename
         end
 
+        def insert_dummy_env_enc(filename = './roro/env/dummy.env.enc')
+          insert_file 'dummy_env_enc', filename
+        end
+
         def insert_dummy_decryptable(filename = './roro/dummy.env.enc')
           insert_file 'dummy_env_enc', filename
         end
@@ -90,6 +92,9 @@ module Roro
           insert_file 'dummy_env', filename
         end
 
+        def insert_dummy_key(filename = 'dummy.key')
+          insert_file 'dummy_key', "./roro/keys/#{filename}"
+        end
         def insert_key_file(filename = 'dummy.key')
           insert_file 'dummy_key', "./roro/keys/#{filename}"
         end
