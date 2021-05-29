@@ -5,11 +5,11 @@ require 'test_helper'
 class DummyClass; include Roro::Crypto::FileReflection; end
 
 describe Roro::Crypto::FileReflection do
+  let(:subject)   { DummyClass.new }
+  let(:execute)   { subject.source_files directory, pattern  }
   let(:workbench) { 'crypto/roro' }
   let(:directory) { 'roro' }
   let(:pattern)   { '.env' }
-  let(:subject)   { DummyClass.new }
-  let(:execute)   { subject.source_files directory, pattern  }
 
   describe ':source_files(directory, pattern' do
     context 'when no files match the pattern' do
