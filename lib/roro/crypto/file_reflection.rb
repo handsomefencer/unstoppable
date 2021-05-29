@@ -4,7 +4,7 @@ module Roro
   module Crypto
     module FileReflection
       def source_files(dir, pattern)
-        Dir.glob("#{Dir.pwd}/#{dir}/**/*#{pattern}")
+        Dir.glob("#{dir}/**/*#{pattern}")
       end
 
       def gather_environments(dir, ext)
@@ -18,7 +18,6 @@ module Roro
           environments.uniq
         end
       end
-
 
       def get_key(environment, _dir = 'roro')
         env_key = "#{environment.upcase}_KEY"

@@ -6,7 +6,7 @@ describe 'Roro::CLI#generate_environments' do
 
   Given(:cli) { Roro::CLI.new }
   Given(:environments) { nil }
-  Given(:dummy_apps) { 'roro' }
+  Given(:workbench) { 'roro' }
   Given(:generate) { cli.generate_environments(*environments) }
 
   describe 'when non-directory file exists in workbench' do
@@ -39,7 +39,7 @@ describe 'Roro::CLI#generate_environments' do
     end
 
     context 'when environments supplied' do
-      Given(:dummy_apps) { 'roro' }
+      Given(:workbench) { 'roro' }
       Given(:environments) { 'smart' }
 
       describe 'must generate default containers' do
@@ -60,7 +60,7 @@ describe 'Roro::CLI#generate_environments' do
   end
 
   context 'when sibling folders and' do
-    Given(:dummy_apps) { %w[roro pistil stamen] }
+    Given(:workbench) { %w[roro pistil stamen] }
 
     context 'when no environments supplied' do
       Given(:environments) { nil }

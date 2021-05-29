@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_exposed' do
-  Given(:dummy_apps) { 'roro' }
+  Given(:workbench) { 'roro' }
   Given(:cli) { Roro::CLI.new }
 
   Given(:setup_with_encrypted_files) do

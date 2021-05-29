@@ -14,7 +14,7 @@ require 'mocha/minitest'
 require 'climate_control'
 require 'roro'
 
-Dir.glob("#{Dir.pwd}/test/helpers/**/*.rb").sort.each { |h| require h }
+require_all 'test/helpers'
 
 module Roro
   module Test
@@ -26,7 +26,6 @@ module Roro
   end
 end
 
-# include TestHelper::Stories::Rails
 include Roro::Test::Helpers::Mocks
 include Roro::Test::Helpers::FilesHelper
 include Roro::Test::Helpers::Stories::Rails

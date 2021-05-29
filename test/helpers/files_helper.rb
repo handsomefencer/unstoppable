@@ -5,18 +5,7 @@ module Roro
     module Helpers
       module FilesHelper
 
-        def prepare_destination(*dummy_apps)
-          @tmpdir = Dir.mktmpdir
-          FileUtils.mkdir_p("#{@tmpdir}/workbench")
-          dummy_apps.each do |dummy_app|
-            source = Dir.pwd + "/test/dummies/#{dummy_app}"
-            if File.exist?(source)
-              FileUtils.cp_r(source, "#{@tmpdir}/workbench")
-            else
-              FileUtils.mkdir_p("#{@tmpdir}/workbench/#{dummy_app}")
-            end
-          end
-        end
+
 
         def assert_file(file, *contents)
           actual = Dir.glob("#{Dir.pwd}/**/*")
@@ -80,7 +69,7 @@ module Roro
           insert_file 'dummy_env', filename
         end
 
-        def insert_dummy_env_enc(filename = './roro/env/dummy.env.enc')
+        def insert_dummy_env_enc(filename = 'roro/env/dummy.env.enc')
           insert_file 'dummy_env_enc', filename
         end
 
@@ -94,6 +83,10 @@ module Roro
 
         def insert_dummy_key(filename = 'dummy.key')
           insert_file 'dummy_key', "./roro/keys/#{filename}"
+        end
+
+        def dummy_key
+          'XLF9IzZ4xQWrZo5Wshc5nw=='
         end
         def insert_key_file(filename = 'dummy.key')
           insert_file 'dummy_key', "./roro/keys/#{filename}"

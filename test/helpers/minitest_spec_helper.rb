@@ -4,12 +4,31 @@ module Minitest
   class Spec
     before do
       Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
-      prepare_destination(*dummy_apps)
-      Dir.chdir("#{@tmpdir}/workbench")
+      if defined? workbench
+        prepare_destination(*workbench)
+        Dir.chdir("#{@tmpdir}/workbench")
+        @tmpdir_glob = Dir.glob("#{@tmpdir}/workbench/**/*")
+      end
+    end
+
+    def prepare_destination(*workbench)
+      @tmpdir = Dir.mktmpdir
+      FileUtils.mkdir_p("#{@tmpdir}/workbench")
+      workbench.each do |dummy_app|
+        source = Dir.pwd + "/test/dummies/#{dummy_app}"
+        if File.exist?(source)
+          FileUtils.cp_r(source, "#{@tmpdir}/workbench")
+        else
+          FileUtils.mkdir_p("#{@tmpdir}/workbench/#{dummy_app}")
+        end
+      end
     end
 
     after do
-      Dir.chdir ENV['PWD']
+      if defined? workbench
+
+        Dir.chdir ENV['PWD']
+        end
     end
   end
 end
