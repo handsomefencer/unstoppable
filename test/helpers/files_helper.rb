@@ -62,22 +62,18 @@ module Roro
         end
 
         def insert_dummy_encryptable(filename = './roro/dummy.smart.env')
-          insert_file 'dummy_env', filename
+          insert_dummy filename
         end
 
-        def insert_dummy_env(filename = './roro/dummy.smart.env')
-          insert_file 'dummy_env', filename
+        def insert_dummy_env(filename = 'roro/env/dummy.env')
+          insert_dummy filename
         end
 
-        def insert_dummy_env_enc(filename = 'roro/smart.env/dummy.smart.env.enc')
+        def insert_dummy_env_enc(filename = 'roro/env/dummy.env.enc')
           insert_file 'dummy_env_enc', filename
         end
 
-        def insert_dummy_decryptable(filename = './roro/dummy.smart.env.enc')
-          insert_file 'dummy_env_enc', filename
-        end
-
-        def insert_dummy(filename = './roro/dummy.smart.env')
+        def insert_dummy(filename = 'roro/env/dummy.env')
           insert_file 'dummy_env', filename
         end
 
@@ -88,6 +84,7 @@ module Roro
         def dummy_key
           'XLF9IzZ4xQWrZo5Wshc5nw=='
         end
+
         def insert_key_file(filename = 'dummy.key')
           insert_file 'dummy_key', "./roro/keys/#{filename}"
         end

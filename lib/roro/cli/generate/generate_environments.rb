@@ -10,14 +10,15 @@ module Roro
     def generate_environments(*environments)
       default_environments = %w[base development test staging production]
       environments = environments.empty? ? default_environments : environments
-      siblings = Dir.entries('./') - %w[roro . ..]
-      containers = siblings.empty? ? %w[frontend backend database] : siblings
-      containers.each do |container|
-        create_file("./roro/containers/#{container}/scripts/.keep")
+      siblings = Dir.glob('./*').select { |f| File.directory?(f) }
+      siblings += %w[frontend backend database] if siblings.size.eql?(1)
+      siblings.each { |s| s.split('/').last }.each do |container|
+        create_file("roro/containers/#{container}/scripts/.keep")
+        create_file("roro/containers/#{container}/env/.keep")
         environments.each do |env|
-          dummy_env_var = 'SOME_KEY=some_value'
-          create_file("./roro/smart.env/#{env}.smart.env", dummy_env_var)
-          create_file "./roro/containers/#{container}/smart.env/#{env}.smart.env", dummy_env_var
+          content = 'SOME_KEY=some_value'
+          create_file "./roro/env/#{env}.env", content
+          create_file "roro/containers/#{container}/env/#{env}.env", content
         end
       end
       environments.each { |e| generate_keys(e) }
