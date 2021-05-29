@@ -25,10 +25,7 @@ module Minitest
     end
 
     after do
-      if defined? workbench
-
-        Dir.chdir ENV['PWD']
-        end
+      Dir.chdir ENV['PWD'] if defined? workbench
     end
   end
 end

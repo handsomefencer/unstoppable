@@ -21,7 +21,7 @@ describe Roro::Crypto::Cipher do
   end
 
   describe '#decrypt(encrypted, key)' do
-    
+
     Then { assert_equal decrypted, plaintext }
   end
 end
