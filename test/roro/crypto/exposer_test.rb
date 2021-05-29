@@ -13,12 +13,12 @@ describe Roro::Crypto::Exposer do
     let(:key) { dummy_key }
 
     Given { insert_dummy_env_enc }
-    Given { subject.expose_file('roro/env/dummy.env.enc', key) }
-    Then  { assert_file 'roro/env/dummy.env', /DATABASE_HOST/ }
+    Given { subject.expose_file('roro/smart.env/dummy.smart.env.enc', key) }
+    Then  { assert_file 'roro/smart.env/dummy.smart.env', /DATABASE_HOST/ }
   end
 
   describe '#expose(envs, dir, ext)' do
-    let(:execute) { subject.expose environments, directory, '.env.enc' }
+    let(:execute) { subject.expose environments, directory, '.smart.env.enc' }
 
     context 'when no environments supplied and' do
       let(:environments) { [] }
@@ -42,24 +42,24 @@ describe Roro::Crypto::Exposer do
 
           Given { insert_dummy_env_enc }
           Given { execute }
-          Then  { assert_file 'roro/env/dummy.env' }
-          And   { assert_file 'roro/env/dummy.env.enc' }
+          Then  { assert_file 'roro/smart.env/dummy.smart.env' }
+          And   { assert_file 'roro/smart.env/dummy.smart.env.enc' }
         end
 
         context 'is a subenv' do
 
           Given { insert_dummy_key }
-          Given { insert_dummy_env_enc 'roro/dummy.subenv.env.enc' }
+          Given { insert_dummy_env_enc 'roro/dummy.subenv.smart.env.enc' }
           Given { execute }
-          Then  { assert_file 'roro/dummy.subenv.env' }
+          Then  { assert_file 'roro/dummy.subenv.smart.env' }
         end
 
         context 'os deeply nested' do
 
-          Given { insert_dummy_env_enc 'roro/containers/dummy.subenv.env.enc' }
+          Given { insert_dummy_env_enc 'roro/containers/dummy.subenv.smart.env.enc' }
           Given { execute }
-          Then  { assert_file 'roro/containers/dummy.subenv.env' }
-          Then  { assert_file 'roro/containers/dummy.subenv.env.enc' }
+          Then  { assert_file 'roro/containers/dummy.subenv.smart.env' }
+          Then  { assert_file 'roro/containers/dummy.subenv.smart.env.enc' }
         end
       end
     end
@@ -81,20 +81,20 @@ describe Roro::Crypto::Exposer do
 
         Given { insert_dummy_key }
         Given { insert_dummy_env_enc }
-        Given { insert_dummy_env_enc 'roro/env/smart.env.enc' }
+        Given { insert_dummy_env_enc 'roro/smart.env/smart.smart.env.enc' }
 
         describe 'must decrypt file' do
 
           Given { execute }
-          Then  { assert_file 'roro/env/dummy.env' }
-          And   { assert_file 'roro/env/dummy.env.enc' }
+          Then  { assert_file 'roro/smart.env/dummy.smart.env' }
+          And   { assert_file 'roro/smart.env/dummy.smart.env.enc' }
         end
 
         describe 'must not decrypt any other file' do
 
           Given { execute }
-          Then  { refute_file 'roro/env/smart.env' }
-          And   { assert_file 'roro/env/smart.env.enc' }
+          Then  { refute_file 'roro/smart.env/smart.smart.env' }
+          And   { assert_file 'roro/smart.env/smart.smart.env.enc' }
         end
       end
     end

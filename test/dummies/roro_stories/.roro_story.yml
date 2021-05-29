@@ -90,34 +90,34 @@
   :roro_version: 0.3.17
   :rails_env: ci
 :actions:
-- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.env
-- "Roro::CLI.roro_environments.each do |e| \n  @config.env[:rails_env] = e\n  source
-  = 'rails/dotenv/database.pg.env.tt'\n  target = \"roro/containers/database/#{e}.env\"\n
-  \ template( source, target, @config.env) \nend\n"
-- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.env
-- "Roro::CLI.roro_environments.each do |e| \n  @config.env[:rails_env] = e\n  source
-  = 'rails/dotenv/database.pg.env.tt'\n  target = \"roro/containers/database/#{e}.env\"\n
-  \ template( source, target, @config.env) \nend\n"
-- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.env
-- "Roro::CLI.roro_environments.each do |e| \n  @config.env[:rails_env] = e\n  source
-  = 'rails/dotenv/database.pg.env.tt'\n  target = \"roro/containers/database/#{e}.env\"\n
-  \ template( source, target, @config.env) \nend\n"
-- "Roro::CLI.roro_environments.each do |environment| \n  src = 'rails/dotenv/web.env.tt'\n
-  \ dest = \"roro/containers/app/#{environment}.env\"\n  template src, dest, @config.env\nend\n"
+- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.smart.env
+- "Roro::CLI.roro_environments.each do |e| \n  @config.smart.env[:rails_env] = e\n  source
+  = 'rails/dotenv/database.pg.smart.env.tt'\n  target = \"roro/containers/database/#{e}.smart.env\"\n
+  \ template( source, target, @config.smart.env) \nend\n"
+- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.smart.env
+- "Roro::CLI.roro_environments.each do |e| \n  @config.smart.env[:rails_env] = e\n  source
+  = 'rails/dotenv/database.pg.smart.env.tt'\n  target = \"roro/containers/database/#{e}.smart.env\"\n
+  \ template( source, target, @config.smart.env) \nend\n"
+- copy_file 'rails/config/database.pg.yml', 'config/database.yml', @config.smart.env
+- "Roro::CLI.roro_environments.each do |e| \n  @config.smart.env[:rails_env] = e\n  source
+  = 'rails/dotenv/database.pg.smart.env.tt'\n  target = \"roro/containers/database/#{e}.smart.env\"\n
+  \ template( source, target, @config.smart.env) \nend\n"
+- "Roro::CLI.roro_environments.each do |environment| \n  src = 'rails/dotenv/web.smart.env.tt'\n
+  \ dest = \"roro/containers/app/#{environment}.smart.env\"\n  template src, dest, @config.smart.env\nend\n"
 - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
-- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
-- template 'base/dotenv', './.env', @config.env
-- directory 'rails/roro', './roro', @config.env
-- template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.env
+- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.smart.env
+- template 'base/dotenv', './.smart.env', @config.smart.env
+- directory 'rails/roro', './roro', @config.smart.env
+- template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.smart.env
 - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
-- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
-- template 'base/dotenv', './.env', @config.env
-- directory 'rails/roro', './roro', @config.env
-- template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.env
+- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.smart.env
+- template 'base/dotenv', './.smart.env', @config.smart.env
+- directory 'rails/roro', './roro', @config.smart.env
+- template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.smart.env
 - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
-- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
-- template 'base/dotenv', './.env', @config.env
-- directory 'rails/roro', './roro', @config.env
+- template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.smart.env
+- template 'base/dotenv', './.smart.env', @config.smart.env
+- directory 'rails/roro', './roro', @config.smart.env
 - chmod "roro/docker-entrypoint.sh", 0755
 :stories: postgresql
 :startup:

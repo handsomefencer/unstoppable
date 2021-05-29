@@ -5,9 +5,9 @@ stories:
 
 actions: 
   - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml' 
-  - template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env
-  - template 'base/dotenv', './.env', @config.env
-  - directory 'rails/roro', './roro', @config.env
+  - template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.smart.env
+  - template 'base/dotenv', './.smart.env', @config.smart.env
+  - directory 'rails/roro', './roro', @config.smart.env
   - chmod "roro/docker-entrypoint.sh", 0755
 
 

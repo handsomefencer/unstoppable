@@ -6,15 +6,15 @@ describe Roro::Crypto::Obfuscator do
   let(:subject)      { Roro::Crypto::Obfuscator.new }
   let(:workbench)    { 'crypto/roro' }
   let(:directory)    { 'roro' }
-  let(:extension)    { '.env' }
+  let(:extension)    { '.smart.env' }
   let(:environments) { ['dummy'] }
 
   describe '#obfuscate_file(file, key)' do
     let(:key) { dummy_key }
 
     Given { insert_dummy_encryptable }
-    Given { subject.obfuscate_file 'roro/dummy.env', key }
-    Then  { assert_file 'roro/dummy.env.enc' }
+    Given { subject.obfuscate_file 'roro/dummy.smart.env', key }
+    Then  { assert_file 'roro/dummy.smart.env.enc' }
   end
 
   describe '#obfuscate(envs, dir, ext)' do
@@ -40,21 +40,21 @@ describe Roro::Crypto::Obfuscator do
 
         Given { insert_dummy }
         Given { execute }
-        Then  { assert_file 'roro/dummy.env.enc' }
+        Then  { assert_file 'roro/dummy.smart.env.enc' }
       end
 
       context 'when obfuscatable is subenv' do
 
-        Given { insert_dummy 'roro/dummy.subenv.env' }
+        Given { insert_dummy 'roro/dummy.subenv.smart.env' }
         Given { execute }
-        Then  { assert_file 'roro/dummy.subenv.env.enc' }
+        Then  { assert_file 'roro/dummy.subenv.smart.env.enc' }
       end
 
       context 'when obfuscatable is nested deeply' do
 
-        Given { insert_dummy 'roro/containers/app/dummy.subenv.env' }
+        Given { insert_dummy 'roro/containers/app/dummy.subenv.smart.env' }
         Given { execute }
-        Then  { assert_file 'roro/containers/app/dummy.subenv.env.enc' }
+        Then  { assert_file 'roro/containers/app/dummy.subenv.smart.env.enc' }
       end
     end
   end

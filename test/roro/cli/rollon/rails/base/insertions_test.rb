@@ -18,7 +18,7 @@ describe Roro::CLI do
 
     Given(:file) { '.gitignore' }
     Given(:insertions) { [ /roro\/\*\*\/\*.key/, 
-      /roro\/\*\*\/\*.env/,
+      /roro\/\*\*\/\*.smart.env/,
       /\*kubeconfig.yaml/,
       /\*kubeconfig.yml/,
       /\*.roro_configurator.yml/

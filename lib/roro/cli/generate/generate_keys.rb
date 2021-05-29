@@ -1,7 +1,7 @@
 module Roro
   class CLI < Thor
     
-    desc "generate::keys", "Generates a key for each <environment>.env file."
+    desc "generate::keys", "Generates a key for each <environment>.smart.env file."
     method_option :environment, type: :hash, default: {}, desc: "Generates a key for each argument.", banner: "development, staging"
     
     map "generate::keys" => "generate_keys"
@@ -11,7 +11,7 @@ module Roro
 
     def generate_keys(*environments)
       key_writer = Roro::Crypto::KeyWriter.new
-      key_writer.write_keyfiles(environments, './roro', '.env')
+      key_writer.write_keyfiles(environments, './roro', '.smart.env')
     end
   end
 end

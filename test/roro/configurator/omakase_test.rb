@@ -54,9 +54,9 @@ describe Roro::Configurator::Omakase do
       Given(:actions)       { config.structure[:actions] }
       Given(:rails_actions) { [
         "template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'", 
-        "template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.env",
-        "template 'base/dotenv', './.env', @config.env",
-        "directory 'rails/roro', './roro', @config.env"
+        "template 'rails/docker-compose.yml.tt', './docker-compose.yml', @config.smart.env",
+        "template 'base/dotenv', './.smart.env', @config.smart.env",
+        "directory 'rails/roro', './roro', @config.smart.env"
       ] }
       
       describe 'rollon' do 
@@ -75,11 +75,11 @@ describe Roro::Configurator::Omakase do
         describe 'must store omakase actions' do
 
           Given(:expected) { [
-            "@config.env['force'] = true",
+            "@config.smart.env['force'] = true",
             [
               "src = 'rails/Dockerfile.omakase.tt'",
               "dest = 'roro/containers/app/Dockerfile'",
-              "template src, dest, @config.env\n"].join("\n")
+              "template src, dest, @config.smart.env\n"].join("\n")
           ] }
     
           Then { expected.each { |e| assert_includes greenfield_actions, e } }
@@ -98,15 +98,15 @@ describe Roro::Configurator::Omakase do
       describe 'postgres' do 
         Given(:expected) { [
           `Roro::Cli.roro_environments.each do |environment| 
-            src = 'rails/dotenv/web.env.tt'
-            dest = "roro/containers/app/#{environment}.env"
-            template src, dest, @config.env
+            src = 'rails/dotenv/web.smart.env.tt'
+            dest = "roro/containers/app/#{environment}.smart.env"
+            template src, dest, @config.smart.env
         end`
       ]}
       end
     end
         
-    describe '.env' do 
+    describe '.smart.env' do
       describe 'dynamic variables' do 
       
         Given(:expected) { [:main_app_name, :docker_username] }

@@ -11,7 +11,7 @@ describe 'Roro::CLI#generate_environments' do
 
   describe 'when non-directory file exists in workbench' do
 
-    Given { insert_dummy_env 'dummy.env' }
+    Given { insert_dummy_env 'dummy.smart.env' }
     Given { generate }
 
     Then { refute_file './roro/containers/dummy' }
@@ -27,9 +27,9 @@ describe 'Roro::CLI#generate_environments' do
         Then { assert_directory './roro/containers/backend/scripts' }
       end
 
-      describe 'must generate default .env files ' do
+      describe 'must generate default .smart.env files ' do
 
-        Then { assert_directory './roro/containers/frontend/env/base.env' }
+        Then { assert_directory './roro/containers/frontend/smart.env/base.smart.env' }
       end
 
       describe 'must generate default keys' do
@@ -47,9 +47,9 @@ describe 'Roro::CLI#generate_environments' do
         Then  { assert_directory './roro/containers/frontend/scripts' }
       end
 
-      describe 'must generate specified .env files ' do
+      describe 'must generate specified .smart.env files ' do
         Given { generate }
-        Then  { assert_file './roro/containers/frontend/env/smart.env' }
+        Then  { assert_file './roro/containers/frontend/smart.env/smart.smart.env' }
       end
 
       describe 'must generate specified keys' do
@@ -70,9 +70,9 @@ describe 'Roro::CLI#generate_environments' do
         Then  { assert_directory './roro/containers/stamen/scripts' }
       end
 
-      describe 'must generate default .env files in sibling containers ' do
+      describe 'must generate default .smart.env files in sibling containers ' do
         Given { generate }
-        Then  { assert_directory './roro/containers/pistil/env/base.env' }
+        Then  { assert_directory './roro/containers/pistil/smart.env/base.smart.env' }
       end
 
       describe 'must generate default keys' do
@@ -89,9 +89,9 @@ describe 'Roro::CLI#generate_environments' do
         Then  { assert_directory './roro/containers/stamen/scripts' }
       end
 
-      describe 'must generate specified .env files ' do
+      describe 'must generate specified .smart.env files ' do
         Given { generate }
-        Then  { assert_file './roro/containers/pistil/env/smart.env' }
+        Then  { assert_file './roro/containers/pistil/smart.env/smart.smart.env' }
       end
 
       describe 'must generate specified keys' do

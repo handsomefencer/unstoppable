@@ -13,7 +13,7 @@ describe 'Roro::CLI#generate_obfuscated' do
   context 'when no environments supplied' do
     Given(:generate) { cli.generate_obfuscated }
 
-    context 'when no .env files and' do
+    context 'when no .smart.env files and' do
       context 'when no key' do
         Then  { assert_raises(Roro::Crypto::EnvironmentError) { generate } }
       end
@@ -25,7 +25,7 @@ describe 'Roro::CLI#generate_obfuscated' do
       end
     end
 
-    context 'when .env files and' do
+    context 'when .smart.env files and' do
       Given { insert_dummy }
 
       context 'when no key' do
@@ -36,19 +36,19 @@ describe 'Roro::CLI#generate_obfuscated' do
         Given { insert_key_file }
         Given { generate }
 
-        Then  { assert_file './roro/dummy.env.enc' }
+        Then  { assert_file './roro/dummy.smart.env.enc' }
       end
     end
 
-    context 'when multiple .env files and keys' do
+    context 'when multiple .smart.env files and keys' do
       Given { insert_dummy }
       Given { insert_key_file }
-      Given { insert_dummy('./roro/stupid.env') }
+      Given { insert_dummy('./roro/stupid.smart.env') }
       Given { insert_key_file('stupid.key') }
       Given { generate }
 
-      Then  { assert_file './roro/dummy.env.enc' }
-      And   { assert_file './roro/stupid.env.enc' }
+      Then  { assert_file './roro/dummy.smart.env.enc' }
+      And   { assert_file './roro/stupid.smart.env.enc' }
     end
   end
 end

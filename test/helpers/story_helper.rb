@@ -4,7 +4,7 @@ module Roro::Test::Helpers::Stories::WorkBench
     assert_directory './roro/keys'
     assert_directory './roro/scripts'
     assert_directory './roro/containers'
-    assert_directory './roro/env'
+    assert_directory './roro/smart.env'
   end
 
   def assert_roro_containers(*containers)

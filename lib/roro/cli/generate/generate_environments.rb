@@ -16,8 +16,8 @@ module Roro
         create_file("./roro/containers/#{container}/scripts/.keep")
         environments.each do |env|
           dummy_env_var = 'SOME_KEY=some_value'
-          create_file("./roro/env/#{env}.env", dummy_env_var)
-          create_file "./roro/containers/#{container}/env/#{env}.env", dummy_env_var
+          create_file("./roro/smart.env/#{env}.smart.env", dummy_env_var)
+          create_file "./roro/containers/#{container}/smart.env/#{env}.smart.env", dummy_env_var
         end
       end
       environments.each { |e| generate_keys(e) }

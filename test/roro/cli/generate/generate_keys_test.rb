@@ -12,22 +12,22 @@ describe 'Roro::CLI#generate_keys' do
 
       Given(:generate) { cli.generate_keys }
 
-      context 'when no .env files' do
+      context 'when no .smart.env files' do
         Given(:error) { Roro::Crypto::EnvironmentError }
 
         Then { assert_raises(error) { generate } }
       end
 
-      context 'when one .env file' do
+      context 'when one .smart.env file' do
         Given { insert_dummy_env }
         Given { generate }
 
         Then  { assert_file('roro/keys/dummy.key') }
       end
 
-      context 'when two different .env files' do
+      context 'when two different .smart.env files' do
         Given { insert_dummy_env }
-        Given { insert_dummy_env('./roro/stupid.env') }
+        Given { insert_dummy_env('./roro/stupid.smart.env') }
         Given { generate }
 
         Then  { assert_file('roro/keys/dummy.key') }

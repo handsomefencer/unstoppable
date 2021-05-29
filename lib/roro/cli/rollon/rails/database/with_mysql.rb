@@ -12,8 +12,8 @@ module Roro
         %w(development production test staging ci).each do |environment| 
           config[:rails_env] = environment
           
-          source = 'rails/dotenv/database.mysql.env.tt'
-          target = "roro/containers/database/#{environment}.env" 
+          source = 'rails/dotenv/database.mysql.smart.env.tt'
+          target = "roro/containers/database/#{environment}.smart.env"
           template( source, target, config )
         end
       end

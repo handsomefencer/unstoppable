@@ -17,7 +17,7 @@ describe "Story::RubyGem::WithCICD" do
   
   describe 'must modify .gitignore' do
     
-    Given(:dotenvs) { /roro\/\*\*\/\*.env/ } 
+    Given(:dotenvs) { /roro\/\*\*\/\*.smart.env/ }
     Given(:keys)    { /roro\/\*\*\/\*.key/ } 
     Given(:file)    { '.gitignore' }
       
@@ -60,9 +60,9 @@ describe "Story::RubyGem::WithCICD" do
     Then { rubies.each { |ruby| assert_match /\d.\d./, ruby } } 
   end
   
-  describe 'roro/ci.env' do 
+  describe 'roro/ci.smart.env' do
     
-    Given(:file) { 'roro/containers/ruby_image/ci.env' }
+    Given(:file) { 'roro/containers/ruby_image/ci.smart.env' }
     Given(:expected) { "export RUBYGEMS_API_KEY=#{rubygems_api_key}"}
 
     Then { assert_file(file) {|c| assert_match expected, c} } 

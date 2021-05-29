@@ -12,7 +12,7 @@ module Roro
     no_commands do 
       def ruby_gem_with_ci_cd(*args)
         answer = ask("\nYou can add your rubygems api key in\n\t 
-          './roro/containers/ruby_gem/ci.env' \n\nlater, or we'll try to add it here:", 
+          './roro/containers/ruby_gem/ci.smart.env' \n\nlater, or we'll try to add it here:",
         default: '')
         rubygems_api_key = (answer.eql?("") ? 'some-key' : answer)
         @config.env[:rubygems_api_key] = rubygems_api_key

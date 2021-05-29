@@ -8,11 +8,11 @@ module Roro
       
       @config ||= Roro::Configuration.new(options)
       # configuration = {
-      #   env_vars: @config.env.keys,
+      #   env_vars: @config.smart.env.keys,
       #   intentions: @config.intentions,
       #   story: @config.structure['story']
       # }
-      # create_file ".roro_configurator.yml", @config.env.to_yaml 
+      # create_file ".roro_configurator.yml", @config.smart.env.to_yaml
     end
   end 
 end

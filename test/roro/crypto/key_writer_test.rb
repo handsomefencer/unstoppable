@@ -13,7 +13,7 @@ describe Roro::Crypto::KeyWriter do
   end
 
   describe '#write_keyfiles(environments, directory, extension' do
-    let(:execute) { subject.write_keyfiles environments, './roro', '.env' }
+    let(:execute) { subject.write_keyfiles environments, './roro', '.smart.env' }
 
     context 'when no environments supplied and' do
       let(:environments) { [] }
@@ -27,21 +27,21 @@ describe Roro::Crypto::KeyWriter do
 
       context 'when file nested deeply' do
 
-        Given { insert_dummy 'roro/containers/dummy.env' }
+        Given { insert_dummy 'roro/containers/dummy.smart.env' }
         Given { execute }
         Then { assert_file 'roro/keys/dummy.key' }
       end
 
       context 'when file is subenv' do
 
-        Given { insert_dummy 'roro/dummy.subenv.env' }
+        Given { insert_dummy 'roro/dummy.subenv.smart.env' }
         Given { execute }
         Then  { assert_file 'roro/keys/dummy.key' }
       end
 
       context 'when file is nested subenv' do
 
-        Given { insert_dummy 'roro/containers/dummy.subenv.env' }
+        Given { insert_dummy 'roro/containers/dummy.subenv.smart.env' }
         Given { execute }
         Then  { assert_file 'roro/keys/dummy.key' }
       end
@@ -49,7 +49,7 @@ describe Roro::Crypto::KeyWriter do
       context 'when multiple files' do
 
         Given { insert_dummy }
-        Given { insert_dummy('roro/containers/stupid.stupidenv.env') }
+        Given { insert_dummy('roro/containers/stupid.stupidenv.smart.env') }
         Given { execute }
         Then  { assert_file 'roro/keys/stupid.key' }
         And   { assert_file 'roro/keys/dummy.key' }
@@ -57,7 +57,7 @@ describe Roro::Crypto::KeyWriter do
 
       context 'when no files matching' do
         let(:error)         { Roro::Crypto::EnvironmentError }
-        let(:error_message) { 'No .env files in ./roro' }
+        let(:error_message) { 'No .smart.env files in ./roro' }
 
         Then { assert_correct_error }
       end

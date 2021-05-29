@@ -61,23 +61,23 @@ module Roro
           removals.each { |l| assert_file(file) { |c| refute_match(l, c) } }
         end
 
-        def insert_dummy_encryptable(filename = './roro/dummy.env')
+        def insert_dummy_encryptable(filename = './roro/dummy.smart.env')
           insert_file 'dummy_env', filename
         end
 
-        def insert_dummy_env(filename = './roro/dummy.env')
+        def insert_dummy_env(filename = './roro/dummy.smart.env')
           insert_file 'dummy_env', filename
         end
 
-        def insert_dummy_env_enc(filename = 'roro/env/dummy.env.enc')
+        def insert_dummy_env_enc(filename = 'roro/smart.env/dummy.smart.env.enc')
           insert_file 'dummy_env_enc', filename
         end
 
-        def insert_dummy_decryptable(filename = './roro/dummy.env.enc')
+        def insert_dummy_decryptable(filename = './roro/dummy.smart.env.enc')
           insert_file 'dummy_env_enc', filename
         end
 
-        def insert_dummy(filename = './roro/dummy.env')
+        def insert_dummy(filename = './roro/dummy.smart.env')
           insert_file 'dummy_env', filename
         end
 

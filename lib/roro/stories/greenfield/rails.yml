@@ -1,5 +1,5 @@
 greenfield_actions:
-  - "@config.env['force'] = true"
+  - "@config.smart.env['force'] = true"
   - |
     src = 'rails/Dockerfile.greenfield.tt'
     dest = 'roro/containers/app/Dockerfile'

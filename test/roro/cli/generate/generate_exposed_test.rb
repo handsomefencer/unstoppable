@@ -8,10 +8,10 @@ describe 'Roro::CLI#generate_exposed' do
 
   Given(:setup_with_encrypted_files) do
     %w[dummy].each do |e|
-      insert_dummy_env_enc("roro/env/#{e}.env.enc")
-      # insert_dummy_env_enc("roro/containers/app/#{e}.env.enc")
-      # assert_file "./roro/env/#{e}.env.enc"
-      # insert_dummy_env_enc("./roro/containers/fron/env/#{e}.env.enc")
+      insert_dummy_env_enc("roro/smart.env/#{e}.smart.env.enc")
+      # insert_dummy_env_enc("roro/containers/app/#{e}.smart.env.enc")
+      # assert_file "./roro/smart.env/#{e}.smart.env.enc"
+      # insert_dummy_env_enc("./roro/containers/fron/smart.env/#{e}.smart.env.enc")
     end
   end
 
@@ -23,9 +23,9 @@ describe 'Roro::CLI#generate_exposed' do
       # Given { insert_key_file('production.key')}
       Given { cli.generate_exposed 'dummy' }
 
-      Then { assert_file 'roro/env/dummy.env' }
-      # And  { assert_file 'roro/containers/app/production.env' }
-      # And  { refute_file 'roro/env/development.env' }
+      Then { assert_file 'roro/smart.env/dummy.smart.env' }
+      # And  { assert_file 'roro/containers/app/production.smart.env' }
+      # And  { refute_file 'roro/smart.env/development.smart.env' }
     end
 
     describe 'with ENV_KEY' do
@@ -37,7 +37,7 @@ describe 'Roro::CLI#generate_exposed' do
         # Then do
         #   with_env_set do
         #     cli.generate_exposed 'dummy'
-        #     assert_file 'roro/containers/app/dummy.env'
+        #     assert_file 'roro/containers/app/dummy.smart.env'
         #   end
         # end
       end

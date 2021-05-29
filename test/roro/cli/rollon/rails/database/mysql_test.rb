@@ -39,7 +39,7 @@ describe Roro::CLI do
     describe 'env_files' do 
       
       Given(:environments) { Roro::CLI.roro_environments }
-      Given(:file)         { "roro/containers/database/#{config.env[:env]}.env" }
+      Given(:file)         { "roro/containers/database/#{config.env[:env]}.smart.env" }
       Given(:insertions)   { [
         "MYSQL_ROOT_PASSWORD=root-mysql-password",
         "MYSQL_PASSWORD=your-mysql-password",

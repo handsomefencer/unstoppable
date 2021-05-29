@@ -48,7 +48,7 @@ describe Roro::CLI do
       
       Given { rollon }
       Given(:file) { ".gitignore" }
-      Given(:insertions) {["roro/**/*.env", "roro/**/*.key"] }
+      Given(:insertions) {["roro/**/*.smart.env", "roro/**/*.key"] }
       
       # Then { assert_insertions } 
     end
@@ -84,9 +84,9 @@ describe Roro::CLI do
       # Then { assert_insertions }
     end
     
-    describe '.env file for docker-compose.yml' do 
+    describe '.smart.env file for docker-compose.yml' do
       
-      Given(:file) { ".env" }
+      Given(:file) { ".smart.env" }
       Given(:insertion) { 'RORO_ENV=development' } 
 
       # Then { assert_insertion }
@@ -112,9 +112,9 @@ describe Roro::CLI do
       # Then { assert_insertions }
     end 
     
-    describe "must create .env file for roro environments" do 
+    describe "must create .smart.env file for roro environments" do
       
-      Given(:file) { "roro/containers/app/#{config.env[:env]}.env" }
+      Given(:file) { "roro/containers/app/#{config.env[:env]}.smart.env" }
       Given(:environments) { Roro::CLI.roro_environments }
       Given(:insertions) { ["DATABASE_HOST=#{config.env[:database_host]}"] }
 
