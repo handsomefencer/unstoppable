@@ -5,8 +5,6 @@ module Roro
     module Helpers
       module FilesHelper
 
-
-
         def assert_file(file, *contents)
           actual = Dir.glob("#{Dir.pwd}/**/*")
           assert File.exist?(file), "Expected #{file} to exist, but does not. actual: #{actual}"

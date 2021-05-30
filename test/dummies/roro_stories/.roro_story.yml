@@ -29,7 +29,7 @@
     :default: n
   :gitignore_sensitive_files:
     :question: "If you plan to use the environment files RoRo generates for \nyour
-      own environment variables, it's a good idea to keep \nthese files out of source
+      own environment variables, it's a good idea to .keep \nthese files out of source
       control. Would you like RoRo to \nmodify your .gitignore file to accomplish
       this for you ?\n"
     :choices:
