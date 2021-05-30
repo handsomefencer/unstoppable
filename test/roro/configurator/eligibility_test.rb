@@ -7,7 +7,7 @@ describe Roro::Configurator::Eligibility do
   Given { Roro::Configuration.any_instance.stubs(:handle_roro_artifacts)}
   describe 'omakase' do
     
-    Given { #  prepare_destination "omakase/omakase" }
+    # Given { #  prepare_destination "omakase/omakase" }
 
     describe '.confirm_directory_app must fail' do
       describe 'errors with option :omakase' do
@@ -45,7 +45,7 @@ describe Roro::Configurator::Eligibility do
         describe 'not empty and' do 
           describe 'with option :omakase' do
 
-            Given { #  prepare_destination "rails/603" }
+            # Given { #  prepare_destination "rails/603" }
             Given(:options) { { greenfield: true } }
           
             Then { assert_raises( Roro::Error ) { config } }
@@ -57,7 +57,7 @@ describe Roro::Configurator::Eligibility do
     
   describe 'rollon' do
     
-    Given { #  prepare_destination "rails/603" }
+    # Given { #  prepare_destination "rails/603" }
     
     describe '.confirm_directory_app' do
       describe 'succeeds without options specified' do 
@@ -81,7 +81,7 @@ describe Roro::Configurator::Eligibility do
       
       describe 'errors when directory empty' do 
 
-        Given { #  prepare_destination "omakase/omakase" }
+        # Given { #  prepare_destination "omakase/omakase" }
         Given(:options) { { rollon: true } }
 
         Then { assert_raises( Roro::Error ) { config.confirm_directory_app } }
