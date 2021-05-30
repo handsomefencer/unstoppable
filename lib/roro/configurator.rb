@@ -9,7 +9,7 @@ module Roro
     include Eligibility
     include Okonomi
     include Omakase
-    class Configurator < Thor; end
+    class Configurator ; end
   end
 
   class Configuration < Thor

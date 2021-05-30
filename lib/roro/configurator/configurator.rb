@@ -1,17 +1,17 @@
 module Roro
   module Configurator
-    module Omakase
+    class Configurator
       attr_reader :structure, :intentions, :env, :options, :story
 
-      def initialize(args = {}, options = {})
+      def initialize(options = {})
 
-        @options = sanitize(args)
+        @options = sanitize(options)
         @structure = {
           intentions: {},
           choices: {},
           env_vars: {}
         }
-        @story = @options[:story] ? { rollon: @options[:story] } : default_story
+        @story = @options[:story] || { }
         build_story
         @intentions = @structure[:intentions]
         @env = @structure[:env_vars]
@@ -139,23 +139,6 @@ module Roro
           array << { name.to_sym => story_map([story, name].join('/'))}
         end
         array
-      end
-
-      def default_story(story = 'rollon', loc = nil)
-        hash = {}
-        loc = [(loc ||= Roro::CLI.story_root), story].join('/')
-        substory = get_layer(loc)[:stories]
-        if substory.is_a?(Array)
-          array = []
-          substory.each do |s|
-            ss = get_layer([loc, s].join('/'))[:stories]
-            array << (ss.is_a?(String) ? { s.to_sym => ss.to_sym } : default_story( s, loc ) )
-          end
-          hash[story.to_sym] = array
-        else
-          hash[story.to_sym] = default_story(substory, loc)
-        end
-        hash
       end
 
       def validate_story(story)
