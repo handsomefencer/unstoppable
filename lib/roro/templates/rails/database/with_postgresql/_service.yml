@@ -2,6 +2,6 @@
     image: postgres
     env_file:
       - roro/containers/database/${RORO_ENV:-development}.smart.env
-      - roro/containers/app/${RORO_ENV:-development}.smart.env
+      - roro/containers/backend/${RORO_ENV:-development}.smart.env
     volumes:
       - db_data:/var/lib/postgresql/data

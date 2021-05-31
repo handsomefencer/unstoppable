@@ -5,8 +5,8 @@
       - attach-roro
       - run: docker-compose build
       - run: docker-compose up -d
-      - run: docker-compose run app bundle
-      - run: docker-compose run app yarn
-      - run: docker-compose run app bin/rails db:create
-      - run: docker-compose run app bin/rails db:migrate
-      - run: docker-compose run app bin/rails test
+      - run: docker-compose run backend bundle
+      - run: docker-compose run backend yarn
+      - run: docker-compose run backend bin/rails db:create
+      - run: docker-compose run backend bin/rails db:migrate
+      - run: docker-compose run backend bin/rails test

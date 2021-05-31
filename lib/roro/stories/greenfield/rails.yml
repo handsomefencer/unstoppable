@@ -6,4 +6,4 @@ greenfield_actions:
     template src, dest, @config.env
   
 greenfield_commands: 
-  - system "DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . ."
+  - system "DOCKER_BUILDKIT=1 docker build --file roro/containers/backend/Dockerfile --output . ."

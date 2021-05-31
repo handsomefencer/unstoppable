@@ -7,13 +7,13 @@ spec:
   replicas: 1
   selector:
     matchLabels: 
-      app: rails-kube-app
+      app: rails-kube-backend
       tier: cache
   template:
     metadata:
       name: redis
       labels:
-        app: rails-kube-app
+        app: rails-kube-backend
         tier: cache
     spec:
       containers:

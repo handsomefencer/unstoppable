@@ -52,9 +52,9 @@ describe Roro::Crypto::Obfuscator do
 
       context 'is nested deeply' do
 
-        Given { insert_dummy 'roro/containers/app/env/dummy.subenv.env' }
+        Given { insert_dummy 'roro/containers/backend/env/dummy.subenv.env' }
         Given { execute }
-        Then  { assert_file 'roro/containers/app/env/dummy.subenv.env.enc' }
+        Then  { assert_file 'roro/containers/backend/env/dummy.subenv.env.enc' }
       end
     end
   end

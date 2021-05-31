@@ -13,9 +13,9 @@ module Roro
         confirm_dependency({
           system_query: "ls -A",
           warning: "This is an empty directory. You can generate a new and fully 
-            dockerized Rails app using the 'omakase' command here here but if
-            you want to containerize an existing app -- which is what the 'rollon'
-            command is for -- you'll need to navigate to a directory with an app we
+            dockerized Rails backend using the 'omakase' command here here but if
+            you want to containerize an existing backend -- which is what the 'rollon'
+            command is for -- you'll need to navigate to a directory with an backend we
             can roll onto.",
           suggestion: "$ roro omakase",
           conditional: "!Dir.glob('*').empty?"})
@@ -24,7 +24,7 @@ module Roro
       def confirm_directory_empty 
         confirm = confirm_dependency({
           system_query: "ls -A",
-          warning: "this is not an empty directory. Roro will not omakase a new Rails app unless either a) the current directory is empty or b) you run omakase with the --force flag",
+          warning: "this is not an empty directory. Roro will not omakase a new Rails backend unless either a) the current directory is empty or b) you run omakase with the --force flag",
           suggestion: "$ roro omakase --force",
           conditional: "Dir.glob('*').empty?" # || (Dir.glob('*').size.eql?(1) && Dir.glob('roro_configurator.yml'))" 
           }) 

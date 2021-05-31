@@ -12,7 +12,7 @@ module Roro
           env_vars: {}
         }
         @story = @options[:story] || { }
-        build_story
+        # build_story
         @intentions = @structure[:intentions]
         @env = @structure[:env_vars]
         @env[:main_app_name] = Dir.pwd.split('/').last

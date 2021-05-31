@@ -14,7 +14,7 @@ services:
       - "3000:3000"
       - "4000:4000"
     volumes:
-      - .:/usr/src/app
+      - .:/usr/src/backend
       - gem_cache:/gems
     env_file:
       - .smart.env/development/web
@@ -28,7 +28,7 @@ services:
     ports:
       - 3035:3035
     volumes:
-      - .:/usr/src/app
+      - .:/usr/src/backend
       - gem_cache:/gems
     env_file:
       - .smart.env/development/database

@@ -2,7 +2,7 @@ module Roro
 
   class CLI < Thor
 
-    desc 'omakase::rails', "Greenfield a dockerized rails app."
+    desc 'omakase::rails', "Greenfield a dockerized rails backend."
 
     map 'omakase::rails' => 'greenfield_rails'
 

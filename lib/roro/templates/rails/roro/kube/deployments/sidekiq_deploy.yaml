@@ -13,18 +13,18 @@ spec:
       maxUnavailable: 1  
   selector:
     matchLabels: 
-      app: rails-kube-app
+      app: rails-kube-backend
       tier: queue
   template:
     metadata:
       name: sidekiq
       labels:
-        app: rails-kube-app
+        app: rails-kube-backend
         tier: queue
     spec:
       containers:
       - name: sidekiq
-        image: tzumby/rails-app-alpine:latest
+        image: tzumby/rails-backend-alpine:latest
         args: ["sidekiq -C config/sidekiq.yml"]
         env:
         - name: DATABASE_NAME

@@ -4,10 +4,10 @@ kind: Service
 metadata:
   name: redis
   labels:
-    app: rails-kube-app
+    app: rails-kube-backend
 spec:
   ports:
     - port: 6379
   selector:
-    app: rails-kube-app
+    app: rails-kube-backend
     tier: cache

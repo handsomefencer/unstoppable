@@ -12,12 +12,19 @@ describe Roro::Configurator::Configurator do
       Then { assert config.options.keys.first.is_a? Symbol }
     end
 
-    context 'when value is a string' do
+    context 'when value is a' do
+      context 'string' do
 
-      When(:options) { { 'key' => 'value' } }
-      Then { assert config.options.values.first.is_a? Symbol }
-    end
-  #
+        When(:options) { { 'key' => 'value' } }
+        Then { assert config.options.values.first.is_a? Symbol }
+      end
+
+      context 'when value is an array' do
+
+        When(:options) { { 'key' => [] } }
+        Then { assert config.options.values.first.is_a? Array }
+      end
+
   #   describe 'sanitizing when options contain' do
   #
   #
@@ -74,7 +81,7 @@ describe Roro::Configurator::Configurator do
   #
   #       Then { assert_equal expected, actual }
   #     end
-  #   end
+    end
   end
 
   describe '#structure' do

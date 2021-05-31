@@ -4,10 +4,10 @@ kind: Service
 metadata:
   name: postgres
   labels: 
-    app: rails-kube-app
+    app: rails-kube-backend
 spec:
   ports:
     - port: 5432
   selector:
-    app: rails-kube-app
+    app: rails-kube-backend
     tier: database

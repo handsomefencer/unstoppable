@@ -13,18 +13,18 @@ spec:
       maxUnavailable: 1  
   selector:
     matchLabels: 
-      app: rails-kube-app
-      tier: app
+      app: rails-kube-backend
+      tier: backend
   template:
     metadata:
       name: rails
       labels:
-        app: rails-kube-app
-        tier: app
+        app: rails-kube-backend
+        tier: backend
     spec:
       containers:
       - name: rails
-        image: tzumby/rails-app-alpine:latest
+        image: tzumby/rails-backend-alpine:latest
         args: ["rake assets:precompile && rails s -p 3000 -b 0.0.0.0"]
         env:
         - name: RAILS_LOG_TO_STDOUT

@@ -16,7 +16,7 @@ module Roro
         end
         %w(development production test staging ci).each do |environment| 
           src = 'rails/dotenv/web.smart.env.tt'
-          dest = "roro/containers/app/#{environment}.smart.env"
+          dest = "roro/containers/backend/#{environment}.smart.env"
           template src, dest, @config.env
         end
       end

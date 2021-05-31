@@ -12,13 +12,13 @@ actions:
 
 
 startup: 
-  success: "Your app should be available at http://localhost:3000"
+  success: "Your backend should be available at http://localhost:3000"
   commands: 
     - docker-compose build --no-cache
     - docker-compose up -d
-    - docker-compose run app bin/rails db:create
-    - docker-compose run app bin/rails db:migrate
-    - 'docker-compose run app echo #{success_msg}'
+    - docker-compose run backend bin/rails db:create
+    - docker-compose run backend bin/rails db:migrate
+    - 'docker-compose run backend echo #{success_msg}'
 
 env_vars: 
   ruby_version: '2.7'

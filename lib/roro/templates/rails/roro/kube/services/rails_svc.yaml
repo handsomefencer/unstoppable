@@ -4,10 +4,10 @@ kind: Service
 metadata:
   name: rails
   labels:
-    app: rails-kube-app
+    app: rails-kube-backend
 spec:
   ports:
     - port: 3000
   selector:
-    app: rails-kube-app
-    tier: app
+    app: rails-kube-backend
+    tier: backend

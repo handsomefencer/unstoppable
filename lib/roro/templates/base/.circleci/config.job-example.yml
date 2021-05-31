@@ -17,10 +17,10 @@ jobs:
       - run: echo 'source docker/env_files/circleci.smart.env' >> $BASH_ENV
       - run: docker-compose build
       - run: docker-compose up -d
-      - run: docker-compose exec app bin/rails db:create db:migrate
+      - run: docker-compose exec backend bin/rails db:create db:migrate
       - run: docker login -u $docker_USER -p $DOCKER_PASS
       - run:
-          name: Tag app image
+          name: Tag backend image
           command: docker tag $(docker images | grep project_app | awk '{ print $3 }') ${DOCKER_ORG_NAME}/${APP_NAME}_app:$DEPLOY_TAG
       - run:
           name: Tag web image

@@ -81,13 +81,13 @@ describe Roro::Crypto::Exposer do
 
         Given { insert_dummy_key }
         Given { insert_dummy_env_enc }
-        Given { insert_dummy_env_enc 'roro/containers/app/env/dummy.env.enc' }
+        Given { insert_dummy_env_enc 'roro/containers/backend/env/dummy.env.enc' }
 
         describe 'must decrypt file' do
 
           Given { execute }
           Then  { assert_file 'roro/env/dummy.env' }
-          And   { assert_file 'roro/containers/app/env/dummy.env' }
+          And   { assert_file 'roro/containers/backend/env/dummy.env' }
         end
 
         describe 'must not decrypt any other file' do

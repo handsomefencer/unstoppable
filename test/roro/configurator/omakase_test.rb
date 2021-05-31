@@ -78,7 +78,7 @@ describe Roro::Configurator::Omakase do
             "@config.smart.env['force'] = true",
             [
               "src = 'rails/Dockerfile.omakase.tt'",
-              "dest = 'roro/containers/app/Dockerfile'",
+              "dest = 'roro/containers/backend/Dockerfile'",
               "template src, dest, @config.smart.env\n"].join("\n")
           ] }
     
@@ -88,7 +88,7 @@ describe Roro::Configurator::Omakase do
         describe 'must store omakase commands' do
         
           Given(:expected) { [
-            "system \"DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . .\""
+            "system \"DOCKER_BUILDKIT=1 docker build --file roro/containers/backend/Dockerfile --output . .\""
           ] }
             
           Then { expected.each { |e| assert_includes greenfield_commands, e } }
@@ -99,7 +99,7 @@ describe Roro::Configurator::Omakase do
         Given(:expected) { [
           `Roro::Cli.roro_environments.each do |environment| 
             src = 'rails/dotenv/web.smart.env.tt'
-            dest = "roro/containers/app/#{environment}.smart.env"
+            dest = "roro/containers/backend/#{environment}.smart.env"
             template src, dest, @config.smart.env
         end`
       ]}

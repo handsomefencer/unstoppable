@@ -17,7 +17,7 @@ module Roro
       end
     end
     rollonto = ' into Roro.'
-    desc "rollon", "Roll an existing app#{rollonto}"
+    desc "rollon", "Roll an existing backend#{rollonto}"
     def rollon(args={})
       @config ||= Roro::Configuration.new(args, options)
       greenfield_actions
@@ -28,14 +28,14 @@ module Roro
       startup_commands
     end
 
-    desc "omakase", "Greenfield a new app and roll it#{rollonto}"
+    desc "omakase", "Greenfield a new backend and roll it#{rollonto}"
     def greenfield(args={})
       args[:greenfield] = :greenfield
 
       rollon(args)
     end
 
-    desc "omakase::rails", "Greenfield a new Rails app and roll it#{rollonto}"
+    desc "omakase::rails", "Greenfield a new Rails backend and roll it#{rollonto}"
 
     map "omakase::rails" => "greenfield_rails"
 
@@ -43,7 +43,7 @@ module Roro
       greenfield( { story: :rails } )
     end
 
-    desc "rollon::rails", "Roll an existing app#{rollonto}"
+    desc "rollon::rails", "Roll an existing backend#{rollonto}"
     map "rollon::rails" => "rollon_rails"
 
     def rollon_rails(args={})
@@ -120,7 +120,7 @@ module Roro
         cmd = @config.structure[:startup]
         commands = cmd[:commands]
         question = []
-        question << "\n\n You can start your app up with some combination of these commands:\n"
+        question << "\n\n You can start your backend up with some combination of these commands:\n"
         commands.each { |c| question << "\t#{c}"}
         question << "\nOr if you'd like Roro to try and do it for you:"
         question = question.join("\n")

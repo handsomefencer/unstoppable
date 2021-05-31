@@ -32,14 +32,14 @@ describe Roro::Crypto::FileReflection do
 
     context 'when a file is nested two levels deep' do
 
-      Given { insert_dummy 'roro/containers/app/env/dummy.env' }
-      Then  { assert_includes execute, 'roro/containers/app/env/dummy.env' }
+      Given { insert_dummy 'roro/containers/backend/env/dummy.env' }
+      Then  { assert_includes execute, 'roro/containers/backend/env/dummy.env' }
     end
 
     context 'when nested three levels deep' do
 
-      Given { insert_dummy 'roro/containers/app/env/dummy.env' }
-      Then  { assert_includes execute, 'roro/containers/app/env/dummy.env' }
+      Given { insert_dummy 'roro/containers/backend/env/dummy.env' }
+      Then  { assert_includes execute, 'roro/containers/backend/env/dummy.env' }
     end
 
     context 'when pattern contains regex' do
@@ -74,7 +74,7 @@ describe Roro::Crypto::FileReflection do
 
     context 'when file is nested deeply' do
 
-      Given { insert_dummy 'roro/containers/app/env/dummy.env' }
+      Given { insert_dummy 'roro/containers/backend/env/dummy.env' }
       Then  { assert_includes execute, 'dummy' }
     end
 
@@ -86,7 +86,7 @@ describe Roro::Crypto::FileReflection do
 
     context 'when files are mixed and nested' do
 
-      Given { insert_dummy 'roro/containers/app/dummy.subenv.env' }
+      Given { insert_dummy 'roro/containers/backend/dummy.subenv.env' }
       Given { insert_dummy 'roro/env/smart.env' }
       Then  { assert_includes execute, 'dummy' }
       And   { assert_includes execute, 'smart' }

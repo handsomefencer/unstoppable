@@ -8,6 +8,7 @@ module Roro
     map 'omakase::roro' => 'omakase_roro'
 
     def omakase_roro
+      @config = Roro::Configurator::Configurator.new
       greenfield({ story: :roro })
     end
   end
