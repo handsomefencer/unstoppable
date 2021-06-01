@@ -17,7 +17,7 @@ module Roro
     end
 
     def self.roro_environments
-      %w[development production test staging ci]
+      %w[base development production test staging ci]
     end
   end
 end
