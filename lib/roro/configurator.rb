@@ -1,18 +1,29 @@
 # frozen_string_literal: true
 
-require_rel 'configurator/eligibility'
-require_rel 'configurator/okonomi'
-require_rel 'configurator/omakase'
+# require_rel 'configurators/eligibility'
+# require_rel 'configurators/okonomi'
+require_rel 'configurators'
 
-module Roro
-  module Configurator
-    include Eligibility
-    include Okonomi
-    include Omakase
-    class Configurator ; end
-  end
-
-  class Configuration < Thor
-    include Roro::Configurator
-  end
-end
+# # in app/models/vehicles/vehicle.rb
+# module Vehicles
+#   class Vehicle
+#     # ...
+#   end
+# end
+#
+# # in app/models/vehicles/car.rb
+# module Vehicles
+#   class Car < Vehicle
+#     # ...
+#   end
+# end
+# module Roro
+#   class Configurator
+#
+#   end
+#
+#   module Configurators
+#     class Omakase < Configurator; end
+#   end
+#
+# end

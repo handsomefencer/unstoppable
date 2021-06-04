@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Roro::Configurator::Eligibility do
+describe 'Roro::Configurator::Eligibility' do
   Given { skip }
   Given(:options) { nil }
   Given(:config)  { Roro::Configuration.new(options) }
@@ -76,7 +76,7 @@ describe Roro::Configurator::Eligibility do
 
         Given(:options) { { greenfield: true } }
 
-        Then { assert_raises( Roro::Error ) { config.confirm_directory_app } }
+        # Then { assert_raises( Roro::Error ) { config.confirm_directory_app } }
       end
       
       describe 'errors when directory empty' do 

@@ -1,18 +1,18 @@
+# frozen_string_literal: true
+
 module Roro
-  module Configurator
-    module Omakase
+  module Configurators
+    class Configurator
       attr_reader :structure, :intentions, :env, :options, :story
 
-      def initialize(args = {}, options = {})
-
-        @options = sanitize(args)
+      def initialize(options = {})
+        @options = sanitize(options)
         @structure = {
           intentions: {},
           choices: {},
           env_vars: {}
         }
-        @story = @options[:story] ? { rollon: @options[:story] } : default_story
-        build_story
+        @story = @options[:story] || {}
         @intentions = @structure[:intentions]
         @env = @structure[:env_vars]
         @env[:main_app_name] = Dir.pwd.split('/').last
@@ -40,7 +40,7 @@ module Roro
         return unless @options.keys.include?(:greenfield)
 
         @structure[:greenfield] = true
-        build_layers( { greenfield: :rails } )
+        build_layers({ greenfield: :rails })
       end
 
       def layer_rollon
@@ -55,12 +55,12 @@ module Roro
       end
 
       def build_layers(story, location = nil)
-        story = story.is_a?(Hash) ? story : { story => {}}
+        story = story.is_a?(Hash) ? story : { story => {} }
         story.each do |key, value|
           location = location ? "#{location}/#{key}" : key
           case value
           when Array
-            value.each {|value| build_layers(value, location) }
+            value.each { |value| build_layers(value, location) }
           when true
           when
             build_layers(value, location)
@@ -136,26 +136,9 @@ module Roro
         stories = Dir.glob("#{loc}/*.yml")
         stories.each do |ss|
           name = ss.split('/').last.split('.yml').first
-          array << { name.to_sym => story_map([story, name].join('/'))}
+          array << { name.to_sym => story_map([story, name].join('/')) }
         end
         array
-      end
-
-      def default_story(story = 'rollon', loc = nil)
-        hash = {}
-        loc = [(loc ||= Roro::CLI.story_root), story].join('/')
-        substory = get_layer(loc)[:stories]
-        if substory.is_a?(Array)
-          array = []
-          substory.each do |s|
-            ss = get_layer([loc, s].join('/'))[:stories]
-            array << (ss.is_a?(String) ? { s.to_sym => ss.to_sym } : default_story( s, loc ) )
-          end
-          hash[story.to_sym] = array
-        else
-          hash[story.to_sym] = default_story(substory, loc)
-        end
-        hash
       end
 
       def validate_story(story)

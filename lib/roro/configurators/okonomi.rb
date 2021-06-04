@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 require 'yaml'
 require 'json'
 
 module Roro
-  module Configurator
-    module Okonomi  
-  
+  module Configurators
+    module Okonomi
       def take_order
         ask_questions
       end
 
       def ask_questions
-        choices = @structure[:choices] 
+        choices = @structure[:choices]
         choices.each do |key, value|
           @structure[:intentions][key] = ask_question(value)
         end
@@ -20,8 +21,7 @@ module Roro
         prompt = question[:question]
         default = question[:default]
         choices = question[:choices].keys
-        answer = ask(prompt, default: default, limited_to: choices)
-        answer
+        ask(prompt, default: default, limited_to: choices)
       end
     end
   end

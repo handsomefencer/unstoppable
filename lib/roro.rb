@@ -7,4 +7,5 @@ require_all 'lib'
 
 module Roro
   module Crypto; end
+  module Configurator; end
 end
