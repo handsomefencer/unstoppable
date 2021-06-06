@@ -8,23 +8,34 @@ describe Omakase do
   let(:omakase) { subject.new(options) }
 
   describe '#junbi' do
-    it 'must return a hash of entrees' do
-      assert_equal omakase.junbi, {
-        entrees: {
-          rails: {
-            rails: {
-              database: {
-                postgres: {},
-                mysql: {},
-                sqlite: {}
-              }
-            },
-            rails_vue: {},
-            rails_react: {}
-          },
-          django: {}
-        }
-      }
+    it 'must return a hash' do
+      assert omakase.junbi.is_a? Hash
+    end
+
+    describe 'junbi' do
+      let(:entrees) { omakase.junbi.keys }
+      let(:rails) { omakase.junbi[:rails] }
+
+      it 'must have keys for each entree' do
+        assert_includes entrees, :rails
+        assert_includes entrees, :django
+      end
+
+      it 'must have keys'
+      #     rails: {
+      #       rails: {
+      #         database: {
+      #           postgres: {},
+      #           mysql: {},
+      #           sqlite: {}
+      #         }
+      #       },
+      #       rails_vue: {},
+      #       rails_react: {}
+      #     },
+      #     django: {}
+      #   }
+      # }
     end
   end
 

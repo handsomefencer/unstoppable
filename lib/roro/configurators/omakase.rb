@@ -4,35 +4,15 @@ module Roro
   module Configurators
     class Omakase < Roro::Configurators::Configurator
 
-      def junbi(folder = nil)
+      def junbi(location = nil)
+        location ||= "#{Roro::CLI.story_root}/entrees"
         hash = {}
-        location ||= "#{Roro::CLI.story_root}/#{story}"
-        folder = "#{Roro::CLI.story_root}/#{story}"
-        child_folders = "#{Dir.glob(location)}/**/*"
-        child_folders.each do |key, value|
-          hash[story] =
+        Dir.glob("#{location}**/*").each do |child_folder|
+          story = child_folder.split('/').last.split('.yml').first
+          hash[story] = junbi(child_folder)
         end
-
-        # story ||= { entrees: {} }
-        # directory ||= "#{Roro::CLI.story_root}/entrees"
-        # subdirectories = Dir.entries("#{Roro::CLI.story_root}/#{key}")
-        # story.transform_values do |key, value|
-        #   children =
-        #
-        # end
-        # story
+        sanitize(hash)
       end
-
-        # hash ||= { entrees: {} }
-        # directory = Roro::CLI.story_root + "/#{key}"
-        #
-        # hash.transform_values do |key, value|
-        #   loc = Roro::CLI.story_root + "/#{key}"
-        #   folders = Dir.glob(Dir.pwd)
-        #   value = { some_key: :some_value}
-        # end
-      #   story
-      # end
 
       def validate_layer(story)
         scenes = get_layer(story)[:stories]

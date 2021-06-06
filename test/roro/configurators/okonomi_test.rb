@@ -6,8 +6,8 @@ describe 'Roro::Configurator::Okonomi' do
   # Given { skip }
   # Given { #  prepare_destination 'omakase/omakase' }
   # Given { stubs_dependency_responses }
-
-  Given(:config)  { Roro::Configurator::Okonomi.new(options) }
+  Given { skip }
+  # Given(:config)  { Roro::Configurator::Okonomi.new(options) }
   Given(:options) { nil }
   Given(:question)  { config.structure[:choices][:config_std_out_true] }
   Given(:intention) { config.structure[:intentions][:config_std_out_true] }
