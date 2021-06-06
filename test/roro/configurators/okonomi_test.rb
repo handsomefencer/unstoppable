@@ -3,9 +3,9 @@
 require 'test_helper'
 
 describe 'Roro::Configurator::Okonomi' do
-  Given { skip }
+  # Given { skip }
   # Given { #  prepare_destination 'omakase/omakase' }
-  Given { stubs_dependency_responses }
+  # Given { stubs_dependency_responses }
 
   Given(:config)  { Roro::Configurator::Okonomi.new(options) }
   Given(:options) { nil }

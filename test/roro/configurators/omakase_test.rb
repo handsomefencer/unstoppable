@@ -2,16 +2,32 @@
 
 require 'test_helper'
 
-describe 'Roro::Configurators::Omakase' do
-  let(:subject) { Roro::Configurators::Omakase }
+describe Omakase do
+  let(:subject) { Omakase }
   let(:options) { nil }
-  let(:config)  { subject.new(options) }
+  let(:omakase) { subject.new(options) }
 
-    # Given { greenfield_rails_test_base }
-    #
-    # Given(:options) { nil }
-    # Given(:config)  { Roro::Configuration.new(options) }
-    #
+  describe '#junbi' do
+    it 'must return a hash of entrees' do
+      assert_equal omakase.junbi, {
+        entrees: {
+          rails: {
+            rails: {
+              database: {
+                postgres: {},
+                mysql: {},
+                sqlite: {}
+              }
+            },
+            rails_vue: {},
+            rails_react: {}
+          },
+          django: {}
+        }
+      }
+    end
+  end
+
     # describe '.structure' do
     #
     #   Given(:env)       { config.env }

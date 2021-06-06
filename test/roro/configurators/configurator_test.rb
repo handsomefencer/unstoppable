@@ -2,8 +2,9 @@
 
 require 'test_helper'
 
-describe Roro::Configurators::Configurator do
-  let(:subject) { Roro::Configurators::Configurator }
+describe Configurator do
+
+  let(:subject) { Configurator }
   let(:options) { nil }
   let(:config)  { subject.new(options) }
 

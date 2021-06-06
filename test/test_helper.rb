@@ -16,6 +16,10 @@ require 'roro'
 
 require_all 'test/helpers'
 
+include Roro::Configurators
+include Roro::Crypto
+
+
 module Roro
   module Test
     module Mocks; end
