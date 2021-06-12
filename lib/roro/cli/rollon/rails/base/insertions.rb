@@ -16,7 +16,7 @@ module Roro
       end 
       
       def gitignore_sensitive_files
-        append_to_file ".gitignore", "\nroro/**/*.smart.env\nroro/**/*.key"
+        append_to_file ".gitignore", "\nroro/**/*.env"
         append_to_file ".gitignore", "\nroro/**/*.smart.env\nroro/**/*.key"
         append_to_file ".gitignore", "\n*kubeconfig.yaml"
         append_to_file ".gitignore", "\n*kubeconfig.yml"

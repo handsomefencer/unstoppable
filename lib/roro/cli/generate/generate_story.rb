@@ -6,7 +6,7 @@ module Roro
     
     def generate_story
       
-      @config ||= Roro::Configuration.new(options)
+      # @config ||= Roro::Configuration.new(options)
       # configuration = {
       #   env_vars: @config.smart.env.keys,
       #   intentions: @config.intentions,

@@ -85,21 +85,21 @@ module Roro
       end
 
       def manifest_actions
-        @config.structure[:actions].each {|a| eval a }
+        @config.structure[:actions].each { |a| eval a }
       end
 
       def manifest_intentions
-        @config.intentions.each {|k, v| eval(k.to_s) if v.eql?('y') }
+        @config.intentions.each { |k, v| eval(k.to_s) if v.eql?('y') }
       end
 
       def greenfield_actions
         return unless @config.structure[:greenfield_actions]
-        @config.structure[:greenfield_actions].each {|a| eval a }
+        @config.structure[:greenfield_actions].each { |a| eval a }
       end
 
       def greenfield_commands
         return unless @config.structure[:greenfield_actions]
-        @config.structure[:greenfield_commands].each {|a| eval a }
+        @config.structure[:greenfield_commands].each { |a| eval a }
       end
 
       def congratulations(story=nil)
@@ -121,11 +121,11 @@ module Roro
         commands = cmd[:commands]
         question = []
         question << "\n\n You can start your backend up with some combination of these commands:\n"
-        commands.each { |c| question << "\t#{c}"}
+        commands.each { |c| question << "\t#{c}" }
         question << "\nOr if you'd like Roro to try and do it for you:"
         question = question.join("\n")
         if ask(question, default: 'y', limited_to: ['y', 'n']).eql?("y")
-          commands.each {|a| system(a) }
+          commands.each { |a| system(a) }
           puts "\n\n#{cmd[:success]}\n\n"
         end
       end
