@@ -14,14 +14,14 @@ describe 'Roro::Configurator::Okonomi' do
 
   describe '.okonomi' do
     describe 'when called with .ask_question must return answer' do
-      Given do
-        Thor::Shell::Basic.any_instance.stubs(:ask)
-                          .with(
-                            question[:question],
-                            default: question[:default],
-                            limited_to: question[:choices].keys
-                          ).returns('n')
-      end
+      # Given do
+      #   Thor::Shell::Basic.any_instance.stubs(:ask)
+      #                     .with(
+      #                       question[:question],
+      #                       default: question[:default],
+      #                       limited_to: question[:choices].keys
+      #                     ).returns('n')
+      # end
 
       Then { assert_equal 'n', config.ask_question(question) }
     end

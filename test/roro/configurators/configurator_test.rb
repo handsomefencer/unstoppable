@@ -37,4 +37,6 @@ describe Configurator do
     And  { assert_includes config.structure.keys, :choices }
     And  { assert_includes config.structure.keys, :env_vars }
   end
+
+
 end

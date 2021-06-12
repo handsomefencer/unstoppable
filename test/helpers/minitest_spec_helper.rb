@@ -3,7 +3,7 @@
 module Minitest
   class Spec
     before do
-      Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
+      # Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
       if defined? workbench
         prepare_destination(*workbench)
         Dir.chdir("#{@tmpdir}/workbench")
@@ -11,6 +11,10 @@ module Minitest
       end
     end
 
+    def assert_asked(question, choices, options)
+      Thor::LineEditor.expects(:readline).with("#{question} #{choices} ", options)
+      command
+    end
 
     def prepare_destination(*workbench)
       @tmpdir = Dir.mktmpdir
