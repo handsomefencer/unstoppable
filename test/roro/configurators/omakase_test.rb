@@ -22,42 +22,59 @@ describe Omakase do
     end
   end
 
-  describe '#checkout_story' do
-    context 'when no story on shelf' do
-      Given(:shelf) { "#{Dir.pwd}/lib/roro/stories/entrees" }
-      Then { assert_nil omakase.checkout_story(shelf) }
-    end
-  end
-
   describe '#choose_your_adventure' do
     Given(:shelf) { "#{Dir.pwd}/lib/roro/stories/entrees" }
-    Then { assert_equal omakase.choose_your_adventure(shelf), %w[django rails] }
-  end
 
-  describe '#question' do
-    Given(:shelf) { "#{Dir.pwd}/lib/roro/stories/entrees" }
-    Then { assert_equal omakase.question(shelf), 'Please choose from these entrees' }
-  end
-
-  describe '#choices' do
-    Given(:shelf) { "#{Dir.pwd}/lib/roro/stories/entrees" }
-    Then { assert_equal omakase.choices(shelf), %w[django rails] }
-  end
-
-  describe '#ask_question' do
-    Given(:shelf) { "#{Dir.pwd}/lib/roro/stories/entrees" }
-
-    # Then { assert_equal 'n', omakase.ask_question(shelf) }
-    let(:output) { capture_io { omakase.ask_question(shelf) } }
-
-    it do
-      assert_equal output, 'blah'
+    describe '#checkout_story' do
+      context 'when no story on shelf' do
+        Then { assert_nil omakase.checkout_story(shelf) }
+      end
     end
 
+    describe '#question' do
+      Then { assert_equal omakase.question(shelf), 'Please choose from these entrees:' }
+    end
+
+    describe '#get_adventures' do
+      context 'when shelf has django and rails folders' do
+        let(:adventures) { omakase.get_adventures(shelf).values }
+
+        Then { assert_equal %w[django rails], adventures }
+      end
+    end
+
+    describe '#get_preface' do
+      context 'when no preface in story yml' do
+        let(:preface) { omakase.get_preface(shelf) }
+
+        Then { assert_nil preface }
+      end
+
+      context 'when preface in story yml' do
+        context 'when rails' do
+          let(:preface) { omakase.get_preface(shelf + '/rails/rails')}
+
+          Then { assert_match 'web framework optimized', preface }
+        end
+
+        context 'when django' do
+          let(:preface) { omakase.get_preface(shelf + '/django/django')}
+
+          Then { assert_match 'Python Web framework', preface }
+        end
+      end
+    end
+
+    describe '#choose_your_adventure' do
+      let(:command) { omakase.choose_your_adventure(shelf) }
+
+      it do
+        skip
+        question = 'Please choose from these entrees:'
+        choices = ''
+        options = '{}'
+        assert_asked(question, choices, options)
+      end
+    end
   end
-
-
-
-
-
 end

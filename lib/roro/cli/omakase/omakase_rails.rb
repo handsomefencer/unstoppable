@@ -9,5 +9,13 @@ module Roro
     def greenfield_rails
       greenfield( { story: :rails } )
     end
+
+    desc 'omakase', 'get it'
+    map 'omakase' => 'omakase'
+
+    def omakase
+      omakase = Roro::Configurators::Omakase.new
+      omakase.choose_your_adventure
+    end
   end
 end

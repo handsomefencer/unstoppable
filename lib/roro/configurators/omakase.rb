@@ -23,31 +23,46 @@ module Roro
         end
       end
 
+      def read_yaml(filedir)
+        JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
+      end
+
+
       def checkout_story(filedir)
         Dir.glob("#{filedir}/*.yml").first
       end
 
-      def choose_your_adventure(filedir)
-        title = filedir.split('').last
-        choices = Dir.entries(filedir) - %w(. ..)
-
-      end
-
-      def choices(filedir)
-        title = filedir.split('').last
-        choices = Dir.entries(filedir) - %w(. ..)
+      def get_adventures(filedir)
+        choices = Dir.glob(filedir + '/*')
+                     .select { |f| File.directory? f }
+                     .map { |f| f.split('/').last }
+        {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
       end
 
       def question(filedir)
         collection_name = filedir.split('/').last
-        "Please choose from these #{collection_name}"
+        "Please choose from these #{collection_name}:"
       end
 
-      def ask_question(filedir)
-        prompt = question(filedir)
-        # default = question[:default]
-        choices = choices(filedir)
-        ask(prompt, limited_to: choices)
+      def get_preface(filedir)
+        file = filedir + '.yml'
+        read_yaml(file)[:preface] if File.exist?(file)
+      end
+
+      def ask_question(prompt, choices)
+        ask("#{prompt}\n\n", { limited_to: choices.keys })
+      end
+
+      def choose_your_adventure(filedir=nil)
+        filedir ||= "#{Dir.pwd}/lib/roro/stories/entrees"
+        prompt = [(set_color "\n\s\s#{question(filedir)}", :blue)]
+        adventures = get_adventures(filedir)
+        adventures.each do |key, value|
+          preface = get_preface("#{filedir}/#{value}/#{value}")
+          blurb = preface.nil? ? '' : "-- #{preface}"
+          prompt << "#{(set_color "(#{key}) #{value}", :blue)} #{blurb}"
+        end
+        ask_question(prompt.join("\n\n"), adventures)
       end
     end
   end
