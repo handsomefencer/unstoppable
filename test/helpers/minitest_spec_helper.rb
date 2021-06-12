@@ -2,14 +2,14 @@
 
 module Minitest
   class Spec
-    before do
-      Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
-      if defined? workbench
-        prepare_destination(*workbench)
-        Dir.chdir("#{@tmpdir}/workbench")
-        @tmpdir_glob = Dir.glob("#{@tmpdir}/workbench/**/*")
-      end
-    end
+    # before do
+    #   Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
+    #   if defined? workbench
+    #     prepare_destination(*workbench)
+    #     Dir.chdir("#{@tmpdir}/workbench")
+    #     @tmpdir_glob = Dir.glob("#{@tmpdir}/workbench/**/*")
+    #   end
+    # end
 
 
     def prepare_destination(*workbench)

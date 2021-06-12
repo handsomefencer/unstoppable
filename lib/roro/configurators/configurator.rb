@@ -2,7 +2,7 @@
 
 module Roro
   module Configurators
-    class Configurator
+    class Configurator < Thor
       attr_reader :structure, :intentions, :env, :options, :story
 
       def initialize(options = {})
@@ -128,6 +128,8 @@ module Roro
         json = JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
         json || raise(Roro::Story::StoryMissing, "Is #{filepath} empty?")
       end
+
+
 
       def story_map(story = 'stories')
         array ||= []
