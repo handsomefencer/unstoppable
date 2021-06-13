@@ -6,37 +6,54 @@ describe Omakase do
   let(:subject) { Omakase }
   let(:options) { nil }
   let(:omakase) { subject.new(options) }
+  let(:stories) { "#{Dir.pwd}/lib/roro/mise_en_place/stories" }
+  let(:shelf)   { stories }
 
   describe '#library' do
-    let(:entrees) { omakase.library.keys }
-    let(:rails)   { omakase.library[:rails].keys }
+    let(:stories)       { omakase.library[:stories] }
+    let(:ruby_stories)  { stories[:ruby][:stories] }
+    let(:rails_stories) { stories[:ruby][:stories].keys }
 
-    it 'must have keys for each entree' do
-      assert_includes entrees, :rails
-      assert_includes entrees, :django
+    it 'must have keys for each story' do
+      assert_includes stories.keys, :python
+      assert_includes stories.keys, :ruby
+      assert_includes stories.keys, :php
+      assert_includes stories.keys, :node
+      assert_equal stories.size, 4
     end
 
-    it 'must have keys' do
-      assert_includes rails, :rails
-      assert_includes rails, :database
+    it 'must have keys for each child story' do
+
+      assert_includes ruby_stories.keys, :rails
+      assert_includes ruby_stories.keys, :rubygem
+      assert_equal ruby_stories.size, 2
     end
   end
 
-  describe '#choose_your_adventure' do
-    Given(:shelf) { "#{Dir.pwd}/lib/roro/stories/entrees" }
-
-    describe '#checkout_story' do
-      context 'when no story on shelf' do
-        Then { assert_nil omakase.checkout_story(shelf) }
-      end
+  describe '#checkout_story when shelf has ' do
+    context 'no story' do
+      Then { assert_nil omakase.checkout_story(shelf) }
     end
 
+    context 'a story' do
+      let(:shelf) { "#{stories}/ruby/stories/rails/rails" }
+
+      Then { assert_includes omakase.checkout_story(shelf).keys, :preface }
+      And  { assert_includes omakase.checkout_story(shelf).keys, :actions }
+      And  { assert_includes omakase.checkout_story(shelf).keys, :variables }
+      And  { assert_includes omakase.checkout_story(shelf).keys, :questions }
+    end
+  end
+  describe '#choose_your_adventure' do
+
+
     describe '#question' do
-      Then { assert_equal omakase.question(shelf), 'Please choose from these entrees:' }
+      Then { assert_equal omakase.question(shelf), 'Please choose from these stories:' }
     end
 
     describe '#get_adventures' do
-      context 'when shelf has django and rails folders' do
+      context 'when ./stories/ruby/stories/folders' do
+        before { skip }
         let(:adventures) { omakase.get_adventures(shelf).values }
 
         Then { assert_equal %w[django rails], adventures }
@@ -51,6 +68,7 @@ describe Omakase do
       end
 
       context 'when preface in story yml' do
+        before { skip }
         context 'when rails' do
           let(:preface) { omakase.get_preface(shelf + '/rails/rails')}
 
@@ -70,7 +88,7 @@ describe Omakase do
 
       it do
         skip
-        question = 'Please choose from these entrees:'
+        question = 'Please choose from these mise_en_place:'
         choices = ''
         options = '{}'
         assert_asked(question, choices, options)

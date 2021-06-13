@@ -131,7 +131,7 @@ module Roro
 
 
 
-      def story_map(story = 'stories')
+      def story_map(story = 'mise_en_place')
         array ||= []
         loc = Roro::CLI.story_root + "/#{story}"
         validate_story(loc)

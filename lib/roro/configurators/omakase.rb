@@ -3,10 +3,11 @@
 module Roro
   module Configurators
     class Omakase < Roro::Configurators::Configurator
-      def library(location = nil)
-        location ||= "#{Roro::CLI.story_root}/entrees"
+
+      def library(filedir = nil)
+        filedir ||= "#{Roro::CLI.story_root}"
         hash = {}
-        Dir.glob("#{location}**/*").each do |child_folder|
+        Dir.glob("#{filedir}/*").each do |child_folder|
           story = child_folder.split('/').last.split('.yml').first
           hash[story] = library(child_folder)
         end
@@ -27,9 +28,9 @@ module Roro
         JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
       end
 
-
       def checkout_story(filedir)
-        Dir.glob("#{filedir}/*.yml").first
+        file = "#{filedir}.yml"
+        File.exist?(file) ? read_yaml(file) : nil
       end
 
       def get_adventures(filedir)
@@ -54,7 +55,7 @@ module Roro
       end
 
       def choose_your_adventure(filedir=nil)
-        filedir ||= "#{Dir.pwd}/lib/roro/stories/entrees"
+        filedir ||= "#{Dir.pwd}/lib/roro/mise_en_place/mise_en_place"
         prompt = [(set_color "\n\s\s#{question(filedir)}", :blue)]
         adventures = get_adventures(filedir)
         adventures.each do |key, value|

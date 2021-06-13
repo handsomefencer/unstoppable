@@ -1,0 +1,5 @@
+story: 
+  ci_cd: circleci
+env_vars: 
+  ruby_version: '2.7'
+  

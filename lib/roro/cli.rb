@@ -9,7 +9,7 @@ module Roro
     end
 
     def self.story_root
-      "#{File.dirname(__FILE__)}/stories"
+      "#{File.dirname(__FILE__)}/mise_en_place"
     end
 
     def self.test_fixture_root
