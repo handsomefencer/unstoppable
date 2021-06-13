@@ -20,6 +20,7 @@ module Roro
         @env[:force] = true
         @env[:verbose] = false
         @env[:roro_version] = VERSION
+        @scene = Roro::CLI.story_root
       end
 
       def build_story

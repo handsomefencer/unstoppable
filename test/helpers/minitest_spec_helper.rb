@@ -12,7 +12,7 @@ module Minitest
     end
 
     def assert_asked(question, choices, options)
-      Thor::LineEditor.expects(:readline).with("#{question} #{choices} ", options)
+      Thor::LineEditor.expects(:readline).with("#{question} #{choices}", options)
       command
     end
 
