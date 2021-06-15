@@ -58,12 +58,11 @@ describe Omakase do
       end
 
       describe '#choose_plot' do
-        let(:scene)    { "#{plot_root}" }
         let(:command)  { omakase.choose_plot(scene) }
         let(:question) { 'Please choose from these roro plots:' }
         let(:choices)  { 'getsome ' }
 
-        Then { assert_asked("Please choose from these roro plots: {1=>\"plots\", 2=>\"databases\"} [1, 2] ") }
+        Then { assert_asked("Please choose from these roro plots: {1=>\"node\", 2=>\"php\", 3=>\"python\", 4=>\"ruby\"}") }
       end
 
       # describe '#choose_plot' do

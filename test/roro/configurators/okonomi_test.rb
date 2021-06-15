@@ -28,7 +28,7 @@ describe 'Roro::Configurator::Okonomi' do
 
     describe 'when called with .ask_questions must change intention' do
       Given { skip }
-      Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('n') }
+      # Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('n') }
       Given { config.ask_questions }
 
       Then  { assert_equal 'n', intention }
@@ -36,7 +36,7 @@ describe 'Roro::Configurator::Okonomi' do
 
     describe 'when called with .new with :okonomi option' do
       Given { skip }
-      Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('n') }
+      # Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('n') }
       Given(:options) { { 'okonomi' => 'okonomi' } }
 
       Then { assert_equal 'n', intention }

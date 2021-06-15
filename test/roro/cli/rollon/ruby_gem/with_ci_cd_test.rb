@@ -8,8 +8,8 @@ describe "Story::RubyGem::WithCICD" do
 
 
   Given(:config)  { Roro::Configuration.new }
-  Given(:cli)     { Roro::CLI.new }
-  Given(:asker)   { Thor::Shell::Basic.any_instance }
+  # Given(:cli)     { Roro::CLI.new }
+  # Given(:asker)   { Thor::Shell::Basic.any_instance }
   Given(:rubygems_api_key) { 'some-rubygems-api-key' }
   Given { asker.stubs(:ask).returns(rubygems_api_key) }    
   Given { cli.instance_variable_set( :@config, config ) }
