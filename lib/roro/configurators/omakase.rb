@@ -4,6 +4,45 @@ module Roro
   module Configurators
     class Omakase < Roro::Configurators::Configurator
 
+      def choose_your_adventure(scene=nil)
+        scene ||= @scene
+        # prompt = [(set_color "\n\s\s#{question(scene)}", :blue)]
+        # adventures = get_adventures(scene)
+        # adventures.each do |key, value|
+        #   preface = get_preface("#{scene}/#{value}/#{value}")
+        #   blurb = preface.nil? ? '' : "-- #{preface}"
+        #   prompt << "#{(set_color "(#{key}) #{value}", :blue)} #{blurb}"
+        # end
+        # ask(prompt.join("\n\n"))
+        question = pick_plot(scene)
+        ask(question)
+      end
+
+      def choose_plot(scene)
+        parent_plot = scene.split('/')[-2]
+        plot_collection_name = scene.split('/').last
+        plot_choices = get_plot_choices(scene)
+        question = "Please choose from these #{parent_plot} #{plot_collection_name}:"
+        ask("#{question} #{plot_choices}", limited_to: plot_choices.keys )
+      end
+
+      def get_plot_choices(scene)
+        choices = Dir.glob(scene + '/*')
+                     .select { |f| File.directory? f }
+                     .map { |f| f.split('/').last }
+        {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
+      end
+
+      def get_plot_preface(scene)
+        get_plot(scene) ? get_plot(scene)[:preface] : nil
+      end
+
+      def get_plot(scene)
+        file = "#{scene}.yml"
+        File.exist?(file) ? read_yaml(file) : nil
+      end
+
+
       def plot_bank(filedir = nil)
         filedir ||= "#{Roro::CLI.plot_root}"
         hash = {}
@@ -25,9 +64,6 @@ module Roro
         end
       end
 
-      def read_yaml(filedir)
-        JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
-      end
 
       def checkout_plot(filedir)
         file = "#{filedir}.yml"
@@ -51,46 +87,14 @@ module Roro
         read_yaml(file)[:preface] if File.exist?(file)
       end
 
-      def get_plot(scene)
-        file = "#{scene}.yml"
-        File.exist?(file) ? read_yaml(file) : nil
-      end
-
-      def get_plot_preface(scene)
-        get_plot(scene) ? get_plot(scene)[:preface] : nil
-      end
-
       def ask_question(prompt, choices)
         ask("#{prompt}\n\n", { limited_to: choices.keys })
       end
 
-      def get_plot_choices(scene)
-        choices = Dir.glob(scene + '/*')
-                     .select { |f| File.directory? f }
-                     .map { |f| f.split('/').last }
-        {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
-      end
+      private
 
-      def choose_plot(scene)
-        parent_plot = scene.split('/')[-2]
-        plot_collection_name = scene.split('/').last
-        plots = get_plot_choices(scene)
-        prompt = "Please choose from these #{parent_plot} #{plot_collection_name}:"
-        ask(prompt, plots, {})
-      end
-
-      def choose_your_adventure(scene=nil)
-        scene ||= @scene
-        # prompt = [(set_color "\n\s\s#{question(scene)}", :blue)]
-        # adventures = get_adventures(scene)
-        # adventures.each do |key, value|
-        #   preface = get_preface("#{scene}/#{value}/#{value}")
-        #   blurb = preface.nil? ? '' : "-- #{preface}"
-        #   prompt << "#{(set_color "(#{key}) #{value}", :blue)} #{blurb}"
-        # end
-        # ask(prompt.join("\n\n"))
-        question = pick_plot(scene)
-        ask(question)
+      def read_yaml(filedir)
+        JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
       end
     end
   end

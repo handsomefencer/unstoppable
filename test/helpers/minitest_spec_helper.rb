@@ -11,8 +11,8 @@ module Minitest
       end
     end
 
-    def assert_asked(question, choices, options)
-      Thor::LineEditor.expects(:readline).with("#{question} #{choices}", options)
+    def assert_asked(prompt)
+      Thor::LineEditor.expects(:readline).with(prompt, {:limited_to => [1,2]}).returns('1')
       command
     end
 

@@ -7,19 +7,16 @@ describe Omakase do
   let(:options) { nil }
   let(:omakase) { subject.new(options) }
   let(:plot_root) { "#{Dir.pwd}/lib/roro/plots" }
+  let(:scene) { "#{plot_root}/plots" }
 
   describe '#choose_your_own_adventure' do
-    let(:scene) { "#{plot_root}/plots" }
-
     describe '#choose_plot' do
       describe '#get_plot_choices' do
         describe '#get_plot_preface' do
-          let(:preface) { omakase.get_plot_preface(scene) }
-
           describe '#get_plot' do
-            context 'when scene has' do
-              let(:plot)  { omakase.get_plot(scene) }
+            let(:plot) { omakase.get_plot(scene) }
 
+            context 'when scene has' do
               context 'no plot file' do
                 Then { assert_nil plot }
               end
@@ -32,22 +29,22 @@ describe Omakase do
             end
           end
 
-          context 'when scene has' do
-            let(:preface) { omakase.get_plot_preface(scene) }
+          let(:preface) { omakase.get_plot_preface(scene) }
 
+          context 'when scene has' do
             context 'no plot file' do
               Then { assert_nil preface }
             end
 
             context 'a plot file with' do
               context 'a preface' do
-                let(:scene)   { "#{plot_root}/plots/ruby" }
+                let(:scene) { "#{plot_root}/plots/ruby" }
 
                 Then { assert_match 'simplicity and productivity', preface }
               end
 
               context 'no preface' do
-                let(:scene)   { "#{plot_root}/plots/php" }
+                let(:scene) { "#{plot_root}/plots/php" }
 
                 Then { assert_nil preface }
               end
@@ -57,17 +54,16 @@ describe Omakase do
 
         let(:plot_choices) { omakase.get_plot_choices(scene) }
 
-        Then { assert_equal %w[ruby php node python], plot_choices.values }
+        Then { assert_includes plot_choices.values, 'php' }
       end
 
       describe '#choose_plot' do
-        let(:scene)   { "#{plot_root}" }
-        let(:command) { omakase.choose_plot(scene) }
-        let(:prompt)  { 'Please choose from these roro plots:' }
-        let(:choices) { ''}
-        let(:options) { {} }
+        let(:scene)    { "#{plot_root}" }
+        let(:command)  { omakase.choose_plot(scene) }
+        let(:question) { 'Please choose from these roro plots:' }
+        let(:choices)  { 'getsome ' }
 
-        Then { assert_asked(prompt, choices, options) }
+        Then { assert_asked("Please choose from these roro plots: {1=>\"plots\", 2=>\"databases\"} [1, 2] ") }
       end
 
       # describe '#choose_plot' do
@@ -134,7 +130,7 @@ describe Omakase do
     let(:scene) { "#{plot_root}/plots" }
     let(:plot_choices) { omakase.get_plot_choices(scene) }
 
-    Then { assert_equal %w[ruby php node python ], plot_choices.values }
+    Then { assert_includes plot_choices.values, 'ruby' }
   end
 
 
@@ -171,7 +167,5 @@ describe Omakase do
     #     Then { assert_equal %w[django rails], adventures }
     #   end
     # end
-
-
   end
 end
