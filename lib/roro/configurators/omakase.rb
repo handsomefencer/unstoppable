@@ -51,9 +51,13 @@ module Roro
         read_yaml(file)[:preface] if File.exist?(file)
       end
 
+      def get_plot(scene)
+        file = "#{scene}.yml"
+        File.exist?(file) ? read_yaml(file) : nil
+      end
+
       def get_plot_preface(scene)
-        file = scene + '.yml'
-        read_yaml(file)
+        get_plot(scene) ? get_plot(scene)[:preface] : nil
       end
 
       def ask_question(prompt, choices)
@@ -66,7 +70,6 @@ module Roro
                      .map { |f| f.split('/').last }
         {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
       end
-
 
       def choose_plot(scene)
         parent_plot = scene.split('/')[-2]

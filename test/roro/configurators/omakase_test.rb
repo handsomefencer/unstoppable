@@ -8,54 +8,82 @@ describe Omakase do
   let(:omakase) { subject.new(options) }
   let(:plot_root) { "#{Dir.pwd}/lib/roro/plots" }
 
-  describe '#choose_your_own_adventure do' do
+  describe '#choose_your_own_adventure' do
+    let(:scene) { "#{plot_root}/plots" }
+
     describe '#choose_plot' do
       describe '#get_plot_choices' do
         describe '#get_plot_preface' do
-          context 'when no plot file' do
-            let(:scene)   { plot_root + '/plots/node' }
-            let(:preface) { omakase.get_plot_preface(scene) }
+          let(:preface) { omakase.get_plot_preface(scene) }
 
-            Then { assert_nil preface }
+          describe '#get_plot' do
+            context 'when scene has' do
+              let(:plot)  { omakase.get_plot(scene) }
+
+              context 'no plot file' do
+                Then { assert_nil plot }
+              end
+
+              context 'a plot file' do
+                let(:scene) { "#{plot_root}/plots/ruby" }
+
+                Then { assert_equal plot.class, Hash }
+              end
+            end
           end
 
-          context 'when plot file has no preface' do
-            let(:scene)   { plot_root + '/plots/php' }
+          context 'when scene has' do
             let(:preface) { omakase.get_plot_preface(scene) }
 
-            Then { assert_nil preface }
+            context 'no plot file' do
+              Then { assert_nil preface }
+            end
 
-          end
+            context 'a plot file with' do
+              context 'a preface' do
+                let(:scene)   { "#{plot_root}/plots/ruby" }
 
-          context 'when plot file contains a premise' do
-            let(:scene) { plot_root + '/plots/ruby'}
-            let(:preface) { omakase.get_plot_preface(scene) }
+                Then { assert_match 'simplicity and productivity', preface }
+              end
 
-            Then { assert_match 'elegant syntax that is natural', preface }
+              context 'no preface' do
+                let(:scene)   { "#{plot_root}/plots/php" }
+
+                Then { assert_nil preface }
+              end
+            end
           end
         end
-      end
-    end
 
-    context 'when no preface in story yml' do
-      let(:preface) { omakase.get_preface(shelf) }
+        let(:plot_choices) { omakase.get_plot_choices(scene) }
 
-      # Then { assert_nil preface }
-    end
-
-    context 'when preface in story yml' do
-      before { skip }
-      context 'when rails' do
-        let(:preface) { omakase.get_preface(shelf + '/rails/rails')}
-
-        Then { assert_match 'web framework optimized', preface }
+        Then { assert_equal %w[ruby php node python], plot_choices.values }
       end
 
-      context 'when django' do
-        let(:preface) { omakase.get_preface(shelf + '/django/django')}
+      describe '#choose_plot' do
+        let(:scene)   { "#{plot_root}" }
+        let(:command) { omakase.choose_plot(scene) }
+        let(:prompt)  { 'Please choose from these roro plots:' }
+        let(:choices) { ''}
+        let(:options) { {} }
 
-        Then { assert_match 'Python Web framework', preface }
+        Then { assert_asked(prompt, choices, options) }
       end
+
+      # describe '#choose_plot' do
+      #   before { skip }
+      #   # let(:scene) { plot_root }
+      #   let(:scene) { "#{Dir.pwd}/lib/roro/plots" }
+      #
+      #   # Dir.pwdRoro::CLI.plot_root }
+      #   let(:command) { omakase.choose_plot(scene) }
+      #   let(:prompt) { 'Please choose from these roro plots:' }
+      #   let(:choices) { ''}
+      #   let(:options) { {} }
+      #
+      #   Then { assert_asked(prompt, choices, options) }
+      # end
+
     end
   end
 
@@ -84,49 +112,31 @@ describe Omakase do
     end
   end
 
-  # describe '#choose_plot' do
-  #   before { skip }
-  #   # let(:scene) { plot_root }
-  #   let(:scene) { "#{Dir.pwd}/lib/roro/plots" }
-  #
-  #   # Dir.pwdRoro::CLI.plot_root }
-  #   let(:command) { omakase.choose_plot(scene) }
-  #   let(:prompt) { 'Please choose from these roro plots:' }
-  #   let(:choices) { ''}
-  #   let(:options) { {} }
-  #
-  #   Then { assert_asked(prompt, choices, options) }
-  # end
 
-  describe '#checkout_plot' do
+  describe '#get_plot' do
     context 'when scene has no plot file with .yml extension' do
       let(:scene) { "#{Dir.pwd}/lib/roro/plots/plots/node" }
 
-      Then { assert_nil omakase.checkout_plot(scene) }
+      Then { assert_nil omakase.get_plot(scene) }
     end
 
     context 'when scene has a plot file with .yml extension' do
       let(:scene) { "#{Dir.pwd}/lib/roro/plots/plots/ruby/plots/rails/rails" }
 
-      Then { assert_includes omakase.checkout_plot(scene).keys, :preface }
-      And  { assert_includes omakase.checkout_plot(scene).keys, :actions }
-      And  { assert_includes omakase.checkout_plot(scene).keys, :variables }
-      And  { assert_includes omakase.checkout_plot(scene).keys, :questions }
+      Then { assert_includes omakase.get_plot(scene).keys, :preface }
+      And  { assert_includes omakase.get_plot(scene).keys, :actions }
+      And  { assert_includes omakase.get_plot(scene).keys, :variables }
+      And  { assert_includes omakase.get_plot(scene).keys, :questions }
     end
   end
 
   describe '#get_plot_choices' do
-    let(:scene) { plot_root + '/plots' }
+    let(:scene) { "#{plot_root}/plots" }
     let(:plot_choices) { omakase.get_plot_choices(scene) }
 
     Then { assert_equal %w[ruby php node python ], plot_choices.values }
   end
 
-  describe '#choose_plot' do
-    let(:scene) { plot_root + '/plots' }
-
-    # Then { assert_equal omakase.pick_plot(scene), 'Please choose from these roro plots:' }
-  end
 
   describe '#question' do
     context 'when scene has no plot' do
