@@ -11,12 +11,11 @@ module Minitest
       end
     end
 
-    def assert_asked(prompt, answer = 1)
-      Thor::Shell::Basic
-        .any_instance
+    def assert_asked(prompt, choices, answer)
+      Thor::Shell::Basic.any_instance
         .expects(:ask)
-        .with("#{prompt}", {:limited_to => [1, 2] })
-        .returns(answer)
+        .with(prompt, {:limited_to => choices.keys })
+        .returns(choices[answer])
       command
     end
 

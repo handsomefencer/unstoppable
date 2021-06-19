@@ -5,32 +5,21 @@ module Roro
     class Omakase < Roro::Configurators::Configurator
 
       def choose_your_adventure(scene=nil)
-        scene ||= @scene
-        # prompt = [(set_color "\n\s\s#{question(scene)}", :blue)]
-        # adventures = get_adventures(scene)
-        # adventures.each do |key, value|
-        #   preface = get_preface("#{scene}/#{value}/#{value}")
-        #   blurb = preface.nil? ? '' : "-- #{preface}"
-        #   prompt << "#{(set_color "(#{key}) #{value}", :blue)} #{blurb}"
-        # end
-        # ask(prompt.join("\n\n"))
-        question = pick_plot(scene)
-        ask(question)
+        @story[choose_plot(scene)] = {}
       end
 
       def choose_plot(scene)
         parent_plot = scene.split('/')[-2]
         plot_collection_name = scene.split('/').last
         plot_choices = get_plot_choices(scene)
-        question = "Please choose from these #{(parent_plot.eql?('plots') ? 'roro' : parent_plot)} #{plot_collection_name}:"
+        question = "Please choose from these #{parent_plot.eql?('plots') ? 'roro' : parent_plot} #{plot_collection_name}:"
         ask("#{question} #{plot_choices}", limited_to: plot_choices.keys )
       end
 
       def get_plot_choices(scene)
-        choices = Dir.glob(scene + '/*')
-                     .select { |f| File.directory? f }
+        choices = Dir.glob("#{scene}/*.yml")
                      .map { |f| f.split('/').last }
-        {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
+        {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
       end
 
       def get_plot_preface(scene)
@@ -41,7 +30,6 @@ module Roro
         file = "#{scene}.yml"
         File.exist?(file) ? read_yaml(file) : nil
       end
-
 
       def plot_bank(filedir = nil)
         filedir ||= "#{Roro::CLI.plot_root}"
@@ -64,14 +52,13 @@ module Roro
         end
       end
 
-
       def checkout_plot(filedir)
         file = "#{filedir}.yml"
         File.exist?(file) ? read_yaml(file) : nil
       end
 
       def get_adventures(filedir)
-        choices = Dir.glob(filedir + '/*')
+        choices = Dir.glob("#{filedir}/*")
                      .select { |f| File.directory? f }
                      .map { |f| f.split('/').last }
         {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
@@ -83,7 +70,7 @@ module Roro
       end
 
       def get_preface(scene)
-        file = scene + '.yml'
+        file = "#{scene}.yml"
         read_yaml(file)[:preface] if File.exist?(file)
       end
 
