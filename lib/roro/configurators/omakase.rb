@@ -5,7 +5,9 @@ module Roro
     class Omakase < Roro::Configurators::Configurator
 
       def choose_your_adventure(scene=nil)
-        @story[choose_plot(scene)] = {}
+        choice = choose_plot(scene)
+        scene
+        @story[choice] = choose_your_adventure("#{scene}/#{choice}/plots")
       end
 
       def choose_plot(scene)
@@ -19,6 +21,7 @@ module Roro
       def get_plot_choices(scene)
         choices = Dir.glob("#{scene}/*.yml")
                      .map { |f| f.split('/').last }
+                     .sort
         {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
       end
 

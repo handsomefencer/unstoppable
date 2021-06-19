@@ -56,18 +56,32 @@ describe Omakase do
 
         Then { assert_includes plot_choices.values, 'php' }
       end
-
       let(:question) { "Please choose from these #{collection}:" }
-      let(:choices)  { plots.map.with_index { |x, i| [i + 1, x] }.to_h }
+      let(:choices)  { plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h }
       let(:prompt)   { "#{question} #{choices}" }
-      let(:command)  { omakase.choose_plot(scene) }
+
+      let(:command) { omakase.choose_plot(scene) }
 
       context 'from lib/roro/plots/plots' do
         let(:collection) { 'roro plots' }
-        let(:plots)      { %w[ruby node php python]}
+        let(:plots)      { %w[node php python ruby] }
+        let(:plot)       { 4 }
 
-        Then { assert_asked(prompt, choices, 1) }
-        And  { assert_equal 'ruby', command }
+        context '#choose_plot' do
+          let(:command) { omakase.choose_plot(scene) }
+
+          Then { assert_asked(prompt, choices, plot) }
+          And  { assert_equal 'node', command }
+        end
+
+        context '#choose_your_adventure' do
+          let(:command) { omakase.choose_your_adventure(scene) }
+
+          Then { assert_asked(prompt, choices, plot) }
+          And { assert_equal omakase.story, 'blah'}
+          # And  { assert_equal 'node', command }
+        end
+
       end
 
       context 'from lib/roro/plots/plots/ruby/plots' do
@@ -82,34 +96,22 @@ describe Omakase do
       context 'from lib/roro/plots/plots/ruby/plots/rails/plots' do
         let(:scene)      { "#{plot_root}/plots/ruby/plots/rails/plots" }
         let(:collection) { 'rails plots' }
-        let(:plots)      { %w[rails rails_vue rails_react] }
+        let(:plots)      { %w[rails rails_react rails_vue] }
 
-        Then { assert_asked(prompt, choices, 3) }
+        Then { assert_asked(prompt, choices, 2) }
         And  { assert_equal 'rails_react', command }
       end
 
       context 'from lib/roro/plots/databases' do
         let(:scene)      { "#{plot_root}/databases" }
         let(:collection) { 'roro databases' }
-        let(:plots)      { %w[postgres mysql] }
+        let(:plots)      { %w[mysql postgres] }
+        let(:choice)     { { 1 => 'mysql' } }
 
-        Then { assert_asked(prompt, choices, 2) }
-        And  { assert_equal 'mysql', command }
+        Then { assert_asked(prompt, choices, choice.keys.first) }
+        And  { assert_equal choice.values.first, command }
       end
     end
-
-    let(:command) { omakase.choose_your_adventure(scene) }
-    let(:story) { omakase.story }
-
-    it 'must set story hash' do
-      Thor::Shell::Basic.any_instance
-                        .stubs(:ask)
-                        .returns('ruby')
-      command
-      assert_equal story, 'blah'
-    end
-
-
   end
 
   describe '#plot_bank' do
