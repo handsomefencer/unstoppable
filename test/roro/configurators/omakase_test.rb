@@ -9,58 +9,88 @@ describe Omakase do
   let(:plot_root) { "#{Dir.pwd}/lib/roro/plots" }
   let(:scene) { "#{plot_root}/plots" }
 
-  describe '#choose_your_own_adventure' do
-    describe '#choose_plot' do
-      describe '#get_plot_choices' do
-        describe '#get_plot_preface' do
-          describe '#get_plot' do
-            let(:plot) { omakase.get_plot(scene) }
+  describe '#get_plot' do
+    let(:plot) { omakase.get_plot(scene) }
 
-            context 'when scene has' do
-              context 'no plot file' do
-                Then { assert_nil plot }
-              end
-
-              context 'a plot file' do
-                let(:scene) { "#{plot_root}/plots/ruby" }
-
-                Then { assert_equal plot.class, Hash }
-              end
-            end
-          end
-
-          let(:preface) { omakase.get_plot_preface(scene) }
-
-          context 'when scene has' do
-            context 'no plot file' do
-              Then { assert_nil preface }
-            end
-
-            context 'a plot file with' do
-              context 'a preface' do
-                let(:scene) { "#{plot_root}/plots/ruby" }
-
-                Then { assert_match 'simplicity and productivity', preface }
-              end
-
-              context 'no preface' do
-                let(:scene) { "#{plot_root}/plots/php" }
-
-                Then { assert_nil preface }
-              end
-            end
-          end
-        end
-
-        let(:plot_choices) { omakase.get_plot_choices(scene) }
-
-        Then { assert_includes plot_choices.values, 'php' }
+    context 'when scene has' do
+      context 'no plot file' do
+        Then { assert_nil plot }
       end
-      let(:question) { "Please choose from these #{collection}:" }
-      let(:choices)  { plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h }
-      let(:prompt)   { "#{question} #{choices}" }
 
-      let(:command) { omakase.choose_plot(scene) }
+      context 'a plot file' do
+        let(:scene) { "#{plot_root}/plots/ruby" }
+
+        Then { assert_equal plot.class, Hash }
+      end
+    end
+  end
+
+  describe '#get_plot_preface' do
+    let(:preface) { omakase.get_plot_preface(scene) }
+
+    context 'when scene has no plot file' do
+      Then { assert_nil preface }
+    end
+
+    context 'when scene has a plot file with a preface' do
+      let(:scene) { "#{plot_root}/plots/ruby" }
+
+      Then { assert_match 'simplicity and productivity', preface }
+    end
+
+    context 'when scene has a plot file with no preface' do
+      let(:scene) { "#{plot_root}/plots/php" }
+
+      Then { assert_nil preface }
+    end
+  end
+
+  describe '#get_plot_choices' do
+    let(:plot_choices) { omakase.get_plot_choices(scene) }
+
+    Then { assert_includes plot_choices.values, 'php' }
+  end
+
+  describe '#choose_your_own_adventure' do
+    let(:question) { "Please choose from these #{collection}:" }
+    let(:choices)  { plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h }
+    let(:prompt)   { "#{question} #{choices}" }
+    let(:command) { omakase.choose_plot(scene) }
+
+    def assert_plot_chosen(collection, plots, plot)
+      question = "Please choose from these #{collection}:"
+      choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
+      prompt = "#{question} #{choices}"
+      assert_asked(prompt, choices, plot)
+    end
+
+    let(:acts) do
+      [
+        ['roro plots', %w[node php python ruby], 4],
+        ['ruby plots', %w[rails ruby_gem], 1],
+        ['rails plots', %w[rails rails_react rails_vue], 2]
+      ]
+    end
+
+    describe '#choose_your_adventure' do
+      let(:command) { omakase.choose_your_adventure(scene) }
+
+      Then do
+        acts.each { |act| assert_plot_chosen(*act)}
+        command
+        assert_equal({ ruby: { rails: { rails_react: {} } } }, omakase.story)
+      end
+    end
+
+    describe '#choose_plot' do
+      context 'from lib/roro/plots/plots' do
+        Given(:command) { omakase.choose_plot(scene) }
+        Then do
+          assert_plot_chosen(*acts[0])
+          command
+        end
+      end
+
 
       context 'from lib/roro/plots/plots' do
         let(:collection) { 'roro plots' }
@@ -71,17 +101,16 @@ describe Omakase do
           let(:command) { omakase.choose_plot(scene) }
 
           Then { assert_asked(prompt, choices, plot) }
-          And  { assert_equal 'node', command }
+          And  { assert_equal 'ruby', command }
         end
 
-        context '#choose_your_adventure' do
-          let(:command) { omakase.choose_your_adventure(scene) }
-
-          Then { assert_asked(prompt, choices, plot) }
-          And { assert_equal omakase.story, 'blah'}
-          # And  { assert_equal 'node', command }
-        end
-
+        # context '#choose_your_adventure' do
+        #   let(:command) { omakase.choose_your_adventure(scene) }
+        #
+        #   Then { assert_adventure_chosen(prompt, choices, plot) }
+        #   # And { assert_equal omakase.story, 'blah'}
+        #   # And  { assert_equal 'node', command }
+        # end
       end
 
       context 'from lib/roro/plots/plots/ruby/plots' do

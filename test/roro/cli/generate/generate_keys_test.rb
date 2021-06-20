@@ -4,6 +4,8 @@ require 'test_helper'
 
 describe 'Roro::CLI#generate_keys' do
   let(:subject) { Roro::CLI.new }
+  Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('y') }
+
   let(:environments) { ['dummy'] }
   let(:generate) { subject.generate_keys(*environments) }
 

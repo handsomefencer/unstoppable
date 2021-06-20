@@ -3,11 +3,16 @@
 module Roro
   module Configurators
     class Omakase < Roro::Configurators::Configurator
-
-      def choose_your_adventure(scene=nil)
+      def choose_your_adventure(scene)
+        hash ||= {}
         choice = choose_plot(scene)
-        scene
-        @story[choice] = choose_your_adventure("#{scene}/#{choice}/plots")
+        child_scene = "#{scene}/#{choice}/plots"
+        hash[choice] = if get_plot_choices(child_scene).empty?
+                         {}
+                       else
+                         choose_your_adventure(child_scene)
+                       end
+        @story = sanitize(hash)
       end
 
       def choose_plot(scene)
@@ -15,7 +20,7 @@ module Roro
         plot_collection_name = scene.split('/').last
         plot_choices = get_plot_choices(scene)
         question = "Please choose from these #{parent_plot.eql?('plots') ? 'roro' : parent_plot} #{plot_collection_name}:"
-        ask("#{question} #{plot_choices}", limited_to: plot_choices.keys )
+        ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
       end
 
       def get_plot_choices(scene)
@@ -35,7 +40,7 @@ module Roro
       end
 
       def plot_bank(filedir = nil)
-        filedir ||= "#{Roro::CLI.plot_root}"
+        filedir ||= Roro::CLI.plot_root.to_s
         hash = {}
         Dir.glob("#{filedir}/*").each do |child_folder|
           story = child_folder.split('/').last.split('.yml').first

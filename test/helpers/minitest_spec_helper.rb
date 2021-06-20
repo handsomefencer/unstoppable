@@ -3,7 +3,6 @@
 module Minitest
   class Spec
     before do
-      # Thor::Shell::Basic.any_instance.stubs(:ask).returns('y')
       if defined? workbench
         prepare_destination(*workbench)
         Dir.chdir("#{@tmpdir}/workbench")
@@ -16,7 +15,6 @@ module Minitest
         .expects(:ask)
         .with(prompt, {:limited_to => choices.keys })
         .returns(choices[answer])
-      command
     end
 
     def prepare_destination(*workbench)
