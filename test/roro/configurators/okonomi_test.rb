@@ -13,19 +13,7 @@ describe 'Roro::Configurator::Okonomi' do
   Given(:intention) { config.structure[:intentions][:config_std_out_true] }
 
   describe '.okonomi' do
-    describe 'when called with .ask_question must return answer' do
-      # Given do
-      #   Thor::Shell::Basic.any_instance.stubs(:ask)
-      #                     .with(
-      #                       question[:question],
-      #                       default: question[:default],
-      #                       limited_to: question[:choices].keys
-      #                     ).returns('n')
-      # end
-
-      Then { assert_equal 'n', config.ask_question(question) }
-    end
-
+    
     describe 'when called with .ask_questions must change intention' do
       Given { skip }
       # Given { Thor::Shell::Basic.any_instance.stubs(:ask).returns('n') }

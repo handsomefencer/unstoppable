@@ -51,7 +51,7 @@ describe Omakase do
     Then { assert_includes plot_choices.values, 'php' }
   end
 
-  describe '#choose_your_own_adventure' do
+  describe '#choose_your_adventure' do
     let(:question) { "Please choose from these #{collection}:" }
     let(:choices)  { plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h }
     let(:prompt)   { "#{question} #{choices}" }
@@ -84,13 +84,13 @@ describe Omakase do
 
     describe '#choose_plot' do
       context 'from lib/roro/plots/plots' do
-        Given(:command) { omakase.choose_plot(scene) }
+        let(:command) { omakase.choose_plot(scene) }
+
         Then do
           assert_plot_chosen(*acts[0])
           command
         end
       end
-
 
       context 'from lib/roro/plots/plots' do
         let(:collection) { 'roro plots' }
@@ -141,49 +141,6 @@ describe Omakase do
         And  { assert_equal choice.values.first, command }
       end
     end
-  end
-
-  describe '#plot_bank' do
-    before { skip }
-    describe 'must return a hash with keys for each folder' do
-      let(:plots) { omakase.plot_bank }
-
-      Then { assert_includes plots.keys, :ruby }
-      And  { assert_includes plots.keys, :python }
-
-      describe 'and each nested folder' do
-        let(:plots) { omakase.plot_bank[:ruby][:plots] }
-
-        Then { assert_includes plots.keys, :rails }
-        And  { assert_includes plots.keys, :ruby_gem }
-
-        describe 'and each deeply nested folder' do
-          let(:plots) { omakase.plot_bank[:ruby][:plots][:rails][:plots] }
-
-          Then { assert_includes plots.keys, :rails }
-          And  { assert_includes plots.keys, :rails_react }
-          And  { assert_includes plots.keys, :rails_vue }
-        end
-      end
-    end
-  end
-
-  describe '#get_plot' do
-    context 'when scene has a plot file with .yml extension' do
-      let(:scene) { "#{Dir.pwd}/lib/roro/plots/plots/ruby/plots/rails" }
-
-      Then { assert_includes omakase.get_plot(scene).keys, :preface }
-      And  { assert_includes omakase.get_plot(scene).keys, :actions }
-      And  { assert_includes omakase.get_plot(scene).keys, :variables }
-      And  { assert_includes omakase.get_plot(scene).keys, :questions }
-    end
-  end
-
-  describe '#get_plot_choices' do
-    let(:scene) { "#{plot_root}/plots" }
-    let(:plot_choices) { omakase.get_plot_choices(scene) }
-
-    Then { assert_includes plot_choices.values, 'ruby' }
   end
 
   describe '#question' do
