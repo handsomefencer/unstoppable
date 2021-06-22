@@ -12,14 +12,15 @@ module Roro
                        else
                          choose_your_adventure(child_scene)
                        end
-        @story = sanitize(hash)
+        @questions = {}
+        @story     = sanitize(hash)
       end
 
       def choose_plot(scene)
         parent_plot = scene.split('/')[-2]
         plot_collection_name = scene.split('/').last
         plot_choices = get_plot_choices(scene)
-        question = "Please choose from these #{parent_plot.eql?('plots') ? 'roro' : parent_plot} #{plot_collection_name}:"
+        question = "Please choose from these #{parent_plot.eql?('stories') ? 'roro' : parent_plot} #{plot_collection_name}:"
         ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
       end
 
