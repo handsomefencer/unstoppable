@@ -34,7 +34,10 @@ describe Omakase do
           Then { assert_equal plot[:questions][0][:question], 'Please supply your docker username' }
           And  { assert_equal plot[:questions][0][:help], 'https://hub.docker.com/signup' }
           And  { assert_equal plot[:questions][0][:action], 'config.env[:docker_username]=answer' }
-          And  { assert_equal plot[:env][:ruby], 2.7 }
+        end
+
+        describe 'env' do
+          Then { assert_equal plot[:env][:ruby], 2.7 }
         end
       end
     end
