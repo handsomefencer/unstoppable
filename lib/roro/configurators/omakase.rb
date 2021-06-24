@@ -3,6 +3,7 @@
 module Roro
   module Configurators
     class Omakase < Roro::Configurators::Configurator
+
       def choose_your_adventure(scene)
         hash ||= {}
         choice = choose_plot(scene)
@@ -20,8 +21,14 @@ module Roro
         parent_plot = scene.split('/')[-2]
         plot_collection_name = scene.split('/').last
         plot_choices = get_plot_choices(scene)
-        question = "Please choose from these #{parent_plot.eql?('stories') ? 'roro' : parent_plot} #{plot_collection_name}:"
+        question = "Please choose from these #{parent_plot} #{plot_collection_name}:"
         ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
+      end
+
+      def choose_env_var(question)
+        answer = ask(question[:question])
+        eval(question[:action])
+
       end
 
       def get_plot_choices(scene)

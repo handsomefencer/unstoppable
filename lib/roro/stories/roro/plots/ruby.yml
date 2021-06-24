@@ -8,13 +8,13 @@ questions:
   -
     question: Please supply your docker username
     help: https://hub.docker.com/signup
-    action: config.env[:docker_username]=answer
+    action: "@env[:docker_username] = answer"
   -
     question: Please supply your docker id
     help: https://hub.docker.com/signup
-    action: config.env[:docker_id]=answer
+    action: "@env[:docker_id]"
   -
     question: Please supply your docker password
     help: https://hub.docker.com/signup
-    action: config.env[:docker_password]=answer
+#    action: config.env[:docker_password]=answer
 
