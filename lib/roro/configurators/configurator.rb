@@ -3,6 +3,7 @@
 module Roro
   module Configurators
     class Configurator < Thor
+      include Thor::Actions
       attr_reader :structure, :intentions, :env, :options, :story
 
       def initialize(options = {})

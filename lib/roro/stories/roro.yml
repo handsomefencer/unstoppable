@@ -1,3 +1,5 @@
 actions:
-  -
-    copy roro .
+  - |
+    src = 'roro'
+    dest = 'roro'
+    template src, dest

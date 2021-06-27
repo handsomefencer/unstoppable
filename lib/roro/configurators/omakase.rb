@@ -3,6 +3,12 @@
 module Roro
   module Configurators
     class Omakase < Roro::Configurators::Configurator
+      def log_adventure
+        directory 'roro'
+        directory 'roro/log'
+        create_file './roro/log/adventure', 'blah'
+        story
+      end
 
       def choose_your_adventure(scene)
         hash ||= {}
@@ -25,10 +31,25 @@ module Roro
         ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
       end
 
+      def write_story(&block)
+        story = self.story
+        story.each do |key, _value|
+          actions = get_plot(key)[:actions]
+          actions.each(&block)
+        end
+      end
+
+      def layer_actions
+        actions = []
+        @story.each do |key, _value|
+          plot = get_plot(key)
+        end
+        config.structure[:actions] = []
+      end
+
       def choose_env_var(question)
         answer = ask(question[:question])
         eval(question[:action])
-
       end
 
       def get_plot_choices(scene)
@@ -43,7 +64,7 @@ module Roro
       end
 
       def get_plot(scene)
-        file = "#{scene}.yml"
+        file = "#{Roro::CLI.plot_root}/#{scene}.yml"
         File.exist?(file) ? read_yaml(file) : nil
       end
 

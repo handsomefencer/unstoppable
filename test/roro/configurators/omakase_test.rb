@@ -157,16 +157,17 @@ describe Omakase do
     Then  { assert_includes omakase.env[:docker_username], 'schadenfred' }
   end
 
-  describe '#execute' do
+  describe '#write_adventure' do
     let(:scene) { plot_root }
-    let(:story) { { roro: { python: { django: {} } } } }
+    let(:story) { { roro: {} } }
 
     Given do
       Roro::Configurators::Omakase
+        .any_instance
         .stubs(:story)
         .returns(story)
     end
-    # Given { omakase.choose_your_adventure(scene) }
-    Then { assert_equal Roro::Configurators::Omakase.story, story }
+
+    Then { assert_equal omakase.story, story }
   end
 end
