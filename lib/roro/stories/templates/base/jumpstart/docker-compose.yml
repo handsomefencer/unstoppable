@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+
+  web:
+    build: .
+    depends_on:
+      - database
+      - redis
+    entrypoint: ./docker-entrypoint.sh
+    command: ["bin/rails", "s", "-b", "0.0.0.0"]
+
+    ports:
+      - "3000:3000"
+      - "4000:4000"
+    volumes:
+      - .:/usr/src/backend
+      - gem_cache:/gems
+    env_file:
+      - .smart.env/development/web
+      - .smart.env/development/database
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server
+
+  webpack_dev_server:
+    build: .
+    command: ./bin/webpack-dev-server
+    ports:
+      - 3035:3035
+    volumes:
+      - .:/usr/src/backend
+      - gem_cache:/gems
+    env_file:
+      - .smart.env/development/database
+      - .smart.env/development/web
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+
+  redis:
+    image: redis
+
+  database:
+    image: postgres
+    env_file:
+      - .smart.env/development/database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  system_tests:
+    image: selenium/standalone-chrome-debug
+    logging:
+      driver: none
+    ports:
+      - "35729:35729"
+      - "5900:5900"
+
+volumes:
+  db_data:
+  gem_cache:

@@ -1,0 +1,11 @@
+<%= yaml_from_template("base/.circleci/_version.yml") %>
+<%= yaml_from_template("base/.circleci/_defaults.yml") %>
+<%= yaml_from_template("base/.circleci/_major_only.yml") %>
+<%= yaml_from_template("base/.circleci/_executors.yml") %>
+<%= yaml_from_template("base/.circleci/_commands.yml") %>
+
+<%= yaml_from_template("rails/.circleci/jobs/_build.yml") %>
+<%= yaml_from_template("rails/.circleci/jobs/_test.yml") %>
+<%= yaml_from_template("rails/.circleci/jobs/_push.yml") %>
+<%= yaml_from_template("base/.circleci/_workflow.yml") %>
+<%= yaml_from_template("rails/.circleci/workflows/_build_test_push.yml") %>

@@ -33,7 +33,6 @@ describe Omakase do
         describe 'questions' do
           Then { assert_equal plot[:questions][0][:question], 'Please supply your docker username' }
           And  { assert_equal plot[:questions][0][:help], 'https://hub.docker.com/signup' }
-          # And  { assert_equal plot[:questions][0][:action], 'config.env[:docker_username]=answer' }
         end
 
         describe 'env' do
@@ -156,6 +155,18 @@ describe Omakase do
 
     Given { command }
     Then  { assert_includes omakase.env[:docker_username], 'schadenfred' }
-    # And { assert_equal 'some id', omakase.env[:docker_id]}
+  end
+
+  describe '#execute' do
+    let(:scene) { plot_root }
+    let(:story) { { roro: { python: { django: {} } } } }
+
+    Given do
+      Roro::Configurators::Omakase
+        .stubs(:story)
+        .returns(story)
+    end
+    # Given { omakase.choose_your_adventure(scene) }
+    Then { assert_equal Roro::Configurators::Omakase.story, story }
   end
 end

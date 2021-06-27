@@ -1,0 +1,33 @@
+defaults: &defaults
+  working_directory: /tmp
+
+version: 2
+
+jobs:
+
+  build:
+    machine: true
+    steps:
+      - checkout
+      - add_ssh_keys
+      
+      - run: gem install handsome_fencer-circle_c_i
+      - run: handsome_fencer-circle_c_i expose circleci
+      - run: handsome_fencer-circle_c_i expose development
+      - run: echo 'source docker/env_files/circleci.smart.env' >> $BASH_ENV
+      - run: docker-compose build
+      - run: docker-compose up -d
+      - run: docker-compose exec backend bin/rails db:create db:migrate
+      - run: docker login -u $docker_USER -p $DOCKER_PASS
+      - run:
+          name: Tag backend image
+          command: docker tag $(docker images | grep project_app | awk '{ print $3 }') ${DOCKER_ORG_NAME}/${APP_NAME}_app:$DEPLOY_TAG
+      - run:
+          name: Tag web image
+          command: docker tag $(docker images | grep project_web | awk '{ print $3 }') ${DOCKER_ORG_NAME}/${APP_NAME}_web:$DEPLOY_TAG
+
+
+      - run: docker push ${DOCKER_ORG_NAME}/${APP_NAME}_app:$DEPLOY_TAG
+      - run: docker push ${DOCKER_ORG_NAME}/${APP_NAME}_web:$DEPLOY_TAG
+
+      - run: rake --rakefile .circleci/Rakefile

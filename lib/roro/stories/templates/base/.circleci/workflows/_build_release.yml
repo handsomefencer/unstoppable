@@ -1,0 +1,10 @@
+  build-release: 
+    jobs: 
+      - build
+      - test
+      - release:
+          requires: 
+            - build
+          filters: 
+            branches: 
+              only: release

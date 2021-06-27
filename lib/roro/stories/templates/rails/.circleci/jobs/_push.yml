@@ -1,0 +1,11 @@
+  push:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach-roro      
+      - run: docker-compose build
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - tag-and-push: 
+          deploy_tag: ${DEPLOY_TAG}
+      - tag-and-push: 
+          deploy_tag: 'latest'

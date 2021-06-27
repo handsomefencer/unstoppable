@@ -1,0 +1,16 @@
+<%= yaml_from_template("base/.circleci/_version.yml") %>
+<%= yaml_from_template("base/.circleci/_defaults.yml") %>
+
+jobs: 
+<%= yaml_from_template("base/.circleci/jobs/_build.yml") %>
+
+<%= yaml_from_template("ruby_gem/.circleci/jobs/_test.yml") %>
+  
+ 
+<%= yaml_from_template("base/.circleci/jobs/_release.yml") %>
+      
+<%= yaml_from_template("base/.circleci/_workflow.yml") %>
+
+<%= yaml_from_template("base/.circleci/workflows/_build_release.yml") %>
+
+  

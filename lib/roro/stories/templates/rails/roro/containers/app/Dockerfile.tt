@@ -1,0 +1,34 @@
+## The FROM instruction below builds our first layer using an official image:
+FROM ruby:<%= config[:ruby_version] %>-alpine
+
+LABEL maintainer="<%= config[:docker_email] %> using RoRo"
+
+# Add basic packages
+RUN apk add --no-cache \
+      build-base \
+      postgresql-dev \
+      nodejs \
+      yarn \
+      tzdata \
+      file 
+      
+## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
+ENV APP_HOME /usr/src/app/
+ENV BUNDLE_PATH /gems
+
+## Create both as directories to make sure they exist:
+RUN mkdir -p ${APP_HOME}
+RUN mkdir ${BUNDLE_PATH}
+
+## Tell Docker to create volumes for our workspace and gems
+## so other containers can access them.
+
+RUN gem install bundler:2.1.4
+
+WORKDIR ${APP_HOME}
+
+COPY Gemfile* ./ 
+
+RUN bundle --jobs 4
+COPY . ${APP_HOME}
+

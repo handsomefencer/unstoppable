@@ -1,0 +1,5 @@
+defaults: &defaults
+  executor: machine-layer-caching
+  working_directory: ~/project
+  environment:
+    RORO_ENV: ci
