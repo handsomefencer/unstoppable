@@ -139,4 +139,14 @@ describe Omakase do
       end
     end
   end
+
+  describe '#publish_your_adventure' do
+
+
+
+  end
+
+  describe '#checkout_advenure' do
+
+  end
 end

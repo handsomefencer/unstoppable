@@ -3,6 +3,7 @@
 module Roro
   module Configurators
     class Omakase < Roro::Configurators::Configurator
+
       def choose_your_adventure(scene)
         hash ||= {}
         choice = choose_plot(scene)
@@ -15,6 +16,8 @@ module Roro
         @questions = {}
         @story     = sanitize(hash)
       end
+
+
 
       def choose_plot(scene)
         parent_plot = scene.split('/')[-2]
