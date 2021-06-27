@@ -1,0 +1,31 @@
+commands: 
+  setup-docker-builds: 
+    steps: 
+      - setup_remote_docker:
+          docker_layer_caching: false
+
+  source-ci-vars: 
+    steps: 
+      - run: |
+          echo 'source roro/containers/app/ci.env' >> ${BASH_ENV}
+          source ${BASH_ENV} 
+
+  attach-roro: 
+    steps: 
+      - attach_workspace: 
+          at: workspace
+      - run: cp -rf workspace/roro .
+      - source-ci-vars
+
+  tag-and-push:
+    parameters: 
+      deploy_tag: 
+        type: string 
+        default: latest
+    steps:
+      - run: | 
+          SOURCE=$(docker images | grep project_app | awk '{ print $3 }')
+          DOCKER_REPO=${DOCKER_ORG}/${APP_NAME}_app
+          TAGGED_IMAGE=${DOCKER_REPO}:<< parameters.deploy_tag >>
+          docker tag ${SOURCE} ${TAGGED_IMAGE}
+          docker push ${TAGGED_IMAGE}

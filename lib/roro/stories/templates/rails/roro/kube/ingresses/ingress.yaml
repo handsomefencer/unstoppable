@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rails-demo-ing
+spec:
+  rules:
+    - host: rails-prod.local
+      http:
+        paths:
+          - backend:
+              serviceName: rails
+              servicePort: 3000
+            path: /
