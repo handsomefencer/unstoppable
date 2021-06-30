@@ -1,4 +1,0 @@
-major_only: &major_only
-  filters:
-    branches:
-      only: master

@@ -13,4 +13,4 @@ actions:
   - |
     src = 'roro'
     dest = 'roro'
-    template src, dest
+    directory src, dest

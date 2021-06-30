@@ -36,9 +36,18 @@ module Roro
 
         def write_story(&block)
           story = self.story
+          scene ||= Roro::CLI.plot_root
+          Roro::Configurators::Omakase.source_root(scene + '/templates')
+          @template_root = scene
+          @destination_stack = [Dir.pwd]
           story.each do |key, _value|
-            actions = get_plot(key)[:actions]
-            actions.each(&block)
+            actions = get_plot("#{scene}/#{key.to_s}")[:actions]
+            actions.each do |action|
+              # src = 'roro'
+              # dest = 'roro'
+              # directory src, dest
+              eval action
+            end
           end
         end
 

@@ -19,8 +19,9 @@ describe 'Stories: Roro' do
       .returns(story)
   end
   Given { omakase.write_story }
-  focus
-  # Then { assert_equal Dir.glob(Dir.pwd + '/**/*'), 'blah'}
-
-
+  Then  { assert_file 'roro/containers/env/.keep' }
+  And   { assert_file 'roro/containers/scripts/.keep' }
+  And   { assert_file 'roro/env/.keep' }
+  And   { assert_file 'roro/keys/.keep' }
+  And   { assert_file 'roro/scripts/.keep' }
 end

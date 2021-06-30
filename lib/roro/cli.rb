@@ -5,7 +5,7 @@ module Roro
     include Thor::Actions
 
     def self.source_root
-      "#{File.dirname(__FILE__)}/templates"
+      "#{@template_root || File.dirname(__FILE__)}/templates"
     end
 
     def self.story_root
