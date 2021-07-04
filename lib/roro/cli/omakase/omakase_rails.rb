@@ -2,20 +2,12 @@ module Roro
 
   class CLI < Thor
 
-    desc 'omakase::rails', "Greenfield a dockerized rails backend."
+    desc 'rollyourown', "Greenfield a dockerized rails backend."
 
-    map 'omakase::rails' => 'greenfield_rails'
+    map 'rollyourown' => 'roll_your_own'
 
-    def greenfield_rails
+    def roll_your_own
       greenfield( { story: :rails } )
-    end
-
-    desc 'omakase', 'get it'
-    map 'omakase' => 'omakase'
-
-    def omakase
-      omakase = Roro::Configurators::Omakase.new
-      omakase.choose_your_adventure
     end
   end
 end
