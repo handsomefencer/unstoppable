@@ -16,5 +16,7 @@ questions:
   -
     question: Please supply your docker password
     help: https://hub.docker.com/signup
-#    action: config.env[:docker_password]=answer
+    action: "@env[:docker_password]"
 
+actions:
+  - "@env[:ruby_version] = RUBY_VERSION"
