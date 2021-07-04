@@ -7,7 +7,7 @@ describe 'Stories: Roro' do
   let(:subject) { Omakase }
   let(:options) { nil }
   let(:omakase) { subject.new(options) }
-  let(:plot_root) { "#{Dir.pwd}/lib/roro/stories/roro" }
+  let(:plot_root) { "#{Dir.pwd}/lib/roro/catalog/roro" }
   let(:scene) { plot_root }
   let(:story) { { roro: {} } }
   let(:command) { omakase.write_story }

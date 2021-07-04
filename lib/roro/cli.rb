@@ -8,12 +8,8 @@ module Roro
       "#{@template_root || File.dirname(__FILE__)}/templates"
     end
 
-    def self.story_root
-      "#{File.dirname(__FILE__)}/stories"
-    end
-
-    def self.plot_root
-      "#{File.dirname(__FILE__)}/stories"
+    def self.catalog_root
+      "#{File.dirname(__FILE__)}/catalog"
     end
 
     def self.test_fixture_root
