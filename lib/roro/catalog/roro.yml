@@ -1,7 +1,6 @@
 preface:
 
-
-env:
+variables:
   roro_version: '2.7'
 
 questions:
@@ -14,3 +13,8 @@ actions:
     src = 'roro'
     dest = 'roro'
     directory src, dest
+
+after:
+  - roro
+  - k8s
+  - docker-compose
