@@ -311,7 +311,7 @@ module Roro
         def write_story
           story = self.story
           scene ||= Roro::CLI.catalog_root
-          Roro::Configurators::Omakase.source_root("#{scene}/templates")
+          Roro::Configurators::Configurator.source_root("#{scene}/templates")
           @template_root = scene
           @destination_stack = [Dir.pwd]
           story.each do |key, _value|
