@@ -287,7 +287,8 @@ module Roro
           story
         end
 
-        def choose_your_adventure(scene)
+        def choose_your_adventure(scene=nil)
+          scene = @scene
           hash ||= {}
           choice = choose_plot(scene)
           child_scene = "#{scene}/#{choice}/plots"

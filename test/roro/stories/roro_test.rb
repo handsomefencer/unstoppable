@@ -5,22 +5,79 @@ require 'test_helper'
 describe 'Stories: Roro' do
   let(:workbench) { nil }
   let(:options)   { nil }
-  let(:subject)   { Configurator }
+  let(:subject)   { Roro::Configurators::Configurator }
+  let(:cli)       { Roro::CLI.new }
   let(:config)    { subject.new(options) }
-  let(:plot_root) { "#{Roro::CLI.catalog_root}" }
+  let(:catalog)   { "#{Roro::CLI.catalog_root}" }
+  let(:command)   { cli.roll_your_own }
 
-  let(:scene) { plot_root }
-  let(:story) { { roro: {} } }
-
-  Given do
-    Roro::Configurators::Configurator
-      .any_instance
-      .stubs(:story)
-      .returns(story)
+  def assert_plot_chosen(collection, plots, plot)
+    question = "Please choose from these #{collection}:"
+    choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
+    prompt = "#{question} #{choices}"
+    assert_asked(prompt, choices, plot)
   end
-  Given { config.write_story }
-  Then  { assert_file 'roro/env/.keep' }
-  And   { assert_file 'roro/containers/.keep' }
-  And   { assert_file 'roro/keys/.keep' }
-  And   { assert_file 'roro/scripts/.keep' }
+
+  let(:acts) do
+    [
+      # ['roro plots', %w[node php python ruby], 4],
+      # ['ruby plots', %w[rails ruby_gem], 1],
+      ['rails plots', %w[rails rails_react rails_vue], 2]
+    ]
+  end
+
+  describe '#choose_your_adventure' do
+    let(:command) { cli.roll_your_own }
+
+    Then do
+      acts.each { |act| assert_plot_chosen(*act) }
+      command
+      assert_equal({ ruby: { rails: { rails_react: {} } } }, config.story)
+    end
+  end
+
+  describe '#choose_plot' do
+    let(:command) { config.choose_plot(scene) }
+
+    context 'from lib/roro/catalog/plots' do
+      # Then do
+      #   assert_plot_chosen(*acts[0])
+      #   command
+      # end
+    end
+
+    context 'ruby plots' do
+      let(:scene) { "#{catalog_root}/roro/plots/ruby/plots" }
+
+      # Then do
+      #   assert_plot_chosen(*acts[1])
+      #   command
+      # end
+    end
+
+    context 'from lib/roro/catalog/plots/ruby/plots/rails/plots' do
+      let(:scene) { "#{catalog_root}/plots/ruby/plots/rails/plots" }
+
+      # Then do
+      #   assert_plot_chosen(*acts[2])
+      #   command
+      # end
+    end
+
+    context 'from lib/roro/catalog/databases' do
+      let(:scene)      { "#{catalog_root}/roro/plots/ruby/plots/rails/databases" }
+      let(:collection) { 'rails databases' }
+      let(:plots)      { %w[mysql postgres] }
+      let(:choice)     { { 1 => 'mysql' } }
+
+      # Then { assert_asked(prompt, choices, choice.keys.first) }
+      # And  { assert_equal choice.values.first, command }
+  # Given { command }
+  # Then  { assert_file 'roro/env/.keep' }
+  # And   { assert_file 'roro/containers/.keep' }
+  # And   { assert_file 'roro/keys/.keep' }
+  # And   { assert_file 'roro/scripts/.keep' }
+    end
+  end
+
 end
