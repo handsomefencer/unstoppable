@@ -26,7 +26,7 @@ describe 'Stories: Roro' do
   end
 
   def assert_story_rolled(collection, plots, plot)
-    question = "Would you like to roll #{plot} into this story?"
+    question = "Please choose from these #{collection}:"
     choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
     prompt = "#{question} #{choices}"
     assert_asked(prompt, choices, plot)
@@ -34,9 +34,9 @@ describe 'Stories: Roro' do
 
   let(:acts) do
     [
-      # ['roro plots', %w[node php python ruby], 4],
-      # ['ruby plots', %w[rails ruby_gem], 1],
-      ['roro stories', %w[rails rails_react rails_vue], 2]
+      ['roro plots', %w[node php python ruby], 4],
+      ['ruby plots', %w[rails ruby_gem], 1],
+      ['rails plots', %w[rails rails_react rails_vue], 2]
     ]
   end
 

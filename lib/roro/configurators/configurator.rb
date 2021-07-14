@@ -130,7 +130,7 @@ module Roro
           when child.match?('template')
             return
           when is_inflection?(location)
-            choose_plot(location)
+            roll_child_story("#{location}/#{choose_plot(location)}")
           when get_children(location).size > 0
             get_children(location).each { |child| roll_child_story(child) }
           end
@@ -207,7 +207,7 @@ module Roro
         end
 
         def get_plot_choices(scene)
-          choices = Dir.glob("#{scene}/*.yml")
+          choices = get_children(scene)
                        .map { |f| f.split('/').last }
                        .sort
           {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
