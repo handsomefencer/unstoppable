@@ -1,4 +1,4 @@
-preface:
+preface: Adding the RoRo story allows you to manage your project securely in different environments.
 
 variables:
   roro_version: '2.7'
@@ -13,8 +13,3 @@ actions:
     src = 'roro'
     dest = 'roro'
     directory src, dest
-
-after:
-  - roro
-  - k8s
-  - docker-compose

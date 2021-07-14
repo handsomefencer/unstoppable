@@ -6,9 +6,12 @@ module Roro
 
     map 'roll_your_own' => 'roll_your_own'
 
+    attr_reader :config, :story
+
     def roll_your_own
       @config = Roro::Configurators::Configurator.new
-      @config.choose_your_adventure
+      @config.roll_your_own
+      @story = @config.story
     end
   end
 end

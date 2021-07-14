@@ -4,7 +4,7 @@ services:
 
   ruby_gem:
     build:
-      context: .
+      context: ""
       dockerfile: roro/containers/ruby_image/Dockerfile
     environment:
       - RUBY_VERSION=${RUBY_VERSION}

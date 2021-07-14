@@ -26,86 +26,6 @@ module Roro
           @scene = Roro::CLI.catalog_root
         end
 
-        def build_story
-          layer_greenfield
-          layer_rollon
-          layer_story
-          layer_okonomi
-        end
-
-        def layer_okonomi
-          return unless @options.keys.include?(:okonomi)
-
-          @structure[:okonomi] = true
-          take_order
-        end
-
-        def layer_greenfield
-          return unless @options.keys.include?(:greenfield)
-
-          @structure[:greenfield] = true
-          build_layers({ greenfield: :rails })
-        end
-
-        def layer_rollon
-          build_layers(@story)
-        end
-
-        def layer_story
-          file = '.roro_story'
-          return unless File.exist?("#{file}.yml")
-
-          overlay(get_layer(file))
-        end
-
-        def build_layers(story, location = nil)
-          story = story.is_a?(Hash) ? story : { story => {} }
-          story.each do |key, value|
-            location = location ? "#{location}/#{key}" : key
-            case value
-            when Array
-              value.each { |value| build_layers(value, location) }
-            when true
-            when
-              build_layers(value, location)
-            end
-          end
-          overlay(get_layer("#{Roro::CLI.story_root}/#{location}"))
-        end
-
-        def overlay(layer)
-          layer.each do |key, value|
-            @structure[key] ||= value
-          end
-          overlay_choices(layer) if layer[:choices]
-          overlay_env_vars(layer) if layer[:env_vars]
-          overlay_actions(layer) if layer[:actions]
-        end
-
-        def overlay_actions(layer)
-          @structure[:actions].concat(layer[:actions])
-        end
-
-        def overlay_env_vars(layer)
-          layer[:env_vars].each do |key, value|
-            @structure[:env_vars][key] = value
-          end
-        end
-
-        def overlay_choices(layer)
-          @structure[:intentions] ||= {}
-          layer[:choices].each do |key, value|
-            @structure[:choices][key] = value
-            @structure[:intentions][key] = value[:default]
-          end
-        end
-
-        def overlay_intentions(layer)
-          layer[:intentions].each do |key, value|
-            @structure[:intentions][key] = value
-          end
-        end
-
         def sanitize(options)
           options ||= {}
           options.transform_keys!(&:to_sym)
@@ -120,38 +40,6 @@ module Roro
             when String || Symbol
               options[key] = value.to_sym
             end
-          end
-        end
-
-        def get_layer(filedir)
-          filepath = "#{filedir}.yml"
-          # key = filed.split('/').last
-          # error_msg = "Cannot find that story #{key} at #{filepath}. Has it been written?"
-          raise Roro::Error, "Can't find story" unless File.exist?(filepath)
-
-          json = JSON.parse(YAML.load_file(filepath).to_json, symbolize_names: true)
-          json || raise(Roro::Story::StoryMissing, "Is #{filepath} empty?")
-        end
-
-        def story_map(story = 'mise_en_place')
-          array ||= []
-          loc = Roro::CLI.story_root + "/#{story}"
-          validate_story(loc)
-          stories = Dir.glob("#{loc}/*.yml")
-          stories.each do |ss|
-            name = ss.split('/').last.split('.yml').first
-            array << { name.to_sym => story_map([story, name].join('/')) }
-          end
-          array
-        end
-
-        def validate_story(story)
-          scenes = get_layer(story)[:stories]
-          case scenes
-          when String
-            File.exist?("#{story}#{scenes}.yml")
-          when Array
-            scenes.each { |scene| validate_story("#{story}/#{scene}") }
           end
         end
 
@@ -173,13 +61,6 @@ module Roro
           JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
         end
 
-        def log_adventure
-          directory 'roro'
-          directory 'roro/log'
-          create_file './roro/log/adventure', 'blah'
-          story
-        end
-
         def choose_your_adventure(scene)
           hash ||= {}
           choice = choose_plot(scene)
@@ -193,7 +74,75 @@ module Roro
           @story     = sanitize(hash)
         end
 
-        def choose_plot(scene)
+        def merge_story(story)
+          children = Dir.glob("#{scene}/**/*.yml")
+
+        end
+
+        def get_children(scene)
+          Dir.glob("#{scene}/*")
+        end
+
+        def merge_story_files(children)
+          merge_stories(children)
+        end
+
+        def merge_stories(files)
+          files.each { |f| @story.merge!(read_yaml(f)) if f.match?('.yml') }
+        end
+
+        def validate_story(file)
+          content = read_yaml(file)
+          case
+          when content.eql?(false)
+            content ? @story.merge!(content) : raise("No content in #{file}.")
+          when !content.keys.include?('blah')
+            'blah'
+          end
+        end
+
+        def merge_story(file)
+          content = read_yaml(file)
+          content ? @story.merge!(content) : raise("No content in #{file}")
+        end
+
+        def child_is_template?(child)
+          child.split('/').last.match?('templates')
+        end
+
+        def choose_stories(children)
+          children.each do |child|
+            next if child_is_template?(child)
+            child
+          end
+        end
+
+        def is_inflection?(scene)
+          children = get_children(scene)
+          (children.any? { |w| w.include? '.yml' }) ? false : true
+        end
+
+        def roll_child_story(location)
+          child = location.split('/').last
+          case
+          when child.match?('.yml')
+            merge_story(location)
+          when child.match?('template')
+            return
+          when is_inflection?(location)
+            choose_plot(location)
+          when get_children(location).size > 0
+            get_children(location).each { |child| roll_child_story(child) }
+          end
+        end
+
+        def roll_your_own(scene = nil)
+          get_children(scene ||= "#{@scene}/roro").each do |child|
+            roll_child_story(child)
+          end
+        end
+
+        def add_story?(scene)
           parent_plot = scene.split('/')[-2]
           plot_collection_name = scene.split('/').last
           plot_choices = get_plot_choices(scene)
@@ -201,29 +150,14 @@ module Roro
           ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
         end
 
-        def write_story
-          story = self.story
-          scene ||= Roro::CLI.plot_root
-          Roro::Configurators::Omakase.source_root("#{scene}/templates")
-          @template_root = scene
-          @destination_stack = [Dir.pwd]
-          story.each do |key, _value|
-            actions = get_plot("#{scene}/#{key}")[:actions]
-            actions.each do |action|
-              # src = 'roro'
-              # dest = 'roro'
-              # directory src, dest
-              eval action
-            end
-          end
+        def has_story?(scene)
+          children = Dir.glob("#{scene}/**/*")
+          children.any? { |w| w.include? '.yml' } #=> false
         end
 
-        def layer_actions
-          actions = []
-          @story.each do |key, _value|
-            plot = get_plot(key)
-          end
-          config.structure[:actions] = []
+        def scene_type(scene)
+          children = Dir.glob("#{scene}/**/*")
+          children
         end
 
         def choose_env_var(question)
@@ -240,65 +174,6 @@ module Roro
 
         def get_plot_preface(scene)
           get_plot(scene) ? get_plot(scene)[:preface] : nil
-        end
-
-        def get_plot(scene)
-          file = "#{scene}.yml"
-          File.exist?(file) ? read_yaml(file) : nil
-        end
-
-        def plot_bank(filedir = nil)
-          filedir ||= Roro::CLI.plot_root.to_s
-          hash = {}
-          Dir.glob("#{filedir}/*").each do |child_folder|
-            story = child_folder.split('/').last.split('.yml').first
-            hash[story] = plot_bank(child_folder)
-          end
-          @scene = filedir
-          sanitize(hash)
-        end
-
-        def validate_layer(story)
-          scenes = get_layer(story)[:stories]
-          case scenes
-          when String
-            File.exist?("#{story}#{scenes}.yml")
-          when Array
-            scenes.each { |scene| validate_story("#{story}/#{scene}") }
-          end
-        end
-
-        def checkout_plot(filedir)
-          file = "#{filedir}.yml"
-          File.exist?(file) ? read_yaml(file) : nil
-        end
-
-        def get_adventures(filedir)
-          choices = Dir.glob("#{filedir}/*")
-                       .select { |f| File.directory? f }
-                       .map { |f| f.split('/').last }
-          {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
-        end
-
-        def log_adventure
-          directory 'roro'
-          directory 'roro/log'
-          create_file './roro/log/adventure', 'blah'
-          story
-        end
-
-        def choose_your_adventure(scene=nil)
-          scene = @scene
-          hash ||= {}
-          choice = choose_plot(scene)
-          child_scene = "#{scene}/#{choice}/plots"
-          hash[choice] = if get_plot_choices(child_scene).empty?
-                           {}
-                         else
-                           choose_your_adventure(child_scene)
-                         end
-          @questions = {}
-          @story     = sanitize(hash)
         end
 
         def choose_plot(scene)
@@ -325,15 +200,7 @@ module Roro
             end
           end
         end
-
-        def layer_actions
-          actions = []
-          @story.each do |key, _value|
-            plot = get_plot(key)
-          end
-          config.structure[:actions] = []
-        end
-
+        private
         def choose_env_var(question)
           answer = ask(question[:question])
           eval(question[:action])
@@ -353,27 +220,6 @@ module Roro
         def get_plot(scene)
           file = "#{scene}.yml"
           File.exist?(file) ? read_yaml(file) : nil
-        end
-
-        def plot_bank(filedir = nil)
-          filedir ||= Roro::CLI.plot_root.to_s
-          hash = {}
-          Dir.glob("#{filedir}/*").each do |child_folder|
-            story = child_folder.split('/').last.split('.yml').first
-            hash[story] = plot_bank(child_folder)
-          end
-          @scene = filedir
-          sanitize(hash)
-        end
-
-        def validate_layer(story)
-          scenes = get_layer(story)[:stories]
-          case scenes
-          when String
-            File.exist?("#{story}#{scenes}.yml")
-          when Array
-            scenes.each { |scene| validate_story("#{story}/#{scene}") }
-          end
         end
 
         def checkout_plot(filedir)

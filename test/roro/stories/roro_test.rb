@@ -18,11 +18,25 @@ describe 'Stories: Roro' do
     assert_asked(prompt, choices, plot)
   end
 
+  def assert_story_chosen(collection, plots, plot)
+    question = "Please choose from these #{collection}:"
+    choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
+    prompt = "#{question} #{choices}"
+    assert_asked(prompt, choices, plot)
+  end
+
+  def assert_story_rolled(collection, plots, plot)
+    question = "Would you like to roll #{plot} into this story?"
+    choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
+    prompt = "#{question} #{choices}"
+    assert_asked(prompt, choices, plot)
+  end
+
   let(:acts) do
     [
       # ['roro plots', %w[node php python ruby], 4],
       # ['ruby plots', %w[rails ruby_gem], 1],
-      ['rails plots', %w[rails rails_react rails_vue], 2]
+      ['roro stories', %w[rails rails_react rails_vue], 2]
     ]
   end
 
@@ -30,16 +44,17 @@ describe 'Stories: Roro' do
     let(:command) { cli.roll_your_own }
 
     Then do
-      acts.each { |act| assert_plot_chosen(*act) }
+      acts.each { |act| assert_story_rolled(*act) }
       command
-      assert_equal({ ruby: { rails: { rails_react: {} } } }, config.story)
+      assert_includes cli.story[:variables].keys, :roro_version
+      # assert_equal({ ruby: { rails: { rails_react: {} } } }, cli.story[:variables])
     end
   end
 
   describe '#choose_plot' do
     let(:command) { config.choose_plot(scene) }
 
-    context 'from lib/roro/catalog/plots' do
+    context 'from lib/roro/stories/plots' do
       # Then do
       #   assert_plot_chosen(*acts[0])
       #   command
@@ -55,7 +70,7 @@ describe 'Stories: Roro' do
       # end
     end
 
-    context 'from lib/roro/catalog/plots/ruby/plots/rails/plots' do
+    context 'from lib/roro/stories/plots/ruby/plots/rails/plots' do
       let(:scene) { "#{catalog_root}/plots/ruby/plots/rails/plots" }
 
       # Then do
@@ -64,7 +79,7 @@ describe 'Stories: Roro' do
       # end
     end
 
-    context 'from lib/roro/catalog/databases' do
+    context 'from lib/roro/stories/databases' do
       let(:scene)      { "#{catalog_root}/roro/plots/ruby/plots/rails/databases" }
       let(:collection) { 'rails databases' }
       let(:plots)      { %w[mysql postgres] }
