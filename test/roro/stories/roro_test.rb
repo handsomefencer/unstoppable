@@ -10,28 +10,6 @@ describe 'Stories: Roro' do
   let(:config)    { subject.new(options) }
   let(:catalog)   { "#{Roro::CLI.catalog_root}" }
   let(:command)   { cli.roll_your_own }
-
-  def assert_plot_chosen(collection, plots, plot)
-    question = "Please choose from these #{collection}:"
-    choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
-    prompt = "#{question} #{choices}"
-    assert_asked(prompt, choices, plot)
-  end
-
-  def assert_story_chosen(collection, plots, plot)
-    question = "Please choose from these #{collection}:"
-    choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
-    prompt = "#{question} #{choices}"
-    assert_asked(prompt, choices, plot)
-  end
-
-  def assert_story_rolled(collection, plots, plot)
-    question = "Please choose from these #{collection}:"
-    choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
-    prompt = "#{question} #{choices}"
-    assert_asked(prompt, choices, plot)
-  end
-
   let(:acts) do
     [
       ['roro plots', %w[node php python ruby], 4],
@@ -40,14 +18,13 @@ describe 'Stories: Roro' do
     ]
   end
 
-  describe '#choose_your_adventure' do
+  describe '#roll_your_own' do
     let(:command) { cli.roll_your_own }
 
     Then do
       acts.each { |act| assert_story_rolled(*act) }
       command
       assert_includes cli.story[:variables].keys, :roro_version
-      # assert_equal({ ruby: { rails: { rails_react: {} } } }, cli.story[:variables])
     end
   end
 
