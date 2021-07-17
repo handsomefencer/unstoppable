@@ -191,11 +191,4 @@ describe Configurator do
       end
     end
   end
-  describe '#structure' do
-    Then { assert_includes config.structure.keys, :intentions }
-    And  { assert_includes config.structure.keys, :choices }
-    And  { assert_includes config.structure.keys, :env_vars }
-  end
-
-
 end

@@ -10,26 +10,12 @@ module Roro
       no_commands do
         def initialize(options = {})
           @options = sanitize(options)
-          @structure = {
-            intentions: {},
-            choices: {},
-            env_vars: {}
-          }
-          @story = @options[:story] || {}
-          @intentions = @structure[:intentions]
-          @env = @structure[:env_vars]
-          @env[:main_app_name] = Dir.pwd.split('/').last
-          @env[:ruby_version] = RUBY_VERSION
-          @env[:force] = true
-          @env[:verbose] = false
-          @env[:roro_version] = VERSION
+          @story = {}
           @scene = Roro::CLI.catalog_root
         end
 
         def sanitize(options)
-          options ||= {}
-          options.transform_keys!(&:to_sym)
-          options.each do |key, value|
+          (options ||= {}).transform_keys!(&:to_sym).each do |key, value|
             case value
             when Array
               value.each { |vs| sanitize(vs) }
@@ -106,30 +92,36 @@ module Roro
           content ? @story.merge!(content) : raise("No content in #{file}")
         end
 
+        def child_type(child)
+          case
+          when child.split('/').last.match?('templates')
+            :template
+          when child.split('.').last.match?('yml')
+            :yml
+          when !get_children(scene).any? { |w| w.include? '.yml' }
+            :inflection
+          end
+        end
+
         def child_is_template?(child)
           child.split('/').last.match?('templates')
         end
 
-        def choose_stories(children)
-          children.each do |child|
-            next if child_is_template?(child)
-            child
-          end
+        def child_is_yaml?(child)
+          child.split('.').last.match?('yml')
         end
 
-        def is_inflection?(scene)
-          children = get_children(scene)
-          (children.any? { |w| w.include? '.yml' }) ? false : true
+        def child_is_inflection?(scene)
+          !get_children(scene).any? { |w| w.include? '.yml' }
         end
 
         def roll_child_story(location)
-          child = location.split('/').last
           case
-          when child.match?('.yml')
+          when child_is_yaml?(location)
             merge_story(location)
-          when child.match?('template')
+          when child_is_template?(location)
             return
-          when is_inflection?(location)
+          when child_is_inflection?(location)
             roll_child_story("#{location}/#{choose_plot(location)}")
           when get_children(location).size > 0
             get_children(location).each { |child| roll_child_story(child) }
@@ -140,36 +132,6 @@ module Roro
           get_children(scene ||= "#{@scene}/roro").each do |child|
             roll_child_story(child)
           end
-        end
-
-        def add_story?(scene)
-          parent_plot = scene.split('/')[-2]
-          plot_collection_name = scene.split('/').last
-          plot_choices = get_plot_choices(scene)
-          question = "Please choose from these #{parent_plot} #{plot_collection_name}:"
-          ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
-        end
-
-        def has_story?(scene)
-          children = Dir.glob("#{scene}/**/*")
-          children.any? { |w| w.include? '.yml' } #=> false
-        end
-
-        def scene_type(scene)
-          children = Dir.glob("#{scene}/**/*")
-          children
-        end
-
-        def choose_env_var(question)
-          answer = ask(question[:question])
-          eval(question[:action])
-        end
-
-        def get_plot_choices(scene)
-          choices = Dir.glob("#{scene}/*.yml")
-                       .map { |f| f.split('/').last }
-                       .sort
-          {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
         end
 
         def get_plot_preface(scene)
@@ -184,55 +146,53 @@ module Roro
           ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
         end
 
-        def write_story
-          story = self.story
-          scene ||= Roro::CLI.catalog_root
-          Roro::Configurators::Configurator.source_root("#{scene}/templates")
-          @template_root = scene
-          @destination_stack = [Dir.pwd]
-          story.each do |key, _value|
-            actions = get_plot("#{scene}/#{key}")[:actions]
-            actions.each do |action|
-              # src = 'roro'
-              # dest = 'roro'
-              # directory src, dest
-              eval action
-            end
-          end
-        end
         private
-        def choose_env_var(question)
-          answer = ask(question[:question])
-          eval(question[:action])
-        end
 
         def get_plot_choices(scene)
           choices = get_children(scene)
-                       .map { |f| f.split('/').last }
-                       .sort
+                      .map { |f| f.split('/').last }
+                      .sort
           {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
         end
 
-        def get_plot_preface(scene)
-          get_plot(scene) ? get_plot(scene)[:preface] : nil
-        end
+        # def write_story
+        #   story = self.story
+        #   scene ||= Roro::CLI.catalog_root
+        #   Roro::Configurators::Configurator.source_root("#{scene}/templates")
+        #   @template_root = scene
+        #   @destination_stack = [Dir.pwd]
+        #   story.each do |key, _value|
+        #     actions = get_plot("#{scene}/#{key}")[:actions]
+        #     actions.each do |action|
+        #       # src = 'roro'
+        #       # dest = 'roro'
+        #       # directory src, dest
+        #       eval action
+        #     end
+        #   end
+        # end
 
-        def get_plot(scene)
-          file = "#{scene}.yml"
-          File.exist?(file) ? read_yaml(file) : nil
-        end
+        # def choose_env_var(question)
+        #   answer = ask(question[:question])
+        #   eval(question[:action])
+        # end
 
-        def checkout_plot(filedir)
-          file = "#{filedir}.yml"
-          File.exist?(file) ? read_yaml(file) : nil
-        end
+        # def get_plot(scene)
+        #   file = "#{scene}.yml"
+        #   File.exist?(file) ? read_yaml(file) : nil
+        # end
 
-        def get_adventures(filedir)
-          choices = Dir.glob("#{filedir}/*")
-                       .select { |f| File.directory? f }
-                       .map { |f| f.split('/').last }
-          {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
-        end
+        # def checkout_plot(filedir)
+        #   file = "#{filedir}.yml"
+        #   File.exist?(file) ? read_yaml(file) : nil
+        # end
+
+        # def get_adventures(filedir)
+        #   choices = Dir.glob("#{filedir}/*")
+        #                .select { |f| File.directory? f }
+        #                .map { |f| f.split('/').last }
+        #   {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
+        # end
       end
     end
   end

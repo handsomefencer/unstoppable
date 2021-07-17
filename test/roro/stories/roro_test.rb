@@ -4,10 +4,10 @@ require 'test_helper'
 
 describe 'Stories: Roro' do
   let(:workbench) { nil }
-  let(:options)   { nil }
+  # let(:options)   { nil }
   let(:subject)   { Roro::Configurators::Configurator }
   let(:cli)       { Roro::CLI.new }
-  let(:config)    { subject.new(options) }
+  # let(:config)    { subject.new(options) }
   let(:catalog)   { "#{Roro::CLI.catalog_root}" }
   let(:command)   { cli.roll_your_own }
   let(:acts) do
@@ -26,6 +26,8 @@ describe 'Stories: Roro' do
       command
       assert_includes cli.story[:variables].keys, :roro_version
     end
+
+    # And { assert_file 'blah' }
   end
 
   describe '#choose_plot' do
