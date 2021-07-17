@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 require "test_helper"
-# TODO refactor folders and files so they follow namespacing in roro/lib e.g test/lib/roro/cli_test.rb
-#
+
 describe Roro do
   it 'must have a version number' do
     assert ::Roro::VERSION
