@@ -100,7 +100,7 @@ describe Configurator do
     describe '#choose_plot' do
       let(:command) { config.choose_plot(scene) }
 
-      context 'from lib/roro/stories/plots' do
+      context 'from lib/roro/library/plots' do
         # Then do
         #   assert_plot_chosen(*acts[0])
         #   command
@@ -116,7 +116,7 @@ describe Configurator do
         # end
       end
 
-      context 'from lib/roro/stories/plots/ruby/plots/rails/plots' do
+      context 'from lib/roro/library/plots/ruby/plots/rails/plots' do
         let(:scene) { "#{catalog_root}/plots/ruby/plots/rails/plots" }
 
         # Then do
@@ -125,7 +125,7 @@ describe Configurator do
         # end
       end
 
-      context 'from lib/roro/stories/databases' do
+      context 'from lib/roro/library/databases' do
         let(:scene)      { "#{catalog_root}/roro/plots/ruby/plots/rails/databases" }
         let(:collection) { 'rails databases' }
         let(:plots)      { %w[mysql postgres] }
