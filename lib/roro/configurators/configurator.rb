@@ -47,18 +47,19 @@ module Roro
           JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
         end
 
-        def choose_your_adventure(scene)
-          hash ||= {}
-          choice = choose_plot(scene)
-          child_scene = "#{scene}/#{choice}/plots"
-          hash[choice] = if get_plot_choices(child_scene).empty?
-                           {}
-                         else
-                           choose_your_adventure(child_scene)
-                         end
-          @questions = {}
-          @story     = sanitize(hash)
-        end
+        # def choose_your_adventure(scene)
+        #   hash ||= {}
+        #   choice = choose_plot(scene)
+        #   return if choice.nil?
+        #   child_scene = "#{scene}/#{choice}/plots"
+        #   hash[choice] = if get_plot_choices(child_scene).empty?
+        #                    {}
+        #                  else
+        #                    choose_your_adventure(child_scene)
+        #                  end
+        #   @questions = {}
+        #   @story     = sanitize(hash)
+        # end
 
         def get_children(scene)
           Dir.glob("#{scene}/*")
@@ -102,8 +103,12 @@ module Roro
           child.split('.').last.match?('yml')
         end
 
-        def child_is_inflection?(scene)
-          !get_children(scene).any? { |w| w.include? '.yml' }
+        def child_is_empty?(child)
+          get_children(child).empty?
+        end
+
+        def child_is_inflection?(child)
+          !get_children(child).any? { |w| w.include? '.yml' }
         end
 
         def roll_child_story(location)
@@ -114,6 +119,8 @@ module Roro
             return
           when child_is_inflection?(location)
             roll_child_story("#{location}/#{choose_plot(location)}")
+          when child_is_empty?(location)
+            return
           when get_children(location).size > 0
             get_children(location).each { |child| roll_child_story(child) }
           end
@@ -133,8 +140,9 @@ module Roro
           parent_plot = scene.split('/')[-2]
           plot_collection_name = scene.split('/').last
           plot_choices = get_plot_choices(scene)
+          return if plot_choices.empty?
           question = "Please choose from these #{parent_plot} #{plot_collection_name}:"
-          ask("#{question} #{plot_choices}", limited_to: plot_choices.keys)
+          ask("#{question} #{plot_choices}", limited_to: plot_choices.keys.map(&:to_s))
         end
 
         private

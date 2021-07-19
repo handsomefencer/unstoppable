@@ -12,8 +12,8 @@ module Minitest
 
     def assert_asked(prompt, choices, answer)
       Thor::Shell::Basic.any_instance
-        .expects(:ask)
-        .with(prompt, {:limited_to => choices.keys })
+        .stubs(:ask)
+        .with(prompt, {:limited_to => choices.keys.map(&:to_s) })
         .returns(choices[answer])
     end
 
