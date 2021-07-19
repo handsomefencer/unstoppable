@@ -60,17 +60,8 @@ module Roro
           @story     = sanitize(hash)
         end
 
-        def merge_story(story)
-          children = Dir.glob("#{scene}/**/*.yml")
-
-        end
-
         def get_children(scene)
           Dir.glob("#{scene}/*")
-        end
-
-        def merge_story_files(children)
-          merge_stories(children)
         end
 
         def merge_stories(files)
