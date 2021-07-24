@@ -47,22 +47,10 @@ module Roro
           JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
         end
 
-        # def choose_your_adventure(scene)
-        #   hash ||= {}
-        #   choice = choose_plot(scene)
-        #   return if choice.nil?
-        #   child_scene = "#{scene}/#{choice}/plots"
-        #   hash[choice] = if get_plot_choices(child_scene).empty?
-        #                    {}
-        #                  else
-        #                    choose_your_adventure(child_scene)
-        #                  end
-        #   @questions = {}
-        #   @story     = sanitize(hash)
-        # end
-
         def get_children(scene)
-          Dir.glob("#{scene}/*")
+          return if scene.split('/').last.eql?('3')
+          kids = Dir.glob("#{scene}/*")
+          kids
         end
 
         def merge_stories(files)
@@ -103,8 +91,18 @@ module Roro
           child.split('.').last.match?('yml')
         end
 
+        def child_is_dotfile?(child)
+          child.split('.').last.match?('keep')
+        end
+
         def child_is_empty?(child)
           get_children(child).empty?
+        end
+
+        def child_is_story_directory?(child)
+          kids = get_children(child)
+
+          kids.size.eql?(1) && kids.first.split('.').last.match?('yml')
         end
 
         def child_is_inflection?(child)
@@ -117,8 +115,11 @@ module Roro
             merge_story(location)
           when child_is_template?(location)
             return
+          when child_is_dotfile?(location)
+            return
           when child_is_inflection?(location)
-            roll_child_story("#{location}/#{choose_plot(location)}")
+            answer = choose_plot(location)
+            roll_child_story("#{location}/#{answer}")
           when child_is_empty?(location)
             return
           when get_children(location).size > 0
@@ -130,6 +131,11 @@ module Roro
           get_children(scene ||= "#{@scene}/roro").each do |child|
             roll_child_story(child)
           end
+          @destination_stack = [Dir.pwd]
+          current_dir = Dir.pwd
+          kidz = get_children(current_dir)
+          create_file('.adventure_log1', @story.to_yaml)
+
         end
 
         def get_plot_preface(scene)
@@ -153,45 +159,6 @@ module Roro
                       .sort
           {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
         end
-
-        # def write_story
-        #   story = self.story
-        #   scene ||= Roro::CLI.catalog_root
-        #   Roro::Configurators::Configurator.source_root("#{scene}/templates")
-        #   @template_root = scene
-        #   @destination_stack = [Dir.pwd]
-        #   story.each do |key, _value|
-        #     actions = get_plot("#{scene}/#{key}")[:actions]
-        #     actions.each do |action|
-        #       # src = 'roro'
-        #       # dest = 'roro'
-        #       # directory src, dest
-        #       eval action
-        #     end
-        #   end
-        # end
-
-        # def choose_env_var(question)
-        #   answer = ask(question[:question])
-        #   eval(question[:action])
-        # end
-
-        # def get_plot(scene)
-        #   file = "#{scene}.yml"
-        #   File.exist?(file) ? read_yaml(file) : nil
-        # end
-
-        # def checkout_plot(filedir)
-        #   file = "#{filedir}.yml"
-        #   File.exist?(file) ? read_yaml(file) : nil
-        # end
-
-        # def get_adventures(filedir)
-        #   choices = Dir.glob("#{filedir}/*")
-        #                .select { |f| File.directory? f }
-        #                .map { |f| f.split('/').last }
-        #   {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c } }
-        # end
       end
     end
   end
