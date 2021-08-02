@@ -1,32 +1,20 @@
 # frozen_string_literal: true
 
+require_relative 'validations'
+
 module Roro
   module Configurators
     class Configurator < Thor
       include Thor::Actions
+      include Validations
 
       attr_reader :structure, :intentions, :env, :options, :story
 
       no_commands do
         def initialize(options = {})
           @options = sanitize(options)
-          @story = {}
           @scene = Roro::CLI.catalog_root
-        end
-
-        def sanitize(options)
-          (options ||= {}).transform_keys!(&:to_sym).each do |key, value|
-            case value
-            when Array
-              value.each { |vs| sanitize(vs) }
-            when Hash
-              sanitize(value)
-            when true
-              options[key] = true
-            when String || Symbol
-              options[key] = value.to_sym
-            end
-          end
+          build_story
         end
 
         def get_preface(scene)
@@ -57,19 +45,31 @@ module Roro
           files.each { |f| @story.merge!(read_yaml(f)) if f.match?('.yml') }
         end
 
-        def validate_story(file)
-          content = read_yaml(file)
-          case
-          when content.eql?(false)
-            content ? @story.merge!(content) : raise("No content in #{file}.")
-          when !content.keys.include?('blah')
-            'blah'
-          end
-        end
-
         def merge_story(file)
           content = read_yaml(file)
-          content ? @story.merge!(content) : raise("No content in #{file}")
+          [:actions].each do |key|
+            content[key].each do |item|
+              @story[key] = @story[key] << item
+            end
+
+          end
+          @story = content
+          # story ||= content
+          # story.each do |key, value|
+          #   case @story
+          #
+          #   end
+          # end
+
+          # content ? @story.merge!(content) : ./raise("No content in #{file}")
+          # content.each do |key, value|
+          #   case key
+          #   @story[key]
+          #   end
+          #   getsome = @story[key]
+          #   # @story[key] = getsome << value
+          #   # @story
+          # end
         end
 
         def child_type(child)
@@ -125,6 +125,7 @@ module Roro
           when get_children(location).size > 0
             get_children(location).each { |child| roll_child_story(child) }
           end
+          @story
         end
 
         def roll_your_own(scene = nil)
@@ -135,6 +136,10 @@ module Roro
           current_dir = Dir.pwd
           kidz = get_children(current_dir)
           create_file('.adventure_log1', @story.to_yaml)
+
+          @story[:actions].each do |a|
+            eval a
+          end
 
         end
 
@@ -152,6 +157,15 @@ module Roro
         end
 
         private
+
+        def build_story
+          @permitted_keys = %w(actions env preface questions).map(&:to_sym)
+          @permitted_envs = %w(base development staging production).map(&:to_sym)
+          @story = @permitted_keys.product([nil]).to_h
+          @story[:env] = @permitted_envs.product([nil]).to_h
+          @story[:actions] = []
+          @story[:questions] = [%w(question help action).map(&:to_sym).product([nil]).to_h]
+        end
 
         def get_plot_choices(scene)
           choices = get_children(scene)

@@ -52,9 +52,9 @@
 #       Then { assert_insertions_in_environments }
 #     end
 #
-#     describe 'docker-compose.yml' do
+#     describe 'preface-returns-array.yml' do
 #
-#       Given(:file) { "docker-compose.yml" }
+#       Given(:file) { "preface-returns-array.yml" }
 #       Given(:insertion) { yaml_from_template('rails/database/with_mysql/_service.yml')}
 #
 #       Then { assert_insertion }

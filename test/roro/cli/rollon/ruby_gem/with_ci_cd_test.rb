@@ -18,7 +18,7 @@ describe "Story::RubyGem::WithCICD" do
   describe 'must modify .gitignore' do
     
     Given(:dotenvs) { /roro\/\*\*\/\*.smart.env/ }
-    Given(:keys)    { /roro\/\*\*\/\*.key/ } 
+    Given(:keys)    { /roro\/\*\*\/\*.key/ }
     Given(:file)    { '.gitignore' }
       
     Then { assert_file(file) {|c| assert_match keys, c }}
@@ -68,15 +68,15 @@ describe "Story::RubyGem::WithCICD" do
     Then { assert_file(file) {|c| assert_match expected, c} } 
   end
  
-  describe 'roro/containers/ruby_gem/Dockerfile' do 
+  describe 'roro/containers/ruby_gem/Dockerfile' do
 
-    Given(:file) { "roro/containers/ruby_image/Dockerfile" }    
+    Given(:file) { "roro/containers/ruby_image/Dockerfile" }
 
     Then { assert_file(file) { |c| assert_match "FROM $RUBY_IMAGE", c } }  
   end
   
-  describe 'docker-compose.yml' do 
+  describe 'preface-returns-array.yml' do
      
-    Then { assert_file 'docker-compose.yml' } 
+    Then { assert_file 'preface-returns-array.yml' }
   end
 end

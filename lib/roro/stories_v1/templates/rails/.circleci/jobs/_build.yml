@@ -3,7 +3,7 @@ jobs:
     <<: *defaults 
     steps:
       - checkout
-      - run: gem install roro 
+      - run: gem install roro
       - run: roro generate::exposed ci
       - run: | 
           mkdir -p workspace 

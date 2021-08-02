@@ -9,36 +9,32 @@ describe Configurator do
   let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
   let(:scene)        { catalog_root }
 
-  describe '#get_plot' do
+  let(:story_file)   { "#{Dir.pwd}/test/fixtures/files/stories/#{filename}" }
+
+  describe '#merge_story' do
     before { skip }
+    Given { config.merge_story(story_file) }
+    Then  { assert_includes config.story.keys, :env }
+    And   { assert_includes config.story.keys, :preface }
+    And   { assert_includes config.story.keys, :questions }
 
-    let(:plot) { config.get_plot(scene) }
+    describe 'preface value be a string' do
+      Then { assert_equal config.story[:preface].class, String }
+    end
 
-    context 'when scene has' do
-      context 'no plot file' do
-        Then { assert_nil plot }
-      end
+    describe 'env value be a hash' do
+      Then { assert_equal config.story[:env].class, Hash }
+      And  { assert_equal config.story[:env][:base].class, Hash }
+    end
 
-      context 'a plot file' do
-        before { skip }
-        let(:scene) { "#{catalog_root}/roro" }
+    describe 'actions value must be an array of strings' do
+      Then { assert_equal config.story[:actions].class, Array }
+      And  { assert_equal config.story[:actions].first.class, String }
+    end
 
-        describe 'must return a hash with desired keys' do
-          Then { assert_equal plot.class, Hash }
-          And  { assert_includes plot.keys, :env }
-          And  { assert_includes plot.keys, :preface }
-          And  { assert_includes plot.keys, :questions }
-        end
-
-        describe 'questions' do
-          Then { assert_equal plot[:questions][0][:question], 'Please supply the name of your project' }
-          And  { assert_equal plot[:questions][0][:help], 'https://github.com/schadenfred/roro/wiki' }
-        end
-
-        describe 'env' do
-          # Then { assert_equal plot[:env][:roro_version], '2.7' }
-        end
-      end
+    describe 'questions value must be an array of hashes' do
+      Then { assert_equal config.story[:questions].class, Array }
+      And  { assert_equal config.story[:questions].first.class, Hash }
     end
   end
 
@@ -168,6 +164,7 @@ describe Configurator do
 
     # Then { assert_equal config.story, story }
   end
+
   describe '#sanitize(options' do
     context 'when key is a string' do
       When(:options) { { 'key' => 'value' } }

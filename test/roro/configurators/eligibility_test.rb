@@ -27,7 +27,8 @@ describe 'Roro::Configurator::Eligibility' do
         And  { assert config }
       end 
       
-      describe 'error when' do 
+      describe 'error when' do
+        before { skip }
         describe 'empty and' do 
           describe 'without option specified' do 
       

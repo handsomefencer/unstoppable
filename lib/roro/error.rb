@@ -2,7 +2,8 @@ module Roro
   class Error < StandardError; end
 
   module Story
-    class StoryMissing < Error; end
+    class Keys < Error; end
+    class Empty < Error; end
   end
 
   module Crypto

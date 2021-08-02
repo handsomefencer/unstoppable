@@ -22,15 +22,15 @@ describe Roro::CLI do
       Then { assert_insertions }
     end
 
-    describe 'docker-compose.yml' do 
+    describe 'preface-returns-array.yml' do
       
-      Given(:file)       { "docker-compose.yml" }
+      Given(:file)       { "preface-returns-array.yml" }
       Given(:insertions) { [ "version: '3.2", "  database:" ] }
       
       Then { assert_insertions }
     end
     
-    describe '.smart.env file for docker-compose.yml' do
+    describe '.smart.env file for preface-returns-array.yml' do
       
       Given(:file) { ".smart.env" }
       Given(:insertion) { 'RORO_ENV=development' } 
@@ -38,13 +38,13 @@ describe Roro::CLI do
       Then { assert_insertion }
     end
           
-    describe 'roro directories' do 
+    describe 'roro directories' do
 
       Then { assert_directory "roro" }
       And  { assert_directory "roro/containers" }
       And  { assert_directory "roro/containers/backend" }
-      And  { assert_directory "roro/containers/database" } 
-      And  { assert_directory "roro/containers/frontend" } 
+      And  { assert_directory "roro/containers/database" }
+      And  { assert_directory "roro/containers/frontend" }
     end
         
     describe 'Dockerfile' do 
