@@ -22,13 +22,20 @@ module Roro
         extensions = %w(keep yaml yml)
         extension = -> (file) { file.split('.').last }
         invalid = ->   (file) { extensions.include?(extension.call(file)) }
+        filename = location.split('/').last.split
+        is_file = filename.size.eql?(2)
+        is_directory = filename.size.eql?(2)
         case
-        when children.empty?
-          msg = "No story in #{location}"
-          raise Roro::Story::Empty, msg
-        when !children.any? {|file| invalid.call(file) }
+        when is_file && !extensions.include?(filename.last)
           msg = "#{children} contains invalid extensions. Extensions must be in #{extensions.map { |e| ".#{e}"}}"
           raise Roro::Story::Empty, msg
+        when is_directory
+          children.each { |child| validate_catalog(child) }
+
+        when children.empty?
+                  msg = "No story in #{location}"
+          raise Roro::Story::Empty, msg
+        when !children.any? {|file| invalid.call(file) }
         end
       end
 

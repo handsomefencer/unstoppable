@@ -48,7 +48,7 @@ describe Configurator do
     context 'when valid' do
       let(:directory) { 'valid/roro' }
       let(:error_message) { 'contaissns invalid extensions' }
-
+      focus
       Then { assert_nil execute }
     end
   end
@@ -122,7 +122,7 @@ describe Configurator do
         context 'an array' do
           let(:filename)      { 'invalid/preface-returns-array.yml' }
           let(:error_message) { 'class must be String, not Array'}
-          focus
+
           Then { assert_correct_error }
         end
 

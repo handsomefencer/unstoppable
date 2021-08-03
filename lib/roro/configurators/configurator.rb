@@ -36,7 +36,6 @@ module Roro
         end
 
         def get_children(scene)
-          return if scene.split('/').last.eql?('3')
           kids = Dir.glob("#{scene}/*")
           kids
         end
@@ -159,12 +158,23 @@ module Roro
         private
 
         def build_story
-          @permitted_keys = %w(actions env preface questions).map(&:to_sym)
-          @permitted_envs = %w(base development staging production).map(&:to_sym)
-          @story = @permitted_keys.product([nil]).to_h
-          @story[:env] = @permitted_envs.product([nil]).to_h
-          @story[:actions] = []
-          @story[:questions] = [%w(question help action).map(&:to_sym).product([nil]).to_h]
+          @story = {
+            actions: [],
+            env: {
+              base: {},
+              development: {},
+              staging: {},
+              production: {}
+            },
+            preface: '',
+            questions: [
+              {
+                question: '',
+                help: '',
+                action: ''
+              }
+            ]
+          }
         end
 
         def get_plot_choices(scene)
