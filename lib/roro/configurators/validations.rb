@@ -53,7 +53,10 @@ module Roro
         raise Roro::Story::Keys, msg if unpermitted.any?
       end
 
-      def validate_content(content, *args)
+      def validate_content(file, *args)
+
+        content = read_yaml(file)
+
         klass = @story.dig(*args).class.to_s
         klasses = [String, Array, Hash].map(&:to_s)
         klasses.delete(klass)
@@ -64,12 +67,12 @@ module Roro
       def validate_story(file)
         content = read_yaml(file)
         validate_not_empty(file)
-        validate_content content, :preface
-        validate_content content, :actions
-        validate_content content, :env
-        validate_content content, :env, :base
-        validate_content content, :questions
-        validate_content content, :questions, 0
+        validate_content file, :preface
+        validate_content file, :actions
+        validate_content file, :env
+        validate_content file, :env, :base
+        validate_content file, :questions
+        validate_content file, :questions, 0
         validate_keys content
         validate_keys content, :env
         validate_keys content, :questions, 0
