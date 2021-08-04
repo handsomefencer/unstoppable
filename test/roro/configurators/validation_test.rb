@@ -48,7 +48,7 @@ describe Configurator do
 
     context 'when valid' do
       let(:directory) { 'valid/roro' }
-      let(:error_message) { 'contaissns invalid extensions' }
+
       Then { assert_nil execute }
     end
   end
@@ -95,14 +95,14 @@ describe Configurator do
         end
 
         context 'a Hash with' do
-          context 'a key that returns a hash' do
+          context 'a key that returns a string' do
             let(:filename)      { 'invalid/env-base-returns-string.yml' }
             let(:error_message) { 'must be Hash, not String'}
 
             Then { assert_correct_error }
           end
 
-          context 'a key that returns a hash' do
+          context 'a key that returns an array' do
             let(:filename)      { 'invalid/env-base-returns-array.yml' }
             let(:error_message) { 'must be Hash, not Array'}
 

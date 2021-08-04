@@ -53,26 +53,33 @@ module Roro
         raise Roro::Story::Keys, msg if unpermitted.any?
       end
 
-      def validate_content(file, *args)
-
-        content = read_yaml(file)
-
-        klass = @story.dig(*args).class.to_s
-        klasses = [String, Array, Hash].map(&:to_s)
-        klasses.delete(klass)
-        object = content.dig(*args)
-        raise_value_error(object, klass) if klasses.include?(object.class.to_s)
-      end
-
-      def validate_story(file)
+      def validate_file(*args)
+        file = args.shift
         content = read_yaml(file)
         validate_not_empty(file)
-        validate_content file, :preface
-        validate_content file, :actions
-        validate_content file, :env
-        validate_content file, :env, :base
-        validate_content file, :questions
-        validate_content file, :questions, 0
+        args.each do |*arg|
+          klass = @story.dig(*arg.flatten).class
+          klasses = [String, Array, Hash].reject {|k| k.eql?(klass) }
+          object = content.dig(*arg.flatten)
+          raise_value_error(object, klass) if klasses.include?(object.class)
+        end
+      end
+
+      def validate_story(file, story=nil)
+        content = read_yaml(file)
+        validate_not_empty(file)
+        story ||= @story
+        content.each do |key, value|
+          story_keys = story.keys
+          msg = "#{key} key must be in #{story.keys}"
+          raise Roro::Story::Keys, msg unless story_keys.include?(key)
+          next if story[key].nil?
+          msg = "#{value} class must be #{story[key].class}, not #{value.class.to_s}"
+          raise Roro::Story::Keys, msg unless story[key].class.eql?(value.class)
+        end
+        # validate_file file, :actions, :env, :preface, :questions
+        validate_file file, [:env, :base]
+        validate_file file, [:questions, 0]
         validate_keys content
         validate_keys content, :env
         validate_keys content, :questions, 0
