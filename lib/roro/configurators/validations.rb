@@ -18,23 +18,34 @@ module Roro
       end
 
       def validate_catalog(location)
+        ## cases:
+        # when children returns no folder(s) or files
+        #   [location] is an empty directory with no story. You may either remove
+        #    the [location] or write a story to put in it.
+        # when children returns a child with an unpermitted extension
+        #   error: [child] with unpermitted [extension] extension in [location].
+        #   Permitted extensions include [permitted_extensions.lastsplit]
+        # ed extensions include [permitted_extensions]
+        # when children returns only a templates folder
+        #   error: template folder must have a story yaml file collocated
+        # when children returns a yml file with filename matching location folder name
+        #
         children = get_children(location)
         extensions = %w(keep yaml yml)
         extension = -> (file) { file.split('.').last }
         invalid = ->   (file) { extensions.include?(extension.call(file)) }
-        filename = location.split('/').last.split
+        filename = location.split('/').last.split('.')
         is_file = filename.size.eql?(2)
-        is_directory = filename.size.eql?(2)
+        is_directory = filename.size.eql?(1)
         case
         when is_file && !extensions.include?(filename.last)
           msg = "#{children} contains invalid extensions. Extensions must be in #{extensions.map { |e| ".#{e}"}}"
           raise Roro::Story::Empty, msg
-        when is_directory
-          children.each { |child| validate_catalog(child) }
-
-        when children.empty?
+        when is_directory && children.empty?
                   msg = "No story in #{location}"
           raise Roro::Story::Empty, msg
+        when is_directory
+          children.each { |child| validate_catalog(child) }
         when !children.any? {|file| invalid.call(file) }
         end
       end
@@ -83,6 +94,10 @@ module Roro
         validate_keys content
         validate_keys content, :env
         validate_keys content, :questions, 0
+      end
+
+      def sentence_from(array)
+        array[1] ? "#{array[0..-2].join(", ")} and #{array[-1]}" : array[0]
       end
 
       def raise_value_error(value, klass)

@@ -10,6 +10,14 @@ describe Configurator do
   let(:scene)        { catalog_root }
   let(:story_file)   { "#{Dir.pwd}/test/fixtures/files/stories/#{filename}" }
 
+  describe '#sentence_from' do
+    let(:call) { -> (array) { config.sentence_from(array) } }
+
+    Then { assert_equal 'one, two and three', call[%w(one two three)] }
+    And  { assert_equal 'one and two', call[%w(one two)] }
+    And  { assert_equal 'one', call[%w(one)] }
+  end
+
   describe '#story' do
     describe 'permitted keys' do
       Then { assert_includes config.story.keys, :actions }
@@ -30,7 +38,7 @@ describe Configurator do
     let(:catalog)   { "#{Dir.pwd}/test/fixtures/files/catalogs/#{directory}" }
     let(:execute)   { config.validate_catalog(catalog) }
     let(:error)     { Roro::Story::Empty }
-
+    before { skip }
     context 'when empty' do
       let(:directory) { 'invalid/directory_with_no_children' }
       let(:error_message) { 'No story in' }
@@ -39,10 +47,8 @@ describe Configurator do
     end
 
     context 'when contains files with invalid extensions' do
-      before { skip }
       let(:directory) { 'invalid/directory_with_invalid_file_extensions' }
       let(:error_message) { 'contains invalid extensions' }
-
       Then { assert_correct_error }
     end
 
