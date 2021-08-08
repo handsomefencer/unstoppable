@@ -6,9 +6,103 @@ describe Configurator do
   let(:subject)      { Configurator }
   let(:options)      { nil }
   let(:config)       { subject.new(options) }
-  let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
-  let(:scene)        { catalog_root }
-  let(:story_file)   { "#{Dir.pwd}/test/fixtures/files/stories/#{filename}" }
+  let(:catalog_root) { "#{Dir.pwd}/test/fixtures/files/catalogs" }
+  let(:catalog)      { "#{catalog_root}/#{folder}" }
+
+  describe '#invalid_extension?(file)' do
+    let(:root)  { "#{Dir.pwd}/test/fixtures/files/stories" }
+    let(:execute) { config.invalid_extension?("#{root}/#{file}") }
+
+    context 'when .yml' do
+      Then { refute config.invalid_extension?("#{root}/valid/yaml.yml") }
+    end
+
+    context 'when .yaml' do
+      Then { refute config.invalid_extension?("#{root}/valid/yaml.yaml") }
+    end
+
+    context 'when .rb' do
+      Then { assert config.invalid_extension?("#{root}/invalid/ruby.rb") }
+    end
+  end
+
+  describe '#has_no_content?(content)' do
+    let(:content)  { "string" }
+    let(:execute) { config.has_no_content?(string) }
+
+    context 'when content is a string' do
+      Then { refute config.has_no_content?('content string') }
+    end
+
+    context 'when content is nil' do
+      Then { assert config.has_no_content?(nil) }
+    end
+
+    context 'when content is empty string' do
+      Then { assert config.has_no_content?('') }
+    end
+
+  end
+
+  describe '#has_unpermitted_keys?(content)' do
+    let(:root)  { "#{Dir.pwd}/test/fixtures/files/stories" }
+    let(:content) { config.read_yaml("#{root}/#{file}") }
+
+    context 'when valid' do
+      let(:file) { 'valid/yaml.yml'}
+
+      Then { refute config.has_unpermitted_keys?(content)}
+    end
+
+    context 'when invalid due to' do
+      context 'unpermitted keys' do
+        let(:file) { 'invalid/unpermitted_keys.yml'}
+
+        Then { assert config.has_unpermitted_keys?(content)}
+      end
+
+      context 'unpermitted question keys' do
+        let(:file) { 'invalid/unpermitted_question_keys.yml'}
+        focus
+        Then { assert config.has_unpermitted_keys?(content)}
+      end
+    end
+
+
+  end
+
+  describe '#get_children(location)' do
+    let(:folder)  { "valid" }
+    let(:execute)  { config.get_children("#{catalog}") }
+    let(:child)   { -> (child) { "#{catalog}/#{child}" } }
+
+    context 'when directory has one file' do
+      let(:folder) { 'valid/roro/docker_compose'}
+
+      Then { assert_equal execute, [child['docker-compose.yml']] }
+      And  { assert_equal execute.size, 1 }
+    end
+
+    context 'when directory has a hidden file' do
+      Then { assert_equal execute, [child['roro']] }
+      And  { assert_equal execute.size, 1 }
+    end
+
+    context 'when directory has one folder' do
+      let(:folder) { 'valid/roro/docker_compose'}
+
+      Then { assert_equal execute, [child['docker-compose.yml']] }
+      And  { assert_equal execute.size, 1 }
+    end
+
+    context 'when directory has several folder' do
+      context 'and a hidden file mustreturn one child' do
+        let(:folder) { 'valid/roro'}
+
+        Then { assert_includes execute, child['k8s'] }
+      end
+    end
+  end
 
   describe '#sentence_from' do
     let(:call) { -> (array) { config.sentence_from(array) } }
@@ -35,20 +129,23 @@ describe Configurator do
   end
 
   describe '#validate_catalog' do
-    let(:catalog)   { "#{Dir.pwd}/test/fixtures/files/catalogs/#{directory}" }
-    let(:execute)   { config.validate_catalog(catalog) }
-    let(:error)     { Roro::Story::Empty }
     before { skip }
-    context 'when empty' do
-      let(:directory) { 'invalid/directory_with_no_children' }
-      let(:error_message) { 'No story in' }
+    let(:folder)  { "invalid" }
+    let(:catalog) { "#{catalog_root}/#{folder}" }
+    let(:execute) { config.validate_catalog(catalog) }
+    let(:error)   { Roro::Catalog::Story }
 
+    context 'when catalog has no children' do
+      before { skip }
+      let(:folder)        { 'invalid/with_no_children' }
+      let(:error_message) { 'No story in' }
       Then { assert_correct_error }
     end
 
-    context 'when contains files with invalid extensions' do
-      let(:directory) { 'invalid/directory_with_invalid_file_extensions' }
+    context 'when catalog contains files with invalid extensions' do
+      let(:folder) { 'invalid/with_invalid_extensions' }
       let(:error_message) { 'contains invalid extensions' }
+
       Then { assert_correct_error }
     end
 
@@ -60,7 +157,8 @@ describe Configurator do
   end
 
   describe '#validate_story' do
-    let(:error)    { Roro::Story::Keys }
+    before { skip }
+    let(:error)    { Roro::Catalog::Keys }
     let(:execute)  { config.validate_story(story_file) }
 
     describe 'must return nil when story is valid' do
@@ -70,8 +168,9 @@ describe Configurator do
     end
 
     describe 'must return error when file' do
+      before { skip }
       context 'is empty' do
-        let(:error)         { Roro::Story::Empty }
+        let(:error)         { Roro::Catalog::StoryError }
         let(:filename)      { 'invalid/empty.yml' }
         let(:error_message) { 'No content in'}
 
@@ -79,7 +178,7 @@ describe Configurator do
       end
 
       describe 'contains unpermitted keys' do
-        let(:filename)      { 'invalid/key-unpermitted.yml' }
+        let(:filename)      { 'invalid/unpermitted_keys.yml' }
         let(:error_message) { 'key must be in'}
 
         Then { assert_correct_error }
@@ -172,7 +271,7 @@ describe Configurator do
         end
 
         context 'hash without correct keys' do
-          let(:filename)      { 'invalid/questions-returns-unpermitted-keys.yml' }
+          let(:filename)      { 'invalid/unpermitted_question_keys.yml' }
           let(:error_message) { 'questions key must be in'}
 
           Then { assert_correct_error }

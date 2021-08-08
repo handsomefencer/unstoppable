@@ -31,13 +31,12 @@ module Roro
           "Please choose from these #{collection_name}:"
         end
 
-        def read_yaml(filedir)
-          JSON.parse(YAML.load_file(filedir).to_json, symbolize_names: true)
+        def read_yaml(yaml_file)
+          JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
         end
 
-        def get_children(scene)
-          kids = Dir.glob("#{scene}/*")
-          kids
+        def get_children(location)
+          Dir.glob("#{location}/*")
         end
 
         def merge_stories(files)
