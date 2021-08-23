@@ -41,7 +41,6 @@ describe Configurator do
     context 'when content is empty string' do
       Then { assert config.has_no_content?('') }
     end
-
   end
 
   describe '#has_unpermitted_keys?(content)' do

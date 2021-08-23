@@ -18,22 +18,33 @@ module Roro
         content = args.shift
         object = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
-        return if !object # || object.is_a?(String)
-        object.each do |key, value|
-          if value.is_a?(Array)
-            value.each do |question|
-              question.each do |qkey, qvalue|
-                has_unpermitted_keys?(content, key, 0, qkey)
-              end
-            end
+        # args.each do |*arg|
+        #   klass = @story.dig(*arg.flatten).class
+        #   klasses = [String, Array, Hash].reject {|k| k.eql?(klass) }
+        #   object = content.dig(*arg.flatten)
+        raise_value_error(object.class, story.class) unless object.class.eql?(story.class)
+        # end
+        object
+        case
+        when object.is_a?(NilClass)
+          return
+        when object.is_a?(String)
+          return
+        when object.is_a?(Array)
+          object.each do |item|
+            args << 0
+            has_unpermitted_keys?(content, *args)
           end
+        when object.is_a?(Hash)
+          object.each do |key, value|
+            # next if value.is_a?(String)
+            args << key
+            has_unpermitted_keys?(content, *args)
+          end
+          (object.keys - story.keys).any? ? true : false
         end
-        unpermitted = object.keys - story.keys
-        if unpermitted.any?
-          return true
-        end
-      end
 
+      end
 
       def validate_keys(content, *args)
         object = args.empty? ? content : content.dig(*args)
