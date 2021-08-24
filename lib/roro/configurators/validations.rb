@@ -9,6 +9,11 @@ module Roro
       def has_no_content?(content)
         !content || content.empty?
       end
+
+      def validate_key_klass(object, story)
+        msg = "\"#{object.to_s}\" class must be #{story.class.to_s}, not #{object.class.to_s}"
+        raise(Error, msg) unless object.class.eql?(story.class)
+      end
       # validate_file file, [:env, :base]
       # validate_file file, [:questions, 0]
       # validate_keys content
@@ -18,12 +23,7 @@ module Roro
         content = args.shift
         object = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
-        # args.each do |*arg|
-        #   klass = @story.dig(*arg.flatten).class
-        #   klasses = [String, Array, Hash].reject {|k| k.eql?(klass) }
-        #   object = content.dig(*arg.flatten)
-        raise_value_error(object.class, story.class) unless object.class.eql?(story.class)
-        # end
+        validate_key_klass(object, story)
         object
         case
         when object.is_a?(NilClass)
@@ -41,9 +41,9 @@ module Roro
             args << key
             has_unpermitted_keys?(content, *args)
           end
-          (object.keys - story.keys).any? ? true : false
-        end
+          return true if (object.keys - story.keys).any?
 
+        end
       end
 
       def validate_keys(content, *args)

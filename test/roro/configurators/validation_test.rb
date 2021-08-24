@@ -66,8 +66,6 @@ describe Configurator do
         Then { assert config.has_unpermitted_keys?(content)}
       end
     end
-
-
   end
 
   describe '#get_children(location)' do
