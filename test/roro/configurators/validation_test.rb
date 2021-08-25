@@ -62,8 +62,14 @@ describe Configurator do
 
       context 'unpermitted question keys' do
         let(:file) { 'invalid/unpermitted_question_keys.yml'}
+        let(:execute) { config.has_unpermitted_keys?(content) }
+        let(:error)         { Roro::Error }
+        let(:error_message) { 'No .env files in ./roro' }
         focus
-        Then { assert config.has_unpermitted_keys?(content)}
+
+        Then { assert_correct_error }
+        #
+        # Then { assert_correct_errorraises(Error) {  } }
       end
     end
   end

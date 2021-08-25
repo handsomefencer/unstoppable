@@ -35,13 +35,14 @@ module Roro
             args << 0
             has_unpermitted_keys?(content, *args)
           end
-        when object.is_a?(Hash)
+        else
           object.each do |key, value|
-            # next if value.is_a?(String)
             args << key
             has_unpermitted_keys?(content, *args)
           end
-          return true if (object.keys - story.keys).any?
+          if (object.keys - story.keys).any?
+            raise Error
+          end
 
         end
       end
