@@ -9,65 +9,74 @@ describe Configurator do
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/files/catalogs" }
   let(:catalog)      { "#{catalog_root}/#{folder}" }
 
-  describe '#invalid_extension?(file)' do
-    let(:root)  { "#{Dir.pwd}/test/fixtures/files/stories" }
-    let(:execute) { config.invalid_extension?("#{root}/#{file}") }
+  describe '#validate_story_extension(file)' do
+    let(:root)    { "#{Dir.pwd}/test/fixtures/files/stories" }
+    let(:execute) { config.validate_story_content("#{root}/#{file}") }
 
     context 'when .yml' do
-      Then { refute config.invalid_extension?("#{root}/valid/yaml.yml") }
+      Then { refute config.validate_story_content("#{root}/valid/yaml.yml") }
     end
 
     context 'when .yaml' do
-      Then { refute config.invalid_extension?("#{root}/valid/yaml.yaml") }
+      Then { refute config.validate_story_content("#{root}/valid/yaml.yaml") }
     end
 
     context 'when .rb' do
-      Then { assert config.invalid_extension?("#{root}/invalid/ruby.rb") }
+      Then { assert config.validate_story_content("#{root}/invalid/ruby.rb") }
     end
   end
 
-  describe '#has_no_content?(content)' do
+  describe '#validate_story_content(content)' do
     let(:content)  { "string" }
-    let(:execute) { config.has_no_content?(string) }
+    let(:execute) { config.validate_story_content(string) }
 
     context 'when content is a string' do
-      Then { refute config.has_no_content?('content string') }
+      Then { refute config.validate_story_content('content string') }
     end
 
     context 'when content is nil' do
-      Then { assert config.has_no_content?(nil) }
+      Then { assert config.validate_story_content(nil) }
     end
 
     context 'when content is empty string' do
-      Then { assert config.has_no_content?('') }
+      Then { assert config.validate_story_content('') }
     end
   end
 
-  describe '#has_unpermitted_keys?(content)' do
+  describe '#story_file_has_unpermitted_keys?(content)' do
     let(:root)  { "#{Dir.pwd}/test/fixtures/files/stories" }
     let(:content) { config.read_yaml("#{root}/#{file}") }
 
     context 'when valid' do
       let(:file) { 'valid/yaml.yml'}
 
-      Then { refute config.has_unpermitted_keys?(content)}
+      # Then { refute config.has_unpermitted_keys?(content)}
     end
 
     context 'when invalid due to' do
+      context 'hash with nil value' do
+        let(:file) { 'invalid/key_with_nil_value.yml'}
+        let(:execute) { config.validate_catalog("#{root}/#{file}") }
+        let(:error)         { Roro::Catalog::ContentError }
+        let(:error_message) { "class must be , not " }
+        # focus
+        # Then { assert_correct_error }
+        # Then { assert config.has_unpermitted_keys?(content)}
+      end
       context 'unpermitted keys' do
         let(:file) { 'invalid/unpermitted_keys.yml'}
 
-        Then { assert config.has_unpermitted_keys?(content)}
+        # Then { assert config.has_unpermitted_keys?(content)}
       end
 
       context 'unpermitted question keys' do
         let(:file) { 'invalid/unpermitted_question_keys.yml'}
         let(:execute) { config.has_unpermitted_keys?(content) }
-        let(:error)         { Roro::Error }
-        let(:error_message) { 'No .env files in ./roro' }
-        focus
-
-        Then { assert_correct_error }
+        let(:error)         { Roro::Catalog::ContentKeyError }
+        let(:error_message) { "class must be , not " }
+        # focus
+        #
+        # Then { assert_correct_error }
         #
         # Then { assert_correct_errorraises(Error) {  } }
       end
@@ -76,7 +85,7 @@ describe Configurator do
 
   describe '#get_children(location)' do
     let(:folder)  { "valid" }
-    let(:execute)  { config.get_children("#{catalog}") }
+    let(:execute) { config.get_children("#{catalog}") }
     let(:child)   { -> (child) { "#{catalog}/#{child}" } }
 
     context 'when directory has one file' do
@@ -196,6 +205,7 @@ describe Configurator do
         end
 
         context 'an Array' do
+          let(:error) { Roro::Story::Keys }
           let(:filename)      { 'invalid/env-returns-array.yml' }
           let(:error_message) { 'class must be Hash, not Array'}
 

@@ -8,6 +8,9 @@ module Roro
     class OutlineError < Error; end
     class StoryError < Error; end
     class KeyError < Error; end
+    class ContentKeyError < Error; end
+    class ContentError < Error; end
+    class ContentStructureError < Error; end
   end
 
   module Crypto

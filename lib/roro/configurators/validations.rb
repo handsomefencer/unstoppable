@@ -2,17 +2,44 @@ module Roro
   module Configurators
     module Validations
 
-      def invalid_extension?(file)
+      def validate_file_extension(file)
         %w(yml yaml).include?(file.split('.').last) ? false : true
       end
 
-      def has_no_content?(content)
+      def validate_story_content(content)
         !content || content.empty?
       end
 
       def validate_key_klass(object, story)
         msg = "\"#{object.to_s}\" class must be #{story.class.to_s}, not #{object.class.to_s}"
         raise(Error, msg) unless object.class.eql?(story.class)
+      end
+
+      def validate_story_content(*args)
+        content = args.shift
+        object = args.empty? ? content : content.dig(*args)
+        story  = args.empty? ? @story : @story.dig(*args)
+        # validate_key_klass(object, story)
+        case
+        when object.is_a?(NilClass)
+          msg = "#{args.first} value is nil."
+          raise Roro::Catalog::ContentError, msg
+        when object.is_a?(String)
+          return
+        when object.is_a?(Array)
+          object.each do |item|
+            args << 0
+            has_unpermitted_keys?(content, *args)
+          end
+        else
+          object.each do |key, value|
+            args << key
+            validate_story_content(content, *args)
+          end
+          if (object.keys - story.keys).any?
+            raise Roro::Catalog::Keys
+          end
+        end
       end
       # validate_file file, [:env, :base]
       # validate_file file, [:questions, 0]
@@ -27,6 +54,7 @@ module Roro
         object
         case
         when object.is_a?(NilClass)
+          msg = "#{args.first} value is nil."
           return
         when object.is_a?(String)
           return
@@ -41,9 +69,8 @@ module Roro
             has_unpermitted_keys?(content, *args)
           end
           if (object.keys - story.keys).any?
-            raise Error
+            raise Roro::Catalog::Keys
           end
-
         end
       end
 
@@ -68,61 +95,12 @@ module Roro
         end
       end
 
-      def sanitize(options)
-        (options ||= {}).transform_keys!(&:to_sym).each do |key, value|
-          case value
-          when Array
-            value.each { |vs| sanitize(vs) }
-          when Hash
-            sanitize(value)
-          when true
-            options[key] = true
-          when String || Symbol
-            options[key] = value.to_sym
-          end
-        end
-      end
-
       def validate_catalog(location)
+        @location = location
         case
         when File.file?(location)
-          validate_story(location)
+          validate_story_content(location)
         end
-        # File.directory?("name") and/or File.file?("name").
-
-
-        # ## cases:
-        # # when children returns no folder(s) or files
-        # #   [location] is an empty directory with no story. You may either remove
-        # #    the [location] or write a story to put in it.
-        # # when children returns a child with an unpermitted extension
-        # #   error: [child] with unpermitted [extension] extension in [location].
-        # #   Permitted extensions include [permitted_extensions.lastsplit]
-        # # ed extensions include [permitted_extensions]
-        # # when children returns only a templates folder
-        # #   error: template folder must have a story yaml file collocated
-        # # when children returns a yml file with filename matching location folder name
-        # #
-        # children = get_children(location)
-        # extensions = %w(yaml yml)
-        # extension = -> (file) { file.split('.').last }
-        # invalid = ->   (file) { extensions.include?(extension.call(file)) }
-        # filename = location.split('/').last.split('.')
-        # is_file = filename.size.eql?(2)
-        # is_directory = filename.size.eql?(1)
-        # case
-        # when children.any? { |w| w.include? s } #=>true
-        #
-        #
-        # msg = "#{children} contains invalid extensions. Extensions must be in #{extensions.map { |e| ".#{e}"}}"
-        #   raise Roro::Catalog::Story, msg
-        # when is_directory && children.empty?
-        #           msg = "No story in #{location}"
-        #   raise Roro::Catalog::Story, msg
-        # when is_directory
-        #   # children.each { |child| validate_catalog(child) }
-        # when !children.any? {|file| invalid.call(file) }
-        # end
       end
 
       def validate_story(file, story=nil)
@@ -152,6 +130,21 @@ module Roro
         validate_keys content
         validate_keys content, :env
         validate_keys content, :questions, 0
+      end
+
+      def sanitize(options)
+        (options ||= {}).transform_keys!(&:to_sym).each do |key, value|
+          case value
+          when Array
+            value.each { |vs| sanitize(vs) }
+          when Hash
+            sanitize(value)
+          when true
+            options[key] = true
+          when String || Symbol
+            options[key] = value.to_sym
+          end
+        end
       end
 
       def sentence_from(array)
