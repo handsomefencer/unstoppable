@@ -2,8 +2,40 @@ module Roro
   module Configurators
     module Validations
 
-      def validate_file_extension(file)
-        %w(yml yaml).include?(file.split('.').last) ? false : true
+      def validate_catalog(catalog)
+        @catalog = catalog
+        case
+        when !File.exist?(catalog)
+          @error = Error
+          @msg = 'Nothing exists'
+        when File.file?(catalog)
+          validate_story_file(read_yaml(@catalog))
+        end
+        raise @error, "#{@msg} in #{catalog}" if @error
+      end
+
+      def validate_story_file(*args)
+        content = args.shift
+        object = args.empty? ? content : content.dig(*args)
+        story  = args.empty? ? @story : @story.dig(*args)
+        case
+        when invalid_story_file_extension?
+          @msg = 'Story file has invalid extension'
+        when %w(keep gitkeep).include?(@catalog.split('.').last)
+          return
+        when !content
+          @msg = 'Story file is empty'
+        when object.class != story.class
+          @msg = "'#{object.to_s}' must be a #{story.class.to_s}"
+        else
+          return
+        end
+        @error = Error
+
+      end
+
+      def invalid_story_file_extension?
+        !%w(yml yaml keep gitkeep).include?(@catalog.split('.').last)
       end
 
       def validate_story_content(content)
@@ -93,43 +125,6 @@ module Roro
           object = content.dig(*arg.flatten)
           raise_value_error(object, klass) if klasses.include?(object.class)
         end
-      end
-
-      def validate_catalog(location)
-        @location = location
-        case
-        when File.file?(location)
-          validate_story_content(location)
-        end
-      end
-
-      def validate_story(file, story=nil)
-        @content = read_yaml(file)
-        case
-        when has_invalid_extension?(file)
-          raise Error
-        when has_no_content?
-          raise Error
-        when has_unpermitted_keys?(content)
-          raise Error
-        when has_invalid_key_klass?(content)
-          raise Error
-        end
-        story ||= @story
-        content.each do |key, value|
-          story_keys = story.keys
-          msg = "#{key} key must be in #{story.keys}"
-          raise Roro::Story::Keys, msg unless story_keys.include?(key)
-          next if story[key].nil?
-          msg = "#{value} class must be #{story[key].class}, not #{value.class.to_s}"
-          raise Roro::Story::Keys, msg unless story[key].class.eql?(value.class)
-        end
-        # validate_file file, :actions, :env, :preface, :questions
-        validate_file file, [:env, :base]
-        validate_file file, [:questions, 0]
-        validate_keys content
-        validate_keys content, :env
-        validate_keys content, :questions, 0
       end
 
       def sanitize(options)

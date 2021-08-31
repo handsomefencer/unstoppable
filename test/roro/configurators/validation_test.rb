@@ -7,27 +7,82 @@ describe Configurator do
   let(:options)      { nil }
   let(:config)       { subject.new(options) }
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/files/catalogs" }
-  let(:catalog)      { "#{catalog_root}/#{folder}" }
+  let(:catalog)      { "#{catalog_root}/#{node}" }
 
-  describe '#validate_story_extension(file)' do
-    let(:root)    { "#{Dir.pwd}/test/fixtures/files/stories" }
-    let(:execute) { config.validate_story_content("#{root}/#{file}") }
+  describe 'validate_catalog' do
+    let(:execute) { config.validate_catalog(catalog) }
 
-    context 'when .yml' do
-      Then { refute config.validate_story_content("#{root}/valid/yaml.yml") }
+    context 'when valid' do
+      context 'dotfile' do
+        let(:node) { 'valid/.keep'}
+        let(:error) { Roro::Error }
+        let(:error_message) { 'Story file has invalid extension' }
+
+        Then { assert_nil execute }
+      end
+
+      context 'yml file' do
+        let(:node) { 'valid/yaml.yml'}
+        let(:error) { Roro::Error }
+        let(:error_message) { 'Story file has invalid extension' }
+
+        Then { assert_nil execute }
+      end
+
+      context 'yaml file' do
+        let(:node) { 'valid/yaml.yaml'}
+        let(:error) { Roro::Error }
+        let(:error_message) { 'Story file has invalid extension' }
+
+        Then { assert_nil execute }
+      end
     end
 
-    context 'when .yaml' do
-      Then { refute config.validate_story_content("#{root}/valid/yaml.yaml") }
-    end
+    context 'when invalid because story file' do
+      let(:error) { Roro::Error }
 
-    context 'when .rb' do
-      Then { assert config.validate_story_content("#{root}/invalid/ruby.rb") }
+      context 'not existing' do
+        let(:node) { 'invalid/nonexistent.yml'}
+        let(:error_message) { 'Nothing exists' }
+
+        Then { assert_correct_error }
+      end
+
+      context 'extension is unpermitted' do
+        let(:node)  { 'invalid/ruby.rb'}
+        let(:error_message) { 'Story file has invalid extension' }
+
+        Then { assert_correct_error }
+      end
+
+      context 'is empty' do
+        let(:node) { 'invalid/empty.yml'}
+        let(:error_message) { 'Story file is empty' }
+
+        Then { assert_correct_error }
+      end
+
+      context 'content' do
+        context 'returns a string' do
+          let(:node) { 'invalid/string.yml'}
+          let(:error_message) { "'some string' must be a Hash" }
+
+          Then { assert_correct_error }
+        end
+
+        context 'returns an array' do
+          let(:node) { 'invalid/array.yml'}
+          let(:error_message) { "some string in an array" }
+
+          Then { assert_correct_error }
+        end
+      end
     end
   end
 
   describe '#validate_story_content(content)' do
-    let(:content)  { "string" }
+    before { skip }
+    let(:content) { "string" }
     let(:execute) { config.validate_story_content(string) }
 
     context 'when content is a string' do
@@ -84,6 +139,7 @@ describe Configurator do
   end
 
   describe '#get_children(location)' do
+    before { skip }
     let(:folder)  { "valid" }
     let(:execute) { config.get_children("#{catalog}") }
     let(:child)   { -> (child) { "#{catalog}/#{child}" } }
