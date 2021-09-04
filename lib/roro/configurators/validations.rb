@@ -1,57 +1,67 @@
+# frozen_string_literal: true
+
 module Roro
   module Configurators
     module Validations
+      def catalog_is_story_file?
+        File.file?(@catalog) && @permitted_extensions.include?(@extension)
+      end
 
-      def validate_catalog(catalog)
-        @catalog = catalog
-        case
-        when !File.exist?(catalog)
-          @error = Error
-          @msg = 'Nothing exists'
-        when File.file?(catalog)
-          validate_story_file(read_yaml(@catalog))
-        end
-        raise @error, "#{@msg} in #{catalog}" if @error
+      def catalog_not_present?
+        !File.exist?(@catalog)
+      end
+
+      def catalog_has_invalid_extension?
+        @extension = @catalog.split('.').last
+        @permitted_extensions = %w[yml yaml]
+        !(@permitted_extensions + %w[keep gitkeep]).include?(@extension)
+      end
+
+      def story_content_missing?
+        !@content || @content.empty?
       end
 
       def validate_story_file(*args)
-        content = args.shift
-        object = args.empty? ? content : content.dig(*args)
+        object = args.empty? ? @content : @content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
-        case
-        when invalid_story_file_extension?
-          @error = Error
-          @msg = 'Story file has invalid extension'
-        when %w(keep gitkeep).include?(@catalog.split('.').last)
-          return
-        when !content
+        if story_content_missing?
           @error = Error
           @msg = 'Story file is empty'
-        when object.nil?
+        elsif object.nil?
           @error = Error
-          @msg = "#{content.keys.first} must not be nil"
-        when object.class != story.class
+          @msg = "#{@content.keys.first} must not be nil"
+        elsif object.class != story.class
           @error = Error
-          @msg = "'#{object.to_s}' must be a #{story.class.to_s}"
-        when object.is_a?(Hash)
-          object.each do |key, value|
+          @msg = "'#{object}' must be a #{story.class}"
+        elsif object.is_a?(Hash)
+          object.each do |key, _value|
             args << key
-            validate_story_file(content, *args)
+            validate_story_file(*args)
           end
         end
       end
 
-      def invalid_story_file_extension?
-        !%w(yml yaml keep gitkeep).include?(@catalog.split('.').last)
-      end
-
-      def validate_story_content(content)
-        !content || content.empty?
+      def validate_catalog(catalog)
+        @catalog = catalog
+        case
+        when catalog_not_present?
+          @error = Error
+          @msg = 'Catalog not present'
+        when catalog_has_invalid_extension?
+          @error = Error
+          @msg = 'Catalog has invalid extension'
+        when catalog_is_story_file?
+          @content = read_yaml(@catalog)
+          validate_story_file
+        else
+          return
+        end
+        raise @error, "#{@msg} in #{catalog}" if @error
       end
 
       def validate_key_klass(object, story)
-        msg = "\"#{object.to_s}\" class must be #{story.class.to_s}, not #{object.class.to_s}"
-        raise(Error, msg) unless object.class.eql?(story.class)
+        msg = "\"#{object}\" class must be #{story.class}, not #{object.class}"
+        raise(Error, msg) unless object.instance_of?(story.class)
       end
 
       def validate_story_content(*args)
@@ -59,27 +69,26 @@ module Roro
         object = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
         # validate_key_klass(object, story)
-        case
-        when object.is_a?(NilClass)
+        case object
+        when NilClass
           msg = "#{args.first} value is nil."
           raise Roro::Catalog::ContentError, msg
-        when object.is_a?(String)
-          return
-        when object.is_a?(Array)
-          object.each do |item|
+        when String
+          nil
+        when Array
+          object.each do |_item|
             args << 0
             has_unpermitted_keys?(content, *args)
           end
         else
-          object.each do |key, value|
+          object.each do |key, _value|
             args << key
             validate_story_content(content, *args)
           end
-          if (object.keys - story.keys).any?
-            raise Roro::Catalog::Keys
-          end
+          raise Roro::Catalog::Keys if (object.keys - story.keys).any?
         end
       end
+
       # validate_file file, [:env, :base]
       # validate_file file, [:questions, 0]
       # validate_keys content
@@ -91,32 +100,31 @@ module Roro
         story  = args.empty? ? @story : @story.dig(*args)
         validate_key_klass(object, story)
         object
-        case
-        when object.is_a?(NilClass)
+        case object
+        when NilClass
           msg = "#{args.first} value is nil."
-          return
-        when object.is_a?(String)
-          return
-        when object.is_a?(Array)
-          object.each do |item|
+          nil
+        when String
+          nil
+        when Array
+          object.each do |_item|
             args << 0
             has_unpermitted_keys?(content, *args)
           end
         else
-          object.each do |key, value|
+          object.each do |key, _value|
             args << key
             has_unpermitted_keys?(content, *args)
           end
-          if (object.keys - story.keys).any?
-            raise Roro::Catalog::Keys
-          end
+          raise Roro::Catalog::Keys if (object.keys - story.keys).any?
         end
       end
 
       def validate_keys(content, *args)
         object = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
-        return if !object
+        return unless object
+
         unpermitted = object.keys - story.keys
         msg = "#{unpermitted} #{args.first} key must be in #{story.keys}"
         raise Roro::Story::Keys, msg if unpermitted.any?
@@ -128,7 +136,7 @@ module Roro
         validate_not_empty(file)
         args.each do |*arg|
           klass = @story.dig(*arg.flatten).class
-          klasses = [String, Array, Hash].reject {|k| k.eql?(klass) }
+          klasses = [String, Array, Hash].reject { |k| k.eql?(klass) }
           object = content.dig(*arg.flatten)
           raise_value_error(object, klass) if klasses.include?(object.class)
         end
@@ -150,11 +158,11 @@ module Roro
       end
 
       def sentence_from(array)
-        array[1] ? "#{array[0..-2].join(", ")} and #{array[-1]}" : array[0]
+        array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
       end
 
       def raise_value_error(value, klass)
-        msg = "#{value} class must be #{klass}, not #{value.class.to_s}"
+        msg = "#{value} class must be #{klass}, not #{value.class}"
         raise Roro::Story::Keys, msg
       end
     end
