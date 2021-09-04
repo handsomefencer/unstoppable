@@ -2,123 +2,103 @@
 
 require 'test_helper'
 
-describe Configurator do
+describe "Configurator valiate_catalog" do
   let(:subject)      { Configurator }
   let(:options)      { nil }
   let(:config)       { subject.new(options) }
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/files/catalogs" }
   let(:catalog)      { "#{catalog_root}/#{node}" }
+  let(:execute)      { config.validate_catalog(catalog) }
 
-  describe 'validate_catalog' do
-    let(:execute) { config.validate_catalog(catalog) }
+  context 'when catalog is valid' do
+    let(:assert_valid) { assert_nil execute }
 
-    context 'when valid' do
-      context 'dotfile' do
-        When(:node) { 'valid/.keep' }
+    context 'dotfile' do
+      When(:node) { 'valid/.keep' }
+      Then { assert_valid }
+    end
 
+    context 'story file with' do
+      context '.yml extension' do
+        When(:node) { 'valid/yaml.yml' }
+        Then { assert_valid }
+      end
+
+      context '.yaml extension' do
+        When(:node) { 'valid/yaml.yaml' }
         Then { assert_nil execute }
       end
 
-      context 'story file with' do
-        context '.yml extension' do
-          When(:node) { 'valid/yaml.yml' }
+      context ':preface hash' do
+        When(:node) { 'valid/preface.yml' }
+        Then { assert_nil execute }
+      end
 
-          Then { assert_nil execute }
-        end
+      context ':questions hash' do
+        When(:node) { 'valid/questions.yml' }
+        Then { assert_nil execute }
+      end
+    end
+  end
 
-        context '.yaml ' do
-          When(:node) { 'valid/yaml.yaml' }
-          Then { assert_nil execute }
-        end
+  context 'when catalog is invalid because node' do
+    let(:error) { Roro::Error }
 
-        context 'with valid :preface' do
-          When(:node) { 'valid/preface.yml' }
+    context 'is not present when' do
+      let(:error_message) { 'Catalog not present' }
 
-          Then { assert_nil execute }
-        end
+      context 'extension is permitted' do
+        When(:node) { 'invalid/nonexistent.yml' }
+        Then { assert_correct_error }
+      end
 
-        context 'with valid :questions' do
-          When(:node) { 'valid/questions.yml' }
-          Then { assert_nil execute }
-        end
+      context 'is a directory' do
+        When(:node) { 'invalid/nonexistent' }
+        Then { assert_correct_error }
       end
     end
 
-    context 'when invalid because node' do
-      let(:error) { Roro::Error }
+    context 'is a story file with' do
+      context 'an invalid extension' do
+        let(:error_message) { 'Catalog has invalid extension' }
 
-      context 'is not present' do
-        let(:error_message) { 'Catalog not present' }
+        When(:node) { 'invalid/ruby.rb' }
+        Then { assert_correct_error }
+      end
 
-        context 'when catalog is story file with proper extension' do
-          When(:node) { 'invalid/nonexistent.yml' }
+      context 'no content' do
+        let(:error_message) { 'Story file is empty' }
+
+        When(:node) { 'invalid/empty.yml' }
+        Then { assert_correct_error }
+      end
+    end
+
+    context 'is a story with wrong structure' do
+      context 'when node expects hash and is' do
+        let(:error_message) { 'must be a Hash' }
+
+        context 'a string' do
+          When(:node) { 'invalid/string.yml' }
           Then { assert_correct_error }
         end
 
-        context 'is a directory' do
-          When(:node) { 'invalid/nonexistent' }
+        context 'is an array' do
+          When(:node) { 'invalid/array.yml' }
           Then { assert_correct_error }
         end
       end
 
-      context 'is a story file with' do
-        context 'an invalid extension' do
-          let(:error_message) { 'Catalog has invalid extension' }
+      context 'when node is a hash with nil value' do
+        let(:error_message) { 'preface must not be nil' }
 
-          When(:node) { 'invalid/ruby.rb' }
-          Then { assert_correct_error }
-        end
-
-        context 'no content' do
-          let(:error_message) { 'Story file is empty' }
-
-          When(:node) { 'invalid/empty.yml' }
-          Then { assert_correct_error }
-        end
-      end
-
-      context 'is a story with wrong structure' do
-        context 'when node expects hash and is' do
-          let(:error_message) { 'must be a Hash' }
-
-          context 'a string' do
-            When(:node) { 'invalid/string.yml' }
-            Then { assert_correct_error }
-          end
-
-          context 'is an array' do
-            When(:node) { 'invalid/array.yml' }
-            Then { assert_correct_error }
-          end
-        end
-
-        context 'when node is a hash with nil value' do
-          let(:error_message) { 'preface must not be nil' }
-
-          When(:node) { 'invalid/key_with_nil_value.yml' }
-          Then { assert_correct_error }
-        end
+        When(:node) { 'invalid/key_with_nil_value.yml' }
+        Then { assert_correct_error }
       end
     end
   end
 
   # describe '#validate_story_content(content)' do
-  #   # before { skip }
-  #   # let(:content) { "string" }
-  #   # let(:execute) { config.validate_story_content(string) }
-  #   #
-  #   # context 'when content is a string' do
-  #   #   Then { refute config.validate_story_content('content string') }
-  #   # end
-  #   #
-  #   # context 'when content is nil' do
-  #   #   Then { assert config.validate_story_content(nil) }
-  #   # end
-  #   #
-  #   # context 'when content is empty string' do
-  #   #   Then { assert config.validate_story_content('') }
-  #   # end
-  # end
   #
   # describe '#story_file_has_unpermitted_keys?(content)' do
   #   let(:root)  { "#{Dir.pwd}/test/fixtures/files/stories" }
@@ -131,15 +111,6 @@ describe Configurator do
   #   end
   #
   #   context 'when invalid due to' do
-  #     context 'hash with nil value' do
-  #       let(:file) { 'invalid/key_with_nil_value.yml'}
-  #       let(:execute) { config.validate_catalog("#{root}/#{file}") }
-  #       let(:error)         { Roro::Catalog::ContentError }
-  #       let(:error_message) { "class must be , not " }
-  #       # focus
-  #       # Then { assert_correct_error }
-  #       # Then { assert config.has_unpermitted_keys?(content)}
-  #     end
   #     context 'unpermitted keys' do
   #       let(:file) { 'invalid/unpermitted_keys.yml'}
   #
@@ -170,11 +141,6 @@ describe Configurator do
   #     let(:folder) { 'valid/roro/docker_compose'}
   #
   #     Then { assert_equal execute, [child['docker-compose.yml']] }
-  #     And  { assert_equal execute.size, 1 }
-  #   end
-  #
-  #   context 'when directory has a hidden file' do
-  #     Then { assert_equal execute, [child['roro']] }
   #     And  { assert_equal execute.size, 1 }
   #   end
   #
@@ -259,13 +225,6 @@ describe Configurator do
   #
   #   describe 'must return error when file' do
   #     before { skip }
-  #     context 'is empty' do
-  #       let(:error)         { Roro::Catalog::StoryError }
-  #       let(:filename)      { 'invalid/empty.yml' }
-  #       let(:error_message) { 'No content in'}
-  #
-  #       Then { assert_correct_error }
-  #     end
   #
   #     describe 'contains unpermitted keys' do
   #       let(:filename)      { 'invalid/unpermitted_keys.yml' }
@@ -371,27 +330,27 @@ describe Configurator do
   #   end
   # end
   #
-  # describe '#sanitize(options' do
-  #   context 'when key is a string' do
-  #     When(:options) { { 'key' => 'value' } }
-  #     Then { assert config.options.keys.first.is_a? Symbol }
-  #   end
-  #
-  #   context 'when value is a' do
-  #     context 'string' do
-  #       When(:options) { { 'key' => 'value' } }
-  #       Then { assert config.options.values.first.is_a? Symbol }
-  #     end
-  #
-  #     context 'when value is an array' do
-  #       When(:options) { { 'key' => [] } }
-  #       Then { assert config.options.values.first.is_a? Array }
-  #     end
-  #
-  #     context 'when value is an array of hashes' do
-  #       When(:options) { { 'key' => [{ 'foo' => 'bar' }] } }
-  #       Then { assert_equal :bar, config.options[:key][0][:foo] }
-  #     end
-  #   end
-  # end
+  describe '#sanitize(options' do
+    context 'when key is a string' do
+      When(:options) { { 'key' => 'value' } }
+      Then { assert config.options.keys.first.is_a? Symbol }
+    end
+
+    context 'when value is a' do
+      context 'string' do
+        When(:options) { { 'key' => 'value' } }
+        Then { assert config.options.values.first.is_a? Symbol }
+      end
+
+      context 'when value is an array' do
+        When(:options) { { 'key' => [] } }
+        Then { assert config.options.values.first.is_a? Array }
+      end
+
+      context 'when value is an array of hashes' do
+        When(:options) { { 'key' => [{ 'foo' => 'bar' }] } }
+        Then { assert_equal :bar, config.options[:key][0][:foo] }
+      end
+    end
+  end
 end
