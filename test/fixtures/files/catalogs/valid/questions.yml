@@ -1,0 +1,5 @@
+questions:
+  -
+    question: Please supply your docker username
+    help: https://hub.docker.com/signup
+    action: "@env[:docker_username] = answer"

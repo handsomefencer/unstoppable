@@ -20,18 +20,25 @@ module Roro
         story  = args.empty? ? @story : @story.dig(*args)
         case
         when invalid_story_file_extension?
+          @error = Error
           @msg = 'Story file has invalid extension'
         when %w(keep gitkeep).include?(@catalog.split('.').last)
           return
         when !content
+          @error = Error
           @msg = 'Story file is empty'
+        when object.nil?
+          @error = Error
+          @msg = "#{content.keys.first} must not be nil"
         when object.class != story.class
+          @error = Error
           @msg = "'#{object.to_s}' must be a #{story.class.to_s}"
-        else
-          return
+        when object.is_a?(Hash)
+          object.each do |key, value|
+            args << key
+            validate_story_file(content, *args)
+          end
         end
-        @error = Error
-
       end
 
       def invalid_story_file_extension?

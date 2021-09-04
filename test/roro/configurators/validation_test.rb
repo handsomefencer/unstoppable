@@ -15,26 +15,32 @@ describe Configurator do
     context 'when valid' do
       context 'dotfile' do
         let(:node) { 'valid/.keep'}
-        let(:error) { Roro::Error }
-        let(:error_message) { 'Story file has invalid extension' }
 
         Then { assert_nil execute }
       end
 
       context 'yml file' do
         let(:node) { 'valid/yaml.yml'}
-        let(:error) { Roro::Error }
-        let(:error_message) { 'Story file has invalid extension' }
 
         Then { assert_nil execute }
       end
 
       context 'yaml file' do
         let(:node) { 'valid/yaml.yaml'}
-        let(:error) { Roro::Error }
-        let(:error_message) { 'Story file has invalid extension' }
 
         Then { assert_nil execute }
+
+        context 'with valid :preface' do
+          let(:node) { 'valid/preface.yml'}
+
+          Then { assert_nil execute }
+        end
+
+        context 'with valid :questions' do
+          let(:node) { 'valid/questions.yml'}
+          focus
+          Then { assert_nil execute }
+        end
       end
     end
 
@@ -73,6 +79,13 @@ describe Configurator do
         context 'returns an array' do
           let(:node) { 'invalid/array.yml'}
           let(:error_message) { "some string in an array" }
+
+          Then { assert_correct_error }
+        end
+
+        context 'returns a key with nil value' do
+          let(:node) { 'invalid/key_with_nil_value.yml'}
+          let(:error_message) { "preface must not be nil" }
 
           Then { assert_correct_error }
         end
