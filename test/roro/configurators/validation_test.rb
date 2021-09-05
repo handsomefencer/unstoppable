@@ -35,6 +35,10 @@ describe 'Configurator validate_catalog' do
       context ':questions hash' do
         Then { assert_valid_catalog['valid/questions_array.yml'] }
       end
+
+      context ':actions array string' do
+        Then { assert_valid_catalog['valid/actions_array_string.yml'] }
+      end
     end
   end
 
