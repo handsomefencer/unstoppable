@@ -21,9 +21,9 @@ module Roro
         !@content || @content.empty?
       end
 
-      def validate_story_file(*args)
+      def validate_story(*args)
         object = args.empty? ? @content : @content.dig(*args)
-        story  = args.empty? ? @story : @story.dig(*args)
+        story  = args.empty? ? @story   : @story.dig(*args)
         if story_content_missing?
           @error = Error
           @msg = 'Story file is empty'
@@ -33,11 +33,10 @@ module Roro
         elsif object.class != story.class
           @error = Error
           @msg = "'#{object}' must be a #{story.class}"
+        elsif object.is_a?(Array)
+          object.each { |i| i.keys.each { |k| validate_story(*args, 0, k) } }
         elsif object.is_a?(Hash)
-          object.each do |key, _value|
-            args << key
-            validate_story_file(*args)
-          end
+          object.keys.each { |k| validate_story(*args, k) }
         end
       end
 
@@ -52,7 +51,7 @@ module Roro
           @msg = 'Catalog has invalid extension'
         when catalog_is_story_file?
           @content = read_yaml(@catalog)
-          validate_story_file
+          validate_story
         else
           return
         end
@@ -89,11 +88,6 @@ module Roro
         end
       end
 
-      # validate_file file, [:env, :base]
-      # validate_file file, [:questions, 0]
-      # validate_keys content
-      # validate_keys content, :env
-      # validate_keys content, :questions, 0
       def has_unpermitted_keys?(*args)
         content = args.shift
         object = args.empty? ? content : content.dig(*args)
@@ -128,18 +122,6 @@ module Roro
         unpermitted = object.keys - story.keys
         msg = "#{unpermitted} #{args.first} key must be in #{story.keys}"
         raise Roro::Story::Keys, msg if unpermitted.any?
-      end
-
-      def validate_file(*args)
-        file = args.shift
-        content = read_yaml(file)
-        validate_not_empty(file)
-        args.each do |*arg|
-          klass = @story.dig(*arg.flatten).class
-          klasses = [String, Array, Hash].reject { |k| k.eql?(klass) }
-          object = content.dig(*arg.flatten)
-          raise_value_error(object, klass) if klasses.include?(object.class)
-        end
       end
 
       def sanitize(options)

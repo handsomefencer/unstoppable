@@ -2,46 +2,43 @@
 
 require 'test_helper'
 
-describe "Configurator valiate_catalog" do
+describe 'Configurator validate_catalog' do
   let(:subject)      { Configurator }
   let(:options)      { nil }
   let(:config)       { subject.new(options) }
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/files/catalogs" }
   let(:catalog)      { "#{catalog_root}/#{node}" }
   let(:execute)      { config.validate_catalog(catalog) }
+  let(:assert_valid_catalog) { -> (node) {
+    catalog = "#{Dir.pwd}/test/fixtures/files/catalogs/#{node}"
+    execute = config.validate_catalog(catalog)
+    assert_nil execute } }
 
-  context 'when catalog is valid' do
-    let(:assert_valid) { assert_nil execute }
-
+  context 'when catalog valid' do
     context 'dotfile' do
-      When(:node) { 'valid/.keep' }
-      Then { assert_valid }
+      Then { assert_valid_catalog['valid/.keep'] }
     end
 
     context 'story file with' do
       context '.yml extension' do
-        When(:node) { 'valid/yaml.yml' }
-        Then { assert_valid }
+        Then { assert_valid_catalog['valid/yaml.yml'] }
       end
 
       context '.yaml extension' do
-        When(:node) { 'valid/yaml.yaml' }
-        Then { assert_nil execute }
+        Then { assert_valid_catalog['valid/yaml.yaml'] }
       end
 
       context ':preface hash' do
-        When(:node) { 'valid/preface.yml' }
-        Then { assert_nil execute }
+        Then { assert_valid_catalog['valid/preface_string.yml'] }
       end
 
       context ':questions hash' do
-        When(:node) { 'valid/questions.yml' }
-        Then { assert_nil execute }
+        Then { assert_valid_catalog['valid/questions_array.yml'] }
       end
     end
   end
 
-  context 'when catalog is invalid because node' do
+  context 'when catalog invalid because node' do
     let(:error) { Roro::Error }
 
     context 'is not present when' do
@@ -58,7 +55,7 @@ describe "Configurator valiate_catalog" do
       end
     end
 
-    context 'is a story file with' do
+    context 'is a story with' do
       context 'an invalid extension' do
         let(:error_message) { 'Catalog has invalid extension' }
 
@@ -72,43 +69,49 @@ describe "Configurator valiate_catalog" do
         When(:node) { 'invalid/empty.yml' }
         Then { assert_correct_error }
       end
-    end
 
-    context 'is a story with wrong structure' do
-      context 'when node expects hash and is' do
+      context 'story of hash' do
         let(:error_message) { 'must be a Hash' }
 
-        context 'a string' do
+        context 'and object of a string' do
           When(:node) { 'invalid/string.yml' }
           Then { assert_correct_error }
         end
 
-        context 'is an array' do
+        context 'and object of an array' do
           When(:node) { 'invalid/array.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'object of hash with nil value' do
+          let(:error_message) { 'preface must not be nil' }
+
+          When(:node) { 'invalid/key_with_nil_value.yml' }
           Then { assert_correct_error }
         end
       end
 
-      context 'when node is a hash with nil value' do
-        let(:error_message) { 'preface must not be nil' }
+      context 'with unpermitted keys' do
+        context 'when top level' do
+          let(:error_message) { 'unpermitted keys' }
 
-        When(:node) { 'invalid/key_with_nil_value.yml' }
-        Then { assert_correct_error }
+          When(:node) { 'invalid/unpermitted_keys.yml'}
+          # Then { assert_correct_error }
+          #
+          #       # Then { assert config.has_unpermitted_keys?(content)}
+
+        end
+        #   context 'when invalid due to' do
+        #     context 'unpermitted keys' do
+        #     end
+
       end
     end
   end
 
-  # describe '#validate_story_content(content)' do
-  #
   # describe '#story_file_has_unpermitted_keys?(content)' do
   #   let(:root)  { "#{Dir.pwd}/test/fixtures/files/stories" }
   #   let(:content) { config.read_yaml("#{root}/#{file}") }
-  #
-  #   context 'when valid' do
-  #     let(:file) { 'valid/yaml.yml'}
-  #
-  #     # Then { refute config.has_unpermitted_keys?(content)}
-  #   end
   #
   #   context 'when invalid due to' do
   #     context 'unpermitted keys' do
@@ -208,7 +211,7 @@ describe "Configurator valiate_catalog" do
   #   context 'when valid' do
   #     let(:directory) { 'valid/roro' }
   #
-  #     Then { assert_nil execute }
+  #     Then { assert_valid }
   #   end
   # end
   #
@@ -220,7 +223,7 @@ describe "Configurator valiate_catalog" do
   #   describe 'must return nil when story is valid' do
   #     let(:filename) { 'valid/valid.yml' }
   #
-  #     Then { assert_nil execute }
+  #     Then { assert_valid }
   #   end
   #
   #   describe 'must return error when file' do

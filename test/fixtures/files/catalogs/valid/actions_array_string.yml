@@ -1,0 +1,2 @@
+actions:
+  - "@env[:ruby_version] = RUBY_VERSION"
