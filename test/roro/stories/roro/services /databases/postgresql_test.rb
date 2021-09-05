@@ -49,9 +49,9 @@
 #     Then { assert_insertions_in_environments }
 #   end
 #
-#   describe 'preface-returns-array.yml' do
+#   describe 'preface-returns-array_of_strings.yml' do
 #
-#     Given(:file) { "preface-returns-array.yml" }
+#     Given(:file) { "preface-returns-array_of_strings.yml" }
 #     Given(:insertion) {
 #       yaml_from_template('rails/database/with_postgresql/_service.yml')}
 #

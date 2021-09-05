@@ -3,7 +3,7 @@ preface:
 
 
 actions:
-  - template 'preface-returns-array.yml', .
+  - template 'preface-returns-array_of_strings.yml', .
   - template 'Dockerfile', .
   - template 'requirements.txt', .
   - system "sudo docker-compose run web django-admin startproject composeexample ."

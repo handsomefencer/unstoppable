@@ -75,8 +75,8 @@ describe "Story::RubyGem::WithCICD" do
     Then { assert_file(file) { |c| assert_match "FROM $RUBY_IMAGE", c } }  
   end
   
-  describe 'preface-returns-array.yml' do
+  describe 'preface-returns-array_of_strings.yml' do
      
-    Then { assert_file 'preface-returns-array.yml' }
+    Then { assert_file 'preface-returns-array_of_strings.yml' }
   end
 end

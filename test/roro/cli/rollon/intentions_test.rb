@@ -76,15 +76,15 @@ describe Roro::CLI do
       # Then { assert_insertions }
     end
 
-    describe 'preface-returns-array.yml' do
+    describe 'preface-returns-array_of_strings.yml' do
       
-      Given(:file) { "preface-returns-array.yml" }
+      Given(:file) { "preface-returns-array_of_strings.yml" }
       Given(:insertions) {["version: '3.2", "  database:"] }
       
       # Then { assert_insertions }
     end
     
-    describe '.smart.env file for preface-returns-array.yml' do
+    describe '.smart.env file for preface-returns-array_of_strings.yml' do
       
       Given(:file) { ".smart.env" }
       Given(:insertion) { 'RORO_ENV=development' } 

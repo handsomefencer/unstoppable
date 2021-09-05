@@ -9,12 +9,15 @@ describe 'Configurator validate_catalog' do
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/files/catalogs" }
   let(:catalog)      { "#{catalog_root}/#{node}" }
   let(:execute)      { config.validate_catalog(catalog) }
-  let(:assert_valid_catalog) { -> (node) {
-    catalog = "#{Dir.pwd}/test/fixtures/files/catalogs/#{node}"
-    execute = config.validate_catalog(catalog)
-    assert_nil execute } }
+  let(:assert_valid_catalog) do
+    lambda { |node|
+      catalog = "#{Dir.pwd}/test/fixtures/files/catalogs/#{node}"
+      execute = config.validate_catalog(catalog)
+      assert_nil execute
+    }
+  end
 
-  context 'when catalog valid' do
+  describe 'valid' do
     context 'dotfile' do
       Then { assert_valid_catalog['valid/.keep'] }
     end
@@ -29,27 +32,33 @@ describe 'Configurator validate_catalog' do
       end
 
       context ':preface hash' do
-        Then { assert_valid_catalog['valid/preface_string.yml'] }
+        Then { assert_valid_catalog['valid/preface/string.yml'] }
       end
 
       context ':questions hash' do
-        Then { assert_valid_catalog['valid/questions_array.yml'] }
+        Then { assert_valid_catalog['valid/questions/array.yml'] }
       end
 
       context ':actions array string' do
-        Then { assert_valid_catalog['valid/actions_array_string.yml'] }
+        Then { assert_valid_catalog['valid/actions/array_string.yml'] }
+      end
+
+      context ':env hash with hash of values of' do
+        before { skip }
+        Then { assert_valid_catalog['valid/env/hash.yml'] }
       end
     end
   end
 
-  context 'when catalog invalid because node' do
+  context 'invalid' do
     let(:error) { Roro::Error }
 
-    context 'is not present when' do
+    context 'catalog not present' do
       let(:error_message) { 'Catalog not present' }
 
       context 'extension is permitted' do
         When(:node) { 'invalid/nonexistent.yml' }
+
         Then { assert_correct_error }
       end
 
@@ -59,56 +68,135 @@ describe 'Configurator validate_catalog' do
       end
     end
 
-    context 'is a story with' do
-      context 'an invalid extension' do
+    context 'story with' do
+      let(:node) { story }
+
+      context 'invalid extension' do
         let(:error_message) { 'Catalog has invalid extension' }
 
-        When(:node) { 'invalid/ruby.rb' }
+        When(:story) { 'invalid/ruby.rb' }
         Then { assert_correct_error }
       end
 
       context 'no content' do
         let(:error_message) { 'Story file is empty' }
 
-        When(:node) { 'invalid/empty.yml' }
+        When(:story) { 'invalid/empty.yml' }
         Then { assert_correct_error }
       end
 
-      context 'story of hash' do
-        let(:error_message) { 'must be a Hash' }
+      context 'invalid plot' do
+        let(:error_message) { 'must be an instance of Hash' }
 
-        context 'and object of a string' do
-          When(:node) { 'invalid/string.yml' }
+        context 'top level' do
+          context 'string' do
+            When(:story) { 'invalid/top_level/string.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'array' do
+            When(:story) { 'invalid/top_level/array.yml' }
+            Then { assert_correct_error }
+          end
+        end
+      end
+
+      context ':actions when value is' do
+        context 'a hash' do
+          let(:error_message) { 'must be an instance of Array' }
+
+          When(:node) { 'invalid/actions/hash.yml' }
           Then { assert_correct_error }
         end
 
-        context 'and object of an array' do
-          When(:node) { 'invalid/array.yml' }
+        context 'a string' do
+          let(:error_message) { 'must be an instance of Array' }
+
+          When(:node) { 'invalid/actions/string.yml' }
           Then { assert_correct_error }
         end
 
-        context 'object of hash with nil value' do
-          let(:error_message) { 'preface must not be nil' }
+        context 'an array of' do
+          let(:error_message) { 'not permitted' }
 
-          When(:node) { 'invalid/key_with_nil_value.yml' }
+          context 'hashes' do
+            When(:node) { 'invalid/actions/array_of_hashes.yml' }
+            # Then { assert_correct_error }
+          end
+
+          context 'arrays' do
+            let(:error_message) { 'must be an instance of Array' }
+
+            When(:node) { 'invalid/actions/array_of_arrays.yml' }
+
+            # Then { assert_correct_error }
+          end
+        end
+      end
+
+      context ':env when value is' do
+        context 'an array' do
+          let(:error_message) { 'must be an instance of Hash' }
+
+          When(:node) { 'invalid/env/array.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'a string' do
+          let(:error_message) { 'must be an instance of Hash' }
+
+          When(:node) { 'invalid/env/string.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'a hash with values of' do
+          let(:error_message) { 'must be an instance of Hash' }
+
+          context 'array' do
+            When(:node) { 'invalid/env/hash_of_arrays.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'hash' do
+            let(:error_message) { 'must be an instance of Array' }
+
+            When(:node) { 'invalid/env/hash_of_hashes_of_hashes.yml' }
+            Then { assert_correct_error }
+          end
+        end
+      end
+
+      context ':preface when value is' do
+        context 'nil' do
+          let(:error_message) { 'Value for :preface must not be nil' }
+
+          When(:node) { 'invalid/preface/nil_value.yml' }
           Then { assert_correct_error }
         end
       end
+
+      context ':questions when value is' do
+        context 'an array of strings' do
+          let(:error_message) { 'must be an instance of Array' }
+
+          When(:node) { 'invalid/questions/array_of_strings.yml' }
+          Then { assert_correct_error }
+        end
+      end
+
 
       context 'with unpermitted keys' do
         context 'when top level' do
           let(:error_message) { 'unpermitted keys' }
 
-          When(:node) { 'invalid/unpermitted_keys.yml'}
+          When(:node) { 'invalid/unpermitted_keys.yml' }
           # Then { assert_correct_error }
           #
           #       # Then { assert config.has_unpermitted_keys?(content)}
-
         end
         #   context 'when invalid due to' do
         #     context 'unpermitted keys' do
         #     end
-
       end
     end
   end
@@ -250,7 +338,7 @@ describe 'Configurator validate_catalog' do
   #
   #       context 'an Array' do
   #         let(:error) { Roro::Story::Keys }
-  #         let(:filename)      { 'invalid/env-returns-array.yml' }
+  #         let(:filename)      { 'invalid/env-returns-array_of_strings.yml' }
   #         let(:error_message) { 'class must be Hash, not Array'}
   #
   #         Then { assert_correct_error }
@@ -265,7 +353,7 @@ describe 'Configurator validate_catalog' do
   #         end
   #
   #         context 'a key that returns an array' do
-  #           let(:filename)      { 'invalid/env-base-returns-array.yml' }
+  #           let(:filename)      { 'invalid/env-base-returns-array_of_strings.yml' }
   #           let(:error_message) { 'must be Hash, not Array'}
   #
   #           Then { assert_correct_error }
@@ -282,7 +370,7 @@ describe 'Configurator validate_catalog' do
   #
   #     context ':preface value class is' do
   #       context 'an array' do
-  #         let(:filename)      { 'invalid/preface-returns-array.yml' }
+  #         let(:filename)      { 'invalid/preface-returns-array_of_strings.yml' }
   #         let(:error_message) { 'class must be String, not Array'}
   #
   #         Then { assert_correct_error }

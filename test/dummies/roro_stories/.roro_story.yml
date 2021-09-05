@@ -105,17 +105,17 @@
 - "Roro::CLI.roro_environments.each do |environment| \n  src = 'rails/dotenv/web.smart.env.tt'\n
   \ dest = \"roro/containers/backend/#{environment}.smart.env\"\n  template src, dest, @config.smart.env\nend\n"
 - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
-- template 'rails/preface-returns-array.yml.tt', './preface-returns-array.yml', @config.smart.env
+- template 'rails/preface-returns-array_of_strings.yml.tt', './preface-returns-array_of_strings.yml', @config.smart.env
 - template 'base/dotenv', './.smart.env', @config.smart.env
 - directory 'rails/roro', './roro', @config.smart.env
 - template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.smart.env
 - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
-- template 'rails/preface-returns-array.yml.tt', './preface-returns-array.yml', @config.smart.env
+- template 'rails/preface-returns-array_of_strings.yml.tt', './preface-returns-array_of_strings.yml', @config.smart.env
 - template 'base/dotenv', './.smart.env', @config.smart.env
 - directory 'rails/roro', './roro', @config.smart.env
 - template 'rails/kube.rake.tt', './lib/tasks/kube.rake', @config.smart.env
 - template 'rails/.circleci/config.yml.tt', './.circleci/config.yml'
-- template 'rails/preface-returns-array.yml.tt', './preface-returns-array.yml', @config.smart.env
+- template 'rails/preface-returns-array_of_strings.yml.tt', './preface-returns-array_of_strings.yml', @config.smart.env
 - template 'base/dotenv', './.smart.env', @config.smart.env
 - directory 'rails/roro', './roro', @config.smart.env
 - chmod "roro/docker-entrypoint.sh", 0755

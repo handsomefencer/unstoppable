@@ -23,7 +23,7 @@ module Roro
         end
         directory 'ruby_gem/roro', './roro', @config.env
         directory 'ruby_gem/.circleci', './.circleci', @config.env
-        copy_file 'ruby_gem/preface-returns-array.yml', './preface-returns-array.yml'
+        copy_file 'ruby_gem/preface-returns-array_of_strings.yml', './preface-returns-array_of_strings.yml'
         
         @config.env[:rubies].each do |ruby| 
           file = '.circleci/config.yml'

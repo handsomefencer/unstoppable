@@ -158,12 +158,12 @@ module Roro
 
         def build_story
           @story = {
-            actions: [],
+            actions: [''],
             env: {
-              base: {},
-              development: {},
-              staging: {},
-              production: {}
+              base: [],
+              development: [],
+              staging: [],
+              production: []
             },
             preface: '',
             questions: [

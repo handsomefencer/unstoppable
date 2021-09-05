@@ -21,27 +21,53 @@ module Roro
         !@content || @content.empty?
       end
 
+      def validate_content_present
+        story_content_missing?
+      end
+
+      def validate_values_not_nil
+
+      end
+
       def validate_story(*args)
         object = args.empty? ? @content : @content.dig(*args)
         story  = args.empty? ? @story   : @story.dig(*args)
-        if story_content_missing?
+        if story.is_a?(NilClass)
           @error = Error
-          @msg = 'Story file is empty'
-        elsif object.nil?
-          @error = Error
-          @msg = "#{@content.keys.first} must not be nil"
+          @msg = "'#{object}' in #{@content} not permitted"
         elsif object.class != story.class
           @error = Error
-          @msg = "'#{object}' must be a #{story.class}"
+          @msg = "'#{object}' must be an instance of #{story.class}"
         elsif object.is_a?(Array)
-          object.each { |i| i.keys.each { |k| validate_story(*args, 0, k) } }
+          object.each do |item|
+            if item.class != story.first.class
+              @error = Error
+              @msg = "#{item} must be an instance of #{story.class}"
+            end
+            if item.is_a?(Hash)
+              item.keys.each do |k|
+                validate_story(*args, 0, k)
+              end
+            end
+          end
         elsif object.is_a?(Hash)
-          object.keys.each { |k| validate_story(*args, k) }
+          object.each do |key, value|
+            if value.nil?
+              @error = Error
+              @msg = "Value for :#{key} must not be nil"
+            elsif value.class != story[key].class
+              @error = Error
+              @msg = "'#{value}' must be an instance of #{story[key].class}"
+            else
+              validate_story(*args, key)
+            end
+          end
         end
       end
 
       def validate_catalog(catalog)
         @catalog = catalog
+        @errors = {}
         case
         when catalog_not_present?
           @error = Error
@@ -51,7 +77,12 @@ module Roro
           @msg = 'Catalog has invalid extension'
         when catalog_is_story_file?
           @content = read_yaml(@catalog)
-          validate_story
+          if story_content_missing?
+            @error = Error
+            @msg = 'Story file is empty'
+          else
+            validate_story
+          end
         else
           return
         end
@@ -64,6 +95,7 @@ module Roro
       end
 
       def validate_story_content(*args)
+
         content = args.shift
         object = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
