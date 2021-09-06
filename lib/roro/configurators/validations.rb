@@ -17,49 +17,46 @@ module Roro
         !(@permitted_extensions + %w[keep gitkeep]).include?(@extension)
       end
 
-      def story_content_missing?
-        !@content || @content.empty?
+      def validate_content_presence
+        @msg = 'Story file is empty' if !@content || @content.empty?
       end
 
-      def validate_content_present
-        story_content_missing?
-      end
-
-      def validate_values_not_nil
-
+      def validate_content_classes(content, story)
+        case
+        when content.class != story.class
+          @msg = "'#{content}' must be an instance of #{story.class}"
+        when content.is_a?(Hash)
+          content.each do |key, value|
+            validate_content_classes(value, story[key])
+          end
+        when content.is_a?(Array)
+          content.each do |item|
+            validate_content_classes(item, story[0])
+          end
+        end
       end
 
       def validate_story(*args)
-        object = args.empty? ? @content : @content.dig(*args)
-        story  = args.empty? ? @story   : @story.dig(*args)
-        if story.is_a?(NilClass)
-          @error = Error
-          @msg = "'#{object}' in #{@content} not permitted"
-        elsif object.class != story.class
-          @error = Error
-          @msg = "'#{object}' must be an instance of #{story.class}"
-        elsif object.is_a?(Array)
-          object.each do |item|
-            if item.class != story.first.class
-              @error = Error
-              @msg = "#{item} must be an instance of #{story.class}"
-            end
-            if item.is_a?(Hash)
-              item.keys.each do |k|
-                validate_story(*args, 0, k)
-              end
-            end
+        @content = read_yaml(@catalog)
+        validate_content_presence
+        content = args.empty? ? @content : @content.dig(*args)
+        story  = args.empty? ? @story : @story.dig(*args)
+        validate_content_classes(content, story)
+        unpermitted_keys = content.keys - story.keys
+        if content.is_a?(Hash)
+          if unpermitted_keys.any?
+            @msg = "Unpermitted keys #{unpermitted_keys} in #{content}"
           end
-        elsif object.is_a?(Hash)
-          object.each do |key, value|
+
+          content.each do |key, value|
             if value.nil?
-              @error = Error
               @msg = "Value for :#{key} must not be nil"
             elsif value.class != story[key].class
-              @error = Error
               @msg = "'#{value}' must be an instance of #{story[key].class}"
-            else
-              validate_story(*args, key)
+            elsif value.is_a?(Array)
+              value.each do |_i|
+                validate_story(*args, key, 0)
+              end
             end
           end
         end
@@ -67,91 +64,83 @@ module Roro
 
       def validate_catalog(catalog)
         @catalog = catalog
-        @errors = {}
+        @error = Error
         case
         when catalog_not_present?
-          @error = Error
           @msg = 'Catalog not present'
         when catalog_has_invalid_extension?
-          @error = Error
           @msg = 'Catalog has invalid extension'
         when catalog_is_story_file?
-          @content = read_yaml(@catalog)
-          if story_content_missing?
-            @error = Error
-            @msg = 'Story file is empty'
-          else
-            validate_story
-          end
+          validate_story
         else
           return
         end
-        raise @error, "#{@msg} in #{catalog}" if @error
+        raise @error, "#{@msg} in #{catalog}" if @msg
       end
 
-      def validate_key_klass(object, story)
-        msg = "\"#{object}\" class must be #{story.class}, not #{object.class}"
-        raise(Error, msg) unless object.instance_of?(story.class)
+      def validate_key_klass(content, story)
+        msg = "\"#{content}\" class must be #{story.class}, not #{content.class}"
+        raise(Error, msg) unless content.instance_of?(story.class)
       end
 
       def validate_story_content(*args)
 
         content = args.shift
-        object = args.empty? ? content : content.dig(*args)
+        content = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
-        # validate_key_klass(object, story)
-        case object
+        # validate_key_klass(content, story)
+        case content
         when NilClass
           msg = "#{args.first} value is nil."
           raise Roro::Catalog::ContentError, msg
         when String
           nil
         when Array
-          object.each do |_item|
+          content.each do |_item|
             args << 0
             has_unpermitted_keys?(content, *args)
           end
         else
-          object.each do |key, _value|
+          content.each do |key, _value|
             args << key
             validate_story_content(content, *args)
           end
-          raise Roro::Catalog::Keys if (object.keys - story.keys).any?
+          raise Roro::Catalog::Keys if (content.keys - story.keys).any?
         end
       end
 
       def has_unpermitted_keys?(*args)
         content = args.shift
-        object = args.empty? ? content : content.dig(*args)
+        content = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
-        validate_key_klass(object, story)
-        object
-        case object
+        validate_key_klass(content, story)
+        content
+        case content
         when NilClass
           msg = "#{args.first} value is nil."
           nil
         when String
           nil
         when Array
-          object.each do |_item|
+          content.each do |_item|
             args << 0
             has_unpermitted_keys?(content, *args)
           end
         else
-          object.each do |key, _value|
+          content.each do |key, _value|
             args << key
             has_unpermitted_keys?(content, *args)
           end
-          raise Roro::Catalog::Keys if (object.keys - story.keys).any?
+          raise Roro::Catalog::Keys if (content.keys - story.keys).any?
         end
       end
 
       def validate_keys(content, *args)
-        object = args.empty? ? content : content.dig(*args)
+        content = args.empty? ? content : content.dig(*args)
         story  = args.empty? ? @story : @story.dig(*args)
-        return unless object
+        return unless content
 
-        unpermitted = object.keys - story.keys
+        unpermitted = content.keys - story.keys
         msg = "#{unpermitted} #{args.first} key must be in #{story.keys}"
         raise Roro::Story::Keys, msg if unpermitted.any?
       end

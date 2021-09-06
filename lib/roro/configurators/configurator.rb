@@ -160,10 +160,10 @@ module Roro
           @story = {
             actions: [''],
             env: {
-              base: [],
-              development: [],
-              staging: [],
-              production: []
+              base: [''],
+              development: [''],
+              staging: [''],
+              production: ['']
             },
             preface: '',
             questions: [

@@ -44,7 +44,6 @@ describe 'Configurator validate_catalog' do
       end
 
       context ':env hash with hash of values of' do
-        before { skip }
         Then { assert_valid_catalog['valid/env/hash.yml'] }
       end
     end
@@ -56,7 +55,7 @@ describe 'Configurator validate_catalog' do
     context 'catalog not present' do
       let(:error_message) { 'Catalog not present' }
 
-      context 'extension is permitted' do
+      context 'when valid story file extension' do
         When(:node) { 'invalid/nonexistent.yml' }
 
         Then { assert_correct_error }
@@ -71,10 +70,10 @@ describe 'Configurator validate_catalog' do
     context 'story with' do
       let(:node) { story }
 
-      context 'invalid extension' do
+      context 'unpermitted extension' do
         let(:error_message) { 'Catalog has invalid extension' }
 
-        When(:story) { 'invalid/ruby.rb' }
+        When(:story) { 'invalid/top_level/ruby.rb' }
         Then { assert_correct_error }
       end
 
@@ -85,23 +84,21 @@ describe 'Configurator validate_catalog' do
         Then { assert_correct_error }
       end
 
-      context 'invalid plot' do
+      context 'top level plot with' do
         let(:error_message) { 'must be an instance of Hash' }
 
-        context 'top level' do
-          context 'string' do
-            When(:story) { 'invalid/top_level/string.yml' }
-            Then { assert_correct_error }
-          end
+        context 'string' do
+          When(:story) { 'invalid/top_level/string.yml' }
+          Then { assert_correct_error }
+        end
 
-          context 'array' do
-            When(:story) { 'invalid/top_level/array.yml' }
-            Then { assert_correct_error }
-          end
+        context 'array' do
+          When(:story) { 'invalid/top_level/array.yml' }
+          Then { assert_correct_error }
         end
       end
 
-      context ':actions when value is' do
+      context 'actions when value is' do
         context 'a hash' do
           let(:error_message) { 'must be an instance of Array' }
 
@@ -117,19 +114,19 @@ describe 'Configurator validate_catalog' do
         end
 
         context 'an array of' do
-          let(:error_message) { 'not permitted' }
+          let(:error_message) { 'must be an instance of String' }
 
           context 'hashes' do
             When(:node) { 'invalid/actions/array_of_hashes.yml' }
-            # Then { assert_correct_error }
+            Then { assert_correct_error }
           end
 
           context 'arrays' do
-            let(:error_message) { 'must be an instance of Array' }
+            let(:error_message) { 'must be an instance of String' }
 
             When(:node) { 'invalid/actions/array_of_arrays.yml' }
 
-            # Then { assert_correct_error }
+            Then { assert_correct_error }
           end
         end
       end
@@ -177,55 +174,30 @@ describe 'Configurator validate_catalog' do
 
       context ':questions when value is' do
         context 'an array of strings' do
-          let(:error_message) { 'must be an instance of Array' }
+          let(:error_message) { 'must be an instance of Hash' }
 
           When(:node) { 'invalid/questions/array_of_strings.yml' }
           Then { assert_correct_error }
         end
       end
 
-
       context 'with unpermitted keys' do
         context 'when top level' do
-          let(:error_message) { 'unpermitted keys' }
+          let(:error_message) { 'Unpermitted keys' }
 
           When(:node) { 'invalid/unpermitted_keys.yml' }
-          # Then { assert_correct_error }
-          #
-          #       # Then { assert config.has_unpermitted_keys?(content)}
+          Then { assert_correct_error }
         end
-        #   context 'when invalid due to' do
-        #     context 'unpermitted keys' do
-        #     end
+
+        context 'when :questions' do
+          let(:error_message) { 'Unpermitted keys' }
+          When(:node) { 'invalid/questions/unpermitted_keys.yml' }
+
+          Then { assert_correct_error }
+        end
       end
     end
   end
-
-  # describe '#story_file_has_unpermitted_keys?(content)' do
-  #   let(:root)  { "#{Dir.pwd}/test/fixtures/files/stories" }
-  #   let(:content) { config.read_yaml("#{root}/#{file}") }
-  #
-  #   context 'when invalid due to' do
-  #     context 'unpermitted keys' do
-  #       let(:file) { 'invalid/unpermitted_keys.yml'}
-  #
-  #       # Then { assert config.has_unpermitted_keys?(content)}
-  #     end
-  #
-  #     context 'unpermitted question keys' do
-  #       let(:file) { 'invalid/unpermitted_question_keys.yml'}
-  #       let(:execute) { config.has_unpermitted_keys?(content) }
-  #       let(:error)         { Roro::Catalog::ContentKeyError }
-  #       let(:error_message) { "class must be , not " }
-  #       # focus
-  #       #
-  #       # Then { assert_correct_error }
-  #       #
-  #       # Then { assert_correct_errorraises(Error) {  } }
-  #     end
-  #   end
-  # end
-  #
   # describe '#get_children(location)' do
   #   before { skip }
   #   let(:folder)  { "valid" }
