@@ -1,22 +1,23 @@
 # frozen_string_literal: true
 
 require_relative 'validations'
+require_relative 'utilities'
 
 module Roro
   module Configurators
     class Configurator < Thor
       include Thor::Actions
       include Validations
+      include Utilities
 
-      attr_reader :structure, :intentions, :env, :options, :story
+      attr_reader :structure, :env, :options, :story
 
       no_commands do
         def initialize(options = {})
           @options = sanitize(options)
           @scene = Roro::CLI.catalog_root
-          structure = Structurer.new
-          build_story
-          @story = structure.story
+          structure = StructureBuilder.new
+          @story = structure.structure
         end
 
         def get_preface(scene)
@@ -189,35 +190,12 @@ module Roro
         end
 
 
-        def build_story
-          @story = {
-            actions: [''],
-            env: {
-              base: {},
-              development: {},
-              staging: {},
-              production: {}
-            },
-            preface: '',
-            questions: [
-              {
-                question: '',
-                help: '',
-                action: ''
-              }
-            ]
-          }
-        end
 
         def get_plot_choices(scene)
           choices = get_children(scene)
                       .map { |f| f.split('/').last }
                       .sort
           {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
-        end
-
-        def sentence_from(array)
-          array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
         end
       end
     end

@@ -78,21 +78,6 @@ module Roro
       def story_has_nil_value?(content)
         content&.values&.include?(nil)
       end
-
-      def sanitize(options)
-        (options ||= {}).transform_keys!(&:to_sym).each do |key, value|
-          case value
-          when Array
-            value.each { |vs| sanitize(vs) }
-          when Hash
-            sanitize(value)
-          when true
-            options[key] = true
-          when String || Symbol
-            options[key] = value.to_sym
-          end
-        end
-      end
     end
   end
 end

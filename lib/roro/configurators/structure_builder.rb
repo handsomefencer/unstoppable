@@ -4,15 +4,15 @@ require_relative 'validations'
 
 module Roro
   module Configurators
-    class Structurer < Thor
-      attr_reader :structure, :story
+    class StructureBuilder < Thor
+      attr_reader :structure
 
       def initialize(override_location = nil)
         build_story
       end
 
       def build_story
-        @story = {
+        @structure = {
           actions: [''],
           env: {
             base: {},

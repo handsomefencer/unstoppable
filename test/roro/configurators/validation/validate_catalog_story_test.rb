@@ -250,35 +250,5 @@ describe 'Configurator validate_catalog' do
     end
   end
 
-  describe '#sentence_from' do
-    let(:call) { ->(array) { config.sentence_from(array) } }
 
-    Then { assert_equal 'one, two and three', call[%w[one two three]] }
-    And  { assert_equal 'one and two', call[%w[one two]] }
-    And  { assert_equal 'one', call[%w[one]] }
-  end
-
-  describe '#sanitize(options' do
-    context 'when key is a string' do
-      When(:options) { { 'key' => 'value' } }
-      Then { assert config.options.keys.first.is_a? Symbol }
-    end
-
-    context 'when value is a' do
-      context 'string' do
-        When(:options) { { 'key' => 'value' } }
-        Then { assert config.options.values.first.is_a? Symbol }
-      end
-
-      context 'when value is an array' do
-        When(:options) { { 'key' => [] } }
-        Then { assert config.options.values.first.is_a? Array }
-      end
-
-      context 'when value is an array of hashes' do
-        When(:options) { { 'key' => [{ 'foo' => 'bar' }] } }
-        Then { assert_equal :bar, config.options[:key][0][:foo] }
-      end
-    end
-  end
 end
