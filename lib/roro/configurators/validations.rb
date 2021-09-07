@@ -28,7 +28,6 @@ module Roro
       end
 
       def validate_story(*args)
-        @content = read_yaml(@catalog)
         case
         when story_is_dotfile?
           return
@@ -40,6 +39,7 @@ module Roro
           raise Error, @msg
         else
           validate_story_content
+          nil
         end
       end
 
@@ -56,6 +56,7 @@ module Roro
       end
 
       def story_is_empty?
+        @content = read_yaml(@catalog)
         !@content
       end
 

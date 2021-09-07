@@ -235,14 +235,14 @@ describe 'Configurator validate_catalog' do
 
       context 'with unpermitted keys' do
         context 'when top level' do
-          let(:error_message) { 'Unpermitted keys' }
+          let(:error_message) { 'not permitted' }
 
           When(:node) { 'top_level/unpermitted_keys.yml' }
           Then { assert_correct_error }
         end
 
         context 'when :questions' do
-          let(:error_message) { 'Unpermitted keys' }
+          let(:error_message) { 'not permitted' }
 
           When(:node) { 'questions/unpermitted_keys.yml' }
           Then { assert_correct_error }
