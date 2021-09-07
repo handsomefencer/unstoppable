@@ -4,6 +4,10 @@ module Roro
   module Configurators
     module Validations
 
+      def catalog_is_inflection?
+        !get_children(@catalog).any? { |w| w.include? '.yml' }
+      end
+
       def validate_catalog(catalog)
         @error = Error
         @catalog = catalog
@@ -12,11 +16,19 @@ module Roro
           @msg = 'Catalog not present'
         when catalog_is_story_file?
           validate_story
+        when catalog_is_template?
+          return
         else
-          validate_structure
+          children = get_children(@catalog)
+          children.each { |child| validate_catalog(child) }
         end
-        raise(@error, @msg) if @msg
+        raise(@error, "#{@msg} in #{@catalog}") if @msg
       end
+
+      def catalog_is_template?
+        @catalog.split('/').last.match?('templates')
+      end
+
 
       def catalog_not_present?
         !File.exist?(@catalog)
@@ -79,7 +91,7 @@ module Roro
       def validate_story_hash(content, story)
         case
         when story_has_unpermitted_keys?(content, story)
-          @msg = "#{content.keys} not in permitted keys: #{story.keys}"
+          @msg = "#{@unpermitted_keys} not in permitted keys: #{story.keys}"
         when story_has_nil_value?(content)
           @msg = "Value for :#{content.key(nil)} must not be nil"
         when story&.keys&.any?
@@ -88,7 +100,12 @@ module Roro
       end
 
       def story_has_unpermitted_keys?(content, story)
-        story&.keys.any? && (content.keys - story.keys).any?
+        permitted_keys = story&.keys
+        unpermitted_keys = content.keys - story.keys
+        if permitted_keys.any? && unpermitted_keys.any?
+          @unpermitted_keys = unpermitted_keys
+          true
+        end
       end
 
       def story_has_nil_value?(content)

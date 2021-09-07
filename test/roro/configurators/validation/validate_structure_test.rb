@@ -17,9 +17,17 @@ describe 'validate catalog structure' do
     }
   end
 
-  describe 'valid' do
+  describe 'valid'do
     context 'template' do
       Then { assert_valid_catalog['templates'] }
+    end
+
+    context 'inflection' do
+      Then { assert_valid_catalog['inflection'] }
+    end
+
+    context 'roro' do
+      Then { assert_valid_catalog['roro'] }
     end
   end
 
