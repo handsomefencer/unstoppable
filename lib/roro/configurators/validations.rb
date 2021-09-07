@@ -7,16 +7,14 @@ module Roro
       def validate_catalog(catalog)
         @catalog = catalog
         @error = Error
-        case
-        when catalog_not_present?
+        if catalog_not_present?
           @msg = 'Catalog not present'
           raise Error, @msg
-        when catalog_is_story_file?
+        elsif catalog_is_story_file?
           validate_story
         else
           return
         end
-        raise @error, "#{@msg} in #{catalog}" if @msg
       end
 
       def catalog_not_present?
@@ -91,24 +89,29 @@ module Roro
       end
 
       def validate_content_classes(content, story)
-        case
-        when content.is_a?(Array) && content.first.nil?
+        if content.is_a?(Array) && content.first.nil?
           @msg = 'Story contains an empty array'
           raise Error, @msg
-        when content.nil?
+        elsif content.nil?
           @msg = 'Story contains a nil value'
           raise Error, @msg
-        when content.is_a?(Hash) && content&.values&.include?(nil)
-          @msg = "Value for :#{content.key(nil)} must not be nil"
-          raise Error, @msg
-        when content.class != story.class
+        elsif content.class != story.class
           @msg = "'#{content}' must be an instance of #{story.class}"
           raise Error, @msg
-        when content.is_a?(Hash) && story&.keys&.any?
+        elsif content.is_a?(Hash) && story.keys.any? && (content.keys - story.keys).any?
+          permitted = (content&.keys - story&.keys)
+          if permitted.any?
+            @msg = "#{content.keys} not permitted. Permitted keys: #{story.keys}"
+            raise Error, @msg
+          end
+        elsif content.is_a?(Hash) && content&.values&.include?(nil)
+          @msg = "Value for :#{content.key(nil)} must not be nil"
+          raise Error, @msg
+        elsif content.is_a?(Hash) && story&.keys&.any?
           content.each do |key, value|
             validate_content_classes(value, story[key])
           end
-        when content.is_a?(Array)
+        elsif content.is_a?(Array)
           content.each do |item|
             validate_content_classes(item, story[0])
           end

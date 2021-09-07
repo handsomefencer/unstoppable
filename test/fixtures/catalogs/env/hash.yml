@@ -1,4 +1,3 @@
 env:
   development:
-    - "@config.smart.env['force'] = true"
-
+    DB_NAME: postgres

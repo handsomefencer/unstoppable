@@ -32,15 +32,15 @@ describe 'Configurator validate_catalog' do
       end
 
       context ':preface value is string' do
-        Then { assert_valid_catalog['preface/string.yml'] }
+        Then { assert_valid_catalog['preface/valid.yml'] }
       end
 
       context ':questions value is array of hashes' do
-        Then { assert_valid_catalog['questions/array_of_hashes.yml'] }
+        Then { assert_valid_catalog['questions/valid.yml'] }
       end
 
       context ':actions value is array of strings' do
-        Then { assert_valid_catalog['actions/array_of_strings.yml'] }
+        Then { assert_valid_catalog['actions/valid.yml'] }
       end
 
       context ':env value is hash of hashes' do
@@ -109,7 +109,6 @@ describe 'Configurator validate_catalog' do
           let(:error_message) { 'must be an instance of Array' }
 
           When(:node) { 'actions/hash.yml' }
-
           Then { assert_correct_error }
         end
 
@@ -167,12 +166,6 @@ describe 'Configurator validate_catalog' do
         context 'a hash of' do
           context 'arrays' do
             When(:node) { 'env/hash_of_arrays.yml' }
-          end
-
-          context 'hash of hashes' do
-            let(:error_message) { 'must be an instance of Array' }
-
-            When(:node) { 'env/hash_of_hashes_of_hashes.yml' }
             Then { assert_correct_error }
           end
         end
@@ -185,14 +178,58 @@ describe 'Configurator validate_catalog' do
           When(:node) { 'preface/nil_value.yml' }
           Then { assert_correct_error }
         end
+
+        context 'array' do
+          let(:error_message) { 'must be an instance of String' }
+
+          When(:node) { 'preface/array.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'hash' do
+          let(:error_message) { 'must be an instance of String' }
+
+          When(:node) { 'preface/hash.yml' }
+          Then { assert_correct_error }
+        end
       end
 
       context ':questions when value is' do
-        context 'an array of strings' do
-          let(:error_message) { 'must be an instance of Hash' }
+        context 'nil' do
+          let(:error_message) { 'must not be nil' }
 
-          When(:node) { 'invalid/questions/array_of_strings.yml' }
-          # Then { assert_correct_error }
+          When(:node) { 'questions/nil_value.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'a string' do
+          let(:error_message) { 'must be an instance of Array' }
+
+          When(:node) { 'questions/string.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'a hash' do
+          let(:error_message) { 'must be an instance of Array' }
+
+          When(:node) { 'questions/hash.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'an array' do
+          context 'of strings' do
+            let(:error_message) { 'must be an instance of Hash' }
+
+            When(:node) { 'questions/array_of_strings.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'of arrays' do
+            let(:error_message) { 'must be an instance of Hash' }
+
+            When(:node) { 'questions/array_of_arrays.yml' }
+            Then { assert_correct_error }
+          end
         end
       end
 
@@ -200,15 +237,15 @@ describe 'Configurator validate_catalog' do
         context 'when top level' do
           let(:error_message) { 'Unpermitted keys' }
 
-          When(:node) { 'invalid/unpermitted_keys.yml' }
-          # Then { assert_correct_error }
+          When(:node) { 'top_level/unpermitted_keys.yml' }
+          Then { assert_correct_error }
         end
 
         context 'when :questions' do
           let(:error_message) { 'Unpermitted keys' }
 
-          When(:node) { 'invalid/questions/unpermitted_keys.yml' }
-          # Then { assert_correct_error }
+          When(:node) { 'questions/unpermitted_keys.yml' }
+          Then { assert_correct_error }
         end
       end
     end
@@ -317,7 +354,7 @@ describe 'Configurator validate_catalog' do
   #
   #     context ':env value class is' do
   #       context 'a String' do
-  #         let(:filename)      { 'invalid/env-returns-string.yml' }
+  #         let(:filename)      { 'invalid/env-returns-valid.yml' }
   #         let(:error_message) { 'class must be Hash, not String'}
   #
   #         Then { assert_correct_error }
@@ -333,7 +370,7 @@ describe 'Configurator validate_catalog' do
   #
   #       context 'a Hash with' do
   #         context 'a key that returns a string' do
-  #           let(:filename)      { 'invalid/env-base-returns-string.yml' }
+  #           let(:filename)      { 'invalid/env-base-returns-valid.yml' }
   #           let(:error_message) { 'must be Hash, not String'}
   #
   #           Then { assert_correct_error }
@@ -380,7 +417,7 @@ describe 'Configurator validate_catalog' do
   #       end
   #
   #       context 'string' do
-  #         let(:filename)      { 'invalid/actions-returns-string.yml' }
+  #         let(:filename)      { 'invalid/actions-returns-valid.yml' }
   #         let(:error_message) { 'class must be Array, not String'}
   #
   #         Then { assert_correct_error }
@@ -396,7 +433,7 @@ describe 'Configurator validate_catalog' do
   #       end
   #
   #       context 'string' do
-  #         let(:filename)      { 'invalid/questions-returns-string.yml' }
+  #         let(:filename)      { 'invalid/questions-returns-valid.yml' }
   #         let(:error_message) { 'class must be Array, not String'}
   #
   #         Then { assert_correct_error }
