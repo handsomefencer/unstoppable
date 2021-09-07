@@ -101,6 +101,10 @@ module Roro
           %w[keep gitkeep].include?(@extension)
         end
 
+        def child_is_dotfile?(child)
+          child.split('.').last.match?('keep')
+        end
+
         def story_has_unpermitted_extension?
           !(@permitted_extensions + %w[keep gitkeep]).include?(@extension)
         end
@@ -111,7 +115,6 @@ module Roro
           !content
         end
 
-
         def catalog_not_present?
           !File.exist?(@catalog)
         end
@@ -119,13 +122,9 @@ module Roro
         def catalog_is_story_file?
           File.file?(@catalog)
         end
+
         def child_is_yaml?(child)
           child.split('.').last.match?('yml')
-        end
-
-
-        def child_is_dotfile?(child)
-          child.split('.').last.match?('keep')
         end
 
         def child_is_empty?(child)

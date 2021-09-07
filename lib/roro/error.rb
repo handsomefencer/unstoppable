@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 module Roro
   class Error < StandardError; end
+  class CatalogError < Error; end
+  class StoryError < Error; end
 
   module Catalog
     class Keys < Error; end

@@ -5,12 +5,14 @@ module Roro
     module Validations
 
       def validate_catalog(catalog)
-        @error = Error
+        @error = Roro::CatalogError
         @catalog = catalog
         case
         when catalog_not_present?
           @msg = 'Catalog not present'
         when catalog_is_story_file?
+          @extension = @catalog.split('.').last
+          @permitted_extensions = %w[yml yaml]
           validate_story
         when catalog_is_template?
           return
@@ -23,8 +25,7 @@ module Roro
       end
 
       def validate_story(*args)
-        @extension = @catalog.split('.').last
-        @permitted_extensions = %w[yml yaml]
+        @error = Roro::CatalogError
         case
         when story_is_dotfile?
           return

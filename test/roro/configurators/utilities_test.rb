@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe 'Configurators::Utilities' do
-  let(:subject) { Configurator }
   let(:config)  { Configurator.new }
 
   describe '#sanitize(hash)' do
