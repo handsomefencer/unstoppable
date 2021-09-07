@@ -14,7 +14,9 @@ module Roro
         def initialize(options = {})
           @options = sanitize(options)
           @scene = Roro::CLI.catalog_root
+          structure = Structurer.new
           build_story
+          @story = structure.story
         end
 
         def get_preface(scene)
@@ -49,7 +51,6 @@ module Roro
             content[key].each do |item|
               @story[key] = @story[key] << item
             end
-
           end
           @story = content
           # story ||= content
@@ -84,10 +85,43 @@ module Roro
         def child_is_template?(child)
           child.split('/').last.match?('templates')
         end
+        def catalog_is_template?
+          @catalog.split('/').last.match?('templates')
+        end
+        def catalog_is_empty?
+          get_children(@catalog).empty?
+        end
 
+        def catalog_is_inflection?
+          !get_children(@catalog).any? { |w| w.include? '.yml' }
+        end
+
+        def story_is_dotfile?
+          %w[keep gitkeep].include?(@extension)
+        end
+
+        def story_has_unpermitted_extension?
+          !(@permitted_extensions + %w[keep gitkeep]).include?(@extension)
+        end
+
+        def story_is_empty?
+          content = read_yaml(@catalog)
+          @content = content if content
+          !content
+        end
+
+
+        def catalog_not_present?
+          !File.exist?(@catalog)
+        end
+
+        def catalog_is_story_file?
+          File.file?(@catalog)
+        end
         def child_is_yaml?(child)
           child.split('.').last.match?('yml')
         end
+
 
         def child_is_dotfile?(child)
           child.split('.').last.match?('keep')
@@ -154,7 +188,6 @@ module Roro
           ask("#{question} #{plot_choices}", limited_to: plot_choices.keys.map(&:to_s))
         end
 
-        private
 
         def build_story
           @story = {
@@ -181,6 +214,10 @@ module Roro
                       .map { |f| f.split('/').last }
                       .sort
           {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
+        end
+
+        def sentence_from(array)
+          array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
         end
       end
     end

@@ -9,15 +9,16 @@ describe 'validate catalog structure' do
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
   let(:catalog)      { "#{catalog_root}/#{node}" }
   let(:execute)      { config.validate_catalog(catalog) }
-  let(:assert_valid_catalog) do
-    lambda { |node|
-      catalog = "#{catalog_root}/#{node}"
-      execute = config.validate_catalog(catalog)
-      assert_nil execute
-    }
-  end
 
   describe 'valid'do
+    let(:assert_valid_catalog) do
+      lambda { |node|
+        catalog = "#{catalog_root}/#{node}"
+        execute = config.validate_catalog(catalog)
+        assert_nil execute
+      }
+    end
+
     context 'template' do
       Then { assert_valid_catalog['templates'] }
     end
@@ -31,13 +32,24 @@ describe 'validate catalog structure' do
     end
   end
 
-  describe '#get_children(location)' do
+  describe 'invalid' do
+    let(:error) { Roro::Error }
+
+    context 'empty' do
+      let(:error_message) { 'Catalog cannot be an empty folder' }
+
+      When(:node) { 'empty' }
+      Then { assert_correct_error }
+    end
+  end
+
+  describe '#get_children(catalog)' do
 #   #   before { skip }
 #   #   let(:folder)  { "valid" }
 #   #   let(:execute) { config.get_children("#{catalog}") }
 #   #   let(:child)   { -> (child) { "#{catalog}/#{child}" } }
 #   #
-#   #   context 'when directory has one file' do
+    context 'when directory has one file' do
 #   #     let(:folder) { 'valid/roro/docker_compose'}
 #   #
 #   #     Then { assert_equal execute, [child['docker-compose.yml']] }
@@ -57,23 +69,6 @@ describe 'validate catalog structure' do
 #   #
 #   #       Then { assert_includes execute, child['k8s'] }
 #   #     end
-#   #   end
-#   # end
-#   #
-#   #
-#   # describe '#validate_catalog' do
-#   #   before { skip }
-#   #   let(:folder)  { "invalid" }
-#   #   let(:catalog) { "#{catalog_root}/#{folder}" }
-#   #   let(:execute) { config.validate_catalog(catalog) }
-#   #   let(:error)   { Roro::Catalog::Story }
-#   #
-#   #   context 'when catalog has no children' do
-#   #     before { skip }
-#   #     let(:folder)        { 'invalid/with_no_children' }
-#   #     let(:error_message) { 'No story in' }
-#   #     Then { assert_correct_error }
-#   #   end
-#   #
+    end
   end
 end

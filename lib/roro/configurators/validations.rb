@@ -4,10 +4,6 @@ module Roro
   module Configurators
     module Validations
 
-      def catalog_is_inflection?
-        !get_children(@catalog).any? { |w| w.include? '.yml' }
-      end
-
       def validate_catalog(catalog)
         @error = Error
         @catalog = catalog
@@ -18,24 +14,12 @@ module Roro
           validate_story
         when catalog_is_template?
           return
+        when catalog_is_empty?
+          @msg = 'Catalog cannot be an empty folder'
         else
-          children = get_children(@catalog)
-          children.each { |child| validate_catalog(child) }
+          get_children(catalog).each { |child| validate_catalog(child) }
         end
         raise(@error, "#{@msg} in #{@catalog}") if @msg
-      end
-
-      def catalog_is_template?
-        @catalog.split('/').last.match?('templates')
-      end
-
-
-      def catalog_not_present?
-        !File.exist?(@catalog)
-      end
-
-      def catalog_is_story_file?
-        File.file?(@catalog)
       end
 
       def validate_story(*args)
@@ -51,20 +35,6 @@ module Roro
         else
           validate_story_content(@content, @story)
         end
-      end
-
-      def story_is_dotfile?
-        %w[keep gitkeep].include?(@extension)
-      end
-
-      def story_has_unpermitted_extension?
-        !(@permitted_extensions + %w[keep gitkeep]).include?(@extension)
-      end
-
-      def story_is_empty?
-        content = read_yaml(@catalog)
-        @content = content if content
-        !content
       end
 
       def validate_story_content(content, story)
@@ -91,7 +61,7 @@ module Roro
       def validate_story_hash(content, story)
         case
         when story_has_unpermitted_keys?(content, story)
-          @msg = "#{@unpermitted_keys} not in permitted keys: #{story.keys}"
+          @msg = "#{@unpermitted} not in permitted keys: #{@permitted}"
         when story_has_nil_value?(content)
           @msg = "Value for :#{content.key(nil)} must not be nil"
         when story&.keys&.any?
@@ -100,12 +70,9 @@ module Roro
       end
 
       def story_has_unpermitted_keys?(content, story)
-        permitted_keys = story&.keys
-        unpermitted_keys = content.keys - story.keys
-        if permitted_keys.any? && unpermitted_keys.any?
-          @unpermitted_keys = unpermitted_keys
-          true
-        end
+        @permitted = story&.keys
+        @unpermitted = content.keys - @permitted
+        @permitted.any? && @unpermitted.any?
       end
 
       def story_has_nil_value?(content)
@@ -125,10 +92,6 @@ module Roro
             options[key] = value.to_sym
           end
         end
-      end
-
-      def sentence_from(array)
-        array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
       end
     end
   end
