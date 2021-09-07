@@ -6,7 +6,7 @@ describe 'Configurator validate_catalog' do
   let(:subject)      { Configurator }
   let(:options)      { nil }
   let(:config)       { subject.new(options) }
-  let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs" }
+  let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/story" }
   let(:catalog)      { "#{catalog_root}/#{node}" }
   let(:execute)      { config.validate_catalog(catalog) }
   let(:assert_valid_catalog) do
@@ -109,6 +109,7 @@ describe 'Configurator validate_catalog' do
           let(:error_message) { 'must be an instance of Array' }
 
           When(:node) { 'actions/hash.yml' }
+
           Then { assert_correct_error }
         end
 

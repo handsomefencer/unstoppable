@@ -1,4 +1,0 @@
-env:
-  - unpermitted_environment:
-    - 'some: key'
-

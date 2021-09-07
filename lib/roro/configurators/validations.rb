@@ -12,6 +12,8 @@ module Roro
           @msg = 'Catalog not present'
         when catalog_is_story_file?
           validate_story
+        else
+          validate_structure
         end
         raise(@error, @msg) if @msg
       end
@@ -53,41 +55,44 @@ module Roro
         !content
       end
 
-      def validate_story_array(content, story)
-        case
-        when content.is_a?(Array) && content.first.nil?
-          @msg = 'Story contains an empty array'
-        when content.is_a?(Array)
-          content.each { |item| validate_story_content(item, story[0]) }
-        end
-      end
-
-      def unpermitted_keys?(content, story)
-        story&.keys.any? && (content.keys - story.keys).any?
-      end
-
-      def validate_story_hash(content, story)
-        case
-        when unpermitted_keys?(content, story)
-          @msg = "#{content.keys} not in permitted keys: #{story.keys}"
-        when content&.values&.include?(nil)
-          @msg = "Value for :#{content.key(nil)} must not be nil"
-        when story&.keys&.any?
-          content.each { |k, v| validate_story_content(v, story[k]) }
-        end
-      end
-
       def validate_story_content(content, story)
         case
-        when content.nil?
+        when content.is_a?(NilClass)
           @msg = 'Story contains a nil value'
-        when content.class != story.class
+        when !content.is_a?(story.class)
           @msg = "'#{content}' must be an instance of #{story.class}"
         when content.is_a?(Array)
           validate_story_array(content, story)
         when content.is_a?(Hash)
           validate_story_hash(content, story)
         end
+      end
+
+      def validate_story_array(content, story)
+        if content.any?(nil)
+          @msg = 'Story contains an empty array'
+        else
+          content.each { |item| validate_story_content(item, story[0]) }
+        end
+      end
+
+      def validate_story_hash(content, story)
+        case
+        when story_has_unpermitted_keys?(content, story)
+          @msg = "#{content.keys} not in permitted keys: #{story.keys}"
+        when story_has_nil_value?(content)
+          @msg = "Value for :#{content.key(nil)} must not be nil"
+        when story&.keys&.any?
+          content.each { |k, v| validate_story_content(v, story[k]) }
+        end
+      end
+
+      def story_has_unpermitted_keys?(content, story)
+        story&.keys.any? && (content.keys - story.keys).any?
+      end
+
+      def story_has_nil_value?(content)
+        content&.values&.include?(nil)
       end
 
       def sanitize(options)
