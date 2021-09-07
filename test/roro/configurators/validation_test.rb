@@ -70,7 +70,7 @@ describe 'Configurator validate_catalog' do
       let(:node) { story }
 
       context 'unpermitted extension' do
-        let(:error_message) { 'Catalog has invalid extension' }
+        let(:error_message) { 'Catalog has unpermitted extension' }
 
         When(:story) { 'top_level/ruby.rb' }
         Then { assert_correct_error }
@@ -234,221 +234,29 @@ describe 'Configurator validate_catalog' do
       end
 
       context 'with unpermitted keys' do
-        context 'when top level' do
-          let(:error_message) { 'not permitted' }
+        let(:error_message) { 'not in permitted' }
 
+        context 'when top level' do
           When(:node) { 'top_level/unpermitted_keys.yml' }
           Then { assert_correct_error }
         end
 
         context 'when :questions' do
-          let(:error_message) { 'not permitted' }
-
           When(:node) { 'questions/unpermitted_keys.yml' }
           Then { assert_correct_error }
         end
       end
     end
   end
-  # describe '#get_children(location)' do
-  #   before { skip }
-  #   let(:folder)  { "valid" }
-  #   let(:execute) { config.get_children("#{catalog}") }
-  #   let(:child)   { -> (child) { "#{catalog}/#{child}" } }
-  #
-  #   context 'when directory has one file' do
-  #     let(:folder) { 'valid/roro/docker_compose'}
-  #
-  #     Then { assert_equal execute, [child['docker-compose.yml']] }
-  #     And  { assert_equal execute.size, 1 }
-  #   end
-  #
-  #   context 'when directory has one folder' do
-  #     let(:folder) { 'valid/roro/docker_compose'}
-  #
-  #     Then { assert_equal execute, [child['docker-compose.yml']] }
-  #     And  { assert_equal execute.size, 1 }
-  #   end
-  #
-  #   context 'when directory has several folder' do
-  #     context 'and a hidden file mustreturn one child' do
-  #       let(:folder) { 'valid/roro'}
-  #
-  #       Then { assert_includes execute, child['k8s'] }
-  #     end
-  #   end
-  # end
-  #
-  # describe '#sentence_from' do
-  #   let(:call) { -> (array) { config.sentence_from(array) } }
-  #
-  #   Then { assert_equal 'one, two and three', call[%w(one two three)] }
-  #   And  { assert_equal 'one and two', call[%w(one two)] }
-  #   And  { assert_equal 'one', call[%w(one)] }
-  # end
-  #
-  # describe '#story' do
-  #   describe 'permitted keys' do
-  #     Then { assert_includes config.story.keys, :actions }
-  #     And  { assert_includes config.story.keys, :env }
-  #     And  { assert_includes config.story.keys, :preface }
-  #     And  { assert_includes config.story.keys, :questions }
-  #   end
-  #
-  #   describe 'permitted environments' do
-  #     Then  { assert_includes config.story[:env].keys, :base }
-  #     And   { assert_includes config.story[:env].keys, :development }
-  #     And   { assert_includes config.story[:env].keys, :staging }
-  #     And   { assert_includes config.story[:env].keys, :production }
-  #   end
-  # end
-  #
-  # describe '#validate_catalog' do
-  #   before { skip }
-  #   let(:folder)  { "invalid" }
-  #   let(:catalog) { "#{catalog_root}/#{folder}" }
-  #   let(:execute) { config.validate_catalog(catalog) }
-  #   let(:error)   { Roro::Catalog::Story }
-  #
-  #   context 'when catalog has no children' do
-  #     before { skip }
-  #     let(:folder)        { 'invalid/with_no_children' }
-  #     let(:error_message) { 'No story in' }
-  #     Then { assert_correct_error }
-  #   end
-  #
-  #   context 'when catalog contains files with invalid extensions' do
-  #     let(:folder) { 'invalid/with_invalid_extensions' }
-  #     let(:error_message) { 'contains invalid extensions' }
-  #
-  #     Then { assert_correct_error }
-  #   end
-  #
-  #   context 'when valid' do
-  #     let(:directory) { 'valid/roro' }
-  #
-  #     Then { assert_valid }
-  #   end
-  # end
-  #
-  # describe '#validate_story' do
-  #   before { skip }
-  #   let(:error)    { Roro::Catalog::Keys }
-  #   let(:execute)  { config.validate_story(story_file) }
-  #
-  #   describe 'must return nil when story is valid' do
-  #     let(:filename) { 'valid/valid.yml' }
-  #
-  #     Then { assert_valid }
-  #   end
-  #
-  #   describe 'must return error when file' do
-  #     before { skip }
-  #
-  #     describe 'contains unpermitted keys' do
-  #       let(:filename)      { 'invalid/unpermitted_keys.yml' }
-  #       let(:error_message) { 'key must be in'}
-  #
-  #       Then { assert_correct_error }
-  #     end
-  #
-  #     context ':env value class is' do
-  #       context 'a String' do
-  #         let(:filename)      { 'invalid/env-returns-valid.yml' }
-  #         let(:error_message) { 'class must be Hash, not String'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #
-  #       context 'an Array' do
-  #         let(:error) { Roro::Story::Keys }
-  #         let(:filename)      { 'invalid/env-returns-array_of_strings.yml' }
-  #         let(:error_message) { 'class must be Hash, not Array'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #
-  #       context 'a Hash with' do
-  #         context 'a key that returns a string' do
-  #           let(:filename)      { 'invalid/env-base-returns-valid.yml' }
-  #           let(:error_message) { 'must be Hash, not String'}
-  #
-  #           Then { assert_correct_error }
-  #         end
-  #
-  #         context 'a key that returns an array' do
-  #           let(:filename)      { 'invalid/env-base-returns-array_of_strings.yml' }
-  #           let(:error_message) { 'must be Hash, not Array'}
-  #
-  #           Then { assert_correct_error }
-  #         end
-  #
-  #         context 'unpermitted keys' do
-  #           let(:filename)      { 'invalid/env-unpermitted.yml' }
-  #           let(:error_message) { 'must be in'}
-  #
-  #           Then { assert_correct_error }
-  #         end
-  #       end
-  #     end
-  #
-  #     context ':preface value class is' do
-  #       context 'an array' do
-  #         let(:filename)      { 'invalid/preface-returns-array_of_strings.yml' }
-  #         let(:error_message) { 'class must be String, not Array'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #
-  #       context 'a hash' do
-  #         let(:filename)      { 'invalid/preface-returns-hash.yml' }
-  #         let(:error_message) { 'class must be String, not Hash'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #     end
-  #
-  #     context ':actions value class is' do
-  #       context 'a hash' do
-  #         let(:filename)      { 'invalid/actions-returns-hash.yml' }
-  #         let(:error_message) { 'class must be Array, not Hash'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #
-  #       context 'string' do
-  #         let(:filename)      { 'invalid/actions-returns-valid.yml' }
-  #         let(:error_message) { 'class must be Array, not String'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #     end
-  #
-  #     context ':questions value class is' do
-  #       context 'a hash' do
-  #         let(:filename)      { 'invalid/questions-returns-hash.yml' }
-  #         let(:error_message) { 'class must be Array, not Hash'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #
-  #       context 'string' do
-  #         let(:filename)      { 'invalid/questions-returns-valid.yml' }
-  #         let(:error_message) { 'class must be Array, not String'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #
-  #       context 'hash without correct keys' do
-  #         let(:filename)      { 'invalid/unpermitted_question_keys.yml' }
-  #         let(:error_message) { 'questions key must be in'}
-  #
-  #         Then { assert_correct_error }
-  #       end
-  #     end
-  #   end
-  # end
-  #
+
+  describe '#sentence_from' do
+    let(:call) { ->(array) { config.sentence_from(array) } }
+
+    Then { assert_equal 'one, two and three', call[%w[one two three]] }
+    And  { assert_equal 'one and two', call[%w[one two]] }
+    And  { assert_equal 'one', call[%w[one]] }
+  end
+
   describe '#sanitize(options' do
     context 'when key is a string' do
       When(:options) { { 'key' => 'value' } }

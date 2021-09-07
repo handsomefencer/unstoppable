@@ -5,16 +5,15 @@ module Roro
     module Validations
 
       def validate_catalog(catalog)
-        @catalog = catalog
         @error = Error
-        if catalog_not_present?
+        @catalog = catalog
+        case
+        when catalog_not_present?
           @msg = 'Catalog not present'
-          raise Error, @msg
-        elsif catalog_is_story_file?
+        when catalog_is_story_file?
           validate_story
-        else
-          return
         end
+        raise(@error, @msg) if @msg
       end
 
       def catalog_not_present?
@@ -22,24 +21,21 @@ module Roro
       end
 
       def catalog_is_story_file?
-        @extension = @catalog.split('.').last
-        @permitted_extensions = %w[yml yaml]
         File.file?(@catalog)
       end
 
       def validate_story(*args)
+        @extension = @catalog.split('.').last
+        @permitted_extensions = %w[yml yaml]
         case
         when story_is_dotfile?
           return
         when story_has_unpermitted_extension?
-          @msg = 'Catalog has invalid extension'
-          raise Error, @msg
+          @msg = 'Catalog has unpermitted extension'
         when story_is_empty?
           @msg = 'Story file is empty'
-          raise Error, @msg
         else
           validate_story_content(@content, @story)
-          nil
         end
       end
 
@@ -51,52 +47,47 @@ module Roro
         !(@permitted_extensions + %w[keep gitkeep]).include?(@extension)
       end
 
-      def validate_content_presence
-        @msg = 'Story file is empty' if !@content || @content.empty?
-      end
-
       def story_is_empty?
-        @content = read_yaml(@catalog)
-        !@content
+        content = read_yaml(@catalog)
+        @content = content if content
+        !content
       end
 
-      def value_is_empty?(value)
-        value.include?(nil) if value.is_a?(Array)
-      end
-
-      def validate_story_content(content, story)
-        if content.is_a?(Array) && content.first.nil?
+      def validate_story_array(content, story)
+        case
+        when content.is_a?(Array) && content.first.nil?
           @msg = 'Story contains an empty array'
-          raise Error, @msg
-        elsif content.nil?
-          @msg = 'Story contains a nil value'
-          raise Error, @msg
-        elsif content.class != story.class
-          @msg = "'#{content}' must be an instance of #{story.class}"
-          raise Error, @msg
-        elsif content.is_a?(Hash) && story.keys.any? && (content.keys - story.keys).any?
-          permitted = (content&.keys - story&.keys)
-          if permitted.any?
-            @msg = "#{content.keys} not permitted. Permitted keys: #{story.keys}"
-            raise Error, @msg
-          end
-        elsif content.is_a?(Hash) && content&.values&.include?(nil)
-          @msg = "Value for :#{content.key(nil)} must not be nil"
-          raise Error, @msg
-        elsif content.is_a?(Hash) && story&.keys&.any?
-          content.each do |key, value|
-            validate_story_content(value, story[key])
-          end
-        elsif content.is_a?(Array)
-          content.each do |item|
-            validate_story_content(item, story[0])
-          end
+        when content.is_a?(Array)
+          content.each { |item| validate_story_content(item, story[0]) }
         end
       end
 
-      def validate_key_klass(content, story)
-        msg = "\"#{content}\" class must be #{story.class}, not #{content.class}"
-        raise(Error, msg) unless content.instance_of?(story.class)
+      def unpermitted_keys?(content, story)
+        story&.keys.any? && (content.keys - story.keys).any?
+      end
+
+      def validate_story_hash(content, story)
+        case
+        when unpermitted_keys?(content, story)
+          @msg = "#{content.keys} not in permitted keys: #{story.keys}"
+        when content&.values&.include?(nil)
+          @msg = "Value for :#{content.key(nil)} must not be nil"
+        when story&.keys&.any?
+          content.each { |k, v| validate_story_content(v, story[k]) }
+        end
+      end
+
+      def validate_story_content(content, story)
+        case
+        when content.nil?
+          @msg = 'Story contains a nil value'
+        when content.class != story.class
+          @msg = "'#{content}' must be an instance of #{story.class}"
+        when content.is_a?(Array)
+          validate_story_array(content, story)
+        when content.is_a?(Hash)
+          validate_story_hash(content, story)
+        end
       end
 
       def sanitize(options)
@@ -116,11 +107,6 @@ module Roro
 
       def sentence_from(array)
         array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
-      end
-
-      def raise_value_error(value, klass)
-        msg = "#{value} class must be #{klass}, not #{value.class}"
-        raise Roro::Story::Keys, msg
       end
     end
   end
