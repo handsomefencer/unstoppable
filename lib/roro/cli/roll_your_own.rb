@@ -11,7 +11,7 @@ module Roro
     def roll_your_own
       @config = Roro::Configurators::Configurator.new
       @config.roll_your_own
-      @structure = @config.story
+      @structure = @config.structure
     end
   end
 end

@@ -13,12 +13,30 @@ module Roro
       attr_reader :structure, :env, :options, :story
 
       no_commands do
-        def initialize(options = {})
+        def initialize(options=nil)
+          options ||= {}
           @options = sanitize(options)
           @scene = Roro::CLI.catalog_root
-          structure = StructureBuilder.new
-          @story = structure.structure
+          catalog_structure = StructureBuilder.new(options[:structure])
+          @structure = catalog_structure.structure
+          @manifest = @structure
         end
+
+        ## steps
+        # choose_adventure
+        #   get plot choices (inflections)
+        #   ask question
+        #   store answer recursively
+        #  {
+        #   docker_compose: 'docker_compose',
+        #   k8s: 'k8s',
+        #   ruby:
+        #     ruby,
+        #     rails:
+        #       "rails",
+        #       {
+        #       ruby:
+        # }
 
         def get_preface(scene)
           file = "#{scene}.yml"
@@ -34,26 +52,18 @@ module Roro
           "Please choose from these #{collection_name}:"
         end
 
-        def read_yaml(yaml_file)
-          JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
-        end
-
-        def get_children(location)
-          Dir.glob("#{location}/*")
-        end
-
         def merge_stories(files)
-          files.each { |f| @story.merge!(read_yaml(f)) if f.match?('.yml') }
+          files.each { |f| @structure.merge!(read_yaml(f)) if f.match?('.yml') }
         end
 
         def merge_story(file)
           content = read_yaml(file)
           [:actions].each do |key|
             content[key].each do |item|
-              @story[key] = @story[key] << item
+              @structure[key] = @structure[key] << item
             end
           end
-          @story = content
+          @structure = content
           # story ||= content
           # story.each do |key, value|
           #   case @story
@@ -157,7 +167,7 @@ module Roro
           when get_children(location).size > 0
             get_children(location).each { |child| roll_child_story(child) }
           end
-          @story
+          @structure
         end
 
         def roll_your_own(scene = nil)
@@ -167,12 +177,11 @@ module Roro
           @destination_stack = [Dir.pwd]
           current_dir = Dir.pwd
           kidz = get_children(current_dir)
-          create_file('.adventure_log1', @story.to_yaml)
+          create_file('.adventure_log', @structure.to_yaml)
 
-          @story[:actions].each do |a|
+          @structure[:actions].each do |a|
             eval a
           end
-
         end
 
         def get_plot_preface(scene)
@@ -187,8 +196,6 @@ module Roro
           question = "Please choose from these #{parent_plot} #{plot_collection_name}:"
           ask("#{question} #{plot_choices}", limited_to: plot_choices.keys.map(&:to_s))
         end
-
-
 
         def get_plot_choices(scene)
           choices = get_children(scene)

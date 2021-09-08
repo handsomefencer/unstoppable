@@ -34,7 +34,7 @@ module Roro
         when story_is_empty?
           @msg = 'Story file is empty'
         else
-          validate_story_content(@content, @story)
+          validate_story_content(@content, @structure)
         end
       end
 
