@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require 'require_all'
+
 require 'thor'
 require 'openssl'
 require 'base64'
-require_all 'lib'
+require_rel '../lib'
 
 module Roro
   class CLI < Thor; end

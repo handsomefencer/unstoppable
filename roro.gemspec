@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rake', '~> 13.0', '>= 13.0.1'
   spec.add_dependency 'sshkit', '~> 1.21'
   spec.add_dependency 'thor', '~> 1.0', '>= 1.0.1'
+  spec.add_dependency 'require_all'
   spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.4'
   spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
   spec.add_development_dependency 'climate_control'
@@ -40,6 +41,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-hooks'
   spec.add_development_dependency 'mocha', '~> 1.11', '>= 1.11.2'
   spec.add_development_dependency 'readline'
-  spec.add_development_dependency 'require_all'
 
 end

@@ -11,5 +11,24 @@ services:
     volumes:
       - gem_cache:/gems
 
+  ruby_2_7:
+    build:
+      context: .
+      dockerfile: roro/containers/ruby_image/Dockerfile
+    environment:
+      - RUBY_VERSION=${RUBY_VERSION}
+    volumes:
+      - gem_cache:/gems
+
+  ruby_3_0:
+    build:
+      context: .
+      dockerfile: roro/containers/ruby_image/Dockerfile
+    environment:
+      - RUBY_VERSION=${RUBY_VERSION}
+    volumes:
+      - gem_cache:/gems
+
+
 volumes:
   gem_cache:
