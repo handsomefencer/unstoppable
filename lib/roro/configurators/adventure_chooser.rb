@@ -48,6 +48,15 @@ module Roro
           Array.new(get_children(catalog).select { |c| catalog_is_story?(c) })
         end
 
+        def question_builder(inflection)
+          prompt = 'Please choose from these'
+          parent = inflection.split('/')[-2]
+          collection = inflection.split('/').last
+          choices = get_plot_choices(inflection)
+          # question = [prompt, parent, collection, choices].join(' ')
+
+        end
+
         def choose_plot(scene)
           parent_plot = scene.split('/')[-2]
           plot_collection_name = scene.split('/').last
@@ -61,9 +70,10 @@ module Roro
           choices = get_children(scene)
                       .map { |f| f.split('/').last }
                       .sort
-          {}.tap { |hsh| choices.each_with_index { |c, i| hsh[i + 1] = c.split('.yml').first } }
+          Hash.new.tap do |h|
+            choices.each_with_index { |c, i| h[i + 1] = c.split('.yml').first }
+          end
         end
-
 
         def get_story_preface(scene)
           read_yaml(scene)[:preface]
@@ -81,7 +91,6 @@ module Roro
           collection_name = filedir.split('/').last
           "Please choose from these #{collection_name}:"
         end
-
       end
     end
   end

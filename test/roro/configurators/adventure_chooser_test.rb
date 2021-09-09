@@ -34,6 +34,12 @@ describe AdventureChooser do
     end
   end
 
+  describe '#question_builder(inflection)' do
+    let(:node) { 'roro/plots' }
+
+    Then { assert_equal 'blah', adventure.question_builder(catalog) }
+
+  end
   describe '#get_plot_choices' do
     let(:node) { 'roro/plots' }
 
