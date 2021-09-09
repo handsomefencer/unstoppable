@@ -250,5 +250,4 @@ describe 'Configurator validate_catalog' do
     end
   end
 
-
 end

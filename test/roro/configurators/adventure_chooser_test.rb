@@ -11,7 +11,9 @@ describe AdventureChooser do
 
   let(:story_file)   { "#{Dir.pwd}/test/fixtures/files/stories/#{filename}" }
 
+
   describe '#merge_story' do
+    before { skip }
     Given { config.merge_story(story_file) }
     Then  { assert_includes config.story.keys, :env }
     And   { assert_includes config.story.keys, :preface }

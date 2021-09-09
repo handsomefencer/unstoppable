@@ -42,33 +42,4 @@ describe 'validate catalog structure' do
       Then { assert_correct_error }
     end
   end
-
-  describe '#get_children(catalog)' do
-#   #   before { skip }
-#   #   let(:folder)  { "valid" }
-#   #   let(:execute) { config.get_children("#{catalog}") }
-#   #   let(:child)   { -> (child) { "#{catalog}/#{child}" } }
-#   #
-    context 'when directory has one file' do
-#   #     let(:folder) { 'valid/roro/docker_compose'}
-#   #
-#   #     Then { assert_equal execute, [child['docker-compose.yml']] }
-#   #     And  { assert_equal execute.size, 1 }
-#   #   end
-#   #
-#   #   context 'when directory has one folder' do
-#   #     let(:folder) { 'valid/roro/docker_compose'}
-#   #
-#   #     Then { assert_equal execute, [child['docker-compose.yml']] }
-#   #     And  { assert_equal execute.size, 1 }
-#   #   end
-#   #
-#   #   context 'when directory has several folder' do
-#   #     context 'and a hidden file mustreturn one child' do
-#   #       let(:folder) { 'valid/roro'}
-#   #
-#   #       Then { assert_includes execute, child['k8s'] }
-#   #     end
-    end
-  end
 end

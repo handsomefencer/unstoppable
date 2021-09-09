@@ -3,7 +3,35 @@
 require 'test_helper'
 
 describe 'Configurators::Utilities' do
+  let(:subject)      { Configurator }
+  let(:options)      { nil }
+  let(:config)       { subject.new(options) }
+  let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
+  let(:catalog)      { "#{catalog_root}/#{node}" }
+  let(:execute)      { config.validate_catalog(catalog) }
+
   let(:config)  { Configurator.new }
+
+  describe '#get_children(catalog)' do
+    let(:execute) { config.get_children("#{catalog}") }
+    let(:child)   { -> (child) { "#{catalog}/#{child}" } }
+
+    context 'when directory has one file' do
+      When(:node) { '/inflection/docker_compose'}
+
+      Then { assert_equal execute.size, 1 }
+    end
+
+    context 'when directory has one folder' do
+      When(:node) { '/inflection'}
+      Then { assert_equal execute.size, 1 }
+    end
+
+    context 'when directory has several folders' do
+      When(:node) { 'roro'}
+      Then { assert_equal 4, execute.size }
+    end
+  end
 
   describe '#sanitize(hash)' do
     context 'when key is a string' do

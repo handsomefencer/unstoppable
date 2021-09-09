@@ -10,8 +10,6 @@ module Roro
       include Validations
       include Utilities
 
-      attr_reader :structure, :env, :options, :story
-
       no_commands do
         def initialize(options=nil)
           options ||= {}
