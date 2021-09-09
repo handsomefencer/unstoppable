@@ -29,7 +29,7 @@ describe 'Configurators::Utilities' do
 
     context 'when directory has several folders' do
       When(:node) { 'roro'}
-      Then { assert_equal 4, execute.size }
+      Then { assert_equal 5, execute.size }
     end
   end
 

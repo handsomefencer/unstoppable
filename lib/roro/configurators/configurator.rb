@@ -103,10 +103,6 @@ module Roro
           get_children(@catalog).empty?
         end
 
-        def catalog_is_inflection?
-          !get_children(@catalog).any? { |w| w.include? '.yml' }
-        end
-
         def story_is_dotfile?
           %w[keep gitkeep].include?(@extension)
         end
