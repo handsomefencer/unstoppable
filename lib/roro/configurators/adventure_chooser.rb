@@ -48,31 +48,44 @@ module Roro
           Array.new(get_children(catalog).select { |c| catalog_is_story?(c) })
         end
 
-        def question_builder(inflection)
-          prompt = 'Please choose from these'
-          parent = inflection.split('/')[-2]
-          collection = inflection.split('/').last
-          choices = get_plot_choices(inflection)
-          # question = [prompt, parent, collection, choices].join(' ')
+        def choose_adventure(inflection)
+          @inflection = inflection
+          question = build_question
+          # ask(question)
+        end
 
+        def build_question
+          prompt = build_question_prompt
+          options = build_question_options
+          ["#{prompt} #{options}", limited_to: options.keys]
+        end
+
+        def build_question_prompt
+          tree = @inflection.split('/')
+          prompt = 'Please choose from these'
+          parent = tree[-2]
+          collection = tree.last
+          [prompt, parent, collection].join(' ')
+        end
+
+        def build_question_options
+          Hash.new.tap do |h|
+            get_children(@inflection)
+                        .map { |f| f.split('/').last }
+                        .sort
+                        .each_with_index do |c, i|
+              h[(i + 1).to_s] = c.split('.').first
+            end
+          end
         end
 
         def choose_plot(scene)
           parent_plot = scene.split('/')[-2]
-          plot_collection_name = scene.split('/').last
+          plot_lcollection_name = scene.split('/').last
           plot_choices = get_plot_choices(scene)
           return if plot_choices.empty?
           question = "Please choose from these #{parent_plot} #{plot_collection_name}:"
-          ask("#{question} #{plot_choices}", limited_to: plot_choices.keys.map(&:to_s))
-        end
-
-        def get_plot_choices(scene)
-          choices = get_children(scene)
-                      .map { |f| f.split('/').last }
-                      .sort
-          Hash.new.tap do |h|
-            choices.each_with_index { |c, i| h[i + 1] = c.split('.yml').first }
-          end
+          ask("#{question} #{plot_choices}", limited_to: build_question_options(inflection))
         end
 
         def get_story_preface(scene)

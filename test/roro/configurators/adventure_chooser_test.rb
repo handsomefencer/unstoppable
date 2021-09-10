@@ -34,19 +34,68 @@ describe AdventureChooser do
     end
   end
 
-  describe '#question_builder(inflection)' do
-    let(:node) { 'roro/plots' }
+  describe '#choose_adventure' do
+    let(:node)             { inflection }
+    let(:choose_adventure) { adventure.choose_adventure(inflection) }
+    let(:question_prompt)  { adventure.build_question_prompt }
+    let(:question_options) { adventure.build_question_options }
+    let(:question) { adventure.build_question }
+    let(:choose_adventure) { adventure.choose_adventure(catalog) }
 
-    Then { assert_equal 'blah', adventure.question_builder(catalog) }
+    context 'when parent is roro and inflection is plots' do
+      let(:inflection)     { 'roro/plots' }
 
+      before { choose_adventure }
+
+      describe '#build_question_prompt' do
+        Then { assert_match 'choose from these roro plots',  question_prompt }
+      end
+
+      describe '#build_question_options' do
+        Then { assert_equal question_options.size, 4 }
+        And  { assert_includes question_options.values, 'php' }
+        And  { assert_includes question_options.values, 'ruby' }
+        And  { assert_includes question_options.values, 'node' }
+      end
+
+      describe '#build_question' do
+        Then { assert_match 'choose from these roro plots',  question.first }
+        And  { assert_equal Hash, question.last.class }
+      end
+    end
+
+    context 'when parent is ruby and inflection is stories' do
+      let(:inflection) { 'roro/plots/ruby/stories' }
+
+      before { choose_adventure }
+
+      describe '#build_question_prompt' do
+        Then { assert_includes question_prompt, 'choose from these ruby stories' }
+      end
+
+      describe '#build_question_options' do
+        Then { assert_equal 2, question_options.count }
+        And  { assert_equal String, question_options.keys.first.class }
+      end
+    end
+
+    context 'when parent is rails and inflection is stories' do
+      let(:inflection) { 'roro/plots/ruby/stories/rails/flavors' }
+
+      before { choose_adventure }
+
+      describe '#build_question_prompt' do
+        Then { assert_includes question_prompt, 'choose from these rails flavors' }
+      end
+
+      describe '#build_question_options' do
+        Then { assert_includes question_options.values, 'rails' }
+        And  { assert_includes question_options.values, 'rails_vue' }
+        And  { assert_includes question_options.values, 'rails_react' }
+      end
+    end
   end
-  describe '#get_plot_choices' do
-    let(:node) { 'roro/plots' }
 
-    let(:plot_choices) { adventure.get_plot_choices(catalog) }
-
-    Then { assert_includes plot_choices.values, 'php' }
-  end
 
   # describe '#choose_your_adventure' do
   #   let(:question) { "Please choose from these #{collection}:" }
