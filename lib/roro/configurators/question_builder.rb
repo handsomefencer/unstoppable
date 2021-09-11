@@ -20,7 +20,7 @@ module Roro
         prompt = inflection_prompt
         options = inflection_options
         prompt_options = humanize(options)
-        ["#{prompt} #{prompt_options}", limited_to: options.keys]
+        @question = ["#{prompt} #{prompt_options}", limited_to: options.keys]
       end
 
       def inflection_prompt
@@ -28,7 +28,7 @@ module Roro
         tree = @inflection.split('/')
         parent = tree[-2]
         collection = tree.last
-        @question = [prompt, parent, collection].join(' ')
+        [prompt, parent, collection].join(' ')
       end
 
       def inflection_options

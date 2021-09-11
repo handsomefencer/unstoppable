@@ -13,6 +13,7 @@ describe QuestionBuilder do
 
     describe '#inflection_prompt' do
       let(:inflection_prompt)  { builder.inflection_prompt }
+
       context 'roro and inflection is plots' do
         Then { assert_match 'these roro plots',  inflection_prompt }
       end
@@ -57,12 +58,12 @@ describe QuestionBuilder do
       let(:preface) { builder.get_story_preface(story_location) }
 
       context 'when story has' do
-        context 'a story file' do
+        context 'a story file with a preface' do
           When(:story) { 'roro' }
           Then { assert_match 'share developer stories', preface }
         end
 
-        context 'a nested story file' do
+        context 'a nested story file with a preface' do
           When(:story) { 'roro/docker_compose' }
           Then { assert_match 'tool for defining and running', preface }
         end
@@ -80,7 +81,16 @@ describe QuestionBuilder do
       context 'when parent is roro and inflection is plots' do
         Then { assert result.is_a?(String) }
         And  { assert_match '(1) node:', result}
+        And  { assert_match '(2) php:', result}
       end
+    end
+
+    describe '#question' do
+      let(:question) { builder.question }
+      Then { assert_equal Array, question.class }
+      And  { assert_equal Hash, question.last.class }
+      And  { assert_equal Array, question.last[:limited_to].class }
+      And  { assert_match builder.inflection_prompt, question.first }
     end
   end
 end

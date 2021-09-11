@@ -20,15 +20,15 @@ describe AdventureChooser do
       And  { assert_match 'roro/roro/roro.yml', adventure.itinerary.first }
     end
   end
+  let(:question) { QuestionBuilder.new(inflection: inflection_path).question }
 
   describe '#choose_adventure' do
     let(:inflection_path) { "#{catalog_root}/#{inflection}" }
     let(:choose_adventure) { adventure.choose_adventure(inflection_path) }
-    let(:question_builder) { QuestionBuilder.new(inflection: inflection_path) }
     let(:inflection) { 'roro/plots' }
 
     it do
-      question = question_builder.question
+      # question = question_builder.question
       assert_question_asked(question, 'node')
       assert_equal 'dd', choose_adventure
       # assert_equal question, 'blah'
