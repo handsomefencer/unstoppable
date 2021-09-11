@@ -24,13 +24,15 @@ describe AdventureChooser do
   describe '#choose_adventure' do
     let(:inflection_path) { "#{catalog_root}/#{inflection}" }
     let(:choose_adventure) { adventure.choose_adventure(inflection_path) }
-    let(:question) { QuestionBuilder.new(inflection: inflection_path) }
+    let(:question_builder) { QuestionBuilder.new(inflection: inflection_path) }
     let(:inflection) { 'roro/plots' }
-    # it do
-    #   assert_question_asked(question)
-    #   choose_adventure
-    #   # assert_equal question, 'blah'
-    # end
+
+    it do
+      question = question_builder.question
+      assert_question_asked(question, 'node')
+      assert_equal 'dd', choose_adventure
+      # assert_equal question, 'blah'
+    end
 
 
 

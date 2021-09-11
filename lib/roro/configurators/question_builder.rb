@@ -28,7 +28,7 @@ module Roro
         tree = @inflection.split('/')
         parent = tree[-2]
         collection = tree.last
-        [prompt, parent, collection].join(' ')
+        @question = [prompt, parent, collection].join(' ')
       end
 
       def inflection_options

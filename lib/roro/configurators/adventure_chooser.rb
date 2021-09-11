@@ -35,27 +35,8 @@ module Roro
         end
 
         def choose_adventure(inflection)
-          @inflection = inflection
-          question = QuestionBuilder.new(inflection).question
-          # ask(question)
-        end
-
-        def choose_plot(scene)
-          parent_plot = scene.split('/')[-2]
-          plot_lcollection_name = scene.split('/').last
-          plot_choices = get_plot_choices(scene)
-          return if plot_choices.empty?
-          question = "Please choose from these #{parent_plot} #{plot_collection_name}:"
-          ask("#{question} #{plot_choices}", limited_to: build_question_options(inflection))
-        end
-
-        def ask_question(prompt, choices)
-          ask("#{prompt}\n\n", { limited_to: choices.keys })
-        end
-
-        def question(filedir)
-          collection_name = filedir.split('/').last
-          "Please choose from these #{collection_name}:"
+          question_builder = QuestionBuilder.new(inflection: inflection)
+          adventure = ask(question_builder.question).to_s
         end
       end
     end
