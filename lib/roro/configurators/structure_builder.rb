@@ -4,7 +4,7 @@ require_relative 'validations'
 
 module Roro
   module Configurators
-    class StructureBuilder < Thor
+    class StructureBuilder
       attr_reader :structure
 
       def initialize(override_location = nil)
