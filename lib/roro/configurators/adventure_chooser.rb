@@ -86,21 +86,21 @@ module Roro
           ask("#{question} #{plot_choices}", limited_to: build_question_options(inflection))
         end
 
-        def get_story_preface(catalog)
-          name = catalog.split('/').last.split('.').first
-          case
-          when node_empty?(catalog)
-            preface = nil
-          when node_missing?(catalog)
-            preface = nil
-          when node_is_file?(catalog)
-            preface = read_yaml(catalog)[:preface]
-          else
-            preface = read_yaml("#{catalog}/#{name}.yml")[:preface]
-          end
-          hash = { name.to_sym => preface }
-          hash
-        end
+        # def get_story_preface(catalog)
+        #   name = catalog.split('/').last.split('.').first
+        #   case
+        #   when node_empty?(catalog)
+        #     preface = nil
+        #   when node_missing?(catalog)
+        #     preface = nil
+        #   when node_is_file?(catalog)
+        #     preface = read_yaml(catalog)[:preface]
+        #   else
+        #     preface = read_yaml("#{catalog}/#{name}.yml")[:preface]
+        #   end
+        #   hash = { name.to_sym => preface }
+        #   hash
+        # end
 
         def node_missing?(node)
           !File.exists?(node)
