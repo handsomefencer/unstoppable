@@ -23,23 +23,31 @@ describe AdventureChooser do
   describe '#get_story_preface' do
     let(:preface) { adventure.get_story_preface(catalog) }
 
-    context 'when scene has no plot file' do
-      When(:node) { 'roro/k8s/k8s.yml' }
-      Then { refute preface }
+    context 'when scene has no child files' do
+      When(:node) { 'empty' }
+      Then { assert_equal Hash, preface.class }
+      And { assert_equal :empty, preface.keys.first }
+
     end
 
-    context 'when scene has a plot file with a preface' do
+    context 'when scene has no story file' do
+      When(:node) { 'roro/plot' }
+      Then { assert_equal :plot, preface.keys.first }
+      Then { assert_nil preface.values.first }
+    end
+
+    context 'when scene is a story file' do
       When(:node) { 'roro/roro.yml' }
-      Then { assert_match 'Default roro stories', preface }
+      focus
+      Then { assert_match 'blah', preface[:name] }
     end
   end
 
   describe '#choose_adventure' do
     let(:node)             { inflection }
-    let(:choose_adventure) { adventure.choose_adventure(inflection) }
     let(:question_prompt)  { adventure.build_question_prompt }
     let(:question_options) { adventure.build_question_options }
-    let(:question) { adventure.build_question }
+    let(:question)         { adventure.build_question }
     let(:choose_adventure) { adventure.choose_adventure(catalog) }
 
     context 'when parent is roro and inflection is plots' do

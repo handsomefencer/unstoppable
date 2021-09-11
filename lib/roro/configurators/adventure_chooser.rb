@@ -61,11 +61,9 @@ module Roro
         end
 
         def build_question_prompt
-          tree = @inflection.split('/')
           prompt = 'Please choose from these'
-          parent = tree[-2]
-          collection = tree.last
-          [prompt, parent, collection].join(' ')
+          tree = @inflection.split('/')
+          [prompt, tree[-2], tree.last].join(' ')
         end
 
         def build_question_options
@@ -88,8 +86,36 @@ module Roro
           ask("#{question} #{plot_choices}", limited_to: build_question_options(inflection))
         end
 
-        def get_story_preface(scene)
-          read_yaml(scene)[:preface]
+        def get_story_preface(catalog)
+          name = catalog.split('/').last.split('.').first
+          case
+          when node_empty?(catalog)
+            preface = nil
+          when node_missing?(catalog)
+            preface = nil
+          when node_is_file?(catalog)
+            preface = read_yaml(catalog)[:preface]
+          else
+            preface = read_yaml("#{catalog}/#{name}.yml")[:preface]
+          end
+          hash = { name.to_sym => preface }
+          hash
+        end
+
+        def node_missing?(node)
+          !File.exists?(node)
+        end
+
+        def node_empty?(node)
+          Dir.glob("#{node}/**").empty?
+        end
+
+        def node_is_file?(node)
+          File.file?(node)
+        end
+
+        def node_exists?(node)
+
         end
 
         def story_name(catalog)
