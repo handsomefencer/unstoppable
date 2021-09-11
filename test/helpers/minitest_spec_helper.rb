@@ -17,6 +17,13 @@ module Minitest
         .returns(choices[answer])
     end
 
+    def assert_question_asked(question)
+      Thor::Shell::Basic.any_instance
+                        .stubs(:ask)
+                        .with(question)
+                        .returns('blah')
+    end
+
     def prepare_destination(*workbench)
       @tmpdir = Dir.mktmpdir
       FileUtils.mkdir_p("#{@tmpdir}/workbench")

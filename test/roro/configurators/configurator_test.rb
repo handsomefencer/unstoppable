@@ -38,29 +38,7 @@ describe Configurator do
     end
   end
 
-  describe '#get_plot_preface' do
-    before { skip }
-    let(:preface) { config.get_plot_preface(scene) }
 
-    context 'when scene has no plot file' do
-      Then { assert_nil preface }
-    end
-
-    context 'when scene has a plot file with a preface' do
-      let(:scene) { "#{catalog_root}/roro/plots/ruby" }
-
-      Then { assert_match 'simplicity and productivity', preface }
-    end
-  end
-
-  describe '#get_plot_choices' do
-    before { skip }
-    let(:scene) { "#{catalog_root}/roro/plots" }
-
-    let(:plot_choices) { config.get_plot_choices(scene) }
-
-    Then { assert_includes plot_choices.values, 'php' }
-  end
 
   describe '#choose_your_adventure' do
     let(:question) { "Please choose from these #{collection}:" }

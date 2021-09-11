@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 require_relative 'validations'
-require_relative 'utilities'
+# require_relative 'utilities'
 
 module Roro
   module Configurators
     class Configurator < Thor
       include Thor::Actions
-      include Validations
-      include Utilities
 
       attr_reader :structure, :env, :options, :story
 
@@ -20,27 +18,6 @@ module Roro
           catalog_structure = StructureBuilder.new(options[:structure])
           @structure = catalog_structure.structure
           @manifest = @structure
-        end
-
-        ## steps
-        # choose_adventure
-        #   get plot choices (inflections)
-        #   ask question
-        #   store answer recursively
-        #  {
-        #   docker_compose: 'docker_compose',
-        #   k8s: 'k8s',
-        #   ruby:
-        #     ruby,
-        #     rails:
-        #       "rails",
-        #       {
-        #       ruby:
-        # }
-
-        def get_preface(scene)
-          file = "#{scene}.yml"
-          read_yaml(file)[:preface] if File.exist?(file)
         end
 
         def ask_question(prompt, choices)

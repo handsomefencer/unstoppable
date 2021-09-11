@@ -9,6 +9,7 @@ module Roro
 
       def initialize(override_location = nil)
         build_story
+        @structure.merge(read_yaml(override_location)) if override_location
       end
 
       def build_story

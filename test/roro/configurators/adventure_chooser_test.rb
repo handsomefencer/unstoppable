@@ -3,109 +3,38 @@
 require 'test_helper'
 
 describe AdventureChooser do
-  let(:subject)      { AdventureChooser }
-  let(:adventure)    { subject.new(catalog) }
-  let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
-  let(:catalog)      { "#{Dir.pwd}/test/fixtures/catalogs/structure/#{node}" }
+  let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
+  let(:catalog_path) { "#{catalog_root}/#{catalog}" }
+  let(:adventure)    { AdventureChooser.new(catalog_path) }
+  let(:catalog)      { 'roro' }
 
   describe '#itinerary' do
     context 'when catalog is empty' do
-      When(:node) { 'empty' }
+      When(:catalog) { 'empty' }
       Then { assert_equal [], adventure.itinerary }
     end
 
-    context 'when catalog is roro' do
-      When(:node) { 'roro' }
-      Then { assert_equal 4, adventure.itinerary.size }
-    end
-  end
-
-  describe '#get_story_preface' do
-    let(:preface) { adventure.get_story_preface(catalog) }
-
-    context 'when scene has no child files' do
-      When(:node) { 'empty' }
-      Then { assert_equal Hash, preface.class }
-      And { assert_equal :empty, preface.keys.first }
-
-    end
-
-    context 'when scene has no story file' do
-      When(:node) { 'roro/plot' }
-      Then { assert_equal :plot, preface.keys.first }
-      Then { assert_nil preface.values.first }
-    end
-
-    context 'when scene is a story file' do
-      When(:node) { 'roro/roro.yml' }
-      focus
-      Then { assert_match 'blah', preface[:name] }
+    context 'when catalog is roro/roro' do
+      When(:catalog) { 'roro/roro' }
+      Then { assert_equal 1, adventure.itinerary.size }
+      And  { assert_match 'roro/roro/roro.yml', adventure.itinerary.first }
     end
   end
 
   describe '#choose_adventure' do
-    let(:node)             { inflection }
-    let(:question_prompt)  { adventure.build_question_prompt }
-    let(:question_options) { adventure.build_question_options }
-    let(:question)         { adventure.build_question }
-    let(:choose_adventure) { adventure.choose_adventure(catalog) }
-
-    context 'when parent is roro and inflection is plots' do
-      let(:inflection)     { 'roro/plots' }
-
-      before { choose_adventure }
-
-      describe '#build_question_prompt' do
-        Then { assert_match 'choose from these roro plots',  question_prompt }
-      end
-
-      describe '#build_question_options' do
-        Then { assert_equal question_options.size, 4 }
-        And  { assert_includes question_options.values, 'php' }
-        And  { assert_includes question_options.values, 'ruby' }
-        And  { assert_includes question_options.values, 'node' }
-      end
-
-      describe '#build_question' do
-        Then { assert_match 'choose from these roro plots',  question.first }
-        And  { assert_equal Hash, question.last.class }
-      end
-    end
-
-    context 'when parent is ruby and inflection is stories' do
-      let(:inflection) { 'roro/plots/ruby/stories' }
-
-      before { choose_adventure }
-
-      describe '#build_question_prompt' do
-        Then { assert_includes question_prompt, 'choose from these ruby stories' }
-      end
-
-      describe '#build_question_options' do
-        Then { assert_equal 2, question_options.count }
-        And  { assert_equal String, question_options.keys.first.class }
-      end
-    end
-
-    context 'when parent is rails and inflection is stories' do
-      let(:inflection) { 'roro/plots/ruby/stories/rails/flavors' }
-
-      before { choose_adventure }
-
-      describe '#build_question_prompt' do
-        Then { assert_includes question_prompt, 'choose from these rails flavors' }
-      end
-
-      describe '#build_question_options' do
-        Then { assert_includes question_options.values, 'rails' }
-        And  { assert_includes question_options.values, 'rails_vue' }
-        And  { assert_includes question_options.values, 'rails_react' }
-      end
-    end
-  end
+    let(:inflection_path) { "#{catalog_root}/#{inflection}" }
+    let(:choose_adventure) { adventure.choose_adventure(inflection_path) }
+    let(:question) { QuestionBuilder.new(inflection: inflection_path) }
+    let(:inflection) { 'roro/plots' }
+    # it do
+    #   assert_question_asked(question)
+    #   choose_adventure
+    #   # assert_equal question, 'blah'
+    # end
 
 
-  # describe '#choose_your_adventure' do
+
+    # describe '#choose_your_adventure' do
   #   let(:question) { "Please choose from these #{collection}:" }
   #   let(:choices)  { plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h }
   #   let(:prompt)   { "#{question} #{choices}" }
@@ -206,6 +135,5 @@ describe AdventureChooser do
   #   end
   #
   #   # Then { assert_equal config.story, story }
-  # end
-
+  end
 end

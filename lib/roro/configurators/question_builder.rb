@@ -6,17 +6,21 @@ require_relative 'utilities'
 module Roro
   module Configurators
     class QuestionBuilder
-      include Utilities
+
+      attr_reader :question
 
       def initialize(args)
-        @inflection = args[:inflection]
-        build_from_inflection if @inflection
+        if args[:inflection]
+          @inflection = args[:inflection]
+          build_from_inflection
+        end
       end
 
       def build_from_inflection
         prompt = inflection_prompt
         options = inflection_options
-        ["#{prompt} #{options}", limited_to: options.keys]
+        prompt_options = humanize(options)
+        ["#{prompt} #{prompt_options}", limited_to: options.keys]
       end
 
       def inflection_prompt
@@ -38,47 +42,18 @@ module Roro
         end
       end
 
+      def humanize(hash)
+        array = []
+        hash.map do |key, value|
+          preface = get_story_preface("#{@inflection}/#{value}")
+          array << "(#{key}) #{value}:\n\t #{preface}"
+        end
+        array.join('\n')
+      end
+
       def get_story_preface(story)
         name = story.split('/').last.split('.').first
         read_yaml("#{story}/#{name}.yml")[:preface]
-      end
-
-
-
-      def catalog_is_node?(catalog)
-        get_children(catalog).any? { |w| w.include? '.yml' }
-      end
-
-      def catalog_is_story?(catalog)
-        %w[yml yaml].include?(story_name(catalog).split('.').last)
-      end
-
-      def catalog_is_inflection?(catalog)
-        catalog_stories(catalog).empty?
-      end
-
-      def catalog_stories(catalog)
-        Array.new(get_children(catalog).select { |c| catalog_is_story?(c) })
-      end
-
-      def node_missing?(node)
-        !File.exists?(node)
-      end
-
-      def node_empty?(node)
-        Dir.glob("#{node}/**").empty?
-      end
-
-      def node_is_file?(node)
-        File.file?(node)
-      end
-
-      def node_exists?(node)
-
-      end
-
-      def story_name(catalog)
-        catalog.split('/').last
       end
     end
   end
