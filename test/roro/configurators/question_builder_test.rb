@@ -92,5 +92,19 @@ describe QuestionBuilder do
       And  { assert_equal Array, question.last[:limited_to].class }
       And  { assert_match builder.inflection_prompt, question.first }
     end
+
+    describe '#answer_from(key)' do
+      let(:answer) { builder.answer_from('1') }
+
+      context 'when roro/plots' do
+        When(:inflection) { 'roro/plots' }
+        Then { assert_equal answer, 'node' }
+      end
+
+      context 'when roro/plots/ruby/stories' do
+        When(:inflection) { 'roro/plots/ruby/stories' }
+        Then { assert_equal answer, 'rails' }
+      end
+    end
   end
 end

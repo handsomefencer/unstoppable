@@ -27,17 +27,17 @@ module Roro
         prompt = 'Please choose from these'
         tree = @inflection.split('/')
         parent = tree[-2]
-        collection = tree.last
+        collection = name(@inflection)
         [prompt, parent, collection].join(' ')
       end
 
       def inflection_options
         Hash.new.tap do |h|
           get_children(@inflection)
-            .map { |f| f.split('/').last }
+            .map { |f| name(f) }
             .sort
             .each_with_index do |c, i|
-            h[(i + 1).to_s] = c.split('.').first
+            h[(i + 1).to_s] = name(c)
           end
         end
       end
@@ -52,8 +52,11 @@ module Roro
       end
 
       def get_story_preface(story)
-        name = story.split('/').last.split('.').first
-        read_yaml("#{story}/#{name}.yml")[:preface]
+        read_yaml("#{story}/#{name(story)}.yml")[:preface]
+      end
+
+      def answer_from(key)
+        inflection_options[key]
       end
     end
   end

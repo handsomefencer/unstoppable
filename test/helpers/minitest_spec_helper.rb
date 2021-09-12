@@ -17,7 +17,7 @@ module Minitest
         .returns(choices[answer])
     end
 
-    def assert_question_asked(question, answer)
+    def assert_question_asked(*question, answer)
       Thor::Shell::Basic.any_instance
                         .stubs(:ask)
                         .with(*question)

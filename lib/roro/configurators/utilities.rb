@@ -95,6 +95,10 @@ module Roro
         catalog.split('/').last
       end
 
+      def name(catalog)
+        catalog.split('/').last.split('.').first
+      end
+
 
       def story_name(catalog)
         catalog.split('/').last

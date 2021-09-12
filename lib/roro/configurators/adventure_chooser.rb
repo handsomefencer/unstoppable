@@ -36,7 +36,11 @@ module Roro
 
         def choose_adventure(inflection)
           question_builder = QuestionBuilder.new(inflection: inflection)
-          adventure = ask(question_builder.question).to_s
+          question = question_builder.question
+          answer_key = ask(question)
+          answer = question_builder.answer_from(answer_key)
+          "#{inflection}/#"
+
         end
       end
     end
