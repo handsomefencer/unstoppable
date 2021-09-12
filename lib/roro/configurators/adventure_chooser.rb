@@ -38,9 +38,9 @@ module Roro
         end
 
         def choose_adventure(inflection)
-          question_builder = QuestionBuilder.new(inflection: inflection)
-          question = question_builder.question
-          adventure = question_builder.answer_from(ask(question))
+          builder = QuestionBuilder.new(inflection: inflection)
+          question = builder.question
+          adventure = builder.answer_from(ask(question))
           "#{inflection}/#{adventure}/#{adventure}.yml"
         end
       end

@@ -27,7 +27,7 @@ module Roro
         prompt = 'Please choose from these'
         tree = @inflection.split('/')
         parent = tree[-2]
-        collection = name(@inflection)
+        collection = name(@inflection) + ":\n"
         [prompt, parent, collection].join(' ')
       end
 
@@ -46,9 +46,9 @@ module Roro
         array = []
         hash.map do |key, value|
           preface = get_story_preface("#{@inflection}/#{value}")
-          array << "(#{key}) #{value}:\n\t #{preface}"
+          array << "\n(#{key}) #{value}:\n #{preface}"
         end
-        array.join('\n')
+        array.join
       end
 
       def get_story_preface(story)
