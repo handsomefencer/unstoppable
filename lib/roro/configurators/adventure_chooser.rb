@@ -20,18 +20,16 @@ module Roro
         def build_itinerary(catalog=nil)
           catalog ||= @catalog
           case
-          when catalog_is_story?(catalog)
-            @itinerary << catalog
           when catalog_is_empty?(catalog)
             return
           when catalog_is_node?(catalog)
             @itinerary += catalog_stories(catalog)
           when catalog_is_inflection?(catalog)
             choose_adventure(catalog)
-          else
-            get_children(catalog).each do |child|
-              build_itinerary(child)
-            end
+          end
+
+          get_children(catalog).each do |child|
+            build_itinerary(child)
           end
         end
 
