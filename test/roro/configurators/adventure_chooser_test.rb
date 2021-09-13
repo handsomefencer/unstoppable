@@ -14,7 +14,7 @@ describe AdventureChooser do
       Then { assert_equal [], adventure.itinerary }
     end
 
-    context 'when catalog is roro/roro' do
+    context 'when catalog has just one story roro/roro' do
       When(:catalog) { 'roro/roro' }
       Then { assert_equal 1, adventure.itinerary.size }
       And  { assert_match 'roro/roro/roro.yml', adventure.itinerary.first }
@@ -29,96 +29,65 @@ describe AdventureChooser do
     let(:answer)
 
     context 'when one inflection in path' do
-      When(:inflection) { 'roro/plots/ruby/stories/rails/flavors' }
-      Given { assert_question_asked(question, '2') }
-      Then { assert_match "rails_react/rails_react.yml", choose_adventure }
+      context 'rails_react' do
+        When(:inflection) { 'roro/plots/ruby/stories/rails/flavors' }
+        Given { assert_question_asked(question, '2') }
+        Then { assert_match 'rails_react/rails_react.yml', choose_adventure }
+      end
+
+      context 'rails_vue' do
+        When(:inflection) { 'roro/plots/ruby/stories/rails/flavors' }
+        Then { assert_question_asked(question, '3') }
+        And  { assert_match 'rails_vue/rails_vue.yml', choose_adventure }
+      end
+
+      context 'rails' do
+        When(:inflection) { 'roro/plots/ruby/stories/rails/flavors' }
+        Then { assert_question_asked(question, '1') }
+        And  { assert_match 'rails/rails.yml', choose_adventure }
+      end
     end
 
     context 'when two inflections in path' do
-      When(:inflection) { 'roro/plots/ruby/stories' }
-      Given { assert_question_asked(question, '1') }
-      Then { assert_match "rails/rails.yml", choose_adventure }
+      context 'rails' do
+        When(:inflection) { 'roro/plots/ruby/stories' }
+        Then { assert_question_asked(question, '1') }
+        And  { assert_match 'rails/rails.yml', choose_adventure }
+      end
+
+      context 'ruby_gem' do
+        When(:inflection) { 'roro/plots/ruby/stories' }
+        Then { assert_question_asked(question, '2') }
+        And  { assert_match 'ruby_gem/ruby_gem.yml', choose_adventure }
+      end
     end
 
-    context 'when two inflections in path' do
-      When(:inflection) { 'roro/plots' }
-      Given { assert_question_asked(question, '4') }
-      Then { assert_match "ruby/ruby.yml", choose_adventure }
+    context 'when three inflections in path' do
+      context 'node' do
+        When(:inflection) { 'roro/plots' }
+        Then { assert_question_asked(question, '1') }
+        And  { assert_match 'node/node.yml', choose_adventure }
+      end
+
+      context 'php' do
+        When(:inflection) { 'roro/plots' }
+        Then { assert_question_asked(question, '2') }
+        And  { assert_match 'php/php.yml', choose_adventure }
+      end
+
+      context 'python' do
+        When(:inflection) { 'roro/plots' }
+        Then { assert_question_asked(question, '3') }
+        And  { assert_match 'python/python.yml', choose_adventure }
+      end
+
+      context 'ruby' do
+        When(:inflection) { 'roro/plots' }
+        Then { assert_question_asked(question, '4') }
+        And  { assert_match 'ruby/ruby.yml', choose_adventure }
+      end
     end
 
-
-
-    # describe '#choose_your_adventure' do
-  #   let(:question) { "Please choose from these #{collection}:" }
-  #   let(:choices)  { plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h }
-  #   let(:prompt)   { "#{question} #{choices}" }
-  #   let(:command) { config.choose_plot(scene) }
-  #
-  #   def assert_plot_chosen(collection, plots, plot)
-  #     question = "Please choose from these #{collection}:"
-  #     choices = plots.sort.map.with_index { |x, i| [i + 1, x] }.to_h
-  #     prompt = "#{question} #{choices}"
-  #     assert_asked(prompt, choices, plot)
-  #   end
-  #
-  #   let(:acts) do
-  #     [
-  #       ['roro plots', %w[node php python ruby], 4],
-  #       ['ruby plots', %w[rails ruby_gem], 1],
-  #       ['rails plots', %w[rails rails_react rails_vue], 2]
-  #     ]
-  #   end
-  #
-  #   describe '#choose_your_adventure' do
-  #     let(:command) { config.choose_your_adventure(scene) }
-  #
-  #     # Then do
-  #     #   acts.each { |act| assert_plot_chosen(*act) }
-  #     #   command
-  #     #   assert_equal({ ruby: { rails: { rails_react: {} } } }, config.story)
-  #     # end
-  #   end
-  #
-  #   describe '#choose_plot' do
-  #     let(:command) { config.choose_plot(scene) }
-  #
-  #     context 'from lib/roro/library/plots' do
-  #       # Then do
-  #       #   assert_plot_chosen(*acts[0])
-  #       #   command
-  #       # end
-  #     end
-  #
-  #     context 'ruby plots' do
-  #       let(:scene) { "#{catalog_root}/roro/plots/ruby/plots" }
-  #
-  #       # Then do
-  #       #   assert_plot_chosen(*acts[1])
-  #       #   command
-  #       # end
-  #     end
-  #
-  #     context 'from lib/roro/library/plots/ruby/plots/rails/plots' do
-  #       let(:scene) { "#{catalog_root}/plots/ruby/plots/rails/plots" }
-  #
-  #       # Then do
-  #       #   assert_plot_chosen(*acts[2])
-  #       #   command
-  #       # end
-  #     end
-  #
-  #     context 'from lib/roro/library/databases' do
-  #       let(:scene)      { "#{catalog_root}/roro/plots/ruby/plots/rails/databases" }
-  #       let(:collection) { 'rails databases' }
-  #       let(:plots)      { %w[mysql postgres] }
-  #       let(:choice)     { { 1 => 'mysql' } }
-  #
-  #       # Then { assert_asked(prompt, choices, choice.keys.first) }
-  #       # And  { assert_equal choice.values.first, command }
-  #     end
-  #   end
-  # end
-  #
   # describe '#choose_env_var' do
   #   let(:scene)    { "#{catalog_root}/plots/ruby" }
   #   let(:question) { config.get_plot(scene)[:questions][0] }

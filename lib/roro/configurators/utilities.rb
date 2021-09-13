@@ -51,6 +51,10 @@ module Roro
         !File.exists?(node)
       end
 
+      def catalog_is_empty?(catalog)
+        node_empty?(catalog)
+      end
+
       def node_empty?(node)
         Dir.glob("#{node}/**").empty?
       end
