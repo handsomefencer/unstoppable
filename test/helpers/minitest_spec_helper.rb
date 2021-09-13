@@ -24,6 +24,16 @@ module Minitest
                         .returns(answer)
     end
 
+    def assert_inflections(inflections)
+      inflections.each { |item|
+        inflection_path = "#{catalog_path}/#{item[0]}"
+        builder = QuestionBuilder.new(inflection: inflection_path)
+        question = builder.question
+        assert_question_asked(question, item[1])
+      }
+    end
+
+
     def prepare_destination(*workbench)
       @tmpdir = Dir.mktmpdir
       FileUtils.mkdir_p("#{@tmpdir}/workbench")
