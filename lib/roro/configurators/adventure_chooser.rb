@@ -24,12 +24,12 @@ module Roro
             return
           when catalog_is_node?(catalog)
             @itinerary += catalog_stories(catalog)
+            get_children(catalog).each do |child|
+              build_itinerary(child)
+            end
           when catalog_is_inflection?(catalog)
-            choose_adventure(catalog)
-          end
-
-          get_children(catalog).each do |child|
-            build_itinerary(child)
+            choice = choose_adventure(catalog)
+            build_itinerary("#{catalog}/#{choice}")
           end
         end
 
@@ -41,7 +41,7 @@ module Roro
           builder = QuestionBuilder.new(inflection: inflection)
           question = builder.question
           adventure = builder.answer_from(ask(question))
-          "#{inflection}/#{adventure}/#{adventure}.yml"
+          # "#{inflection}/#{adventure}/#{adventure}.yml"
         end
       end
     end
