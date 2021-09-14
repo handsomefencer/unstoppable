@@ -12,8 +12,7 @@ module Roro
           options ||= {}
           @options = sanitize(options)
           @scene = Roro::CLI.catalog_root
-          catalog_structure = StructureBuilder.new(options[:structure])
-          @structure = catalog_structure.structure
+          @structure = StructureBuilder.build(options[:structure])
           @manifest = @structure
         end
 
@@ -39,34 +38,18 @@ module Roro
           # end
         end
 
-        def catalog_is_template?
-          @catalog.split('/').last.match?('templates')
-        end
-
-        def catalog_is_empty?
-          get_children(@catalog).empty?
-        end
-
         def story_is_dotfile?
           %w[keep gitkeep].include?(@extension)
         end
 
-        def story_has_unpermitted_extension?
-          !(@permitted_extensions + %w[keep gitkeep]).include?(@extension)
+        def story_has_unpermitted_extension?(extension)
+          !(@permitted_extensions + %w[keep gitkeep]).include?(extension)
         end
 
         def story_is_empty?
           content = read_yaml(@catalog)
           @content = content if content
           !content
-        end
-
-        def catalog_not_present?
-          !File.exist?(@catalog)
-        end
-
-        def catalog_is_story_file?
-          File.file?(@catalog)
         end
 
         def roll_child_story(location)

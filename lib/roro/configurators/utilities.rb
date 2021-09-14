@@ -4,10 +4,6 @@ module Roro
   module Configurators
     module Utilities
 
-      def get_children(location)
-        Dir.glob("#{location}/*")
-      end
-
       def sanitize(hash)
         (hash ||= {}).transform_keys!(&:to_sym).each do |key, value|
           case value
@@ -31,8 +27,24 @@ module Roro
         JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
       end
 
+      def catalog_not_present?(catalog)
+        !File.exist?(catalog)
+      end
+
+      def catalog_is_story_file?(catalog)
+        File.file?(catalog)
+      end
+
+      def catalog_is_template?(catalog)
+        catalog.split('/').last.match?('templates')
+      end
+
+      def get_children(location)
+        Dir.glob("#{location}/*")
+      end
+
       def catalog_is_node?(catalog)
-        get_children(catalog).any? { |w| w.include? '.yml' }
+        get_children(catalog).any? { |w| w.include?('.yml') }
       end
 
       def catalog_is_story?(catalog)
@@ -43,63 +55,17 @@ module Roro
         catalog_stories(catalog).empty? && !File.file?(catalog)
       end
 
-      def catalog_stories(catalog)
-        Array.new(get_children(catalog).select { |c| catalog_is_story?(c) })
-      end
-
-      def node_missing?(node)
-        !File.exists?(node)
-      end
-
       def catalog_is_empty?(catalog)
-        node_empty?(catalog)
-      end
-
-      def node_empty?(node)
-        Dir.glob("#{node}/**").empty?
-      end
-
-      def node_is_file?(node)
-        File.file?(node)
-      end
-
-      def catalog_is_node?(catalog)
-        get_children(catalog).any? { |w| w.include? '.yml' }
-      end
-
-      def catalog_is_story?(catalog)
-        %w[yml yaml].include?(story_name(catalog).split('.').last)
-      end
-
-      def node_missing?(node)
-        !File.exists?(node)
-      end
-
-      def node_empty?(node)
-        Dir.glob("#{node}/**").empty?
-      end
-
-      def node_is_file?(node)
-        File.file?(node)
-      end
-
-      def node_exists?(node)
-
+        Dir.glob("#{catalog}/**").empty?
       end
 
       def story_name(catalog)
         catalog.split('/').last
       end
 
-      def name(catalog)
-        catalog.split('/').last.split('.').first
+      def name(story_file)
+        story_file.split('/').last.split('.').first
       end
-
-
-      def story_name(catalog)
-        catalog.split('/').last
-      end
-
     end
   end
 end

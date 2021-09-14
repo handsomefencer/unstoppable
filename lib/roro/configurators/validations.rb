@@ -8,15 +8,15 @@ module Roro
         @error = Roro::CatalogError
         @catalog = catalog
         case
-        when catalog_not_present?
+        when catalog_not_present?(catalog)
           @msg = 'Catalog not present'
-        when catalog_is_story_file?
+        when catalog_is_story_file?(catalog)
           @extension = @catalog.split('.').last
           @permitted_extensions = %w[yml yaml]
           validate_story
-        when catalog_is_template?
+        when catalog_is_template?(catalog)
           return
-        when catalog_is_empty?
+        when catalog_is_empty?(catalog)
           @msg = 'Catalog cannot be an empty folder'
         else
           get_children(catalog).each { |child| validate_catalog(child) }
@@ -29,7 +29,7 @@ module Roro
         case
         when story_is_dotfile?
           return
-        when story_has_unpermitted_extension?
+        when story_has_unpermitted_extension?(@extension)
           @msg = 'Catalog has unpermitted extension'
         when story_is_empty?
           @msg = 'Story file is empty'

@@ -7,7 +7,8 @@ module Roro
       attr_reader :question
 
       def initialize(args)
-        if args[:inflection]
+        case
+        when args[:inflection]
           @inflection = args[:inflection]
           build_from_inflection
         end

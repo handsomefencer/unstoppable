@@ -7,12 +7,11 @@ module Roro
     class StructureBuilder
       attr_reader :structure
 
-      def initialize(override_location = nil)
-        build_story
-        @structure.merge(read_yaml(override_location)) if override_location
+      def self.build(override=nil)
+        base.merge(override ||= {})
       end
 
-      def build_story
+      def self.base
         @structure = {
           actions: [''],
           env: {
