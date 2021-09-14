@@ -19,6 +19,20 @@ module Roro
         end
       end
 
+      def story_is_empty?
+        content = read_yaml(@catalog)
+        @content = content if content
+        !content
+      end
+
+      def story_is_dotfile?
+        %w[keep gitkeep].include?(@extension)
+      end
+
+      def story_has_unpermitted_extension?(extension)
+        !(@permitted_extensions + %w[keep gitkeep]).include?(extension)
+      end
+
       def sentence_from(array)
         array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
       end
