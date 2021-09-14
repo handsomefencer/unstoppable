@@ -24,7 +24,7 @@ module Roro
         raise(@error, "#{@msg} in #{@catalog}") if @msg
       end
 
-      def validate_story(*args)
+      def validate_story
         @error = Roro::CatalogError
         case
         when story_is_dotfile?
