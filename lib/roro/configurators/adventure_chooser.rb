@@ -29,16 +29,6 @@ module Roro
             build_itinerary("#{catalog}/#{choice}")
           end
         end
-
-        def catalog_stories(catalog)
-          Array.new(get_children(catalog).select { |c| catalog_is_story?(c) })
-        end
-
-        def choose_adventure(inflection)
-          builder = QuestionBuilder.new(inflection: inflection)
-          question = builder.question
-          builder.answer_from(ask(question))
-        end
       end
     end
   end
