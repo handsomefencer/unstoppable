@@ -4,8 +4,9 @@ module Roro
   module Configurators
     class Validator
 
-      def initialize(catalog=nil)
-        # @catalog = catalog || Roro::CLI.catalog_root
+      def initialize(catalog = nil, structure = nil)
+        @catalog = catalog || Roro::CLI.catalog_root
+        @structure = structure || StructureBuilder.build
       end
 
       def validate_catalog(catalog)
