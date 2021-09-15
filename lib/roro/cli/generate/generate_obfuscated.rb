@@ -3,7 +3,7 @@
 module Roro
   class CLI < Thor
 
-    desc 'generate::obfuscated', 'Encrypts .smart.env files for safe storage.'
+    desc 'generate:obfuscated', 'Encrypts .smart.env files for safe storage.'
     map 'generate::obfuscated' => 'generate_obfuscated'
     map 'generate:obfuscated'  => 'generate_obfuscated'
 

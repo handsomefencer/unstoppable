@@ -2,7 +2,7 @@
 
 module Roro
   class CLI < Thor
-    desc 'generate::keys', 'Generates a key for each <environment>.smart.env file.'
+    desc 'generate:keys', 'Generates a key for each <environment>.smart.env file.'
     method_option :environment, type: :hash, default: {}, desc: 'Generates a key for each argument.',
                                 banner: 'development, staging'
 
