@@ -1,0 +1,9 @@
+---
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/roro.yml"
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/docker_compose/docker_compose.yml"
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/plots/ruby/ruby.yml"
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/plots/ruby/stories/rails/rails.yml"
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/plots/ruby/stories/rails/flavors/rails_react/rails_react.yml"
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/plots/ruby/stories/rails/databases/mysql/mysql.yml"
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/roro/roro.yml"
+- "/home/schadenfred/work/opensource/gems/workbench_roro/roro/test/fixtures/catalogs/structure/roro/k8s/k8s.yml"
