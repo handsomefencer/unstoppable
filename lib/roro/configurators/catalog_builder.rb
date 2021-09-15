@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'validations'
-
 module Roro
   module Configurators
     class CatalogBuilder
