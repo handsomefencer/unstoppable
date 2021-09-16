@@ -75,6 +75,10 @@ module Roro
         %w[yml yaml].include?(story_name(catalog).split('.').last)
       end
 
+      def catalog_is_file?(catalog)
+        File.file?(catalog)
+      end
+
       def catalog_is_inflection?(catalog)
         catalog_stories(catalog).empty? && !File.file?(catalog)
       end

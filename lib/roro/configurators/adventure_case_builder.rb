@@ -15,31 +15,30 @@ module Roro
           build_cases
         end
 
-        def build_cases(catalog = nil, cases = nil, parent = nil)
-          cases ||= @cases
+        def build_cases(catalog = nil, cases = nil)
+          cases ||= {}
           catalog ||= @catalog
+          # cases[name(catalog)] ||= {}
+          cases ||= {}
           case
           when catalog_is_empty?(catalog)
             return
-          when catalog_is_template?(catalog)
+          when catalog.nil?
+            return
+          when catalog_is_file?(catalog)
             return
           when catalog_is_node?(catalog)
-            parent = name(catalog)
-            cases[parent] = {  }
             get_children(catalog).each do |child|
-              build_cases(child, cases, parent)
+              build_cases(child, cases)
             end
           when catalog_is_inflection?(catalog)
             question_builder = QuestionBuilder.new(inflection: catalog)
             inflection_options = question_builder.inflection_options
-            cases[parent] = {}
-            inflection_options.each do |_key, value|
-              cases[parent][value] = build_cases("#{catalog}/#{value}", cases, value)
+            inflection_options.each do |key, value|
+              cases[key] = build_cases("#{catalog}/#{value}")
             end
-          #   choice = choose_adventure(catalog)
-          #   build_cases("#{catalog}/#{choice}")
           end
-          @cases = cases
+          cases
         end
       end
     end
