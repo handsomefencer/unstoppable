@@ -68,7 +68,7 @@ module Roro
       end
 
       def catalog_is_node?(catalog)
-        get_children(catalog).any? { |w| w.include?('.yml') }
+        get_children(catalog).any? { |w| w.include?('.yml') } && !catalog_is_template?(catalog)
       end
 
       def catalog_is_story?(catalog)
@@ -80,7 +80,7 @@ module Roro
       end
 
       def catalog_is_inflection?(catalog)
-        catalog_stories(catalog).empty? && !File.file?(catalog)
+        catalog_stories(catalog).empty? && !File.file?(catalog) && !catalog_is_template?(catalog)
       end
 
       def catalog_is_empty?(catalog)
