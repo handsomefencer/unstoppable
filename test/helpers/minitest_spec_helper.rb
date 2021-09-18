@@ -10,6 +10,10 @@ module Minitest
       end
     end
 
+    def assert_file_match_in(file_matcher, files)
+      files.any? { |file| assert_match file_matcher, file  }
+    end
+
     def assert_asked(prompt, choices, answer)
       Thor::Shell::Basic.any_instance
         .stubs(:ask)

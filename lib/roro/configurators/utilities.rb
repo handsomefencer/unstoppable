@@ -71,6 +71,28 @@ module Roro
         get_children(catalog).any? { |w| w.include?('.yml') } && !catalog_is_template?(catalog)
       end
 
+      def catalog_parent(catalog)
+        tree = catalog.split('/')
+        tree[-2]
+      end
+
+      def catalog_parent_path(catalog)
+        catalog.split("/#{name(catalog)}").first
+      end
+
+      def path_to_hash(path, array=nil)
+        @path_hash ||= {}
+        relpath = path.split(Dir.pwd).last
+        array ||= relpath.split('/')
+        # array.shift
+        unless array.empty?
+          array.shift
+          item = array.shift
+          @path_hash[item] = path_to_hash(path, array)
+        end
+        @path_hash # array.reverse { |assigned_value, key| { key => assigned_value } }
+      end
+
       def catalog_is_story?(catalog)
         %w[yml yaml].include?(story_name(catalog).split('.').last)
       end

@@ -4,12 +4,12 @@ require 'test_helper'
 
 describe AdventureChooser do
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
+  let(:catalog)      { 'roro'}
   let(:catalog_path) { "#{catalog_root}/#{catalog}" }
   let(:adventure)    { AdventureChooser.new(catalog_path) }
 
   context 'when catalog has no inflections' do
-    let(:catalog) { 'roro/roro' }
-
+    When(:catalog) { 'roro/roro' }
     Then { assert_equal 1, adventure.itinerary.size }
     And  { assert adventure.itinerary.grep(/roro.yml/).any? }
   end

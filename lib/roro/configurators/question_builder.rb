@@ -23,10 +23,8 @@ module Roro
 
       def inflection_prompt
         prompt = 'Please choose from these'
-        tree = @inflection.split('/')
-        parent = tree[-2]
         collection = name(@inflection) + ":\n"
-        [prompt, parent, collection].join(' ')
+        [prompt, catalog_parent(@inflection), collection].join(' ')
       end
 
       def inflection_options
