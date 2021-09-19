@@ -83,53 +83,23 @@ describe AdventureCaseBuilder do
 
   describe '#build_itineraries' do
     let(:result) { case_builder.build_itineraries(catalog_path) }
-
     context 'when catalog is not an inflection' do
       When(:catalog) { 'roro/plots/ruby/stories/rails/flavors/rails_vue' }
-      Then { assert_nil result }
+      Then { assert_equal 1, result.size }
     end
 
     context 'when catalog is an inflection with' do
       describe 'three inflections' do
         When(:catalog) { 'roro/plots/ruby/stories/rails/flavors' }
-        focus
+        Then { assert_equal 3, result }
+      end
+
+      describe 'child inflections' do
+        When(:catalog) { 'roro/plots/ruby/stories' }
         Then { assert_equal 3, result }
       end
     end
   end
-
-<<<<<<< HEAD
-  let(:cases) { case_builder.build_cases(catalog_path) }
-  let(:catalog) { 'roro' }
-
-  describe '#build_itineraries' do
-    let(:itineraries) { case_builder.build_itineraries(cases) }
-    Then { assert_equal 'blah', itineraries }
-  end
-
-  describe '#build_cases' do
-    context 'first inflection' do
-      Then { assert_equal 'blah', cases }
-      # Then { assert_includes cases.keys, 'node'}
-      # And  { assert_includes cases.keys, 'php'}
-      # And  { assert_includes cases.keys, 'ruby'}
-      # And  { assert_includes cases.keys, 'python' }
-    end
-
-    context 'second inflection' do
-      # Then { assert_includes cases['python'].keys, 'django' }
-      # And  { assert_includes cases['python'].keys, 'flask' }
-      # And  { assert_includes cases['ruby'].keys, 'rails' }
-      # And  { assert_includes cases['ruby'].keys, 'ruby_gem' }
-      # And  { assert_includes cases['ruby']['rails'].keys, 'ruby_gem' }
-    end
-=======
-  describe '#build_cases' do
-    let(:catalog) { 'roro/plots/ruby/stories/rails' }
-    # let(:catalog) { 'roro' }
-    let(:cases) { case_builder.build_cases(catalog_path) }
-    # Given { stubs_answer('1') }
-    # Then  { assert_equal 'blah', cases}
->>>>>>> v2-working
-  end
 end
+
+

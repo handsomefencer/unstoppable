@@ -18,17 +18,6 @@ module Roro
           build_cases
         end
 
-<<<<<<< HEAD
-        def build_cases(catalog = @catalog, cases = nil)
-          cases ||= { name(catalog) => {}}
-          if catalog_is_node?(catalog)
-            get_children(catalog).each { |child| build_cases(child, cases) }
-          elsif catalog_is_inflection?(catalog)
-            question = QuestionBuilder.new(inflection: catalog)
-            cases[name(catalog)] ||= []
-            question.inflection_options.values.each do |story|
-              cases[name(catalog)] << { story => build_cases("#{catalog}/#{story}") }
-=======
         def build_paths(catalog, story_paths = nil)
           story_paths ||= []
           story_paths << catalog if catalog_is_story_path?(catalog)
@@ -36,20 +25,23 @@ module Roro
           story_paths
         end
 
-        def build_itineraries(inflection, itinerary = nil, itineraries = nil)
+        def build_itineraries(catalog, itinerary = nil, itineraries = nil)
           itineraries ||= []
-          itinerary   ||= []
-          paths = build_paths(inflection)
-          paths.each do |child|
-            itinerary << child
-            # build_itineraries(child, itinerary, itineraries)
-            # itineraries << itinerary
+          case
+          when catalog_is_story_path?(catalog)
+            itinerary   ||= []
+
+            itinerary << catalog
+          when catalog_is_inflection?(catalog)
+            get_children(catalog).each do |child|
+              build_itineraries(child, [], itineraries)
+            end
           end
-          # if catalog_is_inflection?(inflection)
-          #   # itinerary += paths
-          #   itineraries << itinerary
-          # end
-          itineraries
+          children = get_children(catalog)
+          children.each do |child|
+            build_itineraries(child, [], itineraries)
+          end
+          itinerary.nil? ? itineraries : itineraries << itinerary
         end
 
         def build_cases(catalog = nil, paths = nil, parent = nil)
@@ -82,7 +74,6 @@ module Roro
                 inflection_paths << inflection_path
                 @cases << inflection_paths
               end
->>>>>>> v2-working
             end
           end
           paths
@@ -105,25 +96,6 @@ module Roro
 
         def catalog_has_inflections?(catalog)
           get_children(catalog).any? { |child| catalog_is_inflection?(child) }
-        end
-
-        def build_itineraries(cases, itinerary = nil )
-          itineraries ||= []
-          itinerary ||= []
-          if cases.is_a?(Hash)
-            itineraries
-          end
-          # case
-          # when cases.is_a?(Hash)
-          #   itineraries
-          #   'blah'# each do |item|
-          # when cases.is_a?(Array)
-          #   itineraries
-          #   cases.each do |item|
-          #     item
-          #   end
-          # end
-          # itineraries
         end
       end
     end
