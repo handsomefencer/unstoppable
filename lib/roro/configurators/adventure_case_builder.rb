@@ -30,18 +30,23 @@ module Roro
           case
           when catalog_is_story_path?(catalog)
             itinerary   ||= []
-
             itinerary << catalog
           when catalog_is_inflection?(catalog)
             get_children(catalog).each do |child|
-              build_itineraries(child, [], itineraries)
+              build_itineraries(child, itinerary, itineraries)
             end
+            itineraries
           end
           children = get_children(catalog)
           children.each do |child|
-            build_itineraries(child, [], itineraries)
+            build_itineraries(child, itinerary, itineraries)
           end
-          itinerary.nil? ? itineraries : itineraries << itinerary
+          if itinerary&.empty?
+            itineraries
+          else
+            itineraries << itinerary
+          end
+          itineraries
         end
 
         def build_cases(catalog = nil, paths = nil, parent = nil)

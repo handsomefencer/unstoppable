@@ -85,12 +85,13 @@ describe AdventureCaseBuilder do
     let(:result) { case_builder.build_itineraries(catalog_path) }
     context 'when catalog is not an inflection' do
       When(:catalog) { 'roro/plots/ruby/stories/rails/flavors/rails_vue' }
-      Then { assert_equal 1, result.size }
+      Then { assert_equal 1, result }
     end
 
     context 'when catalog is an inflection with' do
       describe 'three inflections' do
         When(:catalog) { 'roro/plots/ruby/stories/rails/flavors' }
+        focus
         Then { assert_equal 3, result }
       end
 
