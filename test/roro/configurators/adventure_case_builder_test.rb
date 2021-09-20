@@ -34,6 +34,30 @@ describe AdventureCaseBuilder do
     end
   end
 
+  describe '#catalog_is_parent' do
+    let(:result) { case_builder.catalog_is_parent?(catalog_path) }
+
+    context 'when catalog is parent' do
+      When(:catalog) { 'roro'}
+      Then { assert result }
+    end
+
+    context 'when catalog is story path' do
+      When(:catalog) { 'roro/roro'}
+      Then { refute result }
+    end
+
+    context 'when catalog is story file' do
+      When(:catalog) { 'roro/roro/roro.yml'}
+      Then { refute result }
+    end
+
+    context 'when catalog is inflection' do
+      When(:catalog) { 'roro/plots'}
+      Then { refute result }
+    end
+  end
+
   describe '#build_paths(catalog)' do
     let(:result) { case_builder.build_paths(catalog_path) }
 
@@ -83,21 +107,16 @@ describe AdventureCaseBuilder do
 
   describe '#build_itineraries' do
     let(:result) { case_builder.build_itineraries(catalog_path) }
-    context 'when catalog is not an inflection' do
-      When(:catalog) { 'roro/plots/ruby/stories/rails/flavors/rails_vue' }
-      Then { assert_equal 1, result }
-    end
 
-    context 'when catalog is an inflection with' do
-      describe 'three inflections' do
-        When(:catalog) { 'roro/plots/ruby/stories/rails/flavors' }
-        focus
-        Then { assert_equal 3, result }
+    context 'when catalog contains a parent' do
+      context 'with one inflection' do
+        When(:catalog) { 'roro/plots/python' }
+        Then { assert_equal 1, result }
       end
 
-      describe 'child inflections' do
-        When(:catalog) { 'roro/plots/ruby/stories' }
-        Then { assert_equal 3, result }
+      context 'with two inflections' do
+        When(:catalog) { 'roro/plots/ruby/stories/rails' }
+        # Then { assert_equal 1, result }
       end
     end
   end

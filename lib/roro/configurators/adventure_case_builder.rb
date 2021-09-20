@@ -25,28 +25,28 @@ module Roro
           story_paths
         end
 
-        def build_itineraries(catalog, itinerary = nil, itineraries = nil)
-          itineraries ||= []
-          case
-          when catalog_is_story_path?(catalog)
-            itinerary   ||= []
-            itinerary << catalog
-          when catalog_is_inflection?(catalog)
-            get_children(catalog).each do |child|
-              build_itineraries(child, itinerary, itineraries)
-            end
-            itineraries
-          end
+        def build_itineraries(catalog, story_paths = nil)
+          itineraries = []
           children = get_children(catalog)
+          story_paths ||= []
           children.each do |child|
-            build_itineraries(child, itinerary, itineraries)
+            build_itineraries(child, story_paths)
           end
-          if itinerary&.empty?
-            itineraries
-          else
-            itineraries << itinerary
+          if catalog_is_parent?(catalog)
+            inflections = all_inflections(catalog)
+            inflections.each do |inflection|
+              build_itineraries(inflection, story_paths)
+            end
+          elsif catalog_is_inflection?(catalog)
+            paths = build_paths(catalog)
+            paths.map do |path|
+              [path]
+            end
+            combinations = paths.product(story_paths)
+            build_paths = combinations.empty? ? paths : combinations
+
           end
-          itineraries
+          # itineraries
         end
 
         def build_cases(catalog = nil, paths = nil, parent = nil)
@@ -83,6 +83,10 @@ module Roro
           end
           paths
           @cases
+        end
+
+        def catalog_is_parent?(catalog)
+          get_children(catalog).any? { |child| catalog_is_inflection?(child) }
         end
 
         def all_inflections(catalog)
