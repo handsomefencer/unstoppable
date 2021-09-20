@@ -11,7 +11,8 @@ module Minitest
     end
 
     def assert_file_match_in(file_matcher, files)
-      files.any? { |file| assert_match file_matcher, file  }
+      assert files.any? {|file| file.match file_matcher },
+        "'...#{file_matcher}' doesn't match any files in: #{files}"
     end
 
     def assert_asked(prompt, choices, answer)

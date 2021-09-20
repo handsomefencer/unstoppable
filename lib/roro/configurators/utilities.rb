@@ -26,7 +26,7 @@ module Roro
       end
 
       def catalog_stories(catalog)
-        Array.new(get_children(catalog).select { |c| catalog_is_story?(c) })
+        get_children(catalog).select { |c| catalog_is_story?(c) }
       end
 
       def choose_adventure(inflection)
