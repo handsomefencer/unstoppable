@@ -138,6 +138,13 @@ module Roro
       def name(story_file)
         story_file.split('/').last.split('.').first
       end
+
+      def build_paths(catalog, story_paths = nil)
+        story_paths ||= []
+        story_paths << catalog if catalog_is_story_path?(catalog)
+        get_children(catalog).each { |c| build_paths(c, story_paths) }
+        story_paths
+      end
     end
   end
 end

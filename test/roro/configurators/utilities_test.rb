@@ -6,6 +6,53 @@ describe 'Configurators::Utilities' do
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
   let(:catalog_path) { "#{catalog_root}/#{catalog}" }
 
+  describe '#build_paths(catalog)' do
+    let(:paths) { build_paths(catalog_path) }
+
+    context 'when catalog' do
+      context 'has one path must return that path' do
+        When(:catalog) { 'roro/k8s' }
+        Then { assert_file_match_in(catalog, paths) }
+      end
+
+      context 'is a story file must return empty array' do
+        When(:catalog) { 'roro/k8s/k8s.yml' }
+        Then { assert_empty paths }
+      end
+
+      context 'is a template folder must return empty array' do
+        When(:catalog) { 'roro/docker_compose/templates' }
+        Then { assert_empty paths }
+      end
+
+      context 'has two child paths must return an array' do
+        let(:catalog) { 'roro/plots/python' }
+
+        describe 'with two paths' do
+          Then { assert_equal 2, paths.size }
+        end
+
+        describe 'including correct first path' do
+          When(:expected) { 'roro/plots/python/plots/django'}
+          Then { assert_file_match_in(catalog, paths) }
+        end
+
+        describe 'including correct second path' do
+          When(:expected) { 'roro/plots/python/plots/flask'}
+          Then { assert_file_match_in(catalog, paths) }
+        end
+      end
+
+      context 'has two inflections must return an array' do
+        let(:catalog) { 'roro/plots/ruby' }
+
+        describe 'with correct number of possible paths' do
+          Then { assert_equal 6, paths.size }
+        end
+      end
+    end
+  end
+
   describe '#catalog_is_parent' do
     let(:result) { catalog_is_parent?(catalog_path) }
 

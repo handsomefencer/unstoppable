@@ -11,19 +11,14 @@ module Roro
         build_itineraries(catalog)
       end
 
-      def build_paths(catalog, story_paths = nil)
-        story_paths ||= []
-        story_paths << catalog if catalog_is_story_path?(catalog)
-        get_children(catalog).each { |c| build_paths(c, story_paths) }
-        story_paths
-      end
-
       def build_itineraries(catalog)
         @itineraries ||= []
         @itineraries += build_itinerary(catalog)
         get_children(catalog).each { |c| build_itineraries(c) }
         @itineraries
       end
+
+      private
 
       def build_itinerary(catalog)
         itinerary = []
