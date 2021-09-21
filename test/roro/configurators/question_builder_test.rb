@@ -27,6 +27,11 @@ describe QuestionBuilder do
         When(:inflection) { 'roro/plots/ruby/stories/rails/flavors' }
         Then { assert_includes inflection_prompt, 'choose from these rails flavors' }
       end
+
+      context 'when parent is rails and inflection is ci' do
+        When(:inflection) { 'roro/plots/ruby/stories/rails/continuous_integration_strategies' }
+        Then { assert_includes inflection_prompt, 'choose from these rails continuous integration strategies' }
+      end
     end
 
     describe '#inflection_options' do

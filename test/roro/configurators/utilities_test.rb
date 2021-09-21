@@ -43,11 +43,11 @@ describe 'Configurators::Utilities' do
         end
       end
 
-      context 'has two inflections must return an array' do
+      context 'has three inflections must return an array' do
         let(:catalog) { 'roro/plots/ruby' }
 
         describe 'with correct number of possible paths' do
-          Then { assert_equal 6, paths.size }
+          Then { assert_equal 8, paths.size }
         end
       end
     end

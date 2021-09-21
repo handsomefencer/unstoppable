@@ -37,8 +37,8 @@ describe AdventureCaseBuilder do
       context 'a parent with two inflections' do
         let(:catalog) { 'roro/plots/ruby/stories/rails' }
 
-        describe 'must return 6 inflections' do
-          Then { assert_equal 6, itineraries.size }
+        describe 'must return 12 inflections' do
+          Then { assert_equal 12, itineraries.size }
         end
 
         describe 'must return correct first inflection' do
@@ -56,8 +56,8 @@ describe AdventureCaseBuilder do
       context 'nested inflections' do
         let(:catalog) { 'roro' }
 
-        describe 'must return 11 itineraries' do
-          Then { assert_equal 11, itineraries.size }
+        describe 'must return 17 itineraries' do
+          Then { assert_equal 17, itineraries.size }
         end
 
         describe 'must return correct first inflection' do

@@ -23,7 +23,7 @@ module Roro
 
       def inflection_prompt
         prompt = 'Please choose from these'
-        collection = name(@inflection) + ":\n"
+        collection = name(@inflection).gsub('_', ' ') + ":\n"
         [prompt, catalog_parent(@inflection), collection].join(' ')
       end
 

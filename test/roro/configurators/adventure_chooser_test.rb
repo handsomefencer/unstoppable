@@ -37,6 +37,7 @@ describe AdventureChooser do
         Given { inflections << %w[plots/ruby/stories 1] }
         Given { inflections << %w[plots/ruby/stories/rails/flavors 2] }
         Given { inflections << %w[plots/ruby/stories/rails/databases 1] }
+        Given { inflections << %w[plots/ruby/stories/rails/continuous_integration_strategies 1] }
 
         context 'flavor is rails_vue' do
           Given { assert_inflections(inflections) }
