@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'iteraptor'
-require 'ocg'
-
 module Roro
   module Configurators
     class AdventureCaseBuilder < Thor
@@ -15,7 +12,7 @@ module Roro
           @catalog = catalog || Roro::CLI.catalog_root
           @itinerary = []
           @cases = {}
-          build_cases
+          build_itineraries(catalog)
         end
 
         def build_paths(catalog, story_paths = nil)
@@ -25,21 +22,20 @@ module Roro
           story_paths
         end
 
-        def build_itineraries(catalog, story_paths = nil)
-          @cases ||= []
-          case
-          when catalog_is_parent?(catalog)
-            itineraries = []
-            all_inflections(catalog).each do |inflection|
-              paths = story_paths(inflection).map {|p| [p] }
-              story_paths = story_paths ? story_paths.product(paths) : paths
-              itineraries = story_paths.map { |sp| sp.flatten }
-            end
-            @cases += itineraries
-          end
+        def build_itineraries(catalog)
+          @itineraries ||= []
+          @itineraries += build_itinerary(catalog)
+          get_children(catalog).each { |c| build_itineraries(c) }
+          @itineraries
+        end
 
-          get_children(catalog).each { |c| build_itineraries(c)}
-          # itineraries
+        def build_itinerary(catalog)
+          @itinerary = []
+          all_inflections(catalog).each do |inflection|
+            paths = story_paths(inflection).map { |p| [p] }
+            @itinerary = @itinerary.empty? ? paths : @itinerary.product(paths)
+          end
+          @itinerary.map(&:flatten)
         end
 
         def catalog_is_parent?(catalog)

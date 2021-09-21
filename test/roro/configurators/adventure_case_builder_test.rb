@@ -163,13 +163,13 @@ describe AdventureCaseBuilder do
         let(:catalog) { 'roro/plots/ruby/stories/rails' }
 
         describe 'must return 6 inflections' do
-          # Then { assert_equal 6, itineraries.size }
+          Then { assert_equal 6, itineraries.size }
         end
 
         describe 'must return correct first inflection' do
           When(:itinerary) { itineraries.first }
           Then { assert_file_match_in('rails/flavors/rails_vue', itineraries[0]) }
-          # And  { assert_file_match_in('rails/databases/postgres', itineraries[0]) }
+          And  { assert_file_match_in('rails/databases/postgres', itineraries[0]) }
         end
 
         describe 'must return correct last inflection' do
@@ -181,26 +181,20 @@ describe AdventureCaseBuilder do
       context 'nested inflections' do
         let(:catalog) { 'roro' }
 
-        describe 'must return 6 inflections' do
-          Given { case_builder.build_itineraries(catalog_path)}
-          focus
-          Then { assert_equal 'blah', case_builder.cases }
-          # Then { assert_equal 'blah', case_builder.build_itineraries(catalog_path) }
+        describe 'must return 11 itineraries' do
+          Then { assert_equal 11, itineraries.size }
         end
 
-        # describe 'must return correct first inflection' do
-        #   When(:itinerary) { itineraries.first }
-        #   Then { assert_file_match_in('rails/flavors/rails_vue', itineraries[0]) }
-        #   And  { assert_file_match_in('rails/databases/postgres', itineraries[0]) }
-        # end
-        #
-        # describe 'must return correct last inflection' do
-        #   Then { assert_file_match_in('rails/flavors/rails', itineraries[-1]) }
-        #   And  { assert_file_match_in('rails/databases/mysql', itineraries[-1]) }
-        # end
+        describe 'must return correct first inflection' do
+          When(:itinerary) { itineraries.first }
+          Then { assert_file_match_in('roro/plots/node', itineraries[0]) }
+        end
+
+        describe 'must return correct last inflection' do
+          Then { assert_file_match_in('rails/flavors/rails', itineraries[-1]) }
+          And  { assert_file_match_in('rails/databases/mysql', itineraries[-1]) }
+        end
       end
     end
   end
 end
-
-
