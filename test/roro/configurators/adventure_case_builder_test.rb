@@ -148,12 +148,12 @@ describe AdventureCaseBuilder do
           end
 
           describe 'must return correct first case' do
-            When(:story)     { 'roro/plots/python/stories/flask'}
+            When(:story)     { 'roro/plots/python/stories/django'}
             Then { assert_file_match_in(story, itineraries[0]) }
           end
 
           describe 'must return correct last case' do
-            When(:story)     { 'roro/plots/python/stories/django'}
+            When(:story)     { 'roro/plots/python/stories/flask'}
             Then { assert_file_match_in(story, itineraries[-1]) }
           end
         end
@@ -168,13 +168,13 @@ describe AdventureCaseBuilder do
 
         describe 'must return correct first inflection' do
           When(:itinerary) { itineraries.first }
-          Then { assert_file_match_in('rails/flavors/rails_vue', itineraries[0]) }
-          And  { assert_file_match_in('rails/databases/postgres', itineraries[0]) }
+          Then { assert_file_match_in('rails/flavors/rails', itineraries[0]) }
+          And  { assert_file_match_in('rails/databases/mysql', itineraries[0]) }
         end
 
         describe 'must return correct last inflection' do
           Then { assert_file_match_in('rails/flavors/rails', itineraries[-1]) }
-          And  { assert_file_match_in('rails/databases/mysql', itineraries[-1]) }
+          And  { assert_file_match_in('rails/databases/postgres', itineraries[-1]) }
         end
       end
 
@@ -187,12 +187,11 @@ describe AdventureCaseBuilder do
 
         describe 'must return correct first inflection' do
           When(:itinerary) { itineraries.first }
-          Then { assert_file_match_in('roro/plots/node', itineraries[0]) }
+          Then { assert_file_match_in('roro/plots/php', itineraries[0]) }
         end
 
         describe 'must return correct last inflection' do
-          Then { assert_file_match_in('rails/flavors/rails', itineraries[-1]) }
-          And  { assert_file_match_in('rails/databases/mysql', itineraries[-1]) }
+          Then { assert_file_match_in('python/stories/flask', itineraries[-1]) }
         end
       end
     end
