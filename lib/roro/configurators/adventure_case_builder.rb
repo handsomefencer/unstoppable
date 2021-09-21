@@ -8,7 +8,7 @@ module Roro
     class AdventureCaseBuilder < Thor
       include Thor::Actions
 
-      attr_reader :cases
+      attr_reader :cases, :itineraries
 
       no_commands do
         def build(catalog=nil)
@@ -26,22 +26,20 @@ module Roro
         end
 
         def build_itineraries(catalog, story_paths = nil)
-          itineraries = []
-          if catalog_is_parent?(catalog)
-            story_paths ||= []
+          @cases ||= []
+          case
+          when catalog_is_parent?(catalog)
+            itineraries = []
             all_inflections(catalog).each do |inflection|
-              paths = build_paths(inflection).map {|path| [path] }
-              if story_paths.empty?
-                story_paths = paths
-              else
-                story_paths = story_paths.product(paths)
-              end
+              paths = story_paths(inflection).map {|p| [p] }
+              story_paths = story_paths ? story_paths.product(paths) : paths
               itineraries = story_paths.map { |sp| sp.flatten }
             end
-          elsif catalog_is_inflection?(catalog)
-            build_paths(catalog)
+            @cases += itineraries
           end
-          itineraries
+
+          get_children(catalog).each { |c| build_itineraries(c)}
+          # itineraries
         end
 
         def catalog_is_parent?(catalog)
@@ -50,6 +48,10 @@ module Roro
 
         def all_inflections(catalog)
           get_children(catalog).select { |c| catalog_is_inflection?(c) }
+        end
+
+        def story_paths(catalog)
+          get_children(catalog).select { |c| catalog_is_story_path?(c) }
         end
 
         def catalog_is_story_path?(catalog)
