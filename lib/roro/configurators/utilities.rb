@@ -55,12 +55,34 @@ module Roro
         !File.exist?(catalog)
       end
 
+      def catalog_is_story_path?(catalog)
+        !catalog_has_inflections?(catalog) &&
+          !catalog_is_template?(catalog) &&
+          catalog_is_node?(catalog)
+      end
+
+      def catalog_has_inflections?(catalog)
+        get_children(catalog).any? { |c| catalog_is_inflection?(c) }
+      end
+
+      def catalog_is_parent?(catalog)
+        get_children(catalog).any? { |c| catalog_is_inflection?(c) }
+      end
+
+      def story_paths(catalog)
+        get_children(catalog).select { |c| catalog_is_story_path?(c) }
+      end
+
       def catalog_is_story_file?(catalog)
         File.file?(catalog)
       end
 
       def catalog_is_template?(catalog)
         catalog.split('/').last.match?('templates')
+      end
+
+      def all_inflections(catalog)
+        get_children(catalog).select { |c| catalog_is_inflection?(c) }
       end
 
       def get_children(location)

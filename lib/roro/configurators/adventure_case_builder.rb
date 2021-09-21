@@ -10,8 +10,6 @@ module Roro
       no_commands do
         def build(catalog=nil)
           @catalog = catalog || Roro::CLI.catalog_root
-          @itinerary = []
-          @cases = {}
           build_itineraries(catalog)
         end
 
@@ -36,28 +34,6 @@ module Roro
             @itinerary = @itinerary.empty? ? paths : @itinerary.product(paths)
           end
           @itinerary.map(&:flatten)
-        end
-
-        def catalog_is_parent?(catalog)
-          get_children(catalog).any? { |c| catalog_is_inflection?(c) }
-        end
-
-        def all_inflections(catalog)
-          get_children(catalog).select { |c| catalog_is_inflection?(c) }
-        end
-
-        def story_paths(catalog)
-          get_children(catalog).select { |c| catalog_is_story_path?(c) }
-        end
-
-        def catalog_is_story_path?(catalog)
-          !catalog_has_inflections?(catalog) &&
-            !catalog_is_template?(catalog) &&
-            catalog_is_node?(catalog)
-        end
-
-        def catalog_has_inflections?(catalog)
-          get_children(catalog).any? { |c| catalog_is_inflection?(c) }
         end
       end
     end
