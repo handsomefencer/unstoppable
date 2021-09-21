@@ -8,7 +8,6 @@ describe AdventureCaseBuilder do
   let(:catalog_path) { "#{catalog_root}/#{catalog}" }
   let(:case_builder) { AdventureCaseBuilder.new }
 
-
   describe '#build_paths(catalog)' do
     let(:build_paths) { case_builder.build_paths(catalog_path) }
 
@@ -60,22 +59,24 @@ describe AdventureCaseBuilder do
     let(:itineraries) { case_builder.build_itineraries(catalog_path) }
 
     context 'when catalog contains' do
+      let(:paths)   { [] }
+
       context 'one inflection when first inflection has' do
         let(:catalog) { 'roro/plots/python' }
 
         context 'a parent with two story paths' do
-          describe 'must return two cases' do
+          describe 'must return two itineries' do
             Then { assert_equal 2, itineraries.size }
           end
 
-          describe 'must return correct first case' do
-            When(:story)     { 'roro/plots/python/stories/django'}
-            Then { assert_file_match_in(story, itineraries[0]) }
+          describe 'must return django itinerary' do
+            Given { paths << 'roro/plots/python/stories/django' }
+            Then  { assert_itinerary_in_itineraries(paths, itineraries) }
           end
 
           describe 'must return correct last case' do
-            When(:story)     { 'roro/plots/python/stories/flask'}
-            Then { assert_file_match_in(story, itineraries[-1]) }
+            Given { paths << 'roro/plots/python/stories/flask' }
+            Then  { assert_itinerary_in_itineraries(paths, itineraries) }
           end
         end
       end
@@ -88,9 +89,9 @@ describe AdventureCaseBuilder do
         end
 
         describe 'must return correct first inflection' do
-          When(:itinerary) { itineraries.first }
-          Then { assert_file_match_in('rails/flavors/rails', itineraries[0]) }
-          And  { assert_file_match_in('rails/databases/mysql', itineraries[0]) }
+          Given { paths << 'rails/flavors/rails' }
+          Given { paths << 'rails/databases/mysql' }
+          Then  { assert_itinerary_in_itineraries(paths, itineraries) }
         end
 
         describe 'must return correct last inflection' do

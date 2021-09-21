@@ -5,10 +5,9 @@ require 'test_helper'
 describe 'Configurators::Utilities' do
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
   let(:catalog_path) { "#{catalog_root}/#{catalog}" }
-  let(:config)  { Configurator.new }
 
   describe '#catalog_is_parent' do
-    let(:result) { config.catalog_is_parent?(catalog_path) }
+    let(:result) { catalog_is_parent?(catalog_path) }
 
     context 'when catalog is parent' do
       When(:catalog) { 'roro'}
@@ -32,7 +31,7 @@ describe 'Configurators::Utilities' do
   end
 
   describe '#catalog_is_story_path?(catalog)' do
-    let(:result) { config.catalog_is_story_path?(catalog_path) }
+    let(:result) { catalog_is_story_path?(catalog_path) }
 
     context 'when catalog is' do
       context 'a correct path' do
@@ -57,9 +56,8 @@ describe 'Configurators::Utilities' do
     end
   end
 
-
   describe '#all_inflections' do
-    let(:inflections) { config.all_inflections(catalog_path) }
+    let(:inflections) { all_inflections(catalog_path) }
 
     context 'when catalog is a parent with one inflection' do
       When(:catalog) { 'roro/plots/python' }
@@ -89,12 +87,11 @@ describe 'Configurators::Utilities' do
   end
 
   describe '#get_children(catalog)' do
-    let(:execute) { config.get_children(catalog_path) }
+    let(:execute) { get_children(catalog_path) }
     let(:child)   { -> (child) { "#{catalog}/#{child}" } }
 
     context 'when directory has one file' do
       When(:catalog) { '/inflection/docker_compose'}
-
       Then { assert_equal execute.size, 1 }
     end
 
@@ -112,29 +109,29 @@ describe 'Configurators::Utilities' do
   describe '#sanitize(hash)' do
     context 'when key is a string' do
       When(:options) { { 'key' => 'value' } }
-      Then { assert config.sanitize(options).keys.first.is_a? Symbol }
+      Then { assert sanitize(options).keys.first.is_a? Symbol }
     end
 
     context 'when value is a' do
       context 'string' do
         When(:options) { { 'key' => 'value' } }
-        Then { assert config.sanitize(options).values.first.is_a? Symbol }
+        Then { assert sanitize(options).values.first.is_a? Symbol }
       end
 
       context 'array' do
         When(:options) { { 'key' => [] } }
-        Then { assert config.sanitize(options).values.first.is_a? Array }
+        Then { assert sanitize(options).values.first.is_a? Array }
       end
 
       context 'array of hashes' do
         When(:options) { { 'key' => [{ 'foo' => 'bar' }] } }
-        Then { assert_equal :bar, config.sanitize(options)[:key][0][:foo] }
+        Then { assert_equal :bar, sanitize(options)[:key][0][:foo] }
       end
     end
   end
 
   describe '#sentence_from' do
-    let(:call) { -> (array) { config.sentence_from(array) } }
+    let(:call) { -> (array) { sentence_from(array) } }
 
     Then { assert_equal 'one, two and three', call[%w[one two three]] }
     And  { assert_equal 'one and two', call[%w[one two]] }
