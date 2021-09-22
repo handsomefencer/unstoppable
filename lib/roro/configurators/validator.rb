@@ -7,12 +7,12 @@ module Roro
       def initialize(catalog = nil, structure = nil)
         @catalog = catalog || Roro::CLI.catalog_root
         @structure = structure || StructureBuilder.build
+        validate_catalog(@catalog)
       end
 
       def validate_catalog(catalog)
-
         @error = Roro::CatalogError
-        @catalog = catalog
+        @catalog = catalog.to_s
         case
         when catalog_not_present?(catalog)
           @msg = 'Catalog not present'

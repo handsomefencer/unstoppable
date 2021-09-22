@@ -16,7 +16,7 @@ describe Roro::CLI do
         # omakase_roro: ['omakase::roro'],
         generate_obfuscated: ['generate::obfuscated'],
         # greenfield_rails: ['omakase::rails'],
-        # rollon_rails: ['rollon::rails'],
+        rollon: ['rollon'],
         # rollon_rails_kubernetes: ['rollon::rails::kubernetes']
       }
     end

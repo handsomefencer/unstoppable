@@ -98,8 +98,8 @@ describe QuestionBuilder do
       And  { assert_match builder.inflection_prompt, question.first }
     end
 
-    describe '#answer_from(key)' do
-      let(:answer) { builder.answer_from('1') }
+    describe '#story_from(key, hash)' do
+      let(:answer) { builder.story_from('1') }
 
       context 'when roro/plots' do
         When(:inflection) { 'roro/plots' }

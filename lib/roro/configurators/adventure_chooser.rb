@@ -18,17 +18,18 @@ module Roro
         def build_itinerary(catalog=nil)
           catalog ||= @catalog
           case
-          when catalog_is_empty?(catalog)
-            return
           when catalog_is_node?(catalog)
-            get_children(catalog).each do |child|
-              build_itinerary(child)
-            end
+            get_children(catalog).each { |c| build_itinerary(c) }
           when catalog_is_inflection?(catalog)
-            choice = "#{catalog}/#{choose_adventure(catalog)}"
+            choice = choose_adventure(catalog)
             @itinerary << choice unless catalog_is_parent?(choice)
             build_itinerary(choice)
           end
+        end
+
+        def choose_adventure(inflection)
+          builder = QuestionBuilder.new(inflection: inflection)
+          "#{inflection}/#{builder.story_from(ask(builder.question))}"
         end
       end
     end

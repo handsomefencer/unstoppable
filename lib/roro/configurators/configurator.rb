@@ -6,11 +6,19 @@ module Roro
 
       attr_reader :structure, :env, :options, :story
 
-      def initialize(options=nil)
+      def initialize(options = {} )
         @options = options ? sanitize(options) : {}
         @structure = StructureBuilder.build
-        @catalog = CatalogBuilder.build
+        @catalog = options[:catalog] || CatalogBuilder.build
+        validate_catalog
       end
+
+      def validate_catalog
+        Validator.new(@catalog)
+
+      end
+
+
 
     #   def merge_stories(files)
     #     files.each { |f| @structure.merge!(read_yaml(f)) if f.match?('.yml') }

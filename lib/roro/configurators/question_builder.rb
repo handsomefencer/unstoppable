@@ -51,7 +51,7 @@ module Roro
         read_yaml("#{story}/#{name(story)}.yml")[:preface]
       end
 
-      def answer_from(key)
+      def story_from(key)
         inflection_options[key]
       end
     end

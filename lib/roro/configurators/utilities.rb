@@ -29,12 +29,6 @@ module Roro
         get_children(catalog).select { |c| catalog_is_story?(c) }
       end
 
-      def choose_adventure(inflection)
-        builder = QuestionBuilder.new(inflection: inflection)
-        question = builder.question
-        builder.answer_from(ask(question))
-      end
-
       def story_is_dotfile?
         %w[keep gitkeep].include?(@extension)
       end

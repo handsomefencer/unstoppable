@@ -4,13 +4,24 @@ require 'test_helper'
 
 describe Configurator do
   let(:subject)      { Configurator }
-  let(:options)      { nil }
+  let(:options)      { {} }
   let(:config)       { subject.new(options) }
   let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
   let(:catalog_path) { "#{catalog_root}/#{catalog}"}
 
-  describe '' do
-
+  let(:inflections) { [
+    %w[plots/ruby/stories 1],
+    %w[plots/ruby/stories/rails/flavors 2],
+    %w[plots/ruby/stories/rails/databases 1],
+    %w[plots/ruby/stories/rails/continuous_integration_strategies 1] ]}
+  # Given { assert_inflections(inflections) }
+  describe '#validate_catalog' do
+    context 'when catalog invalid' do
+      Given(:catalog) { }
+      Given { options[:catalog] = "#{Dir.pwd}/test/fixtures/catalogs/structure/empty" }
+      # focus
+      # Then { assert_equal 'blah', config }
+    end
   end
   # describe '#merge_story' do
   #   before { skip }

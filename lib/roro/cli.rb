@@ -9,7 +9,7 @@ module Roro
     end
 
     def self.catalog_root
-      "#{File.dirname(__FILE__)}/library"
+      "#{File.dirname(__FILE__)}/catalog"
     end
 
     def self.test_fixture_root
