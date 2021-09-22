@@ -7,21 +7,21 @@ describe AdventureChooser do
   let(:catalog)      { 'roro'}
   let(:catalog_path) { "#{catalog_root}/#{catalog}" }
   let(:adventure)    { AdventureChooser.new(catalog_path) }
+  let(:itinerary)    { adventure.itinerary }
+  let(:catalog)      { 'roro' }
 
   context 'when catalog has no inflections' do
     When(:catalog) { 'roro/roro' }
-    Then { assert_equal 1, adventure.itinerary.size }
-    And  { assert adventure.itinerary.grep(/roro.yml/).any? }
+    Then { assert_empty itinerary }
   end
 
   context 'when plot choice is' do
-    let(:catalog)     { 'roro' }
     let(:inflections) { [] }
 
     context 'php' do
       Given { inflections << %w[plots 2] }
       Given { assert_inflections(inflections) }
-      Then  { assert adventure.itinerary.grep(/php.yml/).any? }
+      Then  { assert_file_match_in('roro/plots/php', itinerary) }
     end
 
     context 'ruby and when story is' do
@@ -30,7 +30,7 @@ describe AdventureChooser do
       context 'ruby_gem' do
         Given { inflections << %w[plots/ruby/stories 2] }
         Given { assert_inflections(inflections) }
-        Then  { assert adventure.itinerary.grep(/ruby_gem.yml/).any? }
+        Then  { assert_file_match_in('roro/plots/ruby/stories/ruby_gem', itinerary) }
       end
 
       context 'rails and when' do
@@ -41,12 +41,12 @@ describe AdventureChooser do
 
         context 'flavor is rails_vue' do
           Given { assert_inflections(inflections) }
-          Then  { assert adventure.itinerary.grep(/rails_react.yml/).any? }
+          Then  { assert_file_match_in('flavors/rails_react', itinerary)}
         end
 
         context 'database is mysql' do
           Given { assert_inflections(inflections) }
-          Then  { assert adventure.itinerary.grep(/mysql.yml/).any? }
+          Then  { assert_file_match_in('databases/mysql', itinerary)}
         end
       end
     end

@@ -59,7 +59,6 @@ module Minitest
       }
     end
 
-
     def prepare_destination(*workbench)
       @tmpdir = Dir.mktmpdir
       FileUtils.mkdir_p("#{@tmpdir}/workbench")

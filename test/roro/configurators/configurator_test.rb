@@ -7,10 +7,11 @@ describe Configurator do
   let(:options)      { nil }
   let(:config)       { subject.new(options) }
   let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
-  let(:scene)        { catalog_root }
+  let(:catalog_path) { "#{catalog_root}/#{catalog}"}
 
-  let(:story_file)   { "#{Dir.pwd}/test/fixtures/files/stories/#{filename}" }
+  describe '' do
 
+  end
   # describe '#merge_story' do
   #   before { skip }
   #   Given { config.merge_story(story_file) }
