@@ -48,6 +48,18 @@ describe AdventureChooser do
           Given { assert_inflections(inflections) }
           Then  { assert_file_match_in('databases/mysql', itinerary)}
         end
+
+        context 'ci strategy is circleci' do
+          Given { assert_inflections(inflections) }
+          Then  { assert_file_match_in('databases/mysql', itinerary)}
+        end
+
+        context 'all inflections handled' do
+          Given(:paths) { %w[rails_react mysql circleci] }
+          Given { assert_inflections(inflections) }
+          Then { assert_itinerary_in_itineraries(paths, [itinerary]) }
+          And  { assert_equal 3, itinerary.size}
+        end
       end
     end
   end
