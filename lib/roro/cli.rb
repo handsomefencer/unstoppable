@@ -12,10 +12,6 @@ module Roro
       "#{File.dirname(__FILE__)}/catalog"
     end
 
-    def self.test_fixture_root
-      "#{File.dirname(__FILE__)}/test/fixtures"
-    end
-
     def self.roro_environments
       %w[base development production test staging ci]
     end

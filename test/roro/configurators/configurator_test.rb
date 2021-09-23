@@ -17,10 +17,14 @@ describe Configurator do
   # Given { assert_inflections(inflections) }
   describe '#validate_catalog' do
     context 'when catalog invalid' do
-      Given(:catalog) { }
-      Given { options[:catalog] = "#{Dir.pwd}/test/fixtures/catalogs/structure/empty" }
-      # focus
-      # Then { assert_equal 'blah', config }
+      let(:error)         { Roro::Error }
+      let(:error_message) { 'Catalog cannot be an empty folder' }
+      let(:catalog_root)  { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
+      let(:catalog)       { 'empty' }
+      let(:execute)       { config }
+      let(:options)       { { catalog: catalog_path } }
+
+      Then  { assert_correct_error }
     end
   end
   # describe '#merge_story' do

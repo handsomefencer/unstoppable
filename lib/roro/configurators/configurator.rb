@@ -7,7 +7,7 @@ module Roro
       attr_reader :structure, :env, :options, :story
 
       def initialize(options = {} )
-        @options = options ? sanitize(options) : {}
+        @options = options ? options : {}
         @structure = StructureBuilder.build
         @catalog = options[:catalog] || CatalogBuilder.build
         validate_catalog

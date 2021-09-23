@@ -23,7 +23,6 @@ include Roro::Crypto
 module Roro
   module Test
     module Mocks; end
-
     module Helpers
       module Stories; end
     end
