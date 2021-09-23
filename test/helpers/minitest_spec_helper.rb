@@ -10,6 +10,17 @@ module Minitest
       end
     end
 
+    def assert_valid_catalog(catalog)
+      lambda do |node|
+        catalog = "#{catalog_root}/#{node}"
+        validate = validator.validate_catalog(catalog)
+        assert_nil validate
+      end
+    end
+
+
+
+
     def file_match_in_files?(file_matcher, files)
       files.any? {|file| file.match file_matcher }
     end
@@ -19,7 +30,7 @@ module Minitest
         "'...#{file_matcher}' doesn't match any files in: #{files}"
     end
 
-    def assert_itinerary_in_itineraries(matchers, itineraries)
+    def assert_itinerary_in(matchers, itineraries)
       is_present = itineraries.any? do |itinerary|
         matches = []
         matchers.each do |matcher|

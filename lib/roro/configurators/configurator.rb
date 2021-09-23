@@ -15,7 +15,6 @@ module Roro
 
       def validate_catalog
         Validator.new(@catalog)
-
       end
 
 

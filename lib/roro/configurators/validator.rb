@@ -5,19 +5,18 @@ module Roro
     class Validator
 
       def initialize(catalog = nil, structure = nil)
-        @catalog = catalog || Roro::CLI.catalog_root
+        @catalog   = catalog   || Roro::CLI.catalog_root
         @structure = structure || StructureBuilder.build
+        @error     = Roro::CatalogError
         validate_catalog(@catalog)
       end
 
       def validate_catalog(catalog)
-        @error = Roro::CatalogError
-        @catalog = catalog.to_s
         case
         when catalog_not_present?(catalog)
           @msg = 'Catalog not present'
         when catalog_is_story_file?(catalog)
-          @extension = @catalog.split('.').last
+          @extension = catalog.split('.').last
           @permitted_extensions = %w[yml yaml]
           validate_story
         when catalog_is_template?(catalog)

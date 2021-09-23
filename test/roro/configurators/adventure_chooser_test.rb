@@ -57,7 +57,7 @@ describe AdventureChooser do
         context 'all inflections handled' do
           Given(:paths) { %w[rails_react mysql circleci] }
           Given { assert_inflections(inflections) }
-          Then { assert_itinerary_in_itineraries(paths, [itinerary]) }
+          Then { assert_itinerary_in(paths, [itinerary]) }
           And  { assert_equal 3, itinerary.size}
         end
       end

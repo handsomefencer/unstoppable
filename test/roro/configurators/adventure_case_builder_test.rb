@@ -24,12 +24,12 @@ describe AdventureCaseBuilder do
 
           describe 'must return django itinerary' do
             Given { paths << 'roro/plots/python/stories/django' }
-            Then  { assert_itinerary_in_itineraries(paths, itineraries) }
+            Then  { assert_itinerary_in(paths, itineraries) }
           end
 
           describe 'must return correct last case' do
             Given { paths << 'roro/plots/python/stories/flask' }
-            Then  { assert_itinerary_in_itineraries(paths, itineraries) }
+            Then  { assert_itinerary_in(paths, itineraries) }
           end
         end
       end
@@ -44,12 +44,13 @@ describe AdventureCaseBuilder do
         describe 'must return correct first inflection' do
           Given { paths << 'rails/flavors/rails' }
           Given { paths << 'rails/databases/mysql' }
-          Then  { assert_itinerary_in_itineraries(paths, itineraries) }
+          Then  { assert_itinerary_in(paths, itineraries) }
         end
 
         describe 'must return correct last inflection' do
-          Then { assert_file_match_in('rails/flavors/rails', itineraries[-1]) }
-          And  { assert_file_match_in('rails/databases/postgres', itineraries[-1]) }
+
+          Then { assert_itinerary_in(['rails/flavors/rails'], itineraries) }
+          And  { assert_itinerary_in(['rails/databases/postgres'], itineraries) }
         end
       end
 
@@ -62,11 +63,11 @@ describe AdventureCaseBuilder do
 
         describe 'must return correct first inflection' do
           When(:itinerary) { itineraries.first }
-          Then { assert_file_match_in('roro/plots/php', itineraries[0]) }
+          Then { assert_itinerary_in(['roro/plots/php'], itineraries) }
         end
 
         describe 'must return correct last inflection' do
-          Then { assert_file_match_in('python/stories/flask', itineraries[-1]) }
+          Then { assert_itinerary_in(['python/stories/flask'], itineraries) }
         end
       end
     end
