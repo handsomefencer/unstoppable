@@ -5,13 +5,12 @@ module Roro
     class AdventureChooser < Thor
       include Thor::Actions
 
-      attr_reader :itinerary, :adventure
+      attr_reader :itinerary
 
       no_commands do
         def initialize(catalog=nil)
           @catalog = catalog || Roro::CLI.catalog_root
           @itinerary = []
-          @adventure = []
           build_itinerary
         end
 

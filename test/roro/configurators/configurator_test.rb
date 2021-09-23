@@ -24,18 +24,17 @@ describe Configurator do
     end
   end
 
-  let(:fatsufodo_django) { [
-    %w[use_cases 1],
-    %w[use_cases/fatsufodo/stories 1]
-  ]}
   describe '#choose_adventure' do
-    let(:itinerary) { config.itinerary }
-    Given { assert_inflections(fatsufodo_django) }
+    describe 'must allow developer to choose' do
+      before { assert_inflections(
+        [ %w[use_cases 1], %w[use_cases/fatsufodo/stories 1]]) }
 
-    context 'use_cases/fatsufodo/stories/django' do
-      Then  { assert_file_match_in('fatsufodo/stories/django', itinerary) }
+      Then { assert config.choose_adventure }
+      And  { assert config.itinerary }
+      And  { assert_file_match_in('stories/django', config.itinerary ) }
     end
   end
+
 
   # describe '#merge_story' do
   #   before { skip }

@@ -12,6 +12,7 @@ module Roro
         @catalog = options[:catalog] || CatalogBuilder.build
         validate_catalog
         choose_adventure
+        build_manifest
       end
 
       def validate_catalog
@@ -23,6 +24,8 @@ module Roro
         @itinerary = adventure.itinerary
       end
 
+      def build_manifest
+      end
 
 
     #   def merge_stories(files)
