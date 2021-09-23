@@ -18,9 +18,6 @@ module Minitest
       end
     end
 
-
-
-
     def file_match_in_files?(file_matcher, files)
       files.any? {|file| file.match file_matcher }
     end
@@ -50,6 +47,7 @@ module Minitest
 
     def stubs_answer(answer)
       Thor::Shell::Basic.any_instance
+                        .first
                         .stubs(:ask)
                         .returns(answer)
     end

@@ -20,6 +20,8 @@ module Roro
           case
           when catalog_is_node?(catalog)
             get_children(catalog).each { |c| build_itinerary(c) }
+          when catalog_is_parent?(catalog)
+            get_children(catalog).each { |c| build_itinerary(c) }
           when catalog_is_inflection?(catalog)
             choice = choose_adventure(catalog)
             @itinerary << choice unless catalog_is_parent?(choice)

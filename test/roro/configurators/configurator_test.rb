@@ -4,19 +4,15 @@ require 'test_helper'
 
 describe Configurator do
   let(:subject)      { Configurator }
-  let(:options)      { {} }
+  let(:options)      { { catalog: catalog.nil? ? catalog_root : catalog_path } }
   let(:config)       { subject.new(options) }
   let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
-  let(:catalog_path) { "#{catalog_root}/#{catalog}"}
+  let(:catalog_path) { catalog_root }
+  let(:catalog)      { nil }
+  let(:inflections)  { [] }
 
-  let(:inflections) { [
-    %w[plots/ruby/stories 1],
-    %w[plots/ruby/stories/rails/flavors 2],
-    %w[plots/ruby/stories/rails/databases 1],
-    %w[plots/ruby/stories/rails/continuous_integration_strategies 1] ]}
-  # Given { assert_inflections(inflections) }
   describe '#validate_catalog' do
-    context 'when catalog invalid' do
+    context 'when invalid' do
       let(:error)         { Roro::Error }
       let(:error_message) { 'Catalog cannot be an empty folder' }
       let(:catalog_root)  { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
@@ -27,6 +23,20 @@ describe Configurator do
       Then  { assert_correct_error }
     end
   end
+
+  let(:fatsufodo_django) { [
+    %w[use_cases 1],
+    %w[use_cases/fatsufodo/stories 1]
+  ]}
+  describe '#choose_adventure' do
+    let(:itinerary) { config.itinerary }
+    Given { assert_inflections(fatsufodo_django) }
+
+    context 'use_cases/fatsufodo/stories/django' do
+      Then  { assert_file_match_in('fatsufodo/stories/django', itinerary) }
+    end
+  end
+
   # describe '#merge_story' do
   #   before { skip }
   #   Given { config.merge_story(story_file) }
