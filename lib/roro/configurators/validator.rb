@@ -8,6 +8,7 @@ module Roro
         @catalog   = catalog   || Roro::CLI.catalog_root
         @structure = structure || StructureBuilder.build
         @error     = Roro::CatalogError
+        @permitted_extensions = %w[yml yaml]
         validate_catalog(@catalog)
       end
 
@@ -16,9 +17,7 @@ module Roro
         when catalog_not_present?(catalog)
           @msg = 'Catalog not present'
         when catalog_is_story_file?(catalog)
-          @extension = catalog.split('.').last
-          @permitted_extensions = %w[yml yaml]
-          validate_story
+          validate_story(catalog)
         when catalog_is_template?(catalog)
           return
         when catalog_is_empty?(catalog)
@@ -26,15 +25,15 @@ module Roro
         else
           get_children(catalog).each { |child| validate_catalog(child) }
         end
-        raise(@error, "#{@msg} in #{@catalog}") if @msg
+        raise(@error, "#{@msg} in #{catalog}") if @msg
       end
 
-      def validate_story
+      def validate_story(story = nil )
         @error = Roro::CatalogError
         case
-        when story_is_dotfile?
+        when story_is_dotfile?(story)
           return
-        when story_has_unpermitted_extension?(@extension)
+        when has_unpermitted_extension?(story)
           @msg = 'Catalog has unpermitted extension'
         when story_is_empty?
           @msg = 'Story file is empty'

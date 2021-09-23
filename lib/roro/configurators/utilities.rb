@@ -29,12 +29,20 @@ module Roro
         get_children(catalog).select { |c| catalog_is_story?(c) }
       end
 
-      def story_is_dotfile?
+      def story_is_dotfile?(story = nil )
         %w[keep gitkeep].include?(@extension)
+      end
+      def extension_from(file)
+
       end
 
       def story_has_unpermitted_extension?(extension)
+
         !(@permitted_extensions + %w[keep gitkeep]).include?(extension)
+      end
+
+      def has_unpermitted_extension?(file)
+        !(@permitted_extensions + %w[keep gitkeep]).include?(file_extension(file))
       end
 
       def sentence_from(array)
@@ -68,6 +76,8 @@ module Roro
       end
 
       def catalog_is_story_file?(catalog)
+        @extension = catalog.split('.').last
+
         File.file?(catalog)
       end
 
@@ -118,6 +128,14 @@ module Roro
 
       def name(story_file)
         story_file.split('/').last.split('.').first
+      end
+
+      def file_name(story_file)
+        story_file.split('/').last.split('.').first
+      end
+
+      def file_extension(file)
+        file.split('.').last
       end
 
       def build_paths(catalog, story_paths = nil)
