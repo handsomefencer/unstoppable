@@ -28,38 +28,38 @@ module Roro
         raise(@error, "#{@msg} in #{catalog}") if @msg
       end
 
-      def validate_story(story = nil )
+      def validate_story(s)
         @error = Roro::CatalogError
         case
-        when story_is_dotfile?(story)
+        when story_is_dotfile?(s)
           return
-        when has_unpermitted_extension?(story)
+        when story_has_unpermitted_extension?(s)
           @msg = 'Catalog has unpermitted extension'
-        when story_is_empty?
+        when story_is_empty?(s)
           @msg = 'Story file is empty'
         else
-          validate_story_content(@content, @structure)
+          validate_story_content(read_yaml(s))
         end
       end
 
-      def validate_story_content(content, story)
+      def validate_story_content(content, structure = @structure)
         case
         when content.is_a?(NilClass)
           @msg = 'Story contains a nil value'
-        when !content.is_a?(story.class)
-          @msg = "'#{content}' must be an instance of #{story.class}"
+        when !content.is_a?(structure.class)
+          @msg = "'#{content}' must be an instance of #{structure.class}"
         when content.is_a?(Array)
-          validate_story_array(content, story)
+          validate_story_array(content, structure)
         when content.is_a?(Hash)
-          validate_story_hash(content, story)
+          validate_story_hash(content, structure)
         end
       end
 
-      def validate_story_array(content, story)
+      def validate_story_array(content, structure)
         if content.any?(nil)
           @msg = 'Story contains an empty array'
         else
-          content.each { |item| validate_story_content(item, story[0]) }
+          content.each { |item| validate_story_content(item, structure[0]) }
         end
       end
 
@@ -78,6 +78,10 @@ module Roro
         @permitted = story&.keys
         @unpermitted = content.keys - @permitted
         @permitted.any? && @unpermitted.any?
+      end
+
+      def story_has_unpermitted_extension?(file)
+        !(@permitted_extensions + %w[keep gitkeep]).include?(file_extension(file))
       end
 
       def story_has_nil_value?(content)

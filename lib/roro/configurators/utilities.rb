@@ -19,10 +19,8 @@ module Roro
         end
       end
 
-      def story_is_empty?
-        content = read_yaml(@catalog)
-        @content = content if content
-        !content
+      def story_is_empty?(story = nil)
+        !read_yaml(story)
       end
 
       def catalog_stories(catalog)
@@ -30,19 +28,7 @@ module Roro
       end
 
       def story_is_dotfile?(story = nil )
-        %w[keep gitkeep].include?(@extension)
-      end
-      def extension_from(file)
-
-      end
-
-      def story_has_unpermitted_extension?(extension)
-
-        !(@permitted_extensions + %w[keep gitkeep]).include?(extension)
-      end
-
-      def has_unpermitted_extension?(file)
-        !(@permitted_extensions + %w[keep gitkeep]).include?(file_extension(file))
+        %w[keep gitkeep].include?(file_extension(story))
       end
 
       def sentence_from(array)
@@ -76,8 +62,6 @@ module Roro
       end
 
       def catalog_is_story_file?(catalog)
-        @extension = catalog.split('.').last
-
         File.file?(catalog)
       end
 
