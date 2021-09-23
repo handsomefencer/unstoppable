@@ -32,9 +32,17 @@ describe Configurator do
       Then { assert config.choose_adventure }
       And  { assert config.itinerary }
       And  { assert_file_match_in('stories/django', config.itinerary ) }
+      And { assert_equal ["/home/schadenfred/work/opensource/gems/workbench_roro/roro/lib/roro/catalog/use_cases/fatsufodo/stories/django"], config.itinerary}
     end
   end
 
+  describe '#build_manifest' do
+    before {
+      stubs_itinerary
+    }
+
+    Then { assert_equal ["/home/schddadenfred/work/opensource/gems/workbench_roro/roro/lib/roro/catalog/use_cases/fatsufodo/stories/django"], config.itinerary }
+  end
 
   # describe '#merge_story' do
   #   before { skip }

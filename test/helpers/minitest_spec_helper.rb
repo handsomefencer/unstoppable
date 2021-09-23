@@ -47,7 +47,6 @@ module Minitest
 
     def stubs_answer(answer)
       Thor::Shell::Basic.any_instance
-                        .first
                         .stubs(:ask)
                         .returns(answer)
     end
@@ -57,6 +56,16 @@ module Minitest
                         .stubs(:ask)
                         .with(*question)
                         .returns(answer)
+    end
+
+    def stubs_itinerary(itinerary = nil )
+      itinerary ||= ["#{Dir.pwd}/lib/roro/catalog/use_cases/fatsufodo/stories/django"]
+      itinerary.map {|itinerary| "#{Dir.pwd}/#{itinerary}" }
+      stubs_answer('1')
+      Roro::Configurators::AdventureChooser
+        .any_instance
+        .stubs(:itinerary)
+        .returns(itinerary)
     end
 
     def assert_inflections(inflections)

@@ -25,6 +25,7 @@ module Roro
       end
 
       def build_manifest
+        @manifest = []
       end
 
 
