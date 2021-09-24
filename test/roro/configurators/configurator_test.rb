@@ -9,37 +9,37 @@ describe Configurator do
   let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
   let(:catalog_path) { catalog_root }
   let(:catalog)      { nil }
-  let(:inflections)  { [] }
-
-  describe '#validate_catalog' do
-    context 'when invalid' do
-      let(:error)         { Roro::Error }
-      let(:error_message) { 'Catalog cannot be an empty folder' }
-      let(:catalog_root)  { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
-      let(:catalog)       { 'empty' }
-      let(:execute)       { config }
-      let(:options)       { { catalog: catalog_path } }
-
-      Then  { assert_correct_error }
-    end
-  end
+  let(:inflections)  { [ %w[use_cases 1], %w[use_cases/fatsufodo/stories 1]] }
+  let(:assert_adventure_chosen) {
+    assert_inflections(inflections)
+    config.choose_adventure }
 
   describe '#choose_adventure' do
     describe 'must allow developer to choose' do
-      before { assert_inflections(
-        [ %w[use_cases 1], %w[use_cases/fatsufodo/stories 1]]) }
-
-      Then { assert config.choose_adventure }
-      And  { assert config.itinerary }
-      And  { assert_file_match_in('stories/django', config.itinerary ) }
+      Then { assert_adventure_chosen }
+      And { assert_file_match_in('stories/django', config.itinerary ) }
     end
   end
 
-  describe '#build_manifest' do
-    before { stubs_itinerary(['use_cases/fatsufodo/stories/django']) }
-
+  describe '#build_manifests' do
+    Given { assert_adventure_chosen }
     Given { config.build_manifest }
-    Then { assert_equal 'blah', config.manifest }
+    Then  { assert_file_match_in('fatsufodo.yml', config.manifest) }
+    And   { assert_file_match_in('django.yml', config.manifest) }
+  end
+
+  describe '#build_actions' do
+    Given { assert_adventure_chosen }
+    Given { config.build_manifest }
+
+    describe 'actions variable' do
+      let(:actions) { config.actions }
+
+      describe 'must be set' do
+        Given { config.build_actions }
+        Then  { assert_equal Array, actions.class }
+      end
+    end
   end
 
   # describe '#merge_story' do

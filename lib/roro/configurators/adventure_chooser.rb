@@ -5,13 +5,12 @@ module Roro
     class AdventureChooser < Thor
       include Thor::Actions
 
-      attr_reader :itinerary
+      attr_reader :catalog, :itinerary
 
       no_commands do
-        def initialize(catalog=nil)
-          @catalog = catalog || Roro::CLI.catalog_root
+        def initialize
+          @catalog   = Roro::CLI.catalog_root
           @itinerary = []
-          build_itinerary
         end
 
         def build_itinerary(catalog=nil)
@@ -23,9 +22,10 @@ module Roro
             get_children(catalog).each { |c| build_itinerary(c) }
           when catalog_is_inflection?(catalog)
             choice = choose_adventure(catalog)
-            @itinerary << choice unless catalog_is_parent?(choice)
+            @itinerary << choice if catalog_is_itinerary_path?(choice)
             build_itinerary(choice)
           end
+          @itinerary
         end
 
         def choose_adventure(inflection)

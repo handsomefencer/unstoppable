@@ -59,11 +59,17 @@ module Minitest
     end
 
     def stubs_itinerary(itinerary = nil )
-      stubs_answer('1')
-      Roro::Configurators::AdventureChooser
+      Roro::Configurators::Configurator
         .any_instance
         .stubs(:itinerary)
         .returns(itinerary.map {|i| "#{Dir.pwd}/lib/roro/catalog/#{i}"})
+    end
+
+    def stubs_manifest(manifest = nil )
+      Roro::Configurators::Configurator
+        .any_instance
+        .stubs(:manifest)
+        .returns(manifest.map {|i| "#{Dir.pwd}/lib/roro/catalog/#{i}"})
     end
 
     def assert_inflections(inflections)
@@ -71,8 +77,7 @@ module Minitest
         inflection_path = "#{catalog_path}/#{item[0]}"
         builder = QuestionBuilder.new(inflection: inflection_path)
         question = builder.question
-        assert_question_asked(question, item[1])
-      }
+        assert_question_asked(question, item[1]) }
     end
 
     def prepare_destination(*workbench)

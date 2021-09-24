@@ -9,10 +9,11 @@ module Roro
         @structure = structure || StructureBuilder.build
         @error     = Roro::CatalogError
         @permitted_extensions = %w[yml yaml]
-        validate_catalog(@catalog)
+        validate_catalog
       end
 
-      def validate_catalog(catalog)
+      def validate_catalog(catalog = nil)
+        catalog ||= @catalog
         case
         when catalog_not_present?(catalog)
           @msg = 'Catalog not present'
