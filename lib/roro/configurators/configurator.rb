@@ -4,7 +4,7 @@ module Roro
   module Configurators
     class Configurator
 
-      attr_reader :structure, :env, :options, :story, :itinerary
+      attr_reader :structure, :env, :options, :story, :itinerary, :manifest
 
       def initialize(options = {} )
         @options = options ? options : {}
@@ -24,8 +24,26 @@ module Roro
         @itinerary = adventure.itinerary
       end
 
-      def build_manifest
-        @manifest = []
+      def build_manifest(catalog = nil )
+        ## get catalog
+        # get itineraries
+        # for each itinerary
+        # get yaml_files
+        # split catalog from itinerary to get itinerary path
+        # split itinerary paht into array like %w[fatsufodo stories python]
+        # get story files for catalog path
+        # recurse build_manifest(#{catalog_path}/#array.shift, array)
+        catalog   ||= @catalog
+        @manifest ||= []
+        case
+        when catalog_is_parent?(catalog)
+          catalog
+        when catalog_is_story?(catalog)
+          @manifest << catalog
+        end
+        @itinerary.each do |itinerary|
+          build_manifest(itinerary)
+        end
       end
 
 

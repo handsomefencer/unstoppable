@@ -59,13 +59,11 @@ module Minitest
     end
 
     def stubs_itinerary(itinerary = nil )
-      itinerary ||= ["#{Dir.pwd}/lib/roro/catalog/use_cases/fatsufodo/stories/django"]
-      itinerary.map {|itinerary| "#{Dir.pwd}/#{itinerary}" }
       stubs_answer('1')
       Roro::Configurators::AdventureChooser
         .any_instance
         .stubs(:itinerary)
-        .returns(itinerary)
+        .returns(itinerary.map {|i| "#{Dir.pwd}/lib/roro/catalog/#{i}"})
     end
 
     def assert_inflections(inflections)
