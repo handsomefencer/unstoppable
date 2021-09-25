@@ -16,6 +16,8 @@ module Roro
         def build_itinerary(catalog=nil)
           catalog ||= @catalog
           case
+          when catalog_is_alias?(catalog)
+            @itinerary += read_yaml(catalog)[:aliased_to]
           when catalog_is_node?(catalog)
             get_children(catalog).each { |c| build_itinerary(c) }
           when catalog_is_parent?(catalog)
@@ -28,6 +30,10 @@ module Roro
           @itinerary
         end
 
+        def catalog_is_alias?(catalog)
+          catalog_is_story_file?(catalog) &&
+            !read_yaml(catalog)[:aliased_to].nil?
+        end
         def choose_adventure(inflection)
           builder = QuestionBuilder.new(inflection: inflection)
           "#{inflection}/#{builder.story_from(ask(builder.question))}"

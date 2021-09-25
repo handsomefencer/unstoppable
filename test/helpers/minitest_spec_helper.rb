@@ -74,10 +74,11 @@ module Minitest
 
     def assert_inflections(inflections)
       inflections.each { |item|
-        inflection_path = "#{catalog_path}/#{item[0]}"
+        inflection_path = "#{catalog_path}#{"/#{item[0]}" unless item[0].nil?}"
         builder = QuestionBuilder.new(inflection: inflection_path)
         question = builder.question
-        assert_question_asked(question, item[1]) }
+        inflection_options = builder.inflection_options
+        assert_question_asked(question, inflection_options.key(item[1])) }
     end
 
     def prepare_destination(*workbench)
