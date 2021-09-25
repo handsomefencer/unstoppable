@@ -7,7 +7,7 @@ describe Configurator do
   let(:options)      { { catalog: catalog.nil? ? catalog_root : catalog_path } }
   let(:config)       { subject.new(options) }
   let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
-  let(:catalog_path) { catalog_root }
+  # let(:catalog_path) { catalog_root }
   let(:catalog)      { nil }
   let(:inflections)  { [ %w[use_cases 1], %w[use_cases/fatsufodo/stories 1]] }
   let(:assert_adventure_chosen) {
@@ -15,9 +15,12 @@ describe Configurator do
     config.choose_adventure }
 
   describe '#choose_adventure' do
+    Given(:catalog) { nil }
+    Then { assert_equal 'blah', catalog_path }
+
     describe 'must allow developer to choose' do
       # Then { assert_adventure_chosen }
-      # And { assert_file_match_in('stories/django', config.itinerary ) }
+      # And  { assert_file_match_in('stories/django', config.itinerary ) }
     end
   end
 

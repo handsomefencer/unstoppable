@@ -18,6 +18,14 @@ module Minitest
       end
     end
 
+    def assert_valid_stack(catalog)
+      lambda do |node|
+        catalog = "#{catalog_root}/#{node}"
+        validate = validator.validate_catalog(catalog)
+        assert_nil validate
+      end
+    end
+
     def file_match_in_files?(file_matcher, files)
       files.any? {|file| file.match file_matcher }
     end
@@ -92,6 +100,22 @@ module Minitest
           FileUtils.mkdir_p("#{@tmpdir}/workbench/#{dummy_app}")
         end
       end
+    end
+
+    def stack_path(args = nil )
+      append = defined?(stack) ? "/#{stack}" : nil
+      prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
+      fixture_path = "#{Dir.pwd}/test/fixtures"
+      stack_root ||= "#{fixture_path}/stacks/#{prepend_valid}"
+      "#{stack_root}#{append}"
+    end
+
+    def catalog_path(args = nil )
+      append = defined?(catalog) ? "/#{catalog}" : nil
+      prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
+      fixture_path = "#{Dir.pwd}/test/fixtures"
+      catalog_root ||= "#{fixture_path}/stacks/#{prepend_valid}/stacks"
+      "#{catalog_root}#{append}"
     end
 
     after do

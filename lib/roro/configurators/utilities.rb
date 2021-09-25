@@ -4,93 +4,128 @@ module Roro
   module Configurators
     module Utilities
 
+      def stack_type(stack)
+        case
+        when stack_is_dotfile?(stack)
+          :dotfile
+        when stack_is_storyfile?(stack)
+          :storyfile
+        when stack_is_file?(stack)
+          :file
+        when stack_is_templates?(stack)
+          :templates
+        when stack_is_inflection?(stack)
+          :inflection
+        when stack_is_stack?(stack)
+          :stack
+        when stack_is_story?(stack)
+          :story
+        end
+      end
+
+      def stack_is_stack?(stack)
+
+      end
+
+      def stack_is_story?(stack)
+        get_children(stack).any? { |c| story_name(stack).eql?(file_name(c)) }
+      end
+
+      def stack_is_file?(stack)
+        File.file?(stack)
+      end
+
+      def stack_is_dotfile?(stack)
+        stack_is_file?(stack) &&
+          %w[keep gitkeep].include?(file_extension(stack))
+      end
+
+      def stack_is_storyfile?(stack)
+        stack_is_file?(stack) &&
+          %w[yml yaml].include?(file_extension(stack))
+      end
+
+      def stack_is_inflection?(stack)
+        stack_stories(stack).empty? &&
+          !File.file?(stack) &&
+          !stack_is_template?(stack)
+      end
+
+
       def story_is_empty?(story = nil)
-        catalog_is_story_file?(story) &&
+        stack_is_storyfile?(story) &&
           !read_yaml(story)
       end
 
-      def story_is_dotfile?(story = nil )
-        %w[keep gitkeep].include?(file_extension(story))
+      def stack_not_present?(stack)
+        !File.exist?(stack)
       end
 
-      def catalog_is_story_file?(catalog)
-        File.file?(catalog) &&
-          !story_is_dotfile?(catalog)
+      def stack_is_story_path?(stack)
+        !stack_is_parent?(stack) &&
+          !stack_is_template?(stack) &&
+          stack_is_node?(stack)
       end
 
-      def catalog_not_present?(catalog)
-        !File.exist?(catalog)
+      def stack_is_itinerary_path?(stack)
+        !stack_is_parent?(stack) &&
+          !stack_is_template?(stack) &&
+          stack_is_node?(stack)
       end
 
-      def catalog_is_story_path?(catalog)
-        !catalog_is_parent?(catalog) &&
-          !catalog_is_template?(catalog) &&
-          catalog_is_node?(catalog)
+      def stack_is_parent?(stack)
+        get_children(stack).any? { |c| stack_is_inflection?(c) }
       end
 
-      def catalog_is_itinerary_path?(catalog)
-        !catalog_is_parent?(catalog) &&
-          !catalog_is_template?(catalog) &&
-          catalog_is_node?(catalog)
+      def story_paths(stack)
+        get_children(stack).select { |c| stack_is_story_path?(c) }
       end
 
-      def catalog_is_parent?(catalog)
-        get_children(catalog).any? { |c| catalog_is_inflection?(c) }
+      def stack_stories(stack)
+        get_children(stack).select { |c| stack_is_storyfile?(c) }
       end
 
-      def story_paths(catalog)
-        get_children(catalog).select { |c| catalog_is_story_path?(c) }
+      def stack_is_template?(stack)
+        stack.split('/').last.match?('templates')
       end
 
-      def catalog_stories(catalog)
-        get_children(catalog).select { |c| catalog_is_story_file?(c) }
+      def stack_is_templates?(stack)
+        stack.split('/').last.match?('templates')
       end
 
-      def catalog_is_template?(catalog)
-        catalog.split('/').last.match?('templates')
-      end
-
-      def all_inflections(catalog)
-        get_children(catalog).select { |c| catalog_is_inflection?(c) }
+      def all_inflections(stack)
+        get_children(stack).select { |c| stack_is_inflection?(c) }
       end
 
       def get_children(location)
         Dir.glob("#{location}/*")
       end
 
-      def catalog_is_node?(catalog)
-        get_children(catalog).any? { |w| w.include?('.yml') } && !catalog_is_template?(catalog)
+      def stack_is_node?(stack)
+        get_children(stack).any? { |w| w.include?('.yml') } && !stack_is_template?(stack)
       end
 
-      def catalog_parent(catalog)
-        tree = catalog.split('/')
+      def stack_parent(stack)
+        tree = stack.split('/')
         tree[-2]
       end
 
-      def catalog_parent_path(catalog)
-        catalog.split("/#{name(catalog)}").first
+      def stack_parent_path(stack)
+        stack.split("/#{name(stack)}").first
       end
 
-      def catalog_is_story?(catalog)
-        %w[yml yaml].include?(story_name(catalog).split('.').last)
+      # def stack_is_story?(stack)
+      #   %w[yml yaml].include?(story_name(stack).split('.').last)
+      # end
+
+      def stack_is_empty?(stack)
+        Dir.glob("#{stack}/**").empty?
       end
 
-      def catalog_is_file?(catalog)
-        File.file?(catalog)
-      end
-
-      def catalog_is_inflection?(catalog)
-        catalog_stories(catalog).empty? && !File.file?(catalog) && !catalog_is_template?(catalog)
-      end
-
-      def catalog_is_empty?(catalog)
-        Dir.glob("#{catalog}/**").empty?
-      end
-
-      def build_paths(catalog, story_paths = nil)
+      def build_paths(stack, story_paths = nil)
         story_paths ||= []
-        story_paths << catalog if catalog_is_story_path?(catalog)
-        get_children(catalog).each { |c| build_paths(c, story_paths) }
+        story_paths << stack if stack_is_story_path?(stack)
+        get_children(stack).each { |c| build_paths(c, story_paths) }
         story_paths
       end
 
@@ -109,8 +144,8 @@ module Roro
         end
       end
 
-      def name(catalog)
-        catalog.split('/').last.split('.').first
+      def name(stack)
+        stack.split('/').last
       end
 
       def file_name(story_file)
@@ -121,13 +156,10 @@ module Roro
         file.split('.').last
       end
 
-      def story_name(catalog)
-        catalog.split('/').last
+      def story_name(stack)
+        stack.split('/').last
       end
 
-      def catalog_stories(catalog)
-        get_children(catalog).select { |c| catalog_is_story?(c) }
-      end
 
       def sentence_from(array)
         array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
@@ -136,6 +168,15 @@ module Roro
       def read_yaml(yaml_file)
         JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
       end
+
+      # def stack_stories(stack)
+      #   get_children(stack).select { |c| stack_is_story?(c) }
+      # end
+      # def stack_stories(stack)
+      #   get_children(stack).select { |c| stack_is_storyfile?(c) }
+      # end
+
+
     end
   end
 end

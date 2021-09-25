@@ -6,7 +6,7 @@ describe AdventureChooser do
   before { skip }
   let(:adventure)    { AdventureChooser.new }
   let(:catalog_root) { "#{Dir.pwd}/test/fixtures/rollable" }
-  let(:catalog_path) { "#{catalog_root}/#{catalog}" }
+  # let(:catalog_path) { "#{catalog_root}/#{catalog}" }
 
   describe '#new' do
     describe 'instance variables' do

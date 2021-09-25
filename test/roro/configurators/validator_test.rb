@@ -3,25 +3,27 @@
 require 'test_helper'
 
 describe 'validate catalog structure' do
-  let(:catalog_path) { "#{catalog_root}/#{catalog}" }
+  let(:error)        { Roro::Error }
   let(:validator)    { Validator.new(catalog_path) }
   let(:validate)     { validator.validate_catalog(catalog_path) }
-  let(:error)        { Roro::Error }
 
   context 'valid when catalog is a' do
+    # Given(:catalog) { nil }
+    # Then { assert_equal 'blah', catalog_path }
+
     describe 'folder and' do
       let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
 
       context 'when template' do
-        Then { assert_valid_catalog('templates') }
+        Then { assert_valid_stack('templates') }
       end
 
       context 'when inflection' do
-        Then { assert_valid_catalog('inflection') }
+        Then { assert_valid_stack('inflection') }
       end
 
       context 'when valid (roro example)' do
-        Then { assert_valid_catalog('roro') }
+        Then { assert_valid_stack('roro') }
       end
     end
 
@@ -29,46 +31,47 @@ describe 'validate catalog structure' do
       let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/story" }
 
       context 'when .keep' do
-        Then { assert_valid_catalog('top_level/.keep') }
+        Then { assert_valid_stack('top_level/.keep') }
       end
 
       context 'when .gitkeep' do
-        Then { assert_valid_catalog('top_level/.gitkeep') }
+        Then { assert_valid_stack('top_level/.gitkeep') }
       end
 
       context 'when .yml extension' do
-        Then { assert_valid_catalog('top_level/yaml.yml') }
+        Then { assert_valid_stack('top_level/yaml.yml') }
       end
 
       context 'when .yaml extension' do
-        Then { assert_valid_catalog('top_level/yaml.yaml') }
+        Then { assert_valid_stack('top_level/yaml.yaml') }
       end
 
       context 'when contains content and' do
         context 'when top level is a hash' do
-          Then { assert_valid_catalog('top_level/hash.yml') }
+          Then { assert_valid_stack('top_level/hash.yml') }
         end
 
         context 'when :preface value is string' do
-          Then { assert_valid_catalog('preface/valid.yml') }
+          Then { assert_valid_stack('preface/valid.yml') }
         end
 
         context 'when :questions value is array of hashes' do
-          Then { assert_valid_catalog('questions/valid.yml') }
+          Then { assert_valid_stack('questions/valid.yml') }
         end
 
         context 'when :actions value is array of strings' do
-          Then { assert_valid_catalog('actions/valid.yml') }
+          Then { assert_valid_stack('actions/valid.yml') }
         end
 
         context 'when :env value is hash of hashes' do
-          Then { assert_valid_catalog('env/valid.yml') }
+          Then { assert_valid_stack('env/valid.yml') }
         end
       end
     end
   end
 
   context 'invalid when catalog is a' do
+    before { skip }
     let(:execute) { validate }
     let(:error_message) { 'Catalog not present' }
 
