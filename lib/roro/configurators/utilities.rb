@@ -6,6 +6,7 @@ module Roro
 
       def stack_type(stack)
         case
+        when stack_is_nil?(stack)
         when stack_is_dotfile?(stack)
           :dotfile
         when stack_is_storyfile?(stack)
@@ -14,6 +15,8 @@ module Roro
           :file
         when stack_is_templates?(stack)
           :templates
+        when stack_is_empty?(stack)
+          :empty
         when stack_is_inflection?(stack)
           :inflection
         when stack_is_stack?(stack)
@@ -24,9 +27,11 @@ module Roro
       end
 
       def stack_is_stack?(stack)
-
+        children = get_children(stack)
+        children.any? do |c|
+          stack_is_inflection?(c) || stack_is_story?(c)
+        end
       end
-
       def stack_is_story?(stack)
         get_children(stack).any? { |c| story_name(stack).eql?(file_name(c)) }
       end
@@ -58,6 +63,10 @@ module Roro
       end
 
       def stack_not_present?(stack)
+        !File.exist?(stack)
+      end
+
+      def stack_is_nil?(stack)
         !File.exist?(stack)
       end
 
