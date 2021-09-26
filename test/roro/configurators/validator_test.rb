@@ -2,20 +2,17 @@
 
 require 'test_helper'
 
-describe 'validate catalog structure' do
-  let(:error)        { Roro::Error }
-  let(:validator)    { Validator.new(catalog_path) }
-  let(:validate)     { validator.validate_catalog(catalog_path) }
+describe 'Validator#validate_stack' do
+  let(:error)     { Roro::Error }
+  let(:validator) { Validator.new }
+  let(:validate)  { validator.validate_stack(stack_path) }
 
-  context 'valid when catalog is a' do
-    # Given(:catalog) { nil }
-    # Then { assert_equal 'blah', catalog_path }
-
-    describe 'folder and' do
-      let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
+  context 'valid when stack is a' do
+    context 'folder and' do
+      let(:stack) { 'stack' }
 
       context 'when template' do
-        Then { assert_valid_stack('templates') }
+        Then { assert_valid_stack('templatddes') }
       end
 
       context 'when inflection' do
@@ -28,7 +25,7 @@ describe 'validate catalog structure' do
     end
 
     describe 'story file and' do
-      let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/story" }
+      let(:stack_root) { "#{Dir.pwd}/test/fixtures/stacks/story" }
 
       context 'when .keep' do
         Then { assert_valid_stack('top_level/.keep') }
@@ -70,7 +67,7 @@ describe 'validate catalog structure' do
     end
   end
 
-  context 'invalid when catalog is a' do
+  context 'invalid when stack is a' do
     before { skip }
     let(:execute) { validate }
     let(:error_message) { 'Catalog not present' }

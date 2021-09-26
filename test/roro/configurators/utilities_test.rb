@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'Configurators::Utilities' do
-  describe '#stackable_type(stack_path' do
+  describe '#stack_type(stack_path' do
     let(:result) { stack_type(stack_path) }
 
     context 'when nonexistent' do

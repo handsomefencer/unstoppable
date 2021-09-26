@@ -16,7 +16,7 @@ describe Configurator do
 
   describe '#choose_adventure' do
     Given(:catalog) { nil }
-    Then { assert_equal 'blah', catalog_path }
+    # Then { assert_equal 'blah', catalog_path }
 
     describe 'must allow developer to choose' do
       # Then { assert_adventure_chosen }
