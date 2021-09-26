@@ -4,11 +4,16 @@ module Roro
   module Configurators
     class Validator
 
+      attr_reader :stack, :structure, :ext_hidden, :ext_story, :ext_permitted
+
       def initialize(catalog = nil, structure = nil)
-        @catalog   = catalog   || Roro::CLI.catalog_root
-        @structure = structure || StructureBuilder.build
-        @error     = Roro::CatalogError
-        @permitted_extensions = %w[yml yaml]
+        @catalog       = catalog   || Roro::CLI.catalog_root
+        @stack         = catalog   || Roro::CLI.catalog_root
+        @structure     = structure || StructureBuilder.build
+        @error         = Roro::CatalogError
+        @ext_story     = %w[yml yaml]
+        @ext_hidden    = %w[.keep .gitkeep]
+        @ext_permitted = @ext_story + @ext_hidden
       end
 
       def validate_catalog(catalog = nil)

@@ -7,11 +7,27 @@ describe 'Validator#validate_stack' do
   let(:validator) { Validator.new }
   let(:validate)  { validator.validate_stack(stack_path) }
 
+  describe '#initialize' do
+    describe '#catalog' do
+      Then { assert_equal Roro::CLI.catalog_root, validator.stack }
+    end
+
+    describe '#permitted_extensions' do
+      Then { assert_equal %w[yml yaml], validator.ext_story }
+      Then { assert_equal %w[.keep .gitkeep], validator.ext_hidden }
+    end
+
+    describe '#structure' do
+      Then { assert_equal Hash, validator.structure.class }
+    end
+  end
+
   context 'valid when stack is a' do
     context 'folder and' do
       let(:stack) { 'stack' }
 
       context 'when template' do
+        focus
         Then { assert_valid_stack('templatddes') }
       end
 
