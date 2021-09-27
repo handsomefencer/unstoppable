@@ -6,57 +6,39 @@ describe 'Configurators::Utilities' do
   describe '#stack_type(stack_path)' do
     let(:result) { stack_type(stack_path) }
 
-    context 'when nonexistent' do
-      When(:result) { stack_type(stack_path(:invalid)) }
-      When(:stack)  { 'nonexistent' }
-      Then { assert_nil result}
-    end
-
-    context 'when file' do
-      When(:result) { stack_type(stack_path(:invalid)) }
-      When(:stack)  { 'ruby.rb' }
-      Then { assert_equal :file, result}
-    end
-
     context 'when dotfile' do
-      When(:stack)  { '.keep' }
+      When(:stack) { '.keep' }
       Then { assert_equal :dotfile, result}
     end
 
     context 'when storyfile' do
-      When(:stack)  { 'stack/story/story.yml' }
+      When(:stack) { 'stack/story/story.yml' }
       Then { assert_equal :storyfile, result}
     end
 
     context 'when templates' do
-      When(:stack)  { 'stack/story/templates' }
+      When(:stack) { 'stack/story/templates' }
       Then { assert_equal :templates, result}
     end
 
     context 'when inflection' do
-      When(:stack)  { 'stack/inflection' }
+      When(:stack) { 'stack/inflection' }
       Then { assert_equal :inflection, result}
     end
 
     context 'when story' do
-      When(:stack)  { 'stack/story' }
+      When(:stack) { 'stack/story' }
       Then { assert_equal :story, result}
-    end
-
-    context 'when empty' do
-      When(:result) { stack_type(stack_path(:invalid)) }
-      When(:stack)  { 'empty' }
-      Then { assert_equal :empty, result}
     end
 
     context 'when stack' do
       context 'has story, inflection and stack' do
-        When(:stack)  { 'stack' }
+        When(:stack) { 'stack' }
         Then { assert_equal :stack, result}
       end
 
       context 'has story' do
-        When(:stack)  { 'stack/stack' }
+        When(:stack) { 'stack/stack' }
         Then { assert_equal :stack, result}
       end
     end
@@ -72,7 +54,7 @@ describe 'Configurators::Utilities' do
 
     context 'when stack is a story file' do
       When(:stack) { 'stacks/story/story.yml' }
-     Then { refute result }
+      Then { refute result }
     end
   end
 

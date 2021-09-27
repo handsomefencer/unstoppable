@@ -1,0 +1,3 @@
+actions:
+  - "@config.smart.env['force'] = true"
+

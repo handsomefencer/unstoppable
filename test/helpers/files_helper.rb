@@ -88,8 +88,9 @@ module Roro
         end
 
         def assert_correct_error
-          returned = assert_raises(error) { execute }
-          assert_match error_message, returned.message
+          expected_error = defined?(error) ? error : Roro::Error
+          returned = assert_raises(expected_error) { execute }
+          assert_match error_msg, returned.message
         end
 
         def with_env_set(options = nil, &block)

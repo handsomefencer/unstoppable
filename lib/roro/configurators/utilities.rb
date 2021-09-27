@@ -6,17 +6,12 @@ module Roro
 
       def stack_type(stack)
         case
-        when stack_is_nil?(stack)
         when stack_is_dotfile?(stack)
           :dotfile
         when stack_is_storyfile?(stack)
           :storyfile
-        when stack_is_file?(stack)
-          :file
         when stack_is_templates?(stack)
           :templates
-        when stack_is_empty?(stack)
-          :empty
         when stack_is_inflection?(stack)
           :inflection
         when stack_is_stack?(stack)
@@ -50,14 +45,19 @@ module Roro
           %w[yml yaml].include?(file_extension(stack))
       end
 
+      def stack_unpermitted?(stack)
+        stack_is_file?(stack) &&
+          !stack_is_storyfile?(stack) &&
+          !stack_is_dotfile?(stack)
+      end
+
       def stack_is_inflection?(stack)
         stack_stories(stack).empty? &&
           !File.file?(stack) &&
-          !stack_is_template?(stack)
+          !stack_is_templates?(stack)
       end
 
-
-      def story_is_empty?(story = nil)
+      def story_is_empty?(story)
         stack_is_storyfile?(story) &&
           !read_yaml(story)
       end
@@ -94,10 +94,6 @@ module Roro
         get_children(stack).select { |c| stack_is_storyfile?(c) }
       end
 
-      def stack_is_template?(stack)
-        stack.split('/').last.match?('templates')
-      end
-
       def stack_is_templates?(stack)
         stack.split('/').last.match?('templates')
       end
@@ -123,12 +119,9 @@ module Roro
         stack.split("/#{name(stack)}").first
       end
 
-      # def stack_is_story?(stack)
-      #   %w[yml yaml].include?(story_name(stack).split('.').last)
-      # end
-
       def stack_is_empty?(stack)
-        Dir.glob("#{stack}/**").empty?
+        !stack_is_file?(stack) &&
+          Dir.glob("#{stack}/**").empty?
       end
 
       def build_paths(stack, story_paths = nil)
@@ -184,8 +177,6 @@ module Roro
       # def stack_stories(stack)
       #   get_children(stack).select { |c| stack_is_storyfile?(c) }
       # end
-
-
     end
   end
 end

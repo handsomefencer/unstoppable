@@ -16,36 +16,104 @@ module Roro
         @ext_permitted = @ext_story + @ext_hidden
       end
 
-      def validate_catalog(catalog = nil)
-        catalog ||= @catalog
+      def base_validate(s)
         case
-        when catalog_not_present?(catalog)
+        when stack_is_nil?(s)
           @msg = 'Catalog not present'
-        when catalog_is_story_file?(catalog)
-          validate_story(catalog)
-        when catalog_is_template?(catalog)
-          return
-        when catalog_is_empty?(catalog)
+        when stack_is_empty?(s)
           @msg = 'Catalog cannot be an empty folder'
-        else
-          get_children(catalog).each { |child| validate_catalog(child) }
+        when stack_unpermitted?(s)
+          @msg = 'Catalog has unpermitted extension'
         end
-        raise(@error, "#{@msg} in #{@catalog}") if @msg
       end
 
-      def validate_story(s)
-        @error = Roro::CatalogError
+      def validate(s)
+        s ||= @stack
+        @stack_root ||= s
+        base_validate(s)
+        case stack_type(s)
+        when :storyfile
+          validate_plot(read_yaml(s))
+        end
+        raise(@error, "#{@msg} in #{s}") if @msg
+      end
+
+      def validate_plot(content, structure = @structure)
         case
-        when story_is_dotfile?(s)
-          return
-        when story_has_unpermitted_extension?(s)
-          @msg = 'Catalog has unpermitted extension'
-        when story_is_empty?(s)
+        when !content
           @msg = 'Story file is empty'
-        else
-          validate_content_structure(read_yaml(s))
+        when content.is_a?(NilClass)
+          @msg = 'Story contains a nil value'
+        when !content.is_a?(structure.class)
+          @msg = "'#{content}' must be an instance of #{structure.class}"
+        when content.is_a?(Array)
+          validate_content_array(content, structure)
+        when content.is_a?(Hash)
+          validate_content_hash(content, structure)
         end
       end
+
+      # def validate_story(s)
+      #   @error = Roro::CatalogError
+      #   case
+      #   when stack_is_dotfile?(s)
+      #     return
+      #   when story_has_unpermitted_extension?(s)
+      #     @msg = 'Catalog has unpermitted extension'
+      #   when story_is_empty?(s)
+      #     @msg = 'Story file is empty'
+      #   # else
+      #   #   validate_content_structure(read_yaml(s))
+      #   end
+      # end
+        def validate_content_structure(content, structure = @structure)
+          case
+          when content.is_a?(NilClass)
+            @msg = 'Story contains a nil value'
+          when !content.is_a?(structure.class)
+            @msg = "'#{content}' must be an instance of #{structure.class}"
+          when content.is_a?(Array)
+            validate_content_array(content, structure)
+          when content.is_a?(Hash)
+            validate_content_hash(content, structure)
+          end
+        end
+
+
+
+      # def validate_stack(catalog = nil)
+      #   catalog ||= @catalog
+      #   @stack_root ||= catalog
+      #   case
+      #   when stack_not_present?(catalog)
+      #     @msg = 'Catalog not present'
+      #   when stack_is_storyfile?(catalog)
+      #     validate_story(catalog)
+      #   when stack_is_templates?(catalog)
+      #     return
+      #   when stack_type(catalog).eql?(:empty)
+      #     @msg = 'Catalog cannot be an empty folder'
+      #   else
+      #     get_children(catalog).each { |child| validate_stack(child) }
+      #   end
+      #   raise(@error, "#{@msg} in #{catalog}") if @msg
+      # end
+
+
+
+      # def validate_story(s)
+      #   @error = Roro::CatalogError
+      #   case
+      #   when stack_is_dotfile?(s)
+      #     return
+      #   when story_has_unpermitted_extension?(s)
+      #     @msg = 'Catalog has unpermitted extension'
+      #   when story_is_empty?(s)
+      #     @msg = 'Story file is empty'
+      #   else
+      #     validate_content_structure(read_yaml(s))
+      #   end
+      # end
 
       def validate_content_structure(content, structure = @structure)
         case
@@ -86,7 +154,7 @@ module Roro
       end
 
       def story_has_unpermitted_extension?(story)
-        !(@permitted_extensions + %w[keep gitkeep]).include?(file_extension(story))
+        !(@ext_permitted).include?(file_extension(story))
       end
 
       def story_has_nil_value?(content)

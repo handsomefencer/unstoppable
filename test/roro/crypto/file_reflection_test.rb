@@ -118,7 +118,7 @@ describe Roro::Crypto::FileReflection do
 
     describe 'when key is not set' do
       let(:error)         { Roro::Crypto::KeyError }
-      let(:error_message) { 'No DUMMY_KEY set' }
+      let(:error_msg) { 'No DUMMY_KEY set' }
 
       Then { assert_correct_error }
     end

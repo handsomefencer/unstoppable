@@ -57,7 +57,7 @@ describe Roro::Crypto::KeyWriter do
 
       context 'when no files matching' do
         let(:error)         { Roro::Crypto::EnvironmentError }
-        let(:error_message) { 'No .env files in ./roro' }
+        let(:error_msg) { 'No .env files in ./roro' }
 
         Then { assert_correct_error }
       end

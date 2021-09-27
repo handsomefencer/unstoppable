@@ -10,10 +10,8 @@ module Minitest
       "#{stack_root}#{append}"
     end
 
-    def assert_valid_stack
-        catalog = "#{catalog_root}/#{node}"
-        validate = validator.validate_catalog(catalog)
-        assert validate
+    def assert_valid_stack(stack)
+      assert_nil validator.validate_stack("#{stack_path}#{"/#{stack}" if stack}")
     end
   end
 end
