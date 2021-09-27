@@ -7,7 +7,7 @@ describe 'Configurators::Utilities' do
     let(:result) { stack_type(stack_path) }
 
     context 'when dotfile' do
-      When(:stack) { '.keep' }
+      When(:stack) { 'story/.keep' }
       Then { assert_equal :dotfile, result}
     end
 
@@ -48,7 +48,7 @@ describe 'Configurators::Utilities' do
     let(:result) { stack_is_file?(stack_path) }
 
     context 'when stack is a dotfile' do
-      When(:stack) { '.keep' }
+      When(:stack) { 'story/.keep' }
       Then { assert result }
     end
 
@@ -62,7 +62,7 @@ describe 'Configurators::Utilities' do
     let(:result) { stack_is_dotfile?(stack_path) }
 
     context 'when stack is a dotfile' do
-      When(:stack) { '.keep' }
+      When(:stack) { 'story/.keep' }
       Then { assert result }
     end
 
@@ -95,7 +95,7 @@ describe 'Configurators::Utilities' do
     end
 
     context 'when stack is a dotfile' do
-      When(:stack) { '.keep' }
+      When(:stack) { 'story/.keep' }
       Then { refute result }
     end
   end

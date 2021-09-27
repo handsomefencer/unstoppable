@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Validator#validate_stack' do
+describe Validator do
   let(:validator) { Validator.new }
   let(:validate)  { validator.validate_stack(stack_path) }
 
@@ -21,249 +21,238 @@ describe 'Validator#validate_stack' do
     end
   end
 
-  # context 'valid when stack is a' do
-  #   before { skip }
-  #   context 'folder and' do
-  #     context 'when template' do
-  #       Then { assert_valid_stack('stack/story/templates') }
-  #     end
-  #
-  #     context 'when inflection' do
-  #       Then { assert_valid_stack('stack/inflection') }
-  #     end
-  #
-  #     context 'when valid (roro example)' do
-  #       Then { assert_valid_stack('roro') }
-  #     end
-  #   end
-  #
-  #   describe 'story file and' do
-  #     let(:stack_root) { "#{Dir.pwd}/test/fixtures/stacks/story" }
-  #
-  #     context 'when .keep' do
-  #       Then { assert_valid_stack('top_level/.keep') }
-  #     end
-  #
-  #     context 'when .gitkeep' do
-  #       Then { assert_valid_stack('top_level/.gitkeep') }
-  #     end
-  #
-  #     context 'when .yml extension' do
-  #       Then { assert_valid_stack('top_level/yaml.yml') }
-  #     end
-  #
-  #     context 'when .yaml extension' do
-  #       Then { assert_valid_stack('top_level/yaml.yaml') }
-  #     end
-  #
-  #     context 'when contains content and' do
-  #       context 'when top level is a hash' do
-  #         Then { assert_valid_stack('top_level/hash.yml') }
-  #       end
-  #
-  #       context 'when :preface value is string' do
-  #         Then { assert_valid_stack('preface/valid.yml') }
-  #       end
-  #
-  #       context 'when :questions value is array of hashes' do
-  #         Then { assert_valid_stack('questions/valid.yml') }
-  #       end
-  #
-  #       context 'when :actions value is array of strings' do
-  #         Then { assert_valid_stack('actions/valid.yml') }
-  #       end
-  #
-  #       context 'when :env value is hash of hashes' do
-  #         Then { assert_valid_stack('env/valid.yml') }
-  #       end
-  #     end
-  #   end
-  # end
+  describe '#validate' do
+    context 'when stack is valid' do
+      context 'templates folder' do
+        Then { assert_valid_stack('templates') }
+      end
 
-  context 'invalid' do
-    let(:execute)   { validator.validate(stack_path(:invalid)) }
-    let(:error_msg) { 'Catalog not present' }
+      context 'inflection folder' do
+        Then { assert_valid_stack('inflection') }
+      end
 
-    context 'when stack is a nonexistent file when extension is' do
-      context 'permitted' do
-        When(:stack) { 'nonexistent.yml' }
+      context 'nested stack folder' do
+        Then { assert_valid_stack('stack') }
+      end
+
+      context 'hidden file' do
+        Then { assert_valid_stack('story/.keep') }
+        And  { assert_valid_stack('story/.gitkeep') }
+      end
+
+      context 'story file' do
+        Then { assert_valid_stack('story/yaml.yml') }
+        And  { assert_valid_stack('story/yaml.yaml') }
+      end
+
+      context 'story file with plot' do
+        context 'when top level is a hash' do
+          Then { assert_valid_stack('story/hash.yml') }
+        end
+
+        context 'when :preface returns a string' do
+          Then { assert_valid_stack('story/valid_preface.yml') }
+        end
+
+        context 'when :questions returns an array of hashes' do
+          Then { assert_valid_stack('story/valid_questions.yml') }
+        end
+
+        context 'when :actions returns an array of strings' do
+          Then { assert_valid_stack('story/valid_actions.yml') }
+        end
+
+        context 'when :env returns a hash of hashes' do
+          Then { assert_valid_stack('story/valid_env.yml') }
+        end
+      end
+    end
+
+    context 'when stack is invalid' do
+      let(:execute)   { validator.validate(stack_path(:invalid)) }
+      let(:error_msg) { 'Catalog not present' }
+
+      context 'nonexistent when' do
+        context 'file with permitted extension' do
+          When(:stack) { 'nonexistent.yml' }
+          Then { assert_correct_error }
+        end
+
+        context 'file with an unpermitted extension' do
+          When(:stack) { 'nonexistent.non' }
+          Then { assert_correct_error }
+        end
+
+        context 'folder' do
+          When(:stack) { 'nonexistent' }
+          Then { assert_correct_error }
+        end
+      end
+
+      context 'empty folder' do
+        When(:stack)     { 'empty' }
+        When(:error_msg) { 'Catalog cannot be an empty folder' }
         Then { assert_correct_error }
       end
 
-      context 'not permitted' do
-        When(:stack) { 'nonexistent.non' }
-        Then { assert_correct_error }
-      end
-    end
-
-    context 'when stack is a nonexistent folder' do
-      When(:stack) { 'nonexistent' }
-      Then { assert_correct_error }
-    end
-
-    context 'when stack is an empty folder' do
-      When(:stack)     { 'empty' }
-      When(:error_msg) { 'Catalog cannot be an empty folder' }
-      Then { assert_correct_error }
-    end
-
-    context 'when stack is a file with an unpermitted extension' do
-      When(:error_msg) { 'Catalog has unpermitted extension' }
-      When(:stack) { 'ruby.rb' }
-      Then { assert_correct_error }
-    end
-
-    describe 'when stack is a storyfile' do
-      context 'when empty' do
-        When(:error_msg) { 'Story file is empty' }
-        When(:stack)     { 'story_without_content/story_without_content.yml' }
+      context 'a file with an unpermitted extension' do
+        When(:error_msg) { 'Catalog has unpermitted extension' }
+        When(:stack) { 'ruby.rb' }
         Then { assert_correct_error }
       end
 
-      context 'when top level content is a' do
-        let(:error_msg) { 'must be an instance of Hash' }
-
-        context 'string' do
-          When(:stack) { 'top_level/string.yml' }
+      context 'a storyfile when' do
+        context 'content empty' do
+          When(:error_msg) { 'Story file is empty' }
+          When(:stack)     { 'story_without_content/story_without_content.yml' }
           Then { assert_correct_error }
         end
 
-        context 'array' do
-          When(:stack) { 'top_level/array.yml' }
-          Then { assert_correct_error }
-        end
-      end
+        context 'top level content is' do
+          let(:error_msg) { 'must be an instance of Hash' }
 
-      context 'when :actions value is' do
-        context 'nil' do
-          When(:error_msg) { 'Value for :actions must not be nil' }
-          When(:stack)     { 'actions/nil_value.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'a hash' do
-          When(:error_msg) { 'must be an instance of Array' }
-          When(:stack)     { 'actions/hash.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'a string' do
-          When(:error_msg) { 'must be an instance of Array' }
-          When(:stack)     { 'actions/string.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'an empty array' do
-          When(:error_msg) { 'Story contains an empty array' }
-          When(:stack  )   { 'actions/empty_array.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'an array of' do
-          let(:error_msg) { 'must be an instance of String' }
-
-          context 'hashes' do
-            When(:stack) { 'actions/array_of_hashes.yml' }
+          context 'a string' do
+            When(:stack) { 'top_level/string.yml' }
             Then { assert_correct_error }
           end
 
-          context 'arrays' do
-            When(:stack) { 'actions/array_of_arrays.yml' }
+          context 'an array' do
+            When(:stack) { 'top_level/array.yml' }
             Then { assert_correct_error }
           end
         end
-      end
 
-      context 'when :env value is' do
-        let(:error_msg) { 'must be an instance of Hash' }
-
-        context 'nil' do
-          When(:error_msg) { 'Value for :actions must not be nil' }
-          When(:stack)     { 'actions/nil_value.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'a string' do
-          When(:stack) { 'env/string.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'an array' do
-          When(:stack) { 'env/array.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'a hash of arrays' do
-          When(:stack) { 'env/hash_of_arrays.yml' }
-          Then { assert_correct_error }
-        end
-      end
-
-      context 'when :preface when value is' do
-        context 'nil' do
-          When(:error_msg) { 'Value for :preface must not be nil' }
-          When(:stack)     { 'preface/nil_value.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'an array' do
-          When(:error_msg) { 'must be an instance of String' }
-          When(:stack)     { 'preface/array.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'a hash' do
-          When(:error_msg) { 'must be an instance of String' }
-          When(:stack) { 'preface/hash.yml' }
-          Then { assert_correct_error }
-        end
-      end
-
-      context 'when :questions when value is' do
-        context 'nil' do
-          When(:error_msg) { 'must not be nil' }
-          When(:stack)     { 'questions/nil_value.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'a string' do
-          When(:error_msg) { 'must be an instance of Array' }
-          When(:stack)     { 'questions/string.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'a hash' do
-          When(:error_msg) { 'must be an instance of Array' }
-          When(:stack)     { 'questions/hash.yml' }
-          Then { assert_correct_error }
-        end
-
-        context 'an array' do
-          context 'of strings' do
-            When(:error_msg) { 'must be an instance of Hash' }
-            When(:stack)     { 'questions/array_of_strings.yml' }
+        context ':actions returns' do
+          context 'nil' do
+            When(:error_msg) { 'Value for :actions must not be nil' }
+            When(:stack)     { 'actions/nil_value.yml' }
             Then { assert_correct_error }
           end
 
-          context 'of arrays' do
-            When(:error_msg) { 'must be an instance of Hash' }
-            When(:stack)     { 'questions/array_of_arrays.yml' }
+          context 'a hash' do
+            When(:error_msg) { 'must be an instance of Array' }
+            When(:stack)     { 'actions/hash.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'a string' do
+            When(:error_msg) { 'must be an instance of Array' }
+            When(:stack)     { 'actions/string.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'an empty array' do
+            When(:error_msg) { 'Story contains an empty array' }
+            When(:stack  )   { 'actions/empty_array.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'an array of' do
+            let(:error_msg) { 'must be an instance of String' }
+
+            context 'hashes' do
+              When(:stack) { 'actions/array_of_hashes.yml' }
+              Then { assert_correct_error }
+            end
+
+            context 'arrays' do
+              When(:stack) { 'actions/array_of_arrays.yml' }
+              Then { assert_correct_error }
+            end
+          end
+        end
+
+        context ':env returns' do
+          let(:error_msg) { 'must be an instance of Hash' }
+
+          context 'nil' do
+            When(:error_msg) { 'Value for :actions must not be nil' }
+            When(:stack)     { 'actions/nil_value.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'a string' do
+            When(:stack) { 'env/string.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'an array' do
+            When(:stack) { 'env/array.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'a hash of arrays' do
+            When(:stack) { 'env/hash_of_arrays.yml' }
             Then { assert_correct_error }
           end
         end
-      end
 
-      context 'with unpermitted keys' do
-        let(:error_msg) { 'not in permitted' }
+        context ':preface returns' do
+          context 'nil' do
+            When(:error_msg) { 'Value for :preface must not be nil' }
+            When(:stack)     { 'preface/nil_value.yml' }
+            Then { assert_correct_error }
+          end
 
-        context 'when top level' do
-          When(:stack) { 'top_level/unpermitted_keys.yml' }
-          Then { assert_correct_error }
+          context 'an array' do
+            When(:error_msg) { 'must be an instance of String' }
+            When(:stack)     { 'preface/array.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'a hash' do
+            When(:error_msg) { 'must be an instance of String' }
+            When(:stack) { 'preface/hash.yml' }
+            Then { assert_correct_error }
+          end
         end
 
-        context 'when :questions' do
-          When(:stack) { 'questions/unpermitted_keys.yml' }
-          Then { assert_correct_error }
+        context ':questions returns' do
+          context 'nil' do
+            When(:error_msg) { 'must not be nil' }
+            When(:stack)     { 'questions/nil_value.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'a string' do
+            When(:error_msg) { 'must be an instance of Array' }
+            When(:stack)     { 'questions/string.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'a hash' do
+            When(:error_msg) { 'must be an instance of Array' }
+            When(:stack)     { 'questions/hash.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'an array' do
+            context 'of strings' do
+              When(:error_msg) { 'must be an instance of Hash' }
+              When(:stack)     { 'questions/array_of_strings.yml' }
+              Then { assert_correct_error }
+            end
+
+            context 'of arrays' do
+              When(:error_msg) { 'must be an instance of Hash' }
+              When(:stack)     { 'questions/array_of_arrays.yml' }
+              Then { assert_correct_error }
+            end
+          end
+        end
+
+        context 'unpermitted keys' do
+          let(:error_msg) { 'not in permitted' }
+
+          context 'when top level' do
+            When(:stack) { 'top_level/unpermitted_keys.yml' }
+            Then { assert_correct_error }
+          end
+
+          context 'when :questions' do
+            When(:stack) { 'questions/unpermitted_keys.yml' }
+            Then { assert_correct_error }
+          end
         end
       end
     end

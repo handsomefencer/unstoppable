@@ -11,7 +11,7 @@ module Minitest
     end
 
     def assert_valid_stack(stack)
-      assert_nil validator.validate_stack("#{stack_path}#{"/#{stack}" if stack}")
+      assert_nil validator.validate("#{stack_path}#{"/#{stack}" if stack}")
     end
   end
 end
