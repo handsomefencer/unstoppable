@@ -63,7 +63,6 @@ describe Validator do
         end
 
         context 'when :env returns a hash of hashes' do
-          focus
           Then { assert_valid_stack('story/valid_env.yml') }
         end
       end

@@ -27,37 +27,52 @@ module Roro
         end
       end
 
-      def validate(s)
-        s ||= @stack
-        @stack_root ||= s
-        base_validate(s)
-        case stack_type(s)
+      def validate(stack)
+        stack ||= @stack
+        @stack_root ||= stack
+        base_validate(stack)
+        case stack_type(stack)
         when :storyfile
-          validate_plot(read_yaml(s))
+          validate_plot(read_yaml(stack))
         end
-        raise(@error, "#{@msg} in #{s}") if @msg
+        raise(@error, "#{@msg} in #{stack}") if @msg
       end
 
-      def validate_plot(content, structure = @structure)
-        c = content
-        s = structure
+      def validate_plot(plot, structure = @structure)
+        case status(plot, structure)
+        when :plot_empty
+          @msg = 'Story file is empty'
+        when :unexpected_class
+          @msg = "'#{plot}' must be an instance of #{structure.class}"
+        when :array_empty
+          @msg = 'Story contains an empty array'
+        when :unpermitted_keys
+          @msg = "#{@unpermitted} not in permitted keys: #{@permitted}"
+        when :hash_value_nil
+          @msg = "Value for :#{plot.key(nil)} must not be nil"
+        when :array_valid
+          plot.each { |item| validate_plot(item, structure[0]) }
+        when :hash_expecting_values
+          plot.each { |k, v| validate_plot(v, structure[k]) }
+        end
+      end
+
+      def status(c, s)
         case
         when !c
-          @msg = 'Story file is empty'
-        when c.is_a?(NilClass)
-          @msg = 'Story contains a nil value'
+          :plot_empty
         when !c.is_a?(s.class)
-          @msg = "'#{c}' must be an instance of #{s.class}"
+          :unexpected_class
         when c.is_a?(Array) && c.any?(nil)
-          @msg = 'Story contains an empty array'
-        when c.is_a?(Array)
-          c.each { |item| validate_plot(item, s[0]) }
+          :array_empty
         when c.is_a?(Hash) && story_has_unpermitted_keys?(c, s)
-          @msg = "#{@unpermitted} not in permitted keys: #{@permitted}"
+          :unpermitted_keys
         when c.is_a?(Hash) && story_has_nil_value?(c)
-          @msg = "Value for :#{c.key(nil)} must not be nil"
-          else
-          c.each { |k, v| validate_plot(v, structure[k]) }
+          :hash_value_nil
+        when c.is_a?(Hash) && s.keys&.any?
+          :hash_expecting_values
+        when c.is_a?(Array)
+          :array_valid
         end
       end
 
