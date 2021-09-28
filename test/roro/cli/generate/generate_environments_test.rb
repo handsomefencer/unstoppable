@@ -6,7 +6,7 @@ describe 'Roro::CLI#generate_environments' do
   let(:subject)   { Roro::CLI.new }
   let(:workbench) { 'crypto/roro' }
   let(:envs)      { nil }
-  let(:generate)  { suppress_output { subject.generate_environments(*envs) } }
+  let(:generate)  { quiet { subject.generate_environments(*envs) } }
 
   context 'no environments supplied must generate default .env files' do
     before { generate }

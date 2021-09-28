@@ -6,7 +6,7 @@ describe 'Roro::CLI#generate_exposed' do
   let(:subject)   { Roro::CLI.new }
   let(:workbench) { 'roro' }
   let(:envs)      { ['dummy'] }
-  let(:generate)  { suppress_output { subject.generate_exposed(*envs) } }
+  let(:generate)  { quiet { subject.generate_exposed(*envs) } }
 
   context 'when one environment specified' do
 

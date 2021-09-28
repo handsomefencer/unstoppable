@@ -23,7 +23,7 @@ module Minitest
         assert_question_asked(question, inflection_options.key(item[1])) }
     end
 
-    def suppress_output
+    def quiet
       original_stderr = $stderr.clone
       original_stdout = $stdout.clone
       $stderr.reopen(File.new('/dev/null', 'w'))

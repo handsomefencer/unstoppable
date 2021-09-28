@@ -9,44 +9,41 @@ describe Roro::Crypto::FileReflection do
   let(:workbench) { 'crypto/roro' }
   let(:directory) { 'roro' }
   let(:pattern)   { '.env' }
-  let(:execute)   { subject.source_files directory, pattern }
 
   describe ':source_files(directory, pattern' do
-    context 'when no files match the pattern' do
+    let(:source_files) { quiet { subject.source_files directory, pattern } }
 
-      Then { assert_equal execute, [] }
+    context 'when no files match the pattern' do
+      Then { assert_equal source_files, [] }
     end
 
     context 'when the pattern is .env.enc' do
-      let(:pattern) { '.env.enc' }
-
+      When(:pattern)  { '.env.enc' }
+      When(:expected) { 'roro/env/dummy.env.enc' }
       Given { insert_dummy_env_enc }
-      Then  { assert_includes execute, 'roro/env/dummy.env.enc' }
+      Then  { assert_includes source_files, expected }
     end
 
     context 'when a file matches the pattern' do
-
       Given { insert_dummy }
-      Then  { assert_includes execute, 'roro/env/dummy.env' }
+      Then  { assert_includes source_files, 'roro/env/dummy.env' }
     end
 
     context 'when a file is nested two levels deep' do
-
-      Given { insert_dummy 'roro/containers/backend/env/dummy.env' }
-      Then  { assert_includes execute, 'roro/containers/backend/env/dummy.env' }
+      When(:expected) { 'roro/containers/backend/env/dummy.env' }
+      Given { insert_dummy expected }
+      Then  { assert_includes source_files, expected }
     end
 
     context 'when nested three levels deep' do
-
       Given { insert_dummy 'roro/containers/backend/env/dummy.env' }
-      Then  { assert_includes execute, 'roro/containers/backend/env/dummy.env' }
+      Then  { assert_includes source_files, 'roro/containers/backend/env/dummy.env' }
     end
 
     context 'when pattern contains regex' do
-      let(:pattern) { 'dummy*.env' }
-
+      When(:pattern) { 'dummy*.env' }
       Given { insert_dummy 'roro/env/dummy.subenv.env' }
-      Then  { assert_includes execute, 'roro/env/dummy.subenv.env' }
+      Then  { assert_includes source_files, 'roro/env/dummy.subenv.env' }
     end
   end
 
@@ -55,37 +52,31 @@ describe Roro::Crypto::FileReflection do
     let(:extension) { '.env' }
 
     context 'when no file matches extension' do
-
       Then { assert_raises(Roro::Crypto::EnvironmentError) { execute } }
     end
 
     context 'when extension is .env.enc' do
-      let(:extension) { '.env.enc' }
-
+      When(:extension) { '.env.enc' }
       Given { insert_dummy_env_enc }
       Then  { assert_includes execute, 'dummy' }
     end
 
     context 'when extension is .env' do
-
       Given { insert_dummy }
       Then  { assert_includes execute, 'dummy' }
     end
 
     context 'when file is nested deeply' do
-
       Given { insert_dummy 'roro/containers/backend/env/dummy.env' }
       Then  { assert_includes execute, 'dummy' }
     end
 
     context 'when file is a subenv' do
-
       Given { insert_dummy 'roro/env/dummy.subenv.env' }
       Then  { assert_includes execute, 'dummy' }
     end
 
     context 'when files are mixed and nested' do
-
       Given { insert_dummy 'roro/containers/backend/dummy.subenv.env' }
       Given { insert_dummy 'roro/env/smart.env' }
       Then  { assert_includes execute, 'dummy' }
@@ -97,13 +88,11 @@ describe Roro::Crypto::FileReflection do
       let(:extension) { '.key' }
 
       context 'when one key' do
-
         Given { insert_dummy_key }
         Then  { assert_includes execute, 'dummy' }
       end
 
       context 'when multiple keys' do
-
         Given { insert_dummy_key }
         Given { insert_dummy_key 'smart.key' }
         Then  { assert_equal (%w[dummy smart] & execute), %w[dummy smart] }
@@ -119,23 +108,19 @@ describe Roro::Crypto::FileReflection do
     describe 'when key is not set' do
       let(:error)         { Roro::Crypto::KeyError }
       let(:error_msg) { 'No DUMMY_KEY set' }
-
       Then { assert_correct_error }
     end
 
     context 'when key is set in a key file' do
-
       Given { insert_dummy_key }
       Then  { assert_equal execute, dummy_key }
     end
 
     context 'when key is set in ENV' do
-
       Then  { with_env_set { assert_equal execute, var_from_ENV } }
     end
 
     context 'when key is set in a key file and an environment file' do
-
       Given { insert_dummy_key }
       Then  { with_env_set { assert_equal execute, var_from_ENV } }
     end

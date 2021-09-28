@@ -2,39 +2,36 @@
 
 require 'test_helper'
 
-describe Roro::Crypto::Exposer do
-  let(:subject)      { Roro::Crypto::Exposer.new }
-  let(:workbench)    { 'crypto/roro' }
-  let(:directory)    { './roro' }
-  let(:env)  { 'dummy' }
-  let(:envs) { [env] }
-  let(:key) { dummy_key }
+describe 'Roro::Crypto::Exposer.new' do
+  let(:subject)   { Roro::Crypto::Exposer.new }
+  let(:workbench) { 'crypto/roro' }
+  let(:directory) { './roro' }
+  let(:env)       { 'dummy' }
+  let(:envs)      { [env] }
+  let(:key)       { dummy_key }
 
   describe '#expose_file(file, key)' do
     Given { insert_dummy_env_enc }
-    Given { suppress_output { subject.expose_file('roro/env/dummy.env.enc', key) } }
+    Given { quiet { subject.expose_file('roro/env/dummy.env.enc', key) } }
     Then  { assert_file 'roro/env/dummy.env', /DATABASE_HOST/ }
   end
 
   describe '#expose(envs, dir, ext)' do
-    let(:execute) { subject.expose envs, directory, 'env.enc' }
+    let(:execute) { quiet { subject.expose envs, directory, 'env.enc' } }
 
     context 'when no environments supplied and' do
       let(:envs) { [] }
 
       context 'when no exposeable files and no key' do
-
         Then { assert_raises(Roro::Crypto::EnvironmentError) { execute } }
       end
 
       context 'when exposeable files and no key' do
-
         Given { insert_dummy_env_enc }
         Then  { assert_raises(Roro::Crypto::KeyError) { execute } }
       end
 
       context 'when a key and when matching exposeable' do
-
         Given { insert_dummy_key }
 
         context 'exists' do

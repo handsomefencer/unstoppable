@@ -7,7 +7,7 @@ describe 'Roro::CLI#generate_containers' do
   let(:workbench)            { 'roro' }
   let(:default_apps)         { %w[backend database frontend] }
   let(:containers)           { nil }
-  let(:generate) { suppress_output { subject.generate_containers(*containers) } }
+  let(:generate) { quiet { subject.generate_containers(*containers) } }
 
   describe 'when non-directory sibling exists in workbench' do
 

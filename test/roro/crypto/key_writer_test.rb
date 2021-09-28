@@ -3,51 +3,45 @@
 require 'test_helper'
 
 describe Roro::Crypto::KeyWriter do
-  let(:subject)   { Roro::Crypto::KeyWriter.new }
   let(:workbench) { 'crypto/roro' }
+  let(:subject)   { Roro::Crypto::KeyWriter.new }
 
   describe '#write_keyfile(environment)' do
-
-    Given { subject.write_keyfile 'dummy' }
+    Given { quiet { subject.write_keyfile 'dummy' } }
     Then  { assert_file 'roro/keys/dummy.key', /=/ }
   end
 
   describe '#write_keyfiles(environments, directory, extension' do
-    let(:execute) { subject.write_keyfiles environments, './roro', '.env' }
+    let(:execute) { quiet { subject.write_keyfiles envs, './roro', '.env' } }
 
     context 'when no environments supplied and' do
-      let(:environments) { [] }
+      let(:envs) { [] }
 
       context 'when file matches extension' do
-
         Given { insert_dummy }
         Given { execute }
         Then  { assert_file 'roro/keys/dummy.key' }
       end
 
       context 'when file nested deeply' do
-
         Given { insert_dummy 'roro/containers/dummy.smart.env' }
         Given { execute }
-        Then { assert_file 'roro/keys/dummy.key' }
+        Then  { assert_file 'roro/keys/dummy.key' }
       end
 
       context 'when file is subenv' do
-
         Given { insert_dummy 'roro/dummy.subenv.smart.env' }
         Given { execute }
         Then  { assert_file 'roro/keys/dummy.key' }
       end
 
       context 'when file is nested subenv' do
-
         Given { insert_dummy 'roro/containers/dummy.subenv.smart.env' }
         Given { execute }
         Then  { assert_file 'roro/keys/dummy.key' }
       end
 
       context 'when multiple files' do
-
         Given { insert_dummy }
         Given { insert_dummy('roro/containers/stupid.stupidenv.smart.env') }
         Given { execute }
@@ -56,25 +50,21 @@ describe Roro::Crypto::KeyWriter do
       end
 
       context 'when no files matching' do
-        let(:error)         { Roro::Crypto::EnvironmentError }
-        let(:error_msg) { 'No .env files in ./roro' }
-
+        When(:error)     { Roro::Crypto::EnvironmentError }
+        When(:error_msg) { 'No .env files in ./roro' }
         Then { assert_correct_error }
       end
     end
 
     context 'when one environment supplied' do
-      let(:environments) { ['dummy'] }
-
+      When(:envs) { ['dummy'] }
       Given { execute }
       Then  { assert_file 'roro/keys/dummy.key' }
     end
 
     context 'when multiple environments supplied' do
-      let(:environments) { %w[dummy smart stupid] }
-
       context 'when no files match the pattern' do
-
+        When(:envs) { %w[dummy smart stupid] }
         Given { execute }
         Then  { assert_file 'roro/keys/dummy.key' }
         And   { assert_file 'roro/keys/smart.key' }

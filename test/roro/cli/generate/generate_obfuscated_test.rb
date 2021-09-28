@@ -6,7 +6,7 @@ describe 'Roro::CLI#generate_obfuscated' do
   let(:subject)   { Roro::CLI.new }
   let(:workbench) { 'roro' }
   let(:envs) { [] }
-  let(:generate) { suppress_output { subject.generate_obfuscated(*envs) } }
+  let(:generate) { quiet { subject.generate_obfuscated(*envs) } }
 
   context 'when no environments supplied' do
     let(:error) { Roro::Crypto::EnvironmentError }
