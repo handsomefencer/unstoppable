@@ -10,7 +10,6 @@ module Roro
         case
         when args[:inflection]
           @inflection = args[:inflection]
-          build_from_inflection
         end
       end
 
@@ -24,7 +23,7 @@ module Roro
       def inflection_prompt
         prompt = 'Please choose from these'
         collection = name(@inflection).gsub('_', ' ') + "s:\n"
-        [prompt, catalog_parent(@inflection), collection].join(' ')
+        [prompt, stack_parent(@inflection), collection].join(' ')
       end
 
       def inflection_options

@@ -86,6 +86,7 @@ module Roro
         get_children(stack).any? { |c| stack_is_inflection?(c) }
       end
 
+
       def story_paths(stack)
         get_children(stack).select { |c| stack_is_story_path?(c) }
       end
