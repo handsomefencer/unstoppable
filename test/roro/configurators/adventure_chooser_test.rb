@@ -20,7 +20,16 @@ describe AdventureChooser do
   describe '#build_itinerary' do
     let(:inflections) { [] }
     let(:itinerary)   { adventure.build_itinerary(stack_path) }
-    let(:stack)       { 'inflection' }
+
+    context 'when stack is story' do
+      When(:stack) { 'story' }
+      Then { assert_empty itinerary }
+    end
+
+    context 'when stack is storyfile' do
+      When(:stack) { 'story/story.yml' }
+      Then { assert_empty itinerary }
+    end
 
     context 'when stack has no inflections' do
       When(:stack) { 'stack/story' }
@@ -28,15 +37,21 @@ describe AdventureChooser do
     end
 
     context 'when stack is inflection' do
-      context 'story2' do
-        Given { inflections << %w[inflection story2] }
-        Given { assert_inflections(inflections) }
-        # Then  { assert_file_match_in('inflection/story2', itinerary) }
-      end
+      When(:stack) { 'stacks' }
+      Then { assert_empty itinerary }
     end
 
     context 'when stack is stack' do
-      let(:stack) { 'stack' }
+      When(:stack) { 'stack' }
+
+      context 'story2' do
+        Given { inflections << %w[stack/stacks_1 stacks_1] }
+        Given { assert_inflections(inflections) }
+        # focus
+        # Then  { assert_file_match_in('stacks/story2', itinerary) }
+        # focus
+        # Then  { assert_file_match_in('stacks/story2', itinerary) }
+      end
 
       context 'story2' do
         Given { inflections << %w[stack/inflection/stacks_1 stacks_1] }
