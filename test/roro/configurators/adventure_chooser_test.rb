@@ -17,6 +17,18 @@ describe AdventureChooser do
     end
   end
 
+  describe 'experiment' do
+    When(:stack) { 'stack/stack/plots' }
+    Then do
+      string_io = StringIO.new
+      string_io.puts '1'
+      string_io.rewind
+      adventure.build_itinerary(stack_path)
+      $stdin = string_io
+      # assert_equal 'blah', adventure.itinerary
+    end
+  end
+
   describe '#build_itinerary' do
     let(:inflections) { [] }
     let(:itinerary)   { adventure.build_itinerary(stack_path) }

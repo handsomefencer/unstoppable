@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'stringio'
 
 describe QuestionBuilder do
   let(:options) { { inflection: stack_path } }

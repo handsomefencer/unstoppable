@@ -3,10 +3,10 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_exposed' do
-  let(:subject)      { Roro::CLI.new }
-  let(:workbench)    { 'roro' }
-  let(:environments) { ['dummy'] }
-  let(:generate)     { subject.generate_exposed(*environments) }
+  let(:subject)   { Roro::CLI.new }
+  let(:workbench) { 'roro' }
+  let(:envs)      { ['dummy'] }
+  let(:generate)  { suppress_output { subject.generate_exposed(*envs) } }
 
   context 'when one environment specified' do
 
@@ -14,6 +14,7 @@ describe 'Roro::CLI#generate_exposed' do
     Given { insert_dummy_env_enc 'roro/env/smart.env.enc' }
 
     describe 'must only expose matching files' do
+
       Given { insert_dummy_key }
       Given { insert_dummy_key 'smart.key' }
       Given { generate }
@@ -25,12 +26,8 @@ describe 'Roro::CLI#generate_exposed' do
       let(:var_from_ENV) { dummy_key }
 
       describe 'expose one environment' do
-        Then do
-          with_env_set do
-            generate
-            assert_file 'roro/env/dummy.env'
-          end
-        end
+        Given { with_env_set { generate } }
+        Then  { assert_file 'roro/env/dummy.env' }
       end
     end
   end

@@ -4,9 +4,9 @@ require 'test_helper'
 
 describe Roro::Crypto::Cipher do
   let(:subject)   { Roro::Crypto::Cipher.new }
-  let(:key)       { subject.generate_key }
-  let(:encrypted) { subject.encrypt(plaintext, key) }
-  let(:decrypted) { subject.decrypt(encrypted, key) }
+  let(:key)       { suppress_output { subject.generate_key } }
+  let(:encrypted) { suppress_output { subject.encrypt(plaintext, key) } }
+  let(:decrypted) { suppress_output { subject.decrypt(encrypted, key) } }
   let(:plaintext) { 'The Quick Brown Fox' }
 
   describe '#generate_key' do

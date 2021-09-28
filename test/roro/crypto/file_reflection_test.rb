@@ -106,7 +106,7 @@ describe Roro::Crypto::FileReflection do
 
         Given { insert_dummy_key }
         Given { insert_dummy_key 'smart.key' }
-        Then  { assert_equal execute.to_set, %w[dummy smart].to_set }
+        Then  { assert_equal (%w[dummy smart] & execute), %w[dummy smart] }
       end
     end
   end
