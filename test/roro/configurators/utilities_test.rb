@@ -130,17 +130,17 @@ describe 'Configurators::Utilities' do
     end
   end
 
-  describe '#get_children(stack)' do
-    let(:children) { get_children(stack_path) }
+  describe '#children(stack)' do
+    let(:result) { children(stack_path) }
 
-    context 'when directory has a file and a templates folder' do
+    context 'when directory has a file' do
       When(:stack) { 'stack/story'}
-      Then { assert_equal 2, children.size }
+      Then { assert_equal 1, result.size }
     end
 
     context 'when directory has several folders' do
       When(:stack) { 'stack'}
-      Then { assert_equal 4, children.size }
+      Then { assert_equal 4, result.size }
     end
   end
 

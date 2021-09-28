@@ -24,16 +24,29 @@ module Roro
           @msg = 'Catalog cannot be an empty folder'
         when stack_unpermitted?(s)
           @msg = 'Catalog has unpermitted extension'
+        when stack_unrecognized?(s)
+          @msg = 'Catalog must be a story, a stack, or an inflection'
         end
+      end
+
+      def stack_unrecognized?(stack)
+        stack_type(stack).nil?
       end
 
       def validate(stack)
         stack ||= @stack
         @stack_root ||= stack
         base_validate(stack)
+        getsome = stack_type(stack)
         case stack_type(stack)
         when :storyfile
           validate_plot(read_yaml(stack))
+        when :story
+          children(stack).each { |c| validate(c) }
+        when :inflection
+          children(stack).each { |c| validate(c) }
+        when :stack
+          children(stack).each { |c| validate(c) }
         end
         raise(@error, "#{@msg} in #{stack}") if @msg
       end

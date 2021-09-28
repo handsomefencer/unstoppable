@@ -77,14 +77,7 @@ module Minitest
         .returns(manifest.map {|i| "#{Dir.pwd}/lib/roro/catalog/#{i}"})
     end
 
-    def assert_inflections(inflections)
-      inflections.each { |item|
-        inflection_path = "#{catalog_path}#{"/#{item[0]}" unless item[0].nil?}"
-        builder = QuestionBuilder.new(inflection: inflection_path)
-        question = builder.question
-        inflection_options = builder.inflection_options
-        assert_question_asked(question, inflection_options.key(item[1])) }
-    end
+
 
     def prepare_destination(*workbench)
       @tmpdir = Dir.mktmpdir

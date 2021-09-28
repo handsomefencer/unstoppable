@@ -75,19 +75,17 @@ describe QuestionBuilder do
   end
 
   describe '#story_from(key, hash)' do
-    let(:answer) {
-      builder.build_from_inflection
-      builder.story_from('1') }
+    let(:answer) { builder.story_from('1') }
 
     context 'when /inflection' do
       When(:stack) { 'inflection' }
-      focus
+
       Then { assert_equal answer, 'story' }
     end
 
     context 'when /stack/inflection' do
       When(:stack) { 'stack/inflection' }
-      Then { assert_equal answer, 'rails' }
+      Then { assert_equal answer, 'stacks_1' }
     end
   end
 end

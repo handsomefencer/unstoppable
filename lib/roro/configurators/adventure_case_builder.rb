@@ -14,7 +14,7 @@ module Roro
       def build_itineraries(catalog)
         @itineraries ||= []
         @itineraries += build_itinerary(catalog)
-        get_children(catalog).each { |c| build_itineraries(c) }
+        children(catalog).each { |c| build_itineraries(c) }
         @itineraries
       end
 

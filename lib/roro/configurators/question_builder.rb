@@ -28,7 +28,7 @@ module Roro
 
       def inflection_options
         Hash.new.tap do |h|
-          get_children(@inflection)
+          children(@inflection)
             .map { |f| name(f) }
             .sort
             .each_with_index do |c, i|
@@ -47,8 +47,14 @@ module Roro
       end
 
       def get_story_preface(story)
-        read_yaml("#{story}/#{name(story)}.yml")[:preface]
+        storyfile = "#{story}/#{name(story)}.yml"
+        if stack_is_storyfile?(storyfile)
+          read_yaml("#{story}/#{name(story)}.yml")[:preface]
+        else
+          nil
+        end
       end
+
 
       def story_from(key)
         inflection_options[key]

@@ -22,13 +22,12 @@ module Roro
       end
 
       def stack_is_stack?(stack)
-        children = get_children(stack)
-        children.any? do |c|
+        children(stack).any? do |c|
           stack_is_inflection?(c) || stack_is_story?(c)
         end
       end
       def stack_is_story?(stack)
-        get_children(stack).any? { |c| story_name(stack).eql?(file_name(c)) }
+        children(stack).any? { |c| story_name(stack).eql?(file_name(c)) }
       end
 
       def stack_is_file?(stack)
@@ -78,21 +77,21 @@ module Roro
 
       def stack_is_itinerary_path?(stack)
         !stack_is_parent?(stack) &&
-          !stack_is_template?(stack) &&
+          !stack_is_templates?(stack) &&
           stack_is_node?(stack)
       end
 
       def stack_is_parent?(stack)
-        get_children(stack).any? { |c| stack_is_inflection?(c) }
+        children(stack).any? { |c| stack_is_inflection?(c) }
       end
 
 
       def story_paths(stack)
-        get_children(stack).select { |c| stack_is_story_path?(c) }
+        children(stack).select { |c| stack_is_story_path?(c) }
       end
 
       def stack_stories(stack)
-        get_children(stack).select { |c| stack_is_storyfile?(c) }
+        children(stack).select { |c| stack_is_storyfile?(c) }
       end
 
       def stack_is_templates?(stack)
@@ -100,15 +99,15 @@ module Roro
       end
 
       def all_inflections(stack)
-        get_children(stack).select { |c| stack_is_inflection?(c) }
+        children(stack).select { |c| stack_is_inflection?(c) }
       end
 
-      def get_children(location)
+      def children(location)
         Dir.glob("#{location}/*")
       end
 
       def stack_is_node?(stack)
-        get_children(stack).any? { |w| w.include?('.yml') } && !stack_is_template?(stack)
+        children(stack).any? { |w| w.include?('.yml') } && !stack_is_templates?(stack)
       end
 
       def stack_parent(stack)
@@ -128,7 +127,7 @@ module Roro
       def build_paths(stack, story_paths = nil)
         story_paths ||= []
         story_paths << stack if stack_is_story_path?(stack)
-        get_children(stack).each { |c| build_paths(c, story_paths) }
+        children(stack).each { |c| build_paths(c, story_paths) }
         story_paths
       end
 
@@ -173,10 +172,10 @@ module Roro
       end
 
       # def stack_stories(stack)
-      #   get_children(stack).select { |c| stack_is_story?(c) }
+      #   children(stack).select { |c| stack_is_story?(c) }
       # end
       # def stack_stories(stack)
-      #   get_children(stack).select { |c| stack_is_storyfile?(c) }
+      #   children(stack).select { |c| stack_is_storyfile?(c) }
       # end
     end
   end
