@@ -6,7 +6,7 @@ module Minitest
     def stack_path(args = nil )
       append = defined?(stack) ? "/#{stack}" : nil
       prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
-      stack_root ||= "#{fixture_path}/stacks/#{prepend_valid}"
+      stack_root ||= "#{fixture_path}/stack/#{prepend_valid}"
       "#{stack_root}#{append}"
     end
 
@@ -16,7 +16,6 @@ module Minitest
 
     def assert_inflections(inflections)
       inflections.each { |item|
-        inflection_path = "#{catalog_path}#{"/#{item[0]}" unless item[0].nil?}"
         builder = QuestionBuilder.new(inflection: stack_path)
         builder.build_from_inflection
         question = builder.question
