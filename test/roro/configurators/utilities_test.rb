@@ -53,8 +53,8 @@ describe 'Configurators::Utilities' do
     end
 
     context 'when stack is a story file' do
-      When(:stack) { 'stacks/story/story.yml' }
-      Then { refute result }
+      When(:stack) { 'story/story.yml' }
+      Then { assert result }
     end
   end
 
@@ -105,7 +105,7 @@ describe 'Configurators::Utilities' do
 
     context 'when stack has one inflection' do
       When(:stack) { 'stack' }
-      Then { assert_file_match_in('stack/inflection', inflections) }
+      Then { assert_file_match_in('stack/stacks', inflections) }
     end
 
     context 'when stack has two inflections' do

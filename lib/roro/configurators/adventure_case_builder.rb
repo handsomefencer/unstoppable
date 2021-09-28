@@ -6,9 +6,8 @@ module Roro
 
       attr_reader :cases, :itineraries
 
-      def build(catalog=nil)
+      def initialize(catalog=nil)
         @catalog = catalog || Roro::CLI.catalog_root
-        build_itineraries(catalog)
       end
 
       def build_itineraries(catalog)

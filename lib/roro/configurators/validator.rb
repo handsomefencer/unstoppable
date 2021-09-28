@@ -37,7 +37,6 @@ module Roro
         stack ||= @stack
         @stack_root ||= stack
         base_validate(stack)
-        getsome = stack_type(stack)
         case stack_type(stack)
         when :storyfile
           validate_plot(read_yaml(stack))
@@ -70,21 +69,21 @@ module Roro
         end
       end
 
-      def status(c, s)
+      def status(plot, structure)
         case
-        when !c
+        when !plot
           :plot_empty
-        when !c.is_a?(s.class)
+        when !plot.is_a?(structure.class)
           :unexpected_class
-        when c.is_a?(Array) && c.any?(nil)
+        when plot.is_a?(Array) && plot.any?(nil)
           :array_empty
-        when c.is_a?(Hash) && story_has_unpermitted_keys?(c, s)
+        when plot.is_a?(Hash) && story_has_unpermitted_keys?(plot, structure)
           :unpermitted_keys
-        when c.is_a?(Hash) && story_has_nil_value?(c)
+        when plot.is_a?(Hash) && story_has_nil_value?(plot)
           :hash_value_nil
-        when c.is_a?(Hash) && s.keys&.any?
+        when plot.is_a?(Hash) && structure.keys&.any?
           :hash_expecting_values
-        when c.is_a?(Array)
+        when plot.is_a?(Array)
           :array_valid
         end
       end

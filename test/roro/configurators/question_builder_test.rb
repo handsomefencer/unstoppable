@@ -5,18 +5,18 @@ require 'test_helper'
 describe QuestionBuilder do
   let(:options) { { inflection: stack_path } }
   let(:builder) { QuestionBuilder.new(options) }
-  let(:stack)   { 'inflection' }
+  let(:stack)   { 'stacks' }
 
   describe '#inflection_prompt' do
     let(:inflection_prompt)  { builder.inflection_prompt }
 
-    context 'when stack is /inflection' do
-      Then { assert_match 'these valid inflections',  inflection_prompt }
+    context 'when stack is /stacks' do
+      Then { assert_match 'these valid stacks',  inflection_prompt }
     end
 
-    context 'when stack is /stack/inflection' do
-      When(:stack) { 'stack/inflection' }
-      Then { assert_includes inflection_prompt, 'choose from these stack inflections' }
+    context 'when stack is /stack/stacks' do
+      When(:stack) { 'stack/stacks' }
+      Then { assert_includes inflection_prompt, 'choose from these stack stacks' }
     end
 
     context 'when stack parent is rails and inflection is flavors' do
@@ -59,7 +59,7 @@ describe QuestionBuilder do
     let(:result) { builder.humanize(builder.inflection_options) }
 
     context 'when two stories' do
-      let(:stack) { 'inflection' }
+      let(:stack) { 'stacks' }
       Then { assert result.is_a?(String) }
       And  { assert_match '(1) story:', result}
       And  { assert_match '(2) story2:', result}
@@ -78,14 +78,14 @@ describe QuestionBuilder do
     let(:answer) { builder.story_from('1') }
 
     context 'when /inflection' do
-      When(:stack) { 'inflection' }
+      When(:stack) { 'stacks' }
 
-      Then { assert_equal answer, 'story' }
+      Then { assert_equal 'story', answer }
     end
 
-    context 'when /stack/inflection' do
-      When(:stack) { 'stack/inflection' }
-      Then { assert_equal answer, 'stacks_1' }
+    context 'when /stack/stacks' do
+      When(:stack) { 'stack/stacks' }
+      Then { assert_equal 'stacks_1', answer }
     end
   end
 end

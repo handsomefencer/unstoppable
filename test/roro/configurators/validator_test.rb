@@ -28,7 +28,7 @@ describe Validator do
       end
 
       context 'inflection folder' do
-        Then { assert_valid_stack('inflection') }
+        Then { assert_valid_stack('stacks') }
       end
 
       context 'nested stack folder' do

@@ -71,7 +71,7 @@ module Roro
 
       def stack_is_story_path?(stack)
         !stack_is_parent?(stack) &&
-          !stack_is_template?(stack) &&
+          !stack_is_templates?(stack) &&
           stack_is_node?(stack)
       end
 
