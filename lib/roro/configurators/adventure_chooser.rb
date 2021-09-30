@@ -5,27 +5,24 @@ module Roro
     class AdventureChooser < Thor
       include Thor::Actions
 
-      attr_reader :catalog, :itinerary
+      attr_reader :catalog, :itinerary, :stack
 
       no_commands do
         def initialize
-          @catalog   = Roro::CLI.catalog_root
+          @stack   = Roro::CLI.catalog_root
           @itinerary = []
         end
 
-        def build_itinerary(catalog=nil)
-          catalog ||= @catalog
-          case
-          # when catalog_is_alias?(catalog)
-          #   @itinerary += read_yaml(catalog)[:aliased_to]
-          when stack_is_stack?(catalog)
-            children(catalog).each { |c| build_itinerary(c) }
-          # when stack_is_parent?(catalog)
-          #   children(catalog).each { |c| build_itinerary(c) }
-          when stack_is_inflection?(catalog)
-            choice = choose_adventure(catalog)
-            @itinerary << choice if stack_is_story?(choice)
-            build_itinerary(choice)
+        def build_itinerary(stack=nil)
+          stack ||= @stack
+          case stack_type(stack)
+          when :story
+            @itinerary << stack
+          when :stack
+            all_inflections(stack).each { |i| build_itinerary(i) }
+            children(stack).each { |c| build_itinerary(c) }
+          when :inflection
+            build_itinerary(choose_adventure(stack))
           end
           @itinerary
         end
