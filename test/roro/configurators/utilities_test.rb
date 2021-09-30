@@ -140,7 +140,7 @@ describe 'Configurators::Utilities' do
 
     context 'when directory has several folders' do
       When(:stack) { 'stack'}
-      Then { assert_equal 4, result.size }
+      Then { assert_equal 5, result.size }
     end
   end
 

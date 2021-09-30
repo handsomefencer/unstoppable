@@ -26,7 +26,7 @@ describe AdventureCaseBuilder do
 
     context 'when has nested inflections' do
       When(:stack) { 'stack' }
-      Then { assert_equal 10, itineraries.size }
+      Then { assert_equal 12, itineraries.size }
     end
   end
 end

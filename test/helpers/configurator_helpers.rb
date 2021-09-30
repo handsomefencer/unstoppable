@@ -14,9 +14,16 @@ module Minitest
       assert_nil validator.validate("#{stack_path}#{"/#{stack}" if stack}")
     end
 
+    def assert_question_asked(*question, answer)
+      Thor::Shell::Basic.any_instance
+                        .stubs(:ask)
+                        .with(*question)
+                        .returns(answer)
+    end
+
     def assert_inflections(inflections)
       inflections.each { |item|
-        builder = QuestionBuilder.new(inflection: stack_path)
+        builder = QuestionBuilder.new(inflection: "#{stack_path}/#{item[0]}")
         builder.build_from_inflection
         question = builder.question
         inflection_options = builder.inflection_options

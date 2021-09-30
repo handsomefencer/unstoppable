@@ -16,13 +16,12 @@ module Roro
         def build_itinerary(stack=nil)
           stack ||= @stack
           case stack_type(stack)
-          when :story
-            @itinerary << stack
           when :stack
-            all_inflections(stack).each { |i| build_itinerary(i) }
             children(stack).each { |c| build_itinerary(c) }
           when :inflection
-            build_itinerary(choose_adventure(stack))
+            child = choose_adventure(stack)
+            @itinerary << child if stack_type(child).eql?(:story)
+            build_itinerary(child)
           end
           @itinerary
         end

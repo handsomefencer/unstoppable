@@ -23,7 +23,7 @@ describe AdventureChooser do
 
     context 'when stack is story' do
       When(:stack) { 'story' }
-      Then { assert_file_match_in('valid/story', itinerary) }
+      Then { assert_empty itinerary }
     end
 
     context 'when stack is storyfile' do
@@ -33,23 +33,29 @@ describe AdventureChooser do
 
     context 'when stack has no inflections' do
       When(:stack) { 'stack/story' }
-      Then { assert_file_match_in('stack/story', itinerary) }
+      Then { assert_empty itinerary }
     end
 
     context 'when stack is inflection' do
+      let(:inflections)  { [ [nil, 'story']] }
       When(:stack) { 'stacks' }
+      Given { assert_inflections(inflections) }
+      Then  { assert_file_match_in('stacks/story', itinerary) }
+    end
 
-      context 'story' do
-        Given { inflections << %w[valid/stacks story] }
-        Given { assert_inflections(inflections) }
-        Then  { assert_file_match_in('stacks/story', itinerary) }
-      end
+    context 'when stack has one inflection' do
+      let(:inflections)  { [ %w[plots story]] }
+      When(:stack) { 'stack/with_one_inflection' }
+      Given { assert_inflections(inflections) }
+      Then  { assert_file_match_in('plots/story', itinerary) }
+    end
 
-      context 'story2' do
-        Given { inflections << %w[valid/stacks story2] }
-        Given { assert_inflections(inflections) }
-        Then  { assert_file_match_in('stacks/story', itinerary) }
-      end
+    context 'when stack has multiple inflections' do
+      When(:stack) { 'stack/stack' }
+      Given { inflections << %w[plots story] }
+      Given { inflections << %w[stories story] }
+      Given { assert_inflections(inflections) }
+      Then  { assert_file_match_in('plots/story', itinerary) }
     end
   end
 end

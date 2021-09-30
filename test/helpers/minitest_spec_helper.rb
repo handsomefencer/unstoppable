@@ -56,14 +56,8 @@ module Minitest
                         .returns(answer)
     end
 
-    def assert_question_asked(*question, answer)
-      Thor::Shell::Basic.any_instance
-                        .stubs(:ask)
-                        .with(*question)
-                        .returns(answer)
-    end
 
-    def stubs_itinerary(itinerary = nil )
+    def stubs_itinerary(itinerary = nil)
       Roro::Configurators::Configurator
         .any_instance
         .stubs(:itinerary)
