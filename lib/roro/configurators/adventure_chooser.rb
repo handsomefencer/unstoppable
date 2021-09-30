@@ -27,7 +27,7 @@ module Roro
           @itinerary
         end
 
-        def catalog_is_alias?(catalog)
+        def stack_is_alias?(catalog)
           stack_is_storyfile?(catalog) &&
             !read_yaml(catalog)[:aliased_to].nil?
         end
