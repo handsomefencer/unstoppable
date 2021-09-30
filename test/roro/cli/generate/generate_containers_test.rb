@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe 'Roro::CLI#generate_containers' do
   let(:subject)      { Roro::CLI.new }
-  let(:workbench)    { 'roro' }
+  let(:workbench)    { 'workbench' }
   let(:default_apps) { %w[backend database frontend] }
   let(:containers)   { nil }
   let(:generate)     { quiet { subject.generate_containers(*containers) } }
@@ -13,12 +13,6 @@ describe 'Roro::CLI#generate_containers' do
     Given { insert_dummy_env 'dummy.env' }
     Given { generate }
     Then  { refute_file 'roro/containers/dummy' }
-  end
-
-  describe 'when hidden sibling exists in workbench' do
-    When(:workbench) { %w[roro .dotfolder] }
-    Given { generate }
-    Then  { refute_file 'roro/containers/.dotfolder' }
   end
 
   context 'when no sibling folders and when' do
