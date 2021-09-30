@@ -4,23 +4,22 @@ module Roro
   module Configurators
     class Configurator
 
-      attr_reader :structure, :itinerary, :manifest, :actions
+      attr_reader :structure, :itinerary, :manifest, :actions, :stack
 
       def initialize(options = {} )
         @options   = options ? options : {}
-        @catalog   = options[:catalog] || CatalogBuilder.build
+        @stack     = options[:stack] || CatalogBuilder.build
         @structure = StructureBuilder.build
         @manifest  = []
-        validate_catalog
       end
 
-      def validate_catalog
-        Validator.new(@catalog)
+      def validate_stack
+        Validator.new(@stack)
       end
 
       def choose_adventure
         adventure = AdventureChooser.new
-        @itinerary = adventure.build_itinerary(@catalog)
+        @itinerary = adventure.build_itinerary(@stack)
       end
 
       def build_manifest(itinerary = nil, catalog = @catalog, trail = nil)

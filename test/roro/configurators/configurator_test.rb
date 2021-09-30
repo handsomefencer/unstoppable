@@ -4,27 +4,53 @@ require 'test_helper'
 
 describe Configurator do
   let(:subject)      { Configurator }
-  let(:options)      { { catalog: catalog.nil? ? catalog_root : catalog_path } }
+  let(:options)      { { stack: stack_path } }
   let(:config)       { subject.new(options) }
-  let(:catalog_root) { "#{Roro::CLI.catalog_root}" }
-  # let(:catalog_path) { catalog_root }
-  let(:catalog)      { nil }
-  let(:inflections)  { [ %w[use_cases 1], %w[use_cases/fatsufodo/stories 1]] }
-  let(:assert_adventure_chosen) {
-    assert_inflections(inflections)
-    config.choose_adventure }
+  let(:inflections)  { [] }
+
+  describe '#initialize' do
+    context 'when options not supplied' do
+      When(:options) { {} }
+      Then { assert_match 'roro/catalog', config.stack }
+    end
+
+    context 'when options supplied' do
+      Then { assert_match 'stack/valid', config.stack }
+    end
+  end
+
+  describe '#validate_stack' do
+    Then { assert config.validate_stack }
+  end
 
   describe '#choose_adventure' do
-    Given(:catalog) { nil }
-    # Then { assert_equal 'blah', catalog_path }
+    describe 'must set the itinerary when stack with' do
+      let(:assert_adventure_chosen) {
+        assert_inflections(inflections)
+        config.choose_adventure }
 
-    describe 'must allow developer to choose' do
-      # Then { assert_adventure_chosen }
-      # And  { assert_file_match_in('stories/django', config.itinerary ) }
+      context 'one inflection' do
+        When(:stack) { 'stack/with_one_inflection' }
+        Given { inflections << %w[plots story] }
+        Given { assert_adventure_chosen }
+        Then  { assert_file_match_in 'plots/story', config.itinerary }
+      end
+
+      context 'multiple inflections' do
+        When(:stack) { 'stack/stack' }
+        Given { inflections << %w[plots story]}
+        Given { inflections << %w[stories story]}
+        Given { assert_adventure_chosen }
+        Then  { assert_file_match_in('plots/story', config.itinerary ) }
+        # And   { assert_equal 'blah', config.itinerary }
+      end
     end
   end
 
   describe '#build_manifests' do
+    When(:stack) { 'stack/with_one_inflection' }
+    Given { inflections << %w[plots story] }
+
     Given { assert_adventure_chosen }
     Given { config.build_manifest }
     # Then  { assert_file_match_in('fatsufodo.yml', config.manifest) }

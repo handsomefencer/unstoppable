@@ -10,11 +10,6 @@ module Minitest
       end
     end
 
-    def fixture_path
-      "#{Dir.pwd}/test/fixtures"
-    end
-
-
     def assert_valid_catalog(catalog)
       lambda do |node|
         catalog = "#{catalog_root}/#{node}"
@@ -30,17 +25,6 @@ module Minitest
     def assert_file_match_in(file_matcher, files)
       assert file_match_in_files?(file_matcher, files),
         "'...#{file_matcher}' doesn't match any files in: #{files}"
-    end
-
-    def assert_itinerary_in(matchers, itineraries)
-      is_present = itineraries.any? do |itinerary|
-        matches = []
-        matchers.each do |matcher|
-          matches << matcher if file_match_in_files?(matcher, itinerary)
-        end
-        true if matches.size.eql?(matchers.size)
-      end
-      assert is_present, "'...#{matchers}' not found in itineraries: #{itineraries}"
     end
 
     def assert_asked(prompt, choices, answer)
