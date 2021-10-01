@@ -4,13 +4,13 @@ module Roro
   module Configurators
     class Configurator
 
-      attr_reader :structure, :itinerary, :manifest, :actions, :stack, :backstory
+      attr_reader :structure, :itinerary, :manifest, :actions, :stack, :backstory, :graph
 
       def initialize(options = {} )
         @options   = options ? options : {}
         @stack     = options[:stack] || CatalogBuilder.build
         @structure = StructureBuilder.build
-        @manifest  = []
+        # @manifest  = []
       end
 
       def validate_stack
@@ -23,23 +23,44 @@ module Roro
       end
 
       def build_manifest(itinerary = @itinerary, stack = @stack, trail = nil)
-        @manifest += stack_stories(stack)
-        if itinerary.is_a?(Array)
-          itinerary.each { |i| build_manifest(i) }
-        elsif !trail&.empty?
-          trail ||= itinerary.split("#{@stack}/").last.split('/')
-          args = [itinerary, "#{stack}/#{trail.shift}", trail ]
-          build_manifest(*args)
+        manifest ||= []
+        # @manifest += stack_stories(stack)
+        # case
+        # when itinera
+        # end
+        # if itinerary.is_a?(Array)
+        #   itinerary.each { |i| build_manifest(i) }
+        # elsif !trail&.empty?
+        #   trail ||= itinerary.split("#{@stack}/").last.split('/')
+        #   args = [itinerary, "#{stack}/#{trail.shift}", trail ]
+        #   build_manifest(*args)
+        # end
+        @manifest = manifest.uniq
+      end
+
+      def build_graph(manifest = @manifest)
+        @graph = @structure
+        @graph[:questions].shift
+        manifest.each { |story| accrete_story(story) }
+      end
+
+      def accrete_story(story)
+        content = read_yaml(story)
+        accrete_env       content if content[:env]
+        accrete_questions content if content[:questions]
+      end
+
+      def accrete_env(content)
+        env = content[:env]
+        env.each do |key, value|
+          @graph[:env][key].merge!(content[:env][key])
         end
-        @manifest.uniq!
+        # @graph[:questions] += content[:questions] if content[:questions]
       end
 
-      def layer_plots(scene)
-        content = read_yaml(scene)
-
-        @backstory = backstory
+      def accrete_questions(content)
+        @graph[:questions] += content[:questions] if content[:questions]
       end
-
 
       def build_actions
         @actions ||= []

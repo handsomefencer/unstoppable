@@ -5,7 +5,7 @@ module Roro
     class AdventureChooser < Thor
       include Thor::Actions
 
-      attr_reader :catalog, :itinerary, :stack
+      attr_reader :itinerary, :stack
 
       no_commands do
         def initialize

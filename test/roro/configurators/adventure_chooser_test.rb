@@ -7,7 +7,7 @@ describe AdventureChooser do
 
   describe '#new' do
     describe 'instance variables' do
-      describe 'catalog' do
+      describe 'stack' do
         Then { assert_equal Roro::CLI.catalog_root, adventure.stack }
       end
 

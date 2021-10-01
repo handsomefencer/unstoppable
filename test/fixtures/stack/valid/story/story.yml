@@ -1,1 +1,15 @@
 preface: some string
+
+actions:
+  - "@config.smart.env['force'] = true"
+
+questions:
+  -
+    question: Please supply your docker username
+    help: https://hub.docker.com/signup
+    action: "@env[:docker_username] = answer"
+
+env:
+  development:
+    SOME_KEY: somevalue
+
