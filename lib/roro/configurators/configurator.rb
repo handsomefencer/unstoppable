@@ -10,7 +10,6 @@ module Roro
         @options   = options ? options : {}
         @stack     = options[:stack] || CatalogBuilder.build
         @structure = StructureBuilder.build
-        # @manifest  = []
       end
 
       def validate_stack
@@ -22,8 +21,17 @@ module Roro
         @itinerary = adventure.build_itinerary(@stack)
       end
 
-      def build_manifest(itinerary = @itinerary, stack = @stack, trail = nil)
+      def build_manifest(stack = @stack)
         manifest ||= []
+        case stack_type(stack)
+        when :story
+          manifest += stack_stories(stack)
+        when :stack
+          manifest += stack_stories(stack)
+          children(stack).each { |c| build_manifest(c) }
+        when :inflection
+        end
+
         # @manifest += stack_stories(stack)
         # case
         # when itinera

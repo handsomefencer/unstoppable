@@ -8,50 +8,117 @@ describe Configurator do
   let(:config)       { subject.new(options) }
   let(:inflections)  { [] }
 
-  let(:stub_itinerary) do
-    Roro::Configurators::Configurator
-                             .any_instance
-                             .stubs(:itinerary)
-                             .returns([stack_path])
-  end
-
   let(:with_inflection) { -> (method) {
     assert_inflections(inflections)
     config.send(method.to_s)
   }}
 
-  context 'when stack is story' do
-    let(:stack) { 'story' }
+  let(:stub_itinerary) {-> (*i) {
+    # i.map! { |p| p.nil? ? stack_path : "#{stack_path}/#{p}" }
+    Roro::Configurators::Configurator
+      .any_instance
+      .stubs(:itinerary)
+      .returns(i.map { |i| i.nil? ? stack_path : "#{stack_path}/#{i}" }) } }
 
-    describe '#validate_stack' do
-      Then { assert config.validate_stack }
+  describe '#initialize' do
+    context 'without options' do
+      When(:options) { {} }
+      Then { assert_match 'roro/catalog', config.stack }
+      And  { assert_equal Hash, config.structure.class }
     end
 
-    describe '#build_manifest' do
-      Given { stub_itinerary }
-      Given { config.build_manifest }
-      # focus
-      # Then
-      # { assert_equal 8, config.manifest.size }
-    end
-
-    describe '#build_graph' do
-      Given { config.build_graph }
-      # Then  { assert_equal config.structure.keys, config.graph.keys }
-      # And   { assert_equal 2, config.graph[:questions].size }
-      # And   { assert_equal 3, config.graph[:env][:development].size }
+    context 'with options' do
+      Then { assert_match 'stack/valid', config.stack }
     end
   end
 
-  context 'when stack with one inflection' do
-    let(:stack) { 'stack/with_one_inflection' }
-    # Given { inflections << %w[plots story] }
-    # Given { with_inflection['choose_adventure']}
+  describe '#validate_stack' do
+    context 'when stack is' do
+      context 'story' do
+        When(:stack) { 'story' }
+        Then { assert config.validate_stack }
+      end
 
+      context 'stack' do
+        When(:stack) { 'stack' }
+        Then { assert config.validate_stack }
+      end
 
-    describe '#initialize' do
-      Then { assert_match 'stack/with_one_inflection', config.stack }
+      context 'stacks' do
+        When(:stack) { 'stacks' }
+        Then { assert config.validate_stack }
+      end
     end
+  end
+
+  describe '#choose_adventure' do
+    context 'when stack is' do
+      context 'story' do
+        When(:stack) { 'story' }
+        Then { assert config.choose_adventure }
+      end
+
+      context 'stack with one inflection' do
+        When(:stack) { 'stack/with_one_inflection' }
+        Given { inflections << %w[plots story] }
+        Then { assert with_inflection['choose_adventure'] }
+      end
+
+      context 'stack with inflections' do
+        When(:stack) { 'stack/stack' }
+        Given { inflections << %w[plots story] }
+        Given { inflections << %w[stories story] }
+        Then { assert with_inflection['choose_adventure'] }
+      end
+    end
+
+
+    context 'when ' do
+
+      # describe '#build_manifest' do
+      #   Given { stub_itinerary }
+      #   Given { config.build_manifest }
+      #   Then  { assert_equal 8, config.manifest.size }
+      # end
+      #
+      # describe '#build_graph' do
+      #   Given { config.build_graph }
+      #   # Then  { assert_equal config.structure.keys, config.graph.keys }
+      #   # And   { assert_equal 2, config.graph[:questions].size }
+      #   # And   { assert_equal 3, config.graph[:env][:development].size }
+      # end
+    end
+
+  end
+
+  describe '#build_manifest' do
+    context 'when stack is' do
+      context 'story' do
+        When(:stack) { 'story' }
+
+        Given { stub_itinerary[nil] }
+        Then  { assert_equal [stack_path], config.itinerary }
+        Then { assert config.build_manifest }
+        # And  { assert_equal 'blah', config.manifest}
+
+      end
+
+      context 'stack' do
+        When(:stack) { 'stack' }
+      end
+
+      context 'stacks' do
+        When(:stack) { 'stacks' }
+      end
+    end
+  end
+
+  context 'when stack is stack with one inflection' do
+    let(:stack) { 'stack/with_one_inflection' }
+    Given { inflections << %w[plots story] }
+    Given { with_inflection['choose_adventure']}
+
+
 
     describe '#validate_stack' do
       Then { assert config.validate_stack }
