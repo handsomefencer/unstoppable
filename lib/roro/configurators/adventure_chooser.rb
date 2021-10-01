@@ -23,7 +23,7 @@ module Roro
             @itinerary << child if stack_type(child).eql?(:story)
             build_itinerary(child)
           end
-          @itinerary
+          @itinerary.uniq
         end
 
         def stack_is_alias?(catalog)

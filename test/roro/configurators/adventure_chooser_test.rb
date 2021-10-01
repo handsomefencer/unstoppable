@@ -41,6 +41,7 @@ describe AdventureChooser do
       When(:stack) { 'stacks' }
       Given { assert_inflections(inflections) }
       Then  { assert_file_match_in('stacks/story', itinerary) }
+      And   { assert_equal 1, adventure.itinerary.size }
     end
 
     context 'when stack has one inflection' do
@@ -56,6 +57,7 @@ describe AdventureChooser do
       Given { inflections << %w[stories story] }
       Given { assert_inflections(inflections) }
       Then  { assert_file_match_in('plots/story', itinerary) }
+      And   { assert_equal 2, adventure.itinerary.size }
     end
   end
 end

@@ -8,42 +8,54 @@ describe Configurator do
   let(:config)       { subject.new(options) }
   let(:inflections)  { [] }
 
-  describe '#initialize' do
-    context 'when options not supplied' do
-      When(:options) { {} }
-      Then { assert_match 'roro/catalog', config.stack }
+  let(:with_inflection) { -> (method) {
+    assert_inflections(inflections)
+    config.send(method.to_s)
+  }}
+
+  context 'when stack with one inflection' do
+    let(:stack) { 'stack/with_one_inflection' }
+    Given { inflections << %w[plots story] }
+    Given { with_inflection['choose_adventure']}
+
+
+    describe '#initialize' do
+      Then { assert_match 'stack/with_one_inflection', config.stack }
     end
 
-    context 'when options supplied' do
-      Then { assert_match 'stack/valid', config.stack }
+    describe '#validate_stack' do
+      Then { assert config.validate_stack }
+    end
+
+    describe '#choose_adventure' do
+      Then  { assert_file_match_in 'plots/story', config.itinerary }
+    end
+
+    describe '#build_manifest' do
+      Given { config.build_manifest }
+      Then  { assert_equal 2, config.manifest.size }
+      And   { assert_file_match_in('with_one_inflection.yml', config.manifest) }
+      And   { assert_file_match_in('story.yml', config.manifest) }
+    end
+
+    describe '#layer_plots' do
+      Given { config.layer_plots }
+
+      Then { assert_equal 'blah', config.backstory }
+
     end
   end
 
-  describe '#validate_stack' do
-    Then { assert config.validate_stack }
-  end
 
   describe '#choose_adventure' do
-    describe 'must set the itinerary when stack with' do
-      let(:assert_adventure_chosen) {
-        assert_inflections(inflections)
-        config.choose_adventure }
 
-      context 'one inflection' do
-        When(:stack) { 'stack/with_one_inflection' }
-        Given { inflections << %w[plots story] }
-        Given { assert_adventure_chosen }
-        Then  { assert_file_match_in 'plots/story', config.itinerary }
-      end
-
-      context 'multiple inflections' do
-        When(:stack) { 'stack/stack' }
-        Given { inflections << %w[plots story]}
-        Given { inflections << %w[stories story]}
-        Given { assert_adventure_chosen }
-        Then  { assert_file_match_in('plots/story', config.itinerary ) }
-        # And   { assert_equal 'blah', config.itinerary }
-      end
+    context 'multiple inflections' do
+      When(:stack) { 'stack/stack' }
+      Given { inflections << %w[plots story]}
+      Given { inflections << %w[stories story]}
+      # Given { assert_adventure_chosen }
+      # Then  { assert_file_match_in('plots/story', config.itinerary ) }
+      # And   { assert_equal 'blah', config.itinerary }
     end
   end
 
@@ -70,6 +82,17 @@ describe Configurator do
       end
     end
   end
+  describe '#initialize' do
+    context 'when options not supplied' do
+      When(:options) { {} }
+      Then { assert_match 'roro/catalog', config.stack }
+    end
+
+  end
+  let(:assert_adventure_chosen) {
+    assert_inflections(inflections)
+    config.choose_adventure }
+
 
   # describe '#merge_story' do
   #   before { skip }

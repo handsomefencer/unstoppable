@@ -4,7 +4,7 @@ module Roro
   module Configurators
     class Configurator
 
-      attr_reader :structure, :itinerary, :manifest, :actions, :stack
+      attr_reader :structure, :itinerary, :manifest, :actions, :stack, :backstory
 
       def initialize(options = {} )
         @options   = options ? options : {}
@@ -22,17 +22,24 @@ module Roro
         @itinerary = adventure.build_itinerary(@stack)
       end
 
-      def build_manifest(itinerary = nil, catalog = @catalog, trail = nil)
-        itinerary ||= @itinerary
-        @manifest += catalog_stories(catalog)
+      def build_manifest(itinerary = @itinerary, stack = @stack, trail = nil)
+        @manifest += stack_stories(stack)
         if itinerary.is_a?(Array)
           itinerary.each { |i| build_manifest(i) }
         elsif !trail&.empty?
-          trail ||= itinerary.split("#{@catalog}/").last.split('/')
-          args = [itinerary, "#{catalog}/#{trail.shift}", trail ]
+          trail ||= itinerary.split("#{@stack}/").last.split('/')
+          args = [itinerary, "#{stack}/#{trail.shift}", trail ]
           build_manifest(*args)
         end
+        @manifest.uniq!
       end
+
+      def layer_plots(scene)
+        content = read_yaml(scene)
+
+        @backstory = backstory
+      end
+
 
       def build_actions
         @actions ||= []
