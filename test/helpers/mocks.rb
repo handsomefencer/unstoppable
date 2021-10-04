@@ -8,9 +8,18 @@ module Roro
           Roro::CLI.any_instance.stubs(:system)
         end
 
-        def stubs_asker
+        def stubs_asker(answer='y')
           asker = Thor::Shell::Basic.any_instance
-          asker.stubs(:ask).returns('y')
+          asker.stubs(:ask).returns(answer)
+        end
+
+        def stubs_askers(*answers)
+          answers ||= []
+          Thor::Shell::Basic
+            .any_instance
+            .stubs(:ask)
+            .returns(answers)
+
         end
 
         def stubs_startup_commands

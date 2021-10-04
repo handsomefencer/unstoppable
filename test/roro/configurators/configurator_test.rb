@@ -118,24 +118,54 @@ describe Configurator do
     Given { inflections << %w[plots story] }
     Given { with_inflection['choose_adventure']}
 
-
-
     describe '#validate_stack' do
       Then { assert config.validate_stack }
     end
 
     describe '#choose_adventure' do
-      # Then  { assert_file_match_in 'plots/story', config.itinerary }
+      Then  { assert_file_match_in 'plots/story', config.itinerary }
     end
 
-    describe '#build_manifests' do
-      When(:stack) { 'stack/with_one_inflection' }
+    # describe '#build_manifests' do
+    #   When(:stack) { 'stack/with_one_inflection' }
+    #
+    #   Given { stub_itinerary }
+    #   Given { config.build_manifest }
+    #   # focus
+    #   # Then  { assert_equal 'blah', config.manifest }
+    #   # Then  { assert_file_match_in('fatsufodo.yml', config.manifest) }
+    # end
+  end
 
-      Given { stub_itinerary }
-      Given { config.build_manifest }
-      # focus
-      # Then  { assert_equal 'blah', config.manifest }
-      # Then  { assert_file_match_in('fatsufodo.yml', config.manifest) }
+
+  describe '#build_graph()' do
+    context 'when single story in manifest and user' do
+      let(:stack) { 'story' }
+      let(:actual) { config.graph[:env][:development][:SOME_KEY][:value] }
+      Given { config
+        .stubs(:manifest)
+        .returns(["#{stack_path}/#{stack}.yml"]) }
+
+
+      context 'accepts default' do
+        Given { QuestionAsker
+                  .any_instance
+                  .stubs(:confirm_default)
+                  .returns('y') }
+        Given { config.build_graph }
+        Then { assert_equal 'default value', actual }
+      end
+
+      context 'overrides default' do
+        Given { QuestionAsker
+                  .any_instance
+                  .stubs(:confirm_default)
+                  .returns('new value') }
+        Given { config.build_graph }
+        When(:stack) { 'story' }
+        Then { assert_equal 'new value', config.graph[:env][:development][:SOME_KEY][:value] }
+      end
+
     end
 
   end

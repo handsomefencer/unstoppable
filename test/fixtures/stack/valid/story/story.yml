@@ -13,7 +13,7 @@ env:
   development:
     SOME_KEY:
       name: some environment variable name
-      value: somevalue
+      value: default value
       help: some_url
     SOME_OTHER_KEY:
       value: somevalue

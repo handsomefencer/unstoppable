@@ -6,26 +6,22 @@ require 'stringio'
 describe QuestionBuilder do
   let(:builder)  { QuestionBuilder.new(options) }
   let(:env_hash) { read_yaml(stack_path)[:env] }
+  let(:stack)   { 'story/story.yml'}
+  let(:options) { { storyfile: stack_path } }
 
   describe '#build_overrides_from_storyfile' do
-    let(:result)   { builder.build_overrides_from_storyfile }
-    When(:stack)   { 'story/story.yml'}
-    When(:options) { { storyfile: stack_path } }
-    Then { assert_equal env_hash[:development], result[:development] }
-
     describe '#override(hash)' do
       context 'when name' do
         let(:env_key)   { :SOME_KEY }
         let(:env_value) { { :value=>"somevalue", :help=>"some_url"} }
 
-        context 'supplied interpolates name into prompt' do
+        context 'supplied must interpolate name into prompt' do
           Given { env_value[:name] = "some environment variable name" }
-          Then { assert_match 'value for some env', builder.override(env_key, env_value).first }
+          Then { assert_match 'name: some environment', builder.override(:development, env_key, env_value) }
         end
 
-        context 'not supplied interpolates key into prompt' do
-          Then { assert_match 'value for SOME_KEY', builder.override(env_key, env_value).first }
-          Then { assert_equal 'value for SOME_KEY', builder.override(env_key, env_value).first }
+        context 'not supplied must interpolate key into prompt' do
+          Then { assert_match 'name: SOME_KEY', builder.override(:development, env_key, env_value) }
         end
       end
     end

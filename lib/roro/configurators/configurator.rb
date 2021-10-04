@@ -10,6 +10,8 @@ module Roro
         @options   = options ? options : {}
         @stack     = options[:stack] || CatalogBuilder.build
         @structure = StructureBuilder.build
+        @builder   = QuestionBuilder.new
+        @asker     = QuestionAsker.new
       end
 
       def validate_stack
@@ -22,48 +24,39 @@ module Roro
       end
 
       def build_manifest(stack = @stack)
-        manifest ||= []
+        @manifest ||= []
         case stack_type(stack)
         when :story
-          manifest += stack_stories(stack)
+          @manifest += stack_stories(stack)
         when :stack
-          manifest += stack_stories(stack)
+          @manifest += stack_stories(stack)
           children(stack).each { |c| build_manifest(c) }
         when :inflection
         end
-
-        # @manifest += stack_stories(stack)
-        # case
-        # when itinera
-        # end
-        # if itinerary.is_a?(Array)
-        #   itinerary.each { |i| build_manifest(i) }
-        # elsif !trail&.empty?
-        #   trail ||= itinerary.split("#{@stack}/").last.split('/')
-        #   args = [itinerary, "#{stack}/#{trail.shift}", trail ]
-        #   build_manifest(*args)
-        # end
-        @manifest = manifest.uniq
       end
 
-      def build_graph(manifest = @manifest)
+      def build_graph
         @graph = @structure
-        @graph[:questions].shift
+        # @graph[:questions].shift
         manifest.each { |story| accrete_story(story) }
       end
 
       def accrete_story(story)
         content = read_yaml(story)
-        accrete_env       content if content[:env]
-        accrete_questions content if content[:questions]
+        accrete_env(content[:env]) if content[:env]
+        override_environment_variables
       end
 
       def accrete_env(content)
-        env = content[:env]
-        env.each do |key, value|
-          @graph[:env][key].merge!(content[:env][key])
+        content.keys.each { |k| @graph[:env][k].merge!(content[k]) }
+      end
+
+      def override_environment_variables
+        @graph[:env].each do |e, v| v.each do |k, v|
+            answer = @asker.confirm_default(@builder.override(e, k, v))
+            v[:value] = answer unless answer.eql?('y')
+          end
         end
-        # @graph[:questions] += content[:questions] if content[:questions]
       end
 
       def accrete_questions(content)

@@ -6,7 +6,7 @@ module Roro
 
       attr_reader :question, :storyfile, :inflection
 
-      def initialize(args)
+      def initialize(args={})
         case
         when args[:inflection]
           @inflection = args[:inflection]
@@ -15,23 +15,22 @@ module Roro
         end
       end
 
-      def build_overrides_from_storyfile
-        overrides = read_yaml(@storyfile)[:env]
-        overrides.each { |key, value| override(key, value) }
+      def override(environment, key, value, override_value=nil)
+        @question = "#{override_prompt(environment, key, value)}"
       end
 
-      def override(key, value, override_value=nil)
-        @question = [override_prompt(key, value), limited_to: %w[y n] ]
-      end
-
-      def override_prompt(key, value)
+      def override_prompt(environment, key, value)
         name = value.dig(:name) || key
         prompt = "Would you like to accept the default value for #{name}?\n"
-        # prompt = 'Please choose from these'
-        help = value.dig(:help) ? "\nHelp: #{value.dig(:help)}" : nil
-        default = "default: #{key}=#{value[:value]}"
-        # collection = name(@inflection).gsub('_', ' ') + ":\n"
-        [prompt, default, help].join("\n")
+        help = value.dig(:help) ? "#{value.dig(:help)}" : nil
+        default = "#{key}=#{value[:value]}"
+        ["\nEnvironment: #{environment}",
+         "       name: #{name}",
+         "        key: #{key}",
+         "   variable: #{value[:value]}",
+         "    default: #{default}",
+         "       help: #{help}\n"
+        ].join("\n")
       end
 
       def build_inflection
