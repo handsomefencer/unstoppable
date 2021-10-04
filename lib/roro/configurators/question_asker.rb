@@ -2,9 +2,11 @@
 
 module Roro
   module Configurators
-    class QuestionBuilder
+    class QuestionBuilder < Thor
 
       attr_reader :question, :storyfile, :inflection
+
+      include Thor::Actions
 
       def initialize(args)
         case
@@ -15,13 +17,15 @@ module Roro
         end
       end
 
-      def build_overrides_from_storyfile
+      def build_overrides_from_storyfile(storyfile)
+
         overrides = read_yaml(@storyfile)[:env]
         overrides.each { |key, value| override(key, value) }
       end
 
       def override(key, value, override_value=nil)
         @question = [override_prompt(key, value), limited_to: %w[y n] ]
+        ask(@question)
       end
 
       def override_prompt(key, value)

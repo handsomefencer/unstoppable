@@ -30,7 +30,7 @@ module Minitest
     def assert_inflections(inflections)
       inflections.each { |item|
         builder = QuestionBuilder.new(inflection: "#{stack_path}/#{item[0]}")
-        builder.build_from_inflection
+        builder.build_inflection
         question = builder.question
         inflection_options = builder.inflection_options
         assert_question_asked(question, inflection_options.key(item[1])) }

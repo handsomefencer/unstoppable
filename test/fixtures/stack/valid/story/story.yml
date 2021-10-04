@@ -11,5 +11,11 @@ questions:
 
 env:
   development:
-    SOME_KEY: somevalue
+    SOME_KEY:
+      name: some environment variable name
+      value: somevalue
+      help: some_url
+    SOME_OTHER_KEY:
+      value: somevalue
+      help: some_url
 
