@@ -38,7 +38,6 @@ describe 'Configurators::Utilities' do
 
     context 'when story with ignored folders' do
       When(:stack) { 'story' }
-      focus
       Then { assert_equal :story, result}
     end
 

@@ -24,16 +24,8 @@ module Roro
         @itinerary = @adventure.build_itinerary(@stack)
       end
 
-      def build_manifest(stack = @stack)
-        @manifest ||= []
-        case stack_type(stack)
-        when :story
-          @manifest += stack_stories(stack)
-        when :stack
-          @manifest += stack_stories(stack)
-          children(stack).each { |c| build_manifest(c) }
-        when :inflection
-        end
+      def build_manifest
+        @manifest = @adventure.manifest
       end
 
       def build_graph
@@ -59,16 +51,15 @@ module Roro
         end
       end
 
-      def accrete_questions(content)
-        @graph[:questions] += content[:questions] if content[:questions]
+      def write_story
+        @manifest.each do |storyfile|
+          take_actions(storyfile)
+        end
       end
 
-      def build_actions
-        @actions ||= []
-        manifest.each do |manifest|
-          actions = read_yaml(manifest)[:actions]
-          @actions += actions if actions
-        end
+      def take_actions(storyfile)
+        actions = read_yaml(storyfile)[:actions]
+
       end
     end
   end

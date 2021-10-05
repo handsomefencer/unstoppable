@@ -4,20 +4,40 @@ require 'test_helper'
 
 describe Configurator do
   let(:subject)      { Configurator }
-  let(:options)      { { stack: stack_path } }
+  let(:options)      { {} }
   let(:config)       { subject.new(options) }
-  let(:inflections)  { [] }
+  let(:stub_journey) { Thor::Shell::Basic
+                           .any_instance
+                           .stubs(:ask)
+                           .returns(*answers)}
+  Given { QuestionAsker
+            .any_instance
+            .stubs(:confirm_default)
+            .returns('y') }
 
-  let(:with_inflection) { -> (method) {
-    assert_inflections(inflections)
-    config.send(method.to_s)
-  }}
+  context 'when fatsufodo django' do
+    let(:options) { {} }
+    let(:answers) { %w[fatsufodo django] }
+    Given { stub_journey }
+    Given { config.validate_stack }
+    Given { config.choose_adventure }
+    Given { config.build_manifest }
+    Then  do
+      assert_file_match_in 'stories/django', config.itinerary
+      assert_equal 1, config.itinerary.size
+      assert_equal 2, config.manifest.size
+      assert_file_match_in('fatsufodo.yml', config.manifest)
+      assert_file_match_in('django/django.yml', config.manifest)
+    end
 
-  let(:stub_itinerary) {-> (*i) {
-    Roro::Configurators::Configurator
-      .any_instance
-      .stubs(:itinerary)
-      .returns(i.map { |i| i.nil? ? stack_path : "#{stack_path}/#{i}" }) } }
+    describe '#build_graph' do
+      Given { config.build_graph }
+      Given { config.write_story }
+      Then do
+        assert_match 'django', config.graph[:env][:base][:app_name][:value]
+      end
+    end
+  end
 
   context 'without options' do
     let(:options) { {} }
@@ -32,10 +52,6 @@ describe Configurator do
     end
 
     describe '#choose_adventure' do
-      Given(:stub_journey) { Thor::Shell::Basic
-                .any_instance
-                .stubs(:ask)
-                .returns(*answers)}
 
       Given { assert_nil config.validate_stack }
 
@@ -69,6 +85,8 @@ describe Configurator do
   describe '#initialize' do
 
     context 'with options' do
+
+      let(:options)      { { stack: stack_path } }
       Then { assert_match 'stack/valid', config.stack }
     end
   end
@@ -82,6 +100,8 @@ describe Configurator do
     end
 
     context 'with options' do
+
+      let(:options)      { { stack: stack_path } }
       Then { assert_match 'stack/valid', config.stack }
     end
   end
@@ -146,7 +166,23 @@ describe Configurator do
 
   end
 
+  # let(:inflections)  { [] }
+  #
+  # let(:with_inflection) { -> (method) {
+  #   assert_inflections(inflections)
+  #   config.send(method.to_s)
+  # }}
+
+  let(:stub_itinerary) {-> (*i) {
+    Roro::Configurators::Configurator
+      .any_instance
+      .stubs(:itinerary)
+      .returns(i.map { |i| i.nil? ? stack_path : "#{stack_path}/#{i}" }) } }
+
+
   describe '#build_manifest' do
+
+    let(:options)      { { stack: stack_path } }
     context 'when stack is' do
       context 'story' do
         When(:stack) { 'story' }
@@ -162,6 +198,7 @@ describe Configurator do
   end
 
   context 'when stack is stack with one inflection' do
+    let(:options)      { { stack: stack_path } }
     let(:stack) { 'stack/with_one_inflection' }
     Given { inflections << %w[plots story] }
     # Given { with_inflection['choose_adventure']}

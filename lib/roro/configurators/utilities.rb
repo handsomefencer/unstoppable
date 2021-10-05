@@ -179,13 +179,6 @@ module Roro
       def read_yaml(yaml_file)
         JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
       end
-
-      # def stack_stories(stack)
-      #   children(stack).select { |c| stack_is_story?(c) }
-      # end
-      # def stack_stories(stack)
-      #   children(stack).select { |c| stack_is_storyfile?(c) }
-      # end
     end
   end
 end

@@ -1,8 +1,26 @@
 preface: Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of Web development, so you can focus on writing your app without needing to reinvent the wheel. It’s free and open source.
+env:
+  base:
+    POSTGRES_DB:
+      name: Postgres database name
+      value: postgres
+      help: https://www.postgresql.org/docs/9.0/manage-ag-createdb.html
+    POSTGRES_USER:
+      name: Postgres user name
+      value: postgres
+      help: https://www.postgresql.org/docs/8.0/user-manag.html#DATABASE-USERS
+    POSTGRES_PASSWORD:
+      name: Postgres password
+      value: password
+      help: https://www.postgresql.org/docs/8.0/sql-alteruser.html
+    app_name:
+      name: Then name of your application or project
+      value: unstoppable_django
+      help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - template 'step_1, "./#{@build_vars[:app_name]"
-  - system "sudo docker-compose run web django-admin startproject composeexample ."
+  - template 'one, "./#{@build_vars[:app_name]"
+  - system `sudo docker-compose run web django-admin startproject #{@build_vars[:app_name]} .`
   - system "cd #{@build_vars[:app_name]} && sudo docker-compose run web django-admin startproject composeexample ."
   - system "sudo chown -R $USER:$USER ."
 questions:

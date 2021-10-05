@@ -16,6 +16,11 @@ describe AdventureChooser do
   end
 
   describe '#build_itinerary' do
+    Given(:stub_journey) { Thor::Shell::Basic
+                             .any_instance
+                             .stubs(:ask)
+                             .returns(*answers)}
+
     let(:inflections) { [] }
     let(:itinerary)   { adventure.build_itinerary(stack_path) }
 
@@ -36,16 +41,12 @@ describe AdventureChooser do
 
     context 'when stack is inflection' do
       When(:stack) { 'stacks' }
-      Given(:stub_journey) { Thor::Shell::Basic
-                             .any_instance
-                             .stubs(:ask)
-                             .returns(*answers)}
-    let(:answers) { %w[stacks_1 stack_2] }
+      let(:answers) { %w[story] }
 
-      focus
       Given { stub_journey }
       Then  { assert_file_match_in('stacks/story', itinerary) }
-      # And   { assert_equal 1, adventure.itinerary.size }
+      And   { assert_equal 1, adventure.itinerary.size }
+      And   { assert_equal 1, adventure.manifest.size }
     end
 
 
