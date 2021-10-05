@@ -33,8 +33,9 @@ module Roro
 
         def choose_adventure(inflection)
           builder = QuestionBuilder.new(inflection: inflection)
-          builder.build_inflection
-          "#{inflection}/#{builder.story_from(ask(builder.question))}"
+          question = builder.build_inflection
+
+          "#{inflection}/#{ask(question)}"
         end
       end
     end

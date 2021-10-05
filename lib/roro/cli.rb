@@ -9,7 +9,7 @@ module Roro
     end
 
     def self.catalog_root
-      "#{File.dirname(__FILE__)}/catalog"
+      "#{File.dirname(__FILE__)}/stacks/catalog/unstoppable/developer_styles"
     end
 
     def self.roro_environments

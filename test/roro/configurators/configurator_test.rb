@@ -19,6 +19,42 @@ describe Configurator do
       .stubs(:itinerary)
       .returns(i.map { |i| i.nil? ? stack_path : "#{stack_path}/#{i}" }) } }
 
+  context 'without options' do
+    let(:options) { {} }
+
+    describe '#initialize' do
+      Then { assert_match 'roro/catalog', config.stack }
+      And  { assert_equal Hash, config.structure.class }
+    end
+
+    describe '#validate_stack' do
+      Then { assert config.validate_stack }
+    end
+
+    describe '#choose_adventure' do
+      context 'when fatsufodo django' do
+        When(:expected) { 'fatsufodo/stories/django' }
+        When(:answers)  { ['fatsufodo', 'django'] }
+        Given { Thor::Shell::Basic
+                  .any_instance
+                  .stubs(:ask)
+                  .returns(*answers)}
+
+        Given { config.choose_adventure }
+        Then  { assert_file_match_in expected, config.itinerary }
+      end
+    end
+  end
+
+
+  describe '#initialize' do
+
+    context 'with options' do
+      Then { assert_match 'stack/valid', config.stack }
+    end
+  end
+
+
   describe '#initialize' do
     context 'without options' do
       When(:options) { {} }
@@ -102,13 +138,6 @@ describe Configurator do
 
       end
 
-      context 'stack' do
-        When(:stack) { 'stack' }
-      end
-
-      context 'stacks' do
-        When(:stack) { 'stacks' }
-      end
     end
   end
 
