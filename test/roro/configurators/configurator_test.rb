@@ -33,11 +33,14 @@ describe Configurator do
 
     describe '#build_graph' do
       Given { config.build_graph }
-      Given { config.write_story }
+      Given { quiet { config.write_story } }
       focus
       Then do
-        assert_match 'django', config.graph[:env][:base][:app_name][:value]
-        assert_file 'one'
+        # assert_match 'django', config.graph[:env][:base][:app_name][:value]
+        # assert_file 'unstoppable_django'
+        # assert_file 'unstoppable_django/Dockerfile', ['WORKDIR']
+        assert_file 'unstoppable_django/Dockerfile', /FROM/
+        assert_file 'unstoppable_django/docker-compose.yml', /PASSWORD=password/
       end
     end
   end
