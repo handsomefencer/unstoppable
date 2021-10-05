@@ -7,7 +7,7 @@ module Roro
       attr_reader :stack, :structure, :permitted_hidden_extensions, :permitted_story_extensions, :ext_permitted
 
       def initialize(stack = nil, structure = nil)
-        @stack         = stack   || Roro::CLI.catalog_root
+        @stack         = stack     || Roro::CLI.catalog_root
         @structure     = structure || StructureBuilder.build
         @error         = Roro::CatalogError
         @permitted_story_extensions  = %w[yml yaml]
@@ -16,10 +16,16 @@ module Roro
                                        @permitted_hidden_extensions
       end
 
+      ## TODO: validate ambiguous
+      # Add validation to ensure story directory has either a) a matching storyfile or b)
+      # at least one child stack, story, or inflection.
+
       def base_validate(s)
         case
         when stack_is_nil?(s)
           @msg = 'Catalog not present'
+        when stack_is_ignored?(s)
+          return
         when stack_is_empty?(s)
           @msg = 'Catalog cannot be an empty folder'
         when stack_unpermitted?(s)

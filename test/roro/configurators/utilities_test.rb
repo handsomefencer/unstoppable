@@ -17,17 +17,28 @@ describe 'Configurators::Utilities' do
     end
 
     context 'when templates' do
-      When(:stack) { 'stack/story/templates' }
+      When(:stack) { 'templates' }
       Then { assert_equal :templates, result}
     end
 
+    context 'when ignored' do
+      When(:stack) { 'story/test_dummy' }
+      Then { assert_equal :ignored, result}
+    end
+
     context 'when inflection' do
-      When(:stack) { 'stack/inflection' }
+      When(:stack) { 'stacks' }
       Then { assert_equal :inflection, result}
     end
 
-    context 'when story' do
-      When(:stack) { 'stack/story' }
+    context 'when nonexistent' do
+      When(:stack) { 'stack/stacks/staks_1' }
+      Then { assert_equal :nonexistent, result}
+    end
+
+    context 'when story with ignored folders' do
+      When(:stack) { 'story' }
+      focus
       Then { assert_equal :story, result}
     end
 

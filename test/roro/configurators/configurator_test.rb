@@ -23,25 +23,44 @@ describe Configurator do
     let(:options) { {} }
 
     describe '#initialize' do
-      Then { assert_match 'roro/catalog', config.stack }
+      Then { assert_match 'developer_styles', config.stack }
       And  { assert_equal Hash, config.structure.class }
     end
 
     describe '#validate_stack' do
-      Then { assert config.validate_stack }
+      Then { assert_nil config.validate_stack }
     end
 
     describe '#choose_adventure' do
-      context 'when fatsufodo django' do
-        When(:expected) { 'fatsufodo/stories/django' }
-        When(:answers)  { ['fatsufodo', 'django'] }
-        Given { Thor::Shell::Basic
-                  .any_instance
-                  .stubs(:ask)
-                  .returns(*answers)}
+      Given(:stub_journey) { Thor::Shell::Basic
+                .any_instance
+                .stubs(:ask)
+                .returns(*answers)}
 
-        Given { config.choose_adventure }
-        Then  { assert_file_match_in expected, config.itinerary }
+      Given { assert_nil config.validate_stack }
+
+      context 'when fatsufodo' do
+        let(:answers) { %w[fatsufodo] }
+        context 'when django' do
+          Given { answers << 'django' }
+          Given { stub_journey }
+          Given { config.choose_adventure }
+          Then  { assert_file_match_in 'stories/django', config.itinerary }
+        end
+
+        context 'when wordpress' do
+          Given { answers << 'wordpress' }
+          Given { stub_journey }
+          Given { config.choose_adventure }
+          Then  { assert_file_match_in 'stories/wordpress', config.itinerary }
+        end
+
+        context 'when rails' do
+          Given { answers << 'rails' }
+          Given { stub_journey }
+          Given { config.choose_adventure }
+          Then  { assert_file_match_in 'stories/rails', config.itinerary }
+        end
       end
     end
   end
@@ -58,7 +77,7 @@ describe Configurator do
   describe '#initialize' do
     context 'without options' do
       When(:options) { {} }
-      Then { assert_match 'roro/catalog', config.stack }
+      Then { assert_match 'developer_styles', config.stack }
       And  { assert_equal Hash, config.structure.class }
     end
 
@@ -71,22 +90,23 @@ describe Configurator do
     context 'when stack is' do
       context 'story' do
         When(:stack) { 'story' }
-        Then { assert config.validate_stack }
+        # Then { assert config.validate_stack }
       end
 
       context 'stack' do
         When(:stack) { 'stack' }
-        Then { assert config.validate_stack }
+        # Then { assert config.validate_stack }
       end
 
       context 'stacks' do
         When(:stack) { 'stacks' }
-        Then { assert config.validate_stack }
+        # Then { assert config.validate_stack }
       end
     end
   end
 
   describe '#choose_adventure' do
+    before { skip }
     context 'when stack is' do
       context 'story' do
         When(:stack) { 'story' }
@@ -144,14 +164,16 @@ describe Configurator do
   context 'when stack is stack with one inflection' do
     let(:stack) { 'stack/with_one_inflection' }
     Given { inflections << %w[plots story] }
-    Given { with_inflection['choose_adventure']}
+    # Given { with_inflection['choose_adventure']}
 
     describe '#validate_stack' do
-      Then { assert config.validate_stack }
+      # Then { assert config.validate_stack }
     end
 
     describe '#choose_adventure' do
-      Then  { assert_file_match_in 'plots/story', config.itinerary }
+      Given { with_inflection['choose_adventure']}
+      # Then { assert_equal 'blah', stack_path }
+      # Then  { assert_file_match_in 'plots/story', config.itinerary }
     end
 
     # describe '#build_manifests' do

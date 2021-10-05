@@ -17,7 +17,7 @@ module Roro
       end
 
       def validate_stack
-        Validator.new(@stack)
+        @validator.validate(@stack)
       end
 
       def choose_adventure

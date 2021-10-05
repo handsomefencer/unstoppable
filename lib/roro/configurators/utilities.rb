@@ -6,6 +6,10 @@ module Roro
 
       def stack_type(stack)
         case
+        when stack_not_present?(stack)
+          :nonexistent
+        when stack_is_ignored?(stack)
+          :ignored
         when stack_is_dotfile?(stack)
           :dotfile
         when stack_is_storyfile?(stack)
@@ -26,6 +30,7 @@ module Roro
           stack_is_inflection?(c) || stack_is_story?(c)
         end
       end
+
       def stack_is_story?(stack)
         children(stack).any? { |c| story_name(stack).eql?(file_name(c)) }
       end
@@ -53,6 +58,7 @@ module Roro
       def stack_is_inflection?(stack)
         stack_stories(stack).empty? &&
           !File.file?(stack) &&
+          !stack_is_ignored?(stack) &&
           !stack_is_templates?(stack)
       end
 
@@ -85,7 +91,6 @@ module Roro
         children(stack).any? { |c| stack_is_inflection?(c) }
       end
 
-
       def story_paths(stack)
         children(stack).select { |c| stack_is_story_path?(c) }
       end
@@ -96,6 +101,10 @@ module Roro
 
       def stack_is_templates?(stack)
         stack.split('/').last.match?('templates')
+      end
+
+      def stack_is_ignored?(stack)
+        stack.split('/').last.match?('test_dummy')
       end
 
       def all_inflections(stack)

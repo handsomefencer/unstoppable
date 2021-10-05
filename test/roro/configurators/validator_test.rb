@@ -5,7 +5,7 @@ require 'test_helper'
 describe Validator do
   let(:args)      { nil }
   let(:validator) { Validator.new(*args) }
-  let(:validate)  { validator.validate_stack(stack_path) }
+  # let(:validate)  { validator.validate_stack(stack_path) }
 
   context 'when no args supplied' do
     describe '#initialize' do
@@ -13,12 +13,12 @@ describe Validator do
         Then { assert_equal Roro::CLI.catalog_root, validator.stack }
       end
 
-      describe '#ext_hidden' do
+      describe '#permitted_hidden_extensions' do
         Then { assert_equal %w[.keep .gitkeep],
                             validator.permitted_hidden_extensions }
       end
 
-      describe '#ext_story' do
+      describe '#permitted_story_extensions' do
         Then { assert_equal %w[yml yaml],
                             validator.permitted_story_extensions }
       end
