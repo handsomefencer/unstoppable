@@ -14,11 +14,13 @@ describe Validator do
       end
 
       describe '#ext_hidden' do
-        Then { assert_equal %w[.keep .gitkeep], validator.ext_hidden }
+        Then { assert_equal %w[.keep .gitkeep],
+                            validator.permitted_hidden_extensions }
       end
 
       describe '#ext_story' do
-        Then { assert_equal %w[yml yaml], validator.ext_story }
+        Then { assert_equal %w[yml yaml],
+                            validator.permitted_story_extensions }
       end
 
       describe '#structure' do

@@ -4,15 +4,16 @@ module Roro
   module Configurators
     class Validator
 
-      attr_reader :stack, :structure, :ext_hidden, :ext_story, :ext_permitted
+      attr_reader :stack, :structure, :permitted_hidden_extensions, :permitted_story_extensions, :ext_permitted
 
       def initialize(stack = nil, structure = nil)
         @stack         = stack   || Roro::CLI.catalog_root
         @structure     = structure || StructureBuilder.build
         @error         = Roro::CatalogError
-        @ext_story     = %w[yml yaml]
-        @ext_hidden    = %w[.keep .gitkeep]
-        @ext_permitted = @ext_story + @ext_hidden
+        @permitted_story_extensions  = %w[yml yaml]
+        @permitted_hidden_extensions = %w[.keep .gitkeep]
+        @permitted_extensions        = @permitted_story_extensions +
+                                       @permitted_hidden_extensions
       end
 
       def base_validate(s)
