@@ -3,90 +3,116 @@
 require 'test_helper'
 
 describe Validator do
-  let(:validator) { Validator.new }
+  let(:args)      { nil }
+  let(:validator) { Validator.new(*args) }
   let(:validate)  { validator.validate_stack(stack_path) }
 
-  describe '#initialize' do
-    describe '#catalog' do
-      Then { assert_equal Roro::CLI.catalog_root, validator.stack }
+  context 'when no args supplied' do
+    describe '#initialize' do
+      describe '#stack' do
+        Then { assert_equal Roro::CLI.catalog_root, validator.stack }
+      end
+
+      describe '#ext_hidden' do
+        Then { assert_equal %w[.keep .gitkeep], validator.ext_hidden }
+      end
+
+      describe '#ext_story' do
+        Then { assert_equal %w[yml yaml], validator.ext_story }
+      end
+
+      describe '#structure' do
+        Then { assert_equal Hash, validator.structure.class }
+      end
     end
 
-    describe '#permitted_extensions' do
-      Then { assert_equal %w[yml yaml], validator.ext_story }
-      Then { assert_equal %w[.keep .gitkeep], validator.ext_hidden }
-    end
-
-    describe '#structure' do
-      Then { assert_equal Hash, validator.structure.class }
+    describe '#validate' do
+      Then { assert_valid_stack }
     end
   end
 
   describe '#validate' do
-    context 'when stack is valid' do
+    context 'when valid' do
       context 'templates folder' do
-        Then { assert_valid_stack('templates') }
+        When(:stack) { 'templates' }
+        Then { assert_valid_stack }
       end
 
       context 'inflection folder' do
-        Then { assert_valid_stack('stacks') }
+        When(:stack) { 'stacks' }
+        Then { assert_valid_stack }
       end
 
       context 'nested stack folder' do
-        Then { assert_valid_stack('stack') }
+        When(:stack) { 'stack' }
+        Then { assert_valid_stack }
       end
 
-      context 'hidden file' do
-        Then { assert_valid_stack('story/.keep') }
-        And  { assert_valid_stack('story/.gitkeep') }
+      context 'hidden .keep file' do
+        When(:stack) { 'story/.keep' }
+        Then { assert_valid_stack }
       end
 
-      context 'story file' do
-        Then { assert_valid_stack('story/yaml.yml') }
-        And  { assert_valid_stack('story/yaml.yaml') }
+      context 'hidden .gitkeep file' do
+        When(:stack) { 'story/.gitkeep' }
+        Then { assert_valid_stack }
       end
 
-      context 'story file with plot' do
-        context 'when top level is a hash' do
-          Then { assert_valid_stack('story/hash.yml') }
+      context 'story file when' do
+        context '.yaml extension' do
+          When(:stack) { 'story/yaml.yaml' }
+          Then { assert_valid_stack }
         end
 
-        context 'when :preface returns a string' do
-          Then { assert_valid_stack('story/valid_preface.yml') }
+        context '.yml extension' do
+          When(:stack) { 'story/yaml.yml' }
+          Then { assert_valid_stack }
         end
 
-        context 'when :questions returns an array of hashes' do
-          Then { assert_valid_stack('story/valid_questions.yml') }
-        end
+        context 'plot top level is a hash' do
+          When(:stack) { ('story/hash.yml') }
+          Then { assert_valid_stack }
 
-        context 'when :actions returns an array of strings' do
-          Then { assert_valid_stack('story/valid_actions.yml') }
-        end
+          context 'when :preface returns a string' do
+            When(:stack) { 'story/valid_preface.yml' }
+            Then { assert_valid_stack }
+          end
 
-        context 'when :env returns a hash of hashes' do
-          Then { assert_valid_stack('story/valid_env.yml') }
+          context 'when :questions returns an array of hashes' do
+            When(:stack) { 'story/valid_questions.yml' }
+            Then { assert_valid_stack }
+          end
+
+          context 'when :actions returns an array of strings' do
+            When(:stack) { 'story/valid_actions.yml' }
+            Then { assert_valid_stack }
+          end
+
+          context 'when :env returns a hash of hashes' do
+            When(:stack) { 'story/valid_env.yml' }
+            Then { assert_valid_stack }
+          end
         end
       end
     end
 
-    context 'when stack is invalid' do
+    context 'when invalid' do
       let(:execute)   { validator.validate(stack_path(:invalid)) }
       let(:error_msg) { 'Catalog not present' }
 
-      context 'nonexistent when' do
-        context 'file with permitted extension' do
-          When(:stack) { 'nonexistent.yml' }
-          Then { assert_correct_error }
-        end
+      context 'nonexistent file with permitted extension' do
+        When(:stack) { 'nonexistent.yml' }
+        Then { assert_correct_error }
+      end
 
-        context 'file with an unpermitted extension' do
-          When(:stack) { 'nonexistent.non' }
-          Then { assert_correct_error }
-        end
+      context 'nonexistent file with an unpermitted extension' do
+        When(:stack) { 'nonexistent.non' }
+        Then { assert_correct_error }
+      end
 
-        context 'folder' do
-          When(:stack) { 'nonexistent' }
-          Then { assert_correct_error }
-        end
+      context 'nonexistent folder' do
+        When(:stack) { 'nonexistent' }
+        Then { assert_correct_error }
       end
 
       context 'empty folder' do
@@ -95,14 +121,14 @@ describe Validator do
         Then { assert_correct_error }
       end
 
-      context 'a file with an unpermitted extension' do
+      context 'file with an unpermitted extension' do
         When(:error_msg) { 'Catalog has unpermitted extension' }
         When(:stack) { 'ruby.rb' }
         Then { assert_correct_error }
       end
 
-      context 'a storyfile when' do
-        context 'content empty' do
+      context 'storyfile when' do
+        context 'content is empty' do
           When(:error_msg) { 'Story file is empty' }
           When(:stack)     { 'story_without_content/story_without_content.yml' }
           Then { assert_correct_error }

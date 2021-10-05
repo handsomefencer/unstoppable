@@ -15,9 +15,8 @@ module Minitest
       "#{Dir.pwd}/test/fixtures"
     end
 
-
-    def assert_valid_stack(stack)
-      assert_nil validator.validate("#{stack_path}#{"/#{stack}" if stack}")
+    def assert_valid_stack
+      assert_nil validator.validate(stack_path)
     end
 
     def assert_question_asked(*question, answer)

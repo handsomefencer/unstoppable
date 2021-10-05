@@ -4,7 +4,7 @@ module Roro
   module Configurators
     class Configurator
 
-      attr_reader :structure, :itinerary, :manifest, :actions, :stack, :backstory, :graph
+      attr_reader :structure, :itinerary, :manifest, :stack, :graph
 
       def initialize(options = {} )
         @options   = options ? options : {}
@@ -12,6 +12,8 @@ module Roro
         @structure = StructureBuilder.build
         @builder   = QuestionBuilder.new
         @asker     = QuestionAsker.new
+        @adventure = AdventureChooser.new
+        @validator = Validator.new(@stack)
       end
 
       def validate_stack
@@ -19,8 +21,7 @@ module Roro
       end
 
       def choose_adventure
-        adventure = AdventureChooser.new
-        @itinerary = adventure.build_itinerary(@stack)
+        @itinerary = @adventure.build_itinerary(@stack)
       end
 
       def build_manifest(stack = @stack)
@@ -37,7 +38,6 @@ module Roro
 
       def build_graph
         @graph = @structure
-        # @graph[:questions].shift
         manifest.each { |story| accrete_story(story) }
       end
 

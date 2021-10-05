@@ -14,7 +14,6 @@ describe Configurator do
   }}
 
   let(:stub_itinerary) {-> (*i) {
-    # i.map! { |p| p.nil? ? stack_path : "#{stack_path}/#{p}" }
     Roro::Configurators::Configurator
       .any_instance
       .stubs(:itinerary)
@@ -137,7 +136,6 @@ describe Configurator do
     # end
   end
 
-
   describe '#build_graph()' do
     context 'when single story in manifest and user' do
       let(:stack) { 'story' }
@@ -165,9 +163,7 @@ describe Configurator do
         When(:stack) { 'story' }
         Then { assert_equal 'new value', config.graph[:env][:development][:SOME_KEY][:value] }
       end
-
     end
-
   end
 
 

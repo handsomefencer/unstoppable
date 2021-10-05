@@ -6,9 +6,8 @@ module Roro
 
       attr_reader :stack, :structure, :ext_hidden, :ext_story, :ext_permitted
 
-      def initialize(catalog = nil, structure = nil)
-        @catalog       = catalog   || Roro::CLI.catalog_root
-        @stack         = catalog   || Roro::CLI.catalog_root
+      def initialize(stack = nil, structure = nil)
+        @stack         = stack   || Roro::CLI.catalog_root
         @structure     = structure || StructureBuilder.build
         @error         = Roro::CatalogError
         @ext_story     = %w[yml yaml]
@@ -33,7 +32,7 @@ module Roro
         stack_type(stack).nil?
       end
 
-      def validate(stack)
+      def validate(stack = nil)
         stack ||= @stack
         @stack_root ||= stack
         base_validate(stack)
