@@ -14,6 +14,7 @@ module Roro
         @asker     = QuestionAsker.new
         @adventure = AdventureChooser.new
         @validator = Validator.new(@stack)
+
       end
 
       def validate_stack
@@ -52,14 +53,10 @@ module Roro
       end
 
       def write_story
+        writer = AdventureWriter.new
         @manifest.each do |storyfile|
-          take_actions(storyfile)
+          writer.write(@graph[:env], storyfile)
         end
-      end
-
-      def take_actions(storyfile)
-        actions = read_yaml(storyfile)[:actions]
-
       end
     end
   end

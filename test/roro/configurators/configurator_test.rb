@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe Configurator do
+  let(:workbench)    { nil }
   let(:subject)      { Configurator }
   let(:options)      { {} }
   let(:config)       { subject.new(options) }
@@ -33,8 +34,10 @@ describe Configurator do
     describe '#build_graph' do
       Given { config.build_graph }
       Given { config.write_story }
+      focus
       Then do
         assert_match 'django', config.graph[:env][:base][:app_name][:value]
+        assert_file 'one'
       end
     end
   end
@@ -189,7 +192,7 @@ describe Configurator do
 
         Given { stub_itinerary[nil] }
         Then  { assert_equal [stack_path], config.itinerary }
-        Then { assert config.build_manifest }
+        # Then { assert config.build_manifest }
         # And  { assert_equal 'blah', config.manifest}
 
       end

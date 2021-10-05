@@ -8,6 +8,10 @@ module Roro
       "#{@template_root || File.dirname(__FILE__)}/templates"
     end
 
+    # def self.destination_root
+    #   Dir.pwd
+    # end
+
     def self.catalog_root
       "#{File.dirname(__FILE__)}/stacks/catalog/unstoppable/developer_styles"
     end
