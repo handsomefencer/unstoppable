@@ -3,6 +3,30 @@
 module Minitest
   class Spec
 
+    def stub_adventure
+      Thor::Shell::Basic
+        .any_instance
+        .stubs(:ask)
+      Roro::Configurators::QuestionBuilder
+        .any_instance
+        .stubs(:story_from)
+        .returns(*adventures)
+    end
+
+    def roro_rollon
+      cli = Roro::CLI.new
+      stub_adventure
+      stub_overrides
+      quiet { cli.rollon }
+    end
+
+    def stub_overrides
+      Roro::Configurators::QuestionAsker
+        .any_instance
+        .stubs(:confirm_default)
+        .returns(*overrides).then.returns('y')
+    end
+
     def stack_path(args = nil )
       append = defined?(stack) ? "/#{stack}" : nil
       prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'

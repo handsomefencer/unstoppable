@@ -19,6 +19,8 @@ module Roro
           @manifest ||= []
           stack ||= @stack
           case stack_type(stack)
+          when :storyfile
+            @manifest << stack
           when :story
             @manifest += stack_stories(stack)
           when :stack
@@ -27,11 +29,12 @@ module Roro
           when :inflection
 
             child = choose_adventure(stack)
-            byebug
+
             @itinerary << child if stack_type(child).eql?(:story)
             build_itinerary(child)
           end
-          @itinerary.uniq
+          @manifest.uniq!
+          @itinerary.uniq!
         end
 
         def stack_is_alias?(catalog)
@@ -42,8 +45,9 @@ module Roro
         def choose_adventure(inflection)
           builder = QuestionBuilder.new(inflection: inflection)
           question = builder.build_inflection
-
-          "#{inflection}/#{ask(question)}"
+          choice = ask(question)
+          story_name = builder.story_from(choice)
+          "#{inflection}/#{story_name}"
         end
       end
     end

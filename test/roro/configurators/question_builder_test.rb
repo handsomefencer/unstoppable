@@ -27,57 +27,32 @@ describe QuestionBuilder do
     end
   end
 
-
-  describe '#inflection_prompt' do
-    let(:inflection_prompt)  { builder.inflection_prompt }
-
-    context 'when stack is /stacks' do
-      # Then { assert_match 'these valid stacks',  inflection_prompt }
-    end
-
-    context 'when stack is /stack/stacks' do
-      When(:stack) { 'stack/stacks' }
-      # Then { assert_includes inflection_prompt, 'choose from these stack stacks' }
-    end
-
-    context 'when stack parent is rails and inflection is flavors' do
-      When(:stack) { 'stack/stack/inflection/stack/inflection/rails/flavors' }
-      # Then { assert_includes inflection_prompt, 'choose from these rails flavors' }
-    end
-  end
-
   describe '#build_inflection' do
     let(:options)            { { inflection: stack_path } }
     let(:humanized)          { builder.humanize(builder.inflection_options) }
     let(:inflection_options) { builder.inflection_options }
+    let(:inflection_prompt)  { builder.inflection_prompt }
     let(:preface)            { builder.get_story_preface(stack_path) }
     let(:question)           { builder.build_inflection }
     let(:story_from)         { builder.story_from('1') }
     let(:stack)              { 'stacks' }
 
-    describe '#get_story_preface' do
-      context 'when story has' do
-        context 'a preface' do
-          When(:stack) { 'story' }
-          Then { assert_match 'some string', preface }
-        end
-
-        context 'when story is nested without a preface' do
-          When(:stack) { 'stacks/story' }
-          Then { assert_match 'some string', preface }
-        end
-
-        context 'has no preface' do
-          When(:stack) { 'stack/stack/stories/story' }
-          Then { assert_nil preface }
-        end
+    describe '#inflection_prompt' do
+      context 'when stacks' do
+        When(:stack)    { 'stacks' }
+        When(:expected) { 'Please choose from these valid stacks:' }
+        Then { assert_includes inflection_prompt, expected }
       end
-    end
 
-    describe '#humanize_options(hash)' do
-      Then { assert humanized.is_a?(String) }
-      And  { assert_match '(1) story:', humanized }
-      And  { assert_match '(2) story2:', humanized }
+      context 'when stack/stacks' do
+        When(:stack) { 'stack/stacks' }
+        Then { assert_includes inflection_prompt, 'these stack stacks' }
+      end
+
+      context 'when stack parent is rails and inflection is flavors' do
+        When(:stack) { 'stack/stack/inflection/stack/inflection/rails/flavors' }
+        Then { assert_includes inflection_prompt, 'these rails flavors' }
+      end
     end
 
     describe '#inflection_options' do
@@ -89,6 +64,25 @@ describe QuestionBuilder do
         When(:stack) { 'stack/stack/plots' }
         Then { assert_equal 2, inflection_options.count }
         And  { assert_equal String, inflection_options.keys.first.class }
+      end
+    end
+
+    describe '#get_story_preface' do
+      context 'when story' do
+        context 'has a preface' do
+          When(:stack) { 'story' }
+          Then { assert_match 'some string', preface }
+        end
+
+        context 'has a preface and is nested' do
+          When(:stack) { 'stacks/story' }
+          Then { assert_match 'some string', preface }
+        end
+
+        context 'has no preface' do
+          When(:stack) { 'stack/stack/stories/story' }
+          Then { assert_nil preface }
+        end
       end
     end
 
@@ -104,7 +98,7 @@ describe QuestionBuilder do
       Then { assert_equal Array, question.class }
       And  { assert_equal Hash, question.last.class }
       And  { assert_equal Array, question.last[:limited_to].class }
-      And  { assert_match builder.inflection_prompt, question.first }
+      And  { assert_match inflection_prompt, question.first }
     end
 
     describe '#story_from(key, hash)' do

@@ -7,6 +7,7 @@ require 'roro/error'
 require 'roro/cli'
 require 'roro/configurator'
 require 'roro/crypto'
+require 'roro/version'
 
 module Roro
   class CLI < Thor; end

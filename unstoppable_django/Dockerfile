@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:<%= @env[:base][:python_version][:value] %>
+FROM python:3.2
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
 COPY requirements.txt /code/

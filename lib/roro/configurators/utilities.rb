@@ -106,7 +106,8 @@ module Roro
       end
 
       def stack_is_ignored?(stack)
-        stack.split('/').last.match?('test_dummy')
+        ignored = %w[test_dummy story_test test]
+        ignored.include?(stack.split('/').last)
       end
 
       def all_inflections(stack)

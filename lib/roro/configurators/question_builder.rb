@@ -76,7 +76,6 @@ module Roro
         end
       end
 
-
       def story_from(key)
         inflection_options[key]
       end

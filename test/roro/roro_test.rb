@@ -11,7 +11,7 @@ describe Roro do
     assert_includes Roro.constants, :Error
     assert_includes Roro.constants, :CLI
     assert_includes Roro.constants, :Crypto
-    assert_includes Roro.constants, :Configurator
+    assert_includes Roro.constants, :Configurators
     assert_includes Roro.constants, :VERSION
   end
 end
