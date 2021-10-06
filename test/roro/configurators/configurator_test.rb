@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe Configurator do
-  let(:workbench)    { nil }
   let(:subject)      { Configurator }
   let(:options)      { {} }
   let(:config)       { subject.new(options) }
@@ -17,6 +16,8 @@ describe Configurator do
             .returns('y') }
 
   context 'when fatsufodo django' do
+    let(:workbench)    { nil }
+
     let(:options) { {} }
     let(:answers) { %w[fatsufodo django] }
     Given { stub_journey }
@@ -34,7 +35,6 @@ describe Configurator do
     describe '#build_graph' do
       Given { config.build_graph }
       Given { quiet { config.write_story } }
-      focus
       Then do
         # assert_match 'django', config.graph[:env][:base][:app_name][:value]
         # assert_file 'unstoppable_django'

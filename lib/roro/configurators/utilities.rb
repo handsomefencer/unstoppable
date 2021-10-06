@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'json'
+require 'yaml'
 
 module Roro
   module Configurators

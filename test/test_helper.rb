@@ -14,8 +14,7 @@ require 'mocha/minitest'
 require 'climate_control'
 require 'roro'
 
-require_all 'test/helpers'
-
+Dir["#{Dir.pwd}/test/helpers/**/*.rb"].each { |f| require f }
 include Roro::Configurators
 include Roro::Crypto
 

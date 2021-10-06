@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_rel 'file_reflection'
+require_relative 'file_reflection'
 module Roro
   module Crypto
     class Exposer

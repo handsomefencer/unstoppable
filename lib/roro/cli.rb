@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+require_relative 'cli/rollon'
+require_relative 'cli/generate/generate_containers'
+require_relative 'cli/generate/generate_environments'
+require_relative 'cli/generate/generate_exposed'
+require_relative 'cli/generate/generate_keys'
+require_relative 'cli/generate/generate_obfuscated'
+require_relative 'cli/generate/generate_story'
+
 module Roro
   class CLI < Thor
     include Thor::Actions

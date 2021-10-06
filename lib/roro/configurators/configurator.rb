@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'utilities'
+
 module Roro
   module Configurators
+    include Utilities
+
     class Configurator
 
       attr_reader :structure, :itinerary, :manifest, :stack, :graph
@@ -14,7 +18,14 @@ module Roro
         @asker     = QuestionAsker.new
         @adventure = AdventureChooser.new
         @validator = Validator.new(@stack)
+      end
 
+      def rollon
+        validate_stack
+        choose_adventure
+        build_manifest
+        build_graph
+        write_story
       end
 
       def validate_stack

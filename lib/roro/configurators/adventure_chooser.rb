@@ -3,6 +3,8 @@
 module Roro
   module Configurators
     class AdventureChooser < Thor
+      include Utilities
+
       include Thor::Actions
 
       attr_reader :itinerary, :stack, :manifest

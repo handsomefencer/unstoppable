@@ -8,16 +8,12 @@ describe Roro::CLI do
   describe 'commands' do
     let(:mappings) do
       {
-        # generate_story: ['generate::story'],
         generate_exposed: ['generate::exposed'],
         generate_environments: ['generate::environments'],
         generate_containers: ['generate:containers'],
         generate_keys: ['generate::key'],
-        # omakase_roro: ['omakase::roro'],
         generate_obfuscated: ['generate::obfuscated'],
-        # greenfield_rails: ['omakase::rails'],
         rollon: ['rollon'],
-        # rollon_rails_kubernetes: ['rollon::rails::kubernetes']
       }
     end
 

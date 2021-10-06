@@ -6,6 +6,7 @@ module Roro
 
     def rollon
       configurator = Roro::Configurators::Configurator.new
+      configurator.rollon
     end
 
     desc 'log itineraries', 'logs all possible itinerareis in specified location'
