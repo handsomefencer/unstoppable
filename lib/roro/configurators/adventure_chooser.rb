@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'byebug'
 module Roro
   module Configurators
     class AdventureChooser < Thor
@@ -25,7 +25,9 @@ module Roro
             @manifest += stack_stories(stack)
             children(stack).each { |c| build_itinerary(c) }
           when :inflection
+
             child = choose_adventure(stack)
+            byebug
             @itinerary << child if stack_type(child).eql?(:story)
             build_itinerary(child)
           end

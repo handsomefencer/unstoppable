@@ -67,8 +67,7 @@ module Roro
         array.join
       end
 
-      def get_story_preface(story
-      )
+      def get_story_preface(story)
         storyfile = "#{story}/#{name(story)}.yml"
         if stack_is_storyfile?(storyfile)
           read_yaml("#{story}/#{name(story)}.yml")[:preface]
