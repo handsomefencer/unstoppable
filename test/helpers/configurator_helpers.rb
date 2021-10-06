@@ -21,10 +21,10 @@ module Minitest
     end
 
     def stub_overrides
-      Roro::Configurators::QuestionAsker
-        .any_instance
-        .stubs(:confirm_default)
-        .returns(*overrides).then.returns('y')
+      quiet { Roro::Configurators::QuestionAsker
+                .any_instance
+                .stubs(:confirm_default)
+                .returns(*overrides).then.returns('y') }
     end
 
     def stack_path(args = nil )

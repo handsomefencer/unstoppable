@@ -7,9 +7,9 @@ describe 'Roro::CLI#rollon' do
     let(:adventures) { %w[fatsufodo django] }
     let(:overrides)  { %w[] }
 
-    context 'when default variables' do
+    context 'when default vfffariables' do
       Given { rollon }
-      Then  { assert_file 'unstoppable_django/Dockerfile', /python:3/ }
+      Then  { assert_file 'unstoppadble_django/Dockerfile', /python:3/ }
       And   { assert_file 'unstoppable_django/docker-compose.yml', /=password/ }
     end
 
