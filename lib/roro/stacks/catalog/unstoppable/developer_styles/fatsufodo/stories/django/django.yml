@@ -2,7 +2,7 @@ preface: Django is a high-level Python Web framework that encourages rapid devel
 env:
   base:
     python_version:
-      name: Python version
+      name: Python versionddss
       value: 3
       help: https://www.python.org/doc/versions/
     POSTGRES_DB:
@@ -23,11 +23,7 @@ env:
       help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - directory 'one', "./#{@env[:base][:app_name][:value]}", @env
+  - directory 'stage_one', "./#{@env[:base][:app_name][:value]}", @env
+#  - "system `DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . .`"
 
-questions:
-  -
-    question: What would you like to name your app?
-    help: https://hub.docker.com/signup
-    action: "@build_vars[:app_name] = answer"
 

@@ -8,6 +8,10 @@ module Roro
           Roro::CLI.any_instance.stubs(:system)
         end
 
+        def stub_system_calls
+          Roro::Configurators::AdventureWriter.any_instance.stubs(:system)
+        end
+
         def stubs_asker(answer='y')
           asker = Thor::Shell::Basic.any_instance
           asker.stubs(:ask).returns(answer)

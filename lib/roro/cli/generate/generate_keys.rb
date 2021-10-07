@@ -6,8 +6,6 @@ module Roro
     method_option :environment, type: :hash, default: {}, desc: 'Generates a key for each argument.',
                                 banner: 'development, staging'
 
-    map 'generate::keys' => 'generate_keys'
-    map 'generate::key'  => 'generate_keys'
     map 'generate:keys'  => 'generate_keys'
     map 'generate:key'   => 'generate_keys'
 

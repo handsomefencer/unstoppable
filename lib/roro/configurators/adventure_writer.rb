@@ -14,8 +14,6 @@ module Roro
           actions = read_yaml(storyfile)[:actions]
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
-            # template 'one'
-            #   #
             actions.each do |a|
               eval a
             end

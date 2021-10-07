@@ -2,7 +2,6 @@ module Roro
   class CLI < Thor
     
     desc "generate:exposed", "Decrypts .smart.env.enc files for all environments or those specified."
-    map "generate::exposed" => "generate_exposed"
     map "generate:exposed"  => "generate_exposed"
 
     def generate_exposed(*environments)

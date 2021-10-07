@@ -13,18 +13,16 @@ module Minitest
         .returns(*adventures)
     end
 
-    def roro_rollon
-      cli = Roro::CLI.new
+    def stub_rollon
       stub_adventure
       stub_overrides
-      quiet { cli.rollon }
     end
 
     def stub_overrides
-      quiet { Roro::Configurators::QuestionAsker
-                .any_instance
-                .stubs(:confirm_default)
-                .returns(*overrides).then.returns('y') }
+      Roro::Configurators::QuestionAsker
+        .any_instance
+        .stubs(:confirm_default)
+        .returns(*overrides).then.returns('y')
     end
 
     def stack_path(args = nil )
