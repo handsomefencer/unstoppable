@@ -2,7 +2,7 @@ preface: Django is a high-level Python Web framework that encourages rapid devel
 env:
   base:
     python_version:
-      name: Python versionddss
+      name: Python version
       value: 3
       help: https://www.python.org/doc/versions/
     POSTGRES_DB:
@@ -23,7 +23,16 @@ env:
       help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - directory 'stage_one', "./#{@env[:base][:app_name][:value]}", @env
-#  - "system `DOCKER_BUILDKIT=1 docker build --file roro/containers/app/Dockerfile --output . .`"
+  - directory 'stage_one', '.', @env
+  - |
+    system "sudo docker-compose run web django-admin startproject \"#{@env[:base][:app_name][:value]}\" . &&
+    sudo chown -R $USER:$USER ."
+  - directory 'stage_two/settings.py', "./#{@env[:base][:app_name][:value]}/", @env
+  - |
+    sudo chown -R $USER:$USER . &&
+    system "docker-compose build &&
+    sudo chown -R $USER:$USER . &&
+    docker-compose up"
+  - system "echo 'You may open your app at http://localhost:8000/'"
 
 

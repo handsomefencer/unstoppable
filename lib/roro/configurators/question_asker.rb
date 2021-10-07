@@ -20,7 +20,7 @@ module Roro
           }
           getsome = "Would you like to accept the default value?\n"
           prompt = [question, getsome, humanized_options, "\n"].join("\n")
-          answer = ask(prompt, limited_to: options.keys)
+          answer = ask(prompt, limited_to: options.keys.map(&:to_s))
           answer.eql?('n') ? override_default(question) : 'y'
         end
       end

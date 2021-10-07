@@ -4,6 +4,7 @@ module Roro
   module Configurators
     class AdventureWriter < Thor
       include Thor::Actions
+      include Utilities
 
       attr_reader :itinerary, :stack, :manifest
 

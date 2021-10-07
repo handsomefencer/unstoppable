@@ -3,6 +3,8 @@
 require 'thor'
 require 'openssl'
 require 'base64'
+require 'yaml'
+require 'byebug'
 require 'roro/error'
 require 'roro/cli'
 require 'roro/configurator'

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'byebug'
+
 module Roro
   module Configurators
     class AdventureChooser < Thor
@@ -46,7 +46,7 @@ module Roro
           builder = QuestionBuilder.new(inflection: inflection)
           question = builder.build_inflection
           choice = ask(question)
-          story_name = builder.story_from(choice)
+          story_name = builder.story_from(choice.to_s)
           "#{inflection}/#{story_name}"
         end
       end

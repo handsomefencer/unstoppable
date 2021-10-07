@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 require_relative 'utilities'
+require 'yaml'
+
 
 module Roro
   module Configurators
-    include Utilities
 
     class Configurator
+      include Utilities
+
 
       attr_reader :structure, :itinerary, :manifest, :stack, :graph
 

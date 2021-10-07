@@ -2,6 +2,7 @@
 
 module Roro
   module Configurators
+
     class Validator
       include Utilities
 

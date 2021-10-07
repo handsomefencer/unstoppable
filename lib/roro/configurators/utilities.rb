@@ -4,6 +4,7 @@ require 'yaml'
 
 module Roro
   module Configurators
+
     module Utilities
 
       def stack_type(stack)

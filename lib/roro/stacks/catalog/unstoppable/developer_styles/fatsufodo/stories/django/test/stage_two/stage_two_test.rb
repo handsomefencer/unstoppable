@@ -30,6 +30,17 @@ describe 'Roro::CLI#rollon' do
 
     context 'stage two' do
       When(:overrides) { %w[3.2 y y newpass] }
+      # scribe SomeClass do
+      #   it "should invoke right function" do
+      #     mocked_method = MiniTest::Mock.new
+      #     mocked_method.expect :call, return_value, []
+      #     some_instance = SomeClass.new
+      #     some_instance.stub :right, mocked_method do
+      #       some_instance.invoke_function("right")
+      #     end
+      #     mocked_method.verify
+      #   end
+      # end
       Given {
         AdventureWriter
                 .any_instance
