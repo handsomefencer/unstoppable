@@ -13,6 +13,13 @@ module Minitest
         .returns(*adventures)
     end
 
+    def stub_journey(answers)
+      Thor::Shell::Basic
+        .any_instance
+        .stubs(:ask)
+        .returns(*answers)
+    end
+
     def stub_rollon
       stub_adventure
       stub_overrides
