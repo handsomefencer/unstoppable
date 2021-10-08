@@ -1,6 +1,7 @@
 require "test_helper"
 
 describe 'Roro::CLI#rollon' do
+  before { skip }
   let(:workbench) { }
   let(:cli) { Roro::CLI.new }
   let(:rollon)    {

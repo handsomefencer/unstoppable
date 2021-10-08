@@ -2,6 +2,9 @@
 
 require 'test_helper'
 
+class Dummy
+  include Utilities
+end
 describe 'Configurators::Utilities' do
   describe '#stack_type(stack_path)' do
     let(:result) { stack_type(stack_path) }

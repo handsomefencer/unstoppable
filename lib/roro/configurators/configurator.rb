@@ -6,6 +6,8 @@ require 'yaml'
 
 module Roro
   module Configurators
+    include Utilities
+
 
     class Configurator
       include Utilities

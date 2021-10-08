@@ -3,6 +3,7 @@
 module Roro
   module Configurators
     class AdventureCaseBuilder
+      include Utilities
 
       attr_reader :cases, :itineraries
 

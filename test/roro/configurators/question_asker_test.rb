@@ -4,8 +4,8 @@ require 'test_helper'
 require 'stringio'
 
 describe 'QuestionAsker' do
-  let(:asker)  { Roro::Configurators::QuestionAsker.new }
-  let(:env_hash) { read_yaml(stack_path)[:env] }
+  let(:asker)     { Roro::Configurators::QuestionAsker.new }
+  let(:env_hash)  { read_yaml(stack_path)[:env] }
   let(:stack)     { 'story/story.yml'}
   let(:options)   { { storyfile: stack_path } }
   let(:builder)   { QuestionBuilder.new(options) }
