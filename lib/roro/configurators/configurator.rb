@@ -38,10 +38,8 @@ module Roro
       end
 
       def choose_adventure
-        @itinerary = @adventure.build_itinerary(@stack)
-      end
-
-      def build_manifest
+        @adventure.build_itinerary(@stack)
+        @itinerary = @adventure.itinerary
         @manifest = @adventure.manifest
       end
 

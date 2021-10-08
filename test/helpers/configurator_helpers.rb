@@ -32,13 +32,19 @@ module Minitest
         .returns(*overrides).then.returns('y')
     end
 
+    def stub_answers_env(answer = 'y')
+      QuestionAsker
+        .any_instance
+        .stubs(:confirm_default)
+        .returns(answer)
+    end
+
     def stack_path(args = nil )
       append = defined?(stack) ? "/#{stack}" : nil
       prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
       stack_root ||= "#{fixture_path}/stack/#{prepend_valid}"
       "#{stack_root}#{append}"
     end
-
 
     def fixture_path
       "#{Dir.pwd}/test/fixtures"

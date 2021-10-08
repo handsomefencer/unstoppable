@@ -2,7 +2,7 @@
 
 module Roro
   module Configurators
-    class AskInflection < Thor
+    class AdventureAsker < Thor
       include Utilities
 
       attr_reader :inflection

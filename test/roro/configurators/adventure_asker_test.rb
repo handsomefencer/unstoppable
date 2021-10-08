@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'AskInflection' do
-  let(:asker)            { AskInflection.new }
+  let(:asker)            { AdventureAsker.new }
   let(:build_inflection) { asker.build_inflection(stack_path) }
   let(:stack)            { 'stacks' }
 

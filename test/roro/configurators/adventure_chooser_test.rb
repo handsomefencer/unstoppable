@@ -16,17 +16,11 @@ describe 'AdventureChooser' do
   end
 
   describe '#build_itinerary' do
-    before { skip }
     let(:answers) { %w[1] }
-    # let(:stub_journey) { Thor::Shell::Basic
-    #                          .any_instance
-    #                          .stubs(:ask)
-    #                          .returns(*answers)}
-
     let(:itinerary)       { adventure.itinerary }
     let(:manifest)        { adventure.manifest }
     let(:build_itinerary) do
-      stub_journey if defined?(answers)
+      stub_journey(answers) if defined?(answers)
       adventure.build_itinerary(stack_path)
     end
 
