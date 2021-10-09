@@ -115,8 +115,8 @@ module Roro
         children(stack).select { |c| stack_is_inflection?(c) }
       end
 
-      def children(location)
-        Dir.glob("#{location}/*")
+      def children(stack)
+        Dir.glob("#{stack}/*")
       end
 
       def stack_is_node?(stack)

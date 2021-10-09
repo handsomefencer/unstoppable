@@ -29,9 +29,10 @@ module Roro
           [prompt, stack_parent(@stack), collection].join(' ')
         end
 
-        def inflection_options
+        def inflection_options(stack = nil)
+          stack ||= @stack
           Hash.new.tap do |h|
-            children(@stack)
+            children(stack)
               .map { |f| name(f) }
               .sort
               .each_with_index do |c, i|

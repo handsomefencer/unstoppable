@@ -6,6 +6,8 @@ describe AdventureCaseBuilder do
   let(:case_builder) { AdventureCaseBuilder.new }
 
   describe '#build_cases' do
+    before { skip }
+    let(:stack) { 'stack' }
     let(:cases) { case_builder.build_cases(stack_path) }
     Then { assert_equal 'blah', cases }
   end

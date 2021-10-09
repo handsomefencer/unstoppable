@@ -15,8 +15,6 @@ describe 'AdventurePicker' do
     And  { assert_equal Array, build_inflection.last[:limited_to].class }
   end
 
-
-
   describe '#choose_adventure(inflection)' do
     let(:choose_adventure) { asker.choose_adventure(stack_path) }
 
@@ -25,7 +23,7 @@ describe 'AdventurePicker' do
       Then  { assert_equal "#{stack_path}/story", choose_adventure }
     end
 
-    context 'when stack/stack/ploss' do
+    context 'when stack/stack/plots' do
       When(:stack) { 'stack/stack/plots' }
       Given { stub_journey(%w[1]) }
       Then  { assert_equal "#{stack_path}/story1", choose_adventure }
@@ -53,7 +51,11 @@ describe 'AdventurePicker' do
   describe '#inflection_options' do
     let(:options) { asker.inflection_options }
 
-    context 'when stacks' do
+    context 'when valid/stack/stacks' do
+      # TODO: Do we want to allow an inflection to have templates and stacks?
+      before { skip }
+      let(:stack)            { nil }
+      Then { assert_equal options, 2 }
       Then { assert_equal options.size, 2 }
       And  { assert_includes options.values, 'story' }
       And  { assert_includes options.values, 'story2' }
