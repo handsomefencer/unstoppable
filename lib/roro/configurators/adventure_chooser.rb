@@ -8,7 +8,7 @@ module Roro
       attr_reader :itinerary, :stack, :manifest
 
       def initialize
-        @asker     = AdventureAsker.new
+        @asker     = AdventurePicker.new
         @itinerary = []
         @stack     = Roro::CLI.catalog_root
       end

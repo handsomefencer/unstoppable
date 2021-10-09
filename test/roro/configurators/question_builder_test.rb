@@ -6,8 +6,8 @@ require 'stringio'
 describe QuestionBuilder do
   let(:builder)  { QuestionBuilder.new(options) }
   let(:env_hash) { read_yaml(stack_path)[:env] }
-  let(:stack)   { 'story/story.yml'}
-  let(:options) { { storyfile: stack_path } }
+  let(:stack)    { 'story/story.yml'}
+  let(:options)  { { storyfile: stack_path } }
 
   describe '#build_overrides_from_storyfile' do
     describe '#override(hash)' do

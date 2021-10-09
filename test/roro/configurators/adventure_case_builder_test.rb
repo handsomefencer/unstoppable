@@ -5,6 +5,11 @@ require 'test_helper'
 describe AdventureCaseBuilder do
   let(:case_builder) { AdventureCaseBuilder.new }
 
+  describe '#build_cases' do
+    let(:cases) { case_builder.build_cases(stack_path) }
+    Then { assert_equal 'blah', cases }
+  end
+
   describe '#build_itineraries' do
     let(:itineraries) { case_builder.build_itineraries(stack_path) }
     let(:paths)   { [] }

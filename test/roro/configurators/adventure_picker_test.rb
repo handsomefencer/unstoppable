@@ -2,8 +2,8 @@
 
 require 'test_helper'
 
-describe 'AskInflection' do
-  let(:asker)            { AdventureAsker.new }
+describe 'AdventurePicker' do
+  let(:asker)            { AdventurePicker.new }
   let(:build_inflection) { asker.build_inflection(stack_path) }
   let(:stack)            { 'stacks' }
 
@@ -14,6 +14,8 @@ describe 'AskInflection' do
     And  { assert_equal Hash, build_inflection.last.class }
     And  { assert_equal Array, build_inflection.last[:limited_to].class }
   end
+
+
 
   describe '#choose_adventure(inflection)' do
     let(:choose_adventure) { asker.choose_adventure(stack_path) }

@@ -32,8 +32,15 @@ module Minitest
         .returns(*overrides).then.returns('y')
     end
 
+    def stub_env_default
+      Roro::Configurators::QuestionAsker
+        .any_instance
+        .stubs(:confirm_default)
+        .returns('y')
+    end
+
     def stub_answers_env(answer = 'y')
-      QuestionAsker
+      Roro::Configurators::QuestionAsker
         .any_instance
         .stubs(:confirm_default)
         .returns(answer)

@@ -2,7 +2,7 @@
 
 module Roro
   module Configurators
-    class AdventureAsker < Thor
+    class AdventurePicker < Thor
       include Utilities
 
       attr_reader :inflection

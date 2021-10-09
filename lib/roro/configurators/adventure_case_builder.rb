@@ -11,6 +11,19 @@ module Roro
         @catalog = catalog || Roro::CLI.catalog_root
       end
 
+      def build_cases(stack, cases = nil )
+        cases ||= []
+        if stack_type(stack).eql?(:inflection)
+
+        end
+        children(stack).each do |child|
+          build_cases(child, cases)
+
+        end
+        cases
+
+      end
+
       def build_itineraries(catalog)
         @itineraries ||= []
         @itineraries += build_itinerary(catalog)

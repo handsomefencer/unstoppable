@@ -17,6 +17,8 @@ module Roro
   module Crypto; end
 
   module Configurators
+    include Utilities
+
     class Configurator; end
     class QuestionAsker < Thor; end
     class CatalogBuilder; end

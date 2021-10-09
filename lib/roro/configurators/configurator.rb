@@ -6,30 +6,26 @@ require 'yaml'
 
 module Roro
   module Configurators
-    include Utilities
-
-
     class Configurator
       include Utilities
 
-
-      attr_reader :structure, :itinerary, :manifest, :stack, :graph
+      attr_reader :structure, :itinerary, :manifest, :stack, :env
 
       def initialize(options = {} )
         @options   = options ? options : {}
         @stack     = options[:stack] || CatalogBuilder.build
-        @structure = StructureBuilder.build
-        @builder   = QuestionBuilder.new
-        @asker     = QuestionAsker.new
-        @adventure = AdventureChooser.new
         @validator = Validator.new(@stack)
+        @adventure = AdventureChooser.new
+        @builder   = QuestionBuilder.new
+        @structure = StructureBuilder.build
+        @asker     = QuestionAsker.new
+        @writer    = AdventureWriter.new
       end
 
       def rollon
         validate_stack
         choose_adventure
-        build_manifest
-        build_graph
+        build_env
         write_story
       end
 
@@ -43,23 +39,19 @@ module Roro
         @manifest = @adventure.manifest
       end
 
-      def build_graph
-        @graph = @structure
+      def build_env
+        @env = @structure[:env]
         manifest.each { |story| accrete_story(story) }
-      end
-
-      def accrete_story(story)
-        content = read_yaml(story)
-        accrete_env(content[:env]) if content[:env]
         override_environment_variables
       end
 
-      def accrete_env(content)
-        content.keys.each { |k| @graph[:env][k].merge!(content[k]) }
+      def accrete_story(story)
+        content = read_yaml(story)[:env]
+        content.keys.each { |k| @env[k].merge!(content[k]) } if content
       end
 
       def override_environment_variables
-        @graph[:env].each do |e, v| v.each do |k, v|
+        @env.each do |e, v| v.each do |k, v|
             answer = @asker.confirm_default(@builder.override(e, k, v))
             v[:value] = answer unless answer.eql?('y')
           end
@@ -67,10 +59,7 @@ module Roro
       end
 
       def write_story
-        writer = AdventureWriter.new
-        @manifest.each do |storyfile|
-          writer.write(@graph[:env], storyfile)
-        end
+        @manifest.each { |m| @writer.write(@env, m) }
       end
     end
   end
