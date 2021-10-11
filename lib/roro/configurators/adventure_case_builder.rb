@@ -11,31 +11,25 @@ module Roro
         @catalog = catalog || Roro::CLI.catalog_root
       end
 
-      def build_cases(stack, cases = nil, array = nil )
+      def build_cases(stack, cases = [], array = [], index = 0 )
         @base ||= stack
-        cases ||= []
-        case stack_type(stack)
-        when :inflection
-          picker = AdventurePicker.new
-          picker.inflection_options(stack).each do |key, value|
-            array ||= []
-            array << "#{stack.split(@base).last}/#{value}"
-            build_cases( "#{stack}/#{value}", cases, array)
+        position = array.size
+        children(stack).each do |child|
+          if stack_type(stack).eql?(:inflection)
+            choice = "#{child.split(@base).last}"
+            next unless [:stack, :story].include?(stack_type(child))
+            if position.eql?(index)
+              array << choice
+              index += 1
+            else
+              cases << array.dup
+              array.pop(array.size - position)
+              array << choice
+            end
           end
-        when :stack
-          children(stack).each do |child|
-            build_cases( child, cases, array)
-          end
-        when :story
-          children(stack).each do |child|
-            build_cases( child, cases, array)
-          end
-        else
-          children(stack).each do |child|
-            build_cases( child, cases, array)
-          end
+          build_cases( child, cases, array, index)
         end
-        cases << array
+        cases
       end
 
       def build_itineraries(catalog)
