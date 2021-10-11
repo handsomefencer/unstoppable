@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=<%= @env[:base][:POSTGRES_DB][:value] %>
+      - POSTGRES_USER=<%= @env[:base][:POSTGRES_USER][:value] %>
+      - POSTGRES_PASSWORD=<%= @env[:base][:POSTGRES_PASSWORD][:value] %>
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

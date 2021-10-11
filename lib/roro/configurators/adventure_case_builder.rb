@@ -20,7 +20,7 @@ module Roro
             next unless [:stack, :story].include?(stack_type(child))
             if position.eql?(index)
               array << choice
-              index += 1
+              index = position + 1
             else
               cases << array.dup
               array.pop(array.size - position)
