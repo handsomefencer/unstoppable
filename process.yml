@@ -14,7 +14,9 @@ jobs:
     - setup_remote_docker:
         version: 19.03.12
     - run:
-        command: "rake install \nmkdir greenfield\ncd greenfield\n(yes || true) | roro rollon\n"
+        command: |
+          rake install
+          printf "1\n1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
   test:
@@ -89,6 +91,15 @@ workflows:
 #     source $BASH_ENV
 # 
 # commands:
+#   run-test-case:
+#     parameters:
+#       answers:
+#         type: string
+#         default: \"1\\n1\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\"
+#     steps:
+#       - run: |
+#           RUBY_VERSION=<< parameters.answwers >>
+# 
 #   run-tests:
 #     parameters:
 #       ruby-version:
@@ -132,6 +143,7 @@ workflows:
 #       - checkout
 #       - setup_remote_docker:
 #           version: 19.03.12
+# 
 #       - run-tests:
 #           ruby-version: '2.7'
 # 
@@ -148,10 +160,9 @@ workflows:
 #       - setup_remote_docker:
 #           version: 19.03.12
 #       - run: |
-#           rake install 
-#           mkdir greenfield
-#           cd greenfield
-#           (yes || true) | roro rollon
+#           rake install
+#           printf \"1\\n1\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
+# 
 #       - run: echo 'success'
 #   
 # 
