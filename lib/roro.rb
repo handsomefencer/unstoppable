@@ -8,6 +8,7 @@ require 'roro/error'
 require 'roro/cli'
 require 'roro/configurator'
 require 'roro/crypto'
+require 'roro/crypto/file_reflection'
 require 'roro/version'
 
 module Roro
