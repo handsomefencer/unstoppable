@@ -1,0 +1,186 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: cimg/ruby:2.7
+    working_directory: ~/project
+    steps:
+    - checkout
+  test-rollon-rails:
+    docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: "rake install \nmkdir greenfield\ncd greenfield\n(yes || true) | roro rollon\n"
+    - run:
+        command: echo 'success'
+  test:
+    docker:
+    - image: cimg/ruby:2.7
+    working_directory: ~/project
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: RUBY_VERSION=2.5 sudo docker-compose build ruby_gem
+    - run:
+        command: RUBY_VERSION=2.5 sudo docker-compose up -d --force-recreate ruby_gem
+    - run:
+        command: RUBY_VERSION=2.5 sudo docker-compose run ruby_gem bundle exec rake test
+  release:
+    docker:
+    - image: cimg/ruby:2.7
+    working_directory: ~/project
+    steps:
+    - checkout
+    - run:
+        command: gem install roro
+    - run:
+        command: roro generate::exposed ci
+    - run:
+        command: |
+          echo $(cat ./roro/containers/ruby_image/ci.env) >> $BASH_ENV
+          source $BASH_ENV
+    - run:
+        command: chmod +x ./.circleci/setup-gem-credentials.sh
+    - run:
+        command: ./.circleci/setup-gem-credentials.sh
+    - run:
+        command: chmod 0600 ~/.gem/credentials
+    - run:
+        command: git checkout .
+    - run:
+        command: gem release
+workflows:
+  version: 2
+  build-cli:
+    jobs:
+    - build:
+        filters:
+          branches:
+            only: master
+    - test-rollon-rails:
+        filters:
+          branches:
+            only: master
+    - test:
+        filters:
+          branches:
+            only: master
+    - release:
+        filters:
+          branches:
+            only: release
+        requires:
+        - build
+
+# Original config.yml file:
+# aliases:
+#   - &workspace-location
+#     at: /tmp/workspace
+#   - &copy-ci-dotenv | 
+#     cp -rf /tmp/workspace/roro .
+#   - &source-ci-variables | 
+#     echo 'source roro/containers/app/ci.env' >> $BASH_ENV
+#     source $BASH_ENV
+# 
+# defaults: &defaults
+#   executor: ruby-executor
+#   working_directory: ~/project
+# 
+# major_only: &major_only
+#   filters:
+#     branches:
+#       only: master
+# 
+# release: &release
+#   filters:
+#     branches:
+#       only: release
+#       
+#       
+# version: 2.1
+# 
+# executors:
+#   machine-executor:
+#     machine: true
+#   ruby-executor:
+#     docker:
+#       - image: cimg/ruby:2.7
+#       
+# jobs:
+#   build:
+#     <<: *defaults
+#     steps:
+#       - checkout
+#   
+#   test-rollon-rails: 
+#     executor: ruby-executor
+#     steps: 
+#       - checkout 
+#       - setup_remote_docker:
+#           version: 19.03.12
+#       - run: |
+#           rake install 
+#           mkdir greenfield
+#           cd greenfield
+#           (yes || true) | roro rollon
+#       - run: echo 'success'
+#   
+#   test:
+#     <<: *defaults
+# 
+#     steps:
+#       - checkout
+#       - setup_remote_docker:
+#           version: 19.03.12
+#       - run: RUBY_VERSION=2.5 sudo docker-compose build ruby_gem
+#       - run: RUBY_VERSION=2.5 sudo docker-compose up -d --force-recreate ruby_gem
+#       - run: RUBY_VERSION=2.5 sudo docker-compose run ruby_gem bundle exec rake test
+# #      - run: RUBY_VERSION=2.6 sudo docker-compose build ruby_gem
+# #      - run: RUBY_VERSION=2.6 sudo docker-compose up -d --force-recreate ruby_gem
+# #      - run: RUBY_VERSION=2.6 sudo docker-compose run ruby_gem bundle exec rake test
+# #      - run: RUBY_VERSION=2.7 sudo docker-compose build ruby_gem
+# #      - run: RUBY_VERSION=2.7 sudo docker-compose up -d --force-recreate ruby_gem
+# #      - run: RUBY_VERSION=2.7 sudo docker-compose run ruby_gem bundle exec rake test
+# #      - run: sudo RUBY_VERSION=3.0 docker-compose build ruby_gem
+# #      - run: sudo RUBY_VERSION=3.0 docker-compose up -d --force-recreate ruby_gem
+# #      - run: sudo RUBY_VERSION=3.0 docker-compose run ruby_gem bundle exec rake test
+# 
+# 
+#   release:
+#     <<: *defaults
+#     steps:
+#       - checkout
+#       - run: gem install roro
+#       - run: roro generate::exposed ci
+#       - run: | 
+#           echo $(cat ./roro/containers/ruby_image/ci.env) >> $BASH_ENV
+#           source $BASH_ENV
+#       - run: chmod +x ./.circleci/setup-gem-credentials.sh
+#       - run: ./.circleci/setup-gem-credentials.sh
+#       - run: chmod 0600 ~/.gem/credentials
+#       - run: git checkout .
+#       - run: gem release
+# 
+# workflows:
+#   version: 2
+#     
+#   build-cli: 
+#     jobs: 
+#       - build: 
+#           <<: *major_only
+#           <<: *release
+#       - test-rollon-rails: 
+#           <<: *major_only
+#       - test:
+#           <<: *major_only
+#       
+#       - release:
+#           requires: 
+#             - build
+#           <<: *release

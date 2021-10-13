@@ -8,7 +8,7 @@ aliases:
     source $BASH_ENV
 
 defaults: &defaults
-  executor: machine-executor
+  executor: ruby-executor
   working_directory: ~/project
 
 major_only: &major_only
@@ -25,14 +25,13 @@ release: &release
 version: 2.1
 
 executors:
-  machine-executor: 
+  machine-executor:
     machine: true
-  ruby-executor: 
+  ruby-executor:
     docker:
       - image: cimg/ruby:2.7
       
 jobs:
-
   build:
     <<: *defaults
     steps:
@@ -48,23 +47,30 @@ jobs:
           rake install 
           mkdir greenfield
           cd greenfield
-          (yes || true) | roro greenfield
+          (yes || true) | roro rollon
       - run: echo 'success'
   
   test:
     <<: *defaults
+
     steps:
       - checkout
-      - run: RUBY_VERSION=2.5 docker-compose build ruby_gem
-      - run: RUBY_VERSION=2.5 docker-compose up -d --force-recreate ruby_gem
-      - run: RUBY_VERSION=2.5 docker-compose run ruby_gem bundle exec rake test
-      - run: RUBY_VERSION=2.6 docker-compose build ruby_gem
-      - run: RUBY_VERSION=2.6 docker-compose up -d --force-recreate ruby_gem
-      - run: RUBY_VERSION=2.6 docker-compose run ruby_gem bundle exec rake test
-      - run: RUBY_VERSION=2.7 docker-compose build ruby_gem
-      - run: RUBY_VERSION=2.7 docker-compose up -d --force-recreate ruby_gem
-      - run: RUBY_VERSION=2.7 docker-compose run ruby_gem bundle exec rake test    
-      
+      - setup_remote_docker:
+          version: 19.03.12
+      - run: RUBY_VERSION=2.5 sudo docker-compose build ruby_gem
+      - run: RUBY_VERSION=2.5 sudo docker-compose up -d --force-recreate ruby_gem
+      - run: RUBY_VERSION=2.5 sudo docker-compose run ruby_gem bundle exec rake test
+#      - run: RUBY_VERSION=2.6 sudo docker-compose build ruby_gem
+#      - run: RUBY_VERSION=2.6 sudo docker-compose up -d --force-recreate ruby_gem
+#      - run: RUBY_VERSION=2.6 sudo docker-compose run ruby_gem bundle exec rake test
+#      - run: RUBY_VERSION=2.7 sudo docker-compose build ruby_gem
+#      - run: RUBY_VERSION=2.7 sudo docker-compose up -d --force-recreate ruby_gem
+#      - run: RUBY_VERSION=2.7 sudo docker-compose run ruby_gem bundle exec rake test
+#      - run: sudo RUBY_VERSION=3.0 docker-compose build ruby_gem
+#      - run: sudo RUBY_VERSION=3.0 docker-compose up -d --force-recreate ruby_gem
+#      - run: sudo RUBY_VERSION=3.0 docker-compose run ruby_gem bundle exec rake test
+
+
   release:
     <<: *defaults
     steps:
@@ -79,7 +85,7 @@ jobs:
       - run: chmod 0600 ~/.gem/credentials
       - run: git checkout .
       - run: gem release
-  
+
 workflows:
   version: 2
     

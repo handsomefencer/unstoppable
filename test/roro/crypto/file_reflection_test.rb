@@ -11,39 +11,39 @@ describe Roro::Crypto::FileReflection do
   let(:pattern)   { '.env' }
 
   describe ':source_files(directory, pattern' do
-    let(:source_files) { quiet { subject.source_files directory, pattern } }
+    let(:reflected_files) { quiet { subject.source_files directory, pattern } }
 
     context 'when no files match the pattern' do
-      Then { assert_equal source_files, [] }
+      Then { assert_equal reflected_files, [] }
     end
 
     context 'when the pattern is .env.enc' do
       When(:pattern)  { '.env.enc' }
       When(:expected) { 'roro/env/dummy.env.enc' }
       Given { insert_dummy_env_enc }
-      Then  { assert_includes source_files, expected }
+      Then  { assert_includes reflected_files, expected }
     end
 
     context 'when a file matches the pattern' do
       Given { insert_dummy }
-      Then  { assert_includes source_files, 'roro/env/dummy.env' }
+      Then  { assert_includes reflected_files, 'roro/env/dummy.env' }
     end
 
     context 'when a file is nested two levels deep' do
       When(:expected) { 'roro/containers/backend/env/dummy.env' }
       Given { insert_dummy expected }
-      Then  { assert_includes source_files, expected }
+      Then  { assert_includes reflected_files, expected }
     end
 
     context 'when nested three levels deep' do
       Given { insert_dummy 'roro/containers/backend/env/dummy.env' }
-      Then  { assert_includes source_files, 'roro/containers/backend/env/dummy.env' }
+      Then  { assert_includes reflected_files, 'roro/containers/backend/env/dummy.env' }
     end
 
     context 'when pattern contains regex' do
       When(:pattern) { 'dummy*.env' }
       Given { insert_dummy 'roro/env/dummy.subenv.env' }
-      Then  { assert_includes source_files, 'roro/env/dummy.subenv.env' }
+      Then  { assert_includes reflected_files, 'roro/env/dummy.subenv.env' }
     end
   end
 
