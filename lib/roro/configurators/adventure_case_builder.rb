@@ -15,7 +15,6 @@ module Roro
         @base ||= stack
 
         children(stack).each_with_index do |child, index|
-          choices = children(stack)
           if stack_type(stack).eql?(:inflection)
             choice = "#{child.split(@base).last}"
             next unless [:stack, :story].include?(stack_type(child))

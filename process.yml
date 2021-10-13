@@ -26,11 +26,11 @@ jobs:
     - setup_remote_docker:
         version: 19.03.12
     - run:
-        command: RUBY_VERSION=2.5 sudo docker-compose build ruby_gem
-    - run:
-        command: RUBY_VERSION=2.5 sudo docker-compose up -d --force-recreate ruby_gem
-    - run:
-        command: RUBY_VERSION=2.5 sudo docker-compose run ruby_gem bundle exec rake test
+        command: |
+          RUBY_VERSION=2.7
+          sudo docker-compose build ruby_gem &&
+          sudo docker-compose up -d --force-recreate ruby_gem &&
+          sudo docker-compose run ruby_gem bundle exec rake test
   release:
     docker:
     - image: cimg/ruby:2.7
@@ -88,6 +88,19 @@ workflows:
 #     echo 'source roro/containers/app/ci.env' >> $BASH_ENV
 #     source $BASH_ENV
 # 
+# commands:
+#   run-tests:
+#     parameters:
+#       ruby-version:
+#         type: string
+#         default: '2.5'
+#     steps:
+#       - run: |
+#           RUBY_VERSION=<< parameters.ruby-version >>
+#           sudo docker-compose build ruby_gem &&
+#           sudo docker-compose up -d --force-recreate ruby_gem &&
+#           sudo docker-compose run ruby_gem bundle exec rake test
+# 
 # defaults: &defaults
 #   executor: ruby-executor
 #   working_directory: ~/project
@@ -113,6 +126,16 @@ workflows:
 #       - image: cimg/ruby:2.7
 #       
 # jobs:
+#   test:
+#     <<: *defaults
+#     steps:
+#       - checkout
+#       - setup_remote_docker:
+#           version: 19.03.12
+#       - run-tests:
+#           ruby-version: '2.7'
+# 
+# 
 #   build:
 #     <<: *defaults
 #     steps:
@@ -131,26 +154,6 @@ workflows:
 #           (yes || true) | roro rollon
 #       - run: echo 'success'
 #   
-#   test:
-#     <<: *defaults
-# 
-#     steps:
-#       - checkout
-#       - setup_remote_docker:
-#           version: 19.03.12
-#       - run: RUBY_VERSION=2.5 sudo docker-compose build ruby_gem
-#       - run: RUBY_VERSION=2.5 sudo docker-compose up -d --force-recreate ruby_gem
-#       - run: RUBY_VERSION=2.5 sudo docker-compose run ruby_gem bundle exec rake test
-# #      - run: RUBY_VERSION=2.6 sudo docker-compose build ruby_gem
-# #      - run: RUBY_VERSION=2.6 sudo docker-compose up -d --force-recreate ruby_gem
-# #      - run: RUBY_VERSION=2.6 sudo docker-compose run ruby_gem bundle exec rake test
-# #      - run: RUBY_VERSION=2.7 sudo docker-compose build ruby_gem
-# #      - run: RUBY_VERSION=2.7 sudo docker-compose up -d --force-recreate ruby_gem
-# #      - run: RUBY_VERSION=2.7 sudo docker-compose run ruby_gem bundle exec rake test
-# #      - run: sudo RUBY_VERSION=3.0 docker-compose build ruby_gem
-# #      - run: sudo RUBY_VERSION=3.0 docker-compose up -d --force-recreate ruby_gem
-# #      - run: sudo RUBY_VERSION=3.0 docker-compose run ruby_gem bundle exec rake test
-# 
 # 
 #   release:
 #     <<: *defaults

@@ -42,6 +42,7 @@ module Roro
       end
 
       def validate(stack = nil)
+        @msg = nil
         stack ||= @stack
         @stack_root ||= stack
         base_validate(stack)
@@ -55,7 +56,7 @@ module Roro
         when :stack
           children(stack).each { |c| validate(c) }
         end
-        raise(@error, "#{@msg} in #{stack}") if @msg
+        raise(@error, "#{@msg} in #{stack}") unless @msg.nil?
       end
 
       def validate_plot(plot, structure = @structure)
