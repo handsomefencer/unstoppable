@@ -11,25 +11,38 @@ module Roro
         @catalog = catalog || Roro::CLI.catalog_root
       end
 
-      def build_cases(stack, cases = [], array = [], index = 0 )
+      def build_cases(stack, cases = [], array = [], position = 0 )
         @base ||= stack
-        position = array.size
-        children(stack).each do |child|
+
+        children(stack).each_with_index do |child, index|
+          choices = children(stack)
           if stack_type(stack).eql?(:inflection)
             choice = "#{child.split(@base).last}"
             next unless [:stack, :story].include?(stack_type(child))
-            if position.eql?(index)
+            case
+            when children(stack).last.eql?(child)
+              array = array.take(position)
               array << choice
-              index = position + 1
+              cases << array
+            when array.size.eql?(position)
+              array << choice
+            when array.size.eql?(position + 1)
+              cases << array
+              array = array.take(position)
+              array << choice
+            # when array.size.eql?(position - 1)
+            #   array = array.take(position)
+            when array.size.eql?(position + 2)
+              array = array.take(position)
             else
-              cases << array.dup
-              array.pop(array.size - position)
-              array << choice
+              cases << array
+              # array = array.take(position)
             end
+            # position += 1
           end
-          build_cases( child, cases, array, index)
+          build_cases( child, cases, array, (position - index) + 1)
         end
-        cases
+        cases.uniq.sort
       end
 
       def build_itineraries(catalog)
