@@ -8,14 +8,20 @@ aliases:
     source $BASH_ENV
 
 commands:
+
   run-test-case:
     parameters:
       answers:
         type: string
-        default: "1\n1\ny\ny\ny\ny\ny\ny\ny$var\n"
+        default: "1\n1"
     steps:
       - run: |
-          RUBY_VERSION=<< parameters.answwers >>
+          rake install
+          printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+      - run: echo 'success'
+      - run: sudo docker kill $(docker ps -aq) || true
+      - run: sudo docker rm $(docker ps -a -q) || true
+      - run: sudo docker volume rm $(docker volume ls -q) || true
 
   run-tests:
     parameters:
@@ -60,7 +66,6 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 19.03.12
-
       - run-tests:
           ruby-version: '2.7'
 
@@ -70,16 +75,23 @@ jobs:
     steps:
       - checkout
   
-  test-rollon-rails: 
+  test-rollon:
     executor: ruby-executor
     steps: 
       - checkout 
       - setup_remote_docker:
           version: 19.03.12
-      - run: |
-          rake install
-          printf "1\n1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
-
+      - run-test-case:
+          answers: "1\n1"
+      - run: echo 'success'
+      - run-test-case:
+          answers: "1\n2"
+      - run: echo 'success'
+      - run-test-case:
+          answers: "1\n3"
+      - run: echo 'success'
+      - run-test-case:
+          answers: "1\n4"
       - run: echo 'success'
   
 
@@ -106,7 +118,7 @@ workflows:
       - build: 
           <<: *major_only
           <<: *release
-      - test-rollon-rails: 
+      - test-rollon:
           <<: *major_only
       - test:
           <<: *major_only

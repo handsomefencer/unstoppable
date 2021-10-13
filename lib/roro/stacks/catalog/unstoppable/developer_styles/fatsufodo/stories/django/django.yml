@@ -25,12 +25,12 @@ env:
 actions:
   - directory 'stage_one', '.', @env
   - |
-    system "sudo docker-compose run web django-admin startproject \"#{@env[:base][:app_name][:value]}\" &&
+    system "sudo docker-compose run web django-admin startproject \"#{@env[:base][:app_name][:value]}\" . &&
     sudo chown -R $USER:$USER ."
   - directory 'stage_two/settings.py', "./#{@env[:base][:app_name][:value]}/", @env
   - |
     system "sudo chown -R $USER:$USER . &&
-    docker-compose up --build"
+    docker-compose up -d --build"
   - system "echo 'You may open your app at http://localhost:8000/'"
 
 
