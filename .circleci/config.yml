@@ -132,8 +132,8 @@ workflows:
           <<: *release
       - test-rollon:
           <<: *major_only
-      - test:
-          <<: *major_only
+#      - test:
+#          <<: *major_only
       
       - release:
           requires: 
