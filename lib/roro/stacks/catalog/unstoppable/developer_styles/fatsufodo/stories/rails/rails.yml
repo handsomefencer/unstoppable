@@ -3,6 +3,7 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 actions:
   - directory 'stage_one', '.', @env
+  - system "sudo docker-compose build"
   - system "sudo docker-compose run --no-deps web rails new . --force --database=postgresql"
   - system "sudo chown -R $USER:$USER ."
   - template 'stage_two/database.yml.tt', './config/database.yml', @env
