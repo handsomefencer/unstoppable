@@ -123,7 +123,7 @@ workflows:
           matrix:
             parameters:
               answers: ["1\n1", "1\n2", "1\n3", "1\n4"]
-              os: [linux, mac]
+              os: [linux]
     
   build-cli: 
     jobs: 
