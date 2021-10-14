@@ -69,25 +69,25 @@ executors:
 
 jobs:
 
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+
   test:
     <<: *defaults
     steps:
       - checkout
       - setup_remote_docker:
-          version: 19.03.12
+        version: 19.03.12
       - run-tests:
-          ruby-version: '2.7'
+        ruby-version: '2.7'
 
-  build:
-    <<: *defaults
-    steps:
-      - checkout
-  
   test-rollon:
     parameters:
       answers:
         type: string
-        default: "1\n2"
+        default: "1\n1"
       os:
         type: executor
         default: linux
@@ -123,7 +123,7 @@ workflows:
           matrix:
             parameters:
               answers: ["1\n1"]
-              os: [linux, mac]
+              os: [mac]
     
   build-cli: 
     jobs: 
