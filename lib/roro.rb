@@ -6,14 +6,16 @@ require 'base64'
 require 'yaml'
 require 'roro/error'
 require 'roro/cli'
+require 'roro/common/file_reflection'
 require 'roro/configurator'
 require 'roro/crypto'
-require 'roro/crypto/file_reflection'
 require 'roro/version'
 
 module Roro
+
   class CLI < Thor; end
 
+  module FileReflection; end
   module Crypto; end
 
   module Configurators

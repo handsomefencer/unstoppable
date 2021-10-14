@@ -3,9 +3,10 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_keys' do
+  Given { skip }
   let(:subject)   { Roro::CLI.new }
   let(:envs)      { [] }
-  let(:generate)  { quiet { subject.generate_keys(*envs) } }
+  # let(:generate)  { quiet { subject.generate_keys(*envs) } }
   let(:workbench) { 'roro' }
 
   before { stubs_answer('y') }

@@ -6,7 +6,7 @@ module Roro
 
     def generate_exposed(*environments)
       exposer = Roro::Crypto::Exposer.new
-      exposer.expose(environments, './roro', '.env.enc')
+      exposer.expose(environments, Roro::CLI.mise, '.env.enc')
     end
   end
 end

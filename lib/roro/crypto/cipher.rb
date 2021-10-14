@@ -3,7 +3,7 @@ module Roro
   module Crypto 
     class Cipher
 
-      def initialize(options={})
+      def initialize(options = {})
         @standard = options[:standard] || 'AES-128-CBC' 
         @salt     = options[:salt]     || '8 octets' 
         @cipher   = OpenSSL::Cipher.new @standard

@@ -1,13 +1,14 @@
 require "test_helper"
 
 describe Roro::Crypto do
-
-  before { 
+  # before { skip }
+  before {
+    skip
     prepare_destination 'crypto'
     ENV['DUMMY_KEY']=nil 
   }
 
-  Given(:subject)         { Roro::Crypto }
+  Given(:subject)         { Roro::Crypto::Cipher.new }
   Given(:directory)       { './roro' }
   Given(:filename)        { 'dummy' }
   Given(:extension)       { '.env' }
@@ -16,7 +17,6 @@ describe Roro::Crypto do
   Given(:environment)     { 'dummy' }
   
   describe ':generate_key' do
-
     Then { assert_equal subject.generate_key.size, 25 }
   end
   

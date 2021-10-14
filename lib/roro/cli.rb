@@ -5,6 +5,7 @@ require_relative 'cli/generate/generate_containers'
 require_relative 'cli/generate/generate_environments'
 require_relative 'cli/generate/generate_exposed'
 require_relative 'cli/generate/generate_keys'
+require_relative 'cli/generate/generate_mise'
 require_relative 'cli/generate/generate_obfuscated'
 
 module Roro
@@ -17,6 +18,20 @@ module Roro
 
     def self.catalog_root
       "#{File.dirname(__FILE__)}/stacks/catalog/unstoppable/developer_styles"
+    end
+
+    def self.mise_location
+      lookup = Dir.glob("#{Dir.pwd}/**/*.roro")&.first&.split("#{Dir.pwd}/")
+      if lookup
+        mise = 'roro'
+      else
+        mise = lookup.last.split('/').first
+      end
+      "#{Dir.pwd}/#{mise}"
+    end
+
+    def self.mise
+      mise_location.split("#{Dir.pwd}/").last
     end
 
     def self.roro_environments

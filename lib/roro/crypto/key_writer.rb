@@ -9,7 +9,7 @@ module Roro
     # the extension of the key file.
 
     class KeyWriter
-      include FileReflection
+      include Roro::FileReflection
 
       def initialize
         @writer = FileWriter.new
@@ -17,13 +17,13 @@ module Roro
       end
 
       def write_keyfile(environment)
-        destination = "./roro/keys/#{environment}.key"
+        destination = "./#{Roro::CLI.mise}/keys/#{environment}.key"
         @writer.write_to_file(destination, @cipher.generate_key)
       end
 
       def write_keyfiles(environments, directory, ext)
-        environments = gather_environments(directory, ext) if environments.empty?
-        environments.each { |environment| write_keyfile(environment) }
+        environments = gather_environments(Dir.glob("#{Dir.pwd}/#{Roro::CLI.mise}/**/*"), ext) if environments.empty?
+        environments.uniq.each { |environment| write_keyfile(environment) }
       end
     end
   end

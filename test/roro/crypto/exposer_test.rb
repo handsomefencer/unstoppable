@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::Crypto::Exposer.new' do
+  Given { skip }
   let(:subject)   { Roro::Crypto::Exposer.new }
   let(:workbench) { 'crypto/roro' }
   let(:directory) { './roro' }

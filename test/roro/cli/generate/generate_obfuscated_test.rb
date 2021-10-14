@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_obfuscated' do
+  Given { skip }
   let(:subject)   { Roro::CLI.new }
   let(:workbench) { 'roro' }
   let(:envs) { [] }

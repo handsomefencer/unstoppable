@@ -7,11 +7,12 @@ module Roro
 
     def generate_environments(*environments)
       default_environments = Roro::CLI.roro_environments
+      mise = Roro::CLI.mise
       environments = environments.empty? ? default_environments : environments
-      containers = Dir.glob('./roro/containers/*').select { |f| File.directory?(f) }
+      containers = Dir.glob("./#{mise}/containers/*").select { |f| File.directory?(f) }
       (environments.empty? ? default_environments : environments).each do |env|
         content = 'SOME_KEY=some_value'
-        create_file "./roro/env/#{env}.env", content
+        create_file "./#{mise}/env/#{env}.env", content
         containers.each do |container|
           create_file "#{container}/env/#{env}.env", content
         end

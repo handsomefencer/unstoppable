@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe Roro::Crypto::KeyWriter do
+  Given { skip }
   let(:workbench) { 'crypto/roro' }
   let(:subject)   { Roro::Crypto::KeyWriter.new }
 

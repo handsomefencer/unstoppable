@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_containers' do
+  Given { skip }
   let(:subject)      { Roro::CLI.new }
   let(:workbench)    { 'workbench' }
   let(:default_apps) { %w[backend database frontend] }

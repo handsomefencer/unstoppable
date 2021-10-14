@@ -2,7 +2,6 @@ module Roro
   module Crypto
     class Obfuscator
 
-
       def initialize
         @writer = FileWriter.new
         @cipher = Cipher.new

@@ -11,27 +11,57 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          sudo docker system prune -af --volumes
-          rake install
+          rake install &&
           printf "1
           1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
   ? |-
     test-rollon-1
-    1-mac
-  : macos:
-      xcode: 11.4
+    2-linux
+  : docker:
+    - image: cimg/ruby:2.7
     steps:
     - checkout
     - setup_remote_docker:
         version: 19.03.12
     - run:
         command: |
-          sudo docker system prune -af --volumes
-          rake install
+          rake install &&
           printf "1
-          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          2\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
+  ? |-
+    test-rollon-1
+    3-linux
+  : docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          rake install &&
+          printf "1
+          3\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
+  ? |-
+    test-rollon-1
+    4-linux
+  : docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          rake install &&
+          printf "1
+          4\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
   build:
@@ -49,29 +79,11 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          sudo docker system prune -af --volumes
-          rake install
+          rake install &&
           printf "1
-          2\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
-  test:
-    docker:
-    - image: cimg/ruby:2.7
-    working_directory: ~/project
-    steps:
-    - checkout
-    - setup_remote_docker:
-        version: 19.03.12
-    - checkout
-    - setup_remote_docker:
-        version: 19.03.12
-    - run:
-        command: |
-          RUBY_VERSION=2.7
-          sudo docker-compose build ruby_gem &&
-          sudo docker-compose up -d --force-recreate ruby_gem &&
-          sudo docker-compose run ruby_gem bundle exec rake test
   release:
     docker:
     - image: cimg/ruby:2.7
@@ -105,7 +117,13 @@ workflows:
       1-linux
     - |-
       test-rollon-1
-      1-mac
+      2-linux
+    - |-
+      test-rollon-1
+      3-linux
+    - |-
+      test-rollon-1
+      4-linux
   build-cli:
     jobs:
     - build:
@@ -113,10 +131,6 @@ workflows:
           branches:
             only: master
     - test-rollon:
-        filters:
-          branches:
-            only: master
-    - test:
         filters:
           branches:
             only: master
@@ -148,8 +162,7 @@ workflows:
 #         type: executor
 #     steps:
 #       - run: |
-#           sudo docker system prune -af --volumes
-#           rake install
+#           rake install &&
 #           printf \"<< parameters.answers >>\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
 #       - run: echo 'success'
 # 
@@ -200,25 +213,25 @@ workflows:
 # 
 # jobs:
 # 
+#   build:
+#     <<: *defaults
+#     steps:
+#       - checkout
+# 
 #   test:
 #     <<: *defaults
 #     steps:
 #       - checkout
 #       - setup_remote_docker:
-#           version: 19.03.12
+#         version: 19.03.12
 #       - run-tests:
-#           ruby-version: '2.7'
+#         ruby-version: '2.7'
 # 
-#   build:
-#     <<: *defaults
-#     steps:
-#       - checkout
-#   
 #   test-rollon:
 #     parameters:
 #       answers:
 #         type: string
-#         default: \"1\\n2\"
+#         default: \"1\\n1\"
 #       os:
 #         type: executor
 #         default: linux
@@ -253,8 +266,8 @@ workflows:
 #       - test-rollon:
 #           matrix:
 #             parameters:
-#               answers: [\"1\\n1\"]
-#               os: [linux, mac]
+#               answers: [\"1\\n1\", \"1\\n2\", \"1\\n3\", \"1\\n4\"]
+#               os: [linux]
 #     
 #   build-cli: 
 #     jobs: 
@@ -263,8 +276,8 @@ workflows:
 #           <<: *release
 #       - test-rollon:
 #           <<: *major_only
-#       - test:
-#           <<: *major_only
+# #      - test:
+# #          <<: *major_only
 #       
 #       - release:
 #           requires: 

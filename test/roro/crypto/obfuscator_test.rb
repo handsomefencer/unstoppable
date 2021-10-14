@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe Roro::Crypto::Obfuscator do
+  Given { skip }
   let(:subject)      { Roro::Crypto::Obfuscator.new }
   let(:workbench)    { 'crypto/roro' }
   let(:directory)    { './roro' }

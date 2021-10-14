@@ -1,10 +1,7 @@
 # frozen_string_literal: true
-
-require_relative 'file_reflection'
 module Roro
   module Crypto
     class Exposer
-      include FileReflection
 
       def initialize
         @writer = Roro::Crypto::FileWriter.new

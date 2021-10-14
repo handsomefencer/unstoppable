@@ -8,7 +8,7 @@ module Roro
 
     def generate_obfuscated(*environments)
       obfuscator = Roro::Crypto::Obfuscator.new
-      obfuscator.obfuscate(environments, './roro', '.env')
+      obfuscator.obfuscate(environments, Roro::CLI.mise, '.env')
     end
   end
 end
