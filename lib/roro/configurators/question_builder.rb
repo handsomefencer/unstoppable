@@ -3,7 +3,6 @@
 module Roro
   module Configurators
     class QuestionBuilder
-      include Utilities
 
       attr_reader :question, :storyfile, :inflection
 

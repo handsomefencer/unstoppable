@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Roro::Utilities' do
+describe 'Configurators::Utilities' do
   describe '#stack_type(stack_path)' do
     let(:result) { stack_type(stack_path) }
 

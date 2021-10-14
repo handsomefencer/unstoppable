@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe Roro::FileReflection do
+describe 'Roro::FileReflection' do
   let(:workbench)    { 'obfuscated/roro' }
   let(:directory)    { 'roro' }
   let(:pattern)      { '.env.enc' }

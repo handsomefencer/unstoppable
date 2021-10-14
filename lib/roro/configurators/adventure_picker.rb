@@ -3,7 +3,6 @@
 module Roro
   module Configurators
     class AdventurePicker < Thor
-      include Utilities
 
       attr_reader :inflection
 

@@ -4,7 +4,6 @@ module Roro
   module FileReflection
 
     def source_files(dir, pattern)
-
       Dir.glob("#{dir}/**/*#{pattern}")
     end
 

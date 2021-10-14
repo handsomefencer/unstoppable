@@ -4,11 +4,30 @@ require 'thor'
 require 'openssl'
 require 'base64'
 require 'yaml'
-require 'roro/error'
 require 'roro/cli'
+require 'roro/cli/generate/generate_containers'
+require 'roro/cli/generate/generate_environments'
+require 'roro/cli/generate/generate_exposed'
+require 'roro/cli/generate/generate_keys'
+require 'roro/cli/generate/generate_mise'
+require 'roro/cli/generate/generate_obfuscated'
+require 'roro/cli/rollon'
 require 'roro/common/file_reflection'
-require 'roro/configurator'
+require 'roro/common/utilities'
 require 'roro/crypto'
+require 'roro/configurator'
+require 'roro/configurators/utilities'
+require 'roro/configurators/adventure_case_builder'
+require 'roro/configurators/adventure_chooser'
+require 'roro/configurators/adventure_writer'
+require 'roro/configurators/adventure_picker'
+require 'roro/configurators/question_asker'
+require 'roro/configurators/question_builder'
+require 'roro/configurators/configurator'
+require 'roro/configurators/catalog_builder'
+require 'roro/configurators/structure_builder'
+require 'roro/configurators/validator'
+require 'roro/error'
 require 'roro/version'
 
 module Roro
@@ -16,17 +35,17 @@ module Roro
   class CLI < Thor; end
 
   module FileReflection; end
-  module Crypto; end
+  module Utilities; end
 
+  module Crypto
+    include FileReflection
+  end
+  include Utilities
   module Configurators
     include Utilities
 
     class Configurator; end
     class QuestionAsker < Thor; end
     class CatalogBuilder; end
-
-    module Utilities; end
-
-
   end
 end
