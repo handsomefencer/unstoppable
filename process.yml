@@ -1,5 +1,39 @@
 version: 2
 jobs:
+  ? |-
+    test-rollon-1
+    1-linux
+  : docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          sudo docker system prune -af --volumes
+          rake install
+          printf "1
+          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
+  ? |-
+    test-rollon-1
+    1-mac
+  : macos:
+      xcode: 11.4
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          sudo docker system prune -af --volumes
+          rake install
+          printf "1
+          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
   build:
     docker:
     - image: cimg/ruby:2.7
@@ -15,62 +49,10 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install
-          printf "1
-          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
-    - run:
-        command: echo 'success'
-    - run:
-        command: sudo docker kill $(docker ps -aq) || true
-    - run:
-        command: sudo docker rm $(docker ps -a -q) || true
-    - run:
-        command: sudo docker volume rm $(docker volume ls -q) || true
-    - run:
-        command: echo 'success'
-    - run:
-        command: |
+          sudo docker system prune -af --volumes
           rake install
           printf "1
           2\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
-    - run:
-        command: echo 'success'
-    - run:
-        command: sudo docker kill $(docker ps -aq) || true
-    - run:
-        command: sudo docker rm $(docker ps -a -q) || true
-    - run:
-        command: sudo docker volume rm $(docker volume ls -q) || true
-    - run:
-        command: echo 'success'
-    - run:
-        command: |
-          rake install
-          printf "1
-          3\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
-    - run:
-        command: echo 'success'
-    - run:
-        command: sudo docker kill $(docker ps -aq) || true
-    - run:
-        command: sudo docker rm $(docker ps -a -q) || true
-    - run:
-        command: sudo docker volume rm $(docker volume ls -q) || true
-    - run:
-        command: echo 'success'
-    - run:
-        command: |
-          rake install
-          printf "1
-          4\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
-    - run:
-        command: echo 'success'
-    - run:
-        command: sudo docker kill $(docker ps -aq) || true
-    - run:
-        command: sudo docker rm $(docker ps -a -q) || true
-    - run:
-        command: sudo docker volume rm $(docker volume ls -q) || true
     - run:
         command: echo 'success'
   test:
@@ -78,6 +60,9 @@ jobs:
     - image: cimg/ruby:2.7
     working_directory: ~/project
     steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
     - checkout
     - setup_remote_docker:
         version: 19.03.12
@@ -113,6 +98,14 @@ jobs:
         command: gem release
 workflows:
   version: 2
+  test-all-cases:
+    jobs:
+    - |-
+      test-rollon-1
+      1-linux
+    - |-
+      test-rollon-1
+      1-mac
   build-cli:
     jobs:
     - build:
@@ -151,14 +144,14 @@ workflows:
 #       answers:
 #         type: string
 #         default: \"1\\n1\"
+#       os:
+#         type: executor
 #     steps:
 #       - run: |
+#           sudo docker system prune -af --volumes
 #           rake install
 #           printf \"<< parameters.answers >>\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
 #       - run: echo 'success'
-#       - run: sudo docker kill $(docker ps -aq) || true
-#       - run: sudo docker rm $(docker ps -a -q) || true
-#       - run: sudo docker volume rm $(docker volume ls -q) || true
 # 
 #   run-tests:
 #     parameters:
@@ -166,6 +159,9 @@ workflows:
 #         type: string
 #         default: '2.5'
 #     steps:
+#       - checkout
+#       - setup_remote_docker:
+#           version: 19.03.12
 #       - run: |
 #           RUBY_VERSION=<< parameters.ruby-version >>
 #           sudo docker-compose build ruby_gem &&
@@ -185,18 +181,25 @@ workflows:
 #   filters:
 #     branches:
 #       only: release
-#       
-#       
+# 
 # version: 2.1
 # 
 # executors:
+# 
 #   machine-executor:
 #     machine: true
 #   ruby-executor:
 #     docker:
 #       - image: cimg/ruby:2.7
-#       
+#   linux:
+#     docker:
+#       - image: cimg/ruby:2.7
+#   mac:
+#     macos:
+#       xcode: 11.4
+# 
 # jobs:
+# 
 #   test:
 #     <<: *defaults
 #     steps:
@@ -206,31 +209,27 @@ workflows:
 #       - run-tests:
 #           ruby-version: '2.7'
 # 
-# 
 #   build:
 #     <<: *defaults
 #     steps:
 #       - checkout
 #   
 #   test-rollon:
-#     executor: ruby-executor
-#     steps: 
-#       - checkout 
+#     parameters:
+#       answers:
+#         type: string
+#         default: \"1\\n2\"
+#       os:
+#         type: executor
+#         default: linux
+#     executor: << parameters.os >>
+#     steps:
+#       - checkout
 #       - setup_remote_docker:
 #           version: 19.03.12
 #       - run-test-case:
-#           answers: \"1\\n1\"
-#       - run: echo 'success'
-#       - run-test-case:
-#           answers: \"1\\n2\"
-#       - run: echo 'success'
-#       - run-test-case:
-#           answers: \"1\\n3\"
-#       - run: echo 'success'
-#       - run-test-case:
-#           answers: \"1\\n4\"
-#       - run: echo 'success'
-#   
+#           answers: << parameters.answers >>
+#           os: << parameters.os >>
 # 
 #   release:
 #     <<: *defaults
@@ -248,7 +247,14 @@ workflows:
 #       - run: gem release
 # 
 # workflows:
-#   version: 2
+#   version: 2.1
+#   test-all-cases:
+#     jobs:
+#       - test-rollon:
+#           matrix:
+#             parameters:
+#               answers: [\"1\\n1\"]
+#               os: [linux, mac]
 #     
 #   build-cli: 
 #     jobs: 

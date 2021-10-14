@@ -30,7 +30,7 @@ actions:
   - directory 'stage_two/settings.py', "./#{@env[:base][:app_name][:value]}/", @env
   - |
     system "sudo chown -R $USER:$USER . &&
-    docker-compose up -d --build"
+    sudo docker-compose up -d --build"
   - system "echo 'You may open your app at http://localhost:8000/'"
 
 
