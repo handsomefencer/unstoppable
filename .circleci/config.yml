@@ -18,7 +18,6 @@ commands:
         type: executor
     steps:
       - run: |
-          sudo docker system prune -af --volumes &&
           rake install &&
           printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
       - run: echo 'success'
