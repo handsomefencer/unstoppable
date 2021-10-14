@@ -1,0 +1,12 @@
+preface: A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant
+  syntax that is natural to read and easy to write.
+
+actions:
+  - directory 'stage_one', '.', @env
+  - system "sudo docker-compose run --no-deps web rails new . --force --database=postgresql"
+  - system "sudo chown -R $USER:$USER ."
+  - template 'stage_two/database.yml.tt', './config/database.yml', @env
+  - system "sudo docker-compose build"
+  - system "sudo chown -R $USER:$USER ."
+  - system "sudo docker-compose run web rake db:create"
+  - system "sudo docker-compose up -d"

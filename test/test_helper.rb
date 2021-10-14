@@ -1,25 +1,34 @@
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "byebug"
-require "fileutils"
-require "minitest/autorun"
-require "minitest/given"
-require "minitest/focus"
-require "minitest/pride"
-require "minitest/spec"
-require "mocha/minitest"
-require "roro"
-require "helpers/rails"
-require "helpers/matchers/files"
-require "helpers/matchers/insertions"
-require "helpers/crypto_helper"
-require "helpers/mocks"
-require "helpers/thor"
+# frozen_string_literal: true
 
-include TestHelper::Files::Assertions
-include TestHelper::Stories::Rails
-include TestHelper::Mocks::Stubs
-include TestHelper::Mocks::Stubs
-include TestHelper::Matchers::Insertions
-include TestHelper::Helpers::Crypto
-include TestHelper::Matchers::Files
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
+require 'byebug'
+require 'fileutils'
+require 'minitest/autorun'
+require 'minitest/given'
+require 'minitest/focus'
+require 'minitest/hooks/default'
+require 'minitest/pride'
+require 'minitest/spec'
+require 'mocha/minitest'
+require 'climate_control'
+require 'roro'
+
+Dir["#{Dir.pwd}/test/helpers/**/*.rb"].each { |f| require f }
+include Roro::Configurators
+include Roro::Crypto
+
+module Roro
+  module Test
+    module Mocks; end
+    module Helpers
+      module Stories; end
+    end
+  end
+end
+
+include Roro::Test::Helpers::Mocks
+include Roro::Test::Helpers::FilesHelper
+include Roro::Test::Helpers::Stories
+include Roro::Test::Helpers::Stories::Rails
+include Roro::Test::Helpers::Stories::WorkBench

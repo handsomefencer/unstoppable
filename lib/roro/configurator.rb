@@ -1,15 +1,15 @@
-require 'roro/configurator/eligibility'
-require 'roro/configurator/okonomi'
-require 'roro/configurator/omakase'
+# frozen_string_literal: true
 
-module Roro 
-  module Configurator 
-    include Eligibility
-    include Okonomi
-    include Omakase
-  end
-  
-  class Configuration < Thor
-    include Roro::Configurator
-  end
-end
+require_relative 'configurators/utilities'
+require_relative 'configurators/adventure_case_builder'
+require_relative 'configurators/adventure_chooser'
+require_relative 'configurators/adventure_writer'
+require_relative 'configurators/adventure_picker'
+require_relative 'configurators/question_asker'
+require_relative 'configurators/question_builder'
+require_relative 'configurators/configurator'
+require_relative 'configurators/catalog_builder'
+require_relative 'configurators/structure_builder'
+require_relative 'configurators/validator'
+
+

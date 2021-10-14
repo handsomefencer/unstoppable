@@ -1,0 +1,14 @@
+jobs:
+  build:
+    <<: *defaults 
+    steps:
+      - checkout
+      - run: gem install roro
+      - run: roro generate::exposed ci
+      - run: | 
+          mkdir -p workspace 
+          cp -r roro workspace/
+      - persist_to_workspace: 
+          root: workspace 
+          paths:  
+            - roro

@@ -1,0 +1,272 @@
+version: 2
+jobs:
+  ? |-
+    test-rollon-1
+    1-linux
+  : docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          sudo docker system prune -af --volumes
+          rake install
+          printf "1
+          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
+  ? |-
+    test-rollon-1
+    1-mac
+  : macos:
+      xcode: 11.4
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          sudo docker system prune -af --volumes
+          rake install
+          printf "1
+          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
+  build:
+    docker:
+    - image: cimg/ruby:2.7
+    working_directory: ~/project
+    steps:
+    - checkout
+  test-rollon:
+    docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          sudo docker system prune -af --volumes
+          rake install
+          printf "1
+          2\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
+  test:
+    docker:
+    - image: cimg/ruby:2.7
+    working_directory: ~/project
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
+    - run:
+        command: |
+          RUBY_VERSION=2.7
+          sudo docker-compose build ruby_gem &&
+          sudo docker-compose up -d --force-recreate ruby_gem &&
+          sudo docker-compose run ruby_gem bundle exec rake test
+  release:
+    docker:
+    - image: cimg/ruby:2.7
+    working_directory: ~/project
+    steps:
+    - checkout
+    - run:
+        command: gem install roro
+    - run:
+        command: roro generate::exposed ci
+    - run:
+        command: |
+          echo $(cat ./roro/containers/ruby_image/ci.env) >> $BASH_ENV
+          source $BASH_ENV
+    - run:
+        command: chmod +x ./.circleci/setup-gem-credentials.sh
+    - run:
+        command: ./.circleci/setup-gem-credentials.sh
+    - run:
+        command: chmod 0600 ~/.gem/credentials
+    - run:
+        command: git checkout .
+    - run:
+        command: gem release
+workflows:
+  version: 2
+  test-all-cases:
+    jobs:
+    - |-
+      test-rollon-1
+      1-linux
+    - |-
+      test-rollon-1
+      1-mac
+  build-cli:
+    jobs:
+    - build:
+        filters:
+          branches:
+            only: master
+    - test-rollon:
+        filters:
+          branches:
+            only: master
+    - test:
+        filters:
+          branches:
+            only: master
+    - release:
+        filters:
+          branches:
+            only: release
+        requires:
+        - build
+
+# Original config.yml file:
+# aliases:
+#   - &workspace-location
+#     at: /tmp/workspace
+#   - &copy-ci-dotenv | 
+#     cp -rf /tmp/workspace/roro .
+#   - &source-ci-variables | 
+#     echo 'source roro/containers/app/ci.env' >> $BASH_ENV
+#     source $BASH_ENV
+# 
+# commands:
+# 
+#   run-test-case:
+#     parameters:
+#       answers:
+#         type: string
+#         default: \"1\\n1\"
+#       os:
+#         type: executor
+#     steps:
+#       - run: |
+#           sudo docker system prune -af --volumes
+#           rake install
+#           printf \"<< parameters.answers >>\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
+#       - run: echo 'success'
+# 
+#   run-tests:
+#     parameters:
+#       ruby-version:
+#         type: string
+#         default: '2.5'
+#     steps:
+#       - checkout
+#       - setup_remote_docker:
+#           version: 19.03.12
+#       - run: |
+#           RUBY_VERSION=<< parameters.ruby-version >>
+#           sudo docker-compose build ruby_gem &&
+#           sudo docker-compose up -d --force-recreate ruby_gem &&
+#           sudo docker-compose run ruby_gem bundle exec rake test
+# 
+# defaults: &defaults
+#   executor: ruby-executor
+#   working_directory: ~/project
+# 
+# major_only: &major_only
+#   filters:
+#     branches:
+#       only: master
+# 
+# release: &release
+#   filters:
+#     branches:
+#       only: release
+# 
+# version: 2.1
+# 
+# executors:
+# 
+#   machine-executor:
+#     machine: true
+#   ruby-executor:
+#     docker:
+#       - image: cimg/ruby:2.7
+#   linux:
+#     docker:
+#       - image: cimg/ruby:2.7
+#   mac:
+#     macos:
+#       xcode: 11.4
+# 
+# jobs:
+# 
+#   test:
+#     <<: *defaults
+#     steps:
+#       - checkout
+#       - setup_remote_docker:
+#           version: 19.03.12
+#       - run-tests:
+#           ruby-version: '2.7'
+# 
+#   build:
+#     <<: *defaults
+#     steps:
+#       - checkout
+#   
+#   test-rollon:
+#     parameters:
+#       answers:
+#         type: string
+#         default: \"1\\n2\"
+#       os:
+#         type: executor
+#         default: linux
+#     executor: << parameters.os >>
+#     steps:
+#       - checkout
+#       - setup_remote_docker:
+#           version: 19.03.12
+#       - run-test-case:
+#           answers: << parameters.answers >>
+#           os: << parameters.os >>
+# 
+#   release:
+#     <<: *defaults
+#     steps:
+#       - checkout
+#       - run: gem install roro
+#       - run: roro generate::exposed ci
+#       - run: | 
+#           echo $(cat ./roro/containers/ruby_image/ci.env) >> $BASH_ENV
+#           source $BASH_ENV
+#       - run: chmod +x ./.circleci/setup-gem-credentials.sh
+#       - run: ./.circleci/setup-gem-credentials.sh
+#       - run: chmod 0600 ~/.gem/credentials
+#       - run: git checkout .
+#       - run: gem release
+# 
+# workflows:
+#   version: 2.1
+#   test-all-cases:
+#     jobs:
+#       - test-rollon:
+#           matrix:
+#             parameters:
+#               answers: [\"1\\n1\"]
+#               os: [linux, mac]
+#     
+#   build-cli: 
+#     jobs: 
+#       - build: 
+#           <<: *major_only
+#           <<: *release
+#       - test-rollon:
+#           <<: *major_only
+#       - test:
+#           <<: *major_only
+#       
+#       - release:
+#           requires: 
+#             - build
+#           <<: *release

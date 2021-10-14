@@ -1,34 +1,26 @@
+# frozen_string_literal: true
 
-require 'roro/cli/generate/generate_exposed'
-require 'roro/cli/generate/generate_keys'
-require 'roro/cli/generate/generate_obfuscated'
-require 'roro/cli/generate/generate_story'
-require 'roro/cli/greenfield/rails'
-require 'roro/cli/rollon'
-require 'roro/cli/rollon/rails/base/base'
-require 'roro/cli/rollon/rails/database/with_mysql'
-require 'roro/cli/rollon/rails/database/with_postgresql'
-require 'roro/cli/rollon/ruby_gem'
+require_relative 'cli/rollon'
+require_relative 'cli/generate/generate_containers'
+require_relative 'cli/generate/generate_environments'
+require_relative 'cli/generate/generate_exposed'
+require_relative 'cli/generate/generate_keys'
+require_relative 'cli/generate/generate_obfuscated'
 
 module Roro
   class CLI < Thor
-
     include Thor::Actions
-    
+
     def self.source_root
-      File.dirname(__FILE__) + '/templates'
+      "#{@template_root || File.dirname(__FILE__)}/templates"
     end
-    
-    def self.story_root
-      File.dirname(__FILE__) + '/stories'
+
+    def self.catalog_root
+      "#{File.dirname(__FILE__)}/stacks/catalog/unstoppable/developer_styles"
     end
-    
-    def self.test_fixture_root 
-      File.dirname(__FILE__) + '/test/fixtures'
-    end 
-    
-    def self.roro_environments 
-      %w(development production test staging ci)
+
+    def self.roro_environments
+      %w[base development production test staging ci]
     end
   end
 end

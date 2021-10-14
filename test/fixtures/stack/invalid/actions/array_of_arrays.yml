@@ -1,0 +1,3 @@
+actions:
+  - some_key:
+    - some value

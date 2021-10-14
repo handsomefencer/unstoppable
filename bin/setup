@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/smart.env bash
 set -euo pipefail
 IFS=$'\n\t'
 set -vx

@@ -1,0 +1,3 @@
+env:
+  development:
+    DB_NAME: postgres

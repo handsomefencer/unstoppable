@@ -1,0 +1,9 @@
+greenfield_actions:
+  - "@config.smart.env['force'] = true"
+  - |
+    src = 'rails/Dockerfile.greenfield.tt'
+    dest = 'roro/containers/app/Dockerfile'
+    template src, dest, @config.env
+  
+greenfield_commands: 
+  - system "DOCKER_BUILDKIT=1 docker build --file roro/containers/backend/Dockerfile --output . ."

@@ -7,8 +7,39 @@ aliases:
     echo 'source roro/containers/app/ci.env' >> $BASH_ENV
     source $BASH_ENV
 
+commands:
+
+  run-test-case:
+    parameters:
+      answers:
+        type: string
+        default: "1\n1"
+      os:
+        type: executor
+    steps:
+      - run: |
+          sudo docker system prune -af --volumes
+          rake install
+          printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+      - run: echo 'success'
+
+  run-tests:
+    parameters:
+      ruby-version:
+        type: string
+        default: '2.5'
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.12
+      - run: |
+          RUBY_VERSION=<< parameters.ruby-version >>
+          sudo docker-compose build ruby_gem &&
+          sudo docker-compose up -d --force-recreate ruby_gem &&
+          sudo docker-compose run ruby_gem bundle exec rake test
+
 defaults: &defaults
-  executor: machine-executor
+  executor: ruby-executor
   working_directory: ~/project
 
 major_only: &major_only
@@ -20,51 +51,56 @@ release: &release
   filters:
     branches:
       only: release
-      
-      
+
 version: 2.1
 
 executors:
-  machine-executor: 
+
+  machine-executor:
     machine: true
-  ruby-executor: 
+  ruby-executor:
     docker:
       - image: cimg/ruby:2.7
-      
+  linux:
+    docker:
+      - image: cimg/ruby:2.7
+  mac:
+    macos:
+      xcode: 11.4
+
 jobs:
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.12
+      - run-tests:
+          ruby-version: '2.7'
 
   build:
     <<: *defaults
     steps:
       - checkout
   
-  test-rollon-rails: 
-    executor: ruby-executor
-    steps: 
-      - checkout 
-      - setup_remote_docker:
-          version: 19.03.12
-      - run: |
-          rake install 
-          mkdir greenfield
-          cd greenfield
-          (yes || true) | roro greenfield
-      - run: echo 'success'
-  
-  test:
-    <<: *defaults
+  test-rollon:
+    parameters:
+      answers:
+        type: string
+        default: "1\n2"
+      os:
+        type: executor
+        default: linux
+    executor: << parameters.os >>
     steps:
       - checkout
-      - run: RUBY_VERSION=2.5 docker-compose build ruby_gem
-      - run: RUBY_VERSION=2.5 docker-compose up -d --force-recreate ruby_gem
-      - run: RUBY_VERSION=2.5 docker-compose run ruby_gem bundle exec rake test
-      - run: RUBY_VERSION=2.6 docker-compose build ruby_gem
-      - run: RUBY_VERSION=2.6 docker-compose up -d --force-recreate ruby_gem
-      - run: RUBY_VERSION=2.6 docker-compose run ruby_gem bundle exec rake test
-      - run: RUBY_VERSION=2.7 docker-compose build ruby_gem
-      - run: RUBY_VERSION=2.7 docker-compose up -d --force-recreate ruby_gem
-      - run: RUBY_VERSION=2.7 docker-compose run ruby_gem bundle exec rake test    
-      
+      - setup_remote_docker:
+          version: 19.03.12
+      - run-test-case:
+          answers: << parameters.answers >>
+          os: << parameters.os >>
+
   release:
     <<: *defaults
     steps:
@@ -79,16 +115,23 @@ jobs:
       - run: chmod 0600 ~/.gem/credentials
       - run: git checkout .
       - run: gem release
-  
+
 workflows:
-  version: 2
+  version: 2.1
+  test-all-cases:
+    jobs:
+      - test-rollon:
+          matrix:
+            parameters:
+              answers: ["1\n1"]
+              os: [linux, mac]
     
   build-cli: 
     jobs: 
       - build: 
           <<: *major_only
           <<: *release
-      - test-rollon-rails: 
+      - test-rollon:
           <<: *major_only
       - test:
           <<: *major_only

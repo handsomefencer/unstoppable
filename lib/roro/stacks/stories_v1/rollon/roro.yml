@@ -1,0 +1,5 @@
+greenfield_actions:
+  - |
+    src = 'roro'
+    dest = 'roro'
+    template src, dest, @config.env

@@ -1,0 +1,6 @@
+preface: some string
+
+env:
+  base:
+    somekey:
+      value: somevalue

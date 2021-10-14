@@ -24,10 +24,10 @@ Commands:
   roro expose          # Expose encrypted files
   roro generate_key    # Generate a key for each environment
   roro generate_keys   # Generates keys for all environments. If you have .en...
-  roro greenfield      # Greenfield a brand new rails app using Docker's inst...
+  roro omakase      # Greenfield a brand new rails backend using Docker's inst...
   roro help [COMMAND]  # Describe available commands or one specific command
   roro obfuscate       # obfuscates any files matching the pattern ./docker/*...
-  roro rollon          # Generates files necessary to greenfield a new app wi...
+  roro rollon          # Generates files necessary to omakase a new backend wi...
   roro ruby_gem        # Generate files for containerized gem testing, Circle...
 ```
 
@@ -55,7 +55,7 @@ docker-compose version 1.21.0, build 5920eb0
 ```bash
 $ mkdir -p handsome_app
 $ cd handsome_app
-$ roro greenfield
+$ roro omakase
 ```
 
 It'll take a few minutes for Docker to download your images, copy your files, and build your application but once finished, you'll see the Rails welcome screen at [http://localhost:3000](http://localhost:3000/). 
@@ -94,7 +94,7 @@ As with greenfielding above, wait a few minutes, and when it's finished, open [h
 From another terminal: 
 
 ```bash
-$ docker-compose exec app bundle exec guard
+$ docker-compose exec backend bundle exec guard
 ```
 
 To use LiveReoload with Guard, install the Chrome [extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en):
