@@ -38,8 +38,12 @@ describe 'Roro::FileReflection' do
     context 'when from exposed .env files' do
       let(:workbench) { 'exposed/roro' }
       let(:pattern)   { '.env' }
-      Then { assert_includes execute, 'base' }
-      And  { assert_includes execute, 'ci' }
+
+      Given { insert_dummy('roro/env/dummy.env') }
+      Given { insert_dummy('roro/env/base.env') }
+      Given { insert_dummy('roro/containers/backend/env/ci.env') }
+      Then  { assert_includes execute, 'base' }
+      And   { assert_includes execute, 'ci' }
 
       context 'when .env file is a subenv' do
         Then { assert_includes execute, 'dummy' }
@@ -51,11 +55,14 @@ describe 'Roro::FileReflection' do
       let(:pattern)   { '.key' }
 
       context 'when one key' do
+        Given { insert_dummy_key }
         Then { assert_includes execute, 'dummy' }
       end
 
       context 'when multiple keys' do
-        Then { assert_equal %w[dummy base] & execute, %w[dummy base] }
+        Given { insert_dummy_key }
+        Given { insert_dummy_key 'base.key' }
+        Then  { assert_equal %w[dummy base] & execute, %w[dummy base] }
       end
     end
 
@@ -75,8 +82,9 @@ describe 'Roro::FileReflection' do
     context 'when key is' do
       context 'set in key file and' do
         context 'not set in ENV returns key from file' do
-          Then { assert_equal execute, dummy_key }
-          And  { refute_equal execute, var_from_ENV }
+          Given { insert_dummy_key }
+          Then  { assert_equal execute, dummy_key }
+          And   { refute_equal execute, var_from_ENV }
         end
 
         context 'set in ENV returns key from ENV' do

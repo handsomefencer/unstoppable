@@ -1,0 +1,2 @@
+DATABASE_HOST=database
+RAILS_LOG_TO_STDOUT=true
