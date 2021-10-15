@@ -23,9 +23,9 @@ module Roro
     def self.mise_location
       lookup = Dir.glob("#{Dir.pwd}/**/*.roro")&.first&.split("#{Dir.pwd}/")
       if lookup
-        mise = 'roro'
-      else
         mise = lookup.last.split('/').first
+      else
+        mise = 'roro'
       end
       "#{Dir.pwd}/#{mise}"
     end

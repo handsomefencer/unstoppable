@@ -2,12 +2,12 @@
 
 require 'test_helper'
 
-describe Roro::Crypto::Cipher do
-  let(:subject)   { Roro::Crypto::Cipher.new }
-  let(:key)       { quiet { subject.generate_key } }
-  let(:encrypted) { quiet { subject.encrypt(plaintext, key) } }
-  let(:decrypted) { quiet { subject.decrypt(encrypted, key) } }
+describe 'Roro::Crypto::Cipher' do
+  let(:cipher)    { Roro::Crypto::Cipher.new }
+  let(:key)       { cipher.generate_key }
   let(:plaintext) { 'The Quick Brown Fox' }
+  let(:encrypted) { cipher.encrypt(plaintext, key) }
+  let(:decrypted) { cipher.decrypt(encrypted, key) }
 
   describe '#generate_key' do
     Then { assert_equal key.size, 25 }
@@ -20,5 +20,6 @@ describe Roro::Crypto::Cipher do
 
   describe '#decrypt(encrypted, key)' do
     Then { assert_equal decrypted, plaintext }
+    And  { refute_equal 'The slow gray fox', plaintext }
   end
 end

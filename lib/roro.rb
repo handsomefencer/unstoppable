@@ -14,7 +14,6 @@ require 'roro/cli/generate/generate_obfuscated'
 require 'roro/cli/rollon'
 require 'roro/common/file_reflection'
 require 'roro/common/utilities'
-require 'roro/crypto'
 require 'roro/configurator'
 require 'roro/configurators/utilities'
 require 'roro/configurators/adventure_case_builder'
@@ -27,6 +26,11 @@ require 'roro/configurators/configurator'
 require 'roro/configurators/catalog_builder'
 require 'roro/configurators/structure_builder'
 require 'roro/configurators/validator'
+require 'roro/crypto/cipher'
+require 'roro/crypto/exposer'
+require 'roro/crypto/file_writer'
+require 'roro/crypto/key_writer'
+require 'roro/crypto/obfuscator'
 require 'roro/error'
 require 'roro/version'
 
@@ -39,6 +43,9 @@ module Roro
 
   module Crypto
     include FileReflection
+    class Cipher; end
+    class QuestionAsker < Thor; end
+    class CatalogBuilder; end
   end
   include Utilities
   module Configurators

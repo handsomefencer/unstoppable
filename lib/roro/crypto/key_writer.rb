@@ -14,16 +14,19 @@ module Roro
       def initialize
         @writer = FileWriter.new
         @cipher = Cipher.new
+        @mise   = Roro::CLI.mise
       end
 
-      def write_keyfile(environment)
-        destination = "./#{Roro::CLI.mise}/keys/#{environment}.key"
+      def write_keyfile(environment, extension = '.key')
+        destination = "#{@mise}/keys/#{environment}#{extension}"
         @writer.write_to_file(destination, @cipher.generate_key)
       end
 
-      def write_keyfiles(environments, directory, ext)
-        environments = gather_environments(Dir.glob("#{Dir.pwd}/#{Roro::CLI.mise}/**/*"), ext) if environments.empty?
-        environments.uniq.each { |environment| write_keyfile(environment) }
+      def write_keyfiles(environments = [], directory = @mise, extension = '.key')
+        if environments.empty?
+          environments = gather_environments(directory, '.env')
+        end
+        environments.uniq.each { |environment| write_keyfile(environment, extension) }
       end
     end
   end
