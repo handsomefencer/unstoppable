@@ -3,52 +3,53 @@
 require 'test_helper'
 
 describe Roro::Crypto::Obfuscator do
-  Given { skip }
-  let(:subject)      { Roro::Crypto::Obfuscator.new }
-  let(:workbench)    { 'crypto/roro' }
-  let(:directory)    { './roro' }
-  let(:extension)    { '.env' }
-  let(:envs) { ['dummy'] }
-  let(:key)          { dummy_key }
+  Given(:subject)   { Roro::Crypto::Obfuscator.new }
+  Given(:workbench) { 'mise/exposed/roro' }
+  Given(:execute) { quiet { subject.obfuscate *args } }
 
-  describe '#obfuscate_file(file, key)' do
-    Given { insert_dummy }
-    Given { quiet { subject.obfuscate_file 'roro/env/dummy.env', key } }
-    Then  { assert_file 'roro/env/dummy.env.enc' }
-  end
+  describe '#obfuscate(environments, directory, extension)' do
+    Given(:args) { nil }
 
-  describe '#obfuscate(envs, dir, ext)' do
-    let(:execute) { quiet { subject.obfuscate envs, directory, extension } }
+    describe 'errors' do
+      Given(:workbench) { 'mise/fresh/roro' }
+      Given(:error) { Roro::Error }
 
-    describe 'when environments empty' do
-      When(:envs) { [] }
-      Then { assert_raises(Roro::Crypto::EnvironmentError) { execute } }
-    end
-
-    context 'when obfuscatable but no matching key' do
-      Given { insert_dummy }
-      Then  { assert_raises(Roro::Crypto::KeyError) { execute } }
-    end
-
-    context 'when matching key and when obfuscatable' do
-      Given { insert_dummy_key }
-
-      context 'exists' do
-        Given { insert_dummy }
-        Given { execute }
-        Then  { assert_file 'roro/env/dummy.env.enc' }
+      context 'when no args supplied' do
+        Given(:error_msg) { 'No .env files in roro' }
+        Then { assert_correct_error }
       end
 
-      context 'is a subenv' do
-        Given { insert_dummy 'roro/env/dummy.subenv.env' }
-        Given { execute }
-        Then  { assert_file 'roro/env/dummy.subenv.env.enc' }
+      context 'when obfuscatable but no matching key' do
+        Given(:error_msg) { 'No DUMMY_KEY set' }
+        Given { insert_dummy_env }
+        Then  { assert_correct_error }
       end
+    end
 
-      context 'is nested deeply' do
-        Given { insert_dummy 'roro/containers/backend/env/dummy.subenv.env' }
-        Given { execute }
-        Then  { assert_file 'roro/containers/backend/env/dummy.subenv.env.enc' }
+    describe 'success' do
+      context 'when matching key and' do
+        Given { insert_dummy_key 'base.key' }
+        Given { insert_dummy_key 'ci.key' }
+        Given { insert_dummy_key 'dummy.key' }
+
+        context 'when obfuscatable file' do
+          Given { execute }
+          Then  { assert_file 'roro/env/base.env.enc' }
+          And   { assert_file 'roro/env/ci.env.enc' }
+          And   { assert_file 'roro/env/dummy.env.enc' }
+        end
+
+        context 'when obfuscatable subenv file' do
+          Given { insert_dummy 'roro/env/dummy.subenv.env'}
+          Given { execute }
+          Then  { assert_file 'roro/env/dummy.subenv.env.enc' }
+        end
+
+        context 'when obfuscatable subenv file nested deeply' do
+          Given { insert_dummy 'roro/containers/backend/env/dummy.subenv.env' }
+          Given { execute }
+          Then  { assert_file 'roro/containers/backend/env/dummy.subenv.env.enc' }
+        end
       end
     end
   end

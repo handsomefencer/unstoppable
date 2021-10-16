@@ -11,8 +11,7 @@ module Roro
 
     def generate_keys(*environments)
       key_writer = Roro::Crypto::KeyWriter.new
-      mise = Roro::CLI.mise
-      key_writer.write_keyfiles(environments, mise, '.env')
+      key_writer.write_keyfiles(environments)
     end
   end
 end

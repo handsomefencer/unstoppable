@@ -8,9 +8,6 @@ module Roro
     def generate_mise(mise_name = 'mise')
       create_file "#{mise_name}/#{mise_name}.roro"
       generate_containers
-      generate_environments
-      generate_obfuscated
-      generate_exposed
     end
   end
 end

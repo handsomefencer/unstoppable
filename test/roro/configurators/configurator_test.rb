@@ -3,8 +3,8 @@
 require 'test_helper'
 
 describe Configurator do
-  let(:options) { {} }
-  let(:config)  { Configurator.new(options) }
+  Given(:options) { {} }
+  Given(:config)  { Configurator.new(options) }
 
   context 'without options' do
     describe '#initialize' do
@@ -40,7 +40,7 @@ describe Configurator do
   end
 
   context 'when stack path' do
-    let(:options) { { stack: stack_path } }
+    Given(:options) { { stack: stack_path } }
 
     Given { stub_journey(%w[1 1 1]) }
     Given { config.choose_adventure }
@@ -58,7 +58,7 @@ describe Configurator do
     end
 
     describe '#itinerary' do
-      let(:itinerary) { %w[
+      Given(:itinerary) { %w[
           stack/stack/plots/story1
           stack/stack/stories/story1
           stack/stacks/stacks_1/stack_2
@@ -68,7 +68,7 @@ describe Configurator do
     end
 
     describe '#manifest' do
-      let(:manifest) { %w[
+      Given(:manifest) { %w[
         valid/stack/stack.yml
         valid/stack/stack/story.yml
         valid/stack/stack/plots/story1/story1.yml
@@ -84,7 +84,7 @@ describe Configurator do
     end
 
     describe '#build_graph()' do
-      let(:graph_value) { config.env[:base][:somekey][:value] }
+      Given(:graph_value) { config.env[:base][:somekey][:value] }
 
       context 'when answers env default' do
         Given { stub_answers_env }

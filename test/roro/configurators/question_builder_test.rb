@@ -4,16 +4,16 @@ require 'test_helper'
 require 'stringio'
 
 describe QuestionBuilder do
-  let(:builder)  { QuestionBuilder.new(options) }
-  let(:env_hash) { read_yaml(stack_path)[:env] }
-  let(:stack)    { 'story/story.yml'}
-  let(:options)  { { storyfile: stack_path } }
+  Given(:builder)  { QuestionBuilder.new(options) }
+  Given(:env_hash) { read_yaml(stack_path)[:env] }
+  Given(:stack)    { 'story/story.yml'}
+  Given(:options)  { { storyfile: stack_path } }
 
   describe '#build_overrides_from_storyfile' do
     describe '#override(hash)' do
       context 'when name' do
-        let(:env_key)   { :SOME_KEY }
-        let(:env_value) { { :value=>"somevalue", :help=>"some_url"} }
+        Given(:env_key)   { :SOME_KEY }
+        Given(:env_value) { { :value=>"somevalue", :help=>"some_url"} }
 
         context 'supplied must interpolate name into prompt' do
           Given { env_value[:name] = "some environment variable name" }
@@ -28,14 +28,14 @@ describe QuestionBuilder do
   end
 
   describe '#build_inflection' do
-    let(:options)            { { inflection: stack_path } }
-    let(:humanized)          { builder.humanize(builder.inflection_options) }
-    let(:inflection_options) { builder.inflection_options }
-    let(:inflection_prompt)  { builder.inflection_prompt }
-    let(:preface)            { builder.get_story_preface(stack_path) }
-    let(:question)           { builder.build_inflection }
-    let(:story_from)         { builder.story_from('1') }
-    let(:stack)              { 'stacks' }
+    Given(:options)            { { inflection: stack_path } }
+    Given(:humanized)          { builder.humanize(builder.inflection_options) }
+    Given(:inflection_options) { builder.inflection_options }
+    Given(:inflection_prompt)  { builder.inflection_prompt }
+    Given(:preface)            { builder.get_story_preface(stack_path) }
+    Given(:question)           { builder.build_inflection }
+    Given(:story_from)         { builder.story_from('1') }
+    Given(:stack)              { 'stacks' }
 
     describe '#inflection_prompt' do
       context 'when stacks' do

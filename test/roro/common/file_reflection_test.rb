@@ -3,13 +3,13 @@
 require 'test_helper'
 
 describe 'Roro::FileReflection' do
-  let(:workbench)    { 'obfuscated/roro' }
-  let(:directory)    { 'roro' }
-  let(:pattern)      { '.env.enc' }
-  let(:environments) { gather_environments directory, extension }
+  Given(:workbench)    { 'obfuscated/roro' }
+  Given(:directory)    { 'roro' }
+  Given(:pattern)      { '.env.enc' }
+  Given(:environments) { gather_environments directory, extension }
 
   describe ':source_files(directory, pattern)' do
-    let(:execute)    { source_files directory, pattern }
+    Given(:execute)    { source_files directory, pattern }
 
     context 'when directory contains obfuscated files' do
       Then { assert_includes execute, 'roro/env/base.env.enc' }
@@ -28,7 +28,7 @@ describe 'Roro::FileReflection' do
   end
 
   describe ':gather_environments(dir ext)' do
-    let(:execute) { gather_environments directory, pattern }
+    Given(:execute) { gather_environments directory, pattern }
 
     context 'when from obfuscated .env.enc files' do
       Then { assert_includes execute, 'base' }
@@ -36,8 +36,8 @@ describe 'Roro::FileReflection' do
     end
 
     context 'when from exposed .env files' do
-      let(:workbench) { 'exposed/roro' }
-      let(:pattern)   { '.env' }
+      Given(:workbench) { 'exposed/roro' }
+      Given(:pattern)   { '.env' }
 
       Given { insert_dummy('roro/env/dummy.env') }
       Given { insert_dummy('roro/env/base.env') }
@@ -51,8 +51,8 @@ describe 'Roro::FileReflection' do
     end
 
     context 'when from .key files' do
-      let(:directory) { 'roro/keys' }
-      let(:pattern)   { '.key' }
+      Given(:directory) { 'roro/keys' }
+      Given(:pattern)   { '.key' }
 
       context 'when one key' do
         Given { insert_dummy_key }
@@ -73,11 +73,11 @@ describe 'Roro::FileReflection' do
   end
 
   describe ':get_key' do
-    let(:key_file)     { 'roro/keys/dummy.key' }
-    let(:var_from_ENV) { 's0m3k3y-fr0m-variable' }
-    let(:error)        { Roro::Error }
-    let(:error_msg)    { 'No DUMMY_KEY set' }
-    let(:execute)      { get_key('dummy') }
+    Given(:key_file)     { 'roro/keys/dummy.key' }
+    Given(:var_from_ENV) { 's0m3k3y-fr0m-variable' }
+    Given(:error)        { Roro::Error }
+    Given(:error_msg)    { 'No DUMMY_KEY set' }
+    Given(:execute)      { get_key('dummy') }
 
     context 'when key is' do
       context 'set in key file and' do
@@ -96,7 +96,7 @@ describe 'Roro::FileReflection' do
       end
 
       context 'not set in key file and' do
-        let(:workbench) { 'exposed/roro' }
+        Given(:workbench) { 'exposed/roro' }
 
         context 'not set in ENV must raise error' do
           Then { assert_correct_error }

@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe 'Roro::Utilities' do
   describe '#stack_type(stack_path)' do
-    let(:result) { stack_type(stack_path) }
+    Given(:result) { stack_type(stack_path) }
 
     context 'when dotfile' do
       When(:stack) { 'story/.keep' }
@@ -55,7 +55,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#stack_is_file?' do
-    let(:result) { stack_is_file?(stack_path) }
+    Given(:result) { stack_is_file?(stack_path) }
 
     context 'when stack is a dotfile' do
       When(:stack) { 'story/.keep' }
@@ -69,7 +69,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#stack_is_dotfile?' do
-    let(:result) { stack_is_dotfile?(stack_path) }
+    Given(:result) { stack_is_dotfile?(stack_path) }
 
     context 'when stack is a dotfile' do
       When(:stack) { 'story/.keep' }
@@ -83,7 +83,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#stack_is_story_file?' do
-    let(:result) { stack_is_storyfile?(stack_path) }
+    Given(:result) { stack_is_storyfile?(stack_path) }
 
     context 'when stack is a story file' do
       When(:stack) { 'stack/story/story.yml' }
@@ -97,7 +97,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#stack_is_inflection?' do
-    let(:result) { stack_is_inflection?(stack_path) }
+    Given(:result) { stack_is_inflection?(stack_path) }
 
     context 'when stack is an inflection' do
       When(:stack) { 'stacks_1' }
@@ -111,7 +111,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#all_inflections' do
-    let(:inflections) { all_inflections(stack_path) }
+    Given(:inflections) { all_inflections(stack_path) }
 
     context 'when stack has one inflection' do
       When(:stack) { 'stack' }
@@ -141,7 +141,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#children(stack)' do
-    let(:result) { children(stack_path) }
+    Given(:result) { children(stack_path) }
 
     context 'when directory has a file' do
       When(:stack) { 'stack/story'}
@@ -179,7 +179,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#sentence_from' do
-    let(:call) { -> (array) { sentence_from(array) } }
+    Given(:call) { -> (array) { sentence_from(array) } }
 
     Then { assert_equal 'one, two and three', call[%w[one two three]] }
     And  { assert_equal 'one and two', call[%w[one two]] }

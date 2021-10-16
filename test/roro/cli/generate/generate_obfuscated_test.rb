@@ -3,14 +3,13 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_obfuscated' do
-  Given { skip }
-  let(:subject)   { Roro::CLI.new }
-  let(:workbench) { 'roro' }
-  let(:envs) { [] }
-  let(:generate) { quiet { subject.generate_obfuscated(*envs) } }
+  Given(:subject)   { Roro::CLI.new }
+  Given(:workbench) { 'exposed/roro' }
+  Given(:envs) { [] }
+  Given(:generate) { quiet { subject.generate_obfuscated(*envs) } }
 
   context 'when no environments supplied' do
-    let(:error) { Roro::Crypto::EnvironmentError }
+    Given(:error) { Roro::Error }
 
     context 'when no dummy.env files and' do
       context 'when no key' do
@@ -27,7 +26,7 @@ describe 'Roro::CLI#generate_obfuscated' do
       before { insert_dummy }
 
       context 'when no key' do
-        Then  { assert_raises(Roro::Crypto::KeyError) { generate } }
+        Then  { assert_raises(Roro::Error) { generate } }
       end
 
       context 'when matching key' do

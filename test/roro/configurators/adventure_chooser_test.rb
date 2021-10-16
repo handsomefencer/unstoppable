@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'AdventureChooser' do
-  let(:adventure) { AdventureChooser.new }
+  Given(:adventure) { AdventureChooser.new }
 
   describe '#initialize' do
     describe '#stack' do
@@ -16,10 +16,10 @@ describe 'AdventureChooser' do
   end
 
   describe '#build_itinerary' do
-    let(:answers) { %w[1] }
-    let(:itinerary)       { adventure.itinerary }
-    let(:manifest)        { adventure.manifest }
-    let(:build_itinerary) do
+    Given(:answers) { %w[1] }
+    Given(:itinerary)       { adventure.itinerary }
+    Given(:manifest)        { adventure.manifest }
+    Given(:build_itinerary) do
       stub_journey(answers) if defined?(answers)
       adventure.build_itinerary(stack_path)
     end
@@ -64,7 +64,7 @@ describe 'AdventureChooser' do
     end
 
     context 'when stack has multiple inflections' do
-      let(:stack) { 'stack/stack' }
+      Given(:stack) { 'stack/stack' }
 
       context 'when 1,1' do
         When(:answers) { %w[1 1] }

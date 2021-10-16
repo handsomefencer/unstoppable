@@ -3,13 +3,12 @@
 require 'test_helper'
 
 describe 'Roro::Crypto::Exposer.new' do
-  Given { skip }
-  let(:subject)   { Roro::Crypto::Exposer.new }
-  let(:workbench) { 'crypto/roro' }
-  let(:directory) { './roro' }
-  let(:env)       { 'dummy' }
-  let(:envs)      { [env] }
-  let(:key)       { dummy_key }
+  Given(:subject)   { Roro::Crypto::Exposer.new }
+  Given(:workbench) { 'crypto/roro' }
+  Given(:directory) { './roro' }
+  Given(:env)       { 'dummy' }
+  Given(:envs)      { [env] }
+  Given(:key)       { dummy_key }
 
   describe '#expose_file(file, key)' do
     Given { insert_dummy_env_enc }
@@ -18,18 +17,18 @@ describe 'Roro::Crypto::Exposer.new' do
   end
 
   describe '#expose(envs, dir, ext)' do
-    let(:execute) { quiet { subject.expose envs, directory, 'env.enc' } }
+    Given(:execute) { quiet { subject.expose envs, directory, 'env.enc' } }
 
     context 'when no environments supplied and' do
-      let(:envs) { [] }
+      Given(:envs) { [] }
 
       context 'when no exposeable files and no key' do
-        Then { assert_raises(Roro::Crypto::EnvironmentError) { execute } }
+        Then { assert_raises(Roro::Error) { execute } }
       end
 
       context 'when exposeable files and no key' do
         Given { insert_dummy_env_enc }
-        Then  { assert_raises(Roro::Crypto::KeyError) { execute } }
+        Then  { assert_raises(Roro::Error) { execute } }
       end
 
       context 'when a key and when matching exposeable' do
@@ -63,19 +62,17 @@ describe 'Roro::Crypto::Exposer.new' do
 
     context 'when one environment supplied' do
       context 'when no matching key or decryptable files' do
-        let(:envs) { ['dummy'] }
-
-        Then { assert_raises(Roro::Crypto::KeyError) { execute } }
+        Given(:envs) { ['dummy'] }
+        Then { assert_raises(Roro::Error) { execute } }
       end
 
       context 'when no matching key but matching decryptable files' do
 
         Given { insert_dummy_env_enc }
-        Then  { assert_raises(Roro::Crypto::KeyError) { execute } }
+        Then  { assert_raises(Roro::Error) { execute } }
       end
 
       context 'when matching key and decryptable files' do
-
         Given { insert_dummy_key }
         Given { insert_dummy_env_enc }
         Given { insert_dummy_env_enc 'roro/containers/backend/env/dummy.env.enc' }

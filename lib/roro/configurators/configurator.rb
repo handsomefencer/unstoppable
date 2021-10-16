@@ -5,6 +5,7 @@ require 'yaml'
 module Roro
   module Configurators
     class Configurator
+      include Utilities
 
       attr_reader :structure, :itinerary, :manifest, :stack, :env
 

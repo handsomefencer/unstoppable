@@ -3,11 +3,11 @@
 require 'test_helper'
 
 describe 'Roro::Crypto::Cipher' do
-  let(:cipher)    { Roro::Crypto::Cipher.new }
-  let(:key)       { cipher.generate_key }
-  let(:plaintext) { 'The Quick Brown Fox' }
-  let(:encrypted) { cipher.encrypt(plaintext, key) }
-  let(:decrypted) { cipher.decrypt(encrypted, key) }
+  Given(:cipher)    { Roro::Crypto::Cipher.new }
+  Given(:key)       { cipher.generate_key }
+  Given(:plaintext) { 'The Quick Brown Fox' }
+  Given(:encrypted) { cipher.encrypt(plaintext, key) }
+  Given(:decrypted) { cipher.decrypt(encrypted, key) }
 
   describe '#generate_key' do
     Then { assert_equal key.size, 25 }

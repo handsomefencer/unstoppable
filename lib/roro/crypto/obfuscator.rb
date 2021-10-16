@@ -5,6 +5,7 @@ module Roro
       def initialize
         @writer = FileWriter.new
         @cipher = Cipher.new
+        @mise   = Roro::CLI.mise
       end
 
       def obfuscate_file(file, key)
@@ -12,10 +13,10 @@ module Roro
         @writer.write_to_file(file + '.enc', encrypted_content)
       end
 
-      def obfuscate(environments, directory, ext)
-        environments = gather_environments(directory, ext) if environments.empty?
+      def obfuscate(environments = [], directory = @mise, extension = '.env')
+        environments = gather_environments(directory, extension) if environments.empty?
         environments.each do |environment|
-          obfuscatable = source_files(directory, "#{environment}*#{ext}")
+          obfuscatable = source_files(directory, "#{environment}*#{extension}")
           obfuscatable.each { |file| obfuscate_file(file, get_key(environment))}
         end
       end

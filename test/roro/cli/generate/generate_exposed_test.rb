@@ -3,14 +3,12 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_exposed' do
-  Given { skip }
-  let(:subject)   { Roro::CLI.new }
-  let(:workbench) { 'roro' }
-  let(:envs)      { ['dummy'] }
-  let(:generate)  { quiet { subject.generate_exposed(*envs) } }
+  Given(:subject)   { Roro::CLI.new }
+  Given(:workbench) { 'roro' }
+  Given(:envs)      { ['dummy'] }
+  Given(:generate)  { quiet { subject.generate_exposed(*envs) } }
 
   context 'when one environment specified' do
-
     Given { insert_dummy_env_enc }
     Given { insert_dummy_env_enc 'roro/env/smart.env.enc' }
 
@@ -24,7 +22,7 @@ describe 'Roro::CLI#generate_exposed' do
     end
 
     describe 'with ENV_KEY' do
-      let(:var_from_ENV) { dummy_key }
+      Given(:var_from_ENV) { dummy_key }
 
       describe 'expose one environment' do
         Given { with_env_set { generate } }

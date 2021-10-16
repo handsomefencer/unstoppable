@@ -4,14 +4,14 @@ require 'test_helper'
 require 'stringio'
 
 describe 'QuestionAsker' do
-  let(:asker)     { Roro::Configurators::QuestionAsker.new }
-  let(:env_hash)  { read_yaml(stack_path)[:env] }
-  let(:stack)     { 'story/story.yml'}
-  let(:options)   { { storyfile: stack_path } }
-  let(:builder)   { QuestionBuilder.new(options) }
-  let(:question)  { builder.override(:development, env_key, env_value)}
-  let(:env_key)   { :SOME_KEY }
-  let(:env_value) { { :value=>"somevalue", :help=>"some_url"} }
+  Given(:asker)     { Roro::Configurators::QuestionAsker.new }
+  Given(:env_hash)  { read_yaml(stack_path)[:env] }
+  Given(:stack)     { 'story/story.yml'}
+  Given(:options)   { { storyfile: stack_path } }
+  Given(:builder)   { QuestionBuilder.new(options) }
+  Given(:question)  { builder.override(:development, env_key, env_value)}
+  Given(:env_key)   { :SOME_KEY }
+  Given(:env_value) { { :value=>"somevalue", :help=>"some_url"} }
 
   describe '#override_default(question)' do
     context 'when answer is' do

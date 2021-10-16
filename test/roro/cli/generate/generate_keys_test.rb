@@ -3,17 +3,16 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_keys' do
-  Given { skip }
-  let(:subject)   { Roro::CLI.new }
-  let(:envs)      { [] }
-  # let(:generate)  { quiet { subject.generate_keys(*envs) } }
-  let(:workbench) { 'roro' }
+  Given(:subject)   { Roro::CLI.new }
+  Given(:envs)      { nil }
+  Given(:generate)  { quiet { subject.generate_keys(*envs) } }
+  Given(:workbench) { 'mise/fresh/roro' }
 
   before { stubs_answer('y') }
 
   context 'when no environments supplied and' do
     context 'when no .smart.env files' do
-      When(:error) { Roro::Crypto::EnvironmentError }
+      When(:error) { Roro::Error }
       Then { assert_raises(error) { generate } }
     end
 

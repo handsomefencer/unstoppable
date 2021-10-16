@@ -3,9 +3,9 @@
 require 'test_helper'
 
 describe 'AdventurePicker' do
-  let(:asker)            { AdventurePicker.new }
-  let(:build_inflection) { asker.build_inflection(stack_path) }
-  let(:stack)            { 'stacks' }
+  Given(:asker)            { AdventurePicker.new }
+  Given(:build_inflection) { asker.build_inflection(stack_path) }
+  Given(:stack)            { 'stacks' }
 
   Given { build_inflection }
 
@@ -16,7 +16,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#choose_adventure(inflection)' do
-    let(:choose_adventure) { asker.choose_adventure(stack_path) }
+    Given(:choose_adventure) { asker.choose_adventure(stack_path) }
 
     context 'when stacks' do
       Given { stub_journey(%w[1]) }
@@ -31,7 +31,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#inflection_prompt' do
-    let(:prompt) { asker.inflection_prompt }
+    Given(:prompt) { asker.inflection_prompt }
 
     context 'when stacks' do
       Then { assert_includes prompt, 'Please choose from these valid stacks:' }
@@ -49,16 +49,14 @@ describe 'AdventurePicker' do
   end
 
   describe '#inflection_options' do
-    let(:options) { asker.inflection_options }
+    Given(:options) { asker.inflection_options }
 
     context 'when valid/stack/stacks' do
       # TODO: Do we want to allow an inflection to have templates and stacks?
-      before { skip }
-      let(:stack)            { nil }
-      Then { assert_equal options, 2 }
+      Given(:stack)            { 'stack/stacks' }
       Then { assert_equal options.size, 2 }
-      And  { assert_includes options.values, 'story' }
-      And  { assert_includes options.values, 'story2' }
+      And  { assert_includes options.values, 'stacks_1' }
+      And  { assert_includes options.values, 'stacks_2' }
     end
 
     context 'when stack/stack/plots' do
@@ -69,7 +67,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#get_story_preface' do
-    let(:preface) { asker.get_story_preface(stack_path) }
+    Given(:preface) { asker.get_story_preface(stack_path) }
 
     context 'when story' do
       context 'has a preface' do
@@ -90,7 +88,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#humanize_options(hash)' do
-    let(:humanized) { asker.humanize(asker.inflection_options) }
+    Given(:humanized) { asker.humanize(asker.inflection_options) }
 
     context 'when stacks' do
       Then { assert humanized.is_a?(String) }
@@ -100,7 +98,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#story_from(key, hash)' do
-    let(:story_from) { asker.story_from('1') }
+    Given(:story_from) { asker.story_from('1') }
 
     context 'when story' do
       Then { assert_equal 'story', story_from }

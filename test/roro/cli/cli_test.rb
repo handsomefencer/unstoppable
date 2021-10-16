@@ -6,7 +6,7 @@ describe Roro::CLI do
   Given(:cli) { Roro::CLI.new }
 
   describe 'commands' do
-    let(:mappings) do
+    Given(:mappings) do
       {
         generate_containers:   ['generate:containers'],
         generate_exposed:      ['generate:exposed'],

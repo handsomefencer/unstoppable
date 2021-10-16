@@ -3,8 +3,8 @@
 require 'test_helper'
 
 describe StructureBuilder do
-  let(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
-  let(:structure)      { StructureBuilder.build }
+  Given(:catalog_root) { "#{Dir.pwd}/test/fixtures/catalogs/structure" }
+  Given(:structure)      { StructureBuilder.build }
 
   describe '#structure' do
     Then { assert structure.is_a?(Hash) }

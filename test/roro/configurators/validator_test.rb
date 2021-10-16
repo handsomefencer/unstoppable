@@ -3,9 +3,9 @@
 require 'test_helper'
 
 describe Validator do
-  let(:args)      { nil }
-  let(:validator) { Validator.new(*args) }
-  # let(:validate)  { validator.validate_stack(stack_path) }
+  Given(:args)      { nil }
+  Given(:validator) { Validator.new(*args) }
+  # Given(:validate)  { validator.validate_stack(stack_path) }
 
   context 'when no args supplied' do
     describe '#initialize' do
@@ -99,8 +99,8 @@ describe Validator do
     end
 
     context 'when invalid' do
-      let(:execute)   { validator.validate(stack_path(:invalid)) }
-      let(:error_msg) { 'Catalog not present' }
+      Given(:execute)   { validator.validate(stack_path(:invalid)) }
+      Given(:error_msg) { 'Catalog not present' }
 
       context 'nonexistent file with permitted extension' do
         When(:stack) { 'nonexistent.yml' }
@@ -137,7 +137,7 @@ describe Validator do
         end
 
         context 'top level content is' do
-          let(:error_msg) { 'must be an instance of Hash' }
+          Given(:error_msg) { 'must be an instance of Hash' }
 
           context 'a string' do
             When(:stack) { 'top_level/string.yml' }
@@ -176,7 +176,7 @@ describe Validator do
           end
 
           context 'an array of' do
-            let(:error_msg) { 'must be an instance of String' }
+            Given(:error_msg) { 'must be an instance of String' }
 
             context 'hashes' do
               When(:stack) { 'actions/array_of_hashes.yml' }
@@ -191,7 +191,7 @@ describe Validator do
         end
 
         context ':env returns' do
-          let(:error_msg) { 'must be an instance of Hash' }
+          Given(:error_msg) { 'must be an instance of Hash' }
 
           context 'nil' do
             When(:error_msg) { 'Value for :actions must not be nil' }
@@ -270,7 +270,7 @@ describe Validator do
         end
 
         context 'unpermitted keys' do
-          let(:error_msg) { 'not in permitted' }
+          Given(:error_msg) { 'not in permitted' }
 
           context 'when top level' do
             When(:stack) { 'top_level/unpermitted_keys.yml' }
