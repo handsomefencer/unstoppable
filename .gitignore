@@ -13,6 +13,9 @@ roro/**/*.key
 
 *.key
 *.env
+
+!test/**/*.key
+!test/**/*.env
 !/.gitignore
 *.gem
 tmp/*
