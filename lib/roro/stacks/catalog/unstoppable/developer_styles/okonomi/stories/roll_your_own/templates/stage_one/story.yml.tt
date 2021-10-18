@@ -1,0 +1,12 @@
+preface: some string
+
+env:
+  base:
+    story_name:
+      name: Name for this story
+      value: 'Cool story name'
+
+
+
+actions:
+  - template 'story.yml', '.', @env

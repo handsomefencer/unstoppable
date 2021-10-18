@@ -13,7 +13,7 @@ commands:
     parameters:
       answers:
         type: string
-        default: "1\n1"
+        default: "1\n2"
       os:
         type: executor
     steps:
@@ -87,7 +87,7 @@ jobs:
     parameters:
       answers:
         type: string
-        default: "1\n1"
+        default: "1\n4"
       os:
         type: executor
         default: linux

@@ -1,0 +1,21 @@
+preface: Describe your story.
+
+env:
+  base:
+    story_name:
+      name: Name for this story
+      value: 'my_story'
+    stack:
+      name: Stack location
+      value: 'mise/stacks'
+
+
+actions:
+  - |
+    stack = @env[:base][:stack][:value]
+    story = @env[:base][:story_name][:value]
+    template 'stage_one/story.yml', "./#{stack}/#{story}/#{story}.yml/", @env
+    directory 'stage_one/story', "./#{stack}/#{story}/", @env
+#  - directory 'stage_one/story', "./#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}/", @env
+#  - template 'stage_one/story.yml', "./#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}/#{@env[:base][:story_name][:value]}.yml/", @env
+#  - template 'stage_one/story.yml', "./#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}/#{@env[:base][:story_name][:value]}.yml/", @env
