@@ -1,37 +1,37 @@
-# require "test_helper"
-#
-# describe 'Roro::CLI#rollon' do
-#   before { skip }
-#   Given(:workbench) { }
-#   Given(:cli) { Roro::CLI.new }
-#   Given(:rollon)    {
-#     stub_adventure
-#     stub_overrides
-#     quiet { cli.rollon }
-#   }
-#
-#   context 'when fatsufodo django' do
-#     Given(:adventures) { %w[fatsufodo django] }
-#     Given(:overrides)  { %w[] }
-#
-#     context 'when default variables' do
-#       Given { rollon }
-#       Then  { assert_file 'unstoppable_django/Dockerfile', /python:3/ }
-#       And   { assert_file 'unstoppable_django/docker-compose.yml', /=password/ }
-#     end
-#
-#     context 'when overrides variables' do
-#       When(:overrides) { %w[3.2 y y newpass] }
-#       Given { rollon }
-#       Then  { assert_file 'unstoppable_django/Dockerfile', /python:3.2/ }
-#       And   { assert_file 'unstoppable_django/docker-compose.yml', /=newpass/ }
-#     end
-#
-#     context 'stage two' do
-#       When(:overrides) { %w[3.2 y y newpass] }
-#       Given { rollon }
-#       Then  { assert_file 'unstoppable_django/Dockerfile', /python:3.2/ }
-#       And   { assert_file 'unstoppable_django/docker-compose.yml', /=newpass/ }
-#     end
-#   end
-# end
+require "test_helper"
+
+describe 'Roro::CLI#rollon' do
+  Given(:workbench)  { 'django' }
+  Given(:cli)        { Roro::CLI.new }
+  Given(:overrides)  { %w[] }
+
+  Given(:rollon)    {
+    stub_adventure
+    stub_overrides
+    stub_run_actions
+    quiet { cli.rollon }
+  }
+
+  context 'when fatsufodo django' do
+    Given(:adventures) { %w[1 1] }
+
+    Given { rollon }
+
+    context 'when default variables' do
+      Then  { assert_file 'Dockerfile', /python:3/ }
+      And   { assert_file 'docker-compose.yml', /=password/ }
+    end
+
+    context 'when overrides variables' do
+      When(:overrides) { %w[3.2 y y newpass] }
+      Then  { assert_file 'Dockerfile', /python:3.2/ }
+      And   { assert_file 'docker-compose.yml', /=newpass/ }
+    end
+
+    context 'stage two' do
+      When(:overrides) { %w[3.2 y y newpass] }
+      Then  { assert_file 'Dockerfile', /python:3.2/ }
+      And   { assert_file 'docker-compose.yml', /=newpass/ }
+    end
+  end
+end

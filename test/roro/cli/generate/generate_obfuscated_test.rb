@@ -17,7 +17,7 @@ describe 'Roro::CLI#generate_obfuscated' do
       end
 
       context 'when key' do
-        Given { insert_key_file }
+        Given { insert_key_file 'smart.key'}
         Then  { assert_raises(error) { generate } }
       end
     end

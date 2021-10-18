@@ -3,13 +3,16 @@
 module Minitest
   class Spec
 
+    def stub_run_actions
+      Roro::Configurators::AdventureWriter
+        .any_instance
+        .stubs(:run)
+    end
+
     def stub_adventure
-      Thor::Shell::Basic
+      Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)
-      Roro::Configurators::QuestionBuilder
-        .any_instance
-        .stubs(:story_from)
         .returns(*adventures)
     end
 
