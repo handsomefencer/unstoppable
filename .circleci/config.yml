@@ -21,6 +21,7 @@ commands:
           rake install &&
           printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
       - run: echo 'success'
+      - run: docker-compose down
 
   run-tests:
     parameters:
