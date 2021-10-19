@@ -25,13 +25,13 @@ describe Configurator do
         end
 
         context 'when wordpress' do
-          Given { stub_journey(%w[1 4]) }
+          Given { stub_journey(%w[1 5]) }
           Given { config.choose_adventure }
           Then  { assert_file_match_in 'stories/wordpress', config.itinerary }
         end
 
         context 'when rails' do
-          Given { stub_journey(%w[1 3]) }
+          Given { stub_journey(%w[1 4]) }
           Given { config.choose_adventure }
           Then  { assert_file_match_in 'stories/rails', config.itinerary }
         end
