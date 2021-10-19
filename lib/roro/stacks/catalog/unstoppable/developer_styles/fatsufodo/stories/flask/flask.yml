@@ -9,5 +9,6 @@ env:
 actions:
   - directory 'stage_one', '.', @env
   - run "docker-compose build"
-  - run "docker-compose up"
+  - run "docker-compose up -d"
   - run "echo 'You may open your app at http://localhost:5000/'"
+  - run "docker-compose down"

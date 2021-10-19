@@ -25,7 +25,8 @@ module Roro
               help: '',
               action: ''
             }
-          ]
+          ],
+          success: ''
         }
       end
     end
