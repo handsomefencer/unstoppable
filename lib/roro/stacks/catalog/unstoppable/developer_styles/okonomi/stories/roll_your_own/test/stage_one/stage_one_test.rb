@@ -14,7 +14,7 @@ describe 'okonomi roll_your_own' do
 
   Given(:adventures) { %w[2 1] }
 
-  Given { quiet { rollon } }
+  Given  { rollon }
 
   describe 'must generate' do
     describe 'templates with stage one' do
@@ -41,7 +41,10 @@ describe 'okonomi roll_your_own' do
   end
 
   describe 'with stage test' do
-    Given(:contents) { [ /describe 'mise stacks my_story'/ ] }
+    Given(:contents) { [
+      /describe 'mise stacks my_story'/,
+
+    ] }
     Then  {
       contents.each { |c|
         assert_file 'mise/stacks/my_story/test/stage_one/stage_test.rb', c

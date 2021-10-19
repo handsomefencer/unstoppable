@@ -12,10 +12,8 @@ env:
 
 actions:
   - |
-    stack = @env[:base][:stack][:value]
-    story = @env[:base][:story_name][:value]
-    template 'stage_one/story.yml', "./#{stack}/#{story}/#{story}.yml/", @env
-    directory 'stage_one/story', "./#{stack}/#{story}/", @env
-#  - directory 'stage_one/story', "./#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}/", @env
-#  - template 'stage_one/story.yml', "./#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}/#{@env[:base][:story_name][:value]}.yml/", @env
-#  - template 'stage_one/story.yml', "./#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}/#{@env[:base][:story_name][:value]}.yml/", @env
+    @env[:story] = @env[:base][:story_name][:value]
+    @env[:stack] = @env[:base][:stack][:value]
+    @env[:stack_path] = "#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}"
+    template 'stage_one/story.yml', "./#{@env[:stack_path]}/#{@env[:story]}.yml/", @env
+    directory 'stage_one/story', "./#{@env[:stack_path]}", @env

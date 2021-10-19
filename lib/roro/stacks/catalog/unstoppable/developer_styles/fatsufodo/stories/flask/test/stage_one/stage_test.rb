@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe '<%= "#{@env[:stack_path].gsub('/', ' ')}" %>' do
+describe 'lib roro stacks catalog unstoppable developer_styles fatsufodo stories flask' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:adventures) { %w[] }
@@ -20,7 +20,7 @@ describe '<%= "#{@env[:stack_path].gsub('/', ' ')}" %>' do
   Given { rollon }
 
   context 'when default variables' do
-    Then  { assert_file "#{@env[:story}/#{@env[:story]}.yml', /env/ }
+    Then  { assert_file 'my_story/my_story.yml', /env/ }
   end
 
   context 'when overriden variables' do
@@ -32,7 +32,7 @@ describe '<%= "#{@env[:stack_path].gsub('/', ' ')}" %>' do
     Given(:contents) { [:env, :preface, :actions] }
     Then {
       contents.each { |c|
-        assert_file "#{@env[:story}/test/stage_one/stage_test.rb", c
+        assert_file 'my_story/test/stage_one/stage_test.rb', c
       }
     }
   end
