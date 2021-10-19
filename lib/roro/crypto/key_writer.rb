@@ -22,7 +22,9 @@ module Roro
         @writer.write_to_file(destination, @cipher.generate_key)
       end
 
-      def write_keyfiles(environments = [], directory = @mise, extension = '.key')
+      def write_keyfiles(environments = [], directory = nil, extension = nil)
+        directory ||= @mise
+        extension ||= '.key'
         if environments.empty?
           environments = gather_environments(directory, '.env')
         end

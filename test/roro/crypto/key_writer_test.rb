@@ -38,7 +38,7 @@ describe Roro::Crypto::KeyWriter do
             Given(:error)     { Roro::Error }
             Given(:error_msg) { 'No .env files in' }
 
-            Given(:execute)   { write_keyfiles }
+            Given(:execute)   { subject.write_keyfiles }
             Then { assert_correct_error }
           end
 
@@ -57,7 +57,6 @@ describe Roro::Crypto::KeyWriter do
             Given(:workbench) { 'mise/exposed/roro'}
             Given(:args)      { [[], nil, '.passkey'] }
             Given { write_keyfiles }
-
             Then { assert_file 'roro/keys/ci.passkey' }
           end
         end

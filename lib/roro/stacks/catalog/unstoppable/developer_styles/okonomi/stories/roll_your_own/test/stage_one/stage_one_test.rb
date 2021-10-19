@@ -15,8 +15,8 @@ describe 'okonomi roll_your_own' do
   Given(:adventures) { %w[2 1] }
 
   Given  {
-    rollon
-    # quiet { rollon }
+    # rollon
+    quiet { rollon }
   }
 
   describe 'must generate' do

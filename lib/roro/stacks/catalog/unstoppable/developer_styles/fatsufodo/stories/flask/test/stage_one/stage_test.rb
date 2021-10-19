@@ -15,9 +15,9 @@ describe 'lib roro stacks catalog unstoppable developer_styles fatsufodo stories
     ## Ensures Thor run commands are stubbed.
     stub_run_actions
     ## Tests will hang with an empty adventures array.
-    cli.rollon
+    # cli.rollon
     ## To quiet the test output do:
-    # quiet { cli.rollon }
+    quiet { cli.rollon }
   }
 
   Given { rollon unless adventures.empty?}
