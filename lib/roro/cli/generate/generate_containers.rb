@@ -3,9 +3,9 @@
 module Roro
   # Where all the generation, configuration, greenfielding happens.
   class CLI < Thor
-    desc 'generate:containers', 'Generate containers.'
+    desc 'generate containers', 'Generate containers.'
     map 'generate:containers' => 'generate_containers'
-
+    method_options :containers => :array
     def generate_containers(*containers)
       mise = Roro::CLI.mise
       default_containers = %w[frontend backend database]
@@ -13,7 +13,7 @@ module Roro
         File.directory?(f)
         !f.match?(mise)
       end
-      siblings += default_containers if siblings.size.eql?(1)
+      siblings = options[:containers] ? options[:containers] : default_containers
       siblings.each { |s| s.split('/').last }.each do |container|
         create_file("#{mise}/containers/#{container}/scripts/.keep")
         create_file("#{mise}/containers/#{container}/env/.keep")

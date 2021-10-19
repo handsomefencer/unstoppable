@@ -2,12 +2,14 @@
 
 module Roro
   class CLI < Thor
-    desc 'generate:mise', 'Generate mise en place'
+    desc 'generate MISE', 'Generate mise en place.'
     map 'generate:mise'  => 'generate_mise'
+    method_options :containers => :array
 
-    def generate_mise(mise_name = 'mise')
+
+    def generate_mise(mise_name = mise)
       create_file "#{mise_name}/#{mise_name}.roro"
-      generate_containers
+      generate_containers(options[:containers])
     end
   end
 end

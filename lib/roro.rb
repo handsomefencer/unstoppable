@@ -36,7 +36,11 @@ require 'roro/version'
 
 module Roro
 
-  class CLI < Thor; end
+  class CLI < Thor
+    include Utilities
+    include FileReflection
+
+  end
 
   module FileReflection; end
   module Utilities; end
