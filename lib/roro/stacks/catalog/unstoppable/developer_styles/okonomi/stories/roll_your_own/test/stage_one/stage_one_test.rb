@@ -14,7 +14,10 @@ describe 'okonomi roll_your_own' do
 
   Given(:adventures) { %w[2 1] }
 
-  Given  { rollon }
+  Given  {
+    rollon
+    # quiet { rollon }
+  }
 
   describe 'must generate' do
     describe 'templates with stage one' do
@@ -40,15 +43,18 @@ describe 'okonomi roll_your_own' do
     end
   end
 
-  describe 'with stage test' do
-    Given(:contents) { [
-      /describe 'mise stacks my_story'/,
-
-    ] }
-    Then  {
-      contents.each { |c|
-        assert_file 'mise/stacks/my_story/test/stage_one/stage_test.rb', c
-    } }
-  end
+  # describe 'with stage test' do
+  #   before { skip }
+  #   Given(:contents) { [
+  #     /describe 'mise stacks my_story'/,
+  #     /assert_file \"mise\/stacks\/my_story\/my_story.yml'/,
+  #     /assert_file \"mise\/stacks\/my_story\/test'/,
+  #
+  #   ] }
+  #   Then  {
+  #     contents.each { |c|
+  #       assert_file 'mise/stacks/my_story/test/stage_one/stage_test.rb', c
+  #   } }
+  # end
 end
 

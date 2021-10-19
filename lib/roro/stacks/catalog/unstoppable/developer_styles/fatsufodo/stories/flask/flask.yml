@@ -1,0 +1,12 @@
+preface: some string
+
+env:
+  base:
+    app_name:
+      name: Name for your app
+      value: 'unstoppable app name'
+
+
+
+actions:
+  - template 'story.yml', '.', @env
