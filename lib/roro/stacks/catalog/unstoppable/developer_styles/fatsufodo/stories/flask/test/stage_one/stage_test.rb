@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'lib roro stacks catalog unstoppable developer_styles fatsufodo stories flask' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[] }
+  Given(:adventures) { %w[1 3] }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
@@ -14,26 +14,24 @@ describe 'lib roro stacks catalog unstoppable developer_styles fatsufodo stories
     stub_overrides
     ## Ensures Thor run commands are stubbed.
     stub_run_actions
-    quiet { cli.rollon }
+    ## Tests will hang with an empty adventures array.
+    cli.rollon
+    ## To quiet the test output do:
+    # quiet { cli.rollon }
   }
 
-  Given { rollon }
+  Given { rollon unless adventures.empty?}
 
-  context 'when default variables' do
-    Then  { assert_file "lib/roro/stacks/catalog/unstoppable/developer_styles/fatsufodo/stories/flask/flask.yml", /env/ }
+  context 'when default variables interpolated' do
+    Then  { assert_file "app.py", /import time/ }
   end
 
-  context 'when overriden variables' do
-    Given(:overrides) { ['other_story'] }
-    Then  { assert_file 'other_story/other_story.yml', /env/ }
-  end
-
-  context 'when many interpolations' do
-    Given(:contents) { [:env, :preface, :actions] }
-    Then {
-      contents.each { |c|
-        assert_file "lib/roro/stacks/catalog/unstoppable/developer_styles/fatsufodo/stories/flask", c
-      }
-    }
+  context 'when many items interpolated' do
+    # Given(:contents) { [:env, :preface, :actions] }
+    # Then {
+    #   contents.each { |c|
+    #     assert_file "lib/roro/stacks/catalog/unstoppable/developer_styles/fatsufodo/stories/flask", c
+    #   }
+    # }
   end
 end

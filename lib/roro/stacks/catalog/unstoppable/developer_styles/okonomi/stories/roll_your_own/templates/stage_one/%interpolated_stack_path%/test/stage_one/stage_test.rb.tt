@@ -14,21 +14,19 @@ describe '<%= "#{@env[:stack_path].gsub('/', ' ')}" %>' do
     stub_overrides
     ## Ensures Thor run commands are stubbed.
     stub_run_actions
-    quiet { cli.rollon }
+    cli.rollon
+    ## To quiet the test output do:
+    # quiet { cli.rollon }
   }
 
-  Given { rollon }
+  ## Tests will hang if the :adventures array is empty.
+  Given { rollon unless adventures.empty?}
 
-  context 'when default variables' do
+  context 'when default variables interpolated' do
     Then  { assert_file "<%= "#{@env[:stack]}/#{@env[:story]}/#{@env[:story]}.yml" %>", /env/ }
   end
 
-  context 'when overriden variables' do
-    Given(:overrides) { ['other_story'] }
-    Then  { assert_file 'other_story/other_story.yml', /env/ }
-  end
-
-  context 'when many interpolations' do
+  context 'when many items interpolated' do
     Given(:contents) { [:env, :preface, :actions] }
     Then {
       contents.each { |c|

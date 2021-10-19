@@ -6,7 +6,5 @@ env:
       name: Name for your app
       value: 'unstoppable app name'
 
-
-
 actions:
-  - template 'story.yml', '.', @env
+  - directory 'stage_one', '.', @env

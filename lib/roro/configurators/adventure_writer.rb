@@ -20,6 +20,14 @@ module Roro
             end
           end
         end
+
+        def interpolated_stack_path
+          "#{@env[:stack]}/#{@env[:story]}"
+        end
+
+        def interpolated_story_name
+          "#{@env[:story]}"
+        end
       end
     end
   end

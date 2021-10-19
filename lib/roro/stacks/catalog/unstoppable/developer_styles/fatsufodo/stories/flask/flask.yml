@@ -6,7 +6,8 @@ env:
       name: Name for your app
       value: 'unstoppable app name'
 
-
-
 actions:
-  - template 'story.yml', '.', @env
+  - directory 'stage_one', '.', @env
+  - run "docker-compose build"
+  - run "docker-compose up"
+  - run "echo 'You may open your app at http://localhost:5000/'"
