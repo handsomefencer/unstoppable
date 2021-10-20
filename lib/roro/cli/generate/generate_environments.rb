@@ -17,7 +17,6 @@ module Roro
           create_file "#{container}/env/#{env}.env", content
         end
       end
-      environments.each { |e| generate_keys(e) }
     end
   end
 end

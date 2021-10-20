@@ -3,7 +3,7 @@
 module Roro
   # Where all the generation, configuration, greenfielding happens.
   class CLI < Thor
-    desc 'generate containers', 'Generate containers.'
+    desc 'generate:containers', 'Generate containers.'
     map 'generate:containers' => 'generate_containers'
     method_options :containers => :array
     def generate_containers(*containers)

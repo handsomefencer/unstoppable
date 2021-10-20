@@ -26,7 +26,7 @@ module Roro
         directory ||= @mise
         extension ||= '.key'
         if environments.empty?
-          environments = gather_environments(directory, '.env')
+          environments = gather_environments(directory, '.env').uniq
         end
         environments.uniq.each { |environment| write_keyfile(environment, extension) }
       end
