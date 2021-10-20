@@ -34,10 +34,4 @@ describe 'Roro::CLI#generate_mise' do
   describe 'must generate mise/mise.roro file' do
     Then  { assert_directory 'mise/mise.roro' }
   end
-
-  describe 'must generate containers' do
-    Then  { assert_directory 'mise/containers/backend/scripts' }
-    And   { assert_directory 'mise/containers/frontend/scripts' }
-    And   { assert_directory 'mise/containers/database/env' }
-  end
 end

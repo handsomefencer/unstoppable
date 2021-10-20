@@ -24,21 +24,9 @@ describe 'Roro::CLI#generate_containers' do
 
     context 'containers supplied must generate specified containers' do
       When(:containers) { %w[pistil stamen database] }
-      focus
       Then  { assert_directory 'roro/containers/database/scripts' }
-      # Then  { assert_directory 'roro/containers/stamen/scripts' }
-      # Then  { assert_directory 'roro/containers/pistil/scripts' }
-    end
-  end
-
-  context 'when sibling folders and' do
-    Given(:workbench) { %w[roro pistil stamen] }
-
-    context 'when no containers supplied must generate sibling containers' do
-      When(:containers) { nil }
-      Then  { assert_directory 'roro/containers/pistil/env' }
-      And   { assert_directory 'roro/containers/pistil/scripts' }
-      And   { assert_directory 'roro/containers/stamen/env' }
+      And   { assert_directory 'roro/containers/backend/scripts' }
+      And   { assert_directory 'roro/containers/frontend/scripts' }
     end
   end
 end

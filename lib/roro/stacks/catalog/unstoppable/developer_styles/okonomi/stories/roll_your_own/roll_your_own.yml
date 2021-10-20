@@ -9,8 +9,13 @@ env:
       name: Stack location
       value: 'mise/stacks'
 
-
 actions:
+  - |
+    generator = Roro::CLI.new
+    generator.generate_mise
+    generator.generate_containers
+    generator.generate_environments
+    generator.generate_keys
   - |
     @env[:story] = @env[:base][:story_name][:value]
     @env[:stack] = @env[:base][:stack][:value]
