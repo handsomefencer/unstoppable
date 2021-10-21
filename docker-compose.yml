@@ -5,9 +5,11 @@ services:
   ruby_gem:
     build:
       context: .
-      dockerfile: roro/containers/ruby_image/Dockerfile
+      dockerfile: mise/containers/ruby_image/Dockerfile
     volumes:
       - gem_cache:/gems
+    environment:
+      RUBY_VERSION: ${RUBY_VERSION}
 
 volumes:
   gem_cache:
