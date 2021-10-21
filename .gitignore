@@ -12,8 +12,8 @@ roro/**/*.env
 roro/**/*.key
 *.key
 *.env
-!/lib/roro/stacks/*.key
-!/lib/roro/stacks/*.env
+!/lib/roro/stacks/**/*.key
+!/lib/roro/stacks/**/*.env
 !test/**/*.key
 !test/**/*.env
 !/.gitignore
