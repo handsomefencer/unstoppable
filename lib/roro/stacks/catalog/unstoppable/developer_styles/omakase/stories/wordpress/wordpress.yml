@@ -8,4 +8,5 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - docker-compose -f docker-compose-dev.yml up
+  - |
+    run "sudo docker-compose -f docker-compose-dev.yml up"
