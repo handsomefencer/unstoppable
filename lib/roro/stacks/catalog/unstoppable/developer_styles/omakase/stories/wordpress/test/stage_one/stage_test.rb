@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'lib roro stacks catalog unstoppable developer_styles omakase stories wordpress' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[] }
+  Given(:adventures) { %w[3 2] }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
@@ -22,16 +22,19 @@ describe 'lib roro stacks catalog unstoppable developer_styles omakase stories w
   ## Tests will hang if the :adventures array is empty.
   Given { rollon unless adventures.empty?}
 
-  context 'when default variables interpolated' do
-    Then  { assert_file "lib/roro/stacks/catalog/unstoppable/developer_styles/omakase/stories/wordpress/wordpress.yml", /env/ }
+  describe 'must have docker-compose.yml file' do
+    Then  { assert_file 'docker-compose.yml' }
   end
 
-  context 'when many items interpolated' do
-    Given(:contents) { [:env, :preface, :actions] }
-    Then {
-      contents.each { |c|
-        assert_file "lib/roro/stacks/catalog/unstoppable/developer_styles/omakase/stories/wordpress", c
-      }
-    }
+  describe 'must have a mise en place' do
+    Then  { assert_file 'mise/mise.roro' }
+  end
+
+  describe 'must have correct containers' do
+    Then  { assert_file 'mise/containers/wordpress' }
+  end
+
+  describe 'must have correct variables in files' do
+    Then  { assert_file 'mise/env/base.env', /WORDPRESS_IMAGE=wordpress/ }
   end
 end
