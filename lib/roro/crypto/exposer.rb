@@ -4,6 +4,8 @@ module Roro
   module Crypto
     class Exposer
 
+      include Roro::FileReflection
+
       def initialize
         @writer = Roro::Crypto::FileWriter.new
         @cipher = Roro::Crypto::Cipher.new
