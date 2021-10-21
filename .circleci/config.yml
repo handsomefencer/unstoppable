@@ -12,6 +12,14 @@ executors:
   mac:
     macos:
       xcode: 11.4
+  ruby:
+    parameters:
+      version:
+        description: "version tag"
+        default: '2.5'
+        type: string
+    docker:
+      - image: cimg/ruby:<<parameters.version>>
 
 aliases:
   - &workspace-location
@@ -24,7 +32,7 @@ aliases:
 
 defaults: &defaults
   executor: ruby-executor
-  working_directory: ~/project
+  working_directory: &workspace-location
 
 major_only: &major_only
   filters:
@@ -49,35 +57,29 @@ commands:
           rake install &&
           printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
       - run: echo 'success'
-  run-tests:
-    parameters:
-      ruby-version:
-        type: string
-        default: '2.5'
-    steps:
-      - run:
-          name: run rake test from inside ruby:<< parameters.ruby-version >> image
-          environment:
-            RUBY_VERSION: << parameters.ruby-version >>
-          command: |
-              ${RUBY_VERSION}
-#              sudo docker-compose build ruby_gem &&
-#              sudo docker-compose up -d --force-recreate ruby_gem &&
-#              sudo docker-compose run ruby_gem bundle exec rake test
 
 jobs:
   build:
     <<: *defaults
     steps:
       - checkout
-  test-rubies:
-    <<: *defaults
+
+
+  test-against-ruby:
+    parameters:
+      version:
+        description: "version tag"
+        default: "3.0"
+        type: string
+    executor:
+      name: ruby
+      version: <<parameters.version>>
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 19.03.12
-      - run-tests:
-          ruby-version: '2.5'
+      - run: gem install bundler
+      - run: bundle
+      - run: bundle exec rake test
+
   test-rollon:
     parameters:
       answers:
@@ -120,7 +122,15 @@ workflows:
             parameters:
               answers: ["1\n1", "1\n2", "1\n3", "1\n4", "1\n5", "2\n1", "3\n1", "3\n2"]
               os: [linux]
-    
+
+  test-against-common-rubies:
+    jobs:
+      - test-against-ruby:
+          <<: *major_only
+          matrix:
+            parameters:
+              version: [ "2.5", "2.6", "2.7", "3.0" ]
+
   build-cli: 
     jobs: 
       - build: 
@@ -128,9 +138,7 @@ workflows:
           <<: *release
       - test-rollon:
           <<: *major_only
-      - test-rubies:
-          <<: *major_only
-      
+
       - release:
           requires: 
             - build

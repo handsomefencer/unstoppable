@@ -3,7 +3,6 @@ jobs:
   release:
     docker:
     - image: cimg/ruby:2.7
-    working_directory: ~/project
     steps:
     - checkout
     - run:
@@ -24,6 +23,17 @@ jobs:
         command: git checkout .
     - run:
         command: gem release
+  test-against-ruby-2.6:
+    docker:
+    - image: cimg/ruby:2.6
+    steps:
+    - checkout
+    - run:
+        command: gem install bundler
+    - run:
+        command: bundle
+    - run:
+        command: bundle exec rake test
   ? |-
     test-rollon-1
     1-linux
@@ -56,6 +66,17 @@ jobs:
           1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
+  test-against-ruby-2.5:
+    docker:
+    - image: cimg/ruby:2.5
+    steps:
+    - checkout
+    - run:
+        command: gem install bundler
+    - run:
+        command: bundle
+    - run:
+        command: bundle exec rake test
   ? |-
     test-rollon-2
     1-linux
@@ -88,6 +109,17 @@ jobs:
           2\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
+  test-against-ruby-2.7:
+    docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - run:
+        command: gem install bundler
+    - run:
+        command: bundle
+    - run:
+        command: bundle exec rake test
   ? |-
     test-rollon-1
     4-linux
@@ -123,7 +155,6 @@ jobs:
   build:
     docker:
     - image: cimg/ruby:2.7
-    working_directory: ~/project
     steps:
     - checkout
   test-rollon:
@@ -140,20 +171,6 @@ jobs:
           4\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
-  test-rubies:
-    docker:
-    - image: cimg/ruby:2.7
-    working_directory: ~/project
-    steps:
-    - checkout
-    - setup_remote_docker:
-        version: 19.03.12
-    - run:
-        name: run rake test from inside ruby:2.5 image
-        environment:
-          RUBY_VERSION: '2.5'
-        command: |
-          ${RUBY_VERSION}
   ? |-
     test-rollon-1
     2-linux
@@ -170,6 +187,17 @@ jobs:
           2\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
+  test-against-ruby-3.0:
+    docker:
+    - image: cimg/ruby:3.0
+    steps:
+    - checkout
+    - run:
+        command: gem install bundler
+    - run:
+        command: bundle
+    - run:
+        command: bundle exec rake test
   ? |-
     test-rollon-1
     5-linux
@@ -238,6 +266,24 @@ workflows:
       : filters:
           branches:
             only: master
+  test-against-common-rubies:
+    jobs:
+    - test-against-ruby-2.5:
+        filters:
+          branches:
+            only: master
+    - test-against-ruby-2.6:
+        filters:
+          branches:
+            only: master
+    - test-against-ruby-2.7:
+        filters:
+          branches:
+            only: master
+    - test-against-ruby-3.0:
+        filters:
+          branches:
+            only: master
   build-cli:
     jobs:
     - build:
@@ -245,10 +291,6 @@ workflows:
           branches:
             only: master
     - test-rollon:
-        filters:
-          branches:
-            only: master
-    - test-rubies:
         filters:
           branches:
             only: master
@@ -274,6 +316,14 @@ workflows:
 #   mac:
 #     macos:
 #       xcode: 11.4
+#   ruby:
+#     parameters:
+#       version:
+#         description: \"version tag\"
+#         default: '2.5'
+#         type: string
+#     docker:
+#       - image: cimg/ruby:<<parameters.version>>
 # 
 # aliases:
 #   - &workspace-location
@@ -286,7 +336,7 @@ workflows:
 # 
 # defaults: &defaults
 #   executor: ruby-executor
-#   working_directory: ~/project
+#   working_directory: &workspace-location
 # 
 # major_only: &major_only
 #   filters:
@@ -311,35 +361,29 @@ workflows:
 #           rake install &&
 #           printf \"<< parameters.answers >>\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
 #       - run: echo 'success'
-#   run-tests:
-#     parameters:
-#       ruby-version:
-#         type: string
-#         default: '2.5'
-#     steps:
-#       - run:
-#           name: run rake test from inside ruby:<< parameters.ruby-version >> image
-#           environment:
-#             RUBY_VERSION: << parameters.ruby-version >>
-#           command: |
-#               ${RUBY_VERSION}
-# #              sudo docker-compose build ruby_gem &&
-# #              sudo docker-compose up -d --force-recreate ruby_gem &&
-# #              sudo docker-compose run ruby_gem bundle exec rake test
 # 
 # jobs:
 #   build:
 #     <<: *defaults
 #     steps:
 #       - checkout
-#   test-rubies:
-#     <<: *defaults
+# 
+# 
+#   test-against-ruby:
+#     parameters:
+#       version:
+#         description: \"version tag\"
+#         default: \"3.0\"
+#         type: string
+#     executor:
+#       name: ruby
+#       version: <<parameters.version>>
 #     steps:
 #       - checkout
-#       - setup_remote_docker:
-#           version: 19.03.12
-#       - run-tests:
-#           ruby-version: '2.5'
+#       - run: gem install bundler
+#       - run: bundle
+#       - run: bundle exec rake test
+# 
 #   test-rollon:
 #     parameters:
 #       answers:
@@ -382,7 +426,15 @@ workflows:
 #             parameters:
 #               answers: [\"1\\n1\", \"1\\n2\", \"1\\n3\", \"1\\n4\", \"1\\n5\", \"2\\n1\", \"3\\n1\", \"3\\n2\"]
 #               os: [linux]
-#     
+# 
+#   test-against-common-rubies:
+#     jobs:
+#       - test-against-ruby:
+#           <<: *major_only
+#           matrix:
+#             parameters:
+#               version: [ \"2.5\", \"2.6\", \"2.7\", \"3.0\" ]
+# 
 #   build-cli: 
 #     jobs: 
 #       - build: 
@@ -390,9 +442,7 @@ workflows:
 #           <<: *release
 #       - test-rollon:
 #           <<: *major_only
-#       - test-rubies:
-#           <<: *major_only
-#       
+# 
 #       - release:
 #           requires: 
 #             - build
