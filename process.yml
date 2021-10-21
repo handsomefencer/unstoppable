@@ -35,13 +35,31 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install &&
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
           printf "1
-          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          1\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
+  ? |-
+    test-rollon-3
+    1-linux
+  : docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
     - run:
-        command: docker-compose down
+        command: |
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
+          printf "3
+          1\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
   ? |-
     test-rollon-2
     1-linux
@@ -53,13 +71,31 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install &&
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
           printf "2
-          1\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          1\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
+  ? |-
+    test-rollon-3
+    2-linux
+  : docker:
+    - image: cimg/ruby:2.7
+    steps:
+    - checkout
+    - setup_remote_docker:
+        version: 19.03.12
     - run:
-        command: docker-compose down
+        command: |
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
+          printf "3
+          2\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+    - run:
+        command: echo 'success'
   ? |-
     test-rollon-1
     4-linux
@@ -71,13 +107,13 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install &&
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
           printf "1
-          4\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          4\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
-    - run:
-        command: docker-compose down
   ? |-
     test-rollon-1
     3-linux
@@ -89,13 +125,13 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install &&
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
           printf "1
-          3\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          3\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
-    - run:
-        command: docker-compose down
   build:
     docker:
     - image: cimg/ruby:2.7
@@ -111,13 +147,13 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install &&
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
           printf "1
-          4\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          4\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
-    - run:
-        command: docker-compose down
   ? |-
     test-rollon-1
     2-linux
@@ -129,13 +165,13 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install &&
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
           printf "1
-          2\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          2\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
-    - run:
-        command: docker-compose down
   ? |-
     test-rollon-1
     5-linux
@@ -147,13 +183,13 @@ jobs:
         version: 19.03.12
     - run:
         command: |
-          rake install &&
+          gem install bundler &&
+          bundle &&
+          bundle exec rake install &&
           printf "1
-          5\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          5\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
     - run:
         command: echo 'success'
-    - run:
-        command: docker-compose down
 workflows:
   version: 2
   test-all-cases:
@@ -191,6 +227,18 @@ workflows:
     - ? |-
         test-rollon-2
         1-linux
+      : filters:
+          branches:
+            only: master
+    - ? |-
+        test-rollon-3
+        1-linux
+      : filters:
+          branches:
+            only: master
+    - ? |-
+        test-rollon-3
+        2-linux
       : filters:
           branches:
             only: master
@@ -232,10 +280,11 @@ workflows:
 #         type: executor
 #     steps:
 #       - run: |
-#           rake install &&
-#           printf \"<< parameters.answers >>\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
+#           gem install bundler &&
+#           bundle &&
+#           bundle exec rake install &&
+#           printf \"<< parameters.answers >>\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
 #       - run: echo 'success'
-#       - run: docker-compose down
 # 
 #   run-tests:
 #     parameters:
@@ -338,7 +387,7 @@ workflows:
 #           <<: *major_only
 #           matrix:
 #             parameters:
-#               answers: [\"1\\n1\", \"1\\n2\", \"1\\n3\", \"1\\n4\", \"1\\n5\", \"2\\n1\"]
+#               answers: [\"1\\n1\", \"1\\n2\", \"1\\n3\", \"1\\n4\", \"1\\n5\", \"2\\n1\", \"3\\n1\", \"3\\n2\"]
 #               os: [linux]
 #     
 #   build-cli: 
