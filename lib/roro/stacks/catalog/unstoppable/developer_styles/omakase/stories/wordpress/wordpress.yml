@@ -1,0 +1,11 @@
+preface: some string
+
+env:
+  base:
+    app_name:
+      name: Name for your app
+      value: 'unstoppable app name'
+
+actions:
+  - directory 'stage_one', '.', @env
+  - docker-compose -f docker-compose-dev.yml up
