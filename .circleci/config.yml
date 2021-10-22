@@ -89,9 +89,11 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-#      - run: gem bump
-      - run: bundle
-      - run: bundle exec rake release
+      - run: rake release
+#      - run: ./.circleci/setup-gem-credentials.sh
+#      - run: chmod 0600 ./.gem/credentials
+#      - run: git checkout .
+#      - run: gem release
 
 workflows:
   matrix-test-rollon:
