@@ -89,11 +89,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: |
-          git config --global user.email "fred.schoeneman@gmail.com"
-          git config --global user.name "Fred Schoeneman"
-      - run: bundle config set --local whithout development test
-      - run: bundle
+#      - run: |
+#          git config --global user.email "fred.schoeneman@gmail.com"
+#          git config --global user.name "Fred Schoeneman"
+#      - run: bundle config set --local whithout development test
+#      - run: bundle
+      - run: gem install gem-release
       - run: gem bump
       - run: gem release
 #      - run: rake install
