@@ -90,6 +90,7 @@ jobs:
     steps:
       - checkout
 #      - run: gem bump
+      - run: bundle
       - run: bundle exec rake release
 
 workflows:
