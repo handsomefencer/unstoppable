@@ -96,7 +96,7 @@ jobs:
           source $BASH_ENV
       - run: chmod +x ./.circleci/setup-gem-credentials.sh
       - run: ./.circleci/setup-gem-credentials.sh
-      - run: chmod 0600 ~/.gem/credentials
+      - run: chmod 0600 ./.gem/credentials
       - run: git checkout .
       - run: gem release
 
