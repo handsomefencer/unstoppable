@@ -90,7 +90,7 @@ jobs:
     steps:
       - checkout
       - run: rake install
-      - run: roro generate::exposed ci
+      - run: roro generate:exposed ci
       - run: | 
           echo $(cat ./mise/containers/ruby_image/env/ci.env) >> $BASH_ENV
           source $BASH_ENV
