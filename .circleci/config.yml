@@ -89,7 +89,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: gem bump
+#      - run: gem bump
       - run: bundle exec rake release
 
 workflows:
