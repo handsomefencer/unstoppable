@@ -92,7 +92,7 @@ jobs:
       - run: |
           git config --global user.email "fred.schoeneman@gmail.com"
           git config --global user.name "Fred Schoeneman"
-      - run: printf "y" | rake release
+      - run: printf "yes" | rake release
 #      - run: ./.circleci/setup-gem-credentials.sh
 #      - run: chmod 0600 ./.gem/credentials
 #      - run: git checkout .
