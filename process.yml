@@ -6,6 +6,8 @@ jobs:
     steps:
     - checkout
     - run:
+        command: bundle
+    - run:
         command: rake release
   test-against-ruby-2.6:
     docker:
@@ -356,6 +358,7 @@ workflows:
 #     <<: *defaults
 #     steps:
 #       - checkout
+#       - run: bundle
 #       - run: rake release
 # #      - run: ./.circleci/setup-gem-credentials.sh
 # #      - run: chmod 0600 ./.gem/credentials

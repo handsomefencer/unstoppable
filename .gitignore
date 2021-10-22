@@ -8,6 +8,10 @@
 Gemfile.lock
 .byebug_history
 
+## circleci
+process.yml
+
+## roro
 roro/**/*.env
 roro/**/*.key
 *.key
