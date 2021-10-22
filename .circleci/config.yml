@@ -79,7 +79,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.9
+          version: 19.03.12
       - run: |
           rake install &&
           printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
