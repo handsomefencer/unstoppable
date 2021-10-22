@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
 
   spec.executables << 'roro'
   spec.require_paths = ['lib']
-  # spec.add_dependency 'gem-release', '~> 2.1'
+  spec.add_dependency 'gem-release', '~> 2.1'
   spec.add_dependency 'rake', '~> 13.0', '>= 13.0.1'
   spec.add_dependency 'sshkit', '~> 1.21'
   spec.add_dependency 'thor', '~> 1.0', '>= 1.0.1'
