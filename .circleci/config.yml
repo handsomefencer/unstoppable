@@ -118,14 +118,9 @@ workflows:
             parameters:
               version: [ "2.5", "2.6", "2.7", "3.0" ]
 
-  build-cli: 
-    jobs: 
-      - build: 
-          <<: *major_only
-          <<: *release
-      - test-rollon:
-          <<: *major_only
+  build-cli:
+    jobs:
       - release:
-          requires: 
+          requires:
             - build
           <<: *release
