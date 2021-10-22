@@ -6,11 +6,7 @@ jobs:
     steps:
     - checkout
     - run:
-        command: rake install
-    - run:
-        command: |
-          export CI_KEY="Bx2LCiZo7Gedfz1OV9vh3w=="
-          roro generate:exposed ci
+        command: rake release
   test-against-ruby-2.6:
     docker:
     - image: cimg/ruby:2.6
@@ -360,15 +356,7 @@ workflows:
 #     <<: *defaults
 #     steps:
 #       - checkout
-#       - run: rake install
-#       - run: |
-#           export CI_KEY=\"Bx2LCiZo7Gedfz1OV9vh3w==\"
-#           roro generate:exposed ci
-# #      - run: |
-# #          echo $(cat ./mise/containers/ruby_image/env/ci.env) >> $BASH_ENV
-# #          source $BASH_ENV
-# #      - run: echo $RUBYGEMS_API_KEY
-# #      - run: chmod +x ./.circleci/setup-gem-credentials.sh
+#       - run: rake release
 # #      - run: ./.circleci/setup-gem-credentials.sh
 # #      - run: chmod 0600 ./.gem/credentials
 # #      - run: git checkout .

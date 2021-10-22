@@ -1,29 +1,37 @@
 # Contributor Covenant Code of Conduct
 
-## Our Pledge
-
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.
+I want participation in this project to be fun for everyone regardless of age, body  size, disability, ethnicity, level of experience,
+nationality, personal appearance, race, religion, gender identity and expression,
+or sexual identity and orientation.
 
 ## Our Standards
 
-Examples of behavior that contributes to creating a positive environment
-include:
+Some of these things make me happy:
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+* When you use welcoming and inclusive language
+* When you write a user story from the perspective of someone with a different pronoun
+* When you understand we all want the same things for ourselves, our families, and other people even if you disagree with the politics of how to get them
+* When you invert and play with stereotypes
+* When you focus on your own privilege and not on what you assume is that in others
+* When you assume everybody has a positive intent
+* When you listen carefully to criticism before accepting or rejecting it
+* When you tell someone what you think they're asking before providing an answer 
+* When you ask before offering criticism
+* When you acknowledge constructive criticism and either accept it or explain why you can not
+* When you accept that sometimes your criticism will be rejected
+* When you show empathy towards others
+* When you are positive and supportive of someone's efforts
+* When you assume as little as possible about others
+* When you are cheerful, even if you have to fake
+* When you give genuine compliments to others
+
+
 
 Examples of unacceptable behavior by participants include:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
+* Unwelcome sexual attention or advances
+* Teasing someone for something that person is sensitive about, or that a reasonable person might guess she is
+* sensitive about.
 * Trolling, insulting/derogatory comments, and personal or political attacks
 * Public or private harassment
 * Publishing others' private information, such as a physical or electronic
