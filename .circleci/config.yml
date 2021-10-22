@@ -90,6 +90,7 @@ jobs:
     steps:
       - checkout
       - run: bundle config set --local whithout development test
+      - run: bundle
       - run: gem bump
       - run: gem release
 #      - run: |
