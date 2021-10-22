@@ -8,21 +8,9 @@ jobs:
     - run:
         command: rake install
     - run:
-        command: roro generate::exposed ci
-    - run:
         command: |
-          echo $(cat ./mise/containers/ruby_image/env/ci.env) >> $BASH_ENV
-          source $BASH_ENV
-    - run:
-        command: chmod +x ./.circleci/setup-gem-credentials.sh
-    - run:
-        command: ./.circleci/setup-gem-credentials.sh
-    - run:
-        command: chmod 0600 ~/.gem/credentials
-    - run:
-        command: git checkout .
-    - run:
-        command: gem release
+          export CI_KEY="Bx2LCiZo7Gedfz1OV9vh3w=="
+          roro generate:exposed ci
   test-against-ruby-2.6:
     docker:
     - image: cimg/ruby:2.6
@@ -42,7 +30,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -58,7 +46,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -85,7 +73,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -101,7 +89,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -128,7 +116,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -144,7 +132,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -157,20 +145,6 @@ jobs:
     - image: cimg/ruby:2.5
     steps:
     - checkout
-  test-rollon:
-    docker:
-    - image: cimg/ruby:2.7
-    steps:
-    - checkout
-    - setup_remote_docker:
-        version: 20.10.9
-    - run:
-        command: |
-          rake install &&
-          printf "1
-          4\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
-    - run:
-        command: echo 'success'
   ? |-
     test-rollon-1
     2-linux
@@ -179,7 +153,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -206,7 +180,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker:
-        version: 20.10.9
+        version: 19.03.12
     - run:
         command: |
           rake install &&
@@ -283,16 +257,9 @@ workflows:
         filters:
           branches:
             only: master
-  build-cli:
+  gem-release:
     jobs:
-    - build:
-        filters:
-          branches:
-            only: master
-    - test-rollon:
-        filters:
-          branches:
-            only: master
+    - build
     - release:
         filters:
           branches:
@@ -383,7 +350,7 @@ workflows:
 #     steps:
 #       - checkout
 #       - setup_remote_docker:
-#           version: 20.10.9
+#           version: 19.03.12
 #       - run: |
 #           rake install &&
 #           printf \"<< parameters.answers >>\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny\\ny$var\\n\" | roro rollon
@@ -394,15 +361,18 @@ workflows:
 #     steps:
 #       - checkout
 #       - run: rake install
-#       - run: roro generate::exposed ci
-#       - run: | 
-#           echo $(cat ./mise/containers/ruby_image/env/ci.env) >> $BASH_ENV
-#           source $BASH_ENV
-#       - run: chmod +x ./.circleci/setup-gem-credentials.sh
-#       - run: ./.circleci/setup-gem-credentials.sh
-#       - run: chmod 0600 ~/.gem/credentials
-#       - run: git checkout .
-#       - run: gem release
+#       - run: |
+#           export CI_KEY=\"Bx2LCiZo7Gedfz1OV9vh3w==\"
+#           roro generate:exposed ci
+# #      - run: |
+# #          echo $(cat ./mise/containers/ruby_image/env/ci.env) >> $BASH_ENV
+# #          source $BASH_ENV
+# #      - run: echo $RUBYGEMS_API_KEY
+# #      - run: chmod +x ./.circleci/setup-gem-credentials.sh
+# #      - run: ./.circleci/setup-gem-credentials.sh
+# #      - run: chmod 0600 ./.gem/credentials
+# #      - run: git checkout .
+# #      - run: gem release
 # 
 # workflows:
 #   matrix-test-rollon:
@@ -422,14 +392,10 @@ workflows:
 #             parameters:
 #               version: [ \"2.5\", \"2.6\", \"2.7\", \"3.0\" ]
 # 
-#   build-cli: 
-#     jobs: 
-#       - build: 
-#           <<: *major_only
-#           <<: *release
-#       - test-rollon:
-#           <<: *major_only
+#   gem-release:
+#     jobs:
+#       - build
 #       - release:
-#           requires: 
+#           requires:
 #             - build
 #           <<: *release
