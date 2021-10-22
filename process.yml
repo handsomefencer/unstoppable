@@ -2,7 +2,7 @@ version: 2
 jobs:
   release:
     docker:
-    - image: cimg/ruby:2.7
+    - image: cimg/ruby:2.5
     steps:
     - checkout
     - run:
@@ -154,7 +154,7 @@ jobs:
         command: echo 'success'
   build:
     docker:
-    - image: cimg/ruby:2.7
+    - image: cimg/ruby:2.5
     steps:
     - checkout
   test-rollon:
@@ -215,8 +215,7 @@ jobs:
     - run:
         command: echo 'success'
 workflows:
-  version: 2
-  test-all-cases:
+  matrix-test-rollon:
     jobs:
     - ? |-
         test-rollon-1
@@ -266,7 +265,7 @@ workflows:
       : filters:
           branches:
             only: master
-  test-against-common-rubies:
+  matrix-test-against-rubies:
     jobs:
     - test-against-ruby-2.5:
         filters:
@@ -300,6 +299,7 @@ workflows:
             only: release
         requires:
         - build
+  version: 2
 
 # Original config.yml file:
 # version: 2.1
@@ -320,7 +320,7 @@ workflows:
 #     parameters:
 #       version:
 #         description: \"version tag\"
-#         default: '2.5'
+#         default: \"2.5\"
 #         type: string
 #     docker:
 #       - image: cimg/ruby:<<parameters.version>>
@@ -335,7 +335,7 @@ workflows:
 #     source $BASH_ENV
 # 
 # defaults: &defaults
-#   executor: ruby-executor
+#   executor: ruby
 #   working_directory: &workspace-location
 # 
 # major_only: &major_only
@@ -417,8 +417,7 @@ workflows:
 #       - run: gem release
 # 
 # workflows:
-#   version: 2.1
-#   test-all-cases:
+#   matrix-test-rollon:
 #     jobs:
 #       - test-rollon:
 #           <<: *major_only
@@ -427,7 +426,7 @@ workflows:
 #               answers: [\"1\\n1\", \"1\\n2\", \"1\\n3\", \"1\\n4\", \"1\\n5\", \"2\\n1\", \"3\\n1\", \"3\\n2\"]
 #               os: [linux]
 # 
-#   test-against-common-rubies:
+#   matrix-test-against-rubies:
 #     jobs:
 #       - test-against-ruby:
 #           <<: *major_only
@@ -442,7 +441,6 @@ workflows:
 #           <<: *release
 #       - test-rollon:
 #           <<: *major_only
-# 
 #       - release:
 #           requires: 
 #             - build
