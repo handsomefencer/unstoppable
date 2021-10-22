@@ -6,7 +6,9 @@ jobs:
     steps:
     - checkout
     - run:
-        command: bundle
+        command: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
     - run:
         command: rake release
   test-against-ruby-2.6:
@@ -358,7 +360,9 @@ workflows:
 #     <<: *defaults
 #     steps:
 #       - checkout
-#       - run: bundle
+#       - run: |
+#           git config --global user.email \"you@example.com\"
+#           git config --global user.name \"Your Name\"
 #       - run: rake release
 # #      - run: ./.circleci/setup-gem-credentials.sh
 # #      - run: chmod 0600 ./.gem/credentials
