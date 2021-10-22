@@ -95,10 +95,6 @@ jobs:
       - run: gem install gem-release
       - run: gem bump
       - run: gem release
-      #      - run: bundle config set --local whithout development test
-      #      - run: bundle
-#      - run: rake install
-#      - run: printf "yes" | rake release
 
 workflows:
   matrix-test-rollon:
