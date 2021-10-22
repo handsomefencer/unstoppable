@@ -94,10 +94,6 @@ jobs:
           git config --global user.name "Fred Schoeneman"
       - run: rake install
       - run: printf "yes" | rake release
-#      - run: ./.circleci/setup-gem-credentials.sh
-#      - run: chmod 0600 ./.gem/credentials
-#      - run: git checkout .
-#      - run: gem release
 
 workflows:
   matrix-test-rollon:
