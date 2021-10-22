@@ -1,8 +1,6 @@
 version: 2.1
 
 executors:
-  machine-executor:
-    machine: true
   ruby-executor:
     docker:
       - image: cimg/ruby:2.7
@@ -21,18 +19,8 @@ executors:
     docker:
       - image: cimg/ruby:<<parameters.version>>
 
-aliases:
-  - &workspace-location
-    at: /tmp/workspace
-  - &copy-ci-dotenv | 
-    cp -rf /tmp/workspace/roro .
-  - &source-ci-variables | 
-    echo 'source roro/containers/app/ci.env' >> $BASH_ENV
-    source $BASH_ENV
-
 defaults: &defaults
   executor: ruby
-  working_directory: &workspace-location
 
 major_only: &major_only
   filters:
@@ -64,7 +52,6 @@ jobs:
     steps:
       - checkout
 
-
   test-against-ruby:
     parameters:
       version:
@@ -92,19 +79,20 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 19.03.12
-      - run-test-case:
-          answers: << parameters.answers >>
-          os: << parameters.os >>
+          version: 20.10.9
+      - run: |
+          rake install &&
+          printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+      - run: echo 'success'
 
   release:
     <<: *defaults
     steps:
       - checkout
-      - run: gem install roro
+      - run: rake install
       - run: roro generate::exposed ci
       - run: | 
-          echo $(cat ./roro/containers/ruby_image/ci.env) >> $BASH_ENV
+          echo $(cat ./mise/containers/ruby_image/env/ci.env) >> $BASH_ENV
           source $BASH_ENV
       - run: chmod +x ./.circleci/setup-gem-credentials.sh
       - run: ./.circleci/setup-gem-credentials.sh
