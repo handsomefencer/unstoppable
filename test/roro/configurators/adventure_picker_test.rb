@@ -11,8 +11,6 @@ describe 'AdventurePicker' do
 
   describe '#build_inflection' do
     Then { assert_equal Array, build_inflection.class }
-    And  { assert_equal Hash, build_inflection.last.class }
-    And  { assert_equal Array, build_inflection.last[:limited_to].class }
   end
 
   describe '#choose_adventure(inflection)' do
@@ -92,8 +90,7 @@ describe 'AdventurePicker' do
 
     context 'when stacks' do
       Then { assert humanized.is_a?(String) }
-      And  { assert_match '(1) story:', humanized}
-      And  { assert_match '(2) story2:', humanized}
+      And  { assert_match 'story', humanized}
     end
   end
 

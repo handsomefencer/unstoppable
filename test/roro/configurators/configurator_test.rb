@@ -87,15 +87,9 @@ describe Configurator do
       Given(:graph_value) { config.env[:base][:somekey][:value] }
 
       context 'when answers env default' do
-        Given { stub_answers_env }
+        Given { stub_answers_env('some value') }
         Given { config.build_env }
-        Then  { assert_equal 'somevalue', graph_value }
-      end
-
-      context 'when answers env overridden' do
-        Given { stub_answers_env('newvalue') }
-        Given { config.build_env }
-        Then  { assert_equal 'newvalue', graph_value }
+        Then  { assert_equal 'some value', graph_value }
       end
     end
   end

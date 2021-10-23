@@ -10,6 +10,8 @@ module Roro
       no_commands do
         def choose_adventure(stack)
           build_inflection(stack)
+          say("Rolling story on from stack: #{@stack}\n\n")
+          say(@getsome)
           choice = ask(@inflection)
           story_name = story_from(choice.to_s)
           "#{stack}/#{story_name}"
@@ -20,7 +22,8 @@ module Roro
           prompt = inflection_prompt
           options = inflection_options
           prompt_options = humanize(options)
-          @inflection = ["#{prompt} #{prompt_options}", limited_to: options.keys]
+          @getsome = "#{prompt}\n"
+          @inflection = ["#{prompt_options}\n\n", "Choices: [#{set_color(options.keys.map { |k| k.to_i }.join(' '), :blue)}]"]
         end
 
         def inflection_prompt
@@ -45,9 +48,9 @@ module Roro
           array = []
           hash.map do |key, value|
             preface = get_story_preface("#{@stack}/#{value}")
-            array << "\n(#{key}) #{value}:\n #{preface}"
+            array << "#{set_color("(#{key})", :bold)} #{set_color(value, :blue, :bold)}\n\s\s\s\s#{preface}"
           end
-          array.join
+          array.join("\n\n")
         end
 
         def get_story_preface(story)

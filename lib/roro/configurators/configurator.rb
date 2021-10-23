@@ -50,8 +50,8 @@ module Roro
 
       def override_environment_variables
         @env.each do |e, v| v.each do |k, v|
-            answer = @asker.confirm_default(@builder.override(e, k, v))
-            v[:value] = answer unless answer.eql?('y')
+            answer = @asker.confirm_default(@builder.override(e, k, v), v)
+            answer.eql?('') ? return : v[:value] = answer
           end
         end
       end

@@ -30,14 +30,20 @@ describe 'QuestionAsker' do
 
   describe '#confirm_default' do
     context 'when user' do
-      context 'accepts default must return default' do
-        Given { stubs_asker }
-        Then  { assert_equal 'y',  asker.confirm_default(question) }
+      Given(:confirm) { asker.confirm_default(question, 'default value') }
+      describe 'accepts default must return y' do
+        Given { asker.stubs(:ask).returns('y') }
+        Then  { assert_equal 'default value',  confirm }
       end
 
-      context 'overrides default must return override' do
-        Given { asker.stubs(:ask).returns('n').then.returns('new value') }
-        Then  { assert_equal 'new value', asker.confirm_default(question) }
+      describe 'accepts all defaults must return y' do
+        Given { asker.stubs(:ask).returns('a') }
+        Then  { assert_equal '',  confirm }
+      end
+
+      describe 'overrides default must return override' do
+        Given { asker.stubs(:ask).returns('n').then.returns('override value') }
+        Then  { assert_equal 'override value', confirm }
       end
     end
   end

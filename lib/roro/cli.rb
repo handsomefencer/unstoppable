@@ -38,6 +38,10 @@ module Roro
       %w[base development production test staging ci]
     end
 
+    def self.stack_documentation_root
+      '<a href="url">link text</a>'
+    end
+
     def self.roro_default_containers
       %w[backend database frontend]
     end

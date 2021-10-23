@@ -7,7 +7,7 @@ describe 'okonomi roll_your_own' do
 
   Given(:rollon)    {
     stub_adventure
-    stub_overrides
+    # stub_overrides
     stub_run_actions
     cli.rollon
   }
@@ -19,15 +19,20 @@ describe 'okonomi roll_your_own' do
     # quiet { rollon }
   }
 
+  describe 'testing cli ask and say' do
+    Given(:adventures) { %w[] }
+
+    Then { }
+  end
   describe 'must generate' do
     describe 'templates with stage one' do
-      # Then  { assert_file 'mise/stacks/my_story/templates/stage_one/.keep' }
+      Then  { assert_file 'mise/stacks/my_story/templates/stage_one/.keep' }
     end
 
     describe 'test' do
       describe 'with stage one' do
         describe 'with stage dummy' do
-          # Then  { assert_file 'mise/stacks/my_story/test/stage_one/stage_dummy/.keep' }
+          Then  { assert_file 'mise/stacks/my_story/test/stage_one/stage_dummy/.keep' }
         end
       end
     end
