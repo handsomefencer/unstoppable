@@ -37,5 +37,9 @@ module Roro
     def self.roro_environments
       %w[base development production test staging ci]
     end
+
+    def self.roro_default_containers
+      %w[backend database frontend]
+    end
   end
 end

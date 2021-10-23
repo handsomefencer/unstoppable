@@ -7,13 +7,13 @@ module Roro
                  aliases: :e,
                  banner: 'one, two, three',
                  desc: 'The environments to generate:',
-                 default: %w[base ci development production]
+                 default: Roro::CLI.roro_environments
 
     method_option :containers,
                  type: :array,
                  aliases: :c,
                  banner: 'container_one, container_two, container_three',
-                 default: %w[backend database frontend],
+                 default: Roro::CLI.roro_default_containers,
                  desc: 'The containers to generate:'
 
     method_option :mise_en_place,
@@ -26,7 +26,7 @@ module Roro
                  type: :array,
                  aliases: :k,
                  banner: 'one.key two.key three.key',
-                 default: %w[base ci development production],
+                 default: Roro::CLI.roro_environments,
                  desc: 'The names of your keys to generate. If none supplied, Roro will infer them from your .env files:'
 
     desc 'generate', 'Generate stuff.'
