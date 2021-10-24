@@ -23,12 +23,6 @@ env:
       help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - directory 'stage_one', '.', @env
-  - run "sudo docker-compose run web django-admin startproject \"#{@env[:base][:app_name][:value]}\" . &&
-    sudo chown -R $USER:$USER ."
-  - |
-    run "sudo docker-compose run web django-admin startproject \"#{@env[:base][:app_name][:value]}\" . &&
-    sudo chown -R $USER:$USER ."
   - template 'stage_two/settings.py', "./#{@env[:base][:app_name][:value]}/settings.pycd cd", @env
   - |
     run "sudo chown -R $USER:$USER . &&

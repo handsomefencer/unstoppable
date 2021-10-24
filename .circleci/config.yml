@@ -52,7 +52,7 @@ jobs:
     steps:
       - checkout
 
-  test-against-ruby:
+  test:
     parameters:
       version:
         description: "version tag"
@@ -108,7 +108,7 @@ workflows:
 
   matrix-test-against-rubies:
     jobs:
-      - test-against-ruby:
+      - test:
           <<: *major_only
           matrix:
             parameters:

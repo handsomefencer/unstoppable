@@ -28,11 +28,11 @@ module Minitest
       stub_overrides
     end
 
-    def stub_overrides
+    def stub_overrides(answer='')
       Roro::Configurators::QuestionAsker
         .any_instance
         .stubs(:confirm_default)
-        .returns(*overrides).then.returns('y')
+        .returns(*overrides).then.returns(answer)
     end
 
     def stub_env_default
