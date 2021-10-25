@@ -1,7 +1,0 @@
-preface: Fast, unopinionated, minimalist web framework for Node.js
-
-
-actions:
-  - directory 'stage_one', '.', @env
-  - system "sudo docker-compose build"
-  - system "sudo docker-compose build"
