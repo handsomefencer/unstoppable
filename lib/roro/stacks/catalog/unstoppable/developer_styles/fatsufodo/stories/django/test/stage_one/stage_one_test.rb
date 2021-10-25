@@ -3,7 +3,7 @@ require "test_helper"
 describe 'Roro::CLI#rollon' do
   Given(:workbench)  { 'django' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
+  Given(:overrides)  { [''] }
 
   Given(:rollon)    {
     stub_adventure

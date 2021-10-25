@@ -12,7 +12,7 @@ module Roro
       def self.base
         @structure = {
           actions: [''],
-          depends_on: [],
+          depends_on: [''],
           env: {
             base: {},
             development: {},
