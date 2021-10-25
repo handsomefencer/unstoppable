@@ -1,0 +1,17 @@
+preface: some string
+
+depends_on:
+  - kubernetes_cluster
+  - kubectl
+  - domain
+  - dns_a_record
+  - wget
+
+env:
+  base:
+    app_name:
+      name: Name for your app
+      value: echo
+
+actions:
+  - directory 'stage_one', '.', @env
