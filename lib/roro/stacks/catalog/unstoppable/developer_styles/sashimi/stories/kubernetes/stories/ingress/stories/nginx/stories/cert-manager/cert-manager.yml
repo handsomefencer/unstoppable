@@ -1,6 +1,8 @@
 preface: some string
 
 depends_on:
+  - git
+  - doctl
   - kubernetes_cluster
   - kubectl
   - domain
@@ -9,9 +11,31 @@ depends_on:
 
 env:
   base:
-    app_name:
-      name: Name for your app
-      value: echo
-
+    do_cluster_name:
+      name: Digital Ocean Kubernetes cluster name
+      value: k8s-1-21-5-do-0-nyc1-1635194329871
+      help: https://docs.digitalocean.com/products/kubernetes/how-to/connect-to-cluster/
+    domain_name:
+      name: Domain name people will use to find your app
+      value: bierstiefel.com
+    do_cluster_id:
+      name:
+        Digital Ocean Kubernetes cluster id
+      value: df160ada-6534-44db-bb77-282dd7b812ad
+      help: https://docs.digitalocean.com/reference/doctl/reference/kubernetes/cluster/get/
+    cert_email:
+      name: Email address to put on your Let's Encrypt certificate
+      value: localpart@domain.tld
+      required: true
 actions:
   - directory 'stage_one', '.', @env
+  - run "doctl kubernetes cluster kubeconfig save \"#{@env[:base][:do_cluster_name][:value]}\""
+  - run "kubectl config current-context"
+  - run "kubectl config get-contexts"
+  - run "kubectl apply -f echo1.yaml"
+  - run "kubectl apply -f echo2.yaml"
+  - run "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/do/deploy.yaml"
+  - run "kubectl get svc"
+#  - run "kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx"
+#  - run "doctl compute domain records list \"#{@env[:base][:do_cluster_name][:value]}\""
+#  - run "kubectl apply -f echo_ingress.yaml"
