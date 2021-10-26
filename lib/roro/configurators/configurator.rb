@@ -24,6 +24,7 @@ module Roro
         validate_stack
         choose_adventure
         build_env
+
         write_story
       end
 
@@ -41,6 +42,12 @@ module Roro
         @env = @structure[:env]
         manifest.each { |story| accrete_story(story) }
         override_environment_variables
+      end
+
+      def satisfy_dependency(dependency={})
+        `if ! [ -x "$(command -v #{dependency[:name]})" ]; then
+          echo 'Error: #{dependency[:name]} is not installed.' >&2
+        fi`
       end
 
       def accrete_story(story)

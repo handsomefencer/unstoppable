@@ -47,6 +47,22 @@ spec:
                 configMapKeyRef:
                   key: REDIS_PORT
                   name: env
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: DATABASE_NAME
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: DATABASE_PASSWORD
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: DATABASE_USER
+
           image: handsomefencer/rails-kubernetes
           name: app
           ports:

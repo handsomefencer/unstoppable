@@ -5,7 +5,6 @@ describe 'lib roro stacks catalog unstoppable developer_styles omakase stories w
   Given(:cli)        { Roro::CLI.new }
   Given(:adventures) { %w[3 2] }
   Given(:overrides)  { [''] }
-
   Given(:rollon)    {
     stub_adventure
     stub_overrides
