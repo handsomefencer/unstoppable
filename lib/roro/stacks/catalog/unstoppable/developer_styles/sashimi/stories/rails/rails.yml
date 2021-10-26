@@ -2,6 +2,18 @@ preface: some string
 
 env:
   base:
+    do_cluster_name:
+      name: Digital Ocean Kubernetes cluster name
+      value: k8s-1-21-5-do-0-nyc1-1635194329871
+      help: https://docs.digitalocean.com/products/kubernetes/how-to/connect-to-cluster/
+    domain_name:
+      name: Domain name people will use to find your app
+      value: bierstiefel.com
+    do_cluster_id:
+      name:
+        Digital Ocean Kubernetes cluster id
+      value: 1c80d077-4013-4b7b-8d11-3e96f530e367
+      help: https://docs.digitalocean.com/reference/doctl/reference/kubernetes/cluster/get/
     docker_hub_username:
       name: The username you log into hub.docker.com with
       value:
@@ -12,7 +24,7 @@ env:
       required: true
     docker_hub_organization:
       name: The hub.docker.com organization for your image is often but not always the same as your username.
-      value: ${docker_hub_username}
+      value: handsomefencer
     app_name:
       name: Name for your app
       value: rails-kubernetes
@@ -27,5 +39,21 @@ env:
       value: postgres
 
 actions:
+#  - satisfy_dependency( { name: 'git', help: 'www.google.com' })
+#  - |
+#    installed = `! doctl -v  &> /dev/null`
+#    say(installed)
+#
+#  if ! [ -x "$(command -v git)" ]; then
+#    echo 'Error: git is not installed.' >&2
+#  fi
   - directory 'stage_one', '.', @env
-#  - inside 'k8s' {
+#  - run "doctl kubernetes cluster kubeconfig save \"#{@env[:base][:do_cluster_id][:value]}\""
+#  - |
+#    inside('k8s') do
+#      run "kubectl create -f ./ --validate=true"
+#      run "kubectl get pods -l io.kompose.service=app"
+#    end
+#
+#  - run "kubectl exec $(kubectl get pods -o=name -l io.kompose.service=app) -- rake db:migrate"
+

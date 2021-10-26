@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'lib roro stacks catalog unstoppable developer_styles sashimi stories rails' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[] }
+  Given(:adventures) { %w[4 2] }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
@@ -15,16 +15,16 @@ describe 'lib roro stacks catalog unstoppable developer_styles sashimi stories r
 
   Given { rollon unless adventures.empty?}
 
-  context 'when default variables interpolated' do
-    Then  { assert_file "lib/roro/stacks/catalog/unstoppable/developer_styles/sashimi/stories/rails/rails.yml", /env/ }
+  Given(:contents) { [ /version: '3'/, /entrypoints\/sidekiq-entrypoint\.sh/] }
+
+  describe 'docker-compose.yml' do
+    Then { contents.each { |c| assert_file "docker-compose.yml", c } }
   end
 
-  context 'when many items interpolated' do
-    Given(:contents) { [:env, :preface, :actions] }
-    Then {
-      contents.each { |c|
-        assert_file "lib/roro/stacks/catalog/unstoppable/developer_styles/sashimi/stories/rails", c
-      }
-    }
+  describe 'k8s manifests' do
+    Then { assert_file "k8s/app-deployment.yaml", /image: handsomefencer\/rails-kubernetes/  }
+    And  { assert_file "k8s/database-deployment.yaml", /name: database-secret/  }
+    And  { assert_file "k8s/secret.yaml", /DATABASE_NAME: cG9zdGdyZXM=
+/  }
   end
 end
