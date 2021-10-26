@@ -7,16 +7,6 @@ env:
       value: 'unstoppable app name'
 
 actions:
-  - |
-    installed = system "kompose version"
-    installed.nil? ? ( run "
-      curl -L https://github.com/kubernetes/kompose/releases/download/v1.22.0/kompose-linux-amd64 -o kompose
-      chmod +x kompose
-      sudo mv ./kompose /usr/local/bin/kompose "
-    ) : (print installed)
-  - directory 'stage_one', '.', @env
-
-  - run "docker-compose build"
-
+  - run directory 'stage_one', '.', @env
 
 
