@@ -4,26 +4,28 @@ env:
   base:
     docker_hub_username:
       name: The username you log into hub.docker.com with
-      value: fdschoeneman
+      value:
+      required: true
     docker_hub_password:
       name: The password you log into hub.docker.com with
       value:
+      required: true
     docker_hub_organization:
-      name: The dockerhub organization for your image
-      value: handsomefencer
+      name: The hub.docker.com organization for your image is often but not always the same as your username.
+      value: ${docker_hub_username}
     app_name:
       name: Name for your app
       value: rails-kubernetes
     DATABASE_NAME:
-      name: Database username
-      value: fdschoeneman
+      name: Database name
+      value: postgres
     DATABASE_PASSWORD:
-      name: A$$W0rd
+      name: Database password
+      value: postgres
     DATABASE_USER:
-      name: Database user
+      name: Database username
       value: postgres
 
 actions:
   - directory 'stage_one', '.', @env
-  - run "kompose convert --out './k8s'"
 #  - inside 'k8s' {
