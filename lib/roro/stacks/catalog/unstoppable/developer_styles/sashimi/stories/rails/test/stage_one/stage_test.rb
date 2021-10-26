@@ -7,19 +7,12 @@ describe 'lib roro stacks catalog unstoppable developer_styles sashimi stories r
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
-    ## Answers adventure questions according to values set in the :adventures array.
     stub_adventure
-    ## Answers environment variable questions according to values set in
-    #  the overrides array. Defaults to 'y'.
     stub_overrides
-    ## Ensures Thor run commands are stubbed.
     stub_run_actions
     cli.rollon
-    ## To quiet the test output do:
-    # quiet { cli.rollon }
   }
 
-  ## Tests will hang if the :adventures array is empty.
   Given { rollon unless adventures.empty?}
 
   context 'when default variables interpolated' do
