@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  DATABASE_HOST: database
+  DATABASE_PORT: "5432"
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app-env
+  name: env
