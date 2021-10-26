@@ -14,7 +14,6 @@ actions:
       chmod +x kompose
       sudo mv ./kompose /usr/local/bin/kompose "
     ) : (print installed)
-  - directory 'stage_1', '.', @env
   - directory 'stage_one', '.', @env
 
   - run "docker-compose build"
