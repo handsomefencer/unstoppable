@@ -7,31 +7,35 @@ describe '<%= "#{@env[:stack_path].gsub('/', ' ')}" %>' do
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
-    ## Answers adventure questions according to values set in the :adventures array.
     stub_adventure
-    ## Answers environment variable questions according to values set in
-    #  the overrides array. Defaults to 'y'.
     stub_overrides
-    ## Ensures Thor run commands are stubbed.
     stub_run_actions
     cli.rollon
-    ## To quiet the test output do:
-    # quiet { cli.rollon }
   }
 
-  ## Tests will hang if the :adventures array is empty.
   Given { rollon unless adventures.empty?}
 
-  context 'when default variables interpolated' do
-    Then  { assert_file "<%= "#{@env[:stack]}/#{@env[:story]}/#{@env[:story]}.yml" %>", /env/ }
-  end
+  describe 'must generate a' do
+    describe '.keep file so Git keeps the directory under source control' do
+      Then  { assert_file '.keep' }
+    end
 
-  context 'when many items interpolated' do
-    Given(:contents) { [:env, :preface, :actions] }
-    Then {
-      contents.each { |c|
-        assert_file "<%= "#{@env[:stack_path]}"  %>", c
-      }
-    }
+    describe 'a file in the adjacent templates directory' do
+#      Then  { assert_file 'path_to_expected_file' }
+
+      describe 'with expected content matching regex' do
+#       Then  { assert_file 'path_to_expected_file', /expected_content' }
+      end
+
+      describe 'with expected content the same as actual content string' do
+#       Then  { assert_file 'path_to_expected_file', 'expected_content' }
+      end
+
+      describe 'with many strings expected to have been interpolated' do
+
+#        Given(:strings) { [1, :second, third] }
+#        Then { strings.each { |c| assert_file 'path_to_expected_file', c }
+      end
+    end
   end
 end
