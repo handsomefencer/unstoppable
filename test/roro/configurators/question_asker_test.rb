@@ -17,12 +17,12 @@ describe 'QuestionAsker' do
     context 'when answer is' do
       context 'not blank' do
         Given { asker.stubs(:ask).returns('new value') }
-        # Then  { assert_equal 'new value',  asker.override_default(question) }
+        Then  { assert_equal 'new value',  asker.override_default(question) }
       end
 
       context 'blank' do
         Given { asker.stubs(:ask).returns('').then.returns('another answer') }
-        # Then  { assert_equal 'another answer',  asker.override_default(question) }
+        Then  { assert_equal 'another answer',  asker.override_default(question) }
       end
     end
 
@@ -30,7 +30,8 @@ describe 'QuestionAsker' do
 
   describe '#confirm_default' do
     context 'when user' do
-      Given(:confirm) { asker.confirm_default(question, 'default value') }
+      Given(:confirm) { asker.confirm_default(question, { value: 'default value', path: true }) }
+
       describe 'accepts default must return y' do
         Given { asker.stubs(:ask).returns('y') }
         Then  { assert_equal 'default value',  confirm }

@@ -8,6 +8,7 @@ env:
     stack:
       name: Stack location
       value: 'mise/stacks'
+      path: true
 
 actions:
   - |
