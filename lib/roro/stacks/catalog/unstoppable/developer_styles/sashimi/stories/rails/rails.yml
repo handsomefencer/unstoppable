@@ -7,6 +7,6 @@ env:
       value: 'unstoppable app name'
 
 actions:
-  - run directory 'stage_one', '.', @env
+  - directory 'stage_one', '.', @env
 
 
