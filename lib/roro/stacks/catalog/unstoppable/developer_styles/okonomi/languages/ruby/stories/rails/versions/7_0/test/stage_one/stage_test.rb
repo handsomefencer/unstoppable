@@ -18,7 +18,7 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
 
   describe 'must generate a' do
     describe 'Gemfile with the correct railss version' do
-      Then  { assert_file 'Gemfile', /'rails', '~>7.0'/ }
+      Then  { assert_file 'Gemfile', /'rails', '~>7.0.0.alpha2'/ }
     end
 
     describe 'a file in the adjacent templates directory' do

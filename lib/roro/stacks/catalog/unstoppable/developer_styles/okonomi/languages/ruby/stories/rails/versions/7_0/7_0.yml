@@ -12,11 +12,17 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - run "sudo docker-compose build"
-  - run "sudo docker-compose run --no-deps web rails new . --force --database=postgresql"
-  - run "sudo chown -R $USER:$USER ."
+  - run "DOCKER_BUILDKIT=1 docker build --file roro/containers/backend/Dockerfile --output . ."
   - template 'stage_two/database.yml.tt', './config/database.yml', @env
   - run "sudo docker-compose build"
   - run "sudo chown -R $USER:$USER ."
   - run "sudo docker-compose run web rake db:create"
   - run "sudo docker-compose up -d"
+
+#
+#  - "@config.smart.env['force'] = true"
+#  - |
+#    src = 'rails/Dockerfile.greenfield.tt'
+#    dest = 'roro/containers/app/Dockerfile'
+#    template src, dest, @config.env
+#  - system "DOCKER_BUILDKIT=1 docker build --file roro/containers/backend/Dockerfile --output . ."
