@@ -16,7 +16,7 @@ RUN apk add --update --no-cache \
   libffi-dev \
   libc-dev \
   linux-headers \
-  libxml2-dev \
+  libxml2-dev
 
 #RUN apk add --update --no-cache \
 #  libxslt-dev \
