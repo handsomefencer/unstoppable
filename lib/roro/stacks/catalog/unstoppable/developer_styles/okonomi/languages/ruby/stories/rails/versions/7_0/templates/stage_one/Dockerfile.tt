@@ -19,10 +19,12 @@ RUN apk add --update --no-cache \
   libxml2-dev
 
 RUN apk add --update --no-cache \
+RUN apk add --update --no-cache \
   libxslt-dev \
   libgcrypt-dev \
   make \
-  netcat-openbsd \
+  netcat-openbsd
+RUN apk add --update --no-cache \
   nodejs \
   openssl \
   pkgconfig \
