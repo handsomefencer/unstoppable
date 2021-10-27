@@ -6,6 +6,7 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
   Given(:adventures) { %w[] }
   Given(:overrides)  { %w[] }
 
+
   Given(:rollon)    {
     stub_adventure
     stub_overrides
@@ -17,7 +18,7 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
 
   describe 'must generate a' do
     describe '.keep file so Git keeps the directory under source control' do
-      Then  { assert_file '.keep' }
+      # Then  { assert_file '.keep' }
     end
 
     describe 'a file in the adjacent templates directory' do
