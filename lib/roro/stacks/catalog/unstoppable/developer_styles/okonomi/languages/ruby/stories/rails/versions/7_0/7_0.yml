@@ -15,8 +15,8 @@ actions:
   - run "sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
   - run "sudo chown -R $USER:$USER ."
   - directory 'stage_two', '.', @env
-  - template 'stage_two/database.yml.tt', './config/database.yml', @env
-  - run "sudo docker-compose build"
-  - run "sudo chown -R $USER:$USER ."
-  - run "sudo docker-compose run web rake db:create"
-  - run "sudo docker-compose up -d"
+#  - template 'stage_two/database.yml.tt', './config/database.yml', @env
+#  - run "sudo docker-compose build"
+#  - run "sudo chown -R $USER:$USER ."
+#  - run "sudo docker-compose run web rake db:create"
+#  - run "sudo docker-compose up -d"
