@@ -3,6 +3,14 @@
 module Minitest
   class Spec
 
+    def stub_dependencies_installed
+      Roro::Configurators::Configurator
+        .any_instance
+        .stubs(:dependency_installed?)
+        .with(dependency.keys.first.to_s)
+        .returns(installed)
+    end
+
     def stub_run_actions
       Roro::Configurators::AdventureWriter
         .any_instance

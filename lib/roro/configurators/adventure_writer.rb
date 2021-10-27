@@ -21,12 +21,6 @@ module Roro
           end
         end
 
-        def satisfy_dependency(dependency={})
-          `if ! [ -x "$(command -v #{dependency[:name]})" ]; then
-          echo 'Error: git is not installed.' >&2
-        fi`
-        end
-
         def interpolated_stack_path
           "#{@env[:stack]}/#{@env[:story]}"
         end

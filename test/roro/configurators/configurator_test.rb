@@ -6,6 +6,28 @@ describe Configurator do
   Given(:options) { {} }
   Given(:config)  { Configurator.new(options) }
 
+  describe '#satisfy_dependency(dependency)' do
+    Given(:error)      { Roro::Error }
+    Given(:error_msg)  { 'not installed' }
+    Given(:execute)    { satisfy }
+    Given(:installed)  { true }
+    Given(:satisfy)    { config.satisfy_dependency(*dependency) }
+    Given(:dependency) { { git: { command: 'git -v',
+                                  help:    'www.google.com',
+                                  name:    'git' } } }
+
+    Given { stub_dependencies_installed }
+
+    context 'when installed' do
+      Then { assert_nil satisfy }
+    end
+
+    context 'when not installed' do
+      Given(:installed) { false }
+      Then { assert_correct_error }
+    end
+  end
+
   context 'without options' do
     describe '#initialize' do
       Then { assert_match 'developer_styles', config.stack }

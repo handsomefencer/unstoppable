@@ -1,13 +1,10 @@
 preface: some string
 
 depends_on:
-  - git
-  - doctl
-  - kubernetes_cluster
-  - kubectl
-  - domain
-  - dns_a_record
-  - wget
+  git:
+    name: git
+    command: git -v
+    help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 
 env:
   base:
