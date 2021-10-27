@@ -10,21 +10,22 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
     stub_adventure
     stub_overrides
     stub_run_actions
-    cli.rollon
+    quiet { cli.rollon }
+    # cli.rollon
   }
 
   Given { rollon unless adventures.empty?}
 
   describe 'must generate a' do
-    describe '.keep file so Git keeps the directory under source control' do
-      Then  { assert_file '.keep' }
+    describe 'Gemfile with the correct railss version' do
+      Then  { assert_file 'Gemfile', /'rails', '~>7.0'/ }
     end
 
     describe 'a file in the adjacent templates directory' do
-#      Then  { assert_file 'path_to_expected_file' }
+     Then  { assert_file 'Dockerfile' }
 
       describe 'with expected content matching regex' do
-#       Then  { assert_file 'path_to_expected_file', /expected_content' }
+        Then  { assert_file 'Dockerfile', /FROM ruby:3.0/ }
       end
 
       describe 'with expected content the same as actual content string' do
