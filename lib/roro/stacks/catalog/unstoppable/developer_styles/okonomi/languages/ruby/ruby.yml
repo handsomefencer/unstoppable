@@ -5,3 +5,6 @@ env:
     ruby_version:
       name: Ruby minor version
       value: 3.0
+    bundler_version:
+      name: Bundler version
+      value: 2.1.4
