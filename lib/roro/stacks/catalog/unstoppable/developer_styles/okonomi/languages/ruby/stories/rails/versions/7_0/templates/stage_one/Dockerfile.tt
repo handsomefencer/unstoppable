@@ -3,9 +3,9 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 # Add basic packages
 RUN apk add --no-cache \
       build-base \
-      postgresql-dev
+      postgresql-dev \
+      git
       # \
-      # git \
       # nodejs \
       # yarn \
       # tzdata \
