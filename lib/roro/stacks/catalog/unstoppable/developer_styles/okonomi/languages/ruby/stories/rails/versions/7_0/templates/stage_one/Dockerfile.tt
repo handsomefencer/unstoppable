@@ -1,14 +1,11 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
-  # Add basic packages
 RUN apk add --update --no-cache \
   binutils-gold \
   build-base \
   curl \
   file \
-  g++
-
-RUN apk add --update --no-cache \
+  g++ \
   gcc \
   git \
   less \
@@ -16,24 +13,16 @@ RUN apk add --update --no-cache \
   libffi-dev \
   libc-dev \
   linux-headers \
-  libxml2-dev
-
-RUN apk add --update --no-cache \
+  libxml2-dev \
   libxslt-dev \
-  libgcrypt-dev
-
-RUN apk add --update --no-cache \
+  libgcrypt-dev \
   make \
   netcat-openbsd \
   nodejs \
   openssl \
-  pkgconfig
-
-RUN apk add --update --no-cache \
+  pkgconfig \
   postgresql-dev \
-  tzdata
-
-RUN apk add --update --no-cache \
+  tzdata \
   nodejs \
   yarn
 
