@@ -2,7 +2,7 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
   # Add basic packages
 RUN apk add --update --no-cache \
-  binutils-gold \
+#  binutils-gold \
   build-base \
   curl \
   file \
