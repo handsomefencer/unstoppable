@@ -1,6 +1,4 @@
-FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
-
-ENV BUNDLER_VERSION=<%= @env[:base][:bundler_version][:value] %>
+FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
 RUN apk add --update --no-cache \
   binutils-gold \
@@ -24,8 +22,8 @@ RUN apk add --update --no-cache \
   openssl \
   pkgconfig \
   postgresql-dev \
-  python \
   tzdata \
+  nodejs \
   yarn
 
 RUN gem install bundler -v ${BUNDLER_VERSION}
