@@ -7,4 +7,4 @@ env:
       value: 3.0
     bundler_version:
       name: Bundler version
-      value: 2.1.4
+      value: 2.2.28
