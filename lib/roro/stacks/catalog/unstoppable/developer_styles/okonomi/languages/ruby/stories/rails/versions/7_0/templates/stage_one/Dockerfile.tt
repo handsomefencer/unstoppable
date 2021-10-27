@@ -21,7 +21,7 @@ RUN mkdir ${BUNDLE_PATH}
   ## Tell Docker to create volumes for our workspace and gems
   ## so other containers can access them.
 
-RUN gem install bundler:2.1.4
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 
 WORKDIR ${APP_HOME}
 
