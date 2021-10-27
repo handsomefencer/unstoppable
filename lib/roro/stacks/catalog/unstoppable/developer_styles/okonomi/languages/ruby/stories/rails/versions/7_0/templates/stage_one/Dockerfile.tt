@@ -3,11 +3,13 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 # Add basic packages
 RUN apk add --no-cache \
       build-base \
-      postgresql-dev \
-      git \
-      nodejs \
-      tzdata \
-      file
+      postgresql-dev
+      # \
+      # git \
+      # nodejs \
+      # yarn \
+      # tzdata \
+      # file
 
 WORKDIR /app
 
