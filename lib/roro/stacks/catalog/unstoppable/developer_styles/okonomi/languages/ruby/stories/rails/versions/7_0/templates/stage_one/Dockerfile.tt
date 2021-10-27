@@ -32,7 +32,10 @@ RUN apk add --update --no-cache \
 RUN apk add --update --no-cache \
   postgresql-dev \
   python \
-  tzdata \
+  tzdata
+
+RUN apk add --update --no-cache \
+
   yarn
 
   ## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
