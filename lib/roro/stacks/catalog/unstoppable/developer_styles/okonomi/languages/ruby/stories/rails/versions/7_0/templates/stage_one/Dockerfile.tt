@@ -6,7 +6,6 @@ RUN apk add --no-cache \
       postgresql-dev \
       git \
       nodejs \
-      yarn \
       tzdata \
       file
 
