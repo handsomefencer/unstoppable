@@ -5,7 +5,7 @@ depends_on:
     name: doctl
     command: doctl version
     help: https://docs.digitalocean.com/reference/doctl/how-to/install/
-  gitf:
+  git:
     name: git
     command: git -v
     help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
@@ -17,23 +17,22 @@ env:
   base:
     do_cluster_name:
       name: Digital Ocean Kubernetes cluster name
-      value: k8s-1-21-5-do-0-nyc1-1635194329871
+      value: k8s-1-21-5-do-0-sfo3-1635359659910
       help: https://docs.digitalocean.com/products/kubernetes/how-to/connect-to-cluster/
     domain_name:
       name: Domain name people will use to find your app
       value: bierstiefel.com
     do_cluster_id:
-      name:
-        Digital Ocean Kubernetes cluster id
-      value: 1c80d077-4013-4b7b-8d11-3e96f530e367
+      name: Digital Ocean Kubernetes cluster id
+      value: 0e23750a-05a4-49f0-8fad-42a201995afc
       help: https://docs.digitalocean.com/reference/doctl/reference/kubernetes/cluster/get/
     docker_hub_username:
       name: The username you log into hub.docker.com with
-      value:
+      value: dhusername
       required: true
     docker_hub_password:
       name: The password you log into hub.docker.com with
-      value:
+      value: dhpassword
       required: true
     docker_hub_organization:
       name: The hub.docker.com organization for your image is often but not always the same as your username.
@@ -52,20 +51,12 @@ env:
       value: postgres
 
 actions:
-#  - satisfy_dependency( { name: 'git', help: 'www.google.com' })
-#  - |
-#    installed = `! doctl -v  &> /dev/null`
-#    say(installed)
-#
-#  if ! [ -x "$(command -v git)" ]; then
-#    echo 'Error: git is not installed.' >&2
-#  fi
   - directory 'stage_one', '.', @env
-#  - run "doctl kubernetes cluster kubeconfig save \"#{@env[:base][:do_cluster_id][:value]}\""
-#  - |
-#    inside('k8s') do
-#      run "kubectl create -f ./ --validate=true"
-#      run "kubectl get pods -l io.kompose.service=app"
-#    end
-#
-#  - run "kubectl exec $(kubectl get pods -o=name -l io.kompose.service=app) -- rake db:migrate"
+  - run "doctl kubernetes cluster kubeconfig save \"#{@env[:base][:do_cluster_id][:value]}\""
+  - |
+    inside('k8s') do
+      run "kubectl create -f ./ --validate=true"
+      run "kubectl get pods -l io.kompose.service=app"
+    end
+
+  - run "kubectl exec $(kubectl get pods -o=name -l io.kompose.service=app) -- rake db:migrate"
