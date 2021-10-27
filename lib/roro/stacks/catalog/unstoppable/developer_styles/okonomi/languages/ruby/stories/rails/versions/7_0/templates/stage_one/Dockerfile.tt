@@ -31,7 +31,6 @@ RUN apk add --update --no-cache \
 
 RUN apk add --update --no-cache \
   postgresql-dev \
-  python \
   tzdata
 
 RUN apk add --update --no-cache \
