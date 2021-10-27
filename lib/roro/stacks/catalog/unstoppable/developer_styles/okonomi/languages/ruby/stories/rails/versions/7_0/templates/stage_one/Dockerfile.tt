@@ -35,8 +35,16 @@ RUN apk add --update --no-cache \
   tzdata
 
 RUN apk add --update --no-cache \
-
+  nodejs \
   yarn
+
+#build-base \
+#postgresql-dev \
+#git \
+#nodejs \
+#yarn \
+#tzdata \
+#file
 
   ## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
 #ENV APP_HOME /usr/src/app/
