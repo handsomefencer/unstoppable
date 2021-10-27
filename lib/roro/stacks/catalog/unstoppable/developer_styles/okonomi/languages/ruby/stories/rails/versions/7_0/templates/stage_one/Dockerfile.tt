@@ -27,4 +27,4 @@ RUN bundle exec rails new . \
 FROM scratch AS export-stage
 
 ## Copy the generated files onto the host.
-COPY --from=builder . .
+COPY --from=builder ./app/ .
