@@ -1,14 +1,33 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
   # Add basic packages
-RUN apk add --no-cache \
-build-base \
-postgresql-dev \
-git \
-nodejs \
-yarn \
-tzdata \
-file
+RUN apk add --update --no-cache \
+  binutils-gold \
+  build-base \
+  curl \
+  file \
+  g++ \
+  gcc \
+  git \
+  less \
+  libstdc++ \
+  libffi-dev \
+  libc-dev \
+  linux-headers \
+  libxml2-dev \
+
+RUN apk add --update --no-cache \
+  libxslt-dev \
+  libgcrypt-dev \
+  make \
+  netcat-openbsd \
+  nodejs \
+  openssl \
+  pkgconfig \
+  postgresql-dev \
+  python \
+  tzdata \
+  yarn
 
   ## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
 ENV APP_HOME /usr/src/app/
