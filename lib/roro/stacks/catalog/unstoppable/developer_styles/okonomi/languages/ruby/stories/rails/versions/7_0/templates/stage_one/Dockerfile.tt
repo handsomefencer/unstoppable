@@ -7,6 +7,8 @@ RUN apk add --update --no-cache \
   curl \
   file \
   g++ \
+
+RUN apk add --update --no-cache \
   gcc \
   git \
   less \
@@ -15,6 +17,8 @@ RUN apk add --update --no-cache \
   libc-dev \
   linux-headers \
   libxml2-dev \
+
+RUN apk add --update --no-cache \
   libxslt-dev \
   libgcrypt-dev \
   make \
