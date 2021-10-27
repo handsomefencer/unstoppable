@@ -1,1 +1,7 @@
-preface: matz
+preface: A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write.
+
+env:
+  base:
+    ruby_version:
+      name: Ruby minor version
+      value: 3.0

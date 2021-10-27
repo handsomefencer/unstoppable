@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages ruby stories rails versions 7_0' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[] }
+  Given(:adventures) { %w[2 ] }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
