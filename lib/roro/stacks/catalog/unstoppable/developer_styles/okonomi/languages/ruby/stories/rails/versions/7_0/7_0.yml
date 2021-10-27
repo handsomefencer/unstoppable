@@ -5,7 +5,7 @@ env:
   base:
     rails_version:
       name: Ruby on Rails minor version
-      value: 7.0
+      value: 7.0.0.alpha2
     app_name:
       name: Name for your app
       value: 'unstoppable app name'
