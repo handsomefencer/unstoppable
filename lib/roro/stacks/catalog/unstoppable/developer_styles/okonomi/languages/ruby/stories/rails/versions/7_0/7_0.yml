@@ -12,7 +12,7 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - run "DOCKER_BUILDKIT=1 docker build --file roro/containers/backend/Dockerfile --output . ."
+  - run "DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
   - template 'stage_two/database.yml.tt', './config/database.yml', @env
   - run "sudo docker-compose build"
   - run "sudo chown -R $USER:$USER ."
