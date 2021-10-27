@@ -26,15 +26,11 @@ RUN apk add --update --no-cache \
   nodejs \
   yarn
 
-#build-base \
-#postgresql-dev \
-#git \
-#nodejs \
-#yarn \
-#tzdata \
-#file
+WORKDIR /app
 
-  ## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
+#  ## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
 #ENV APP_HOME /usr/src/app/
 #ENV BUNDLE_PATH /gems
 
