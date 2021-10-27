@@ -24,7 +24,7 @@ module Roro
         validate_stack
         choose_adventure
         build_env
-
+        satisfy_dependencies
         write_story
       end
 
@@ -44,10 +44,29 @@ module Roro
         override_environment_variables
       end
 
-      def satisfy_dependency(dependency={})
-        `if ! [ -x "$(command -v #{dependency[:name]})" ]; then
-          echo 'Error: #{dependency[:name]} is not installed.' >&2
-        fi`
+      def satisfy_dependencies
+        @dependencies ||= {}
+        manifest.each do |story|
+          content = read_yaml(story)[:depends_on] || {}
+          @dependencies.merge!(content) unless content.nil?
+        end
+        @dependencies.each { |d| satisfy_dependency(d) }
+      end
+
+      def dependency_installed?(command)
+        result = `command -v #{command} &> /dev/null`
+        result.match?(command)
+      end
+
+      def satisfy_dependency(*dependency)
+        dependency.each do |key, value|
+          installable = key.to_s
+          return if dependency_installed?(installable)
+          msg = [ "\nDependency '#{installable}' is not installed." ]
+          msg << "Install instructions: #{value[:help]}" if value&.dig(:help)
+          msg << "Verify install: #{value[:command]}" if value&.dig(:command)
+          raise Roro::Error, msg.join("\n")
+        end
       end
 
       def accrete_story(story)
@@ -66,6 +85,11 @@ module Roro
       def write_story
         @manifest.sort.each { |m| @writer.write(@env, m) }
       end
+    end
+
+    def installed?(installable)
+      result = `command -v #{installable} &> /dev/null`
+      result.match?(installable)
     end
   end
 end
