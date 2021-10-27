@@ -21,14 +21,15 @@ RUN apk add --update --no-cache \
 RUN apk add --update --no-cache \
   libxslt-dev \
   libgcrypt-dev
+
 RUN apk add --update --no-cache \
   make \
   netcat-openbsd \
-
-
   nodejs \
   openssl \
-  pkgconfig \
+  pkgconfig
+
+RUN apk add --update --no-cache \
   postgresql-dev \
   python \
   tzdata \
