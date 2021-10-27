@@ -1,68 +1,30 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
-RUN apk add --update --no-cache \
-  binutils-gold \
-  build-base \
-  curl \
-  file \
-  g++ \
-  gcc \
-  git \
-  less \
-  libstdc++ \
-  libffi-dev \
-  libc-dev \
-  linux-headers \
-  libxml2-dev \
-  libxslt-dev \
-  libgcrypt-dev \
-  make \
-  netcat-openbsd \
-  nodejs \
-  openssl \
-  pkgconfig \
-  postgresql-dev \
-  tzdata \
-  nodejs \
-  yarn
+# Add basic packages
+RUN apk add --no-cache \
+      build-base \
+      postgresql-dev \
+      git \
+      nodejs \
+      yarn \
+      tzdata \
+      file
 
 WORKDIR /app
 
+## Create a Gemfile with just the Rails gem inside:
+RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '<%= @env[:base][:rails_version][:value] %>'" > Gemfile
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+RUN bundle config --local frozen 1 && \
+  bundle install -j4 --retry 3
 
-#  ## Set APP_HOME and BUNDLE_PATH as using ENV instructions:
-#ENV APP_HOME /usr/src/app/
-#ENV BUNDLE_PATH /gems
+## Use Rails to generate a new app. We'll configure it later.
+RUN bundle exec rails new . \
+  --database=postgresql \
+  --skip-bundle \
+  --skip-webpack-install
 
-  ## Create both as directories to make sure they exist:
-#RUN mkdir -p ${APP_HOME}
-#RUN mkdir ${BUNDLE_PATH}
+FROM scratch AS export-stage
 
-  ## Tell Docker to create volumes for our workspace and gems
-  ## so other containers can access them.
-#
-#RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
-#
-#WORKDIR ${APP_HOME}
-
-  ## Create a Gemfile with just the Rails gem inside:
-#RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '<%= @env[:base][:rails_version][:value] %>'" > Gemfile
-
-  ## Bundle to install rails:
-#RUN bundle install
-
-  ## Use Rails to generate a new app. We'll configure it later.
-#RUN bundle exec rails new . \
-#--database=postgresql \
-#--skip-bundle \
-#--skip-webpack-install
-#RUN bundle --jobs 4
-#RUN bundle exec rails webpacker:install
-#RUN bundle exec rails yarn:install
-  ## Tell docker not to create a layer:
-#FROM scratch AS export-stage
-
-  ## Copy the generated files onto the host. Note that because we are in a
-  ## new container, we don't have access to the previous ${APP_HOME}
-  # variable and so we must hard code it as our source:
-#COPY --from=builder /usr/src/app/ .
+## Copy the generated files onto the host.
+COPY --from=builder . .
