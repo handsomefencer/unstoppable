@@ -40,6 +40,4 @@ RUN yarn install --check-files
 
 # RUN bundle exec rake webpacker:compile?
 
-RUN chmod +x /entrypoints/docker-entrypoint.sh
-
 CMD ["./entrypoints/docker-entrypoint.sh"]
