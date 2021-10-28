@@ -1,82 +1,36 @@
 # Contributor Covenant Code of Conduct
 
-I want participation in this project to be fun for everyone regardless of age, body  size, disability, ethnicity, level of experience,
-nationality, personal appearance, race, religion, gender identity and expression,
-or sexual identity and orientation.
+Softare is hard. It is complicated. Sometimes working on it is fun, like when we solve a problem for another person with it, and other times painful, like when we spend all day failing to fix a bug.  
 
-## Our Standards
+Software makes me feel dumb every day. 
 
-Some of these things make me happy:
+### Things that help 
 
-* When you use welcoming and inclusive language
+* When people don't assume things about me because of my age, body size, disabilities, ethnicity, level of experience, nationality, personal appearance, race, religion, gender identity and expression, or sexual identity and orientation.
+* Use welcoming and inclusive language.
+* When you avoid describing something as 'simple' or 'easy.' 
+  * If it was simple or easy I would have figured it out already.
+  * If it was simple or easy then I must be dumb.
+* When you focus on your privilege instead of that in others.
+* When you tell me what you think my question is before answering.
+* When you assume everybody has a [positive intent](https://archive.fortune.com/galleries/2008/fortune/0804/gallery.bestadvice.fortune/7.html).
+* When you give genuine compliments to others:
+  * Tell them what they did
+  * Tell them why it was special or unexpected
+  * Tell them how it made you feel
 * When you write a user story from the perspective of someone with a different pronoun
-* When you understand we all want the same things for ourselves, our families, and other people even if you disagree with the politics of how to get them
+* When you understand we all want the same things for ourselves, our families, and other people even if we may disagree with the politics of how to get them
 * When you invert and play with stereotypes
-* When you focus on your own privilege and not on what you assume is that in others
-* When you assume everybody has a positive intent
-* When you listen carefully to criticism before accepting or rejecting it
-* When you tell someone what you think they're asking before providing an answer 
-* When you ask before offering criticism
-* When you acknowledge constructive criticism and either accept it or explain why you can not
-* When you accept that sometimes your criticism will be rejected
-* When you show empathy towards others
-* When you are positive and supportive of someone's efforts
-* When you assume as little as possible about others
-* When you are cheerful, even if you have to fake
-* When you give genuine compliments to others
 
+### Criticism
+* Ask before offering it.
+* listen to and understand it before accepting or rejecting it.
+* Accept that sometimes it will be rejected.
+* Show that you understand it before explaining why you reject it. 
 
-
-Examples of unacceptable behavior by participants include:
-
-* Unwelcome sexual attention or advances
-* Teasing someone for something that person is sensitive about, or that a reasonable person might guess she is
-* sensitive about.
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
-
-## Our Responsibilities
-
-Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
-
-Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
-
-## Scope
-
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.
-
-## Enforcement
-
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at fred.schoeneman@gmail.com. All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.
-
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
-
-## Attribution
-
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at [http://contributor-covenant.org/version/1/4][version]
-
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+## Teasing or joking
+Teasing and joking can make things fun. Other times it can make people feel less than.
+* Make jokes about things I'm not sensitive bout.
+* Don't make jokes about things a reasonable person might guess I'm sensitive about.
+* Make fun of me for things I can change.
+* Don't make fun of me for things I can't change.
