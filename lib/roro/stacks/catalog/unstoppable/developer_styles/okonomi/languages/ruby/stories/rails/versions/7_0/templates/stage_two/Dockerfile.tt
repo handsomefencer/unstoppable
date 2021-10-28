@@ -26,39 +26,20 @@ RUN apk add --update --no-cache \
   nodejs \
   yarn
 
-RUN gem install bundler -v ${BUNDLER_VERSION}
-
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock ./
+# Install standard Node modules
+COPY package.json yarn.lock /app/
+RUN yarn install --frozen-lockfile
 
-RUN bundle check || bundle install
-
-COPY package.json yarn.lock ./
-
-RUN yarn install --check-files
+# Install standard gems
+COPY Gemfile* /app/
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+RUN bundle config --local frozen 1 && \
+    bundle install -j4 --retry 3
 
 COPY . ./
 
 RUN bundle exec rake webpacker:compile
 
 CMD ["./entrypoints/docker-entrypoint.sh"]
-
-
-
-
-#FROM ruby:<%= @env[:base][:ruby_version][:value] %>
-#RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
-#WORKDIR /myapp
-COPY Gemfile /myapp/Gemfile
-COPY Gemfile.lock /myapp/Gemfile.lock
-RUN bundle install
-
-  # Add a script to be executed every time the container starts.
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
-
-  # Configure the main process to run when running the image
-CMD ["rails", "server", "-b", "0.0.0.0"]
