@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["schadenfred"]
   spec.email         = ["fred.schoeneman@gmail.com"]
 
-  spec.summary       = %q{Containerization framwork for Ruby on Rails applications.}
+  spec.summary       = %q{Containerization framework for Ruby on Rails applications.}
   spec.description   = %q{Roro is a containerization and continuous integration framework for Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity."}
   spec.homepage      = "https://github.com/schadenfred/roro"
   spec.license       = "MIT"
@@ -33,7 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'sshkit', '~> 1.21'
   spec.add_dependency 'thor', '~> 1.0', '>= 1.0.1'
   spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.4'
-  spec.add_development_dependency 'byebug', '~> 11.1', '>= 11.1.3'
   spec.add_development_dependency 'climate_control'
   spec.add_development_dependency 'handsome_fencer-test', '~> 0.2.2'
   spec.add_development_dependency 'minitest-focus'
