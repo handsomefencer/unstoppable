@@ -2,11 +2,32 @@
 
 module Roro
   module Configurators
-    class AdventurePicker < Thor
+    class DependencySatisfier < Thor
 
-      attr_reader :inflection
+      attr_reader :dependencies
 
       no_commands do
+
+        def satisfy_dependencies(manifest = [])
+          @manifest = manifest
+          @dependencies = {}.tap do |d|
+            d.merge!(gather_base_dependencies)
+            d.merge!(gather_stack_dependencies)
+          end
+        end
+
+        def gather_base_dependencies(stack = "#{Roro::CLI.dependency_root}")
+          @base_dependencies = {}.tap do |b|
+            children(stack).each { |c| b.merge!(read_yaml(c)) }
+          end
+        end
+
+        def gather_stack_dependencies
+          @stack_dependencies = {}.tap do |b|
+            @manifest.each { |c| b.merge!(read_yaml(c)[:dependencies] || {}) }
+          end
+        end
+
         def choose_adventure(stack)
           build_inflection(stack)
           say("Rolling story on from stack: #{@stack}\n\n")

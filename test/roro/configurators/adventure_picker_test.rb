@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe 'AdventurePicker' do
   Given(:asker)            { AdventurePicker.new }
-  Given(:build_inflection) { asker.build_inflection(stack_path) }
+  Given(:build_inflection) { quiet { asker.build_inflection(stack_path) } }
   Given(:stack)            { 'stacks' }
 
   Given { build_inflection }
@@ -14,7 +14,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#choose_adventure(inflection)' do
-    Given(:choose_adventure) { asker.choose_adventure(stack_path) }
+    Given(:choose_adventure) { quiet { asker.choose_adventure(stack_path) } }
 
     context 'when stacks' do
       Given { stub_journey(%w[1]) }

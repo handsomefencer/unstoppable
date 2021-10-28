@@ -1,20 +1,8 @@
 preface: some string
 
 depends_on:
-  doctl:
-    name: doctl
-    command: doctl version
-    help: https://docs.digitalocean.com/reference/doctl/how-to/install/
-    luck:
-      linux: cd ~ wget https://github.com/digitalocean/doctl/releases/download/v1.65.0/doctl-1.65.0-linux-amd64.tar.gz
-  git:
-    name: git
-    command: git -v
-    help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-  kubectl:
-    name: kubectl
-    command: kubectl version
-    help: https://kubernetes.io/docs/tasks/tools/
+  - doctl
+
 env:
   base:
     do_cluster_id:

@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-require_relative 'cli/rollon'
-require_relative 'cli/generate/generate_containers'
-require_relative 'cli/generate/generate_environments'
-require_relative 'cli/generate/generate_exposed'
-require_relative 'cli/generate/generate_keys'
-require_relative 'cli/generate/generate_mise'
-require_relative 'cli/generate/generate_obfuscated'
-
 module Roro
   class CLI < Thor
     include Thor::Actions
 
     def self.source_root
       "#{@template_root || File.dirname(__FILE__)}/templates"
+    end
+
+    def self.roro_root
+      "#{File.dirname(__FILE__)}"
+    end
+
+    def self.dependency_root
+      "#{self.roro_root}/dependencies"
     end
 
     def self.catalog_root

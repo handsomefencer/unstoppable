@@ -5,7 +5,6 @@ require 'test_helper'
 describe Validator do
   Given(:args)      { nil }
   Given(:validator) { Validator.new(*args) }
-  # Given(:validate)  { validator.validate_stack(stack_path) }
 
   context 'when no args supplied' do
     describe '#initialize' do

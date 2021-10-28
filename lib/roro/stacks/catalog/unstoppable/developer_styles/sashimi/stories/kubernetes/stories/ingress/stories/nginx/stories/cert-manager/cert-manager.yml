@@ -1,11 +1,5 @@
 preface: some string
 
-depends_on:
-  git:
-    name: git
-    command: git -v
-    help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-
 env:
   base:
     do_cluster_name:

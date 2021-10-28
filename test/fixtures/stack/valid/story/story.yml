@@ -1,5 +1,15 @@
 preface: some string
 
+dependencies:
+  git:
+    name: git
+    command: git -overridden
+    help: gitsome.com
+  notional_tool:
+    name: notional tool
+    command: notional -v
+    help: www.notionaltool.com
+
 actions:
   - "@config.smart.env['force'] = true"
 
