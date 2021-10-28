@@ -34,7 +34,7 @@ RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 RUN bundle config --local frozen 1 && \
     bundle install -j4 --retry 3
 
-COPY . ./
+COPY . ./app/
 
 RUN bundle exec rake webpacker:compile
 
