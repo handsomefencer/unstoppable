@@ -26,21 +26,17 @@ RUN apk add --update --no-cache \
   nodejs \
   yarn
 
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
 WORKDIR /app
 
-
-
-# Install standard gems
-COPY Gemfile* /app/
-RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+## Install standard gems
+COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
-RUN touch package.json yarn.lock
-COPY package.json yarn.lock ./
+COPY . ./
 
 RUN yarn install --check-files
-
-COPY . ./
 
 RUN bundle exec rake webpacker:compile
 
