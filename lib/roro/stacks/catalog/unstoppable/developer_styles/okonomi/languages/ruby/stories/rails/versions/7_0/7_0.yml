@@ -8,13 +8,13 @@ env:
       value: 7.0.0.alpha2
     app_name:
       name: Name for your app
-      value: 'unstoppable app name'
+      value: unstoppable_app
 
 actions:
   - directory 'stage_one', '.', @env
   - run "sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . ."
   - run "sudo chown -R $USER:$USER ."
-#  - directory 'stage_two', '.', @env
+  - directory 'stage_two', '.', @env
 #  - template 'stage_two/database.yml.tt', './config/database.yml', @env
 #  - run "sudo docker-compose build"
 #  - run "sudo chown -R $USER:$USER ."
