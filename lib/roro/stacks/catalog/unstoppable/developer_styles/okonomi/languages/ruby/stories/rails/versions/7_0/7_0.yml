@@ -16,6 +16,7 @@ actions:
   - run "sudo chown -R $USER:$USER ."
   - directory 'stage_two', '.', @env
 #  - template 'stage_two/database.yml.tt', './config/database.yml', @env
+  - chmod "entrypoints/docker-entrypoint.sh"
   - run "sudo docker-compose build"
   - run "sudo chown -R $USER:$USER ."
   - run "sudo docker-compose run web rake db:create"
