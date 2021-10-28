@@ -17,7 +17,7 @@ actions:
   - directory 'stage_two', '.', @env
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
-  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "group :development, :test do"
+  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
   - run "sudo docker-compose build"
   - run "sudo chown -R $USER:$USER ."
   - run "sudo docker-compose run web rake db:create"
