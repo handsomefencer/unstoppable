@@ -19,6 +19,7 @@ env:
       value: postgres
 
 actions:
+  - @env[:force] = 'true'
   - directory 'stage_one', '.', @env
   - run 'sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
   - run 'sudo chown -R $USER:$USER .'
@@ -30,7 +31,7 @@ actions:
     generator = Roro::CLI.new
     generator.generate_mise
     generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-    generator.generate_environments
+    generator.generate_environments @env
     generator.generate_keys
 
   - run "sudo docker-compose build"
