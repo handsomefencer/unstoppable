@@ -25,7 +25,7 @@ defaults: &defaults
 major_only: &major_only
   filters:
     branches:
-      only: master
+      only: main
 
 release: &release
   filters:
