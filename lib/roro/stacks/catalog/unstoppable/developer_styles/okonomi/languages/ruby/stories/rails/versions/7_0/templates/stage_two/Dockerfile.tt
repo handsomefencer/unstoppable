@@ -28,11 +28,13 @@ RUN apk add --update --no-cache \
 
 WORKDIR /app
 
+# install yarn
+RUN yarn install --check-files
+
 # Install standard gems
 COPY Gemfile* /app/
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
-RUN bundle config --local && \
-    bundle install -j4 --retry 3
+RUN bundle install -j4 --retry 3
 
 COPY . ./app/
 
