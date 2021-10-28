@@ -1,7 +1,6 @@
 preface: some string
 
 env:
-
   base:
     rails_version:
       name: Ruby on Rails minor version
