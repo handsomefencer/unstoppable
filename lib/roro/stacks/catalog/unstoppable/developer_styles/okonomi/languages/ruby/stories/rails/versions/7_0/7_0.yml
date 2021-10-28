@@ -24,4 +24,3 @@ actions:
   - run "sudo docker-compose up -d"
 
 
-  gem 'sidekiq', '~>6.0.0'
