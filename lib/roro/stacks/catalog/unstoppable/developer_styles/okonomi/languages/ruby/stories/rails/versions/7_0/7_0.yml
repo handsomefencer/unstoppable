@@ -19,7 +19,6 @@ env:
       value: postgres
 
 actions:
-  - @env[:force] = 'true'
   - directory 'stage_one', '.', @env
   - run 'sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
   - run 'sudo chown -R $USER:$USER .'
