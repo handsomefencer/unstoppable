@@ -60,5 +60,4 @@ actions:
       run "kubectl create -f ./ --validate=true"
       run "kubectl get pods -l io.kompose.service=app"
     end
-
   - run "kubectl exec $(kubectl get pods -o=name -l io.kompose.service=app) -- rake db:migrate"
