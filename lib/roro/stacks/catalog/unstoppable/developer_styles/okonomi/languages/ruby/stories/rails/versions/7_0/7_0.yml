@@ -29,7 +29,7 @@ actions:
   - |
     generator = Roro::CLI.new
     generator.generate_mise
-    generator.generate_containers app database redis
+    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
     generator.generate_environments
     generator.generate_keys
 
