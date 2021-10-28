@@ -5,6 +5,8 @@ depends_on:
     name: doctl
     command: doctl version
     help: https://docs.digitalocean.com/reference/doctl/how-to/install/
+    luck:
+      linux: cd ~ wget https://github.com/digitalocean/doctl/releases/download/v1.65.0/doctl-1.65.0-linux-amd64.tar.gz
   git:
     name: git
     command: git -v
@@ -15,6 +17,10 @@ depends_on:
     help: https://kubernetes.io/docs/tasks/tools/
 env:
   base:
+    do_cluster_id:
+      name: Digital Ocean Kubernetes cluster id
+      value: 0e23750a-05a4-49f0-8fad-42a201995afc
+      help: https://docs.digitalocean.com/reference/doctl/reference/kubernetes/cluster/get/
     do_cluster_name:
       name: Digital Ocean Kubernetes cluster name
       value: k8s-1-21-5-do-0-sfo3-1635359659910
@@ -22,10 +28,6 @@ env:
     domain_name:
       name: Domain name people will use to find your app
       value: bierstiefel.com
-    do_cluster_id:
-      name: Digital Ocean Kubernetes cluster id
-      value: 0e23750a-05a4-49f0-8fad-42a201995afc
-      help: https://docs.digitalocean.com/reference/doctl/reference/kubernetes/cluster/get/
     docker_hub_username:
       name: The username you log into hub.docker.com with
       value: dhusername
