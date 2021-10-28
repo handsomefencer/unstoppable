@@ -10,8 +10,9 @@ describe 'lib roro stacks catalog unstoppable developer_styles sashimi stories r
     stub_adventure
     stub_overrides
     stub_run_actions
-    # stub_dependencies_installed
-    quiet { cli.rollon }
+    stub_dependencies_installed
+    # quiet { cli.rollon }
+    cli.rollon
   }
 
   Given { rollon unless adventures.empty?}

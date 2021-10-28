@@ -14,7 +14,7 @@ services:
       - .:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
-    env_file: .env
+    env_file: ./mise/env/development.env
     environment:
       RAILS_ENV: development
 
@@ -39,7 +39,7 @@ services:
       - .:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
-    env_file: .env
+    env_file: ./mise/env/development.env
     environment:
       RAILS_ENV: development
     entrypoint: ./entrypoints/sidekiq-entrypoint.sh
