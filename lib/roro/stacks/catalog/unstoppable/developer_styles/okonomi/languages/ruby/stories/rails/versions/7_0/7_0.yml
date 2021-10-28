@@ -9,6 +9,15 @@ env:
     app_name:
       name: Name for your app
       value: unstoppable_app
+    DATABASE_NAME:
+      name: Database name
+      value: postgres
+    DATABASE_PASSWORD:
+      name: Database password
+      value: postgres
+    DATABASE_USERNAME:
+      name: Database username
+      value: postgres
 
 actions:
   - directory 'stage_one', '.', @env
@@ -18,6 +27,13 @@ actions:
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
   - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
+  - |
+    generator = Roro::CLI.new
+    generator.generate_mise
+    generator.generate_containers app database redis sidekiq
+    generator.generate_environments
+    generator.generate_keys
+
   - run "sudo docker-compose build"
   - run "sudo chown -R $USER:$USER ."
   - run "sudo docker-compose run web rake db:create"
