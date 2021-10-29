@@ -56,11 +56,12 @@ module Roro
           # return if dependency_met?(d[:command])
           help = hint(d, :help)
           lucky = hint(d, :lucky)
-          msg = ["Dependency '#{check}' is not installed."]
+          say("Dependency '#{check}' is not installed.", :yellow)
+          msg = []
           msg << "Installation help: #{help}" if help
           msg << "Platform:          #{platform}" if lucky
           msg << "Install with:      #{lucky}" if lucky
-          say(msg.join("\n\t"), :red)
+          say(msg.join("\n\s\s"), :green)
           # help = hint(d, :help)
           # lucky = hint(d, :lucky)
           # say("Installation help: #{help}") if help
