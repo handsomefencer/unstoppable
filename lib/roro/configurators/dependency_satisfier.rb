@@ -6,6 +6,8 @@ module Roro
   module Configurators
     class DependencySatisfier < Thor
 
+      include Utilities
+
       attr_reader :dependencies, :checks, :dependencies
 
       no_commands do
