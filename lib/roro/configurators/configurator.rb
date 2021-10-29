@@ -24,8 +24,8 @@ module Roro
       def rollon
         validate_stack
         choose_adventure
-        build_env
         satisfy_dependencies
+        build_env
         write_story
       end
 
