@@ -51,15 +51,14 @@ module Roro
     class QuestionAsker < Thor; end
     class CatalogBuilder; end
   end
-  include Utilities
   module Configurators
     include Utilities
 
-    class Validator
-      # include Utilities
-    end
-    class Configurator; end
-    class QuestionAsker < Thor; end
-    class CatalogBuilder; end
+    # class Validator
+    #   include Utilities
+    # end
+    # class Configurator; end
+    # class QuestionAsker < Thor; end
+    # class CatalogBuilder; end
   end
 end
