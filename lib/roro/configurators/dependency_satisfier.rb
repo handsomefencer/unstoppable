@@ -60,7 +60,7 @@ module Roro
           msg << "Installation help: #{help}" if help
           msg << "Platform:          #{platform}" if lucky
           msg << "Install with:      #{lucky}" if lucky
-          say(msg.join('/n/t'), :red)
+          say(msg.join("/n/t"), :red)
           # help = hint(d, :help)
           # lucky = hint(d, :lucky)
           # say("Installation help: #{help}") if help
