@@ -59,7 +59,7 @@ module Roro
           say("Dependency '#{check}' is not installed.", :yellow)
           msg = []
           msg << "Installation help: #{set_color("#{help}", :red)}" if help
-          msg << "Platform:          #{platform}" if lucky
+          msg << "Platform:          #{set_color(platform, :red)}" if lucky
           msg << "Install with:      #{lucky}" if lucky
           say(msg.join("\n\s\s"))
           # help = hint(d, :help)
