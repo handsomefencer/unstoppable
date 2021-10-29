@@ -4,6 +4,8 @@ module Roro
   module Configurators
     class AdventureChooser
 
+      include Utilities
+
       attr_reader :itinerary, :stack, :manifest
 
       def initialize
