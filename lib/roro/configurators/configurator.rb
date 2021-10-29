@@ -46,29 +46,9 @@ module Roro
       end
 
       def satisfy_dependencies
-        @dependencies ||= {}
-        manifest.each do |story|
-          content = read_yaml(story)[:depends_on] || {}
-          @dependencies.merge!(content) unless content.nil?
-        end
-        @dependencies.each { |d| satisfy_dependency(d) }
+        satisfier = DependencySatisfier.new(manifest)
       end
 
-      def dependency_installed?(command)
-        result = `command -v #{command} &> /dev/null`
-        result.match?(command)
-      end
-
-      def satisfy_dependency(*dependency)
-        dependency.each do |key, value|
-          installable = key.to_s
-          return if dependency_installed?(installable)
-          msg = [ "\nDependency '#{installable}' is not installed." ]
-          msg << "Install instructions: #{value[:help]}" if value&.dig(:help)
-          msg << "Verify install: #{value[:command]}" if value&.dig(:command)
-          raise Roro::Error, msg.join("\n")
-        end
-      end
 
       def accrete_story(story)
         content = read_yaml(story)[:env]
