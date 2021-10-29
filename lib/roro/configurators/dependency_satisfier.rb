@@ -58,7 +58,8 @@ module Roro
           help = hint(d, :help)
           lucky = hint(d, :lucky)
           say("Installation help: #{help}") if help
-          say("Install with for your OS: #{lucky}") if lucky
+          say("Platform:          #{platform}") if lucky
+          say("Install command:   #{lucky}") if lucky
           yes?("Do you feel lucky?") if lucky
         end
 
