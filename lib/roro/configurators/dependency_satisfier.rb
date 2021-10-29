@@ -58,10 +58,12 @@ module Roro
           lucky = hint(d, :lucky)
           # say("Missing Dependency: #{set_color(check, :yellow)}")
           msg = ["Missing Dependency: #{set_color(check, :yellow)}"]
-          msg << "              Help: #{help}" if help
+          if help
+            msg << "            Help: #{help}" if help
+          end
           if lucky
-            msg << "Platform:          #{set_color(platform, :yellow)}"
-            msg << "Install with:      $ #{lucky.shift}"
+            msg << "        Platform: #{set_color(platform, :yellow)}"
+            msg << "    Install with: $ #{lucky.shift}"
           end
 
           say(msg.join("\n\s\s"))
