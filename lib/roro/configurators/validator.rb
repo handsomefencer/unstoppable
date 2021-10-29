@@ -2,7 +2,6 @@
 
 module Roro
   module Configurators
-    include Utilities
     class Validator
       attr_reader :stack, :structure, :permitted_hidden_extensions, :permitted_story_extensions, :ext_permitted
 
