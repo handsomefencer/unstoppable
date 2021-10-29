@@ -79,8 +79,9 @@ module Roro
           # result = `command -v #{command.to_s}`
           # raise result
           # result = `command -v #{command.to_s} || echo fail`
-          result = `command && echo OK || echo Failed`
-          raise Roro::Error, `command && echo OK || echo Failed`
+          # result = `command && echo OK || echo Failed`
+          `command && echo OK || echo Failed`
+          raise Roro::Error, `$?`
         end
 
         def platform_for(dependency)
