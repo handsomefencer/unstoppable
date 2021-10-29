@@ -1,5 +1,7 @@
 # frozen_string_literal: true
+
 require 'os'
+
 module Roro
   module Configurators
     class DependencySatisfier < Thor

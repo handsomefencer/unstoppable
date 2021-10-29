@@ -53,12 +53,5 @@ module Roro
   end
   module Configurators
     include Utilities
-
-    # class Validator
-    #   include Utilities
-    # end
-    # class Configurator; end
-    # class QuestionAsker < Thor; end
-    # class CatalogBuilder; end
   end
 end
