@@ -34,12 +34,16 @@ module Minitest
         .returns(choices[answer])
     end
 
+    def stubs_yes?(answer = 'yes')
+      Thor::Shell::Basic.any_instance
+                        .stubs(:yes?)
+                        .returns(answer)
+    end
     def stubs_answer(answer)
       Thor::Shell::Basic.any_instance
                         .stubs(:ask)
                         .returns(answer)
     end
-
 
     def stubs_itinerary(itinerary = nil)
       Roro::Configurators::Configurator

@@ -66,7 +66,7 @@ describe 'DependencySatisfier' do
   end
 
   describe '#satisfy(check)' do
-    Given { skip }
+    Given { stubs_yes? }
     Given { stubs_dependencies }
 
     context 'when dependency is met' do
@@ -74,9 +74,15 @@ describe 'DependencySatisfier' do
       Then  { assert_nil satisfier.satisfy('git') }
     end
 
-    context 'when dependency is not met and hint defined' do
-      Given { stubs_host_os(:linux) }
-      Then  { assert_equal IO, satisfier.satisfy('git').class }
+    context 'when dependency is not met' do
+      context 'and when hint configured' do
+        Given { stubs_host_os(:debian) }
+
+        context 'must return ' do
+          Given(:stdout) { capture_io { satisfier.satisfy('git') }}
+          Then  { assert_match 'Install with', stdout.first }
+        end
+      end
     end
   end
 
@@ -103,12 +109,11 @@ describe 'DependencySatisfier' do
         Given(:hint_key) { :lucky }
         Given { stubs_host_os(:fedora) }
         Then { assert_match 'sudo dnf', hint.first }
-      end
 
-      context 'configured for alias of platform' do
-        Given(:hint_key) { :lucky }
-        Given { stubs_host_os(:ubuntu) }
-        Then { assert_match 'sudo apt', hint.first }
+        context 'using alias' do
+          Given { stubs_host_os(:ubuntu) }
+          Then { assert_match 'sudo apt', hint.first }
+        end
       end
     end
   end
@@ -162,6 +167,10 @@ describe 'DependencySatisfier' do
     else
       OS.stubs(:host_os).returns(host_os.to_sym)
     end
+    DependencySatisfier
+      .any_instance
+      .stubs(:dependency_met?)
+      .returns(met)
   end
 
   def dependencies(key = nil)
