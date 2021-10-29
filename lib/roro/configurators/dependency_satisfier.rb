@@ -19,7 +19,6 @@ module Roro
             d.merge!(gather_stack_dependencies)
           end
           gather_checks
-          validate_checks
           checks.each { |c| validate_check(c) }
           checks.each { |c| satisfy(c) }
         end
