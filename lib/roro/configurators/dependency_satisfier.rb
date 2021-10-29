@@ -61,7 +61,7 @@ module Roro
 
           if lucky
             msg << "        #{set_color("Platform", :yellow)}: #{platform}"
-            msg << "    Install with: $ #{lucky.shift}"
+            msg << "    #{set_color("Install with", :yellow)}: $ #{lucky.shift}"
             lucky.each do |c|
             msg << "                  $ #{c}"
             end
