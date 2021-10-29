@@ -80,7 +80,7 @@ module Roro
           # raise result
           # result = `command -v #{command.to_s} || echo fail`
           # result = `command && echo OK || echo Failed`
-          `command && echo OK || echo Failed`
+          `#{command} && echo OK || echo Failed`
           raise Roro::Error, `$?`
         end
 
