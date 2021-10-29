@@ -60,7 +60,7 @@ module Roro
           msg = []
           msg << "Installation help: #{set_color("#{help}", :red)}" if help
           msg << "Platform:          #{set_color(platform, :red)}" if lucky
-          msg << "Install with:      #{lucky}" if lucky
+          msg << "Install with:      #{lucky.shift}" if lucky
           say(msg.join("\n\s\s"))
           # help = hint(d, :help)
           # lucky = hint(d, :lucky)
