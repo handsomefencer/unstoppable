@@ -56,7 +56,7 @@ module Roro
     include Utilities
 
     class Validator
-      include Utilities
+      # include Utilities
     end
     class Configurator; end
     class QuestionAsker < Thor; end
