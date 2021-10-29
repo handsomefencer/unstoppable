@@ -53,7 +53,7 @@ module Roro
         def satisfy(check)
           d = dependencies[check.to_sym]
           return if dependency_met?(check)
-          return if dependency_met?(d[:command])
+          # return if dependency_met?(d[:command])
           say("Dependency '#{check}' is not installed.")
           help = hint(d, :help)
           lucky = hint(d, :lucky)
