@@ -46,7 +46,8 @@ module Roro
       end
 
       def satisfy_dependencies
-        satisfier = DependencySatisfier.new(manifest)
+        satisfier = DependencySatisfier.new
+        satisfier.satisfy_dependencies(manifest)
       end
 
 
