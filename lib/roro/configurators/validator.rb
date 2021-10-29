@@ -2,8 +2,8 @@
 
 module Roro
   module Configurators
+    include Utilities
     class Validator
-      include Utilities
       attr_reader :stack, :structure, :permitted_hidden_extensions, :permitted_story_extensions, :ext_permitted
 
       def initialize(stack = nil, structure = nil)
