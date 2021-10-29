@@ -1,7 +1,7 @@
 preface: some string
 
 depends_on:
-  - gitsome
+  - doctl
 
 env:
   base:
