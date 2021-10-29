@@ -76,8 +76,8 @@ module Roro
         end
 
         def dependency_met?(command)
-          # result = `command -v #{command.to_s} &> /dev/null`
-          result = `command -v #{command.to_s} && echo success`
+          result = `command -v #{command.to_s} &> /dev/null`
+          # result = `command -v #{command.to_s} && echo success`
           result.match?(command)
         end
 
