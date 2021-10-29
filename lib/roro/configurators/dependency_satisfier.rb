@@ -76,7 +76,7 @@ module Roro
         end
 
         def dependency_met?(command)
-          `command -v #{command.to_s} &> /dev/null
+          `command -v #{command.to_s} &> /dev/null`
           # result = `command -v #{command.to_s}`
           # raise result
           # result = `command -v #{command.to_s} || echo fail`
