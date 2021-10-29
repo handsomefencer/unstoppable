@@ -1,7 +1,7 @@
 preface: some string
 
 depends_on:
-  - gitsomedd
+  - gitsome
 env:
   base:
     rails_version:
