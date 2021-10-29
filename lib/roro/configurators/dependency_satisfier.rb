@@ -64,7 +64,7 @@ module Roro
             msg << "Install with:      $ #{lucky.shift}"
           end
 
-          say(msg.join("\n\n\s\s"))
+          say(msg.join("\n\s\s"))
           # help = hint(d, :help)
           # lucky = hint(d, :lucky)
           # say("Installation help: #{help}") if help
