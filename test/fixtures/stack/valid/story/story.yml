@@ -1,5 +1,8 @@
 preface: some string
 
+depends_on:
+  - git
+
 dependencies:
   git:
     name: git

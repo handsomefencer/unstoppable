@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-
+require 'os'
 module Roro
   module Configurators
     class DependencySatisfier < Thor
 
-      attr_reader :dependencies
+      attr_reader :dependencies, :checks, :dependencies
 
       no_commands do
 
@@ -14,76 +14,86 @@ module Roro
             d.merge!(gather_base_dependencies)
             d.merge!(gather_stack_dependencies)
           end
+          gather_checks
+          validate_checks
+          checks.each { |c| validate_check(c) }
+          checks.each { |c| satisfy(c) }
         end
 
-        def gather_base_dependencies(stack = "#{Roro::CLI.dependency_root}")
-          @base_dependencies = {}.tap do |b|
+        def gather_base_dependencies(stack = Roro::CLI.dependency_root)
+          {}.tap do |b|
             children(stack).each { |c| b.merge!(read_yaml(c)) }
           end
         end
 
         def gather_stack_dependencies
-          @stack_dependencies = {}.tap do |b|
-            @manifest.each { |c| b.merge!(read_yaml(c)[:dependencies] || {}) }
+          {}.tap do |b|
+            manifest.each { |c| b.merge!(read_yaml(c)[:dependencies] || {}) }
           end
         end
 
-        def choose_adventure(stack)
-          build_inflection(stack)
-          say("Rolling story on from stack: #{@stack}\n\n")
-          say(@getsome)
-          choice = ask(@inflection)
-          story_name = story_from(choice.to_s)
-          "#{stack}/#{story_name}"
-        end
-
-        def build_inflection(stack)
-          @stack = stack
-          prompt = inflection_prompt
-          options = inflection_options
-          prompt_options = humanize(options)
-          @getsome = "#{prompt}\n"
-          @inflection = ["#{prompt_options}\n\n", "Choices: [#{set_color(options.keys.map { |k| k.to_i }.join(' '), :blue)}]"]
-        end
-
-        def inflection_prompt
-          prompt = 'Please choose from these'
-          collection = name(@stack).gsub('_', ' ') + ":\n"
-          [prompt, stack_parent(@stack), collection].join(' ')
-        end
-
-        def inflection_options(stack = nil)
-          stack ||= @stack
-          Hash.new.tap do |h|
-            children(stack)
-              .map { |f| name(f) }
-              .sort
-              .each_with_index do |c, i|
-              h[(i + 1).to_s] = name(c)
+        def gather_checks
+          @checks = []
+          manifest.each do |f|
+            read_yaml(f).dig(:depends_on)&.each do |c|
+              @checks << c
             end
           end
+          @checks
         end
 
-        def humanize(hash)
-          array = []
-          hash.map do |key, value|
-            preface = get_story_preface("#{@stack}/#{value}")
-            array << "#{set_color("(#{key})", :bold)} #{set_color(value, :blue, :bold)}\n\s\s\s\s#{preface}"
+        def validate_check(check)
+          msg = "No #{check} dependency exists. Please define it before depending on it."
+          dependencies[check.to_sym] || raise(Roro::Error, msg)
+        end
+
+        def satisfy(check)
+          d = dependencies[check.to_sym]
+          return if dependency_met?(check)
+          return if dependency_met?(d[:command])
+          say("Dependency '#{check}' is not installed.")
+          help = hint(d, :help)
+          say("Installation help: #{help}") unless help.nil?
+          say("Do you feel lucky?: #{lucky}") unless help.nil?
+        end
+
+        def platform_for(dependency)
+          overrides = dependency.dig(:overrides)
+          return if overrides.nil? || overrides.empty?
+          return platform if overrides.keys.include?(platform)
+          overrides.select do |key, value|
+            return key if value.dig(:aliases)&.include?(platform.to_s)
           end
-          array.join("\n\n")
         end
 
-        def get_story_preface(story)
-          storyfile = "#{story}/#{name(story)}.yml"
-          if stack_is_storyfile?(storyfile)
-            read_yaml("#{story}/#{name(story)}.yml")[:preface]
+        def platform
+          case
+          when OS.linux?
+            distro
           else
-            nil
+            OS.host_os.to_sym
           end
         end
 
-        def story_from(key)
-          inflection_options[key]
+        def distro
+          OS.parse_os_release[:ID].to_sym
+        end
+
+        def hint(hash, key)
+          case
+          when OS.linux? && hash.dig(:overrides, platform_for(hash), key )
+            hash.dig(:overrides, platform_for(hash), key)
+          when hash.dig(:overrides, platform, key)
+            hash.dig(:overrides, platform, key)
+          when hash.dig(key)
+            hash.dig(key)
+          end
+        end
+
+        def dependency_met?(command)
+          # result = `command -v #{command.to_s} &> /dev/null`
+          result = `command -v #{command.to_s} && echo success`
+          result.match?(command)
         end
       end
     end

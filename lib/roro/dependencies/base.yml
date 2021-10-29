@@ -1,14 +1,34 @@
+git:
+  name: git
+  command: git -v
+  help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+  overrides:
+    linux:
+      lucky:
+        - some linux command
+    fedora:
+      aliases:
+        - rhel
+        - centos
+      lucky:
+        - sudo dnf install git-all
+    debian:
+      aliases:
+        - ubuntu
+      lucky:
+        - sudo apt install git-all
+        - sudo apt-get install install-info
+
 doctl:
   name: doctl
   command: doctl version
   help: https://docs.digitalocean.com/reference/doctl/how-to/install/
   luck:
     linux: cd ~ wget https://github.com/digitalocean/doctl/releases/download/v1.65.0/doctl-1.65.0-linux-amd64.tar.gz
-git:
-  name: git
-  command: git -v
-  help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+
+
 kubectl:
   name: kubectl
   command: kubectl version
   help: https://kubernetes.io/docs/tasks/tools/
+  hint: https://kubernetes.io/docs/tasks/tools/
