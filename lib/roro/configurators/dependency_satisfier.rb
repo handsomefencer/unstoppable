@@ -60,17 +60,18 @@ module Roro
           msg = []
           msg << "Installation help: #{set_color("#{help}", :red)}" if help
           if lucky
-            # msg << "Platform:          #{set_color(platform, :red)}"
-            # msg << "Install with:      $ #{lucky.shift}"
+            msg << "Platform:          #{set_color(platform, :red)}"
+            msg << "Install with:      $ #{lucky.shift}"
           end
 
-          # say(msg.join("\n\n\s\s"))
+          say(msg.join("\n\n\s\s"))
           # help = hint(d, :help)
           # lucky = hint(d, :lucky)
           # say("Installation help: #{help}") if help
           # say("Platform:          #{platform}") if lucky
           # say("Install with:      #{lucky}") if lucky
-          # yes?("Do you feel lucky?") if lucky
+          yes?("Do you feel lucky?") if lucky
+        end
 
 
         def hint(hash, key)
