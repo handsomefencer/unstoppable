@@ -60,7 +60,7 @@ module Roro
           msg = []
           msg << "Installation help: #{set_color("#{help}", :red)}" if help
           if lucky
-            msg << "Platform:          #{set_color(platform, :red)}"
+            # msg << "Platform:          #{set_color(platform, :red)}"
             # msg << "Install with:      $ #{lucky.shift}"
           end
 
