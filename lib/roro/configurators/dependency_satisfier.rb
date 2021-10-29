@@ -8,7 +8,7 @@ module Roro
 
       include Utilities
 
-      attr_reader :dependencies, :checks, :dependencies
+      attr_reader :dependencies, :checks, :dependencies, :manifest
 
       no_commands do
 
