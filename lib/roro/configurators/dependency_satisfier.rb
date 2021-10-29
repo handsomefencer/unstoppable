@@ -60,7 +60,7 @@ module Roro
           msg = ["\n\n#{set_color("Missing Dependency", :yellow)}: #{check}"]
 
           if lucky
-            msg << "        Platform: #{set_color(platform, :yellow)}"
+            msg << "        #{set_color("Platform", :yellow)}: #{platform}"
             msg << "    Install with: $ #{lucky.shift}"
             lucky.each do |c|
             msg << "                  $ #{c}"
