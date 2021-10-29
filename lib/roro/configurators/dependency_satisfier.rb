@@ -76,14 +76,7 @@ module Roro
         end
 
         def dependency_met?(command)
-          `command -v #{command.to_s} &> /dev/null`
-          result = `$?`
-          # result = `command -v #{command.to_s}`
-          # raise result
-          # result = `command -v #{command.to_s} || echo fail`
-          # result = `command && echo OK || echo Failed`
-          # `#{command}`
-          raise Roro::Error, result
+          system(command.to_s) ? true : false
         end
 
         def platform_for(dependency)
