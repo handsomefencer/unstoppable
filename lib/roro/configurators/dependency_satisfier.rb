@@ -78,8 +78,8 @@ module Roro
         def dependency_met?(command)
           result = `command -v #{command.to_s}`
           # raise result
-          # result = `command -v #{command.to_s} && echo success`
-          result.match?(command)
+          result = `command -v #{command.to_s} && echo success`
+          raise result.match?(command)
         end
 
         def platform_for(dependency)
