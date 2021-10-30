@@ -13,7 +13,7 @@ module Roro
         def write(buildenv, storyfile)
           @env = buildenv[:env]
           @env[:force] = true
-          raise buildenv[:actions].to_s
+          raise buildenv.to_s
           actions = buildenv[:actions] || []
           actions = actions + read_yaml(storyfile)[:actions]
           unless actions.nil?
