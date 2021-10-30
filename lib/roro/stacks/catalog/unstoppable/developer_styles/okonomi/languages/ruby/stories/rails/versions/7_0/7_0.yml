@@ -43,7 +43,7 @@ actions:
 
   - run "sudo docker-compose build"
   - run "sudo chown -R $USER:$USER ."
-  - run "sudo docker-compose run web rake db:create"
+  - run "sudo docker-compose run app rake db:create"
   - run "sudo docker-compose up -d"
 
 
