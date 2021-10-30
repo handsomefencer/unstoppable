@@ -14,6 +14,10 @@ module Roro
 
         def satisfy_dependencies(manifest = [])
           @manifest = manifest
+          @builder = {
+            actions: [],
+            env: {}
+          }
           @dependencies = {}.tap do |d|
             d.merge!(gather_base_dependencies)
             d.merge!(gather_stack_dependencies)
@@ -21,10 +25,7 @@ module Roro
           gather_checks
           checks.each { |c| validate_check(c) }
           checks.each { |c| satisfy(c) }
-          @builder = {
-            actions: [],
-            env: {}
-          }
+
         end
 
         def gather_base_dependencies(stack = Roro::CLI.dependency_root)
