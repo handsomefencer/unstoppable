@@ -26,10 +26,10 @@ gitsome:
       aliases:
         - ubuntu
       lucky:
-        - sudo apt install git-all
-        - sudo apt-get install install-info
-        - git config --global user.email jane.doe@example.com
-        - git config --global user.name Jane Doe
+        - run "sudo apt install git-all"
+        - run "sudo apt-get install install-info"
+        - run "git config --global user.email jane.doe@example.com"
+        - run "git config --global user.name Jane Doe"
 
 
 doctl:
