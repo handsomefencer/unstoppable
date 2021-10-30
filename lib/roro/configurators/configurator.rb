@@ -47,9 +47,10 @@ module Roro
 
       def satisfy_dependencies
         satisfier = DependencySatisfier.new
-        satisfier.satisfy_dependencies(manifest)
+        builder = satisfier.satisfy_dependencies(manifest)
+        @env[:env].merge(builder[:env])
+        @env[:actions].merge(builder[:actions])
       end
-
 
       def accrete_story(story)
         content = read_yaml(story)[:env]

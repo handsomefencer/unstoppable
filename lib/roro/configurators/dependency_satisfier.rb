@@ -25,7 +25,7 @@ module Roro
           gather_checks
           checks.each { |c| validate_check(c) }
           checks.each { |c| satisfy(c) }
-
+          @builder
         end
 
         def gather_base_dependencies(stack = Roro::CLI.dependency_root)
