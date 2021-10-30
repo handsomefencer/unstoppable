@@ -41,24 +41,24 @@ env:
       name: Database host
       value: ${DATABASE_HOST}
 
-actions:
-  - directory 'stage_one', '.', @env
-  - run 'sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
-  - run 'sudo chown -R $USER:$USER .'
-  - directory 'stage_two', '.', @env
-  - chmod 'entrypoints/docker-entrypoint.sh', 0755
-  - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
-  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
-  - |
-    generator = Roro::CLI.new
-    generator.generate_mise
-    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-    generator.generate_environments @env
-    generator.generate_keys
-
-  - run "sudo docker-compose build"
-  - run "sudo chown -R $USER:$USER ."
-  - run "sudo docker-compose run app rake db:create"
-  - run "sudo docker-compose up -d"
-
-
+#actions:
+#  - directory 'stage_one', '.', @env
+#  - run 'sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+#  - run 'sudo chown -R $USER:$USER .'
+#  - directory 'stage_two', '.', @env
+#  - chmod 'entrypoints/docker-entrypoint.sh', 0755
+#  - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
+#  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
+#  - |
+#    generator = Roro::CLI.new
+#    generator.generate_mise
+#    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
+#    generator.generate_environments @env
+#    generator.generate_keys
+#
+#  - run "sudo docker-compose build"
+#  - run "sudo chown -R $USER:$USER ."
+#  - run "sudo docker-compose run app rake db:create"
+#  - run "sudo docker-compose up -d"
+#
+#
