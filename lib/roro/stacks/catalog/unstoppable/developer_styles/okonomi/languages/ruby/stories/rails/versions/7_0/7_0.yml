@@ -1,7 +1,7 @@
 preface: some string
 
 depends_on:
-  - gitsome
+  - git
 env:
   base:
     git_config_user_name:
