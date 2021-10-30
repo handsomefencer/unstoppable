@@ -20,7 +20,6 @@ module Roro
         @asker     = QuestionAsker.new
         @writer    = AdventureWriter.new
         @env       = @structure[:env]
-
       end
 
       def rollon
@@ -55,7 +54,7 @@ module Roro
 
       def accrete_story(story)
         content = read_yaml(story)[:env]
-        content.keys.each { |k| @env[k].merge!(content[k]) } if content
+        content.keys.each { |k| @structure[:env][k].merge!(content[k]) } if content
       end
 
       def override_environment_variables
