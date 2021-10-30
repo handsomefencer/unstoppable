@@ -48,8 +48,8 @@ module Roro
       def satisfy_dependencies
         satisfier = DependencySatisfier.new
         dependency_hash = satisfier.satisfy_dependencies(manifest)
-        @structure[:actions] + dependency_hash[:actions]
-        @structure[:env].merge(dependency_hash.dig(:env) || {})
+        @structure[:actions] = @structure[:actions] + dependency_hash[:actions]
+        @structure[:env].merge!(dependency_hash.dig(:env) || {})
         raise "dep hash: #{dependency_hash.to_s} \n @structure: #{@structure}"
       end
 
