@@ -73,7 +73,7 @@ module Roro
           say(msg.join("\n\s\s"))
           if lucky && yes?("Do you feel lucky?")
             @builder[:env] = d[:env] || {}
-            @builder[:actions] + lucky
+            # @builder[:actions] + lucky
           end
         end
 
