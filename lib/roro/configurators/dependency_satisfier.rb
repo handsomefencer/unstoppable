@@ -70,12 +70,9 @@ module Roro
             msg << "            Help: #{help}" if help
           end
           say(msg.join("\n\s\s"))
-          # help = hint(d, :help)
-          # lucky = hint(d, :lucky)
-          # say("Installation help: #{help}") if help
-          # say("Platform:          #{platform}") if lucky
-          # say("Install with:      #{lucky}") if lucky
-          yes?("Do you feel lucky?") if lucky
+          if lucky && yes?("Do you feel lucky?")
+            lucky.each { |c| run c }
+          end
         end
 
 
