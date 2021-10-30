@@ -49,6 +49,7 @@ module Roro
         satisfier = DependencySatisfier.new
         builder = satisfier.satisfy_dependencies(manifest)
         @env[:env].merge(builder[:env])
+        raise Roro::Error builder.to_s
         @env[:actions].merge(builder[:actions])
       end
 
