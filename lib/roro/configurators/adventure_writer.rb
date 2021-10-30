@@ -13,7 +13,8 @@ module Roro
         def write(buildenv, storyfile)
           @env = buildenv[:env]
           @env[:force] = true
-          actions = buildenv[:actions] + read_yaml(storyfile)[:actions]
+          actions = buildenv[:actions] || []
+          actions = actions + read_yaml(storyfile)[:actions]
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
             actions.each do |a|
