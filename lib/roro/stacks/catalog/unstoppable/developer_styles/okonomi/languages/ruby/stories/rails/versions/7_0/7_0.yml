@@ -25,6 +25,9 @@ env:
     DATABASE_USERNAME:
       name: Database username
       value: postgres
+    DATABASE_HOST:
+      name: Database host
+      value: database
 
 actions:
   - directory 'stage_one', '.', @env
