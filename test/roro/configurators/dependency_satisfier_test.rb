@@ -78,7 +78,7 @@ describe 'DependencySatisfier' do
       context 'and when hint configured' do
         Given { stubs_host_os(:debian) }
 
-        context 'must return ' do
+        context 'must return' do
           Given(:stdout) { capture_io { satisfier.satisfy('git') }}
           Then  { assert_match 'Install with', stdout.first }
         end

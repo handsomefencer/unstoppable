@@ -8,7 +8,7 @@ module Roro
       include Thor::Actions
       include Utilities
 
-      attr_reader :dependencies, :checks, :dependencies, :manifest
+      attr_reader :dependencies, :checks, :dependencies, :manifest, :builder
 
       no_commands do
 
@@ -73,16 +73,19 @@ module Roro
           end
           say(msg.join("\n\s\s"))
           if lucky && yes?("Do you feel lucky?")
-            @builder[:env].merge(d.dig(:env) || {})
+            @builder ||= {
+              actions: [],
+              env: {}
+            }
+            @builder[:env].merge!(d.dig(:env) || {})
             @builder[:actions] + lucky
-            raise @builder.to_s
           end
         end
 
         def hint(hash, key)
+          hash
           case
-          when
-          OS.linux? && hash.dig(:overrides, platform_for(hash), key )
+          when OS.linux? && hash.dig(:overrides, platform_for(hash), key )
             hash.dig(:overrides, platform_for(hash), key)
           when hash.dig(:overrides, platform, key)
             hash.dig(:overrides, platform, key)
