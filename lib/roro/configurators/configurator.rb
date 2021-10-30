@@ -48,9 +48,9 @@ module Roro
 
       def satisfy_dependencies
         satisfier = DependencySatisfier.new
-        builder = satisfier.satisfy_dependencies(manifest)
-        @structure[:env].merge(builder.dig(:env) || {})
-        @structure[:actions] + builder[:actions]
+        dependency_hash = satisfier.satisfy_dependencies(manifest)
+        @structure[:env].merge(dependency_hash.dig(:env) || {})
+        @structure[:actions] + dependency_hash[:actions]
       end
 
       def accrete_story(story)
