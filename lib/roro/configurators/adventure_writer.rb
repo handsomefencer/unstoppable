@@ -14,7 +14,7 @@ module Roro
           @env = buildenv[:env]
           @env[:force] = true
           actions = buildenv[:actions] || []
-          raise read_yaml(storyfile)[:actions].to_s
+          raise read_yaml(storyfile).to_s
           actions = actions & read_yaml(storyfile)[:actions]
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
