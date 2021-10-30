@@ -6,7 +6,7 @@ env:
       value: 3
       help: https://www.python.org/doc/versions/
     POSTGRES_DB:
-      name: Postgres databasconfigurarbe name
+      name: Postgres database name
       value: postgres
       help: https://www.postgresql.org/docs/9.0/manage-ag-createdb.html
     POSTGRES_USER:
