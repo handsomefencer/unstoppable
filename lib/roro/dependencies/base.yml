@@ -2,6 +2,7 @@ gitsome:
   name: git
   command: gitsome -v
   help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+  lucky:
   overrides:
     linux:
       lucky:
@@ -18,6 +19,9 @@ gitsome:
       lucky:
         - sudo apt install git-all
         - sudo apt-get install install-info
+        - git config --global user.email jane.doe@example.com
+        - git config --global user.name Jane Doe
+
 
 doctl:
   name: doctl
