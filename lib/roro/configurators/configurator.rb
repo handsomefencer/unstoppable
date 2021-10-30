@@ -67,6 +67,7 @@ module Roro
       end
 
       def write_story
+        raise 'made it'
         @manifest.sort.each { |m| @writer.write(@structure[:env], m) }
       end
     end
