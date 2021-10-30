@@ -50,7 +50,7 @@ module Roro
         dependency_hash = satisfier.satisfy_dependencies(manifest)
         @structure[:actions] = dependency_hash[:actions]
         @structure[:env] = dependency_hash.dig(:env) || {}
-        raise "dep hash: #{dependency_hash.to_s} \n @structure: #{@structure}"
+        # raise "dep hash: #{dependency_hash.to_s} \n @structure: #{@structure}"
       end
 
       def accrete_story(story)
