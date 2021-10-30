@@ -19,6 +19,8 @@ module Roro
         @structure = StructureBuilder.build
         @asker     = QuestionAsker.new
         @writer    = AdventureWriter.new
+        @env       = @structure[:env]
+
       end
 
       def rollon
@@ -40,7 +42,6 @@ module Roro
       end
 
       def build_env
-        @env = @structure[:env]
         manifest.each { |story| accrete_story(story) }
         override_environment_variables
       end
