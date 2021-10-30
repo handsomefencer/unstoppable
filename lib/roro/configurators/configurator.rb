@@ -59,12 +59,13 @@ module Roro
       end
 
       def override_environment_variables
-        raise @structure.to_s
         @structure[:env].each do |e, h| h.each do |k, v|
             answer = @asker.confirm_default(@builder.override(e, k, v), h)
             answer.eql?('') ? return : v[:value] = answer
           end
         end
+        raise @structure.to_s
+
       end
 
       def write_story
