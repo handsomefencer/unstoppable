@@ -25,7 +25,6 @@ module Roro
           gather_checks
           checks.each { |c| validate_check(c) }
           checks.each { |c| satisfy(c) }
-          raise @builder.to_s
           @builder
         end
 
@@ -76,6 +75,7 @@ module Roro
           if lucky && yes?("Do you feel lucky?")
             @builder[:env].merge(d.dig(:env) || {})
             @builder[:actions] + lucky
+            raise @builder.to_s
           end
         end
 
