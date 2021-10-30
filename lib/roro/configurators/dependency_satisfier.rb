@@ -78,7 +78,7 @@ module Roro
               env: {}
             }
             @builder[:env].merge!(d.dig(:env) || {})
-            @builder[:actions] + lucky
+            @builder[:actions] = @builder[:actions] + lucky
           end
         end
 
