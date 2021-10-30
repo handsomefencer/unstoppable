@@ -64,11 +64,10 @@ module Roro
             answer.eql?('') ? return : v[:value] = answer
           end
         end
-        raise @structure.to_s
-
       end
 
       def write_story
+        raise @structure.to_s
         @manifest.sort.each { |m| @writer.write(@structure[:env], m) }
       end
     end
