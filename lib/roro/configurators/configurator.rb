@@ -38,7 +38,7 @@ module Roro
       def choose_adventure
         @adventure.build_itinerary(@stack)
         @itinerary = @adventure.itinerary
-        @manifest = @adventure.manifest
+        @manifest  = @adventure.manifest
       end
 
       def build_env
@@ -50,8 +50,8 @@ module Roro
         satisfier = DependencySatisfier.new
         builder = satisfier.satisfy_dependencies(manifest)
         # raise  builder.to_s
-        @env[:env].merge(builder[:env] || {})
-        @env[:actions].merge(builder[:actions] || [])
+        @env[:env].merge(builder.dig(:env) || {})
+        @env[:actions].merge(builder.dig(:actions) || [])
       end
 
       def accrete_story(story)
