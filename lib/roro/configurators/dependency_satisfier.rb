@@ -23,9 +23,7 @@ module Roro
           checks.each { |c| satisfy(c) }
           @builder = {
             actions: [],
-            env: {
-              base: {}
-            }
+            env: {}
           }
         end
 
@@ -74,8 +72,8 @@ module Roro
           end
           say(msg.join("\n\s\s"))
           if lucky && yes?("Do you feel lucky?")
-            @builder[:env] = d[:env]
-            @builder[:actions] = lucky
+            @builder[:env] = d[:env] || {}
+            @builder[:actions] + lucky
           end
         end
 
