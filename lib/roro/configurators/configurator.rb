@@ -58,7 +58,7 @@ module Roro
       end
 
       def override_environment_variables
-        @env.each do |e, h| h.each do |k, v|
+        @structure[:env].each do |e, h| h.each do |k, v|
             answer = @asker.confirm_default(@builder.override(e, k, v), h)
             answer.eql?('') ? return : v[:value] = answer
           end
@@ -66,7 +66,7 @@ module Roro
       end
 
       def write_story
-        @manifest.sort.each { |m| @writer.write(@env, m) }
+        @manifest.sort.each { |m| @writer.write(@structure[:env], m) }
       end
     end
 
