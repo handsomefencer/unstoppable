@@ -51,7 +51,7 @@ module Roro
         builder = satisfier.satisfy_dependencies(manifest)
         # raise  builder.to_s
         @structure[:env].merge(builder.dig(:env) || {})
-        # @env[:actions].merge(builder.dig(:actions) || [])
+        @structure[:actions] + builder[:actions]
       end
 
       def accrete_story(story)
