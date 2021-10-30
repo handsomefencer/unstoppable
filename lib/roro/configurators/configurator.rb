@@ -49,10 +49,8 @@ module Roro
       def satisfy_dependencies
         satisfier = DependencySatisfier.new
         builder = satisfier.satisfy_dependencies(manifest)
-        # raise  builder.to_s
         @structure[:env].merge(builder.dig(:env) || {})
         @structure[:actions] + builder[:actions]
-        raise builder.to_s
       end
 
       def accrete_story(story)

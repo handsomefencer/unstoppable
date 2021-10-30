@@ -25,6 +25,7 @@ module Roro
           gather_checks
           checks.each { |c| validate_check(c) }
           checks.each { |c| satisfy(c) }
+          raise @builder.to_s
           @builder
         end
 
