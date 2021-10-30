@@ -5,7 +5,7 @@ require 'os'
 module Roro
   module Configurators
     class DependencySatisfier < Thor
-
+      include Thor::Actions
       include Utilities
 
       attr_reader :dependencies, :checks, :dependencies, :manifest
