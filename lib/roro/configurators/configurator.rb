@@ -52,7 +52,7 @@ module Roro
         # raise  builder.to_s
         @structure[:env].merge(builder.dig(:env) || {})
         @structure[:actions] + builder[:actions]
-        raise @structure.to_s
+        raise builder.to_s
       end
 
       def accrete_story(story)
