@@ -48,8 +48,8 @@ module Roro
       def satisfy_dependencies
         satisfier = DependencySatisfier.new
         builder = satisfier.satisfy_dependencies(manifest)
-        @env[:env].merge(builder[:env])
         raise Roro::Error builder.to_s
+        @env[:env].merge(builder[:env])
         @env[:actions].merge(builder[:actions])
       end
 
