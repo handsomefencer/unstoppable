@@ -3,6 +3,15 @@ gitsome:
   command: gitsome -v
   help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
   lucky:
+  env:
+    base:
+      git_config_user_name:
+        name: The name you'd like associated with git activities
+        value: Jane Doe
+      git_config_user_email:
+        name: The email address you'd like associated with git activities
+        value: jane.doe@example.com
+
   overrides:
     linux:
       lucky:

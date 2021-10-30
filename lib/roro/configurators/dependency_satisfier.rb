@@ -21,6 +21,12 @@ module Roro
           gather_checks
           checks.each { |c| validate_check(c) }
           checks.each { |c| satisfy(c) }
+          @builder = {
+            actions: [],
+            env: {
+              base: {}
+            }
+          }
         end
 
         def gather_base_dependencies(stack = Roro::CLI.dependency_root)
@@ -53,12 +59,9 @@ module Roro
         def satisfy(check)
           d = dependencies[check.to_sym]
           return if dependency_met?(check)
-          # return if dependency_met?(d[:command])
           help = hint(d, :help)
           lucky = hint(d, :lucky)
-          # say("Missing Dependency: #{set_color(check, :yellow)}")
           msg = ["\n\n#{set_color("Missing Dependency", :yellow)}: #{check}"]
-
           if lucky
             msg << "        #{set_color("Platform", :yellow)}: #{platform}"
             msg << "    #{set_color("Install with", :yellow)}: $ #{lucky.shift}"
@@ -71,10 +74,10 @@ module Roro
           end
           say(msg.join("\n\s\s"))
           if lucky && yes?("Do you feel lucky?")
-            lucky.each { |c| run c }
+            @builder[:env] = d[:env]
+            @builder[:actions] = lucky
           end
         end
-
 
         def hint(hash, key)
           case
