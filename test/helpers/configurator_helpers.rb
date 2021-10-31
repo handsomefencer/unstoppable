@@ -3,12 +3,20 @@
 module Minitest
   class Spec
 
-    def stub_dependencies_installed
+    def stubs_dependency_met?(dependency, value = false)
       Roro::Configurators::Configurator
         .any_instance
-        .stubs(:dependency_installed?)
-        .with(dependency.keys.first.to_s)
-        .returns(installed)
+        .stubs(:dependency_met?)
+        .with(dependency)
+        .returns(value)
+    end
+
+    def stubs_yes?(value = true)
+      Thor::Shell::Basic
+        .any_instance
+        .stubs(:yes?)
+        .returns(value)
+
     end
 
     def stub_run_actions

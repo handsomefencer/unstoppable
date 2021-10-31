@@ -7,18 +7,22 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
+    stubs_dependency_met?(:git)
+    stubs_yes?
     stub_adventure
     stub_overrides
     stub_run_actions
-    quiet { cli.rollon }
-    # cli.rollon
+    # quiet { cli.rollon }
+    cli.rollon
   }
 
-  # Given { rollon unless adventures.empty?}
+  Given { rollon unless adventures.empty?}
 
   describe 'must generate a' do
     describe 'Gemfile with the correct rails version' do
-      # Then  { assert_file 'Gemfile', /'rails', '~>7.0.0.alpha2'/ }
+
+
+      Then  { assert_file 'Gemfile', /'rails', '~>7.0.0.alpha2'/ }
 
     end
 

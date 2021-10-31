@@ -10,12 +10,11 @@ module Roro
 
       no_commands do
 
-        def write(buildenv, storyfile)
+        def write(buildenv, storyfile = nil)
           @env = buildenv[:env]
           @env[:force] = true
-          actions = buildenv[:actions] || []
-          raise read_yaml(storyfile).to_s
-          actions = actions & read_yaml(storyfile)[:actions]
+          # actions = buildenv[:actions] || []
+          actions = storyfile ? read_yaml(storyfile).dig(:actions) : buildenv[:actions]
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
             actions.each do |a|

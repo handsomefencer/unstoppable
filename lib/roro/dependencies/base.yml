@@ -1,4 +1,4 @@
-gitsome:
+git:
   name: git
   command: gitsome -v
   help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
