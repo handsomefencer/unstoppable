@@ -27,7 +27,12 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
-    image: redis:5.0.7
+    image: redis
+    ports:
+      - "6379:6379"
+    env_file:
+      - ./mise/env/base.env
+      - ./mise/env/development.env
 
   sidekiq:
     build:

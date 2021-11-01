@@ -1,8 +1,8 @@
 preface: some string
 
-depends_on:
+#depends_on:
 #  - git
-  - docker
+#  - docker
 env:
   base:
     git_config_user_name:
@@ -15,16 +15,18 @@ env:
       name: Ruby on Rails minor version
       value: 7.0.0.alpha2
 
+#  REDIS_URL=redis://redis:6379/0
+
 
 actions:
-  - directory 'stage_one', '.', @env
-  - run 'sudo chown -R $USER:$USER .'
+  - directory "stage_one", '.', @env
   - |
     generator = Roro::CLI.new
     generator.generate_mise
     generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
     generator.generate_environments @env
     generator.generate_keys
+  - run 'sudo chown -R $USER:$USER .'
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
   - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
@@ -33,5 +35,6 @@ actions:
   - run "sudo chown -R $USER:$USER ."
   - run "sudo docker-compose run app rake db:create"
   - run "sudo docker-compose up -d"
+
 
 

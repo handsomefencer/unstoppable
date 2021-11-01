@@ -24,21 +24,13 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
       Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.0.alpha2/ }
     end
 
-    describe 'a file in the adjacent templates directory' do
-     # Then  { assert_file 'Dockerfile' }
-
-      describe 'with expected content matching regex' do
-        # Then  { assert_file 'Dockerfile', /FROM ruby:3.0/ }
+    describe 'Dockerfile' do
+      describe 'ruby version' do
+        Then  { assert_file 'Dockerfile', /FROM ruby:3.0/ }
       end
 
-      describe 'with expected content the same as actual content string' do
-#       Then  { assert_file 'path_to_expected_file', 'expected_content' }
-      end
-
-      describe 'with many strings expected to have been interpolated' do
-
-#        Given(:strings) { [1, :second, third] }
-#        Then { strings.each { |c| assert_file 'path_to_expected_file', c }
+      describe 'yarn install command' do
+        Then   { assert_file 'Dockerfile', /RUN yarn install/ }
       end
     end
   end

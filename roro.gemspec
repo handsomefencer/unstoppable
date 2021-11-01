@@ -40,6 +40,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-hooks'
   spec.add_development_dependency 'minitest-profile'
   spec.add_development_dependency 'mocha', '~> 1.11', '>= 1.11.2'
-  spec.add_development_dependency 'readline'
+  spec.add_development_dependency 'rb-readline'
 
 end
