@@ -10,7 +10,7 @@ module Roro
 
       attr_reader :structure, :itinerary, :manifest, :stack, :env
 
-      def initialize(options = {} )
+      def initialize(options = {})
         @options   = options ? options : {}
         @stack     = options[:stack] || CatalogBuilder.build
         @validator = Validator.new(@stack)
@@ -19,6 +19,7 @@ module Roro
         @structure = StructureBuilder.build
         @asker     = QuestionAsker.new
         @writer    = AdventureWriter.new
+        @env       = @structure[:env]
       end
 
       def rollon
@@ -27,6 +28,7 @@ module Roro
         satisfy_dependencies
         build_env
         write_story
+        structure[:env] = structure[:env].merge(@dependency_hash)
       end
 
       def validate_stack
@@ -45,9 +47,8 @@ module Roro
       end
 
       def satisfy_dependencies
-        satisfier = DependencySatisfier.new
-        dependency_hash = satisfier.satisfy_dependencies(manifest)
-        @structure[:env].merge!(dependency_hash)
+        @satisfier = DependencySatisfier.new
+        @dependency_hash = @satisfier.satisfy_dependencies(manifest)
       end
 
       def accrete_story(story)
@@ -56,7 +57,6 @@ module Roro
       end
 
       def override_environment_variables
-        @structure[:env][:force] = true
         @structure[:env].each do |e, h| h.each do |k, v|
             answer = @asker.confirm_default(@builder.override(e, k, v), h)
             answer.eql?('') ? return : v[:value] = answer
@@ -67,11 +67,6 @@ module Roro
       def write_story
         @manifest.sort.each { |m| @writer.write(@structure, m) }
       end
-    end
-
-    def installed?(installable)
-      result = `command -v #{installable} &> /dev/null`
-      result.match?(installable)
     end
   end
 end
