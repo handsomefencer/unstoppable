@@ -2,6 +2,9 @@ preface: some string
 
 env:
   base:
+    ruby_version:
+      name: Ruby minor version
+      value: 2.7.4
     git_config_user_name:
       name: The name you'd like associated with git activities
       value: Jane Doe
@@ -10,7 +13,10 @@ env:
       value: jane.doe@example.com
     rails_version:
       name: Ruby on Rails minor version
-      value: 7.0.0.alpha2
+      value: 6.1
+    bundler_version:
+      name: Bundler version
+      value: 2.2.30
     JOB_WORKER_URL:
       name: Reids job worker url
       value: redis://redis:6379/0
@@ -19,6 +25,7 @@ env:
       value: redis://redis:6379/0
 
 actions:
+  - run "sudo chown -R $USER:$USER ."
   - directory "stage_one", '.', @env
   - |
     generator = Roro::CLI.new
@@ -26,15 +33,12 @@ actions:
     generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
     generator.generate_environments @env
     generator.generate_keys
-  - run 'sudo chown -R $USER:$USER .'
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
+  - run "sudo chown -R $USER:$USER ."
   - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
-  - run "sudo chown -R $USER:$USER ."
   - run "sudo docker-compose build"
-  - run "sudo chown -R $USER:$USER ."
   - run "sudo docker-compose run app rake db:create"
-  - run "sudo docker-compose up -d"
 
 
 

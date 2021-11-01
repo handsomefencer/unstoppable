@@ -38,6 +38,7 @@ COPY . ./
 
 RUN yarn install --check-files
 
-# RUN bundle exec rake webpacker:compile?
+ RUN bundle exec rake webpacker:install
+
 
 CMD ["./entrypoints/docker-entrypoint.sh"]

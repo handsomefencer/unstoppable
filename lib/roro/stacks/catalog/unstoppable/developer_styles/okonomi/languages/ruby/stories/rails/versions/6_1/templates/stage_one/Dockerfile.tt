@@ -34,10 +34,10 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
+RUN yarn install
+
 COPY . ./
 
-RUN yarn install --check-files
-
-# RUN bundle exec rake webpacker:compile?
+RUN bundle install
 
 CMD ["./entrypoints/docker-entrypoint.sh"]

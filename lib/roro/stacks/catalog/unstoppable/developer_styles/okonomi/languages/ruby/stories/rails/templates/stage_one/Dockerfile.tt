@@ -4,12 +4,11 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 RUN apk add --no-cache \
       build-base \
       postgresql-dev \
-      git
 
 WORKDIR /app
 
 ## Create a Gemfile with just the Rails gem inside:
-RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '<%= @env[:base][:rails_version][:value] %>'" > Gemfile
+RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> <%= @env[:base][:rails_version][:value] %>'" > Gemfile
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 RUN bundle config --local && \
   bundle install -j4 --retry 3

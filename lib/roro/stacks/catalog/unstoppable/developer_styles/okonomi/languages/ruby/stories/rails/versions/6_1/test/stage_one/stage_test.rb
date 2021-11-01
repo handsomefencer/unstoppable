@@ -7,7 +7,7 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
-    copy_stage_dummy(__dir__)
+    # copy_stage_dummy(__dir__)
     stubs_dependencies_met?
     stubs_yes?
     stub_adventure
@@ -21,7 +21,8 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
 
   describe 'must generate a' do
     describe 'Gemfile with the correct rails version' do
-      Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.0.alpha2/ }
+      focus
+      Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 6.1/ }
     end
 
     describe 'Dockerfile' do
