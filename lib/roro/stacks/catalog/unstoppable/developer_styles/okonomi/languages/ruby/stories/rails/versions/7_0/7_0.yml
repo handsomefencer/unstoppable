@@ -13,30 +13,7 @@ env:
     rails_version:
       name: Ruby on Rails minor version
       value: 7.0.0.alpha2
-    DATABASE_NAME:
-      name: Database name
-      value: postgres
-    DATABASE_PASSWORD:
-      name: Database password
-      value: postgres
-    DATABASE_USERNAME:
-      name: Database username
-      value: postgres
-    DATABASE_HOST:
-      name: Database host
-      value: database
-    POSTGRES_NAME:
-      name: Database name
-      value: ${DATABASE_NAME}
-    POSTGRES_PASSWORD:
-      name: Database password
-      value: ${DATABASE_PASSWORD}
-    POSTGRES_USERNAME:
-      name: Database username
-      value: ${DATABASE_USERNAME}
-    POSTGRES_HOST:
-      name: Database host
-      value: ${DATABASE_HOST}
+
 
 actions:
   - directory 'stage_one', '.', @env
