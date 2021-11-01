@@ -1,6 +1,6 @@
 git:
   name: git
-  command: gitsome -v
+  command: git version
   help: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
   lucky:
   env:
