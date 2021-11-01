@@ -32,4 +32,4 @@ env:
       value: ${DATABASE_HOST}
 actions:
   - directory 'stage_one', '.', @env
-  - run 'sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+  - run 'sucdo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
