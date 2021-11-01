@@ -3,6 +3,11 @@
 module Minitest
   class Spec
 
+    def copy_stage_dummy(path)
+      list = Dir.glob("#{path}/stage_dummy/**/*")
+      FileUtils.cp_r(list, Dir.pwd )
+    end
+
     def stubs_dependency_met?(dependency, value = false)
       Roro::Configurators::Configurator
         .any_instance
@@ -11,14 +16,25 @@ module Minitest
         .returns(value)
     end
 
+    def stubs_dependencies_met?(value = false)
+      Roro::Configurators::Configurator
+        .any_instance
+        .stubs(:dependency_met?)
+        .returns(value)
+    end
+
     def stubs_yes?(value = true)
       Thor::Shell::Basic
         .any_instance
         .stubs(:yes?)
         .returns(value)
-
     end
 
+    def stubs_install_actions
+      Roro::Configurators::DependencySatisfier
+        .any_instance
+        .stubs(:run)
+    end
     def stub_run_actions
       Roro::Configurators::AdventureWriter
         .any_instance

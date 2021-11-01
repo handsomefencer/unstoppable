@@ -19,7 +19,6 @@ module Roro
         @structure = StructureBuilder.build
         @asker     = QuestionAsker.new
         @writer    = AdventureWriter.new
-        @env       = @structure[:env]
       end
 
       def rollon
@@ -48,9 +47,7 @@ module Roro
       def satisfy_dependencies
         satisfier = DependencySatisfier.new
         dependency_hash = satisfier.satisfy_dependencies(manifest)
-        @structure[:actions] = dependency_hash[:actions]
-        @structure[:env] = dependency_hash.dig(:env) || {}
-        # raise "@structure: #{@structure}"
+        @structure[:env].merge!(dependency_hash)
       end
 
       def accrete_story(story)
@@ -59,6 +56,7 @@ module Roro
       end
 
       def override_environment_variables
+        @structure[:env][:force] = true
         @structure[:env].each do |e, h| h.each do |k, v|
             answer = @asker.confirm_default(@builder.override(e, k, v), h)
             answer.eql?('') ? return : v[:value] = answer

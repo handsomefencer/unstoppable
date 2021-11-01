@@ -8,7 +8,7 @@ module Roro
       include Thor::Actions
       include Utilities
 
-      attr_reader :dependencies, :checks, :dependencies, :manifest, :builder
+      attr_reader :dependencies, :checks, :dependencies, :manifest, :builder, :env
 
       no_commands do
 
@@ -25,7 +25,16 @@ module Roro
           gather_checks
           checks.each { |c| validate_check(c) }
           checks.each { |c| satisfy(c) }
-          @builder
+          install_dependencies
+
+        end
+
+        def install_dependencies
+          actions = @builder[:actions]
+          actions.each do |a|
+            eval a
+          end
+          @env = @builder[:env] || {}
         end
 
         def gather_base_dependencies(stack = Roro::CLI.dependency_root)
@@ -81,6 +90,8 @@ module Roro
             @builder[:actions] = @builder[:actions] + lucky
           end
         end
+
+
 
         def hint(hash, key)
           hash
