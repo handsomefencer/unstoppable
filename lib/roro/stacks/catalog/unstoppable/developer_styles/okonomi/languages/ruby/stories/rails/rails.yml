@@ -1,3 +1,13 @@
 preface: A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant
   syntax that is natural to read and easy to write.
 
+env:
+  base:
+    app_name:
+      name: Name for your app
+      value: unstoppable_app
+
+actions:
+  - directory 'stage_one', '.', @env
+  - run 'sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+  - run 'sudo chown -R $USER:$USER .'
