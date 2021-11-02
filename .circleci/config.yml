@@ -71,7 +71,7 @@ jobs:
     parameters:
       answers:
         type: string
-        default: "1\n4"
+        default: 1\1
       os:
         type: executor
         default: linux
@@ -82,7 +82,7 @@ jobs:
           version: 19.03.12
       - run: |
           rake install &&
-          printf "<< parameters.answers >>\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny\ny$var\n" | roro rollon
+          printf "<< parameters.answers >>\na$var\n" | roro rollon
       - run: echo 'success'
 
   release:
@@ -104,14 +104,18 @@ workflows:
           matrix:
             parameters:
               answers:
-                - "1 1"
-#                - "1\n2"
-#                - "1\n3"
-#                - "1\n4"
-#                - "1\n5"
-#                - "2\n1"
-#                - "3\n1"
-#                - "3\n2"
+                - 1\n1
+                - 1\n2
+                - 1\n3
+                - 1\n4
+                - 1\n5
+                - 2\n1
+                - 2\n2\1\1
+                - 2\n2\1\2
+                - 3\n1
+                - 3\n2
+                - 4\n2
+                - 4\n3
               os: [linux]
 
   matrix-test-against-rubies:
@@ -120,7 +124,11 @@ workflows:
           <<: *major_only
           matrix:
             parameters:
-              version: [ "2.5", "2.6", "2.7", "3.0" ]
+              version:
+                - 2.5
+                - 2.6
+                - 2.7
+                - 3.0
 
   gem-release:
     jobs:
