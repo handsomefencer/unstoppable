@@ -25,7 +25,6 @@ env:
       value: redis://redis:6379/0
 
 actions:
-  - run "sudo chown -R $USER:$USER ."
   - directory "stage_one", '.', @env
   - |
     generator = Roro::CLI.new
@@ -35,10 +34,11 @@ actions:
     generator.generate_keys
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
-  - run "sudo chown -R $USER:$USER ."
   - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
   - run "sudo docker-compose build"
+  - run "sudo docker-compose run app bin/rails webpacker:install"
   - run "sudo docker-compose run app rake db:create"
+  - run "sudo docker-compose up"
 
 
 

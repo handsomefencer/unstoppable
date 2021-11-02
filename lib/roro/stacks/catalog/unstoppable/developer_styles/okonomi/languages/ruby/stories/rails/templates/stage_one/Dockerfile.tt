@@ -1,9 +1,10 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
 # Add only packages necessary to generate a new rails app
-RUN apk add --no-cache \
-      build-base \
-      postgresql-dev \
+RUN apk add \
+  build-base \
+  git \
+  postgresql-dev
 
 WORKDIR /app
 
