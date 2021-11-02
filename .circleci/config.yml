@@ -125,10 +125,10 @@ workflows:
           matrix:
             parameters:
               version:
-                - 2.5
-                - 2.6
-                - 2.7
-                - 3.0
+                - '2.5'
+                - '2.6'
+                - '2.7'
+                - '3.0'
 
   gem-release:
     jobs:
