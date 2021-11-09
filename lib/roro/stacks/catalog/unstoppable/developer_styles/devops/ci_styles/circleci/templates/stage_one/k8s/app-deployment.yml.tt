@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: <%= @env[:base][:app_name] %>
+  name: <%= @env[:base][:app_name][:value] %>
   namespace: default
   labels:
-    app: <%= @env[:base][:app_name] %>
+    app: <%= @env[:base][:app_name][:value] %>
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: <%= @env[:base][:app_name] %>
+      app: <%= @env[:base][:app_name][:value] %>
   template:
     metadata:
       labels:
-        app: <%= @env[:base][:app_name] %>
+        app: <%= @env[:base][:app_name][:value] %>
     spec:
       containers:
-        - name: <%= @env[:base][:app_name] %>
-          image: handsomefencer/<%= @env[:base][:app_name] %>:$COMMIT_SHA1
+        - name: <%= @env[:base][:app_name][:value] %>
+          image: <%= @env[:base][:DOCKERHUB_ORGANIZATION][:value] %>/<%= @env[:base][:app_name][:value] %>:$COMMIT_SHA1
           ports:
             - containerPort: 80
               name: http

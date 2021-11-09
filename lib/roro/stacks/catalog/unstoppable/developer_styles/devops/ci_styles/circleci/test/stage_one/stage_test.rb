@@ -16,35 +16,26 @@ describe 'lib roro stacks catalog unstoppable developer_styles devops ci_styles 
   Given { rollon unless adventures.empty?}
 
   describe 'must generate a' do
+    Given(:app_name) { 'unstoppable_devops' }
+    Given(:org_name) { 'your-dockerhub-organization' }
+    Given(:image)    { "#{org_name}/#{app_name}" }
+
+    describe 'scripts directory with ci-deploy.sh' do
+      Then  { assert_file './scripts/ci-deploy.sh', /k8s\/app-deployment.yml/ }
+    end
+
+    describe '.circleci directory with config.yml' do
+      Then  { assert_file './.circleci/config.yml', /IMAGE_NAME: #{image}/ }
+    end
+
     describe 'k8s directory with' do
       describe 'app-deployment.yml' do
-        Then  { assert_file './k8s/app-deployment.yml', /unstoppable_devops/ }
+        Then  { assert_file './k8s/app-deployment.yml', /image: #{image}/ }
       end
 
       describe 'app-service.yml' do
-        Then  { assert_file './k8s/app-service.yml', /unstoppable_devops/ }
-      end
-    end
-
-    describe '.keep file so Git keeps the directory under source control' do
-      # Then  { assert_file '.keep' }
-    end
-
-    describe 'a file in the adjacent templates directory' do
-#      Then  { assert_file 'path_to_expected_file' }
-
-      describe 'with expected content matching regex' do
-#       Then  { assert_file 'path_to_expected_file', /expected_content' }
-      end
-
-      describe 'with expected content the same as actual content string' do
-#       Then  { assert_file 'path_to_expected_file', 'expected_content' }
-      end
-
-      describe 'with many strings expected to have been interpolated' do
-
-#        Given(:strings) { [1, :second, third] }
-#        Then { strings.each { |c| assert_file 'path_to_expected_file', c }
+        Then  { assert_file './k8s/app-service.yml', /app: #{app_name}/ }
+        And   { assert_file './k8s/app-service.yml', /name: #{app_name}/ }
       end
     end
   end
