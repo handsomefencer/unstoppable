@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <%= @env[:base][:app_name] %>
+  namespace: default
+  labels:
+    app: <%= @env[:base][:app_name] %>
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <%= @env[:base][:app_name] %>
+  template:
+    metadata:
+      labels:
+        app: <%= @env[:base][:app_name] %>
+    spec:
+      containers:
+        - name: <%= @env[:base][:app_name] %>
+          image: handsomefencer/<%= @env[:base][:app_name] %>:$COMMIT_SHA1
+          ports:
+            - containerPort: 80
+              name: http

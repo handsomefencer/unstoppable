@@ -16,11 +16,18 @@ describe 'lib roro stacks catalog unstoppable developer_styles devops ci_styles 
   Given { rollon unless adventures.empty?}
 
   describe 'must generate a' do
-    describe 'k8s directory' do
-      Then  { assert_file '.keep' }
+    describe 'k8s directory with' do
+      describe 'app-deployment.yml' do
+        Then  { assert_file './k8s/app-deployment.yml', /unstoppable_devops/ }
+      end
+
+      describe 'app-service.yml' do
+        Then  { assert_file './k8s/app-service.yml', /unstoppable_devops/ }
+      end
     end
+
     describe '.keep file so Git keeps the directory under source control' do
-      Then  { assert_file '.keep' }
+      # Then  { assert_file '.keep' }
     end
 
     describe 'a file in the adjacent templates directory' do
