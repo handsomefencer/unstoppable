@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: do-kubernetes-sample-app
+  namespace: default
+  labels:
+    app: do-kubernetes-sample-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: do-kubernetes-sample-app
+  template:
+    metadata:
+      labels:
+        app: do-kubernetes-sample-app
+    spec:
+      containers:
+        - name: do-kubernetes-sample-app
+          image: handsomefencer/do-kubernetes-sample-app:$COMMIT_SHA1
+          ports:
+            - containerPort: 80
+              name: http
