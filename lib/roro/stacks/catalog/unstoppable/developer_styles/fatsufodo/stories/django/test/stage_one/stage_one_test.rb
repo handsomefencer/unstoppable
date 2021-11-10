@@ -1,6 +1,7 @@
 require "test_helper"
 
 describe 'Roro::CLI#rollon' do
+  Given { skip }
   Given(:workbench)  { 'django' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { [''] }

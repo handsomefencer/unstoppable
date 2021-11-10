@@ -5,7 +5,7 @@ describe 'kubernetes ingress nginx cert-manager' do
   Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[4] }
+  Given(:adventures) { %w[5 1] }
   Given(:overrides)  { %w[4 1] }
 
   Given(:rollon)    {

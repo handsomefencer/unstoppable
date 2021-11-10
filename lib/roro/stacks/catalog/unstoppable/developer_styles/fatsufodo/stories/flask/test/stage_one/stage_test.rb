@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'lib roro stacks catalog unstoppable developer_styles fatsufodo stories flask' do
+  Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:adventures) { %w[1 3] }

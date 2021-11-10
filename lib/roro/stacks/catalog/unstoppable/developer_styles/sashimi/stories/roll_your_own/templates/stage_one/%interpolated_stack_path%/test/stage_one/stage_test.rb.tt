@@ -7,6 +7,7 @@ describe '<%= "#{@env[:stack_path].gsub('/', ' ')}" %>' do
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
+    copy_stage_dummy(__dir__)
     stub_adventure
     stub_overrides
     stub_run_actions

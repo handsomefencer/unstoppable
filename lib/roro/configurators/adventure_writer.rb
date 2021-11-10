@@ -20,8 +20,11 @@ module Roro
               eval a
             end
             self.source_paths.shift
-
           end
+        end
+
+        def partial(filename)
+          File.read("#{self.source_paths.last}/partials/_#{filename}")
         end
 
         def interpolated_stack_path
@@ -30,6 +33,10 @@ module Roro
 
         def interpolated_story_name
           "#{@env[:story]}"
+        end
+
+        def write_log(log)
+          create_file 'mise/log.yml', log.to_yaml
         end
       end
     end

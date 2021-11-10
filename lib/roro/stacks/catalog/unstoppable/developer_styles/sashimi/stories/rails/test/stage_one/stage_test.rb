@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'lib roro stacks catalog unstoppable developer_styles sashimi stories rails' do
+  Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:adventures) { %w[4 2] }

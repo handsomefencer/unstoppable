@@ -13,7 +13,7 @@ describe 'okonomi roll_your_own' do
     cli.rollon
   }
 
-  Given(:adventures) { %w[2 1] }
+  Given(:adventures) { %w[3 1 1] }
 
   Given  {
     rollon
@@ -21,9 +21,9 @@ describe 'okonomi roll_your_own' do
   }
 
   describe 'testing cli ask and say' do
-    Given(:adventures) { %w[] }
+    # Given(:adventures) { %w[] }
 
-    Then { }
+    # Then { }
   end
   describe 'must generate' do
     describe 'templates with stage one' do

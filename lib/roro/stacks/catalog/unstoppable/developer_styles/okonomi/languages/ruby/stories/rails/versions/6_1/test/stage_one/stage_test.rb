@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages ruby stories rails versions 7_0' do
+  Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:adventures) { %w[ 2 2 1 1 ] }
@@ -21,7 +22,6 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
 
   describe 'must generate a' do
     describe 'Gemfile with the correct rails version' do
-      focus
       Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 6.1/ }
     end
 

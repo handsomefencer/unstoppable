@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe Configurator do
+  Given { skip }
   Given(:options) { {} }
   Given(:config)  { Configurator.new(options) }
 
