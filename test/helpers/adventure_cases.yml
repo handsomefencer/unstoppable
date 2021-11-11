@@ -19,6 +19,7 @@
 :sashimi:
   :kubernetes:
     :ingress:
-      :cert_manager: {}
+      :nginx:
+        :cert_manager: {}
   :rails: {}
   :roll_your_own: {}

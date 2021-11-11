@@ -3,7 +3,7 @@ require 'test_helper'
 describe 'okonomi ruby rails 7_0' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[ okonomi ruby rails 6_1 ] }
+  Given(:adventures) { %w[ okonomi ruby rails v6_1 ] }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {

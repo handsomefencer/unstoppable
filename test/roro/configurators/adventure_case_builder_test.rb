@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe AdventureCaseBuilder do
   Given(:case_builder) { AdventureCaseBuilder.new("#{Roro::CLI.roro_root}/stacks") }
-  Given(:expected) { read_yaml("#{Roro::CLI.test_root}/helpers/cases.yml") }
+  Given(:expected) { read_yaml("#{Roro::CLI.test_root}/helpers/adventure_cases.yml") }
 
   describe '#build_cases' do
     Given { case_builder.build_cases }
