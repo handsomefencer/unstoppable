@@ -8,6 +8,9 @@ module Roro
       "#{ENV['PWD']}/test"
     end
 
+    def self.stacks
+      "#{File.dirname(__FILE__)}/stacks/unstoppable/developer_styles"
+    end
     def self.source_root
       "#{@template_root || File.dirname(__FILE__)}/templates"
     end

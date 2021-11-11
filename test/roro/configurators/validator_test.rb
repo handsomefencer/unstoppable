@@ -9,7 +9,7 @@ describe Validator do
   context 'when no args supplied' do
     describe '#initialize' do
       describe '#stack' do
-        Then { assert_equal Roro::CLI.catalog_root, validator.stack }
+        Then { assert_equal Roro::CLI.stacks, validator.stack }
       end
 
       describe '#permitted_hidden_extensions' do

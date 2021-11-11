@@ -7,7 +7,7 @@ describe 'AdventureChooser' do
 
   describe '#initialize' do
     describe '#stack' do
-      Then { assert_equal Roro::CLI.catalog_root, adventure.stack }
+      Then { assert_equal Roro::CLI.stacks, adventure.stack }
     end
 
     describe '#itinerary' do

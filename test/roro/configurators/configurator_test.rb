@@ -5,7 +5,7 @@ require 'test_helper'
 describe Configurator do
   Given(:options)    { {} }
   Given(:config)     { Configurator.new(options) }
-  Given(:adventures) { %w[fatsufodo django ]}
+  Given(:adventures) { %w[ fatsufodo django ]}
 
   Given { stubs_adventure }
 

@@ -9,7 +9,7 @@ module Roro
       attr_reader :stack, :structure, :permitted_hidden_extensions, :permitted_story_extensions, :ext_permitted
 
       def initialize(stack = nil, structure = nil)
-        @stack         = stack     || Roro::CLI.catalog_root
+        @stack         = stack     || Roro::CLI.stacks
         @structure     = structure || StructureBuilder.build
         @error         = Roro::CatalogError
         @permitted_story_extensions  = %w[yml yaml]

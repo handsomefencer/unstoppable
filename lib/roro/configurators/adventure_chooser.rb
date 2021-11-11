@@ -11,7 +11,7 @@ module Roro
       def initialize
         @asker     = AdventurePicker.new
         @itinerary = []
-        @stack     = Roro::CLI.catalog_root
+        @stack     = Roro::CLI.stacks
       end
 
       def build_itinerary(stack=nil)

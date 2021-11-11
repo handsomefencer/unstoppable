@@ -43,22 +43,19 @@ module Minitest
     end
 
     def stubs_adventure
-      choices = journey_choices(*adventures)
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)
-        .returns(*choices)
+        .returns *journey_choices(*adventures.map(&:to_sym))
     end
 
     def journey_choices(*args)
       cases = read_yaml("#{Roro::CLI.test_root}/helpers/cases.yml")
       hash = args.last.is_a?(Hash) ? args.pop : cases
-      return unless hash.is_a?(Hash)
+      return if hash.empty?
       choice = args.shift
-      # hash.transform_keys! { |k| k }
-      args << hash[choice]
-      journey_choices(*args)
-      (@array ||= []).insert(0, hash.keys.index(choice.gsub('_', '-')) + 1)
+      journey_choices(*(args << hash[choice]))
+      (@array ||= []).insert(0, hash.keys.index(choice) + 1)
     end
 
     def stubs_journey(*args)

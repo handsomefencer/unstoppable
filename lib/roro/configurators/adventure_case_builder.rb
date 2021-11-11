@@ -7,7 +7,7 @@ module Roro
       attr_reader :cases, :itineraries
 
       def initialize(catalog=nil)
-        @catalog = catalog || Roro::CLI.catalog_root
+        @catalog = catalog || Roro::CLI.stacks
         @cases =  {}
       end
 
@@ -23,8 +23,11 @@ module Roro
         children(stack).each do |c|
           build_cases(c, cases)
         end
-
         @cases = cases
+      end
+
+      def document_cases
+        File.open("#{Dir.pwd}/test/helpers/adventure_cases.yml", "w") { |f| f.write(cases.to_yaml) }
       end
     end
   end
