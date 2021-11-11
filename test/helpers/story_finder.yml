@@ -12,8 +12,8 @@ okonomi:
   python:
   ruby:
     rails:
-      6-1:
-      7-0:
+      v6_1:
+      v7_0:
 
 omakase:
   rails:
@@ -23,7 +23,7 @@ sashimi:
   kubernetes:
     ingress:
       nginx:
-        cert-manager:
+        cert_manager:
   rails:
-  roll-your-own:
+  roll_your_own:
 

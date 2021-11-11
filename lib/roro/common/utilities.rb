@@ -173,7 +173,6 @@ module Roro
       stack.split('/').last
     end
 
-
     def sentence_from(array)
       array[1] ? "#{array[0..-2].join(', ')} and #{array[-1]}" : array[0]
     end
