@@ -51,10 +51,11 @@ module Minitest
     end
 
     def journey_choices(*args)
-      hash = args.last.is_a?(String) ? read_yaml("#{Roro::CLI.test_root}/helpers/story_finder.yml") : args.pop
+      cases = read_yaml("#{Roro::CLI.test_root}/helpers/cases.yml")
+      hash = args.last.is_a?(Hash) ? args.pop : cases
       return unless hash.is_a?(Hash)
       choice = args.shift
-      hash.transform_keys! { |k| k.to_s }
+      # hash.transform_keys! { |k| k }
       args << hash[choice]
       journey_choices(*args)
       (@array ||= []).insert(0, hash.keys.index(choice.gsub('_', '-')) + 1)
