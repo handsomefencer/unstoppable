@@ -36,6 +36,7 @@ require 'roro/version'
 
 module Roro
 
+  include Roro::Configurators
   class CLI < Thor
     include Utilities
     include FileReflection

@@ -20,6 +20,7 @@ module Roro
             end
           end
         end
+
         alias assert_directory assert_file
 
         def refute_file(file, *_contents)
