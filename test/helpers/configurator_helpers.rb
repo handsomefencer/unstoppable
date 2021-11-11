@@ -35,6 +35,7 @@ module Minitest
         .any_instance
         .stubs(:run)
     end
+
     def stub_run_actions
       Roro::Configurators::AdventureWriter
         .any_instance
@@ -46,6 +47,32 @@ module Minitest
         .any_instance
         .stubs(:ask)
         .returns(*adventures)
+    end
+
+    def stubs_adventure
+      choices = journey_choices(*adventures)
+      Roro::Configurators::AdventurePicker
+        .any_instance
+        .stubs(:ask)
+        .returns(*choices)
+    end
+
+    def journey_choices(*args)
+      hash = args.last.is_a?(String) ? read_yaml("#{@roro_dir}/test/helpers/story_finder.yml") : args.pop
+      return unless hash.is_a?(Hash)
+      choice = args.shift
+      hash.transform_keys! { |k| k.to_s }
+      args << hash[choice]
+      journey_choices(*args)
+      (@array ||= []).insert(0, hash.keys.index(choice.gsub('_', '-')) + 1)
+    end
+
+    def stubs_journey(*args)
+      answers = journey_choices(*args)
+      Thor::Shell::Basic
+        .any_instance
+        .stubs(:ask)
+        .returns(*answers)
     end
 
     def stub_journey(answers)

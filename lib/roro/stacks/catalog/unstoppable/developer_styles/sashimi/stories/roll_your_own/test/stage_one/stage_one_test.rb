@@ -1,30 +1,20 @@
 require "test_helper"
 
 describe 'okonomi roll_your_own' do
-  Given { skip }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
   Given(:workbench)  { 'empty'}
+  Given(:adventures) { %w[sashimi roll_your_own] }
 
   Given(:rollon)    {
-    stub_adventure
+    stubs_adventure
     stub_overrides
     stub_run_actions
-    cli.rollon
+    quiet { cli.rollon }
   }
 
-  Given(:adventures) { %w[3 1 1] }
+  Given { rollon }
 
-  Given  {
-    rollon
-    # quiet { rollon }
-  }
-
-  describe 'testing cli ask and say' do
-    # Given(:adventures) { %w[] }
-
-    # Then { }
-  end
   describe 'must generate' do
     describe 'templates with stage one' do
       Then  { assert_file 'mise/stacks/my_story/templates/stage_one/.keep' }

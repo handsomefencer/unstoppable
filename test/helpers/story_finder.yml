@@ -1,0 +1,29 @@
+devops:
+  circleci:
+
+fatsufodo:
+  django:
+  expressjs:
+  flask:
+  rails:
+  wordpress:
+
+okonomi:
+  python:
+  ruby:
+    rails:
+      6-1:
+      7-0:
+
+omakase:
+  rails:
+  wordpress:
+
+sashimi:
+  kubernetes:
+    ingress:
+      nginx:
+        cert-manager:
+  rails:
+  roll-your-own:
+

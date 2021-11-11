@@ -5,7 +5,9 @@ module Minitest
     before do
       if defined? workbench
         prepare_destination(*workbench)
+        @roro_dir = Dir.pwd
         Dir.chdir("#{@tmpdir}/workbench")
+
         @tmpdir_glob = Dir.glob("#{@tmpdir}/workbench/**/*")
       end
     end
