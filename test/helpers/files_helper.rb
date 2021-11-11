@@ -5,6 +5,15 @@ module Roro
     module Helpers
       module FilesHelper
 
+        def file_match_in_files?(file_matcher, files)
+          files.any? {|file| file.match file_matcher }
+        end
+
+        def assert_file_match_in(file_matcher, files)
+          assert file_match_in_files?(file_matcher, files),
+                 "'...#{file_matcher}' doesn't match any files in: #{files}"
+        end
+
         def assert_file(file, *contents)
           actual = Dir.glob("#{Dir.pwd}/**/*")
           assert File.exist?(file), "Expected #{file} to exist, but does not. actual: #{actual}"
@@ -31,37 +40,6 @@ module Roro
           source = [ENV.fetch('PWD'), 'test/fixtures/files', source].join('/')
           destination = [Dir.pwd, destination].join('/')
           FileUtils.cp(source, destination)
-        end
-
-        def yaml_from_template(file)
-          File.read([Roro::CLI.source_root, file].join('/'))
-        end
-
-        def assert_insertion
-          assert_file(file) { |c| assert_match(insertion, c) }
-        end
-
-        def assert_insertions
-          insertions.each { |_l| assert_file(file, insertions) }
-        end
-
-        def assert_insertions_in_environments
-          environments.each do |env|
-            config.env[:env] = env
-            insertions.each do |insertion|
-              assert_file(file) do |c|
-                assert_match(insertion, c)
-              end
-            end
-          end
-        end
-
-        def assert_removals
-          removals.each { |l| assert_file(file) { |c| refute_match(l, c) } }
-        end
-
-        def insert_dummy_encryptable(filename = './roro/dummy.smart.env')
-          insert_dummy filename
         end
 
         def insert_dummy_env(filename = 'roro/env/dummy.env')
