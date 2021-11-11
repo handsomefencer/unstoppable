@@ -9,7 +9,7 @@ describe AdventureCaseBuilder do
   describe '#build_cases' do
     Given(:cases) { case_builder.build_cases }
     focus
+    # Then { assert_equal cases.keys, expected }
     Then { assert_equal cases, expected }
   end
-
 end
