@@ -4,6 +4,10 @@ module Roro
   class CLI < Thor
     include Thor::Actions
 
+    def self.test_root
+      "#{ENV['PWD']}/test"
+    end
+
     def self.source_root
       "#{@template_root || File.dirname(__FILE__)}/templates"
     end

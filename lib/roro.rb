@@ -39,7 +39,6 @@ module Roro
   class CLI < Thor
     include Utilities
     include FileReflection
-
   end
 
   module FileReflection; end

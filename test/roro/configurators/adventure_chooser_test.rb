@@ -21,7 +21,7 @@ describe 'AdventureChooser' do
     Given(:manifest)        { adventure.manifest }
     Given(:build_itinerary) do
       stub_journey(answers) if defined?(answers)
-      adventure.build_itinerary(stack_path)
+      quiet { adventure.build_itinerary(stack_path) }
     end
 
     context 'when stack is story' do

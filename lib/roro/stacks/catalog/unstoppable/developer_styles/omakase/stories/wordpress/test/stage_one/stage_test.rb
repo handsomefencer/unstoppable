@@ -1,13 +1,12 @@
 require 'test_helper'
 
-describe 'lib roro stacks catalog unstoppable developer_styles omakase stories wordpress' do
-  Given { skip }
+describe 'omakase wordpress' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[3 2] }
+  Given(:adventures) { %w[omakase wordpress] }
   Given(:overrides)  { [''] }
   Given(:rollon)    {
-    stub_adventure
+    stubs_adventure
     stub_overrides
     stub_run_actions
     cli.rollon

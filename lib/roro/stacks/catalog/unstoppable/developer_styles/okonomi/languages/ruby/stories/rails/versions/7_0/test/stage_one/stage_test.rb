@@ -1,24 +1,22 @@
 require 'test_helper'
 
 describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages ruby stories rails versions 7_0' do
-  Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[ 2 2 1 1 ] }
+  Given(:adventures) { %w[ okonomi ruby rails 7_0 ] }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
     copy_stage_dummy(__dir__)
     stubs_dependencies_met?
     stubs_yes?
-    stub_adventure
+    stubs_adventure
     stub_overrides
     stub_run_actions
-    # quiet { cli.rollon }
     cli.rollon
   }
 
-  Given { rollon unless adventures.empty?}
+  Given { quiet { rollon } }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct rails version' do

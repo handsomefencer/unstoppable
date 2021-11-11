@@ -42,13 +42,6 @@ module Minitest
         .stubs(:run)
     end
 
-    def stub_adventure
-      Roro::Configurators::AdventurePicker
-        .any_instance
-        .stubs(:ask)
-        .returns(*adventures)
-    end
-
     def stubs_adventure
       choices = journey_choices(*adventures)
       Roro::Configurators::AdventurePicker
@@ -58,7 +51,7 @@ module Minitest
     end
 
     def journey_choices(*args)
-      hash = args.last.is_a?(String) ? read_yaml("#{@roro_dir}/test/helpers/story_finder.yml") : args.pop
+      hash = args.last.is_a?(String) ? read_yaml("#{Roro::CLI.test_root}/helpers/story_finder.yml") : args.pop
       return unless hash.is_a?(Hash)
       choice = args.shift
       hash.transform_keys! { |k| k.to_s }

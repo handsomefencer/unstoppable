@@ -10,10 +10,10 @@ describe 'okonomi roll_your_own' do
     stubs_adventure
     stub_overrides
     stub_run_actions
-    quiet { cli.rollon }
+    cli.rollon
   }
 
-  Given { rollon }
+  Given { quiet { rollon } }
 
   describe 'must generate' do
     describe 'templates with stage one' do

@@ -1,21 +1,20 @@
 require 'test_helper'
 
-describe 'lib roro stacks catalog unstoppable developer_styles devops ci_styles circleci circleci' do
-  Given { skip }
+describe 'devops circleci' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[1 1] }
+  Given(:adventures) { %w[devops circleci] }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
-    # copy_stage_dummy(__dir__)
-    stub_adventure
+    copy_stage_dummy(__dir__)
+    stubs_adventure
     stub_overrides
     stub_run_actions
-    # cli.rollon
+    cli.rollon
   }
 
-  Given { rollon unless adventures.empty?}
+  Given { quiet { rollon } }
 
   describe 'must generate a' do
     Given(:app_name) { 'unstoppable_devops' }

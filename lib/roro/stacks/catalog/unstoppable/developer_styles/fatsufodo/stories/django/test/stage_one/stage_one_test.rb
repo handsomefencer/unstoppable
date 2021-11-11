@@ -9,13 +9,13 @@ describe 'Roro::CLI#rollon' do
     stubs_adventure
     stub_overrides
     stub_run_actions
-    quiet { cli.rollon }
+    cli.rollon
   }
 
   context 'when fatsufodo django' do
     Given(:adventures) { %w[fatsufodo django] }
 
-    Given { rollon }
+    Given { quiet { rollon } }
 
     context 'when default variables' do
       Then  { assert_file 'Dockerfile', /python:3/ }

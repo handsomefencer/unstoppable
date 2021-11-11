@@ -37,8 +37,7 @@ describe Roro::Crypto::KeyWriter do
             Given(:workbench) { 'mise/fresh/roro'}
             Given(:error)     { Roro::Error }
             Given(:error_msg) { 'No .env files in' }
-
-            Given(:execute)   { subject.write_keyfiles }
+            Given(:execute)   { quiet { subject.write_keyfiles } }
             Then { assert_correct_error }
           end
 
