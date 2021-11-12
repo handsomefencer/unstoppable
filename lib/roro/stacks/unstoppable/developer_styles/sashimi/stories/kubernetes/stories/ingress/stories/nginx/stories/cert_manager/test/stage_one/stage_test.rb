@@ -3,11 +3,10 @@ require 'test_helper'
 describe 'sashimi kubernetes ingress nginx cert-manager' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[ sashimi kubernetes ingress nginx cert_manager ] }
   Given(:overrides)  { %w[4 1] }
 
   Given(:rollon)    {
-    stubs_adventure
+    stubs_adventure(__dir__)
     stub_overrides
     stub_run_actions
     cli.rollon

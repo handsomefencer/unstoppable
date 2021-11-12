@@ -1,13 +1,13 @@
 require 'test_helper'
 
 describe 'sashimi rails' do
-  Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[ sashimi rails ] }
-  Given(:overrides)  { %w[] }
+  Given(:workbench) { 'empty' }
+  Given(:cli)       { Roro::CLI.new }
+  Given(:overrides) { %w[] }
 
   Given(:rollon)    {
-    stubs_adventure
+    copy_stage_dummy __dir__
+    stubs_adventure  __dir__
     stub_overrides
     stub_run_actions
     cli.rollon

@@ -5,14 +5,15 @@ describe 'omakase wordpress' do
   Given(:cli)        { Roro::CLI.new }
   Given(:adventures) { %w[omakase wordpress] }
   Given(:overrides)  { [''] }
-  Given(:rollon)    {
-    stubs_adventure
+  Given(:rollon)     {
+    copy_stage_dummy(__dir__)
+    stubs_adventure(__dir__)
     stub_overrides
     stub_run_actions
     cli.rollon
   }
 
-  Given { quiet { rollon } unless adventures.empty?}
+  Given { quiet { rollon } }
 
   describe 'must have docker-compose.yml file' do
     Then  { assert_file 'docker-compose.yml' }

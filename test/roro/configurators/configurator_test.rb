@@ -5,9 +5,12 @@ require 'test_helper'
 describe Configurator do
   Given(:options)    { {} }
   Given(:config)     { Configurator.new(options) }
-  Given(:adventures) { %w[ fatsufodo django ]}
+  Given(:adventures) { %w[ fatsufodo django ] }
 
-  Given { stubs_adventure }
+  Given { Roro::Configurators::AdventurePicker
+            .any_instance
+            .stubs(:ask)
+            .returns *journey_choices(*adventures.map(&:to_sym)) }
 
   context 'without options' do
     describe '#initialize' do
@@ -25,17 +28,17 @@ describe Configurator do
       context 'when fatsufodo' do
         context 'when django' do
           When(:adventures) { %w[ fatsufodo django ] }
-          Then  { assert_file_match_in 'stories/django', config.itinerary }
+          Then { assert_file_match_in 'stories/django', config.itinerary }
         end
 
         context 'when wordpress' do
           When(:adventures) { %w[ fatsufodo wordpress ] }
-          Then  { assert_file_match_in 'stories/wordpress', config.itinerary }
+          Then { assert_file_match_in 'stories/wordpress', config.itinerary }
         end
 
         context 'when rails' do
           When(:adventures) { %w[ fatsufodo rails ] }
-          Then  { assert_file_match_in 'stories/rails', config.itinerary }
+          Then { assert_file_match_in 'stories/rails', config.itinerary }
         end
       end
     end

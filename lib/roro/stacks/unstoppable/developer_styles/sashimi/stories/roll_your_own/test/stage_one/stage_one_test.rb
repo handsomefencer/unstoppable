@@ -1,13 +1,12 @@
 require "test_helper"
 
 describe 'okonomi roll_your_own' do
-  Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-  Given(:workbench)  { 'empty'}
-  Given(:adventures) { %w[sashimi roll_your_own] }
-
+  Given(:cli)       { Roro::CLI.new }
+  Given(:overrides) { %w[] }
+  Given(:workbench) { 'empty'}
   Given(:rollon)    {
-    stubs_adventure
+    copy_stage_dummy(__dir__)
+    stubs_adventure(__dir__)
     stub_overrides
     stub_run_actions
     cli.rollon

@@ -130,6 +130,12 @@ module Roro
       stack.split("/#{name(stack)}").first
     end
 
+    def stack_is_adventure?(stack)
+      !stack_type(stack).eql?(:templates) &&
+        stack_type(stack_parent_path(stack)).eql?(:inflection) &&
+        [:stack, :story].include?(stack_type(stack))
+    end
+
     def stack_is_empty?(stack)
       !stack_is_file?(stack) &&
         Dir.glob("#{stack}/**").empty?

@@ -33,7 +33,10 @@ module Minitest
         .stubs(:run)
     end
 
-    def stubs_adventure
+    def stubs_adventure(path = nil)
+      case_builder = AdventureCaseBuilder.new
+      case_builder.build_cases
+      adventures = case_builder.case_from_path(path)
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)

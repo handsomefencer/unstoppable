@@ -45,7 +45,6 @@ module Roro
       def build_env
         manifest.each do |story|
           accrete_story(story)
-          # @log[:actions] += read_yaml(story)[:actions]
         end
         override_environment_variables
       end

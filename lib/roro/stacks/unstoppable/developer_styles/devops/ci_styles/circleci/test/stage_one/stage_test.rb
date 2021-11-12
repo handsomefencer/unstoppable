@@ -3,12 +3,10 @@ require 'test_helper'
 describe 'devops circleci' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[devops circleci] }
   Given(:overrides)  { %w[] }
-
-  Given(:rollon)    {
+  Given(:rollon)     {
     copy_stage_dummy(__dir__)
-    stubs_adventure
+    stubs_adventure(__dir__)
     stub_overrides
     stub_run_actions
     cli.rollon
