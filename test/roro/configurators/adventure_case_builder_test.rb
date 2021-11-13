@@ -26,4 +26,12 @@ describe AdventureCaseBuilder do
     Given(:expected) { %w[sashimi kubernetes ingress nginx cert_manager] }
     Then { assert_equal expected, case_builder.case_from_path(stack) }
   end
+
+  describe '#matrix_cases' do
+    Given(:result) { [
+      [1, 1], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 1], [3, 2, 1, 1],
+      [3, 2, 1, 2], [4, 1], [4, 2], [5, 1, 1, 1, 1], [5, 2], [5, 3] ]}
+
+    Then { assert_equal case_builder.matrix_cases, result}
+  end
 end
