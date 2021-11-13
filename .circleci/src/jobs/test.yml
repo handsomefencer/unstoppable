@@ -1,6 +1,6 @@
 parameters:
   version:
-    description: "version tag"
+    description: "Ruby minor version tag"
     default: "3.0"
     type: string
 executor:
@@ -11,3 +11,4 @@ steps:
   - run: gem install bundler
   - run: bundle
   - run: bundle exec rake test
+  - run: bundle exec rake test_stacks
