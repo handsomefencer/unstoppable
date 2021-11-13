@@ -4,11 +4,13 @@ module Roro
   module Configurators
     class AdventureCaseBuilder
 
-      attr_reader :cases, :itineraries
+      attr_reader :cases, :itineraries, :matrix
 
       def initialize(stack=nil)
         @stack = stack || Roro::CLI.stacks
         @cases =  {}
+        @matrix = []
+        build_cases
       end
 
       def build_cases(stack = nil, cases = {})
@@ -27,7 +29,14 @@ module Roro
       end
 
       def document_cases
-        File.open("#{Dir.pwd}/test/helpers/adventure_cases.yml", "w") { |f| f.write(cases.to_yaml) }
+        File.open("#{Dir.pwd}/test/helpers/adventure_cases.yml", "w") do |f|
+          f.write(cases.to_yaml)
+        end
+        workflow = "#{Dir.pwd}/.circleci/src/workflows/test-matrix-rollon.yml"
+        hash = read_yaml("#{workflow}")
+        hash[:jobs][0][:"test-rollon"][:matrix][:parameters][:answers] = matrix_cases
+        File.open(workflow, "w") { |f| f.write(hash.to_yaml) }
+
       end
 
       def case_from_path(stack, array = nil)
@@ -38,6 +47,15 @@ module Roro
         @case << folder if stack_is_adventure?(stack)
         case_from_path(stack, array) unless array.empty?
         @case
+      end
+
+      def matrix_cases(array = [], d = 0, hash = cases)
+        # (@matri/x ||= [])
+        hash.each do |k, v|
+          array = (array.take(d) << hash.keys.index(k) + 1)
+          v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
+        end
+        @matrix
       end
     end
   end
