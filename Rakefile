@@ -26,5 +26,9 @@ task :ci, [:section]  do |task, args|
   content = JSON.parse(YAML.load_file(source).to_json)
   content['jobs'][0]['test-rollon']['matrix']['parameters']['answers'] = cases.map { |c| c.join('\n') }
   File.open(dest, "w") { |f| f.write(content.to_yaml) }
+  puts 'Wrote answers to file'
+  system("circleci config pack .circleci/src/ > .circleci/config.yml")
+  puts 'Packed config'
+  system("circleci config validate")
 
 end
