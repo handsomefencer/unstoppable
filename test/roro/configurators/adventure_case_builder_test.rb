@@ -3,37 +3,35 @@
 require 'test_helper'
 
 describe AdventureCaseBuilder do
-  Given(:case_builder) { AdventureCaseBuilder.new }
+  Given(:case_builder) { AdventureCaseBuilder.new("#{Roro::CLI.roro_root}/stacks") }
+  Given(:expected) { read_yaml("#{Roro::CLI.test_root}/helpers/adventure_cases.yml") }
+
+  Given { case_builder.build_cases }
 
   describe '#build_cases' do
-    Given(:stack_root) { Roro::CLI.catalog_root}
-    Given(:stack) {  }
-    Given(:cases) { case_builder.build_cases(stack_root) }
-    # Then { assert_equal 'blah', cases }
+    Then { assert_equal case_builder.cases, expected }
   end
 
-  describe '#build_itineraries' do
-    Given(:itineraries) { case_builder.build_itineraries(stack_path) }
-    Given(:paths)   { [] }
+  describe '#document_cases' do
+    Given { case_builder.document_cases }
+    Then  { assert_file "#{Dir.pwd}/test/helpers/adventure_cases.yml" }
+  end
 
-    context 'when stack is a story must return empty' do
-      When(:stack) { 'story' }
-      Then { assert_empty itineraries }
-    end
+  describe '#case_from_stack' do
+    Given(:stack) { %W[#{Roro::CLI.stacks}/sashimi
+      stories/kubernetes
+      stories/ingress
+      stories/nginx
+      stories/cert_manager].join('/')}
+    Given(:expected) { %w[sashimi kubernetes ingress nginx cert_manager] }
+    Then { assert_equal expected, case_builder.case_from_path(stack) }
+  end
 
-    context 'when stack is inflection' do
-      When(:stack) { 'stacks' }
-      Then { assert_empty itineraries }
-    end
+  describe '#matrix_cases' do
+    Given(:result) { [
+      [1, 1], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 1], [3, 2, 1, 1],
+      [3, 2, 1, 2], [4, 1], [4, 2], [5, 1, 1, 1, 1], [5, 2], [5, 3] ]}
 
-    context 'when stack has two inflections' do
-      When(:stack) { 'stack/stack' }
-      Then { assert_equal 4, itineraries.size }
-    end
-
-    context 'when has nested inflections' do
-      When(:stack) { 'stack' }
-      Then { assert_equal 12, itineraries.size }
-    end
+    Then { assert_equal case_builder.matrix_cases, result}
   end
 end

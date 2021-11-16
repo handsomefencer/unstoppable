@@ -16,6 +16,7 @@ module Roro
           depends_on: [''],
           env: {
             base: {},
+            ci: {},
             development: {},
             staging: {},
             production: {}

@@ -10,7 +10,7 @@ module Roro
       end
 
       def self.base
-        Roro::CLI.catalog_root
+        Roro::CLI.stacks
       end
     end
   end

@@ -1,4 +1,0 @@
-  test:
-    machine: true
-    steps:
-      - placeholder

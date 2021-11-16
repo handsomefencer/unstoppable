@@ -1,0 +1,31 @@
+preface: some string
+
+env:
+  base:
+    app_name:
+      name: Name for your app
+      value: 'unstoppable_devops_app'
+    DOCKERHUB_ORGANIZATION:
+      name: The hub.docker.com organization for your image is often but not always the same as your username.
+      value: your-dockerhub-organization
+  ci:
+    DOCKERHUB_USERNAME:
+      name: The username you log into hub.docker.com with
+      value: dhusername
+      required: true
+    DOCKERHUB_PASSWORD:
+      name: The password you log into hub.docker.com with
+      value: dhpassword
+      required: true
+
+
+actions:
+  - directory 'stage_one', '.', @env
+  - |
+    generator = Roro::CLI.new
+    generator.generate_mise
+    generator.generate_environments @env
+    generator.generate_keys
+  - append_to_file './.gitignore', '/k8s-general/'
+  - append_to_file './.gitignore', partial('ignores')
+

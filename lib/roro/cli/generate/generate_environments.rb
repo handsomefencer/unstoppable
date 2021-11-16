@@ -13,6 +13,7 @@ module Roro
       mise = Roro::CLI.mise
       environments = args.empty? ? default_environments : args
       containers = Dir.glob("./#{mise}/containers/*").select { |f| File.directory?(f) }
+      create_file "./#{mise}/env/.keep", ''
       environments.each do |env|
         content = hash&.dig(env.to_sym)&.each&.map {|k,v| "#{k}=#{v[:value]}"}&.join("\n") || 'SOME_KEY=some_value'
         create_file "./#{mise}/env/#{env}.env", content

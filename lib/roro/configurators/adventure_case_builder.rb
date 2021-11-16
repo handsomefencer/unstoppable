@@ -4,61 +4,59 @@ module Roro
   module Configurators
     class AdventureCaseBuilder
 
-      attr_reader :cases, :itineraries
+      include Utilities
+      attr_reader :cases, :itineraries, :matrix
 
-      def initialize(catalog=nil)
-        @catalog = catalog || Roro::CLI.catalog_root
+      def initialize(stack=nil)
+        @stack = stack || Roro::CLI.stacks
+        @cases =  {}
+        @matrix = []
+        build_cases
       end
 
-      def build_cases(stack, cases = [], array = [], position = 0 )
-        @base ||= stack
-
-        children(stack).each_with_index do |child, index|
-          if stack_type(stack).eql?(:inflection)
-            choice = "#{child.split(@base).last}"
-            next unless [:stack, :story].include?(stack_type(child))
-            case
-            when children(stack).last.eql?(child)
-              array = array.take(position)
-              array << choice
-              cases << array
-            when array.size.eql?(position)
-              array << choice
-            when array.size.eql?(position + 1)
-              cases << array
-              array = array.take(position)
-              array << choice
-            # when array.size.eql?(position - 1)
-            #   array = array.take(position)
-            when array.size.eql?(position + 2)
-              array = array.take(position)
-            else
-              cases << array
-              # array = array.take(position)
-            end
-            # position += 1
-          end
-          build_cases( child, cases, array, (position - index) + 1)
+      def build_cases(stack = nil, cases = {})
+        stack ||= @stack
+        case
+        when stack_type(stack).eql?(:templates)
+          return
+        when stack_type(stack_parent_path(stack)).eql?(:inflection) && [:stack, :story].include?(stack_type(stack))
+          cases[name(stack).to_sym] = {}
+          cases = cases[name(stack).to_sym]
         end
-        cases.uniq.sort
-      end
-
-      def build_itineraries(catalog)
-        @itineraries ||= []
-        @itineraries += build_itinerary(catalog)
-        children(catalog).each { |c| build_itineraries(c) }
-        @itineraries
-      end
-
-      private
-
-      def build_itinerary(catalog)
-        itinerary = []
-        all_inflections(catalog).each do |inflection|
-          paths = story_paths(inflection).map { |p| [p] }
-          itinerary = itinerary.empty? ? paths : itinerary.product(paths)
+        children(stack).each do |c|
+          build_cases(c, cases)
         end
-        itinerary.map(&:flatten)
+        @cases = cases
+      end
+
+      def document_cases
+        File.open("#{Dir.pwd}/test/helpers/adventure_cases.yml", "w") do |f|
+          f.write(cases.to_yaml)
+        end
+        workflow = "#{Dir.pwd}/.circleci/src/workflows/test-matrix-rollon.yml"
+        hash = read_yaml("#{workflow}")
+        hash[:jobs][0][:"test-rollon"][:matrix][:parameters][:answers] = matrix_cases
+        File.open(workflow, "w") { |f| f.write(hash.to_yaml) }
+
+      end
+
+      def case_from_path(stack, array = nil)
+        array ||= stack.split("#{@stack}/").last.split('/') unless @case
+        folder = array.shift
+        stack = "#{@case ? stack : @stack}/#{folder}"
+        (@case ||= [])
+        @case << folder if stack_is_adventure?(stack)
+        case_from_path(stack, array) unless array.empty?
+        @case
+      end
+
+      def matrix_cases(array = [], d = 0, hash = cases)
+        # (@matri/x ||= [])
+        hash.each do |k, v|
+          array = (array.take(d) << hash.keys.index(k) + 1)
+          v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
+        end
+        @matrix
       end
     end
   end

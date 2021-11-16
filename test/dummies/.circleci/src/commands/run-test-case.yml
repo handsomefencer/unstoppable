@@ -1,0 +1,11 @@
+parameters:
+  answers:
+    type: string
+    default: 1\n1
+  os:
+    type: executor
+steps:
+  - run: |
+      rake install &&
+      printf "<< parameters.answers >>\na$var\n" | roro rollon
+  - run: echo 'success'

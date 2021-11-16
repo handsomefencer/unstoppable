@@ -1,9 +1,0 @@
-stories: postgresql
-
-actions: 
-  - |
-    Roro::CLI.roro_environments.each do |environment| 
-      src = 'rails/dotenv/web.env.tt'
-      dest = "roro/containers/app/#{environment}.env"
-      template src, dest, @config.env
-    end

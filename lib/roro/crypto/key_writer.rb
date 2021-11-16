@@ -23,11 +23,13 @@ module Roro
       end
 
       def write_keyfiles(environments = [], directory = nil, extension = nil)
+        @writer.write_to_file("#{@mise}/keys/.keep", '')
         directory ||= @mise
         extension ||= '.key'
         if environments.empty?
           environments = gather_environments(directory, '.env').uniq
         end
+
         environments.uniq.each { |environment| write_keyfile(environment, extension) }
       end
     end

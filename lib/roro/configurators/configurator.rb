@@ -19,6 +19,7 @@ module Roro
         @asker     = QuestionAsker.new
         @writer    = AdventureWriter.new
         @env       = @structure[:env]
+        @log       = @structure
       end
 
       def rollon
@@ -28,6 +29,7 @@ module Roro
         build_env
         write_story
         structure[:env] = structure[:env].merge(@dependency_hash)
+        write_log
       end
 
       def validate_stack
@@ -41,7 +43,9 @@ module Roro
       end
 
       def build_env
-        manifest.each { |story| accrete_story(story) }
+        manifest.each do |story|
+          accrete_story(story)
+        end
         override_environment_variables
       end
 
@@ -64,7 +68,16 @@ module Roro
       end
 
       def write_story
-        @manifest.sort.each { |m| @writer.write(@structure, m) }
+        @manifest.each { |m| @writer.write(@structure, m) }
+      end
+
+      def write_log
+        @log[:dependency_hash] = @dependency_hash
+        @log[:itinerary]       = @itinerary
+        @log[:manifest]        = @manifest
+        @log[:stack]           = @stack
+        @log[:structure]       = @structure
+        @writer.write_log(@log)
       end
     end
   end

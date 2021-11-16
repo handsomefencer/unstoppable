@@ -1,0 +1,25 @@
+---
+:devops:
+  :circleci: {}
+:fatsufodo:
+  :django: {}
+  :expressjs: {}
+  :flask: {}
+  :rails: {}
+  :wordpress: {}
+:okonomi:
+  :python: {}
+  :ruby:
+    :rails:
+      :v6_1: {}
+      :v7_0: {}
+:omakase:
+  :rails: {}
+  :wordpress: {}
+:sashimi:
+  :kubernetes:
+    :ingress:
+      :nginx:
+        :cert_manager: {}
+  :rails: {}
+  :roll_your_own: {}

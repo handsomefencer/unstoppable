@@ -1,0 +1,13 @@
+parameters:
+  version:
+    description: "version tag"
+    default: "3.0"
+    type: string
+executor:
+  name: ruby
+  version: <<parameters.version>>
+steps:
+  - checkout
+  - run: gem install bundler
+  - run: bundle
+  - run: bundle exec rake test
