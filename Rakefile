@@ -4,9 +4,9 @@ require "json"
 require "yaml"
 require "roro"
 
-Rake.add_rakelib 'rakelib/circleci/config'
-Rake.add_rakelib 'rakelib/circlci/process'
 Rake.add_rakelib 'rakelib/circleci'
+Rake.add_rakelib 'rakelib/circleci/config'
+Rake.add_rakelib 'rakelib/circleci/process'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"

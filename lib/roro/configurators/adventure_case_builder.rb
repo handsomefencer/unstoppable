@@ -12,6 +12,7 @@ module Roro
         @cases =  {}
         @matrix = []
         build_cases
+        matrix_cases
       end
 
       def build_cases(stack = nil, cases = {})
@@ -51,7 +52,6 @@ module Roro
       end
 
       def matrix_cases(array = [], d = 0, hash = cases)
-        # (@matri/x ||= [])
         hash.each do |k, v|
           array = (array.take(d) << hash.keys.index(k) + 1)
           v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
