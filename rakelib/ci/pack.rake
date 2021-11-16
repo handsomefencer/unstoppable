@@ -1,6 +1,0 @@
-desc 'Pack .circleci/config.yml from .circleci/src files'
-task 'ci:pack' do |t|
-  puts 'Packing .circleci/config.yaml ...'
-  system("circleci config pack .circleci/src/ > .circleci/config.yml")
-  puts 'Packed .circleci/config.yml'
-end

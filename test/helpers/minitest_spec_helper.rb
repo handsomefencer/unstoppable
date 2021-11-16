@@ -5,6 +5,7 @@ module Roro
     module AdventureHelper
 
       def prepare_destination(*workbench)
+        Rake.application.load_rakefile
         @tmpdir = Dir.mktmpdir
         FileUtils.mkdir_p("#{@tmpdir}/workbench")
         workbench.each do |dummy_app|
@@ -27,6 +28,7 @@ module Minitest
 
     def check_into_workbench
       return unless defined? workbench
+      Rake.application.load_rakefile if defined? load_rakefile
       prepare_destination(*workbench)
       @roro_dir = Dir.pwd
       Dir.chdir("#{@tmpdir}/workbench")
@@ -42,7 +44,7 @@ module Minitest
     end
 
     after do
-      check_out_of_workbench # checkin_workbench
+      check_out_of_workbench
     end
   end
 end
