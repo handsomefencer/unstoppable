@@ -45,6 +45,8 @@ module Minitest
 
     def journey_choices(*args)
       cases = read_yaml("#{Roro::CLI.test_root}/helpers/adventure_cases.yml")
+      builder = AdventureCaseBuilder.new
+      cases = builder.cases # read_yaml("#{Roro::CLI.test_root}/helpers/adventure_cases.yml")
       hash = args.last.is_a?(Hash) ? args.pop : cases
       return if hash.empty?
       choice = args.shift
