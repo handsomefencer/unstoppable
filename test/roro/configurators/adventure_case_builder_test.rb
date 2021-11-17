@@ -6,7 +6,7 @@ describe AdventureCaseBuilder do
   Given(:case_builder) { AdventureCaseBuilder.new("#{Roro::CLI.roro_root}/stacks") }
   Given(:expected) { read_yaml("#{Roro::CLI.test_root}/helpers/adventure_cases.yml") }
 
-  Given { case_builder.build_cases }
+  Given { case_builder }
 
   describe '#build_cases' do
     Then { assert_equal case_builder.cases, expected }
@@ -32,6 +32,6 @@ describe AdventureCaseBuilder do
       [1, 1], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 1], [3, 2, 1, 1],
       [3, 2, 1, 2], [4, 1], [4, 2], [5, 1, 1, 1, 1], [5, 2], [5, 3] ]}
 
-    Then { assert_equal case_builder.matrix_cases, result}
+    Then { assert_equal case_builder.matrix.sort, result.sort}
   end
 end

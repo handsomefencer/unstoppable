@@ -28,7 +28,8 @@ describe Configurator do
       context 'when fatsufodo' do
         context 'when django' do
           When(:adventures) { %w[ fatsufodo django ] }
-          Then { assert_file_match_in 'stories/django', config.itinerary }
+          Then {
+            assert_file_match_in 'stories/django', config.itinerary }
         end
 
         context 'when wordpress' do
