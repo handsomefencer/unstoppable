@@ -19,5 +19,5 @@ describe 'rake ci:prepare' do
     assert_match 'Packed', output.first
     assert_match 'Validating', output.first
     assert_match 'is valid', output.first
-  end
+  end if ENV['CI_key']
 end
