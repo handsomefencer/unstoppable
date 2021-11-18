@@ -10,7 +10,6 @@ steps:
   - checkout
   - setup_remote_docker:
       version: 19.03.12
-  - run: |
-      rake install &&
-      printf "<< parameters.answers >>\na$var\n" | roro rollon
+  - restore-and-save-cache
+  - run: printf "<< parameters.answers >>\na$var\n" | roro rollon
   - run: echo 'success'

@@ -1,4 +1,16 @@
 commands:
+    restore-and-save-cache:
+        steps:
+            - restore_cache:
+                key: circlev2-{{ checksum "Gemfile.lock" }}
+            - run: bundle config set --local path 'vendor/bundle'
+            - run: bundle check || bundle install --jobs=4 --retry=3
+            - run: gem build roro.gemspec
+            - run: gem install roro-0.3.29.gem
+            - save_cache:
+                key: circlev2-{{ checksum "Gemfile.lock" }}
+                paths:
+                    - vendor/bundle
     run-test-case:
         parameters:
             answers:
@@ -73,9 +85,8 @@ jobs:
             - checkout
             - setup_remote_docker:
                 version: 19.03.12
-            - run: |
-                rake install &&
-                printf "<< parameters.answers >>\na$var\n" | roro rollon
+            - restore-and-save-cache
+            - run: printf "<< parameters.answers >>\na$var\n" | roro rollon
             - run: echo 'success'
 version: 2.1
 workflows:
