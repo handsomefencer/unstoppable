@@ -12,7 +12,6 @@ module Roro
         @cases =  {}
         @matrix = []
         build_cases
-        matrix_cases
       end
 
       def build_cases(stack = nil, cases = {})
@@ -27,7 +26,7 @@ module Roro
         children(stack).each do |c|
           build_cases(c, cases)
         end
-        @cases = cases
+        @cases = sort_hash_deeply(cases)
       end
 
       def document_cases
@@ -42,13 +41,25 @@ module Roro
       end
 
       def case_from_path(stack, array = nil)
-        array ||= stack.split("#{@stack}/").last.split('/') unless @case
+        if @case.nil?
+          @case = []
+          array = stack.split("#{@stack}/").last.split('/')
+          stack = @stack
+        end
         folder = array.shift
-        stack = "#{@case ? stack : @stack}/#{folder}"
-        (@case ||= [])
+        stack = "#{stack}/#{folder}"
         @case << folder if stack_is_adventure?(stack)
         case_from_path(stack, array) unless array.empty?
         @case
+      end
+
+      def case_from_stack(stack)
+        hash = cases
+        case_from_path(stack).map do |item|
+          index = hash.keys.index(item.to_sym)
+          hash = hash[item.to_sym]
+          index += 1
+        end
       end
 
       def matrix_cases(array = [], d = 0, hash = cases)

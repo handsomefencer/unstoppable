@@ -3,10 +3,9 @@ require 'test_helper'
 describe 'omakase wordpress' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
-  Given(:adventures) { %w[omakase wordpress] }
   Given(:overrides)  { [''] }
   Given(:rollon)     {
-    copy_stage_dummy(__dir__)
+    # copy_stage_dummy(__dir__)
     stubs_adventure(__dir__)
     stub_overrides
     stub_run_actions
@@ -20,7 +19,8 @@ describe 'omakase wordpress' do
   end
 
   describe 'must have a mise en place' do
-    Then  { assert_file 'mise/mise.roro' }
+    Then  {
+      assert_file 'mise/mise.roro' }
   end
 
   describe 'must have correct containers' do
