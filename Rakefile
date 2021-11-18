@@ -6,6 +6,7 @@ require "roro"
 
 Rake.add_rakelib 'rakelib/circleci'
 Rake.add_rakelib 'rakelib/circleci/config'
+Rake.add_rakelib 'rakelib/circleci/matrices/run'
 Rake.add_rakelib 'rakelib/circleci/process'
 
 Rake::TestTask.new(:test) do |t|
