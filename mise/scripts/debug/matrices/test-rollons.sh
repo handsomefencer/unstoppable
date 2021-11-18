@@ -9,5 +9,6 @@
 circleci config process .circleci/config.yml > process.yml
 
 #for ruby in ${rubies[@]}; do
-  circleci local execute -c process.yml --job test-rollon-2\\n1-linux
+  circleci local execute -c process.yml --job test-rollon-1\\n1-linux
+#  circleci local execute -c process.yml --job test-rollon-3\\n2\\n1\\n1-linux
 #done
