@@ -2,3 +2,4 @@ executor:
   name: ruby
 steps:
   - checkout
+  - run: whoami

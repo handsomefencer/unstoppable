@@ -1,7 +1,4 @@
 actions:
   - directory 'stage_one', '.', @env
-  - run "sudo docker-compose run web django-admin startproject \"#{@env[:base][:app_name][:value]}\" . &&
-    sudo chown -R $USER:$USER ."
-  - |
-    run "sudo docker-compose run web django-admin startproject \"#{@env[:base][:app_name][:value]}\" . &&
-    sudo chown -R $USER:$USER ."
+  - run "sudo docker-compose build"
+  - run "sudo chown -R $USER:$USER ."

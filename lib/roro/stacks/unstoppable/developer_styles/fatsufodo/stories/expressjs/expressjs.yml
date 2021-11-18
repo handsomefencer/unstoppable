@@ -1,5 +1,4 @@
-preface: Fast, unopinionated, minimalist web framework for Node.js
-
+preface: Fast, unopinionated, minimalist web framework for Node.js. Coming soon.
 
 actions:
   - directory 'stage_one', '.', @env

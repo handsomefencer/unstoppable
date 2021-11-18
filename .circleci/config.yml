@@ -47,6 +47,7 @@ jobs:
             name: ruby
         steps:
             - checkout
+            - run: whoami
     release:
         executor:
             name: ruby

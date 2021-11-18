@@ -8,7 +8,7 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - run "docker-compose build"
-  - run "docker-compose up -d"
-  - run "echo 'You may open your app at http://localhost:5000/'"
-  - run "docker-compose down"
+  - run "sudo docker-compose build"
+  - run "sudo chown -R $USER:$USER ."
+  - run "sudo docker-compose up -d"
+  - say "Arigato http://localhost:5000/ "
