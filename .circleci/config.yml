@@ -2,9 +2,7 @@ commands:
     run-test-case:
         parameters:
             answers:
-                default: |-
-                    1
-                    2
+                default: 1\n1
                 type: string
             os:
                 type: executor

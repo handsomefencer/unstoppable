@@ -17,7 +17,7 @@ describe AdventureCaseBuilder do
     Then  { assert_file "#{Dir.pwd}/test/helpers/adventure_cases.yml" }
   end
 
-  describe '#case_from_stack' do
+  describe '#case_from_path' do
     Given(:stack) { %W[#{Roro::CLI.stacks}/sashimi
       stories/kubernetes
       stories/ingress
@@ -25,6 +25,16 @@ describe AdventureCaseBuilder do
       stories/cert_manager].join('/')}
     Given(:expected) { %w[sashimi kubernetes ingress nginx cert_manager] }
     Then { assert_equal expected, case_builder.case_from_path(stack) }
+  end
+
+  describe '#case_from_stack' do
+    Given(:stack) { %W[#{Roro::CLI.stacks}/sashimi
+      stories/kubernetes
+      stories/ingress
+      stories/nginx
+      stories/cert_manager].join('/')}
+    Given(:expected) { [5, 1, 1, 1, 1] }
+    Then { assert_equal expected, case_builder.case_from_stack(stack) }
   end
 
   describe '#matrix_cases' do

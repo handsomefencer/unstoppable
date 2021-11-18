@@ -148,6 +148,12 @@ module Roro
       story_paths
     end
 
+    def sort_hash_deeply(unsorted)
+      sorted ||= {}
+      unsorted.sort.to_h.map { |k, v| sorted[k] = sort_hash_deeply(v) }
+      sorted
+    end
+
     def sanitize(hash)
       (hash ||= {}).transform_keys!(&:to_sym).each do |key, value|
         case value

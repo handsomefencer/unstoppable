@@ -3,6 +3,42 @@
 require 'test_helper'
 
 describe 'Configurators::Utilities' do
+  describe '#sort_hash_deeply(hash)' do
+    Given(:unsorted) { {
+        bravo: { charlie: { delta: {} } },
+        echo: { zulu: { xray: {} }, foxtrot: { golf: {} } },
+        hotel: { bravo: { juliet: {}, kilo: {}, bravo: {}, alpha: {}
+          },
+          yankee: {
+            juliet: {},
+            kilo: {},
+            bravo: {},
+            alpha: {}
+          },
+          india: {
+            juliet: {},
+            kilo: {},
+            bravo: {},
+            alpha: {}
+          }
+        },
+        alpha: {
+          alpha: {
+            delta: {},
+            alpha: {}
+          }
+        }
+      }
+    }
+    Given(:result) { sort_hash_deeply(unsorted) }
+    Then {
+      assert_equal [:alpha, :bravo, :echo, :hotel], result.keys
+      assert_equal [:bravo, :india, :yankee], result[:hotel].keys
+      assert_equal [:foxtrot, :zulu], result[:echo].keys
+      assert_equal [:alpha, :bravo, :juliet, :kilo], result[:hotel][:yankee].keys
+    }
+  end
+
   describe '#stack_type(stack_path)' do
     Given(:result) { stack_type(stack_path) }
 

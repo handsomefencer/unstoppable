@@ -1,0 +1,8 @@
+
+jobs:
+  - test-rollon:
+      matrix:
+        parameters:
+          answers:
+            - 1\n1
+          os: [linux]
