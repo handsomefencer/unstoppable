@@ -3,11 +3,14 @@ version: '3.2'
 services:
 
   ruby_gem:
+    image: roar
     build:
       context: .
       dockerfile: mise/containers/frontend/Dockerfile
     volumes:
-      - gem_cache:/gems
+      - .:/usr/src
+      - .:/usr/app
+
     environment:
       - RUBY_VERSION='2.5'
 
