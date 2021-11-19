@@ -8,8 +8,8 @@ services:
       context: .
       dockerfile: mise/containers/frontend/Dockerfile
     volumes:
-      - .:/usr/src
       - .:/usr/app
+      - /var/run/docker.sock:/var/run/docker.sock
 
     environment:
       - RUBY_VERSION='2.5'
