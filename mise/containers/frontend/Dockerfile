@@ -17,6 +17,8 @@ RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID schade
 USER schadenfred
 
 WORKDIR /home/schadenfred
+VOLUME ["/home/schadenfred"]
+
 
 RUN chown -R schadenfred:schadenfred .
 

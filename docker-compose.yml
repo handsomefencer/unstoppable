@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: mise/containers/frontend/Dockerfile
     volumes:
-      - .:/usr/app
+      - $PWD:/home/schadenfred
       - /var/run/docker.sock:/var/run/docker.sock
 
     environment:
