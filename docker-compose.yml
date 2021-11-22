@@ -8,9 +8,7 @@ services:
       context: .
       dockerfile: mise/containers/frontend/Dockerfile
     volumes:
-      - $PWD:/home/schadenfred
       - /var/run/docker.sock:/var/run/docker.sock
-
     environment:
       - RUBY_VERSION='2.5'
 
