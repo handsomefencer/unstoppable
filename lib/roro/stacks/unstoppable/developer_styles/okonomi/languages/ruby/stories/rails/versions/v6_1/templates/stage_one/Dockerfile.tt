@@ -1,6 +1,6 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
-RUN apk add \
+RUN apk add --update \
   build-base \
   postgresql-dev
 

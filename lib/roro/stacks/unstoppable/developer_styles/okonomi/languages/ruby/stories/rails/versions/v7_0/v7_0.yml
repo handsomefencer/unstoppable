@@ -33,6 +33,4 @@ actions:
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
   - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
-  - run "sudo docker-compose build"
-  - run "sudo docker-compose run app rake db:create"
   - run "sudo docker-compose up"
