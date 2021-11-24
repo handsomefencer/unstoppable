@@ -10,8 +10,10 @@ module Roro
         end
 
         def assert_file_match_in(file_matcher, files)
-          assert file_match_in_files?(file_matcher, files),
-                 "'...#{file_matcher}' doesn't match any files in: #{files}"
+          msg = "'...#{file_matcher}' doesn't match any files in: #{files}"
+          assert(files.any? {|file| file.match file_matcher }, msg )
+          # assert file_match_in_files?(file_matcher, files),
+          #        "'...#{file_matcher}' doesn't match any files in: #{files}"
         end
 
         def assert_file(file, *contents)
