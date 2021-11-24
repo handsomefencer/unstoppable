@@ -10,6 +10,11 @@ describe AdventureCaseBuilder do
 
   describe '#build_cases' do
     Then { assert_equal case_builder.cases, expected }
+    context 'when complex' do
+      Given(:complex_case) { case_builder.build_complex_cases[:okonomi][:ruby] }
+      focus
+      Then { assert_equal complex_case, expected }
+    end
   end
 
   describe '#document_cases' do

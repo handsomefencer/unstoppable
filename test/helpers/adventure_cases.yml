@@ -13,6 +13,8 @@
     :rails:
       :v6_1: {}
       :v7_0: {}
+    :v2_7: {}
+    :v3_0: {}
 :omakase:
   :rails: {}
   :wordpress: {}

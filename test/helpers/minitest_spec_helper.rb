@@ -5,7 +5,6 @@ module Roro
     module AdventureHelper
 
       def prepare_destination(*workbench)
-        Rake.application.load_rakefile
         @tmpdir = Dir.mktmpdir
         FileUtils.mkdir_p("#{@tmpdir}/workbench")
         workbench.each do |dummy_app|

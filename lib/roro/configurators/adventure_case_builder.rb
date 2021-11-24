@@ -14,6 +14,21 @@ module Roro
         build_cases
       end
 
+      def build_complex_cases(stack = nil, cases = {})
+        stack ||= @stack
+        case
+        when stack_type(stack).eql?(:templates)
+          return
+        when stack_type(stack_parent_path(stack)).eql?(:inflection) && [:stack, :story].include?(stack_type(stack))
+          cases[name(stack).to_sym] = {}
+          cases = cases[name(stack).to_sym]
+        end
+        children(stack).each do |c|
+          build_cases(c, cases)
+        end
+        @cases = sort_hash_deeply(cases)
+      end
+
       def build_cases(stack = nil, cases = {})
         stack ||= @stack
         case
@@ -56,9 +71,9 @@ module Roro
       def case_from_stack(stack)
         hash = cases
         case_from_path(stack).map do |item|
-          index = hash.keys.index(item.to_sym)
+          _index = hash.keys.index(item.to_sym)
           hash = hash[item.to_sym]
-          index += 1
+          _index += 1
         end
       end
 
