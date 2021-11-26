@@ -36,22 +36,12 @@ module Minitest
     def stubs_adventure(path = nil)
       case_builder = AdventureCaseBuilder.new
       case_builder.build_cases
-      adventures = case_builder.case_from_path(path)
+      adventures = case_builder.case_from_stack(path)
+      adventures.insert(variant.shift, *variant) if defined? variant
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)
-        .returns *journey_choices(*adventures.map(&:to_sym))
-    end
-
-    def journey_choices(*args)
-      cases = read_yaml("#{Roro::CLI.test_root}/helpers/adventure_cases.yml")
-      builder = AdventureCaseBuilder.new
-      cases = builder.cases # read_yaml("#{Roro::CLI.test_root}/helpers/adventure_cases.yml")
-      hash = args.last.is_a?(Hash) ? args.pop : cases
-      return if hash.empty?
-      choice = args.shift
-      journey_choices(*(args << hash[choice]))
-      (@array ||= []).insert(0, hash.keys.index(choice) + 1)
+        .returns *adventures
     end
 
     def stub_journey(answers)

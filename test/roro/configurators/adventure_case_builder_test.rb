@@ -9,12 +9,8 @@ describe AdventureCaseBuilder do
   Given { case_builder.build_cases }
 
   describe '#build_cases' do
-    Then { assert_equal case_builder.cases, expected }
-    context 'when complex' do
-      Given(:complex_case) { case_builder.build_complex_cases[:okonomi][:ruby] }
-      focus
-      Then { assert_equal complex_case, expected }
-    end
+    Then { assert_includes case_builder.cases[:okonomi][:ruby].keys, :rails  }
+    And  { refute case_builder.cases[:okonomi][:ruby][:v2_7] }
   end
 
   describe '#document_cases' do
@@ -43,10 +39,14 @@ describe AdventureCaseBuilder do
   end
 
   describe '#matrix_cases' do
-    Given(:result) { [
-      [1, 1], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 1], [3, 2, 1, 1],
-      [3, 2, 1, 2], [4, 1], [4, 2], [5, 1, 1, 1, 1], [5, 2], [5, 3] ]}
+    context 'when no variants' do
+      Then { assert_includes case_builder.matrix_cases, [3,2,1,1] }
+    end
 
-    Then { assert_equal case_builder.matrix_cases, result}
+    context 'when variants (ruby version)' do
+      # focus
+      # Then { assert_equal case_builder.matrix_cases, [3,2,1,1,1] }
+      # Then { assert_includes case_builder.matrix_cases, [3,2,1,1,1] }
+    end
   end
 end

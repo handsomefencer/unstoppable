@@ -7,12 +7,10 @@ describe Configurator do
   Given(:config)     { Configurator.new(options) }
   Given(:adventures) { %w[ fatsufodo django ] }
 
-  Given { Roro::Configurators::AdventurePicker
-            .any_instance
-            .stubs(:ask)
-            .returns *journey_choices(*adventures.map(&:to_sym)) }
+  Given { stubs_adventure("#{stack_path}/fatsufodo/stories/django") }
 
   context 'without options' do
+    Given { skip }
     describe '#initialize' do
       Then { assert_match 'developer_styles', config.stack }
       And  { assert_equal Hash, config.structure.class }

@@ -18,9 +18,8 @@ describe 'okonomi ruby rails 7_0' do
 
   describe 'must generate a' do
     describe 'Dockerfile' do
-      Given(:variant) { [0,1,2,3] }
+      Given(:variant) { [4, 1] }
       describe 'ruby version' do
-        focus
         Then  { assert_file 'Dockerfile', /FROM ruby:2.7.4-alpine/ }
       end
 
