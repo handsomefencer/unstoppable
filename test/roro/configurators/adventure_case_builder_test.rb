@@ -10,7 +10,7 @@ describe AdventureCaseBuilder do
 
   describe '#build_cases' do
     # focus
-    Then { assert_equal case_builder.build_matrix_names, 'blah'  }
+    # Then { assert_equal case_builder.build_matrix_names, 'blah'  }
     # And  { assert_includes case_builder
     #                          .build_complex_cases[:okonomi][:ruby][:rails
     #                        ][:v6_1][:v2_7],
