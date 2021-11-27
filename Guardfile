@@ -1,5 +1,6 @@
 
-guard :minitest, test_folders: ['test', 'lib/roro/stacks'] do
+guard :minitest, all_after_pass: true, test_folders: ['test',
+                                                    'lib/roro/stacks'] do
   watch(%r{^lib/roro/stacks/(.*)\/?(.*)_test\.rb$})
   watch(%r{^lib/roro/stacks/(.*/)?([^/]+)\.yml$})      { |m| "lib/roro/stacks/#{m[1]}test" }
   watch(%r{^lib/roro/stacks/(.*/)?templates/(.*)$}) { |m| "lib/roro/stacks/#{m[1]}test" }

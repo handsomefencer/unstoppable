@@ -11,8 +11,10 @@
   :python: {}
   :ruby:
     :rails:
-      :v6_1: {}
-      :v7_0: {}
+      :v6_1:
+        :config: {}
+      :v7_0:
+        :config: {}
     :v2_7: {}
     :v3_0: {}
 :omakase:

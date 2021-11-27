@@ -71,20 +71,23 @@ module Roro
 
       def build_matrix_names(stack = nil, array = [], d = 0)
         stack ||= @stack
+        stackable = stack_type(stack)
         @matrix_names ||= []
         case
+        when stack_type(stack).eql?(:ignored)
+          return
+        when stack_type(stack).eql?(:inflection)
+          return
         when stack_type(stack).eql?(:templates)
           return
-        when stack_type(stack_parent_path(stack)).eql?(:inflection) &&
-          [:story, :stack].include?(stack_type(stack))
+        when stack_is_adventure?(stack)
           array = (array.take(d) << name(stack).to_sym)
           children(stack).each do |c|
             build_matrix_names(c, array, d+1)
           end
-        else
-          children(stack).each do |c|
-            build_matrix_names(c, array, d)
-          end
+        end
+        children(stack).each do |c|
+          build_matrix_names(c, array, d)
         end
         @matrix_names
       end
