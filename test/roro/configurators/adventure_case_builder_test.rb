@@ -9,8 +9,13 @@ describe AdventureCaseBuilder do
   Given { case_builder.build_cases }
 
   describe '#build_cases' do
-    Then { assert_includes case_builder.cases[:okonomi][:ruby].keys, :rails  }
-    And  { refute case_builder.cases[:okonomi][:ruby][:v2_7] }
+    focus
+    Then { assert_equal case_builder.build_matrix_names, 'blah'  }
+    # And  { assert_includes case_builder
+    #                          .build_complex_cases[:okonomi][:ruby][:rails
+    #                        ][:v6_1][:v2_7],
+    #                        'blah'  }
+    # And  { refute case_builder.cases[:okonomi][:ruby][:v2_7] }
   end
 
   describe '#document_cases' do

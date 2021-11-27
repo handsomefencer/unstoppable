@@ -14,21 +14,6 @@ module Roro
         build_cases
       end
 
-      def build_complex_cases(stack = nil, cases = {})
-        stack ||= @stack
-        case
-        when stack_type(stack).eql?(:templates)
-          return
-        when stack_type(stack_parent_path(stack)).eql?(:inflection) && [:stack, :story].include?(stack_type(stack))
-          cases[name(stack).to_sym] = {}
-          cases = cases[name(stack).to_sym]
-        end
-        children(stack).each do |c|
-          build_cases(c, cases)
-        end
-        @cases = sort_hash_deeply(cases)
-      end
-
       def build_cases(stack = nil, cases = {})
         stack ||= @stack
         case
@@ -52,7 +37,6 @@ module Roro
         hash = read_yaml("#{workflow}")
         hash[:jobs][0][:"test-rollon"][:matrix][:parameters][:answers] = matrix_cases
         File.open(workflow, "w") { |f| f.write(hash.to_yaml) }
-
       end
 
       def case_from_path(stack, array = nil)
@@ -83,6 +67,26 @@ module Roro
           v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
         end
         @matrix
+      end
+
+      def build_matrix_names(stack = nil, array = [], d = 0)
+        stack ||= @stack
+        @matrix_names ||= []
+        case
+        when stack_type(stack).eql?(:templates)
+          return
+        when stack_type(stack_parent_path(stack)).eql?(:inflection) &&
+          [:story, :stack].include?(stack_type(stack))
+          array = (array.take(d) << name(stack).to_sym)
+          children(stack).each do |c|
+            build_matrix_names(c, array, d+1)
+          end
+        else
+          children(stack).each do |c|
+            build_matrix_names(c, array, d)
+          end
+        end
+        @matrix_names
       end
     end
   end
