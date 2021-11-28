@@ -76,6 +76,26 @@ module Roro
       !File.exist?(stack)
     end
 
+    def stack_is_story_path?(stack)
+      !stack_is_parent?(stack) &&
+        !stack_is_templates?(stack) &&
+        stack_is_node?(stack)
+    end
+
+    def stack_is_itinerary_path?(stack)
+      !stack_is_parent?(stack) &&
+        !stack_is_templates?(stack) &&
+        stack_is_node?(stack)
+    end
+
+    def stack_is_parent?(stack)
+      children(stack).any? { |c| stack_is_inflection?(c) }
+    end
+
+    def story_paths(stack)
+      children(stack).select { |c| stack_is_story_path?(c) }
+    end
+
     def stack_stories(stack)
       children(stack).select { |c| stack_is_storyfile?(c) }
     end
@@ -85,7 +105,7 @@ module Roro
     end
 
     def stack_is_ignored?(stack)
-      ignored = %w[test_dummy story_test test templates]
+      ignored = %w[test_dummy story_test test]
       ignored.include?(stack.split('/').last)
     end
 
@@ -95,6 +115,10 @@ module Roro
 
     def children(stack)
       Dir.glob("#{stack}/*")
+    end
+
+    def stack_is_node?(stack)
+      children(stack).any? { |w| w.include?('.yml') } && !stack_is_templates?(stack)
     end
 
     def stack_parent(stack)
@@ -115,6 +139,13 @@ module Roro
     def stack_is_empty?(stack)
       !stack_is_file?(stack) &&
         Dir.glob("#{stack}/**").empty?
+    end
+
+    def build_paths(stack, story_paths = nil)
+      story_paths ||= []
+      story_paths << stack if stack_is_story_path?(stack)
+      children(stack).each { |c| build_paths(c, story_paths) }
+      story_paths
     end
 
     def sort_hash_deeply(unsorted)

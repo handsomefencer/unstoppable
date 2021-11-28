@@ -44,14 +44,13 @@ describe AdventureCaseBuilder do
   end
 
   describe '#matrix_cases' do
-    context 'when no variants' do
-      Then { assert_includes case_builder.matrix_cases, [3,2,1,1] }
-    end
+    # Then { assert_includes case_builder.matrix_cases, [3,2,1,1,1] }
+  end
 
-    context 'when variants (ruby version)' do
-      # focus
-      # Then { assert_equal case_builder.matrix_cases, [3,2,1,1,1] }
-      # Then { assert_includes case_builder.matrix_cases, [3,2,1,1,1] }
-    end
+  describe '#matrix_cases_human' do
+    # focus
+    Then { assert_includes case_builder.matrix_cases_human, [:okonomi,:ruby,
+                                                             :rails,:v6_1,
+                                                             :v2_7] }
   end
 end

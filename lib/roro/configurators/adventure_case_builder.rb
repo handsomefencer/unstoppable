@@ -5,12 +5,14 @@ module Roro
     class AdventureCaseBuilder
 
       include Utilities
-      attr_reader :cases, :itineraries, :matrix
+      attr_reader :cases, :itineraries, :matrix, :matrix_human, :kases
 
       def initialize(stack=nil)
         @stack = stack || Roro::CLI.stacks
         @cases =  {}
+        @kases =  {}
         @matrix = []
+        @matrix_human = []
         build_cases
       end
 
@@ -27,6 +29,31 @@ module Roro
           build_cases(c, cases)
         end
         @cases = sort_hash_deeply(cases)
+      end
+
+      # def matrix_cases(array = [], d = 0, hash = cases)
+      #   hash.each do |k, v|
+      #     array = (array.take(d) << hash.keys.index(k) + 1)
+      #     v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
+      #   end
+      #   @matrix
+      # end
+
+      def matrix_cases_human(stack = nil, array = [], d = 0)
+        stack ||= @stack
+        if [:stack, :story].include?(stack_type(stack))
+          array << name(stack)
+        end
+        if stack_type(stack).eql?(:inflection)
+          array = array.dup
+        end
+        if [:templates, :ignored, :storyfile].include?(stack_type(stack))
+          return
+        end
+        children(stack).each_with_index do |c, index|
+          matrix_cases_human(c, array, d)
+        end
+        @matrix << array
       end
 
       def document_cases
@@ -67,29 +94,6 @@ module Roro
           v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
         end
         @matrix
-      end
-
-      def build_matrix_names(stack = nil, array = [], d = 0)
-        stack ||= @stack
-        stackable = stack_type(stack)
-        @matrix_names ||= []
-        case
-        when stack_type(stack).eql?(:ignored)
-          return
-        when stack_type(stack).eql?(:inflection)
-          return
-        when stack_type(stack).eql?(:templates)
-          return
-        when stack_is_adventure?(stack)
-          array = (array.take(d) << name(stack).to_sym)
-          children(stack).each do |c|
-            build_matrix_names(c, array, d+1)
-          end
-        end
-        children(stack).each do |c|
-          build_matrix_names(c, array, d)
-        end
-        @matrix_names
       end
     end
   end
