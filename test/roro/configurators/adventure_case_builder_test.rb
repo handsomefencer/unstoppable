@@ -48,9 +48,10 @@ describe AdventureCaseBuilder do
   end
 
   describe '#matrix_cases_human' do
-    # focus
-    Then { assert_includes case_builder.matrix_cases_human, [:okonomi,:ruby,
-                                                             :rails,:v6_1,
-                                                             :v2_7] }
+    Given { case_builder.matrix_cases_human }
+    Then { assert_equal case_builder.matrix, 'blah'}
+    # Then { assert_includes case_builder.matrix_cases_human, [:okonomi,:ruby,
+    #                                                          :rails,:v6_1,
+    #                                                          :v2_7] }
   end
 end

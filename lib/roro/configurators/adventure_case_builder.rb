@@ -31,29 +31,35 @@ module Roro
         @cases = sort_hash_deeply(cases)
       end
 
-      # def matrix_cases(array = [], d = 0, hash = cases)
-      #   hash.each do |k, v|
-      #     array = (array.take(d) << hash.keys.index(k) + 1)
-      #     v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
-      #   end
-      #   @matrix
-      # end
+      def chooseables(stack)
+        children(stack).select do |c|
+          [:inflection].include?(stack_type(c))
+        end
+      end
 
       def matrix_cases_human(stack = nil, array = [], d = 0)
         stack ||= @stack
-        if [:stack, :story].include?(stack_type(stack))
-          array << name(stack)
+        array << name(stack) if stack_is_adventure?(stack)
+        chooseables = chooseables(stack)
+        iterables = children(stack) - chooseables
+        chooseables.each do |c|
+          if c.eql?(chooseables.first)
+            @level = array.size
+            d = d + 1
+            matrix_cases_human(c, array, @level)
+          end
+          if c.eql?(chooseables.last)
+            @matrix << array unless array.empty?
+            matrix_cases_human(c, array, d)
+          else
+            matrix_cases_human(c, array, d)
+          end
         end
-        if stack_type(stack).eql?(:inflection)
-          array = array.dup
-        end
-        if [:templates, :ignored, :storyfile].include?(stack_type(stack))
-          return
-        end
-        children(stack).each_with_index do |c, index|
+        iterables.each do |c|
+          next if [:ignored, :templates].include?(stack_type(c))
           matrix_cases_human(c, array, d)
         end
-        @matrix << array
+        array
       end
 
       def document_cases
