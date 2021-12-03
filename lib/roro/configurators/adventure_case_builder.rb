@@ -37,6 +37,27 @@ module Roro
         end
       end
 
+      def human(array = [], hash = cases, d = 0 )
+        hash ||= cases
+        plots = []
+        hash.each do |k, v|
+          if hash.keys.first.eql?(k)
+            @level = array.size
+            @foo = array.size
+            bar = array.size
+          end
+          array << k
+          unless hash.keys.last.eql?(k)
+            human(array, v, d)
+          end
+          plots << array
+          array  = array.take(@level)
+        end
+        plots.uniq
+        cases
+        plots
+      end
+
       def matrix_cases_human(stack = nil, array = [], d = 0)
         stack ||= @stack
         array << name(stack) if stack_is_adventure?(stack)
