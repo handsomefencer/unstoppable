@@ -12,22 +12,28 @@ module Roro
         build_cases
       end
 
-      def build_matrix(path = stack)
-        path   ||= stack
+      def build_matrix(path = stack, choices = nil )
         case
-        when stack_type(path).eql?(:story)
-          matrix = { name(path).to_sym => name(path).to_sym }
         when stack_type(path).eql?(:inflection)
           choices ||= []
+          matrix = { name(path).to_sym => []}
           children(path).each do |c|
             choices << build_matrix(c)
           end
-          matrix = { name(path).to_sym => choices }
-        when stack_type(path).eql?(:stack)
-          matrix = {}
+          matrix[name(path).to_sym] = choices
+        when [:stack].include?(stack_type(path))
+          matrix = { name(path).to_sym => {} }
           children(path).each do |c|
-            matrix[name(path).to_sym] = build_matrix(c)
+            nc = name(c).to_sym
+            if build_matrix(c)
+              matrix[name(path).to_sym][nc] = build_matrix(c)[nc]
+            end
           end
+
+        when stack_type(path).eql?(:story)
+          matrix = { name(path).to_sym => {} }
+        else
+          return
         end
         matrix
       end

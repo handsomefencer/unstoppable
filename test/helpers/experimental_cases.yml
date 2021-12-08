@@ -1,26 +1,43 @@
 ---
-:developer_styles:
-- :devops: 
-- :fatsufodo:
-    :stories:
-    - :django: :django
-    - :expressjs: :expressjs
-    - :flask: :flask
-    - :rails: :rails
-    - :wordpress: :wordpress
-- :okonomi: 
-- :omakase:
-    :stories:
-    - :rails: :rails
-    - :wordpress: :wordpress
-- :sashimi:
-    :stories:
-    - :kubernetes:
+:stacks:
+- :unstoppable:
+  - :developer_styles:
+    - :devops:
+        :ci_styles:
+        - :circleci: {}
+    - :fatsufodo:
         :stories:
-        - :ingress:
+        - :django: {}
+        - :expressjs: {}
+        - :flask: {}
+        - :rails: {}
+        - :wordpress: {}
+    - :okonomi:
+        :languages:
+        - :python:
+            :frameworks:
+            - :flask: {}
+        - :ruby:
             :stories:
-            - :nginx:
+            - :rails:
+                :versions:
+                - :v6_1: {}
+                - :v7_0: {}
+            :versions:
+            - :v2_7: {}
+            - :v3_0: {}
+    - :omakase:
+        :stories:
+        - :rails: {}
+        - :wordpress: {}
+    - :sashimi:
+        :stories:
+        - :kubernetes:
+            :stories:
+            - :ingress:
                 :stories:
-                - :cert_manager: :cert_manager
-    - :rails: :rails
-    - :roll_your_own: :roll_your_own
+                - :nginx:
+                    :stories:
+                    - :cert_manager: {}
+        - :rails: {}
+        - :roll_your_own: {}
