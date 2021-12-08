@@ -5,15 +5,31 @@ module Roro
     class AdventureCaseBuilder
 
       include Utilities
-      attr_reader :cases, :itineraries, :matrix, :matrix_human, :kases
+      attr_reader :cases, :itineraries, :matrix, :matrix_human, :kases, :stack
 
       def initialize(stack=nil)
         @stack = stack || Roro::CLI.stacks
-        @cases =  {}
-        @kases =  {}
-        @matrix = []
-        @matrix_human = []
         build_cases
+      end
+
+      def build_matrix(path = stack)
+        path   ||= stack
+        case
+        when stack_type(path).eql?(:story)
+          matrix = { name(path).to_sym => name(path).to_sym }
+        when stack_type(path).eql?(:inflection)
+          choices ||= []
+          children(path).each do |c|
+            choices << build_matrix(c)
+          end
+          matrix = { name(path).to_sym => choices }
+        when stack_type(path).eql?(:stack)
+          matrix = {}
+          children(path).each do |c|
+            matrix[name(path).to_sym] = build_matrix(c)
+          end
+        end
+        matrix
       end
 
       def build_cases(stack = nil, cases = {})
@@ -37,25 +53,41 @@ module Roro
         end
       end
 
+      # def human(array = [], hash = cases, d = 0 )
+      #   hash   ||= cases
+      #   @plots ||= []
+      #   @foo   ||= 0
+      #   hash.each do |k, v|
+      #     if hash.keys.first.eql?(k)
+      #       @foo += 1
+      #     end
+      #     array << k
+      #     human(array.dup, v, d + 1)
+      #     @plots << array
+      #     array  = array.take(d)
+      #     if hash.keys.last.eql?(k)
+      #       @foo = @foo - 1
+      #     end
+      #   end
+      #   @plots
+      # end
+
       def human(array = [], hash = cases, d = 0 )
-        hash ||= cases
-        plots = []
+        hash   ||= cases
+        @plots ||= []
+        @foo   ||= 0
         hash.each do |k, v|
-          if hash.keys.first.eql?(k)
-            @level = array.size
-            @foo = array.size
-            bar = array.size
-          end
+          d += 1
+          # array = array.take(d)
           array << k
-          unless hash.keys.last.eql?(k)
-            human(array, v, d)
+          if k.eql?(:fatsufodo)
+            human(array.dup, v, d) #unless v.empty?
           end
-          plots << array
-          array  = array.take(@level)
+          human(array.dup, v, d) #unless v.empty?
+          @plots << array
         end
-        plots.uniq
+        @plots
         cases
-        plots
       end
 
       def matrix_cases_human(stack = nil, array = [], d = 0)
@@ -84,13 +116,62 @@ module Roro
       end
 
       def document_cases
-        File.open("#{Dir.pwd}/test/helpers/adventure_cases.yml", "w") do |f|
-          f.write(cases.to_yaml)
+        getsome = {
+          devops: [
+            stories: {
+              circleci: {}
+            }
+          ],
+          fatsufodo: [
+            stories: {
+              django: {},
+              expressjs: {},
+              flask: {},
+              rails: {},
+              wordpress: {}
+            }
+          ],
+          okonomi: [
+            languages: [
+              python: {},
+              ruby: [
+                databases: {
+                  maria: [
+                    versions: {
+                      v15_1: {},
+                      v16_2: {}
+                    }
+                  ],
+                  postgres: [
+                    versions: {
+                      v12_2: {},
+                      v13_1: {}
+                    }
+                  ]
+                },
+                stories: {
+                  rails: [
+                    versions: {
+                      v6_1: {},
+                      v7_0: {}
+                    }
+                  ]
+                },
+                versions: {
+                  v2_7: {},
+                  v3_0: {}
+                }
+              ]
+            ]
+          ]
+        }
+        File.open("#{Dir.pwd}/test/helpers/experimental_cases.yml", "w") do |f|
+          f.write(build_matrix.to_yaml)
         end
-        workflow = "#{Dir.pwd}/.circleci/src/workflows/test-matrix-rollon.yml"
-        hash = read_yaml("#{workflow}")
-        hash[:jobs][0][:"test-rollon"][:matrix][:parameters][:answers] = matrix_cases
-        File.open(workflow, "w") { |f| f.write(hash.to_yaml) }
+        # workflow = "#{Dir.pwd}/.circleci/src/workflows/test-matrix-rollon.yml"
+        # hash = read_yaml("#{workflow}")
+        # hash[:jobs][0][:"test-rollon"][:matrix][:parameters][:answers] = matrix_cases
+        # File.open(workflow, "w") { |f| f.write(hash.to_yaml) }
       end
 
       def case_from_path(stack, array = nil)

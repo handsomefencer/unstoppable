@@ -1,0 +1,26 @@
+---
+:developer_styles:
+- :devops: 
+- :fatsufodo:
+    :stories:
+    - :django: :django
+    - :expressjs: :expressjs
+    - :flask: :flask
+    - :rails: :rails
+    - :wordpress: :wordpress
+- :okonomi: 
+- :omakase:
+    :stories:
+    - :rails: :rails
+    - :wordpress: :wordpress
+- :sashimi:
+    :stories:
+    - :kubernetes:
+        :stories:
+        - :ingress:
+            :stories:
+            - :nginx:
+                :stories:
+                - :cert_manager: :cert_manager
+    - :rails: :rails
+    - :roll_your_own: :roll_your_own

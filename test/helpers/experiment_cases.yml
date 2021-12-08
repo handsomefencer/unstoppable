@@ -1,0 +1,32 @@
+---
+:devops:
+- :stories:
+    :circleci: {}
+:fatsufodo:
+- :stories:
+    :django: {}
+    :expressjs: {}
+    :flask: {}
+    :rails: {}
+    :wordpress: {}
+:okonomi:
+- :languages:
+  - :python: {}
+    :ruby:
+    - :databases:
+        :maria:
+        - :versions:
+            :v15_1: {}
+            :v16_2: {}
+        :postgres:
+        - :versions:
+            :v12_2: {}
+            :v13_1: {}
+      :stories:
+        :rails:
+        - :versions:
+            :v6_1: {}
+            :v7_0: {}
+      :versions:
+        :v2_7: {}
+        :v3_0: {}
