@@ -73,7 +73,6 @@ module Roro
           when v.empty?
             array << k
             build_matrix(v, array.dup)
-
             @matrix << array
           when v.is_a?(Hash)
             array << k
@@ -81,12 +80,19 @@ module Roro
 
           when v.is_a?(Array)
             v.each do |item|
-              # if value.keys.first.eql?(k)
+              if value.keys.first.eql?(k)
                 build_matrix(item, array.dup)
-              # else
+              else
+                trix = @matrix.dup
+                trix.each do |m|
+                  foo = 'bar'
+                  @matrix.delete(m)
+                  m.pop(v.index(item))
+                  build_matrix(item, m)
+                end
               #   @matrix.last.pop
               #   build_matrix(item, @matrix.last)
-              # end
+              end
             end
           end
         end
