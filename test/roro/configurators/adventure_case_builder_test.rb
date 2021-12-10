@@ -3,21 +3,24 @@
 require 'test_helper'
 
 describe AdventureCaseBuilder do
-  Given(:case_builder) { AdventureCaseBuilder.new("#{Roro::CLI
-                                                       .roro_root}/stacks") }
-  Given(:expected) {
-    read_yaml("#{Roro::CLI.test_root}/helpers/experimental_cases.yml")
-  }
+  Given(:stack_loc)    { "#{Roro::CLI
+    .stacks}/unstoppable/developer_styles/okonomi/languages/ruby" }
 
-  Given { case_builder.build_cases }
+  Given(:case_builder) { AdventureCaseBuilder.new(stack_loc) }
+  Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_cases.yml") }
+
+  describe '#build_cases' do
+    Then { assert_equal case_builder.cases, expected }
+  end
 
   describe '#build_matrix' do
-    Then { assert_equal case_builder.build_matrix, expected  }
+    focus
+    Then { assert_equal case_builder.build_matrix, 'expected'  }
   end
 
   describe '#document_cases' do
     Given { case_builder.document_cases }
-    Then  { assert_file "#{Dir.pwd}/test/helpers/experimental_cases.yml" }
+    # Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
   end
 
   describe '#case_from_path' do
@@ -38,17 +41,5 @@ describe AdventureCaseBuilder do
       stories/cert_manager].join('/')}
     Given(:expected) { [5, 1, 1, 1, 1] }
     # Then { assert_equal expected, case_builder.case_from_stack(stack) }
-  end
-
-  describe '#matrix_cases' do
-    # Then { assert_includes case_builder.matrix_cases, [3,2,1,1,1] }
-  end
-
-  describe '#matrix_cases_human' do
-    # Given { case_builder.matrix_cases_human }
-    # Then { assert_equal case_builder.human, 'blah'}
-    # Then { assert_includes case_builder.matrix_cases_human, [:okonomi,:ruby,
-    #                                                          :rails,:v6_1,
-    #                                                          :v2_7] }
   end
 end
