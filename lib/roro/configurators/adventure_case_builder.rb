@@ -64,31 +64,31 @@ module Roro
         end
       end
 
-      def build_matrix( value = cases, array = [] )
+      def build_matrix( value = cases, array = [], index = 0)
         @matrix ||= []
         value.each do |k,v|
           case
           # when v.size > 1
           #   array << k
           when v.empty?
+            array.pop(index)
+            @matrix.delete(array)
             array << k
-            build_matrix(v, array.dup)
             @matrix << array
+            build_matrix(v, array.dup)
           when v.is_a?(Hash)
             array << k
             build_matrix(v, array.dup)
 
           when v.is_a?(Array)
-            v.each do |item|
+            v.each_with_index do |item, index|
               if value.keys.first.eql?(k)
                 build_matrix(item, array.dup)
               else
-                trix = @matrix.dup
-                trix.each do |m|
-                  foo = 'bar'
-                  @matrix.delete(m)
-                  m.pop(v.index(item))
-                  build_matrix(item, m)
+                @matrix.dup.each do |m|
+                  # @matrix.delete(m)
+                  # m.pop unless v.index(item).eql?(0)
+                  build_matrix(item, m.dup, index)
                 end
               #   @matrix.last.pop
               #   build_matrix(item, @matrix.last)
@@ -96,7 +96,7 @@ module Roro
             end
           end
         end
-        @matrix
+        @matrix.uniq
         # array
       end
 
