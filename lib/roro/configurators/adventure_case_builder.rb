@@ -37,8 +37,12 @@ module Roro
       end
 
       def document_cases
-        File.open("#{Dir.pwd}/mise/logs/matrix_cases.yml", "w") do |f|
+        File.open("#{Dir.pwd}/mise/logs/cases.yml", "w") do |f|
           f.write(build_cases.to_yaml)
+        end
+
+        File.open("#{Dir.pwd}/mise/logs/matrix_cases.yml", "w") do |f|
+          f.write(build_matrix.to_yaml)
         end
       end
 
@@ -64,58 +68,35 @@ module Roro
         end
       end
 
-      def build_matrix( value = cases, array = [], index = 0)
-        @matrix ||= []
-        value.each do |k,v|
+      def build_matrix( hash = cases, array = [], index = nil)
+        hash.each do |k,v|
+          @matrix ||= []
           case
-          # when v.size > 1
-          #   array << k
           when v.empty?
             array.pop(index)
             @matrix.delete(array)
             array << k
-            @matrix << array
+            @matrix << array.dup
             build_matrix(v, array.dup)
           when v.is_a?(Hash)
+            array.pop(index)
+            @matrix.delete(array)
             array << k
             build_matrix(v, array.dup)
-
           when v.is_a?(Array)
             v.each_with_index do |item, index|
-              if value.keys.first.eql?(k)
-                build_matrix(item, array.dup)
+              if hash.keys.first.eql?(k)
+                build_matrix(item, array.dup, 0)
               else
                 @matrix.dup.each do |m|
-                  # @matrix.delete(m)
-                  # m.pop unless v.index(item).eql?(0)
-                  build_matrix(item, m.dup, index)
+                  build_matrix(item, m, index)
                 end
-              #   @matrix.last.pop
-              #   build_matrix(item, @matrix.last)
               end
             end
           end
         end
-        @matrix.uniq
-        # array
+        @matrix.sort
       end
-
-      # def build_matrix(array = [], d = -2, hash = cases)
-      #   @matrix ||= []
-      #   hash.each do |k, v|
-      #     case
-      #     when v.is_a?(Hash)
-      #       # newarray = (array.take(d) << k)
-      #       build_matrix(array, d, v)
-      #     when v.is_a?(Array)
-      #       v.each do |vv|
-      #         getsome = build_matrix(array, d + 1, vv)
-      #         foo = 'bar'
-      #       end
-      #     end
-      #   end
-      #   @matrix
-      # end
 
       def matrix_cases(array = [], d = 0, hash = cases)
         hash.each do |k, v|

@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe AdventureCaseBuilder do
   Given(:stack_loc)    { "#{Roro::CLI
-    .stacks}/unstoppable/developer_styles/okonomi/languages/ruby" }
+    .stacks}" }
 
   Given(:case_builder) { AdventureCaseBuilder.new(stack_loc) }
   Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_cases.yml") }
@@ -14,13 +14,15 @@ describe AdventureCaseBuilder do
   end
 
   describe '#build_matrix' do
-    focus
+    # focus
     Then { assert_equal case_builder.build_matrix, 'expected'  }
   end
 
   describe '#document_cases' do
+    focus
     Given { case_builder.document_cases }
-    # Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
+    Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
+    Then  { assert_file "#{Dir.pwd}/mise/logs/cases.yml" }
   end
 
   describe '#case_from_path' do
