@@ -1,54 +1,55 @@
 ---
-:stacks:
-- :unstoppable:
-  - :developer_styles:
-    - :devops:
-        :ci_styles:
-        - :circleci: {}
-    - :fatsufodo:
-        :stories:
+:developer_styles:
+- :devops:
+    :ci_styles:
+    - :circleci: {}
+- :fatsufodo:
+    :stories:
+    - :django: {}
+    - :expressjs: {}
+    - :flask: {}
+    - :rails: {}
+    - :wordpress: {}
+- :okonomi:
+    :languages:
+    - :python:
+        :frameworks:
         - :django: {}
-        - :expressjs: {}
         - :flask: {}
-        - :rails: {}
-        - :wordpress: {}
-    - :okonomi:
-        :languages:
-        - :python:
-            :frameworks:
-            - :django: {}
-            - :flask: {}
-        - :ruby:
-            :stories:
-            - :rails:
-                :databases:
-                - :mariadb:
-                    :versions:
-                    - :v10_6_5: {}
-                    - :v10_7_1: {}
-                - :postgres:
-                    :versions:
-                    - :v13_5: {}
-                    - :v14_1: {}
+        :versions:
+        - :v3_10_1: {}
+        - :v3_9_9: {}
+    - :ruby:
+        :stories:
+        - :rails:
+            :databases:
+            - :mariadb:
                 :versions:
-                - :v6_1: {}
-                - :v7_0: {}
-            - :ruby_gem: {}
+                - :v10_6_5: {}
+                - :v10_7_1: {}
+            - :postgres:
+                :versions:
+                - :v13_5: {}
+                - :v14_1: {}
             :versions:
-            - :v2_7: {}
-            - :v3_0: {}
-    - :omakase:
+            - :v6_1: {}
+            - :v7_0: {}
+        - :ruby_gem: {}
+        :versions:
+        - :v2_7: {}
+        - :v3_0: {}
+- :omakase:
+    :stories:
+    - :rails: {}
+    - :wordpress: {}
+- :sashimi:
+    :stories:
+    - :kubernetes:
         :stories:
-        - :rails: {}
-        - :wordpress: {}
-    - :sashimi:
-        :stories:
-        - :kubernetes:
+        - :ingress:
             :stories:
-            - :ingress:
+            - :nginx:
                 :stories:
-                - :nginx:
-                    :stories:
-                    - :cert_manager: {}
-        - :rails: {}
-        - :roll_your_own: {}
+                - :cert_manager: {}
+    - :rails: {}
+    - :roll_your_own: {}

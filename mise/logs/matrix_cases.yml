@@ -1,36 +1,44 @@
 ---
 - - :devops
   - :circleci
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :fatsufodo
   - :django
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :fatsufodo
   - :expressjs
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :fatsufodo
   - :flask
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :fatsufodo
   - :rails
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :fatsufodo
   - :wordpress
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :okonomi
   - :python
   - :django
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :okonomi
   - :python
   - :flask
+  - :v3_9_9
   - :v7_0
   - :v3_0
 - - :okonomi
