@@ -68,19 +68,26 @@ module Roro
         end
       end
 
-      def build_matrix( hash = cases, matrix = [[]])
+      def build_matrix( hash = cases)
+        @matrix ||= [[]]
         hash.each do |k,v|
           if v.is_a?(Hash)
-            matrix.last << k
-            build_matrix( v, matrix)
+            @matrix.last << k
+            build_matrix( v ) unless v.empty?
           else
-            artefact = matrix
-            v.each do |inflection|
-              build_matrix(inflection, artefact)
+            before = @matrix.dup
+            v.each_with_index do |inflection, index|
+              unless index.eql?(0)
+                @matrix <<  @matrix.last.dup
+                @matrix.last.pop
+              end
+              build_matrix(inflection)
             end
+            after = @matrix.size
+            foo = 'bar'
           end
         end
-        matrix
+        @matrix
       end
 
       def matrix_cases(array = [], d = 0, hash = cases)
