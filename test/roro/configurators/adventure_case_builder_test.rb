@@ -14,8 +14,20 @@ describe AdventureCaseBuilder do
   end
 
   describe '#build_matrix' do
+    Given(:result) { case_builder.build_matrix }
     focus
-    Then { assert_equal case_builder.build_matrix, 'expected'  }
+    Then {
+      assert_includes result, [:devops, :circleci]
+      assert_includes result, [:fatsufodo, :django]
+      assert_includes result, [:fatsufodo, :rails]
+      assert_includes result, [:okonomi, :python, :django, :v3_9_9]
+      assert_includes result, [:sashimi, :rails]
+      assert_includes result, [:sashimi, :kubernetes, :ingress, :nginx,
+                               :cert_manager]
+      assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
+                               :v6_1]
+      # refute result.include?( [:okonomi, :python, :django, :v3_9_9] )
+    }
   end
 
   describe '#document_cases' do
