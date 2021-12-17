@@ -69,24 +69,31 @@ module Roro
       end
 
       def build_matrix( hash = cases, array = [], batch = [])
-        hash.each do |k, v|
-          @matrix ||= []
+        @matrix ||= []
+        hash.each do |k,v|
           if v.is_a?(Hash)
-            @matrix.delete(array)
-            @matrix << ( array << k )
-            build_matrix(v, array)
-            batch.each do |b|
-              # b.each do |k1, v1|
-              #   v1.each do |item|
-                  build_matrix(b, array)
-              #   end
-              # end
+            array << k
+            if v.empty? && batch.empty?
+              @matrix << array
+            else
+              if v.empty?
+                build_matrix({ batch: batch }, array)
+              else
+                build_matrix(v, array, batch)
+              end
             end
-            foo = 'bar'
           else
-            hash.shift
-            v.each_with_index do |item, index|
-              build_matrix(item, array.dup, hash.empty? ? [] : [hash] )
+            v.each do |item|
+              hash.shift
+              unless hash.empty?
+                batch << hash
+              end
+              if item.eql?(v.first)
+                args = [item, array.dup, batch.dup]
+              else
+                args = [item, array.dup, batch.dup]
+              end
+              build_matrix(*args)
             end
           end
         end
@@ -94,7 +101,7 @@ module Roro
       end
 
       def matrix_cases(array = [], d = 0, hash = cases)
-        hash.each do |k, v|
+        hash.each do |k, v|[]
           array = (array.take(d) << hash.keys.index(k) + 1)
           v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
         end

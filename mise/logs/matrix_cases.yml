@@ -20,69 +20,29 @@
   - :django
   - :v3_9_9
 - - :okonomi
-  - :python
-  - :flask
-  - :v3_10_1
-- - :okonomi
-  - :python
-  - :flask
-  - :v3_9_9
+  - :ruby
+  - :rails
+  - :mariadb
+  - :v10_6_5
+  - :v2_7
 - - :okonomi
   - :ruby
   - :rails
   - :mariadb
   - :v10_6_5
+  - :v3_0
 - - :okonomi
   - :ruby
   - :rails
   - :mariadb
-  - :v10_7_1
-- - :okonomi
-  - :ruby
-  - :rails
-  - :mariadb
+  - :v10_6_5
   - :v6_1
 - - :okonomi
   - :ruby
   - :rails
   - :mariadb
+  - :v10_6_5
   - :v7_0
-- - :okonomi
-  - :ruby
-  - :rails
-  - :postgres
-  - :v13_5
-- - :okonomi
-  - :ruby
-  - :rails
-  - :postgres
-  - :v14_1
-- - :okonomi
-  - :ruby
-  - :rails
-  - :postgres
-  - :v6_1
-- - :okonomi
-  - :ruby
-  - :rails
-  - :postgres
-  - :v7_0
-- - :okonomi
-  - :ruby
-  - :rails
-  - :v2_7
-- - :okonomi
-  - :ruby
-  - :rails
-  - :v3_0
-- - :okonomi
-  - :ruby
-  - :ruby_gem
-  - :v2_7
-- - :okonomi
-  - :ruby
-  - :ruby_gem
-  - :v3_0
 - - :omakase
   - :rails
 - - :omakase
