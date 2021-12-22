@@ -72,11 +72,11 @@ module Roro
         @matrix ||= []
         hash.each do |k,v|
           if v.is_a?(Hash)
+            batch.first.shift unless batch.empty?
+            batch.reject! { |b| b.empty? }
             array << k
-            if v.empty? && batch.empty?
+            if v.empty? && (batch.empty? || batch.first.empty?)
               @matrix << array
-              # build_matrix({ batch: batch }, array)
-              # build_matrix(v, array, hash)
             else
               if v.empty?
                 build_matrix({ batch: batch }, array)
@@ -85,23 +85,15 @@ module Roro
               end
             end
           else
-            if hash.size > 1
-              v.each do |item|
-                if item.eql?(v.first)
-                  hash.shift
-                  unless hash.empty?
-                    batch << hash
-                  end
-                  args = [item, array.dup, batch.dup]
-                else
-                  args = [item, array.dup, batch.dup]
-                end
-                build_matrix(*args)
+            return unless k.eql?(hash.keys.first)
+            v.each do |item|
+              batch.unshift(hash)
+              if item.eql?(v.first)
+                args = [item, array.dup, batch.dup]
+              else
+                args = [item, array.dup, batch.dup]
               end
-            else
-              v.each do |item|
-                build_matrix(item, array.dup, batch.dup)
-              end
+              build_matrix(*args)
             end
           end
         end
