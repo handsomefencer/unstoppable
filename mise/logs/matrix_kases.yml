@@ -1,0 +1,90 @@
+---
+:inflections:
+- :unstoppable:
+    :inflections:
+    - :developer_styles:
+        :stacks:
+          :devops:
+            :inflections:
+            - :ci_styles:
+                :stories:
+                - circleci
+          :fatsufodo:
+            :inflections:
+            - :frameworks:
+                :stories:
+                - django
+                - expressjs
+                - flask
+                - rails
+                - wordpress
+          :okonomi:
+            :inflections:
+            - :languages:
+                :stacks:
+                  :python:
+                    :inflections:
+                    - :frameworks:
+                        :stories:
+                        - django
+                        - flask
+                    - :versions:
+                        :stories:
+                        - v3_10_1
+                        - v3_9_9
+                  :ruby:
+                    :inflections:
+                    - :frameworks:
+                        :stacks:
+                          :rails:
+                            :inflections:
+                            - :databases:
+                                :stacks:
+                                  :mariadb:
+                                    :inflections:
+                                    - :versions:
+                                        :stories:
+                                        - v10_6_5
+                                        - v10_7_1
+                                  :postgres:
+                                    :inflections:
+                                    - :versions:
+                                        :stories:
+                                        - v13_5
+                                        - v14_1
+                            - :versions:
+                                :stories:
+                                - v6_1
+                                - v7_0
+                        :stories:
+                        - ruby_gem
+                    - :versions:
+                        :stories:
+                        - v2_7
+                        - v3_0
+          :omakase:
+            :inflections:
+            - :stories:
+                :stories:
+                - rails
+                - wordpress
+          :sashimi:
+            :inflections:
+            - :stories:
+                :stacks:
+                  :kubernetes:
+                    :inflections:
+                    - :stories:
+                        :stacks:
+                          :ingress:
+                            :inflections:
+                            - :stories:
+                                :stacks:
+                                  :nginx:
+                                    :inflections:
+                                    - :stories:
+                                        :stories:
+                                        - cert_manager
+                :stories:
+                - rails
+                - roll_your_own
