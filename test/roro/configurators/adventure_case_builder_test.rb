@@ -3,19 +3,22 @@
 require 'test_helper'
 
 describe AdventureCaseBuilder do
-  Given(:stack_loc)    { "#{Roro::CLI
-                              .stacks}/unstoppable/developer_styles" }
+  Given(:stack_loc)    { "#{Roro::CLI.stacks}" }
 
   Given(:case_builder) { AdventureCaseBuilder.new(stack_loc) }
-  Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_cases.yml") }
+  Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_cases_array.yml") }
 
+  describe '#reorder_cases' do
+    focus
+    Then { assert_equal case_builder.reorder_cases, 'expected' }
+  end
   describe '#build_cases' do
-    Then { assert_equal case_builder.cases, expected }
+    Then { assert_equal case_builder.cases, 'expected' }
   end
 
   describe '#build_matrix' do
     Given(:result) { case_builder.build_matrix }
-    focus
+
     Then {
       assert_includes result, [:devops, :circleci]
       assert_includes result, [:fatsufodo, :django]

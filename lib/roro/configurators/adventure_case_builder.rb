@@ -33,7 +33,28 @@ module Roro
         when stack_type(path).eql?(:story)
           cases = { name(path).to_sym => {} }
         end
-        @cases = cases
+        cases
+      end
+
+      def reorder_cases(path = stack)
+        kases = {
+          inflections: [],
+          stacks: {},
+          stories: []
+        }
+        children(path).each do |c|
+          case
+          when stack_type(c).eql?(:inflection)
+            kases[:inflections] << { name(c).to_sym => reorder_cases(c) }
+          when stack_type(c).eql?(:stack)
+            kases[:stacks][name(c).to_sym] = reorder_cases(c)
+          when stack_type(c).eql?(:story)
+            kases[:stories] << name(c).to_sym
+          end
+        end
+        kases.reject do |k|
+          kases[k].empty?
+        end
       end
 
       def document_cases
@@ -69,17 +90,19 @@ module Roro
       end
 
       def build_matrix( hash = cases, array = [], batch = [])
+        batch.reject! { |b| b.empty? }
+
         @matrix ||= []
         hash.each do |k,v|
           if v.is_a?(Hash)
-            batch.first.shift unless batch.empty?
-            batch.reject! { |b| b.empty? }
             array << k
             if v.empty? && (batch.empty? || batch.first.empty?)
               @matrix << array
             else
               if v.empty?
-                build_matrix({ batch: batch }, array)
+                newbatch = batch.dup
+                # newbatch.first.shift unless newbatch.empty?
+                build_matrix(newbatch.first, array)
               else
                 build_matrix(v, array, batch)
               end
