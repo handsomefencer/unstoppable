@@ -4,21 +4,21 @@ require 'test_helper'
 
 describe AdventureCaseBuilder do
   Given(:stack_loc)    { "#{Roro::CLI.stacks}" }
-
   Given(:case_builder) { AdventureCaseBuilder.new(stack_loc) }
-  Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_cases_array.yml") }
+  Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_kases.yml") }
 
   describe '#reorder_cases' do
     # focus
     Then { assert_equal case_builder.reorder_cases, 'expected' }
   end
+
   describe '#build_cases' do
     Then { assert_equal case_builder.cases, 'expected' }
   end
 
   describe '#build_matrix' do
-    Given(:result) { case_builder.build_matrix }
-
+    Given(:result) { case_builder.build_kases }
+    focus
     Then {
       assert_includes result, [:devops, :circleci]
       assert_includes result, [:fatsufodo, :django]
@@ -36,10 +36,10 @@ describe AdventureCaseBuilder do
   end
 
   describe '#document_cases' do
-    focus
+    # focus
     Given { case_builder.document_cases }
     Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
-    Then  { assert_file "#{Dir.pwd}/mise/logs/cases.yml" }
+    # Then  { assert_file "#{Dir.pwd}/mise/logs/cases.yml" }
   end
 
   describe '#case_from_path' do

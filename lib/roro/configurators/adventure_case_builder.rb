@@ -6,11 +6,12 @@ module Roro
 
       include Utilities
 
-      attr_reader :cases, :itineraries, :matrix, :stack
+      attr_reader :cases, :itineraries, :matrix, :stack, :kases
 
       def initialize(stack=nil)
         @stack = stack || Roro::CLI.stacks
         build_cases
+        @kases = reorder_cases
       end
 
       def build_cases(path = stack, choices = nil )
@@ -52,9 +53,29 @@ module Roro
             kases[:stories] << name(c)
           end
         end
+        # kases
         kases.reject do |k|
           kases[k].empty?
         end
+      end
+
+      def build_kases(hash = kases, array = [])
+        @backlog = []
+        @matrix_kases ||= []
+        hash[:inflections].each do |inflection|
+          build_kases(inflection, array)
+
+          choice.shift
+          @backlog << choice unless choice.empty?
+        end
+        hash[:stories]&.each do |k,v|
+          @matrix_kases << (array + [k])
+          # build_kases(v, array)
+        end
+        hash[:stacks]&.each do |k,v|
+          build_kases(v, ( array.dup <<  k ) )
+        end
+        @matrix_kases
       end
 
       def document_cases
@@ -93,7 +114,7 @@ module Roro
         end
       end
 
-      def build_matrix( hash = cases, array = [], batch = [])
+      def build_matrix( hash = kases, array = [], batch = [])
         batch.reject! { |b| b.empty? }
 
         @matrix ||= []
