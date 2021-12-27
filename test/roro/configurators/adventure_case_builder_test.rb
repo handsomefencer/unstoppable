@@ -9,7 +9,7 @@ describe AdventureCaseBuilder do
   Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_cases_array.yml") }
 
   describe '#reorder_cases' do
-    focus
+    # focus
     Then { assert_equal case_builder.reorder_cases, 'expected' }
   end
   describe '#build_cases' do
@@ -36,7 +36,7 @@ describe AdventureCaseBuilder do
   end
 
   describe '#document_cases' do
-    # focus
+    focus
     Given { case_builder.document_cases }
     Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
     Then  { assert_file "#{Dir.pwd}/mise/logs/cases.yml" }

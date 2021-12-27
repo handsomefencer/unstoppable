@@ -49,7 +49,7 @@ module Roro
           when stack_type(c).eql?(:stack)
             kases[:stacks][name(c).to_sym] = reorder_cases(c)
           when stack_type(c).eql?(:story)
-            kases[:stories] << name(c).to_sym
+            kases[:stories] << name(c)
           end
         end
         kases.reject do |k|
@@ -58,13 +58,17 @@ module Roro
       end
 
       def document_cases
-        File.open("#{Dir.pwd}/mise/logs/cases.yml", "w") do |f|
-          f.write(build_cases.to_yaml)
+        # File.open("#{Dir.pwd}/mise/logs/cases.yml", "w") do |f|
+        #   f.write(build_cases.to_yaml)
+        # end
+
+        File.open("#{Dir.pwd}/mise/logs/matrix_kases.yml", "w") do |f|
+          f.write(reorder_cases.to_yaml)
         end
 
-        File.open("#{Dir.pwd}/mise/logs/matrix_cases.yml", "w") do |f|
-          f.write(build_matrix.to_yaml)
-        end
+        # File.open("#{Dir.pwd}/mise/logs/matrix_cases.yml", "w") do |f|
+        #   f.write(build_matrix.to_yaml)
+        # end
       end
 
       def case_from_path(stack, array = nil)
