@@ -53,24 +53,33 @@ module Roro
             kases[:stories] << name(c)
           end
         end
-        # kases
-        kases.reject do |k|
-          kases[k].empty?
-        end
+        kases
+        # kases.reject do |k|
+        #   kases[k].empty?
+        # end
       end
 
-      def build_kases(hash = kases, array = [])
+      def build_kases(hash = kases, array = [], remainder = [])
         @backlog = []
         @matrix_kases ||= []
-        hash[:inflections].each do |inflection|
-          build_kases(inflection, array)
+        unless hash[:inflections].empty?
+          hash[:inflections]&.each_with_index do |inflection, index|
+            beforesize = @matrix_kases.dup
+            inflection.each do |k, v|
+              if inflection.eql?(hash[:inflections].first)
+                build_kases(v, array.dup, remainder + hash[:inflections][1..-1])
+                kreateds = @matrix_kases - beforesize
+                kreateds.each do |kreated|
+                  foo = @matrix_kases[kreated]
 
-          choice.shift
-          @backlog << choice unless choice.empty?
+                end
+                # build_kases(hash[:inflections].first.values.first, array.dup, remainder + hash[:inflections][1..-1])
+              end
+            end
+          end
         end
         hash[:stories]&.each do |k,v|
-          @matrix_kases << (array + [k])
-          # build_kases(v, array)
+          @matrix_kases << (array.dup + [k])
         end
         hash[:stacks]&.each do |k,v|
           build_kases(v, ( array.dup <<  k ) )
