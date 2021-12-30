@@ -50,41 +50,31 @@ module Roro
           when stack_type(c).eql?(:stack)
             kases[:stacks][name(c).to_sym] = reorder_cases(c)
           when stack_type(c).eql?(:story)
-            kases[:stories] << name(c)
+            kases[:stories] << name(c).to_sym
           end
         end
         kases
-        # kases.reject do |k|
-        #   kases[k].empty?
-        # end
       end
 
-      def build_kases(hash = kases, array = [], remainder = [])
-        @backlog = []
+      def build_kases(hash = kases, array = [])
         @matrix_kases ||= []
-        unless hash[:inflections].empty?
-          hash[:inflections]&.each_with_index do |inflection, index|
-            beforesize = @matrix_kases.dup
-            inflection.each do |k, v|
-              if inflection.eql?(hash[:inflections].first)
-                build_kases(v, array.dup, remainder + hash[:inflections][1..-1])
-                kreateds = @matrix_kases - beforesize
-                if hash[:inflections].size > 1
-                  kreateds.each do |kreated|
-                    @matrix_kases.delete(kreated)
-                    build_kases(hash[:inflections].last.values.first, kreated, remainder + hash[:inflections][1..-1])
-                  end
+        hash[:inflections]&.each do |inflection|
+          beforesize = @matrix_kases.dup
+          inflection.each do |k, v|
+            if inflection.eql?(hash[:inflections].first)
+              build_kases(v, array)
+              kreateds = @matrix_kases - beforesize
+              if hash[:inflections].size > 1
+                kreateds.each do |kreated|
+                  @matrix_kases.delete(kreated)
+                  build_kases(hash[:inflections].last.values.first, kreated)
                 end
               end
             end
           end
         end
-        hash[:stories]&.each do |k,v|
-          @matrix_kases << (array.dup + [k])
-        end
-        hash[:stacks]&.each do |k,v|
-          build_kases(v, ( array.dup <<  k ) )
-        end
+        hash[:stories]&.each { |k,_v| @matrix_kases << array + [k] }
+        hash[:stacks]&.each  { |k, v| build_kases(v, array.dup + [k]) }
         @matrix_kases
       end
 
@@ -136,7 +126,6 @@ module Roro
             else
               if v.empty?
                 newbatch = batch.dup
-                # newbatch.first.shift unless newbatch.empty?
                 build_matrix(newbatch.first, array)
               else
                 build_matrix(v, array, batch)

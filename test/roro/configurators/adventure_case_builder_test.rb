@@ -27,11 +27,11 @@ describe AdventureCaseBuilder do
       assert_includes result, [:sashimi, :rails]
       assert_includes result, [:sashimi, :kubernetes, :ingress, :nginx,
                                :cert_manager]
+      assert_includes result, [:okonomi, :ruby, :rails, :mariadb, :v10_7_1,
+                                :v6_1, :v2_7]
       assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
-                               :v6_1]
-      # assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
-      #                          :v6_1, :v2_7]
-      # refute result.include?( [:okonomi, :python, :django, :v3_9_9] )
+                               :v6_1, :v3_0]
+      assert_equal result.size, 33
     }
   end
 
