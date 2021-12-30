@@ -69,11 +69,12 @@ module Roro
               if inflection.eql?(hash[:inflections].first)
                 build_kases(v, array.dup, remainder + hash[:inflections][1..-1])
                 kreateds = @matrix_kases - beforesize
-                kreateds.each do |kreated|
-                  foo = @matrix_kases[kreated]
-
+                if hash[:inflections].size > 1
+                  kreateds.each do |kreated|
+                    @matrix_kases.delete(kreated)
+                    build_kases(hash[:inflections].last.values.first, kreated, remainder + hash[:inflections][1..-1])
+                  end
                 end
-                # build_kases(hash[:inflections].first.values.first, array.dup, remainder + hash[:inflections][1..-1])
               end
             end
           end
