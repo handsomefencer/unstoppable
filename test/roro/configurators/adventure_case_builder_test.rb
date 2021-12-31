@@ -5,39 +5,36 @@ require 'test_helper'
 describe AdventureCaseBuilder do
   Given(:stack_loc)    { "#{Roro::CLI.stacks}" }
   Given(:case_builder) { AdventureCaseBuilder.new(stack_loc) }
-  Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_kases.yml") }
-
-  describe '#reorder_cases' do
-    # Then { assert_equal case_builder.reorder_cases, expected }
-  end
+  Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_cases.yml") }
 
   describe '#build_cases' do
-    # focus
-    # Then { assert_equal case_builder.cases, expec ted }
+    When(:expected) { [:inflections, :stacks, :stories] }
+    Then { assert_equal expected, case_builder.build_cases.keys }
   end
 
-  describe '#build_matrix' do
-    Given(:result) { case_builder.build_kases }
-    # Then {
-    #   assert_includes result, [:devops, :circleci]
-    #   assert_includes result, [:fatsufodo, :django]
-    #   assert_includes result, [:fatsufodo, :rails]
-    #   assert_includes result, [:okonomi, :python, :django, :v3_9_9]
-    #   assert_includes result, [:sashimi, :rails]
-    #   assert_includes result, [:sashimi, :kubernetes, :ingress, :nginx,
-    #                            :cert_manager]
-    #   assert_includes result, [:okonomi, :ruby, :rails, :mariadb, :v10_7_1,
-    #                             :v6_1, :v2_7]
-    #   assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
-    #                            :v6_1, :v3_0]
-    #   assert_equal result.size, 33
-    # }
+  describe '#build_cases_matrix' do
+    Given(:result) { case_builder.build_cases_matrix }
+
+    Then {
+      assert_includes result, [:devops, :circleci]
+      assert_includes result, [:fatsufodo, :django]
+      assert_includes result, [:fatsufodo, :rails]
+      assert_includes result, [:okonomi, :python, :django, :v3_9_9]
+      assert_includes result, [:sashimi, :rails]
+      assert_includes result, [:sashimi, :kubernetes, :ingress, :nginx,
+                               :cert_manager]
+      assert_includes result, [:okonomi, :ruby, :rails, :mariadb, :v10_7_1,
+                                :v6_1, :v2_7]
+      assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
+                               :v6_1, :v3_0]
+      assert_equal result.size, 33
+    }
   end
 
   describe '#document_cases' do
-    # Given { case_builder.document_cases }
-    # Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
-    # Then  { assert_file "#{Dir.pwd}/mise/logs/cases.yml" }
+    Given { case_builder.document_cases }
+    focus
+    Then  { assert_file "#{Dir.pwd}/mise/logs/cases_matrix.yml" }
   end
 
   describe '#case_from_path' do
