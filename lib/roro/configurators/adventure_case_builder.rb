@@ -35,6 +35,7 @@ module Roro
           cases = { name(path).to_sym => {} }
         end
         cases
+        @cases = cases
       end
 
       def reorder_cases(path = stack)
@@ -79,17 +80,9 @@ module Roro
       end
 
       def document_cases
-        # File.open("#{Dir.pwd}/mise/logs/cases.yml", "w") do |f|
-        #   f.write(build_cases.to_yaml)
-        # end
-
         File.open("#{Dir.pwd}/mise/logs/matrix_kases.yml", "w") do |f|
           f.write(reorder_cases.to_yaml)
         end
-
-        # File.open("#{Dir.pwd}/mise/logs/matrix_cases.yml", "w") do |f|
-        #   f.write(build_matrix.to_yaml)
-        # end
       end
 
       def case_from_path(stack, array = nil)
