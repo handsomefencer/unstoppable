@@ -8,35 +8,35 @@ describe AdventureCaseBuilder do
   Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_kases.yml") }
 
   describe '#reorder_cases' do
-    # Then { assert_equal case_builder.reorder_cases, 'expected' }
+    # Then { assert_equal case_builder.reorder_cases, expected }
   end
 
   describe '#build_cases' do
-    # Then { assert_equal case_builder.cases, 'expected' }
+    # focus
+    # Then { assert_equal case_builder.cases, expec ted }
   end
 
   describe '#build_matrix' do
     Given(:result) { case_builder.build_kases }
-    Then {
-      assert_includes result, [:devops, :circleci]
-      assert_includes result, [:fatsufodo, :django]
-      assert_includes result, [:fatsufodo, :rails]
-      assert_includes result, [:okonomi, :python, :django, :v3_9_9]
-      assert_includes result, [:sashimi, :rails]
-      assert_includes result, [:sashimi, :kubernetes, :ingress, :nginx,
-                               :cert_manager]
-      assert_includes result, [:okonomi, :ruby, :rails, :mariadb, :v10_7_1,
-                                :v6_1, :v2_7]
-      assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
-                               :v6_1, :v3_0]
-      assert_equal result.size, 33
-    }
+    # Then {
+    #   assert_includes result, [:devops, :circleci]
+    #   assert_includes result, [:fatsufodo, :django]
+    #   assert_includes result, [:fatsufodo, :rails]
+    #   assert_includes result, [:okonomi, :python, :django, :v3_9_9]
+    #   assert_includes result, [:sashimi, :rails]
+    #   assert_includes result, [:sashimi, :kubernetes, :ingress, :nginx,
+    #                            :cert_manager]
+    #   assert_includes result, [:okonomi, :ruby, :rails, :mariadb, :v10_7_1,
+    #                             :v6_1, :v2_7]
+    #   assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
+    #                            :v6_1, :v3_0]
+    #   assert_equal result.size, 33
+    # }
   end
 
   describe '#document_cases' do
-    # focus
-    Given { case_builder.document_cases }
-    Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
+    # Given { case_builder.document_cases }
+    # Then  { assert_file "#{Dir.pwd}/mise/logs/matrix_cases.yml" }
     # Then  { assert_file "#{Dir.pwd}/mise/logs/cases.yml" }
   end
 
