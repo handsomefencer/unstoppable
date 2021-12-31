@@ -8,17 +8,15 @@ describe AdventureCaseBuilder do
   Given(:expected)     { read_yaml("#{Dir.pwd}/mise/logs/matrix_kases.yml") }
 
   describe '#reorder_cases' do
-    # focus
-    Then { assert_equal case_builder.reorder_cases, 'expected' }
+    # Then { assert_equal case_builder.reorder_cases, 'expected' }
   end
 
   describe '#build_cases' do
-    Then { assert_equal case_builder.cases, 'expected' }
+    # Then { assert_equal case_builder.cases, 'expected' }
   end
 
   describe '#build_matrix' do
     Given(:result) { case_builder.build_kases }
-    focus
     Then {
       assert_includes result, [:devops, :circleci]
       assert_includes result, [:fatsufodo, :django]

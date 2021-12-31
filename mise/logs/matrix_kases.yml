@@ -11,7 +11,7 @@
                 :inflections: []
                 :stacks: {}
                 :stories:
-                - circleci
+                - :circleci
             :stacks: {}
             :stories: []
           :fatsufodo:
@@ -20,11 +20,11 @@
                 :inflections: []
                 :stacks: {}
                 :stories:
-                - django
-                - expressjs
-                - flask
-                - rails
-                - wordpress
+                - :django
+                - :expressjs
+                - :flask
+                - :rails
+                - :wordpress
             :stacks: {}
             :stories: []
           :okonomi:
@@ -38,14 +38,14 @@
                         :inflections: []
                         :stacks: {}
                         :stories:
-                        - django
-                        - flask
+                        - :django
+                        - :flask
                     - :versions:
                         :inflections: []
                         :stacks: {}
                         :stories:
-                        - v3_10_1
-                        - v3_9_9
+                        - :v3_10_1
+                        - :v3_9_9
                     :stacks: {}
                     :stories: []
                   :ruby:
@@ -64,8 +64,8 @@
                                         :inflections: []
                                         :stacks: {}
                                         :stories:
-                                        - v10_6_5
-                                        - v10_7_1
+                                        - :v10_6_5
+                                        - :v10_7_1
                                     :stacks: {}
                                     :stories: []
                                   :postgres:
@@ -74,8 +74,8 @@
                                         :inflections: []
                                         :stacks: {}
                                         :stories:
-                                        - v13_5
-                                        - v14_1
+                                        - :v13_5
+                                        - :v14_1
                                     :stacks: {}
                                     :stories: []
                                 :stories: []
@@ -83,18 +83,18 @@
                                 :inflections: []
                                 :stacks: {}
                                 :stories:
-                                - v6_1
-                                - v7_0
+                                - :v6_1
+                                - :v7_0
                             :stacks: {}
                             :stories: []
                         :stories:
-                        - ruby_gem
+                        - :ruby_gem
                     - :versions:
                         :inflections: []
                         :stacks: {}
                         :stories:
-                        - v2_7
-                        - v3_0
+                        - :v2_7
+                        - :v3_0
                     :stacks: {}
                     :stories: []
                 :stories: []
@@ -106,8 +106,8 @@
                 :inflections: []
                 :stacks: {}
                 :stories:
-                - rails
-                - wordpress
+                - :rails
+                - :wordpress
             :stacks: {}
             :stories: []
           :sashimi:
@@ -131,7 +131,7 @@
                                         :inflections: []
                                         :stacks: {}
                                         :stories:
-                                        - cert_manager
+                                        - :cert_manager
                                     :stacks: {}
                                     :stories: []
                                 :stories: []
@@ -141,8 +141,8 @@
                     :stacks: {}
                     :stories: []
                 :stories:
-                - rails
-                - roll_your_own
+                - :rails
+                - :roll_your_own
             :stacks: {}
             :stories: []
         :stories: []
