@@ -5,13 +5,13 @@ describe 'omakase wordpress' do
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { [''] }
   Given(:rollon)     {
-    # copy_stage_dummy(__dir__)
+    copy_stage_dummy(__dir__)
     stubs_adventure(__dir__)
     stub_overrides
     stub_run_actions
     cli.rollon
   }
-
+  Given { skip }
   Given { quiet { rollon } }
 
   describe 'must have docker-compose.yml file' do

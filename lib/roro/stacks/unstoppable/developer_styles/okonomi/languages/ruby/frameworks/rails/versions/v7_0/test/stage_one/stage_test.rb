@@ -15,6 +15,8 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
     cli.rollon
   }
 
+  Given { skip }
+
   Given { quiet { rollon } }
 
   describe 'must generate a' do

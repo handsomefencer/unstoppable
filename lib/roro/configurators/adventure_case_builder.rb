@@ -13,6 +13,21 @@ module Roro
         build_cases
       end
 
+      def build_itinerary( array = [], path = stack )
+        case
+        when stack_type(path).eql?(:inflection)
+          children(path).each do |c|
+            build_itinerary(array, c)
+          end
+        when stack_type(path).eql?(:stack)
+          foo = 'bar'
+        when stack_type(path).eql?(:story)
+          foo = 'baz'
+        else
+          foo = 'baz'
+        end
+      end
+
       def build_cases(path = stack)
         cases = {
           inflections: [],
@@ -31,6 +46,7 @@ module Roro
         end
         @cases = cases
       end
+
 
       def build_cases_matrix(hash = cases, array = [])
         @matrix ||= []

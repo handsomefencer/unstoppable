@@ -11,7 +11,7 @@ namespace :circleci do
       task 'test-matrix-rollon' do |task|
         set_content(task)
         case_builder = Roro::Configurators::AdventureCaseBuilder.new
-        case_builder.matrix_cases
+        case_builder.build_cases_matrix
         value = case_builder.matrix.map { |c| c.join('\n') }
         matrix = @content['jobs'][0]['test-rollon']['matrix']
         matrix['parameters']['answers'] = value

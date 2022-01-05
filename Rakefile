@@ -7,6 +7,8 @@ require "roro"
 Rake.add_rakelib 'rakelib/circleci'
 Rake.add_rakelib 'rakelib/circleci/config'
 Rake.add_rakelib 'rakelib/circleci/matrices/run'
+Rake.add_rakelib 'rakelib/circleci/matrices/test_rollon'
+Rake.add_rakelib 'rakelib/circleci/matrices/test_rubies'
 Rake.add_rakelib 'rakelib/circleci/process'
 Rake.add_rakelib 'rakelib/circleci/jobs'
 

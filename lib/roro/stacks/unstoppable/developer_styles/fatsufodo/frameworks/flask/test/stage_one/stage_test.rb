@@ -12,6 +12,7 @@ describe 'fatsufodo flask' do
     stub_run_actions
     cli.rollon
   }
+  Given { skip }
 
   Given { quiet { rollon } }
 

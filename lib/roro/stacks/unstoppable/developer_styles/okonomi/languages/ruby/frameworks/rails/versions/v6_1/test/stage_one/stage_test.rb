@@ -13,7 +13,7 @@ describe 'okonomi ruby rails 7_0' do
     stub_run_actions
     cli.rollon
   }
-
+  Given { skip }
   Given { quiet { rollon } }
 
   describe 'must generate a' do

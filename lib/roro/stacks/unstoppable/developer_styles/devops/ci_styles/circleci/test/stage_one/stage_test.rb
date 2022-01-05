@@ -11,7 +11,7 @@ describe 'devops circleci' do
     stub_run_actions
     cli.rollon
   }
-
+  Given { skip }
   Given { quiet { rollon } }
 
   describe 'must generate a' do
