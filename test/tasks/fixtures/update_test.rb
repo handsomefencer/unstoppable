@@ -14,7 +14,7 @@ describe 'rake ci:prepare' do
     assert_file workflow, /test-rollon/
     assert_file workflow, /answers:\n/
     assert_file workflow, /- 1\\n1\n/
-    assert_match 'Wrote answers', output.first
+    assert_match 'Wrote answeddrs', output.first
     assert_match 'Packing', output.first
     assert_match 'Packed', output.first
     assert_match 'Validating', output.first
