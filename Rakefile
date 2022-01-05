@@ -4,13 +4,15 @@ require "json"
 require "yaml"
 require "roro"
 
-Rake.add_rakelib 'rakelib/circleci'
-Rake.add_rakelib 'rakelib/circleci/config'
-Rake.add_rakelib 'rakelib/circleci/matrices/run'
-Rake.add_rakelib 'rakelib/circleci/matrices/test_rollon'
-Rake.add_rakelib 'rakelib/circleci/matrices/test_rubies'
-Rake.add_rakelib 'rakelib/circleci/process'
-Rake.add_rakelib 'rakelib/circleci/jobs'
+Rake.add_rakelib 'rakelib/ci'
+Rake.add_rakelib 'rakelib/ci/config'
+Rake.add_rakelib 'rakelib/ci/matrices/run'
+Rake.add_rakelib 'rakelib/ci/matrices/test_rollon'
+Rake.add_rakelib 'rakelib/ci/matrices/test_rubies'
+Rake.add_rakelib 'rakelib/ci/process'
+Rake.add_rakelib 'rakelib/ci/workflows'
+Rake.add_rakelib 'rakelib/ci/jobs'
+Rake.add_rakelib 'rakelib/fixtures'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"

@@ -2,6 +2,14 @@
 
 module Roro
   module TestHelpers
+    module RakeTaskHelpers
+
+      def run_task(task_name)
+        Rake.application.invoke_task task_name
+      end
+
+    end
+
     module AdventureHelper
 
       def prepare_destination(*workbench)
@@ -24,10 +32,11 @@ module Minitest
   class Spec
 
     include Roro::TestHelpers::AdventureHelper
+    include Roro::TestHelpers::RakeTaskHelpers
 
     def check_into_workbench
       return unless defined? workbench
-      Rake.application.load_rakefile if defined? load_rakefile
+      Rake.application.load_rakefile #if defined? load_rakefile
       prepare_destination(*workbench)
       @roro_dir = Dir.pwd
       Dir.chdir("#{@tmpdir}/workbench")

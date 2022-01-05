@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#set -e
 
 rollon=2\\n4
 

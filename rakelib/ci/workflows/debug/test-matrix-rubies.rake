@@ -3,7 +3,7 @@ namespace :ci do
     namespace :local do
       desc 'Process workflows'
       task 'workflows' do
-        namespace 'circleci:process:workflows' do
+        namespace 'ci:process:workflows' do
           Rake::Task['test-matrix-rollon'].invoke
         end
       end
