@@ -12,7 +12,7 @@ module Roro
         def choose_adventure(stack)
           build_inflection(stack)
           say("Rolling story on from stack: #{@stack}\n\n")
-          say(@getsome)
+          say(@prompt)
           choice = ask(@inflection)
           story_name = story_from(choice.to_s)
           "#{stack}/#{story_name}"
@@ -23,7 +23,7 @@ module Roro
           prompt = inflection_prompt
           options = inflection_options
           prompt_options = humanize(options)
-          @getsome = "#{prompt}\n"
+          @prompt = "#{prompt}\n"
           @inflection = ["#{prompt_options}\n\n", "Choices: [#{set_color(options.keys.map { |k| k.to_i }.join(' '), :blue)}]"]
         end
 

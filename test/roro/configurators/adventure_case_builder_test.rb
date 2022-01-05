@@ -12,6 +12,10 @@ describe AdventureCaseBuilder do
     Then { assert_equal expected, case_builder.build_cases.keys }
   end
 
+  describe '#build_itinerary' do
+
+  end
+
   describe '#build_itineraries' do
     Given(:expected) { %w[first_story second_story] }
     # focus
