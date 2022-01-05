@@ -1,4 +1,4 @@
-namespace :circleci do
+namespace :release do
   namespace :jobs do
     task 'build' do |task|
       sh(". ./mise/scripts/debug/jobs/build.sh ")

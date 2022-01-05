@@ -1,4 +1,4 @@
-namespace :circleci do
+namespace :release do
   namespace :process do
     desc 'Process workflows'
     task 'workflows' do
