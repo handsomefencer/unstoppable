@@ -1,4 +1,4 @@
-namespace :release do
+namespace :ci do
   desc 'Prepare .circlecli/config.yml for deploy'
   task 'prepare' do
     Rake::Task['circleci:process:workflows'].invoke

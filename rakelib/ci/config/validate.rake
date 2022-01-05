@@ -1,4 +1,4 @@
-namespace :release do
+namespace :ci do
   namespace :config do
     desc 'Validate .circleci/config.yml'
     task 'validate' do |t|

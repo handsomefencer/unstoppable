@@ -1,4 +1,4 @@
-namespace :release do
+namespace :ci do
   namespace :workflows do
     namespace :local do
       desc 'Process workflows'

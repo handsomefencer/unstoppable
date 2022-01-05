@@ -1,4 +1,4 @@
-namespace :release do
+namespace :ci do
   namespace :config do
     desc 'Pack .circleci/config.yml from .circleci/src files'
     task 'pack' do |t|

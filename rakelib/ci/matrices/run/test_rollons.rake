@@ -1,4 +1,4 @@
-namespace :release do
+namespace :ci do
   namespace :matrices do
     namespace :run do
       task 'test_rollons' do |task|

@@ -1,4 +1,4 @@
-namespace :release do
+namespace :ci do
   namespace :matrices do
     namespace :test_rubies do
       desc 'Run local'
