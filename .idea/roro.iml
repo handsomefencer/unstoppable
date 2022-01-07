@@ -62,6 +62,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.11.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.10.1, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-readline (v0.5.5, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rbs (v1.4.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="regexp_parser (v1.8.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.3.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="selenium-webdriver (v3.142.7, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
@@ -80,7 +81,84 @@
   </component>
   <component name="RakeTasksCache">
     <option name="myRootTask">
-      <RakeTaskImpl id="rake" />
+      <RakeTaskImpl id="rake">
+        <subtasks>
+          <RakeTaskImpl description="Build roro-0.3.29.gem into the pkg directory" fullCommand="build" id="build" />
+          <RakeTaskImpl id="build">
+            <subtasks>
+              <RakeTaskImpl description="Generate SHA512 checksum if roro-0.3.29.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="ci">
+            <subtasks>
+              <RakeTaskImpl id="config">
+                <subtasks>
+                  <RakeTaskImpl description="Pack .circleci/config.yml from .circleci/src files" fullCommand="ci:config:pack" id="pack" />
+                  <RakeTaskImpl description="Validate .circleci/config.yml" fullCommand="ci:config:process" id="process" />
+                  <RakeTaskImpl description="Validate .circleci/config.yml" fullCommand="ci:config:validate" id="validate" />
+                </subtasks>
+              </RakeTaskImpl>
+              <RakeTaskImpl id="matrices">
+                <subtasks>
+                  <RakeTaskImpl id="test_rubies">
+                    <subtasks>
+                      <RakeTaskImpl description="Run local" fullCommand="ci:matrices:test_rubies:run" id="run" />
+                    </subtasks>
+                  </RakeTaskImpl>
+                  <RakeTaskImpl id="run">
+                    <subtasks>
+                      <RakeTaskImpl description="" fullCommand="ci:matrices:run:test_rollons" id="test_rollons" />
+                    </subtasks>
+                  </RakeTaskImpl>
+                </subtasks>
+              </RakeTaskImpl>
+              <RakeTaskImpl description="Prepare .circlecli/config.yml for deploy" fullCommand="ci:prepare" id="prepare" />
+              <RakeTaskImpl id="process">
+                <subtasks>
+                  <RakeTaskImpl description="Process workflows" fullCommand="ci:process:workflows" id="workflows" />
+                  <RakeTaskImpl id="workflows">
+                    <subtasks>
+                      <RakeTaskImpl description="" fullCommand="ci:process:workflows:test-matrix-rollon" id="test-matrix-rollon" />
+                    </subtasks>
+                  </RakeTaskImpl>
+                </subtasks>
+              </RakeTaskImpl>
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Remove any temporary products" fullCommand="clean" id="clean" />
+          <RakeTaskImpl description="Remove any generated files" fullCommand="clobber" id="clobber" />
+          <RakeTaskImpl id="fixtures">
+            <subtasks>
+              <RakeTaskImpl id="matrixes">
+                <subtasks>
+                  <RakeTaskImpl id="create">
+                    <subtasks>
+                      <RakeTaskImpl description="Create or update cases" fullCommand="fixtures:matrixes:create:cases" id="cases" />
+                      <RakeTaskImpl description="Create or update itineraries" fullCommand="fixtures:matrixes:create:itineraries" id="itineraries" />
+                    </subtasks>
+                  </RakeTaskImpl>
+                </subtasks>
+              </RakeTaskImpl>
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Build and install roro-0.3.29.gem into system gems" fullCommand="install" id="install" />
+          <RakeTaskImpl id="install">
+            <subtasks>
+              <RakeTaskImpl description="Build and install roro-0.3.29.gem into system gems without network access" fullCommand="install:local" id="local" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Create tag v0.3.29 and build and push roro-0.3.29.gem to rubygems.org" fullCommand="release[remote]" id="release[remote]" />
+          <RakeTaskImpl description="Run tests" fullCommand="test" id="test" />
+          <RakeTaskImpl description="" fullCommand="release" id="release" />
+          <RakeTaskImpl id="release">
+            <subtasks>
+              <RakeTaskImpl description="" fullCommand="release:guard_clean" id="guard_clean" />
+              <RakeTaskImpl description="" fullCommand="release:rubygem_push" id="rubygem_push" />
+              <RakeTaskImpl description="" fullCommand="release:source_control_push" id="source_control_push" />
+            </subtasks>
+          </RakeTaskImpl>
+        </subtasks>
+      </RakeTaskImpl>
     </option>
   </component>
 </module>
