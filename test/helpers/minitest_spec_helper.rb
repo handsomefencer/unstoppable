@@ -5,13 +5,9 @@ module Roro
     module RakeTaskHelpers
 
       def run_task(task_name)
-        # Rake.application.invoke_task task_name
         @task_name = task_name
-        @output = capture_subprocess_io {
-          Rake.application.invoke_task task_name
-        }
-
-
+        git         @output = capture_subprocess_io { Rake::Task[task_name]
+                                                      .execute }
       end
     end
 
