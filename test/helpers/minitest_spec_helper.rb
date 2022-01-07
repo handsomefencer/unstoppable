@@ -5,9 +5,14 @@ module Roro
     module RakeTaskHelpers
 
       def run_task(task_name)
-        Rake.application.invoke_task task_name
-      end
+        # Rake.application.invoke_task task_name
+        @task_name = task_name
+        @output = capture_subprocess_io {
+          Rake.application.invoke_task task_name
+        }
 
+
+      end
     end
 
     module AdventureHelper
@@ -16,7 +21,7 @@ module Roro
         @tmpdir = Dir.mktmpdir
         FileUtils.mkdir_p("#{@tmpdir}/workbench")
         workbench.each do |dummy_app|
-          source = Dir.pwd + "/test/dummies/#{dummy_app}"
+          source = Dir.pwd + "/test/fixtures/dummies/#{dummy_app}"
           if File.exist?(source)
             FileUtils.cp_r(source, "#{@tmpdir}/workbench")
           else

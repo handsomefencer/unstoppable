@@ -13,6 +13,7 @@ Rake.add_rakelib 'rakelib/ci/process'
 Rake.add_rakelib 'rakelib/ci/workflows'
 Rake.add_rakelib 'rakelib/ci/jobs'
 Rake.add_rakelib 'rakelib/fixtures'
+Rake.add_rakelib 'rakelib/fixtures/matrixes'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
