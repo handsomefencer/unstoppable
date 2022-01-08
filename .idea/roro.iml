@@ -62,7 +62,6 @@
     <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.11.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.10.1, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-readline (v0.5.5, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rbs (v1.4.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="regexp_parser (v1.8.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.3.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="selenium-webdriver (v3.142.7, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />

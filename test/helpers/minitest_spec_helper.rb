@@ -6,8 +6,7 @@ module Roro
 
       def run_task(task_name)
         @task_name = task_name
-        git         @output = capture_subprocess_io { Rake::Task[task_name]
-                                                      .execute }
+        @output = capture_subprocess_io { Rake::TestTask[task_name].execute }
       end
     end
 

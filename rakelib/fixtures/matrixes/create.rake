@@ -12,12 +12,12 @@ namespace :fixtures do
         end
       end
 
-      desc 'Create or update itineraries'
-      task 'itineraries' do |task|
-        create_fixture_matrix('itineraries') do
-          Rake::Task['fixtures:generate'].execute
-        end
-      end
+      # desc 'Create or update itineraries'
+      # task 'itineraries' do |task|
+      #   create_fixture_matrix('itineraries') do
+      #     Rake::Task['fixtures:generate'].execute
+      #   end
+      # end
 
       private
 

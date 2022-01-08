@@ -18,7 +18,8 @@ describe 'generate fixtures' do
           .stubs(:ask)
           .returns(*kases)
         chooser = AdventureChooser.new
-        itineraries << chooser.build_itinerary
+        chooser.build_itinerary
+        itineraries << chooser.itinerary
       end
       f.write(itineraries.to_yaml)
 

@@ -57,7 +57,7 @@ describe 'rake fixtures:matrixes:create' do
     end
 
     describe 'when task is run' do
-      Given { run_task("fixtures:matrixes:create:#{matrix}" ) }
+      Given { run_task("fixtures:generate" ) }
       Then  { assert_file file }
       # And   { assert_match 'Creating', @output.first }
       # And   { assert_match 'Created', @output.first }
