@@ -5,7 +5,7 @@ require 'rake'
 
 describe 'rake ci:config:pack' do
   Given(:workbench) { '.circleci' }
-  Given(:output) { capture_subprocess_io { run_task('ci:config:pack') }.first }
+  Given(:output) { run_task('ci:config:pack') }
   Given { skip }
   Then { assert_match /Packing/, output }
   And  { assert_match /Packed/, output }

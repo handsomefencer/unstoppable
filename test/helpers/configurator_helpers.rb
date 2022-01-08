@@ -41,7 +41,7 @@ module Minitest
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)
-        .returns *adventures
+        .returns(*adventures)
     end
 
     def stub_journey(answers)

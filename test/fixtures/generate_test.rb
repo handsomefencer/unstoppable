@@ -3,13 +3,11 @@
 require 'test_helper'
 
 describe 'generate fixtures' do
-  Given(:cases) { read_yaml("#{Dir.pwd}/test/fixtures/matrixes/cases.yml") }
-  Given(:file) { "test/fixtures/matrixes/itineraries.yml" }
-  Given(:content)         { read_yaml("#{Dir.pwd}/#{file}") }
-
-  Given do
-
-    File.open("#{Dir.pwd}/test/fixtures/matrixes/itineraries.yml", "w+") do |f|
+  Given(:file)    { "test/fixtures/matrixes/itineraries.yml" }
+  Given(:cases)   { read_yaml("#{Dir.pwd}/test/fixtures/matrixes/cases.yml") }
+  Given(:content) { read_yaml("#{Dir.pwd}/#{file}") }
+  Given(:generate_file) do
+    File.open("#{Dir.pwd}/#{file}", "w+") do |f|
       itineraries = []
       cases.each do |c|
         kases = c.unshift('1')
@@ -22,11 +20,13 @@ describe 'generate fixtures' do
         itineraries << chooser.itinerary
       end
       f.write(itineraries.to_yaml)
-
     end
   end
 
+
+  Given { generate_file unless File.exist?(file) }
+
   Then { assert_file file }
-  And {   assert_equal 33, content }
+  # And {   assert_equal 33, content }
 
 end
