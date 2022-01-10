@@ -13,21 +13,6 @@ module Roro
         build_cases
       end
 
-      def build_itinerary( array = [], path = stack )
-        case
-        when stack_type(path).eql?(:inflection)
-          children(path).each do |c|
-            build_itinerary(array, c)
-          end
-        when stack_type(path).eql?(:stack)
-          foo = 'bar'
-        when stack_type(path).eql?(:story)
-          foo = 'baz'
-        else
-          foo = 'baz'
-        end
-      end
-
       def build_cases(path = stack)
         cases = {
           inflections: [],
@@ -36,17 +21,16 @@ module Roro
         }
         children(path).each_with_index do |c, index|
           case
-          when stack_type(c).eql?(:inflection)
+          when [:inflection, :inflection_stub].include?(stack_type(c))
             cases[:inflections] << { name(c).to_sym => build_cases(c) }
-          when stack_type(c).eql?(:stack)
-            cases[:stacks][index + 1] = build_cases(c)
-          when stack_type(c).eql?(:story)
+          when [:stack].include?(stack_type c)
+            cases[:stacks][index + 1] = build_cases c
+          when [:story].include?(stack_type c)
             cases[:stories] << index + 1
           end
         end
         @cases = cases
       end
-
 
       def build_cases_matrix(hash = cases, array = [])
         @matrix ||= []
@@ -65,15 +49,11 @@ module Roro
             end
           end
         end
-        hash[:stories]&.each { |k,_v| @matrix << array + [k] }
+        hash[:stories]&.each do |k,_v|
+          @matrix << array + [k]
+        end
         hash[:stacks]&.each  { |k, v| build_cases_matrix(v, array.dup + [k]) }
         @matrix
-      end
-
-      def document_cases
-        File.open("#{Dir.pwd}/mise/logs/cases_matrix.yml", "w") do |f|
-          f.write(build_cases_matrix.to_yaml)
-        end
       end
 
       def case_from_path(stack, array = nil)

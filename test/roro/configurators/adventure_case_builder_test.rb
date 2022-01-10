@@ -12,40 +12,6 @@ describe AdventureCaseBuilder do
     Then { assert_equal expected, case_builder.build_cases.keys }
   end
 
-  describe '#build_itinerary' do
-
-  end
-
-  describe '#build_itineraries' do
-    Given(:expected) { %w[first_story second_story] }
-    # focus
-    # Then { assert_includes case_builder.build_itinerary([1,1]), expected }
-  end
-
-  describe '#build_cases_matrix' do
-    Given(:result) { case_builder.build_cases_matrix }
-
-    Then {
-      assert_includes result, [1,1]
-      # assert_includes result, [:fatsufodo, :django]
-      # assert_includes result, [:fatsufodo, :rails]
-      # assert_includes result, [:okonomi, :python, :django, :v3_9_9]
-      # assert_includes result, [:sashimi, :rails]
-      # assert_includes result, [:sashimi, :kubernetes, :ingress, :nginx,
-      #                          :cert_manager]
-      # assert_includes result, [:okonomi, :ruby, :rails, :mariadb, :v10_7_1,
-      #                           :v6_1, :v2_7]
-      # assert_includes result, [:okonomi, :ruby, :rails, :postgres, :v13_5,
-      #                          :v6_1, :v3_0]
-      # assert_equal result.size, 33
-    }
-  end
-
-  describe '#document_cases' do
-    Given { case_builder.document_cases }
-    # Then  { assert_file "#{Dir.pwd}/mise/logs/cases_matrix.yml" }
-  end
-
   describe '#case_from_path' do
     Given(:stack) { %W[#{Roro::CLI.stacks}/sashimi
       stories/kubernetes

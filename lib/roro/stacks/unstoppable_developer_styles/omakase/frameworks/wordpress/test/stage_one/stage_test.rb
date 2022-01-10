@@ -19,8 +19,7 @@ describe 'omakase wordpress' do
   end
 
   describe 'must have a mise en place' do
-    Then  {
-      assert_file 'mise/mise.roro' }
+    Then  { assert_file 'mise/mise.roro' }
   end
 
   describe 'must have correct containers' do

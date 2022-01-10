@@ -17,6 +17,8 @@ module Roro
         :storyfile
       when stack_is_templates?(stack)
         :templates
+      when stack_is_inflection_stub?(stack)
+        :inflection_stub
       when stack_is_inflection?(stack)
         :inflection
       when stack_is_stack?(stack)
@@ -54,6 +56,20 @@ module Roro
       stack_is_file?(stack) &&
         !stack_is_storyfile?(stack) &&
         !stack_is_dotfile?(stack)
+    end
+
+    def stack_is_inflection_stub?(stack)
+      return unless stack_is_inflection?(stack)
+      choices = children(stack).select do |c|
+        stack_is_inflection?(stack) &&
+          !stack_is_stack?(stack) &&
+          !stack_is_story?(stack) &&
+          !stack_is_template?(stack) &&
+          !stack_is_ignored?(stack) &&
+          !stack_is_storyfile?(stack) &&
+          stack_is_stack?(c) || stack_is_story?(c)
+      end
+      choices.size < 2
     end
 
     def stack_is_inflection?(stack)

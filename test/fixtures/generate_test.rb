@@ -14,7 +14,7 @@ describe 'generate fixtures' do
         Roro::Configurators::AdventurePicker
           .any_instance
           .stubs(:ask)
-          .returns(*kases)
+          .returns(*c)
         chooser = AdventureChooser.new
         chooser.build_itinerary
         itineraries << chooser.itinerary

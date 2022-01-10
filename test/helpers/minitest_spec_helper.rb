@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rake'
 module Roro
   module TestHelpers
     module RakeTaskHelpers

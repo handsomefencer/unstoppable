@@ -25,6 +25,8 @@ module Roro
         when :stack
           @manifest += stack_stories(stack)
           children(stack).each { |c| build_itinerary(c) }
+        when :inflection_stub
+          children(stack).each { |c| build_itinerary(c) }
         when :inflection
           child = choose_adventure(stack)
           @itinerary << child if stack_type(child).eql?(:story)
