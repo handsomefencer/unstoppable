@@ -62,6 +62,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.11.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.10.1, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-readline (v0.5.5, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rbs (v1.4.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="regexp_parser (v1.8.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.3.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="selenium-webdriver (v3.142.7, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
@@ -128,14 +129,11 @@
           <RakeTaskImpl description="Remove any generated files" fullCommand="clobber" id="clobber" />
           <RakeTaskImpl id="fixtures">
             <subtasks>
-              <RakeTaskImpl id="matrixes">
+              <RakeTaskImpl description="Generate fixtures" fullCommand="fixtures:generate" id="generate" />
+              <RakeTaskImpl id="generate">
                 <subtasks>
-                  <RakeTaskImpl id="create">
-                    <subtasks>
-                      <RakeTaskImpl description="Create or update cases" fullCommand="fixtures:matrixes:create:cases" id="cases" />
-                      <RakeTaskImpl description="Create or update itineraries" fullCommand="fixtures:matrixes:create:itineraries" id="itineraries" />
-                    </subtasks>
-                  </RakeTaskImpl>
+                  <RakeTaskImpl description="Generate cases" fullCommand="fixtures:generate:cases" id="cases" />
+                  <RakeTaskImpl description="Generate itineraries" fullCommand="fixtures:generate:itineraries" id="itineraries" />
                 </subtasks>
               </RakeTaskImpl>
             </subtasks>

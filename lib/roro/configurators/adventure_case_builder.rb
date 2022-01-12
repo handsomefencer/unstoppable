@@ -77,13 +77,6 @@ module Roro
           _index += 1
         end
       end
-
-      def generate_fixture_cases
-        File.open("#{Dir.pwd}/test/fixtures/matrixes/cases.yml", "w+") do |f|
-          builder = Roro::Configurators::AdventureCaseBuilder.new
-          f.write(builder.build_cases_matrix.to_yaml)
-        end
-      end
     end
   end
 end
