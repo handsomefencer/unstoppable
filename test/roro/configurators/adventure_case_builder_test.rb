@@ -69,7 +69,7 @@ describe AdventureCaseBuilder do
       end
 
       describe 'simple' do
-        focus
+        Given { skip }
         Then { assert_includes cases, [1,1] }
         And  { assert_includes itineraries, [1,1] }
       end

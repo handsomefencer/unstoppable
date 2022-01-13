@@ -21,6 +21,9 @@ module Roro
         when :storyfile
           @manifest << stack
         when :story
+          @itinerary << stack
+          # @itinerary << "#{stack}/#{name(stack)}.yml"
+
           @manifest += stack_stories(stack)
         when :stack
           @manifest += stack_stories(stack)
@@ -29,7 +32,7 @@ module Roro
           children(stack).each { |c| build_itinerary(c) }
         when :inflection
           child = choose_adventure(stack)
-          @itinerary << child if stack_type(child).eql?(:story)
+          # @itinerary << child if stack_type(child).eql?(:story)
           build_itinerary(child)
         end
         @manifest.uniq!
