@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::Test::Helpers::Configurator' do
-  describe '.stack_path' do
+  describe ':stack_path' do
     context 'when valid and when' do
       context 'not defined' do
         Then { assert_match 'valid', stack_path }

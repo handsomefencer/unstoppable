@@ -12,14 +12,12 @@ describe 'devops circleci' do
     cli.rollon
   }
   Given { quiet { rollon } }
-
   describe 'must generate a' do
     Given(:app_name) { 'unstoppable_devops' }
     Given(:org_name) { 'your-dockerhub-organization' }
     Given(:image)    { "#{org_name}/#{app_name}" }
 
     describe 'scripts directory with ci-deploy.sh' do
-      focus
       Then  { assert_file './scripts/ci-deploy.sh', /k8s\/app-deployment.yml/ }
     end
 

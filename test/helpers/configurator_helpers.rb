@@ -58,12 +58,30 @@ module Minitest
     def stubs_adventure(path = nil)
       case_builder = AdventureCaseBuilder.new
       case_builder.build_cases
-      adventures = case_from_stack(path)
-      adventures.insert(variant.shift, *variant) if defined? variant
+      adventures = adventures_from(path.split('/test').first).first
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)
         .returns(*adventures)
+    end
+
+    def cases_cache(context = Dir.pwd)
+      fixtures    = "#{context}/test/fixtures/matrixes"
+      @matrix ||= {
+        cases: read_yaml("#{fixtures}/cases.yml"),
+        itineraries: read_yaml("#{fixtures}/itineraries.yml")
+      }
+    end
+
+    def adventures_from(stack)
+      adventures  = []
+      cases_cache
+      @matrix[:itineraries].each_with_index do |itinerary, index|
+        if itinerary.include?(stack)
+          adventures << @matrix[:cases][index]
+        end
+      end
+      adventures
     end
 
     def stub_journey(answers)
@@ -97,8 +115,8 @@ module Minitest
 
     def generate_fixtures
       capture_subprocess_io {
-        generate_fixture_cases unless File.exist?(cases_loc)
-        generate_fixture_itineraries unless File.exist?(itineraries_loc)
+        generate_fixture_cases
+        generate_fixture_itineraries
       }
     end
 

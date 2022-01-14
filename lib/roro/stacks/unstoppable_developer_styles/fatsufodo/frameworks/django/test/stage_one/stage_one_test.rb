@@ -11,7 +11,7 @@ describe 'Roro::CLI#rollon' do
     stub_run_actions
     cli.rollon
   }
-  Given { skip }
+
   Given { quiet { rollon } }
 
   context 'when fatsufodo django' do

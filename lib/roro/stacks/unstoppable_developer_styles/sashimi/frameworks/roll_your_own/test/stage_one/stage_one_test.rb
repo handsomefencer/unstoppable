@@ -11,9 +11,8 @@ describe 'okonomi roll_your_own' do
     stub_run_actions
     cli.rollon
   }
-  Given { skip }
+
   Given { quiet { rollon } }
-  # Given { skip }
   describe 'must generate' do
     describe 'templates with stage one' do
       Then  { assert_file 'mise/stacks/my_story/templates/stage_one/.keep' }

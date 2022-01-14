@@ -55,42 +55,6 @@ module Roro
         hash[:stacks]&.each  { |k, v| build_cases_matrix(v, array.dup + [k]) }
         @matrix
       end
-
-      def case_from_path(stack, array = nil)
-        if @case.nil?
-          @case = []
-          array = stack.split("#{@stack}/").last.split('/')
-          stack = @stack
-        end
-        folder = array.shift
-        stack = "#{stack}/#{folder}"
-        @case << folder if stack_is_adventure?(stack)
-        case_from_path(stack, array) unless array.empty?
-        @case
-      end
-
-      def case_from_stack(stack)
-
-        hash = read_yaml("#{Dir.pwd}/test/matrixes/fixrues/cases.yml")
-        case_from_path(stack).map do |item|
-          _index = hash.keys.index(item.to_sym)
-          hash = hash[item.to_sym]
-          _index += 1
-        end
-      end
-
-      def adventures_from(stack)
-        fixtures    = "#{Dir.pwd}/test/fixtures/matrixes"
-        cases       = read_yaml("#{fixtures}/cases.yml")
-        itineraries = read_yaml("#{fixtures}/itineraries.yml")
-        adventures  = []
-        itineraries.each_with_index do |itinerary, index|
-          if itinerary.include?(stack)
-            adventures << cases[index]
-          end
-        end
-        adventures
-      end
     end
   end
 end
