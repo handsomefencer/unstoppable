@@ -33,10 +33,32 @@ module Minitest
         .stubs(:run)
     end
 
+    def case_from_path(stack, array = nil)
+      if @case.nil?
+        @case = []
+        array = stack.split("#{@stack}/").last.split('/')
+        stack = @stack
+      end
+      folder = array.shift
+      stack = "#{stack}/#{folder}"
+      @case << folder if stack_is_adventure?(stack)
+      case_from_path(stack, array) unless array.empty?
+      @case
+    end
+
+    def case_from_stack(stack)
+      hash = cases
+      case_from_path(stack).map do |item|
+        _index = hash.keys.index(item.to_sym)
+        hash = hash[item.to_sym]
+        _index += 1
+      end
+    end
+
     def stubs_adventure(path = nil)
       case_builder = AdventureCaseBuilder.new
       case_builder.build_cases
-      adventures = case_builder.case_from_stack(path)
+      adventures = case_from_stack(path)
       adventures.insert(variant.shift, *variant) if defined? variant
       Roro::Configurators::AdventurePicker
         .any_instance
@@ -71,6 +93,36 @@ module Minitest
 
     def assert_valid_stack
       assert_nil validator.validate(stack_path)
+    end
+
+    def generate_fixtures
+      capture_subprocess_io {
+        generate_fixture_cases unless File.exist?(cases_loc)
+        generate_fixture_itineraries unless File.exist?(itineraries_loc)
+      }
+    end
+
+    def generate_fixture_cases
+      File.open(cases_loc, "w+") { |f|
+        builder = Roro::Configurators::AdventureCaseBuilder.new
+        f.write(builder.build_cases_matrix.to_yaml)
+      }
+    end
+
+    def generate_fixture_itineraries
+      File.open(itineraries_loc, "w+") do |f|
+        itineraries = []
+        cases.each do |c|
+          Roro::Configurators::AdventurePicker
+            .any_instance
+            .stubs(:ask)
+            .returns(*c)
+          chooser = AdventureChooser.new
+          chooser.build_itinerary
+          itineraries << chooser.itinerary
+        end
+        f.write(itineraries.to_yaml)
+      end
     end
 
     def quiet

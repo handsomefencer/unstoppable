@@ -11,7 +11,6 @@ describe 'devops circleci' do
     stub_run_actions
     cli.rollon
   }
-  Given { skip }
   Given { quiet { rollon } }
 
   describe 'must generate a' do
@@ -20,6 +19,7 @@ describe 'devops circleci' do
     Given(:image)    { "#{org_name}/#{app_name}" }
 
     describe 'scripts directory with ci-deploy.sh' do
+      focus
       Then  { assert_file './scripts/ci-deploy.sh', /k8s\/app-deployment.yml/ }
     end
 
