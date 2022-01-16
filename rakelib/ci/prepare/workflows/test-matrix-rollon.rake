@@ -10,9 +10,8 @@ namespace :ci do
         overwrite
         notify('answers')
       end
-
-
     end
+
     def set_content(task)
       wf = "#{Dir.pwd}/.circleci/src/workflows/#{task.name.split(':').last}"
       @dest = "#{wf}.yml"
