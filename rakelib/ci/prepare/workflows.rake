@@ -1,20 +1,17 @@
 namespace :ci do
-  namespace :process do
-    desc 'Process workflows'
+  namespace :prepare do
+    desc 'Prepare workflows'
     task 'workflows' do
-      namespace 'ci:process:workflows' do
-        Rake::Task['test-matrix-rollon'].invoke
-      end
+      Rake::Task['ci:prepare:workflows:test-matrix-rollon'].execute
     end
 
     namespace :workflows do
+      desc 'Prepare workflow test-matrix-rollon'
       task 'test-matrix-rollon' do |task|
         set_content(task)
-        case_builder = Roro::Configurators::AdventureCaseBuilder.new
-        case_builder.build_cases_matrix
-        value = case_builder.matrix.map { |c| c.join('\n') }
+        cases = YAML.load_file("test/fixtures/matrixes/cases.yml")
         matrix = @content['jobs'][0]['test-rollon']['matrix']
-        matrix['parameters']['answers'] = value
+        matrix['parameters']['answers'] = cases.map { |c| c.join('\n') }
         overwrite
         notify('answers')
       end
