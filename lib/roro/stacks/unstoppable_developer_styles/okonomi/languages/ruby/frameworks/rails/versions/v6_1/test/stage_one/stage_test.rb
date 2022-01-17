@@ -4,9 +4,10 @@ describe 'okonomi ruby rails 7_0' do
   Given(:workbench) { 'empty' }
   Given(:cli)       { Roro::CLI.new }
   Given(:overrides) { %w[] }
+  Given(:adventure) { 0 }
   Given(:rollon)    {
     copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
+    stubs_adventure(__dir__, adventure)
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
@@ -17,10 +18,58 @@ describe 'okonomi ruby rails 7_0' do
   Given { quiet { rollon } }
 
   describe 'must generate a' do
+    describe 'docker-compose.yml' do
+      Given(:file) { 'docker-compose.yml' }
+
+      context 'when mariadb' do
+        context 'when version 10.6.5' do
+          Then  { assert_file 'docker-compose.yml', /mariadb:10.6.5/ }
+          And  { assert_file file, /var\/lib\/mariadb\/data/ }
+        end
+
+        context 'when version 10.7.1' do
+          Given(:adventure) { 2 }
+          Then  { assert_file 'docker-compose.yml', /mariadb:10.7.1/ }
+          And  { assert_file file, /var\/lib\/mariadb\/data/ }
+        end
+      end
+
+      context 'when postgres' do
+        context 'when version 13.5' do
+          Given(:adventure) { 4 }
+          Then { assert_file 'docker-compose.yml', /postgres:13.5/ }
+          And  { assert_file file, /var\/lib\/postgresql\/data/ }
+        end
+
+        context 'when version 14.1' do
+          Given(:adventure) { 6 }
+          Then { assert_file file, /image: postgres:14.1/ }
+          And  { assert_file file, /var\/lib\/postgresql\/data/ }
+        end
+      end
+    end
+
     describe 'Dockerfile' do
-      Given(:variant) { [4, 1] }
       describe 'ruby version' do
-        Then  { assert_file 'Dockerfile', /FROM ruby:2.7.4-alpine/ }
+        context 'when 2.7.4 chosen' do
+          Then  { assert_file 'Dockerfile', /FROM ruby:2.7.4-alpine/ }
+        end
+
+        context 'when 3.0 chosen' do
+          Given(:adventure) { 1 }
+          Then  { assert_file 'Dockerfile', /FROM ruby:3.0-alpine/ }
+        end
+      end
+
+      describe 'alpine db pkg' do
+        context 'when mariadb' do
+          Then  { assert_file 'Dockerfile', /mariadb/ }
+        end
+
+        context 'when postgres' do
+          Given(:adventure) { 4 }
+          Then  { assert_file 'Dockerfile', /postgresql-dev/ }
+        end
       end
 
       describe 'yarn install command' do

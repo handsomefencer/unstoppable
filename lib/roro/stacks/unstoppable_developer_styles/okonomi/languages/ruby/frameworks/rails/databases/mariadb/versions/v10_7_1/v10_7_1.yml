@@ -1,5 +1,5 @@
 env:
   base:
-    app_name:
-      name: Name for your app
-      value: unstoppable_app
+    db_image:
+      name: database version
+      value: mariadb:10.7.1

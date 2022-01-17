@@ -13,7 +13,7 @@ env:
       value: jane.doe@example.com
     rails_version:
       name: Ruby on Rails minor version
-      value: 7.0.0.alpha2
+      value: 7.0
     JOB_WORKER_URL:
       name: Reids job worker url
       value: redis://redis:6379/0
