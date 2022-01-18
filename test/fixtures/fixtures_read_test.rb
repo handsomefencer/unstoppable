@@ -23,6 +23,7 @@ describe 'fixtures' do
   end
 
   describe 'must contain correct number of' do
+    Given { skip }
     describe 'cases' do
       Then { assert_equal 33, cases.size }
     end

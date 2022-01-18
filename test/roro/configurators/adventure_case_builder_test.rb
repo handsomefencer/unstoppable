@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe AdventureCaseBuilder do
+  Given { skip }
   Given(:stack_loc)       { Roro::CLI.stacks }
   Given(:case_builder)    { AdventureCaseBuilder.new(stack_loc) }
   Given(:itinerary)       { itineraries[cases.index(adventure)][0] }

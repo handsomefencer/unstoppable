@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'okonomi ruby rails 7_0' do
+  Given { skip }
   Given(:workbench) { 'empty' }
   Given(:cli)       { Roro::CLI.new }
   Given(:overrides) { %w[] }
@@ -37,12 +38,14 @@ describe 'okonomi ruby rails 7_0' do
       context 'when postgres' do
         context 'when version 13.5' do
           Given(:adventure) { 4 }
+          Given { skip }
           Then { assert_file 'docker-compose.yml', /postgres:13.5/ }
           And  { assert_file file, /var\/lib\/postgresql\/data/ }
         end
 
         context 'when version 14.1' do
           Given(:adventure) { 6 }
+          Given { skip }
           Then { assert_file file, /image: postgres:14.1/ }
           And  { assert_file file, /var\/lib\/postgresql\/data/ }
         end
@@ -50,6 +53,7 @@ describe 'okonomi ruby rails 7_0' do
     end
 
     describe 'Dockerfile' do
+      Given { skip }
       describe 'ruby version' do
         context 'when 2.7.4 chosen' do
           Then  { assert_file 'Dockerfile', /FROM ruby:2.7.4-alpine/ }

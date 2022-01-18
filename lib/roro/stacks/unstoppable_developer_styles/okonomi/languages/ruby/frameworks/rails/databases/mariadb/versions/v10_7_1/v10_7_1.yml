@@ -1,5 +1,0 @@
-env:
-  base:
-    db_image:
-      name: database version
-      value: mariadb:10.7.1
