@@ -4,7 +4,7 @@ steps:
   - run: bundle config set --local path 'vendor/bundle'
   - run: bundle check || bundle install --jobs=4 --retry=3
   - run: gem build roro.gemspec
-  - run: gem install roro-0.3.29.gem
+  - run: gem install roro-0.3.30.gem
   - save_cache:
       key: circlev2-{{ checksum "Gemfile.lock" }}
       paths:

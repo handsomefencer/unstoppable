@@ -12,7 +12,7 @@ describe '(helper) generate_fixtures' do
   Given(:cases)           { read_yaml(cases_loc) }
   Given(:itineraries)     { read_yaml(itineraries_loc) }
   Given(:itinerary)       { itineraries[cases.index(adventure)][0] }
-
+  Given { skip }
   Given { generate_fixtures }
 
   describe 'must generate fixture file in' do
