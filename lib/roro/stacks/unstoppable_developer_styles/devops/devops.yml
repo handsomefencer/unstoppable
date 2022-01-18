@@ -1,2 +1,1 @@
-actions:
-  - directory 'stage_one', '.'
+preface: Adventures in dev ops. Add ci/cd.
