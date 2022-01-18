@@ -1,18 +1,20 @@
 require 'test_helper'
 
 describe 'devops circleci' do
-  Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
+  Given(:adventure)  { 0 }
   Given(:rollon)     {
     copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
+    stubs_adventure(__dir__, adventure)
     stub_overrides
     stub_run_actions
     cli.rollon
   }
+
   Given { quiet { rollon } }
+
   describe 'must generate a' do
     Given(:app_name) { 'unstoppable_devops' }
     Given(:org_name) { 'your-dockerhub-organization' }
@@ -50,11 +52,8 @@ describe 'devops circleci' do
     end
 
     describe '.gitignore' do
+
       Given(:ignoreds) { %w[
-        /log/*
-        /tmp/*
-        /tmp/pids/*
-        !/tmp/pids/
         /k8s-general/
         \*.env
         \*.key

@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe AdventureCaseBuilder do
-  Given { skip }
   Given(:stack_loc)       { Roro::CLI.stacks }
   Given(:case_builder)    { AdventureCaseBuilder.new(stack_loc) }
   Given(:itinerary)       { itineraries[cases.index(adventure)][0] }
@@ -26,9 +25,9 @@ describe AdventureCaseBuilder do
 
     context 'advanced' do
       Given(:stack) { "#{ruby_stacks}/rails/versions/v6_1" }
-      Then { assert_equal expected.size, 8 }
+      Then { assert_equal expected.size, 6 }
       And  { assert_includes expected, [3, 2, 1, 1, 1, 1, 1] }
-      And  { assert_includes expected, [3, 2, 1, 2, 2, 1, 2] }
+      And  { assert_includes expected, [3, 2, 1, 1, 2, 1, 2] }
     end
   end
 

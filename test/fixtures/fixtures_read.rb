@@ -23,13 +23,12 @@ describe 'fixtures' do
   end
 
   describe 'must contain correct number of' do
-    Given { skip }
     describe 'cases' do
-      Then { assert_equal 33, cases.size }
+      Then { assert_equal 29, cases.size }
     end
 
     describe 'itineraries' do
-      Then { assert_equal 33, itineraries.size }
+      Then { assert_equal itineraries.size, cases.size }
     end
   end
 

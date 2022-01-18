@@ -1,7 +1,6 @@
 require 'test_helper'
 
 describe 'okonomi ruby rails 7_0' do
-  Given { skip }
   Given(:workbench) { 'empty' }
   Given(:cli)       { Roro::CLI.new }
   Given(:overrides) { %w[] }
@@ -22,30 +21,20 @@ describe 'okonomi ruby rails 7_0' do
     describe 'docker-compose.yml' do
       Given(:file) { 'docker-compose.yml' }
 
-      context 'when mariadb' do
-        context 'when version 10.6.5' do
-          Then  { assert_file 'docker-compose.yml', /mariadb:10.6.5/ }
-          And  { assert_file file, /var\/lib\/mariadb\/data/ }
-        end
-
-        context 'when version 10.7.1' do
-          Given(:adventure) { 2 }
-          Then  { assert_file 'docker-compose.yml', /mariadb:10.7.1/ }
-          And  { assert_file file, /var\/lib\/mariadb\/data/ }
-        end
+      context 'when sqlite' do
+        Then  { assert_file 'docker-compose.yml', /postgres:13.5/ }
+        And  { assert_file file, /var\/local-db/ }
       end
 
       context 'when postgres' do
         context 'when version 13.5' do
-          Given(:adventure) { 4 }
-          Given { skip }
+          Given(:adventure) { 3 }
           Then { assert_file 'docker-compose.yml', /postgres:13.5/ }
           And  { assert_file file, /var\/lib\/postgresql\/data/ }
         end
 
         context 'when version 14.1' do
-          Given(:adventure) { 6 }
-          Given { skip }
+          Given(:adventure) { 5 }
           Then { assert_file file, /image: postgres:14.1/ }
           And  { assert_file file, /var\/lib\/postgresql\/data/ }
         end
@@ -53,7 +42,6 @@ describe 'okonomi ruby rails 7_0' do
     end
 
     describe 'Dockerfile' do
-      Given { skip }
       describe 'ruby version' do
         context 'when 2.7.4 chosen' do
           Then  { assert_file 'Dockerfile', /FROM ruby:2.7.4-alpine/ }
@@ -66,8 +54,8 @@ describe 'okonomi ruby rails 7_0' do
       end
 
       describe 'alpine db pkg' do
-        context 'when mariadb' do
-          Then  { assert_file 'Dockerfile', /mariadb/ }
+        context 'when sqlite' do
+          Then  { assert_file 'Dockerfile', /sqlite/ }
         end
 
         context 'when postgres' do
