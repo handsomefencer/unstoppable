@@ -10,7 +10,7 @@ describe 'fixtures' do
   Given(:itineraries)     { read_yaml(itineraries_loc) }
   Given(:itinerary)       { itineraries[cases.index(adventure)][0] }
 
-  Given { generate_fixtures unless File.exist?(cases_loc) }
+  Given { generate_fixtures }
 
   describe 'must exist in' do
     describe 'itineraries.yml' do
