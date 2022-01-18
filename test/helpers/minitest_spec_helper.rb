@@ -7,7 +7,8 @@ module Roro
 
       def run_task(task_name)
         loc = 'test/fixtures/matrixes'
-        FileUtils.cp_r("#{@roro_dir}/test", "#{Dir.pwd}")
+        FileUtils.mkdir_p("#{Dir.pwd}/#{loc}")
+        FileUtils.cp_r("#{@roro_dir}/#{loc}/.", "#{Dir.pwd}/#{loc}")
         @task_name = task_name
         @output = capture_subprocess_io { Rake::Task[task_name].execute }
       end

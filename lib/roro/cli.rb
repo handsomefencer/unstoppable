@@ -4,6 +4,10 @@ module Roro
   class CLI < Thor
     include Thor::Actions
 
+    def self.supported_rubies
+      %w[2.5 2.6 2.7 3.0]
+    end
+
     def self.test_root
       "#{ENV['PWD']}/test"
     end

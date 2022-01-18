@@ -26,7 +26,7 @@ describe Roro::Crypto::KeyWriter do
   end
 
   describe '#write_keyfiles(environments, directory, extension' do
-    Given(:write_keyfiles) { quiet { subject.write_keyfiles *args } }
+    Given(:write_keyfiles) { quiet { subject.write_keyfiles(*args) } }
 
     context 'when no environments' do
       Given(:args) { %w[]}
