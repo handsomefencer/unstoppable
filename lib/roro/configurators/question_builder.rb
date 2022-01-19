@@ -21,7 +21,7 @@ module Roro
 
       def override_prompt(environment, key, value)
         name = value.dig(:name) || key
-        prompt = "Would you like to accept the default value for #{name}?\n"
+        # prompt = "Would you like to accept the default value for #{name}?\n"
         help = value.dig(:help) ? "#{value.dig(:help)}" : nil
         default = "#{key}=#{value[:value]}"
         ["\nEnvironment: #{environment}",
