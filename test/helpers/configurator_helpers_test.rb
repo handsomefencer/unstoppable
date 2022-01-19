@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'test_helper'
 
 describe 'Roro::Test::Helpers::Configurator' do
   describe ':stack_path' do
