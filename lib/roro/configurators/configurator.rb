@@ -68,8 +68,11 @@ module Roro
         end
       end
 
+
       def write_story
-        @manifest.each { |m| @writer.write(@structure, m) }
+        @manifest.each do |m|
+          @writer.write(@structure, m)
+        end
       end
 
       def write_log

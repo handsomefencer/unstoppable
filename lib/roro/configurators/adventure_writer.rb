@@ -19,7 +19,26 @@ module Roro
             actions.each do |a|
               eval a
             end
+            copy_stage_dummy(storyfile)
             self.source_paths.shift
+          end
+        end
+
+        def copy_stage_dummy(stage)
+          location = Dir.pwd
+          stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
+          generated = Dir.glob("#{location}/**/*")
+          dummies = Dir.glob("#{stage_dummy}/**/*")
+          dummies.each do |dummy|
+            # dummy = dummy.split(stage_dummy).last
+            generated.select do |g|
+              # g = g.split(Dir.pwd).last
+              if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
+                FileUtils.cp(g, "#{stage_dummy}/#{name(g)}")
+                foo = File.read(dummies.first)
+                bar = 'baz'
+              end
+            end
           end
         end
 
