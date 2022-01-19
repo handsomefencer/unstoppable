@@ -5,9 +5,9 @@ require 'test_helper'
 describe AdventureCaseBuilder do
   Given(:stack_loc)       { Roro::CLI.stacks }
   Given(:case_builder)    { AdventureCaseBuilder.new(stack_loc) }
-  Given { skip }
+
   describe '#cases_from_stack(stack)' do
-    Given(:base)        { "#{Roro::CLI.stacks}/unstoppable_developer_styles" }
+    Given(:base)        { "/unstoppable_developer_styles" }
     Given(:ruby_stacks) { "#{base}/okonomi/languages/ruby/frameworks"}
     Given(:expected)    { adventures_from(stack) }
 

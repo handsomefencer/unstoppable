@@ -92,7 +92,6 @@ module Roro
         end
 
 
-
         def hint(hash, key)
           hash
           case

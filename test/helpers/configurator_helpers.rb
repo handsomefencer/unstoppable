@@ -56,29 +56,27 @@ module Minitest
     end
 
     def stubs_adventure(path = nil, adventure = 0)
+      story = path.split(Roro::CLI.stacks).last
       case_builder = AdventureCaseBuilder.new
       case_builder.build_cases
-      adventures = adventures_from(path.split('/test').first)[adventure]
+      adventures = adventures_from(story.split('/test').first)[adventure]
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)
         .returns(*adventures)
     end
 
-    def cases_cache(context = Dir.pwd)
-      fixtures    = "#{context}/test/fixtures/matrixes"
-      @matrix ||= {
+    def adventures_from(stack)
+      fixtures    = "#{ENV['PWD']}/test/fixtures/matrixes"
+      matrix = {
         cases: read_yaml("#{fixtures}/cases.yml"),
         itineraries: read_yaml("#{fixtures}/itineraries.yml")
       }
-    end
 
-    def adventures_from(stack)
       adventures  = []
-      cases_cache
-      @matrix[:itineraries].each_with_index do |itinerary, index|
+      matrix[:itineraries].each_with_index do |itinerary, index|
         if itinerary.include?(stack)
-          adventures << @matrix[:cases][index]
+          adventures << matrix[:cases][index]
         end
       end
       adventures
@@ -106,7 +104,7 @@ module Minitest
     end
 
     def fixture_path
-      "#{Dir.pwd}/test/fixtures"
+      "#{Roro::CLI.test_root}/fixtures"
     end
 
     def assert_valid_stack

@@ -5,6 +5,7 @@ describe 'devops circleci' do
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
   Given(:adventure)  { 0 }
+
   Given(:rollon)     {
     copy_stage_dummy(__dir__)
     stubs_adventure(__dir__, adventure)

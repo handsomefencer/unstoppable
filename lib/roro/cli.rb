@@ -15,6 +15,7 @@ module Roro
     def self.stacks
       "#{File.dirname(__FILE__)}/stacks"
     end
+
     def self.source_root
       "#{@template_root || File.dirname(__FILE__)}/templates"
     end

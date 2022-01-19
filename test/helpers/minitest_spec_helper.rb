@@ -52,7 +52,6 @@ module Minitest
     end
 
     before do
-      cases_cache(Dir.pwd)
       check_into_workbench
     end
 
