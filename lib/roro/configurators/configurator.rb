@@ -26,10 +26,10 @@ module Roro
       def rollon
         validate_stack
         choose_adventure
-        satisfy_dependencies
+        # satisfy_dependencies
         build_env
         write_story
-        structure[:env] = structure[:env].merge(@dependency_hash)
+        # structure[:env] = structure[:env].merge(@dependency_hash)
         write_log
       end
 
@@ -50,10 +50,10 @@ module Roro
         override_environment_variables
       end
 
-      def satisfy_dependencies
-        @satisfier = DependencySatisfier.new
-        @dependency_hash = @satisfier.satisfy_dependencies(manifest)
-      end
+      # def satisfy_dependencies
+      #   @satisfier = DependencySatisfier.new
+      #   @dependency_hash = @satisfier.satisfy_dependencies(manifest)
+      # end
 
       def accrete_story(story)
         content = read_yaml(story)[:env]

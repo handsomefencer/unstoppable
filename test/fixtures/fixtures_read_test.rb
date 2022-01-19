@@ -43,13 +43,13 @@ describe 'fixtures' do
     describe 'intermediate' do
       Given(:adventure) { [3,1,2,1] }
       Then { assert_includes cases, adventure }
-      And  { assert_match /\/flask\//, itinerary }
+      And  { assert_match /\/flask/, itinerary }
     end
 
     describe 'advanced' do
       Given(:adventure) { [3,2,1,1,2,2,1] }
       Then { assert_includes cases, adventure }
-      And  { assert_match /\/rails\//, itinerary }
+      And  { assert_match /\/rails/, itinerary }
     end
   end
 end
