@@ -28,7 +28,7 @@ module Minitest
     end
 
     def stub_run_actions
-      return if ENV['build_dummies']
+      # return if ENV['build_dummies']
       Roro::Configurators::AdventureWriter
         .any_instance
         .stubs(:run)

@@ -19,7 +19,7 @@ module Roro
             actions.each do |a|
               eval a
             end
-            copy_stage_dummy(storyfile)
+            # copy_stage_dummy(storyfile)
             self.source_paths.shift
           end
         end
