@@ -11,17 +11,18 @@ describe 'okonomi ruby rails 7_0' do
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
-    stub_run_actions
+    # stub_run_actions
     cli.rollon
   }
 
-  Given { quiet { rollon } }
+  Given { rollon }
 
   describe 'must generate a' do
     describe 'docker-compose.yml' do
       Given(:file) { 'docker-compose.yml' }
 
       context 'when sqlite' do
+        focus
         Then  { assert_file 'docker-compose.yml', /postgres:13.5/ }
         And  { assert_file file, /var\/local-db/ }
       end

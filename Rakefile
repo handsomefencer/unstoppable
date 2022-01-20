@@ -16,6 +16,7 @@ Rake.add_rakelib 'rakelib/ci/test'
 Rake.add_rakelib 'rakelib/ci/jobs'
 Rake.add_rakelib 'rakelib/fixtures'
 Rake.add_rakelib 'rakelib/fixtures/matrixes'
+Rake.add_rakelib 'rakelib/docker/image'
 
 Rake::TestTask.new('test:test') do |t|
   t.libs << "test"
