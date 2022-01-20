@@ -17,22 +17,32 @@ describe "#{adventure_name(__FILE__)}" do
   }
 
   # Given { quiet { rollon } }
-  Given {  rollon }
+  Given { rollon }
 
-  describe 'must generate a' do
-    describe 'Gemfile with the correct rails version' do
-      focus
-      Then  {
-        assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
+  describe 'must have a' do
+    describe 'config/database.yml' do
+      describe 'with sqlite' do
+        focus
+        Then  { assert_file 'config/database.yml' }
+      end
+    end
+    describe 'Gemfile with the correct' do
+      describe 'rails version' do
+        Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
+      end
+
+      describe 'db' do
+        Then  { assert_file 'Gemfile', /gem \"sqlite3\"/ }
+      end
     end
 
     describe 'Dockerfile' do
       describe 'ruby version' do
-        Then  { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+        Then { assert_file 'Dockerfile', /FROM ruby:2.7/ }
       end
 
       describe 'yarn install command' do
-        Then   { assert_file 'Dockerfile', /RUN yarn install/ }
+        Then { assert_file 'Dockerfile', /RUN yarn install/ }
       end
     end
   end

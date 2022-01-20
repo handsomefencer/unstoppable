@@ -2,7 +2,10 @@ preface: SQLite is a C-language library that implements a small, fast, self-cont
 
 env:
   base:
-    alpine_db_pkg:
+    db_vendor:
+      name: Database vendor name
+      value: sqlite3
+    db_pkg:
       name: Alpine db package
       value: sqlite
     db_volume:

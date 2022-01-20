@@ -4,7 +4,7 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 RUN apk add \
   build-base \
   git \
-  postgresql-dev
+  <%= @env[:base][:db_pkg][:value] %>
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ RUN bundle config --local && \
 
 ## Use Rails to generate a new app. We'll configure it later.
 RUN bundle exec rails new . \
-  --database=postgresql \
+  --database=<%= @env[:base][:db_vendor][:value] %> \
   --skip-bundle \
   --skip-webpack-install
 
