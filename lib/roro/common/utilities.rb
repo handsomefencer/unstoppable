@@ -208,5 +208,9 @@ module Roro
     def read_yaml(yaml_file)
       JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
     end
+
+    def adventure_name(location)
+      array = "Adventure #{stack_parent(location)} #{location.split(Roro::CLI.stacks).last}" #.split('/')
+    end
   end
 end

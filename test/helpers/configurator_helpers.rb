@@ -3,8 +3,12 @@
 module Minitest
   class Spec
 
+    def adventure_descriptor
+      'blah'
+    end
+
     def copy_stage_dummy(path)
-      list = Dir.glob("#{path}/stage_dummy/**/*")
+      list = Dir.glob("#{path}/dummy/**/*")
       FileUtils.cp_r(list, Dir.pwd )
     end
 
@@ -28,7 +32,7 @@ module Minitest
     end
 
     def stub_run_actions
-      # return if ENV['build_dummies']
+      return if ENV['build_dummies']
       Roro::Configurators::AdventureWriter
         .any_instance
         .stubs(:run)

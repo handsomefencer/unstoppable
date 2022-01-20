@@ -1,12 +1,15 @@
 require 'test_helper'
 
-describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages ruby stories rails versions 7_0' do
+# describe "#{adventure_descriptor(__dir__)} adventure 0" do
+# describe "#{__dir__.split(Roro::CLI.stacks).last} adventure 0" do
+# describe "Adventure #{stack_parent(__FILE__)}: #{stack_parent(__dir__)}" do
+describe "#{adventure_name(__FILE__)}" do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
-    # copy_stage_dummy(__dir__)
+    copy_stage_dummy(__dir__)
     stubs_adventure(__dir__)
     stubs_dependencies_met?
     stubs_yes?
@@ -16,7 +19,7 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
   }
 
   # Given { quiet { rollon } }
-  Given { rollon }
+  Given {  rollon }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct rails version' do

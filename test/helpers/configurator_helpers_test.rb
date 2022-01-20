@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 describe 'Roro::Test::Helpers::Configurator' do
   describe ':stack_path' do
     context 'when valid and when' do

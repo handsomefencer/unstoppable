@@ -6,7 +6,7 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
-    # copy_stage_dummy(__dir__)
+    copy_stage_dummy(__dir__)
     stubs_adventure(__dir__)
     stubs_dependencies_met?
     stubs_yes?
@@ -16,7 +16,7 @@ describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages
   }
 
   # Given { quiet { rollon } }
-  Given { rollon }
+  Given {  rollon }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct rails version' do
