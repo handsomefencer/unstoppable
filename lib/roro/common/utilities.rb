@@ -210,7 +210,7 @@ module Roro
     end
 
     def adventure_name(location)
-      array = "Adventure #{stack_parent(location)} #{location.split(Roro::CLI.stacks).last}" #.split('/')
+      "Adventure #{stack_parent(location)} #{location.split(Roro::CLI.stacks).last}" #.split('/')
     end
   end
 end

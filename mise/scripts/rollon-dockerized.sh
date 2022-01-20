@@ -3,13 +3,35 @@
 SRC=~/work/opensource/gems/roro
 DST=~/work/opensource/gems/sandbox
 
-if [[ $PWD = $DST ]]; then
-    echo 'getsome'
-elif [[ $ans1_1 = n ]]; then
-    :
-else
-    echo "Answer 'y' or 'n'"
-fi
+(
+  cd $SRC
+  sudo docker-compose build
+)
+
+(
+  cd $DST
+  if [[ $PWD = !$DST ]]; then
+    echo "Wrong directory"
+    exit
+  fi
+
+  docker-compose down
+
+  sudo rm -rf ./* ./.*
+
+  sudo docker run \
+    -v $PWD:/home/schadenfred \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -u 0 \
+     roar:latest printf "1\na\n" | roro rollon
+#    -it roar:latest roro rollon
+
+
+)
+
+  #  printf "2\n4\na$var\n" | roro rollon
+
+#    sudo rm -rf ./* ./.*
 
 #(
 #  cd $SRC
@@ -25,7 +47,6 @@ fi
 #  sudo docker-compose build
 #
 #)
-#sudo rm -rf ./* ./.*
 ##docker system prune --volumes
 ##(cd ~/work/opensource/gems/workbench_roro/roro && docker-compose build)
 #

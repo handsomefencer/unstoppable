@@ -10,11 +10,11 @@ describe 'devops circleci' do
     copy_stage_dummy(__dir__)
     stubs_adventure(__dir__, adventure)
     stub_overrides
-    stub_run_actions
+    # stub_run_actions
     cli.rollon
   }
 
-  Given { quiet { rollon } }
+  Given {  rollon }
 
   describe 'must generate a' do
     Given(:app_name) { 'unstoppable_devops' }

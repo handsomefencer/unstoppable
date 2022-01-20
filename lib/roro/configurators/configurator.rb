@@ -73,7 +73,7 @@ module Roro
         stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
         generated = Dir.glob("#{location}/**/*")
         dummies = Dir.glob("#{stage_dummy}/**/*")
-        stage_dummy_index(stage)
+        # stage_dummy_index(stage)
         dummies.each do |dummy|
           generated.select do |g|
             if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
