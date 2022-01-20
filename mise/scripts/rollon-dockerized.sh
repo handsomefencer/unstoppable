@@ -5,6 +5,8 @@ DST=~/work/opensource/gems/sandbox
 
 (
   cd $SRC
+  rake install
+  gem build roro.gemspec
   sudo docker-compose build
 )
 
@@ -23,7 +25,7 @@ DST=~/work/opensource/gems/sandbox
     -v $PWD:/home/schadenfred \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -u 0 \
-     roar:latest printf "1\na\n" | roro rollon
+    -it roar:latest roro rollon
 #    -it roar:latest roro rollon
 
 

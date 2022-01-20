@@ -3,8 +3,11 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 actions:
   - directory 'stage_one', '.', @env
-  - run "sudo docker-compose build"
-  - run "sudo docker-compose run --no-deps web rails new . --force"
-  - run "sudo docker-compose build"
-  - run "sudo docker-compose run web bundle exec rake db:create"
-  - run "sudo docker-compose up -d"
+  - run "docker-compose run --no-deps web rails new . --force --database=postgresql"
+  - run "docker-compose build"
+  - directory 'stage_one', '.', @env
+  - run "sudo docker-compose up"
+
+#  - run "sudo docker-compose run --no-deps web rails new . --force"
+#  - run "sudo docker-compose build"
+#  - run "sudo docker-compose run web bundle exec rake db:create"

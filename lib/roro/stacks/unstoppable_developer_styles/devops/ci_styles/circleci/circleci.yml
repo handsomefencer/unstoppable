@@ -21,11 +21,11 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-#  - append_to_file '.gitignore', '/k8s-general/'
+  - append_to_file '.gitignore', '/k8s-general/'
+  - append_to_file './.gitignore', partial('ignores')
   - |
     generator = Roro::CLI.new
     generator.generate_mise
     generator.generate_environments @env
-    generator.generate_keys
-#  - append_to_file './.gitignore', partial('ignores')
+      generator.generate_keys
 
