@@ -9,7 +9,7 @@ module Minitest
 
     def copy_stage_dummy(path)
       list = Dir.glob("#{path}/dummy/**/*")
-      FileUtils.cp_r(list, Dir.pwd )
+      FileUtils.cp_r("#{path}/dummy/", Dir.pwd )
     end
 
     def stubs_yes?(answer = 'yes')
