@@ -1,12 +1,10 @@
 require 'test_helper'
 
-# describe "#{adventure_descriptor(__dir__)} adventure 0" do
-# describe "#{__dir__.split(Roro::CLI.stacks).last} adventure 0" do
-# describe "Adventure #{stack_parent(__FILE__)}: #{stack_parent(__dir__)}" do
 describe "#{adventure_name(__FILE__)}" do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
+  Given(:adventure)  { 0 }
 
   Given(:rollon)    {
     copy_stage_dummy(__dir__)
@@ -14,7 +12,7 @@ describe "#{adventure_name(__FILE__)}" do
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
-    stub_run_actions
+    # stub_run_actions
     cli.rollon
   }
 
@@ -23,7 +21,9 @@ describe "#{adventure_name(__FILE__)}" do
 
   describe 'must generate a' do
     describe 'Gemfile with the correct rails version' do
-      Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
+      focus
+      Then  {
+        assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
     end
 
     describe 'Dockerfile' do

@@ -33,4 +33,4 @@ env:
 actions:
   - directory 'stage_one', '.', @env
   - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
-  - run 'sudo chown -R $USER:$USER .'
+#  - run 'sudo -S chown -R $USER:$USER .'

@@ -70,10 +70,12 @@ module Roro
 
       def copy_stage_dummy(stage)
         location = Dir.pwd
-        stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
+        index = itinerary_index(stage).index(itinerary)
+        test_dir = "#{stack_parent_path(stage)}/test"
+        return unless File.exist?(test_dir)
+        stage_dummy = "#{test_dir}/#{index}/dummy"
         generated = Dir.glob("#{location}/**/*")
         dummies = Dir.glob("#{stage_dummy}/**/*")
-        # stage_dummy_index(stage)
         dummies.each do |dummy|
           generated.select do |g|
             if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
@@ -81,6 +83,14 @@ module Roro
             end
           end
         end
+      end
+
+      def itinerary_index(stage)
+        itineraries = read_yaml("#{Roro::CLI.test_root}/fixtures/matrixes/itineraries.yml")
+        foo = itineraries.select! do |i|
+          i.include?(stack_parent_path(stage.split(Roro::CLI.stacks).last))
+        end
+        foo
       end
 
       def write_story

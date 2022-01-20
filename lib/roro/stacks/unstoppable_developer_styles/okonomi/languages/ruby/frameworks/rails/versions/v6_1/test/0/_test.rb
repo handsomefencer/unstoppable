@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'lib roro stacks catalog unstoppable developer_styles okonomi languages ruby stories rails versions 7_0' do
+describe "#{adventure_name(__FILE__)}" do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }

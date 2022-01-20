@@ -64,7 +64,7 @@ module Roro
         stack_is_inflection?(stack) &&
           !stack_is_stack?(stack) &&
           !stack_is_story?(stack) &&
-          !stack_is_template?(stack) &&
+          !stack_is_templates?(stack) &&
           !stack_is_ignored?(stack) &&
           !stack_is_storyfile?(stack) &&
           stack_is_stack?(c) || stack_is_story?(c)
