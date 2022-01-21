@@ -92,7 +92,7 @@ module Roro
       end
 
       def itinerary_index(stage)
-        itineraries = read_yaml("#{Roro::CLI.test_root}/fixtures/matrixes/itineraries.yml")
+        itineraries = read_yaml("#{Roro.gem_root}/fixtures/matrixes/itineraries.yml")
         foo = itineraries.select! do |i|
           i.include?(stack_parent_path(stage.split(Roro::CLI.stacks).last))
         end

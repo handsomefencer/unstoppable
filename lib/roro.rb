@@ -36,6 +36,10 @@ require 'roro/version'
 
 module Roro
 
+  def self.gem_root
+    File.dirname __dir__
+  end
+
   include Roro::Configurators
   class CLI < Thor
     include Utilities
