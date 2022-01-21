@@ -98,7 +98,7 @@ module Roro
       def write_story
         @manifest.each do |m|
           @writer.write(@structure, m)
-          copy_stage_dummy(m)
+          copy_stage_dummy(m) unless ENV['RORO_ENV']
         end
       end
 
