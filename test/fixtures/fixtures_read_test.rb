@@ -24,7 +24,7 @@ describe 'fixtures' do
 
   describe 'must contain correct number of' do
     describe 'cases' do
-      Then { assert_equal 29, cases.size }
+      Then { assert_equal 27, cases.size }
     end
 
     describe 'itineraries' do

@@ -34,7 +34,7 @@ module Roro
             generated.select do |g|
               # g = g.split(Dir.pwd).last
               if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
-                FileUtils.cp(g, "#{stage_dummy}/#{name(g)}")
+                FileUtils.cp(g, "#{stage_dummy}/#{stack_name(g)}")
               end
             end
           end

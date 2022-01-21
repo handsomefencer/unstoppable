@@ -80,11 +80,7 @@ module Roro
           generated.select do |g|
             if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
               if File.file?(g)
-                foo = 'bar'
                 FileUtils.cp_r(g, "#{stage_dummy}#{g.split(Dir.pwd).last}")
-              else
-                baz = 'qux'
-                # FileUtils.mkdir_p("#{stage_dummy}/#{name(g)}")
               end
             end
           end

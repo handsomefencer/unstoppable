@@ -42,17 +42,17 @@ module Roro
 
       def inflection_prompt
         prompt = 'Please choose from these'
-        collection = name(@inflection).gsub('_', ' ') + ":\n"
+        collection = stack_name(@inflection).gsub('_', ' ') + ":\n"
         [prompt, stack_parent(@inflection), collection].join(' ')
       end
 
       def inflection_options
         Hash.new.tap do |h|
           children(@inflection)
-            .map { |f| name(f) }
+            .map { |f| stack_name(f) }
             .sort
             .each_with_index do |c, i|
-            h[(i + 1).to_s] = name(c)
+            h[(i + 1).to_s] = stack_name(c)
           end
         end
       end
@@ -67,9 +67,9 @@ module Roro
       end
 
       def get_story_preface(story)
-        storyfile = "#{story}/#{name(story)}.yml"
+        storyfile = "#{story}/#{stack_name(story)}.yml"
         if stack_is_storyfile?(storyfile)
-          read_yaml("#{story}/#{name(story)}.yml")[:preface]
+          read_yaml("#{story}/#{stack_name(story)}.yml")[:preface]
         else
           nil
         end

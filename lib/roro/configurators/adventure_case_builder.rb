@@ -22,7 +22,7 @@ module Roro
         children(path).each_with_index do |c, index|
           case
           when [:inflection, :inflection_stub].include?(stack_type(c))
-            cases[:inflections] << { name(c).to_sym => build_cases(c) }
+            cases[:inflections] << { stack_name(c).to_sym => build_cases(c) }
           when [:stack].include?(stack_type c)
             cases[:stacks][index + 1] = build_cases c
           when [:story].include?(stack_type c)

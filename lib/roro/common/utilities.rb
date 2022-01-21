@@ -143,7 +143,7 @@ module Roro
     end
 
     def stack_parent_path(stack)
-      stack.split("/#{name(stack)}").first
+      stack.split("/#{stack_name(stack)}").first
     end
 
     def stack_is_adventure?(stack)
@@ -185,9 +185,13 @@ module Roro
       end
     end
 
-    def name(stack)
+    def stack_name(stack)
       stack.split('/').last
     end
+
+    # def name(stack)
+    #   stack.split('/').last
+    # end
 
     def file_name(story_file)
       story_file.split('/').last.split('.').first

@@ -8,7 +8,6 @@ module Minitest
     end
 
     def copy_stage_dummy(path)
-      list = Dir.glob("#{path}/dummy/**/*")
       FileUtils.cp_r("#{path}/dummy/", Dir.pwd )
     end
 

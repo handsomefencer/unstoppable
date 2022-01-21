@@ -22,7 +22,7 @@ module Roro
           @manifest << stack
         when :story
           @itinerary << stack.split(Roro::CLI.stacks).last
-          # @itinerary << "#{stack}/#{name(stack)}.yml"
+          # @itinerary << "#{stack}/#{stack_name(stack)}.yml"
 
           @manifest += stack_stories(stack)
         when :stack
