@@ -81,10 +81,10 @@ module Roro
             if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
               if File.file?(g)
                 foo = 'bar'
-                # FileUtils.cp_r(g, "#{stage_dummy}/#{name(g)}")
+                FileUtils.cp_r(g, "#{stage_dummy}#{g.split(Dir.pwd).last}")
               else
                 baz = 'qux'
-                # FileUtils.cp_r(g, "#{stage_dummy}")
+                # FileUtils.mkdir_p("#{stage_dummy}/#{name(g)}")
               end
             end
           end
