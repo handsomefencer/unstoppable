@@ -189,10 +189,6 @@ module Roro
       stack.split('/').last
     end
 
-    # def name(stack)
-    #   stack.split('/').last
-    # end
-
     def file_name(story_file)
       story_file.split('/').last.split('.').first
     end
