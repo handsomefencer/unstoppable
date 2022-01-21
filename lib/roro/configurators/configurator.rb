@@ -80,9 +80,11 @@ module Roro
           generated.select do |g|
             if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
               if File.file?(g)
-                FileUtils.cp_r(g, "#{stage_dummy}/#{name(g)}")
+                foo = 'bar'
+                # FileUtils.cp_r(g, "#{stage_dummy}/#{name(g)}")
               else
-                FileUtils.cp_r(g, "#{stage_dummy}")
+                baz = 'qux'
+                # FileUtils.cp_r(g, "#{stage_dummy}")
               end
             end
           end
