@@ -20,3 +20,4 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
+

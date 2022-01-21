@@ -34,3 +34,4 @@ actions:
   - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
   - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
   - run "sudo docker-compose up"
+  - run "sudo docker-compose up"

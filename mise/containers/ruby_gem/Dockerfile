@@ -1,26 +1,13 @@
 # syntax=docker/dockerfile:1
-FROM ruby:3.0-alpine
-
-RUN apk add --update \
-    build-base \
-    file \
-    git \
-    tzdata \
-    docker \
-    docker-compose \
-    sudo \
-    libffi-dev
-
-RUN gem install bundler:2.3.2
+FROM ruby:3.0
+RUN apt-get update -qq
+RUN apt-get install -y docker docker-compose sudo
 
 WORKDIR /usr/src
 
 COPY . .
 
-RUN bundle install -j4 --retry 3
-
+RUN bundle
 RUN rake install
-RUN gem build roro.gemspec
 
 WORKDIR /home/schadenfred
-
