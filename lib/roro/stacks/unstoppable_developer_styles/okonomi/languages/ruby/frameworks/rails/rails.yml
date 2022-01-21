@@ -30,6 +30,7 @@ env:
     POSTGRES_HOST:
       name: Database host
       value: ${DATABASE_HOST}
+
 actions:
   - directory 'stage_one', '.', @env
   - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'

@@ -6,8 +6,9 @@ services:
     image: roar
     build:
       context: .
-      dockerfile: mise/containers/frontend/Dockerfile
+      dockerfile: mise/containers/ruby_gem/Dockerfile
     volumes:
+      - .:/usr/src
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - RUBY_VERSION='2.5'

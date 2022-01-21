@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd $SRC
+cd $DST
 sudo docker-compose build
 

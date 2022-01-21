@@ -18,3 +18,5 @@ env:
       name: sqlite gem
       value: sqlite
 
+actions:
+  - directory 'stage_one', '.', @env
