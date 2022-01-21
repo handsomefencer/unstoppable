@@ -79,7 +79,11 @@ module Roro
         dummies.each do |dummy|
           generated.select do |g|
             if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
-              FileUtils.cp_r(g, "#{stage_dummy}/#{name(g)}")
+              if File.file?(g)
+                FileUtils.cp_r(g, "#{stage_dummy}/#{name(g)}")
+              else
+                FileUtils.cp_r(g, "#{stage_dummy}")
+              end
             end
           end
         end
