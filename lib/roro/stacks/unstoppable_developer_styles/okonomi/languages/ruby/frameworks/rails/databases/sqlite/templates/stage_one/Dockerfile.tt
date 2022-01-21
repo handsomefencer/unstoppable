@@ -2,7 +2,7 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
 RUN apk add --update \
   build-base \
-  <%= @env[:base][:alpine_db_pkg][:value] %>
+  <%= @env[:base][:db_pkg][:value] %>
 
 RUN apk add --update\
   file \

@@ -7,7 +7,7 @@ env:
       value: sqlite3
     db_pkg:
       name: Alpine db package
-      value: sqlite
+      value: sqlite-dev
     db_volume:
       name: database volume path
       value: /var/local-db
@@ -17,3 +17,4 @@ env:
     db_gem:
       name: sqlite gem
       value: sqlite
+
