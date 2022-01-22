@@ -57,7 +57,13 @@ module Roro
         end
 
         def epilogue
-          "https://www.handsomefencer.com/tutorials/docker-rails-6-sqlite"
+          array = []
+          itinerary.each do |story|
+            array << story.split('/').last.split('.yml').first
+
+
+          end
+          "https://www.handsomefencer.com/tutorials/#{array.join('-')}"
         end
 
         def write_log(log)
