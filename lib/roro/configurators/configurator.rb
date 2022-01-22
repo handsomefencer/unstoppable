@@ -72,6 +72,7 @@ module Roro
         location = Dir.pwd
         index = itinerary_index(stage).index(itinerary)
         test_dir = "#{stack_parent_path(stage)}/test"
+        alive = File.exist?(test_dir)
         return unless File.exist?(test_dir)
         stage_dummy = "#{test_dir}/#{index}/dummy"
         generated = Dir.glob("#{location}/**/*")

@@ -4,6 +4,7 @@ describe "#{adventure_name(__FILE__)}" do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
+  Given(:adventure)  { 0 }
 
   Given(:rollon)    {
     copy_stage_dummy(__dir__)
@@ -11,7 +12,7 @@ describe "#{adventure_name(__FILE__)}" do
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
-    stub_run_actions
+    # stub_run_actions
     cli.rollon
   }
 
@@ -19,8 +20,19 @@ describe "#{adventure_name(__FILE__)}" do
   Given {  rollon }
 
   describe 'must generate a' do
-    describe 'Gemfile with the correct rails version' do
-      Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
+    describe 'Gemfile with the correct' do
+      describe 'ruby version' do
+        Then  { assert_file file, /ruby ['"]2.7.4['"]/ }
+      end
+      Given(:file) { 'Gemfile'}
+
+      describe 'rails version' do
+        Then  { assert_file file, /gem ['"]rails['"], ['"]~> 6.1.4/ }
+      end
+
+      describe 'sqlite version' do
+        Then  { assert_file file, /gem ['"]sqlite3['"], ['"]~> 1.4['"]/ }
+      end
     end
 
     describe 'Dockerfile' do
@@ -30,6 +42,31 @@ describe "#{adventure_name(__FILE__)}" do
 
       describe 'yarn install command' do
         Then   { assert_file 'Dockerfile', /RUN yarn install/ }
+      end
+    end
+
+    describe 'docker-compose.yml' do
+      Given(:file) { 'docker-compose.yml' }
+
+      describe 'sqlite service' do
+        Then  { assert_file file, /sqlite3:/ }
+      end
+
+      describe 'sqlite image' do
+        Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
+      end
+    end
+
+    describe 'rails master key config' do
+      Given(:file) { 'config/environments/production.rb' }
+
+      describe 'sqlite service' do
+        Then  { assert_file file, /sqlite3:/ }
+      end
+
+      describe 'sqlite image' do
+        focus
+        Then  { assert_file file, /require_master_key = false/ }
       end
     end
   end
