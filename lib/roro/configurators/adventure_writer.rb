@@ -59,7 +59,7 @@ module Roro
         def epilogue(log)
           array = []
           log[:itinerary].each do |i|
-            if stack_parent(stack_parent_path(i)).eql?('versions')
+            if stack_parent(stack_parent_path(stack_parent_path(i))).eql?('versions')
               array << stack_parent(stack_parent_path(i))
             else
               array << stack_name(i)
