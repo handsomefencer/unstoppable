@@ -1,4 +1,4 @@
 preface: Choose what you like.
 
 actions:
-  - directory 'stage_one/.dockerignore', '.'
+  - directory 'stage_one', '.', @env
