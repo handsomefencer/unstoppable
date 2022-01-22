@@ -72,8 +72,8 @@ module Roro
 
         def write_log(log)
           create_file 'mise/log.yml', log.to_yaml
-          say epilogue(log)
           say 'Arigato.'
+          say epilogue(log)
         end
       end
     end
