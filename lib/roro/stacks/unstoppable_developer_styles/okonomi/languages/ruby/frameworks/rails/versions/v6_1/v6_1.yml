@@ -20,7 +20,7 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - run 'sudo chown -R $USER:$USER .'
+  - run 'chown -R $USER:$USER .'
   - |
     generator = Roro::CLI.new
     generator.generate_mise
