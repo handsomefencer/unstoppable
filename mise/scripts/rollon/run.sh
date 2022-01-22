@@ -6,4 +6,3 @@ sudo docker run \
   -u 0 \
   -it roar:latest roro rollon
 
-sudo chown -R $USER:$USER .
