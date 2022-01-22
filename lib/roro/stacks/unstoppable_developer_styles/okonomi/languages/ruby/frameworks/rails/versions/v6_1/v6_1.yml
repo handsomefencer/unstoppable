@@ -29,5 +29,3 @@ actions:
     generator.generate_keys
   - uncomment_lines 'config/environments/production.rb', /# config.require_master_key = true/
   - gsub_file 'config/environments/production.rb', /require_master_key = true/, 'require_master_key = false'
-  - run "sudo docker-compose build"
-  - run "sudo docker-compose up"
