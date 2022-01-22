@@ -59,9 +59,11 @@ module Roro
         def epilogue(log)
           array = []
           log[:itinerary].each do |i|
-            array << stack_parent(stack_parent_path(i))
-            # story = stack_name(i)
-            # array << story.split('/').last.split('.yml').first
+            if stack_parent(stack_parent_path(i)).eql?('versions')
+              array << stack_parent(stack_parent_path(i))
+            else
+              array << stack_name(i)
+            end
           end
           "https://www.handsomefencer.com/tutorials/#{array.join('-')}"
         end
