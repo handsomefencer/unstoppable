@@ -58,8 +58,8 @@ module Roro
 
         def write_log(log)
           create_file 'mise/log.yml', log.to_yaml
-          say 'Arigato'
-          say 'epilogue https://pjmedia.com/instapundit/'
+          say "#{stack}"
+          say 'Arigato.'
         end
       end
     end
