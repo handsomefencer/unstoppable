@@ -4,6 +4,7 @@ SRC=~/work/opensource/gems/roro
 DST=~/work/opensource/gems/sandbox
 SCRIPTS=${SRC}/mise/scripts/rollon
 
+. ${SCRIPTS}/git_commit.sh
 . ${SCRIPTS}/build_gem.sh
 . ${SCRIPTS}/down.sh
 . ${SCRIPTS}/reset_sandbox.sh

@@ -1,5 +1,4 @@
 env:
   base:
     ruby_version:
-      name: Ruby minor version
       value: 2.7.4

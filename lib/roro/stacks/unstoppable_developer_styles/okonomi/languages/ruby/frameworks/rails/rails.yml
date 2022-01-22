@@ -36,4 +36,4 @@ actions:
   - run 'sudo DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
   - directory 'stage_two', '.', @env
   - run 'sudo -S chown -R $USER:$USER .'
-  - chmod './entrypoints/docker-entrypoint.sh', 0755
+  - chmod 'entrypoints/docker-entrypoint.sh', 0755
