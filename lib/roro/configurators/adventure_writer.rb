@@ -56,9 +56,13 @@ module Roro
           "#{@env[:story]}"
         end
 
+        def epilogue
+          "https://www.handsomefencer.com/tutorials/docker-rails-6-sqlite"
+        end
+
         def write_log(log)
           create_file 'mise/log.yml', log.to_yaml
-          say "#{stack}"
+          say epilogue
           say 'Arigato.'
         end
       end
