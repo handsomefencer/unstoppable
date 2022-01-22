@@ -32,5 +32,5 @@ actions:
   - run 'sudo chown -R $USER:$USER .'
   - run 'docker-compose run --rm app bin/rails webpacker:install'
 #  - run 'sudo docker-compose run --rm app bin/rails webpacker:install'
-  - say 'fin!'
-  - open https://osxdaily.com
+#  - say 'fin!'
+#  - open https://osxdaily.com
