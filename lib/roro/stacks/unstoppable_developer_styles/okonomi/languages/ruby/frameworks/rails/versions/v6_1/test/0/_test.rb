@@ -12,7 +12,7 @@ describe "#{adventure_name(__FILE__)}" do
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
-    # stub_run_actions
+    stub_run_actions
     cli.rollon
   }
 
@@ -38,6 +38,10 @@ describe "#{adventure_name(__FILE__)}" do
     describe 'Dockerfile' do
       describe 'ruby version' do
         Then  { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+      end
+
+      describe 'bundler version' do
+        Then   { assert_file 'Dockerfile', /gem install bundler:2.2.28/ }
       end
 
       describe 'yarn install command' do
