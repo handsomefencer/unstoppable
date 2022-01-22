@@ -59,7 +59,7 @@ module Roro
         def epilogue(log)
           array = []
           log[:itinerary].each do |i|
-            array << stack_parent_path(stack_parent_path(i))
+            array << stack_parent_path(stack_parent(i))
             # story = stack_name(i)
             # array << story.split('/').last.split('.yml').first
           end
