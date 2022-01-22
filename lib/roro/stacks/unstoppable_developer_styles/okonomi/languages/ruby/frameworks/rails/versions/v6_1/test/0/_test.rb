@@ -59,14 +59,19 @@ describe "#{adventure_name(__FILE__)}" do
 
     describe 'rails master key config' do
       Given(:file) { 'config/environments/production.rb' }
+      Then  { assert_file file, /require_master_key = false/ }
+    end
 
-      describe 'sqlite service' do
-        Then  { assert_file file, /sqlite3:/ }
+    describe 'entrypoints/docker-entrypoint.sh' do
+      Given(:file) { 'entrypoints/docker-entrypoint.sh' }
+
+      describe 'must exist' do
+        Then  { assert_file file }
       end
 
-      describe 'sqlite image' do
+      describe 'must have correct permissions' do
         focus
-        Then  { assert_file file, /require_master_key = false/ }
+        Then  { assert File.owned?(file)  }
       end
     end
   end

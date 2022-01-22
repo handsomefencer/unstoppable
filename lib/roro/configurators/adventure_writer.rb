@@ -17,13 +17,8 @@ module Roro
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
             actions.each do |a|
-              begin
-                eval a
-              rescue
-                foo = 'bar'
-              end
+              eval a
             end
-            # copy_stage_dummy(storyfile)
             self.source_paths.shift
           end
         end
