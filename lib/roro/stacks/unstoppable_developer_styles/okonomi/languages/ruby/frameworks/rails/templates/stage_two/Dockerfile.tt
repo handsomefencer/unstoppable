@@ -2,14 +2,14 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
 RUN apk add --update \
   build-base \
-  <%= @env[:base][:db_pkg][:value] %>
-
-RUN apk add --update\
   file \
   git \
   nodejs \
   tzdata \
   yarn
+
+RUN apk add --update\
+  <%= @env[:base][:db_pkg][:value] %>
 
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 

@@ -1,10 +1,17 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
-# Add only packages necessary to generate a new rails app
-RUN apk add \
+RUN apk add --update \
   build-base \
+  file \
   git \
+  nodejs \
+  tzdata \
+  yarn
+
+RUN apk add --update\
   <%= @env[:base][:db_pkg][:value] %>
+
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 
 WORKDIR /app
 
