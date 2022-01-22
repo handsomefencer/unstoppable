@@ -70,7 +70,6 @@ describe "#{adventure_name(__FILE__)}" do
       end
 
       describe 'must have correct permissions' do
-        focus
         Then  { assert File.owned?(file)  }
       end
     end
