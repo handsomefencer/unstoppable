@@ -30,6 +30,6 @@ actions:
   - uncomment_lines 'config/environments/production.rb', /# config.require_master_key = true/
   - gsub_file 'config/environments/production.rb', /require_master_key = true/, 'require_master_key = false'
   - say 'Arigato.'
-  - say "<a href="https://www.instapundit.com>getsome</a>"
+  - say "<a href='https://www.instapundit.com'>getsome</a>"
   #  - run 'xdg-open https://stackoverflow.com'
   #  - run 'sudo chown -R $USER:$USER .'
