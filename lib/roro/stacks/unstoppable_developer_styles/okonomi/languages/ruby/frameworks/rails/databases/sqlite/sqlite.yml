@@ -20,4 +20,6 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
+  - run 'sudo chown -R $USER:$USER .'
+
 

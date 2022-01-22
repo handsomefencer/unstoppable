@@ -20,13 +20,14 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - run 'chown -R $USER:$USER .'
+  - run 'sudo chown -R $USER:$USER .'
   - |
     generator = Roro::CLI.new
     generator.generate_mise
     generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
     generator.generate_environments @env
     generator.generate_keys
+  - run 'sudo chown -R $USER:$USER .'
   - uncomment_lines 'config/environments/production.rb', /# config.require_master_key = true/
   - gsub_file 'config/environments/production.rb', /require_master_key = true/, 'require_master_key = false'
   - run "docker-compose build"
