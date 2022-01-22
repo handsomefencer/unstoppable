@@ -9,7 +9,7 @@
         <RAKE_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
         <RAKE_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
         <RAKE_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-        <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+        <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="true" />
         <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
         <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" IGNORE_RCOVRT="true" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
           <COVERAGE_PATTERN ENABLED="true">
@@ -43,7 +43,7 @@
         <RAKE_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
         <RAKE_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
         <RAKE_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-        <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+        <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="true" />
         <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
         <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" IGNORE_RCOVRT="true" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
           <COVERAGE_PATTERN ENABLED="true">
@@ -78,7 +78,7 @@
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-        <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+        <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="true" />
         <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
         <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" IGNORE_RCOVRT="true" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
           <COVERAGE_PATTERN ENABLED="true">
@@ -116,7 +116,7 @@
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-        <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+        <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="true" />
         <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
         <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" IGNORE_RCOVRT="true" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
           <COVERAGE_PATTERN ENABLED="true">
@@ -154,7 +154,7 @@
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
         <RTEST_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
-        <EXTENSION ID="BundlerRunConfigurationExtension" BUNDLE_MODE="AUTO" bundleExecEnabled="true" />
+        <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="true" />
         <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
         <EXTENSION ID="RubyCoverageRunConfigurationExtension" track_test_folders="true" runner="rcov" IGNORE_RCOVRT="true" ENABLE_BRANCH_COVERAGE="true" ENABLE_FORKED_COVERAGE="true">
           <COVERAGE_PATTERN ENABLED="true">
@@ -246,6 +246,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.11.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.10.1, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rb-readline (v0.5.5, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rbs (v1.4.0, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="regexp_parser (v1.8.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.3.2, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="selenium-webdriver (v3.142.7, RVM: ruby-3.0.3 [roro]) [gem]" level="application" />
