@@ -9,9 +9,9 @@ RUN apk add \
     docker-compose \
     sudo
 
-RUN gem install bundler:2.2.32
-
 WORKDIR /usr/src
+
+RUN gem install bundler:2.2.32
 
 COPY . .
 
