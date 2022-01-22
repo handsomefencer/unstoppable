@@ -24,6 +24,6 @@ RUN yarn install
 COPY . ./
 
 RUN bundle install
-RUN chmod -R 755 "./entrypoints/docker-entrypoint.sh"
+RUN chmod -R 755 ./entrypoints/docker-entrypoint.sh
 
 CMD ["./entrypoints/docker-entrypoint.sh"]
