@@ -56,19 +56,17 @@ module Roro
           "#{@env[:story]}"
         end
 
-        def epilogue
+        def epilogue(log)
           array = []
-          itinerary.each do |story|
+          log[:itinerary].each do |story|
             array << story.split('/').last.split('.yml').first
-
-
           end
           "https://www.handsomefencer.com/tutorials/#{array.join('-')}"
         end
 
         def write_log(log)
           create_file 'mise/log.yml', log.to_yaml
-          say epilogue
+          say epilogue(log)
           say 'Arigato.'
         end
       end
