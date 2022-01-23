@@ -19,7 +19,7 @@ COPY . .
 RUN rm -rf ./lib/roro/stacks
 
 RUN bundle
-COPY ./lib/roro/stacks .
+COPY ./lib/roro/stacks ./lib/roro/stacks
 
 RUN rake install
 
