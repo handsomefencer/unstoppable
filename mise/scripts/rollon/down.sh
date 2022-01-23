@@ -2,5 +2,7 @@
 
 cd $DST
 docker-compose down
-docker rm -f $(docker ps -a -q)
-docker volume rm $(docker volume ls -q)
+docker ps --filter name=sandbox* -a -q | xargs docker stop | xargs docker rm -f
+docker volume ls --filter name=sandbox* -q | xargs docker volume rm -f
+docker network ls --filter name=sandbox* -q | xargs docker network rm
+docker image ls sandbox* -q | xargs docker rmi -f
