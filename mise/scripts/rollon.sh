@@ -11,4 +11,4 @@ SCRIPTS=${SRC}/mise/scripts/rollon
 . ${SCRIPTS}/run.sh
 . ${SCRIPTS}/build_app.sh
 
-#cd ${SRC}
+cd ${SRC}
