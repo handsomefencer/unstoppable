@@ -1,8 +1,5 @@
 preface: some string
 
-#depends_on:
-#  - git
-#  - docker
 env:
   base:
     git_config_user_name:
