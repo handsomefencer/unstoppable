@@ -9,6 +9,6 @@ SCRIPTS=${SRC}/mise/scripts/rollon
 . ${SCRIPTS}/down.sh
 . ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/run.sh
-#. ${SCRIPTS}/build_app.sh
+. ${SCRIPTS}/build_app.sh
 
 cd ${SRC}
