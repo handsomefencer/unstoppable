@@ -97,7 +97,7 @@ workflows:
             - release:
                 requires:
                     - build
-    test-matrix-rollon:
+    test-adventures:
         jobs:
             - test-rollon:
                 matrix:
@@ -132,7 +132,7 @@ workflows:
                             - 5\n1\n1\n1\n1
                         os:
                             - linux
-    test-matrix-rubies:
+    test-rubies:
         jobs:
             - test-rubies:
                 filters:
