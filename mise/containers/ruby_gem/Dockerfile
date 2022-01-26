@@ -26,5 +26,7 @@ WORKDIR /usr/src
 COPY ./lib/roro/stacks ./lib/roro/stacks
 
 RUN rake install
+RUN gem build roro.gemspec
+
 
 WORKDIR /home/schadenfred
