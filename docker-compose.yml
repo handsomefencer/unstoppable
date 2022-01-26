@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.5'
 
 services:
 
@@ -6,11 +6,10 @@ services:
     image: roar
     build:
       context: .
-      dockerfile: mise/containers/ruby_gem/Dockerfile-alpine
+      target: stacker
+      dockerfile: mise/containers/ruby_gem/Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - RUBY_VERSION='2.5'
 
-volumes:
-  gem_cache:
