@@ -24,7 +24,7 @@ describe 'fixtures' do
 
   describe 'must contain correct number of' do
     describe 'cases' do
-      Then { assert_equal 27, cases.size }
+      Then { assert_equal 25, cases.size }
     end
 
     describe 'itineraries' do
@@ -35,19 +35,18 @@ describe 'fixtures' do
   describe 'must be correct when' do
     describe 'simple' do
       Given(:adventure) { [1,1] }
-
       Then { assert_equal cases[0], adventure }
-      And  { assert_match(/ci_styles\/circleci/, itinerary) }
+      And  { assert_match(/php\/wordpress/, itinerary) }
     end
 
     describe 'intermediate' do
-      Given(:adventure) { [3,1,2,1] }
+      Given(:adventure) { [1,3,2,1] }
       Then { assert_includes cases, adventure }
-      And  { assert_match(/flask/, itinerary) }
+      And  { assert_match(/ruby_gem/, itinerary) }
     end
 
     describe 'advanced' do
-      Given(:adventure) { [3,2,1,1,2,2,1] }
+      Given(:adventure) { [1,3,1,2,1,1]}
       Then { assert_includes cases, adventure }
       And  { assert_match(/rails/, itinerary) }
     end
