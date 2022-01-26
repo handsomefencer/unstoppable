@@ -20,7 +20,8 @@ services:
       RAILS_ENV: development
 
   sqlite3:
-    image: nouchka/sqlite3:latest
+    image: <%= @env[:base][:db_image][:value] %><%=
+    ":#{@env[:base][:db_version][:value]}" %>
     stdin_open: true
     tty: true
     volumes:

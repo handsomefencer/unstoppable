@@ -11,7 +11,7 @@ env:
       value: /var/local-db
     db_image:
       name: database image
-      value: postgres:13.5
+      value:
     db_version:
       name: database image
       value: 13.5
