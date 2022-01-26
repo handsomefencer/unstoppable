@@ -1,29 +1,17 @@
-FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
-
-RUN apk add --update \
-  build-base \
-  file \
-  git \
-  nodejs \
-  tzdata \
-  yarn
-
-RUN apk add --update\
-  <%= @env[:base][:db_pkg][:value] %>
-
-RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
-
-WORKDIR /app
-
+FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
+  
 ## Install standard gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
 RUN yarn install
 
-COPY . ./
+COPY Gemfile Gemfile.lock .
 
 RUN bundle install
+
+COPY Gemfile Gemfile.lock .
+
 RUN chmod -R 755 ./entrypoints/docker-entrypoint.sh
 
 CMD ["./entrypoints/docker-entrypoint.sh"]

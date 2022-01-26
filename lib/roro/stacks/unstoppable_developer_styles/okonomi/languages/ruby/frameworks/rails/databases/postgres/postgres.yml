@@ -2,12 +2,13 @@ preface: PostgreSQL is a powerful, open source object-relational database system
 
 env:
   base:
+    db_vendor:
+      value: postgresql
     db_pkg:
-      name: Alpine db package
-      value: sqlite
+      value: postgresql-dev
     db_volume:
-      name: database volume path
       value: /var/lib/postgresql/data
+    db_image:
+      value: postgres
     db_gem:
-      name: sqlite gem
-      value: sqlite
+      value: pg

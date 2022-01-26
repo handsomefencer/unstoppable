@@ -1,0 +1,20 @@
+env:
+  base:
+    db_vendor:
+      name: Database vendor name
+      value: sqlite33
+    db_pkg:
+      name: Alpine db package
+      value: sqlite-dev
+    db_volume:
+      name: database volume path
+      value: /var/local-db
+    db_image:
+      name: database image
+      value: postgres:13.5
+    db_version:
+      name: database image
+      value: 13.5
+    db_gem:
+      name: Gemfile gem for interacting with db
+      value: sqlite
