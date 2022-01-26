@@ -6,7 +6,7 @@ services:
     image: roar
     build:
       context: .
-      target: stacker
+      target: "${TARGET}"
       dockerfile: mise/containers/ruby_gem/Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
