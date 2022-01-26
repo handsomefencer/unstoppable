@@ -21,17 +21,17 @@ env:
       name: Reids url
       value: redis://redis:6379/0
 
-actions:
-  - directory 'stage_one', '.', @env
-  - run 'sudo chown -R $USER:$USER .'
-  - |
-    generator = Roro::CLI.new
-    generator.generate_mise
-    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-    generator.generate_environments @env
-    generator.generate_keys
-  - chmod 'entrypoints/docker-entrypoint.sh', 0755
-  - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
-  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
-  - run "sudo docker-compose up"
-  - run "sudo docker-compose up"
+#actions:
+#  - directory 'stage_one', '.', @env
+#  - run 'sudo chown -R $USER:$USER .'
+#  - |
+#    generator = Roro::CLI.new
+#    generator.generate_mise
+#    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
+#    generator.generate_environments @env
+#    generator.generate_keys
+#  - chmod 'entrypoints/docker-entrypoint.sh', 0755
+#  - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
+#  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
+#  - run "sudo docker-compose up"
+#  - run "sudo docker-compose up"
