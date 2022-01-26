@@ -12,6 +12,9 @@ env:
     db_image:
       name: database image
       value: postgres:13.5
+    db_version:
+      name: database image
+      value: 13.5
     db_gem:
       name: Gemfile gem for interacting with db
       value: sqlite
