@@ -12,6 +12,5 @@ services:
     environment:
       - RUBY_VERSION='2.5'
 
-
 volumes:
   gem_cache:
