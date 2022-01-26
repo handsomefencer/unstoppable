@@ -1,4 +1,5 @@
 
+
 RUN apk add --update \
   build-base \
   file \
@@ -13,4 +14,3 @@ RUN apk add --update\
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 
 WORKDIR /app
-

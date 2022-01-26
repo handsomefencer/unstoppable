@@ -1,28 +1,26 @@
-FROM ruby:2.7.4-alpine AS builder
+FROM ruby:2.7.4-alpine
 
-RUN apk add \
+RUN apk add --update \
   build-base \
-  postgresql-dev
-
-RUN apk add --update\
   file \
   git \
   nodejs \
   tzdata \
   yarn
 
+RUN apk add --update\
+  sqlite-dev
+
 RUN gem install bundler:2.2.28
 
 WORKDIR /app
-
+  
 ## Install standard gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
 RUN yarn install
 
-COPY . ./
-
-RUN bundle install
+RUN chmod -R 755 ./entrypoints/docker-entrypoint.sh
 
 CMD ["./entrypoints/docker-entrypoint.sh"]

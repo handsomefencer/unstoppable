@@ -33,9 +33,10 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
+  - inject_into_file('Dockerfile', partial('packages'), :after => 'AS builder')
+  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+  - directory 'stage_two', '.', @env
+  - insert_into_file 'Dockerfile', partial('packages'), :after => '2.7.4-alpine'
 #  - append_to_file './.gitignore', partial('ignores')
-  - insert_into_file 'Dockerfile', partial('packages'), after: 'builder'
-#  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --no-cache --output . .'
-#  - directory 'stage_two', '.', @env
 #  - insert_into_file 'Dockerfile', partial('packages'), after: '-alpine'
 #  - run "chmod u+x 'entrypoints/docker-entrypoint.sh'"

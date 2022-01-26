@@ -17,7 +17,11 @@ module Roro
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
             actions.each do |a|
-              eval a
+              begin
+                eval a
+              rescue
+                eval a
+              end
             end
             self.source_paths.shift
           end
@@ -40,8 +44,15 @@ module Roro
         end
 
         def partial(filename)
-          File.read("#{self.source_paths.last}/partials/_#{filename}")
+          content = File.read("#{self.source_paths.last}/partials/_#{filename}.erb")
+          ERB.new(content).result(binding)
         end
+
+  #       x = 42
+  #       template = ERB.new <<-EOF
+  # The value of x is: <%= x %>
+  #       EOF
+  #       puts template.result(binding)
 
         def interpolated_stack_path
           "#{@env[:stack]}/#{@env[:story]}"

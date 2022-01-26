@@ -2,7 +2,7 @@ env:
   base:
     db_vendor:
       name: Database vendor name
-      value: sqlite33
+      value: sqlite3
     db_pkg:
       name: Alpine db package
       value: sqlite-dev
