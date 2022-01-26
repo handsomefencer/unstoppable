@@ -1,15 +1,5 @@
-FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
+FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
 
-RUN apk add --update \
-  build-base \
-  file \
-  git \
-  nodejs \
-  tzdata \
-  yarn
-
-RUN apk add --update\
-  <%= @env[:base][:db_pkg][:value] %>
 
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 

@@ -36,7 +36,6 @@ actions:
   - append_to_file './.gitignore', partial('ignores')
   - insert_into_file 'Dockerfile', partial('packages'), after: 'builder'
   - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --no-cache --output . .'
-  - run 'sudo chown -R $USER:$USER .'
   - directory 'stage_two', '.', @env
-  - run 'sudo chown -R $USER:$USER .'
+  - insert_into_file 'Dockerfile', partial('packages'), after: '-alpine'
   - run "chmod u+x 'entrypoints/docker-entrypoint.sh'"
