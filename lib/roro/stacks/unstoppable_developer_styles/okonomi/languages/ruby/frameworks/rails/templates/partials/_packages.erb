@@ -9,3 +9,8 @@ RUN apk add --update \
 
 RUN apk add --update\
   <%= @env[:base][:db_pkg][:value] %>
+
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
+WORKDIR /app
+
