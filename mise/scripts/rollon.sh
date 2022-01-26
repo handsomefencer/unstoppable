@@ -4,6 +4,15 @@ SRC=~/work/opensource/gems/roro
 DST=~/work/opensource/gems/sandbox
 SCRIPTS=${SRC}/mise/scripts/rollon
 
+locations=( $SRC $DST )
+for i in "${locations[@]}"
+do
+  if [ ! -d ${i} ]; then
+    echo "Directory ${i} DOES NOT exist."
+	  kill -INT $$
+	fi
+done
+
 . ${SCRIPTS}/git_commit.sh
 . ${SCRIPTS}/build_gem.sh
 . ${SCRIPTS}/down.sh
