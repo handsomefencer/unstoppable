@@ -13,5 +13,5 @@ env:
       name: database image
       value: postgres:13.5
     db_gem:
-      name: sqlite gem
+      name: Gemfile gem for interacting with db
       value: sqlite
