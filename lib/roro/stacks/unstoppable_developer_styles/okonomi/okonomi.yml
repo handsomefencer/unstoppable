@@ -1,4 +1,10 @@
 preface: Choose what you like.
 
+env:
+  base:
+    app_name:
+      name: Name for your app
+      value: unstoppable_app
+
 actions:
   - directory 'stage_one', '.', @env

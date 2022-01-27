@@ -5,7 +5,7 @@ RUN apk add --update \
   build-base \
   file \
   git \
-  tzdata
+  tzdata \
   nodejs \
   yarn
 
@@ -16,6 +16,8 @@ RUN apk add --update \
 
 
 
+
+WORKDIR /app
 
 RUN gem install bundler:2.2.28
 

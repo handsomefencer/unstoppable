@@ -18,3 +18,27 @@ env:
     db_gem:
       name: Gemfile gem for interacting with db
       value: sqlite
+    DATABASE_NAME:
+      name: Database name
+      value: postgres
+    DATABASE_PASSWORD:
+      name: Database password
+      value: postgres
+    DATABASE_USERNAME:
+      name: Database username
+      value: postgres
+    DATABASE_HOST:
+      name: Database host
+      value: database
+    POSTGRES_NAME:
+      name: Database name
+      value: ${DATABASE_NAME}
+    POSTGRES_PASSWORD:
+      name: Database password
+      value: ${DATABASE_PASSWORD}
+    POSTGRES_USERNAME:
+      name: Database username
+      value: ${DATABASE_USERNAME}
+    POSTGRES_HOST:
+      name: Database host
+      value: ${DATABASE_HOST}
