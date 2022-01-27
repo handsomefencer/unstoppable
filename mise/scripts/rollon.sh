@@ -15,9 +15,9 @@ done
 
 . ${SCRIPTS}/git_commit.sh
 . ${SCRIPTS}/down.sh
+. ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/prune.sh
 . ${SCRIPTS}/build_gem.sh
-. ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/run.sh
 #. ${SCRIPTS}/build_app.sh
 
