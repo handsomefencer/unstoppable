@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $SRC
+
 sudo docker run \
   -v $PWD:/home/schadenfred \
   -v /var/run/docker.sock:/var/run/docker.sock \
