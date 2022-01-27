@@ -6,4 +6,4 @@ env:
       value: 6.1
 
 actions:
-  - docker-compose run --rm app bin/rails webpacker:install
+  - run "docker-compose run --rm app bin/rails webpacker:install"
