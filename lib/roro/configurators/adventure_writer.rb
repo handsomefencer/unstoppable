@@ -21,7 +21,7 @@ module Roro
               begin
                 eval a
               rescue
-                raise Error, a.to_s
+                raise Error, msg: "#{a} #{storyfile}"
               end
             end
             self.source_paths.shift

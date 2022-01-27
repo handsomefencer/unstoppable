@@ -53,12 +53,18 @@ describe "#{adventure_name(__FILE__)}" do
         Then { assert_file 'Dockerfile', /bundler:2.2.28/ }
       end
 
-      describe 'alpine db package' do
-        Then { assert_file 'Dockerfile', /sqlite-dev/ }
-      end
+      describe 'alpine db packages' do
+        describe 'sqlite' do
+          Then { assert_file 'Dockerfile', /sqlite-dev/ }
+        end
+  #       nodejs \
+  # tzdata \
+  # yarn
+        describe 'node' do
+          focus
+          Then { assert_file 'Dockerfile', /nodejs/ }
+        end
 
-      describe 'yarn install command' do
-        Then { assert_file 'Dockerfile', /RUN yarn install/ }
       end
     end
 

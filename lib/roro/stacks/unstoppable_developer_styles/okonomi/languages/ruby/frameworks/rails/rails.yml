@@ -33,7 +33,6 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - inject_into_file('Dockerfile', partial('packages'), :after => '## Base packages')
   - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
   - directory 'stage_two', '.', @env
   - |
@@ -51,6 +50,3 @@ actions:
     generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
     generator.generate_environments @env
     generator.generate_keys
-
-##  - insert_into_file 'Dockerfile', partial('packages'), :after => '## Base
-##  packages

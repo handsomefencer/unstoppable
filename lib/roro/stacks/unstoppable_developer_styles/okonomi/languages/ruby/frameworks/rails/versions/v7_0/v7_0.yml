@@ -18,3 +18,9 @@ env:
       name: Reids url
       value: redis://redis:6379/0
 
+actions:
+  - |
+    insert_into_file(
+      'Dockerfile',
+      partial('packages'),
+      :after => "## Adventure packages")

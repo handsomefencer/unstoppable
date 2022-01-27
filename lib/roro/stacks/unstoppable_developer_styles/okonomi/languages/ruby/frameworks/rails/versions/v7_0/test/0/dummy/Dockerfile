@@ -9,6 +9,11 @@ RUN apk add --update \
 
 ## Adventure packages
 RUN apk add --update \
+  yarn \
+  nodejs
+
+
+RUN apk add --update \
   sqlite-dev
 
 
