@@ -1,5 +1,4 @@
-preface: some string
-
+preface: https://guides.rubyonrails.org/v6.0/
 env:
   base:
     rails_version:
