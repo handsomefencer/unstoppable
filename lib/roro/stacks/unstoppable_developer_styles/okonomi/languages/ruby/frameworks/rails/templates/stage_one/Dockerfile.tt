@@ -2,6 +2,10 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
   
 <%= partial('packages') %>
 
+
+RUN apk add --update \
+  <%= @env[:base][:db_pkg][:value] %>
+
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 
 WORKDIR /app

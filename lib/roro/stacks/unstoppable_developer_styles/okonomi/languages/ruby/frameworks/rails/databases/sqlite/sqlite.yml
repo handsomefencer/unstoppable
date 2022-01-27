@@ -5,7 +5,7 @@ actions:
   - |
     insert_into_file(
       'Dockerfile', 
-      partial('packages_db'),
+      partial('packages'),
       :after => "## Adventure packages")
 
   - |
