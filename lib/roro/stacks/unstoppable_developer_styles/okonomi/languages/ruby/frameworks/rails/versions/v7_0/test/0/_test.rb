@@ -27,7 +27,6 @@ describe "#{adventure_name(__FILE__)}" do
     end
 
     describe 'mise-en-place' do
-      focus
       Then { assert_file 'mise/env/base.env' }
     end
 
