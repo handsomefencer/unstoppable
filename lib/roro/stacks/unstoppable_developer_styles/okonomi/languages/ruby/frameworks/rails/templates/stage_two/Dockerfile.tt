@@ -2,6 +2,8 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
 
 <%= partial('packages') %>
 
+WORKDIR /app
+
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 
 COPY Gemfile Gemfile.lock ./
