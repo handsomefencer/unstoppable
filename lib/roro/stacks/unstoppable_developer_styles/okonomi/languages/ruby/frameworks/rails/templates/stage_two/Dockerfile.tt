@@ -8,4 +8,6 @@ COPY . .
 
 RUN chmod -R 755 entrypoints/docker-entrypoint.sh
 
+RUN yarn install
+
 CMD ["./entrypoints/docker-entrypoint.sh"]

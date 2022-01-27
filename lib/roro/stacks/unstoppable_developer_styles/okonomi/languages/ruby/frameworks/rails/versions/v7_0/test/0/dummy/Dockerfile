@@ -19,8 +19,10 @@ WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
-RUN yarn install
+COPY . .
 
-RUN chmod -R 755 ./entrypoints/docker-entrypoint.sh
+RUN chmod -R 755 entrypoints/docker-entrypoint.sh
+
+RUN yarn install
 
 CMD ["./entrypoints/docker-entrypoint.sh"]
