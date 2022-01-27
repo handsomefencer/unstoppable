@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $DST
+
 if [[ $PWD = !$DST ]]; then
   echo "Wrong directory"
   exit
