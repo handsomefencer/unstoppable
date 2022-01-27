@@ -35,7 +35,7 @@ actions:
   - directory 'stage_one', '.', @env
   - inject_into_file('Dockerfile', partial('packages'), :after => 'AS builder')
   - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
-  - sudo chown -R $USER:$USER .
+  - run 'sudo chown -R $USER:$USER .'
   - directory 'stage_two', '.', @env
   - |
     insert_into_file(

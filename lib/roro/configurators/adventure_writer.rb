@@ -17,11 +17,11 @@ module Roro
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
             actions.each do |a|
-              # begin
+              begin
                 eval a
-              # rescue
-              #   eval a
-              # end
+              rescue
+                raise Error, a.to_s
+              end
             end
             self.source_paths.shift
           end

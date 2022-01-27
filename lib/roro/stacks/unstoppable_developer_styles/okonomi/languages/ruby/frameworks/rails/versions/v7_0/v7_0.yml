@@ -25,6 +25,6 @@ actions:
     generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
     generator.generate_environments @env
     generator.generate_keys
-    - chmod 'entrypoints/docker-entrypoint.sh', 0755
-    - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
+  - run "chmod 'entrypoints/docker-entrypoint.sh', 0755"
+  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
 
