@@ -1,21 +1,22 @@
 FROM ruby:2.7.4-alpine
 
+## Base packages
 RUN apk add --update \
   build-base \
   file \
   git \
-  nodejs \
-  tzdata \
-  yarn
+  tzdata
 
-RUN apk add --update\
+## Adventure packages
+RUN apk add --update \
   sqlite-dev
+
+
+
+
 
 RUN gem install bundler:2.2.28
 
-WORKDIR /app
-  
-  ## Install standard gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 

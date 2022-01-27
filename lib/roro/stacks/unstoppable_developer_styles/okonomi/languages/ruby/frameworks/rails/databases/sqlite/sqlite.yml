@@ -4,12 +4,18 @@ actions:
   - directory 'stage_one', '.', @env
   - |
     insert_into_file(
-      'docker-compose.yml', 
+      'Dockerfile', 
+      partial('packages_db'),
+      :after => "## Adventure packages")
+
+  - |
+    insert_into_file(
+      'docker-compose.yml',
       partial('service_database'),
       :after => "\nservices:")
-  - run 'sudo chown -R $USER:$USER .'
+
   - |
-  - insert_into_file(
+    insert_into_file(
     'docker-compose.yml',
-    "\n\s\sdb_data:", 
+    "\n\s\sdb_data:",
       :after => "\nvolumes:")

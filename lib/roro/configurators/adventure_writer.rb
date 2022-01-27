@@ -45,8 +45,9 @@ module Roro
         end
 
         def partial(filename)
-          content = File.read("#{self.source_paths.last}/partials/_#{filename}.erb")
-          ERB.new(content).result(binding)
+          file = "#{self.source_paths.last}/partials/_#{filename}.erb"
+          return unless File.exist?(file)
+          ERB.new(File.read(file)).result(binding)
         end
 
         def interpolated_stack_path

@@ -1,4 +1,10 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
+  
+<%= partial('packages') %>
+
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
+WORKDIR /app
 
 ## Create a Gemfile with just the Rails gem inside:
 RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> <%= @env[:base][:rails_version][:value] %>'" > Gemfile

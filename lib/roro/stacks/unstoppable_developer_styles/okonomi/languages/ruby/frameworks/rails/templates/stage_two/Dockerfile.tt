@@ -1,6 +1,9 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
-  
-  ## Install standard gems
+
+<%= partial('packages') %>
+
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
