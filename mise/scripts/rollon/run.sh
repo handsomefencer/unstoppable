@@ -6,5 +6,13 @@ sudo docker run \
   -u 0 \
   -it roar:latest roro rollon
 
+1
 
+#  -t roar:latest printf "1\\n3\\n1\\n2\\n2\\n1\\na\\n$var" | roro rollon
 
+1
+3
+1
+2
+2
+1
