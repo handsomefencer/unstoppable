@@ -26,6 +26,10 @@ describe "#{adventure_name(__FILE__)}" do
       end
     end
 
+    describe 'mise-en-place' do
+      Then { assert_file 'mise' }
+    end
+
     describe 'Gemfile with the correct' do
       describe 'rails version' do
         Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
@@ -46,7 +50,6 @@ describe "#{adventure_name(__FILE__)}" do
       end
 
       describe 'alpine db package' do
-        focus
         Then { assert_file 'Dockerfile', /sqlite-dev/ }
       end
 
@@ -70,7 +73,6 @@ describe "#{adventure_name(__FILE__)}" do
 
       describe 'sqlite image' do
         Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
-        # Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
       end
     end
   end

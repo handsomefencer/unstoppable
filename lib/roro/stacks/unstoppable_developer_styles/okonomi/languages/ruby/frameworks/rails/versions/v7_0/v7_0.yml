@@ -19,8 +19,6 @@ env:
       value: redis://redis:6379/0
 
 #actions:
-#  - directory 'stage_one', '.', @env
-#  - run 'sudo chown -R $USER:$USER .'
 #  - |
 #    generator = Roro::CLI.new
 #    generator.generate_mise

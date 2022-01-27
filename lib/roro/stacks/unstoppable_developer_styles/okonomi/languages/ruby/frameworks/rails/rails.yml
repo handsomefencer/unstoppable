@@ -43,9 +43,13 @@ actions:
       :after => "\nservices:")
   - insert_into_file 'Dockerfile', partial('packages'), :after => '2.7.4-alpine'
   - insert_into_file(
-    'docker-compose.yml',
-    "\n\s\sgem_cache:\n\s\snode_modules:",
-    :after => "\nvolumes:")
-#  - append_to_file './.gitignore', partial('ignores')
-#  - insert_into_file 'Dockerfile', partial('packages'), after: '-alpine'
-#  - run "chmod u+x 'entrypoints/docker-entrypoint.sh'"
+      'docker-compose.yml',
+      "\n\s\sgem_cache:\n\s\snode_modules:",
+      :after => "\nvolumes:")
+  - |
+    generator = Roro::CLI.new
+    generator.generate_mise
+    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
+    generator.generate_environments @env
+    generator.generate_keys
+  - run "chmod u+x 'entrypoints/docker-entrypoint.sh'"
