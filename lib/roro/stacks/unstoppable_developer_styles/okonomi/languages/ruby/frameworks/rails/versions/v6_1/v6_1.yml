@@ -6,4 +6,5 @@ env:
       value: 6.1
 
 actions:
+  - run 'sudo chown -R $USER:$USER .'
   - run "docker-compose run --rm app bin/rails webpacker:install"
