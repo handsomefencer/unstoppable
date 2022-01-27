@@ -13,6 +13,7 @@ module Roro
         def write(buildenv, storyfile)
           @env = buildenv[:env]
           @env[:force] = true
+          @env[:exit_on_failure] = true
           actions = read_yaml(storyfile)[:actions]
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"

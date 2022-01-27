@@ -18,13 +18,3 @@ env:
       name: Reids url
       value: redis://redis:6379/0
 
-actions:
-  - |
-    generator = Roro::CLI.new
-    generator.generate_mise
-    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-    generator.generate_environments @env
-    generator.generate_keys
-  - run "chmod 'entrypoints/docker-entrypoint.sh', 0755"
-  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
-

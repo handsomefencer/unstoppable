@@ -20,6 +20,10 @@ describe "#{adventure_name(__FILE__)}" do
   Given { rollon }
 
   describe 'must have a' do
+    describe 'docker entrypoint' do
+      Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
+    end
+
     describe 'config/database.yml' do
       describe 'with sqlite' do
         Then  { assert_file 'config/database.yml' }
