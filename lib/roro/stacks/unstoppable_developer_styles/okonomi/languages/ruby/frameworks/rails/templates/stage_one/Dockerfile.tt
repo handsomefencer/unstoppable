@@ -18,8 +18,6 @@ RUN bundle config --local && \
 ## Use Rails to generate a new app. We'll configure it later.
 RUN bundle exec rails new . \
   --database=<%= @env[:base][:db_vendor][:value] %> \
-  --skip-bundle \
-  --skip-webpack-install
 
 FROM scratch AS export-stage
 
