@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd $SRC
+cd $DST
 
 sudo docker run \
   -v $PWD:/home/schadenfred \
