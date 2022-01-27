@@ -1,6 +1,4 @@
-version: '3.4'
 
-services:
 
   app:
     build:
@@ -8,6 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    depends_on:
+      - database
     volumes:
       - .:/app
       - db_data/:/tmpfs
@@ -18,16 +18,3 @@ services:
       - ./mise/env/development.env
     environment:
       RAILS_ENV: development
-
-  sqlite3:
-    image: <%= @env[:base][:db_image][:value] %><%=
-    ":#{@env[:base][:db_version][:value]}" %>
-    stdin_open: true
-    tty: true
-    volumes:
-      - db_data/:/root/db/
-
-volumes:
-  db_data:
-  gem_cache:
-  node_modules:

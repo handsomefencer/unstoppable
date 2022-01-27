@@ -53,5 +53,25 @@ describe "#{adventure_name(__FILE__)}" do
         Then { assert_file 'Dockerfile', /RUN yarn install/ }
       end
     end
+
+    describe 'docker-compose.yml' do
+      Given(:file) { 'docker-compose.yml' }
+
+      describe 'volumes' do
+        Then { assert_file file, /\nvolumes:\n\s\sdb_data/ }
+        And  { assert_file file, /\s\sgem_cache/ }
+        And  { assert_file file, /\s\snode_modules/ }
+      end
+
+      describe 'database service' do
+        Then  { assert_file file, /database:/ }
+      end
+
+      describe 'sqlite image' do
+        focus
+        Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
+        # Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
+      end
+    end
   end
 end
