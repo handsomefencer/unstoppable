@@ -68,7 +68,6 @@ describe "#{adventure_name(__FILE__)}" do
       end
 
       describe 'sqlite image' do
-        focus
         Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
         # Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
       end
