@@ -46,6 +46,7 @@ describe "#{adventure_name(__FILE__)}" do
       end
 
       describe 'alpine db package' do
+        focus
         Then { assert_file 'Dockerfile', /sqlite-dev/ }
       end
 
