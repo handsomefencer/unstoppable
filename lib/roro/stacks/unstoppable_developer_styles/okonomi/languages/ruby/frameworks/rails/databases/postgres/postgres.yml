@@ -12,3 +12,15 @@ env:
       value: postgres
     db_gem:
       value: pg
+    POSTGRES_NAME:
+      name: Database name
+      value: ${DATABASE_NAME}
+    POSTGRES_PASSWORD:
+      name: Database password
+      value: ${DATABASE_PASSWORD}
+    POSTGRES_USERNAME:
+      name: Database username
+      value: ${DATABASE_USERNAME}
+    POSTGRES_HOST:
+      name: Database host
+      value: ${DATABASE_HOST}

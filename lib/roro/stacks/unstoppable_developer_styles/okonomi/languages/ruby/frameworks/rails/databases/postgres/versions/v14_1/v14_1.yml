@@ -1,5 +1,4 @@
 env:
   base:
-    db_image:
-      name: database version
-      value: postgres:14.1
+    db_image_version:
+]      value: 14.1
