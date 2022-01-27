@@ -35,6 +35,7 @@ actions:
   - directory 'stage_one', '.', @env
   - inject_into_file('Dockerfile', partial('packages'), :after => 'AS builder')
   - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+  - sudo chown -R $USER:$USER .
   - directory 'stage_two', '.', @env
   - |
     insert_into_file(
@@ -46,13 +47,3 @@ actions:
       'docker-compose.yml',
       "\n\s\sgem_cache:\n\s\snode_modules:",
       :after => "\nvolumes:")
-  - |
-    generator = Roro::CLI.new
-    generator.generate_mise
-    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-    generator.generate_environments @env
-    generator.generate_keys
-  - chmod 'entrypoints/docker-entrypoint.sh', 0755
-  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
-  - run "sudo docker-compose up"
-  - run "sudo docker-compose up"
