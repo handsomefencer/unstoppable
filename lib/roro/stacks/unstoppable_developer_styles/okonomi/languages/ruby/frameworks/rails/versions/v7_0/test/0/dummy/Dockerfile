@@ -6,13 +6,10 @@ RUN apk add --update \
   file \
   git \
   tzdata
+  nodejs \
+  yarn
 
 ## Adventure packages
-RUN apk add --update \
-  yarn \
-  nodejs
-
-
 RUN apk add --update \
   sqlite-dev
 

@@ -13,7 +13,7 @@ do
 	fi
 done
 
-#. ${SCRIPTS}/git_commit.sh
+. ${SCRIPTS}/git_commit.sh
 . ${SCRIPTS}/build_gem.sh
 . ${SCRIPTS}/down.sh
 . ${SCRIPTS}/reset_sandbox.sh
