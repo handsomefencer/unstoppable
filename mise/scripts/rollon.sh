@@ -14,7 +14,7 @@ do
 done
 
 #. ${SCRIPTS}/git_commit.sh
-#. ${SCRIPTS}/build_gem.sh
+. ${SCRIPTS}/build_gem.sh
 . ${SCRIPTS}/down.sh
 . ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/run.sh

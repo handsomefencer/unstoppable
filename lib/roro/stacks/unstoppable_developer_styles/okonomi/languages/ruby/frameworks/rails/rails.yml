@@ -38,7 +38,6 @@ actions:
   - run 'sudo chown -R $USER:$USER .'
   - directory 'stage_two', '.', @env
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
-
   - |
     insert_into_file(
       'docker-compose.yml', 

@@ -1,4 +1,4 @@
-FROM ruby:2.7.4-alpine AS builder
+FROM ruby:2.7.4-alpine
 
 RUN apk add --update \
   build-base \
@@ -14,19 +14,13 @@ RUN apk add --update\
 RUN gem install bundler:2.2.28
 
 WORKDIR /app
+  
+  ## Install standard gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install -j4 --retry 3
 
-## Create a Gemfile with just the Rails gem inside:
-RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> 7.0'" > Gemfile
-RUN bundle config --local && \
-  bundle install -j4 --retry 3
+RUN yarn install
 
-## Use Rails to generate a new app. We'll configure it later.
-RUN bundle exec rails new . \
-  --database=sqlite3 \
-  --skip-bundle \
-  --skip-webpack-install
+RUN chmod -R 755 ./entrypoints/docker-entrypoint.sh
 
-FROM scratch AS export-stage
-
-## Copy the generated files onto the host.
-COPY --from=builder ./app/ .
+CMD ["./entrypoints/docker-entrypoint.sh"]
