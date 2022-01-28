@@ -1,0 +1,6 @@
+env:
+  base:
+    ruby_version:
+      value: 3.0
+
+

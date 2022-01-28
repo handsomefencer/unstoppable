@@ -1,0 +1,5 @@
+env:
+  base:
+    pythong_version:
+      name: python minor version
+      value: 3.10.1

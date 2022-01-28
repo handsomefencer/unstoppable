@@ -1,0 +1,24 @@
+preface: Describe your story.
+
+env:
+  base:
+    story_name:
+      name: Name for this story
+      value: 'my_story'
+    stack:
+      name: Stack location
+      value: 'mise/stacks'
+      path: true
+
+actions:
+  - |
+    generator = Roro::CLI.new
+    generator.generate_mise
+    generator.generate_containers
+    generator.generate_environments
+    generator.generate_keys
+  - |
+    @env[:story] = @env[:base][:story_name][:value]
+    @env[:stack] = @env[:base][:stack][:value]
+    @env[:stack_path] = "#{@env[:base][:stack][:value]}/#{@env[:base][:story_name][:value]}"
+    directory 'stage_one', '.', @env
