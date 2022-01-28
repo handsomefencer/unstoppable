@@ -4,7 +4,6 @@ describe "#{adventure_name(__FILE__)}" do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
-  Given(:adventure)  { 0 }
 
   Given(:rollon)    {
     copy_stage_dummy(__dir__)
@@ -16,11 +15,11 @@ describe "#{adventure_name(__FILE__)}" do
     cli.rollon
   }
 
-  Given {  rollon  }
-  # Given { quiet { rollon } }
+  Given { rollon }
 
   describe 'must have a' do
     describe 'docker entrypoint' do
+      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 

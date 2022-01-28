@@ -16,11 +16,11 @@ describe "#{adventure_name(__FILE__)}" do
     cli.rollon
   }
 
-  Given {  rollon  }
-  # Given { quiet { rollon } }
+  Given { rollon }
 
   describe 'must have a' do
     describe 'docker entrypoint' do
+      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 
