@@ -1,6 +1,6 @@
 namespace :ci do
   desc 'prepare config'
   task 'update' do
-    system("sudo circleci update")
+    system("sudo -S circleci update")
   end
 end

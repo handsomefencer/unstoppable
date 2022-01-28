@@ -5,7 +5,7 @@ namespace :ci do
       task 'test-adventures' do |task|
         set_content(task)
         cases = YAML.load_file("test/fixtures/matrixes/cases.yml")
-        matrix = @content['jobs'][0]['test-rollon']['matrix']
+        matrix = @content['jobs'][0]['test-adventures']['matrix']
         matrix['parameters']['answers'] = cases.map { |c| c.join('\n') }
         overwrite
         notify('answers')

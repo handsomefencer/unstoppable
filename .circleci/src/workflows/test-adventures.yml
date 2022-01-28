@@ -1,6 +1,6 @@
 ---
 jobs:
-- test-rollon:
+- test-adventures:
     matrix:
       parameters:
         answers:

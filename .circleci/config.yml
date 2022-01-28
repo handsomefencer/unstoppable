@@ -59,7 +59,7 @@ jobs:
             - run: gem install gem-release
             - run: gem bump
             - run: gem release
-    test-rollon:
+    test-adventures:
         executor: << parameters.os >>
         parameters:
             answers:
@@ -102,7 +102,7 @@ workflows:
                     - build
     test-adventures:
         jobs:
-            - test-rollon:
+            - test-adventures:
                 matrix:
                     parameters:
                         answers:
