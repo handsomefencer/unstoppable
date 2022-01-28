@@ -44,10 +44,15 @@ module Roro
           end
         end
 
-        def partial(filename)
-          file = "#{self.source_paths.last}/partials/_#{filename}.erb"
-          return unless File.exist?(file)
-          ERB.new(File.read(file)).result(binding)
+        def partial(name, args = {})
+          location = "#{source_paths.last}/partials"
+          shared = File.expand_path('../..', source_paths.last)
+          locations = Dir.glob("#{shared}/**/*/partials/shared") << location
+          partials = locations
+                       .map! { |p| "#{p}/_#{name}.erb"}
+                       .select { |p| File.exist?(p) }
+          raise Error, source_paths.last if partials.empty?
+          ERB.new(File.read(partials.last)).result(binding)
         end
 
         def interpolated_stack_path

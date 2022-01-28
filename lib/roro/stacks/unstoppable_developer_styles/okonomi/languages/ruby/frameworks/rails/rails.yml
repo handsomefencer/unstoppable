@@ -20,7 +20,7 @@ actions:
     :after => "\nservices:")
   - insert_into_file(
       'docker-compose.yml',
-      "\n\s\sgem_cache:\n\s\snode_modules:",
+      "\n\s\sgem_cache:\n\s\snode_modules:\n\s\sdb_data:",
       :after => "\nvolumes:")
   - |
     generator = Roro::CLI.new

@@ -62,7 +62,8 @@ module Minitest
       end
     end
 
-    def stubs_adventure(path = nil, adventure = 0)
+    def stubs_adventure(path = nil, adventure = nil )
+      adventure ||= path.split('/').last.to_i
       story = path.split(Roro::CLI.stacks).last
       case_builder = AdventureCaseBuilder.new
       case_builder.build_cases

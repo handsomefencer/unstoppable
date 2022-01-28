@@ -2,13 +2,6 @@ version: '3.4'
 
 services:
 
-  database:
-    image: nouchka/sqlite3:latest
-    stdin_open: true
-    tty: true
-    volumes:
-      - db_data/:/root/db/
-
   app:
     build:
       context: .
@@ -29,18 +22,10 @@ services:
       RAILS_ENV: development
 
   database:
-    image: nouchka/sqlite3:latest
-    env_file:
-    
-      - foo
-    
-      - bar
-    
-      
-      - ./mise/env/base.env
-      - ./mise/env/development.env
-      - ./mise/containers/database/env/base.env
-      - ./mise/containers/database/env/development.env
+    image: postgres:13.5
+      - /mise/env/base.env
+      - /mise/containers/database/env/base.env
+
 
 volumes:
   gem_cache:

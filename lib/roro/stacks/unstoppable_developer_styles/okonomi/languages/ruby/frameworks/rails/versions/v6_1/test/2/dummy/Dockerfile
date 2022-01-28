@@ -10,9 +10,11 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  sqlite-dev
+  postgresql-dev
 
-## Adventure packages
+## Adventure packagesRUN apk add --update \
+build-base \
+
 
 
 

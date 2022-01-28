@@ -2,11 +2,6 @@ preface: SQLite is a C-language library that implements a small, fast, self-cont
 
 actions:
   - directory 'stage_one', '.', @env
-  - |
-    insert_into_file(
-      'Dockerfile', 
-      partial('packages'),
-      :after => "## Adventure packages")
 
   - |
     insert_into_file(

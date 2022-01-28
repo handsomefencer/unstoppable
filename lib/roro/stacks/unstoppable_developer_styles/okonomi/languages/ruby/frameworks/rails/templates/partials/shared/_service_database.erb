@@ -1,0 +1,6 @@
+
+
+  database:
+    image: <%= @env[:base][:db_image][:value] %><%= ":#{@env[:base][:db_image_version][:value]}" %>
+      <%= "- /mise/env/base.env" %>
+      <%= "- /mise/containers/#{args[:container]}/env/base.env" %>

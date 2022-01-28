@@ -1,4 +1,4 @@
 env:
   base:
     db_image_version:
-]      value: 13.5
+      value: 13.5

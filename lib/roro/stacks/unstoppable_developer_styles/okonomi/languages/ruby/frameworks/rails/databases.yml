@@ -30,3 +30,12 @@ env:
     DATABASE_HOST:
       name: Database host
       value: database
+
+
+actions:
+
+  - |
+    insert_into_file(
+      'docker-compose.yml',
+      partial('service_database', container: 'database'),
+      :after => "\nservices:")
