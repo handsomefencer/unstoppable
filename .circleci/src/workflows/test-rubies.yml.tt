@@ -1,12 +1,14 @@
+---
 jobs:
-  - test-rubies:
-      filters:
-        branches:
-          only: main
-      matrix:
-        parameters:
-          version:
-            - '2.5'
-            - '2.6'
-            - '2.7'
-            - '3.0'
+- test-rubies:
+    filters:
+      branches:
+        only: development
+    matrix:
+      parameters:
+        version:
+        - '3.0'
+        - '2.5'
+        - '2.6'
+        - '2.7'
+        - '3.0'

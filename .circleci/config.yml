@@ -103,6 +103,9 @@ workflows:
     test-adventures:
         jobs:
             - test-adventures:
+                filters:
+                    branches:
+                        only: development
                 matrix:
                     parameters:
                         answers:
@@ -138,12 +141,9 @@ workflows:
             - test-rubies:
                 filters:
                     branches:
-                        only: main
+                        only: development
                 matrix:
                     parameters:
                         version:
-                            - "2.5"
-                            - "2.6"
-                            - "2.7"
                             - "3.0"
 

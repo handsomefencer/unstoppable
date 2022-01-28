@@ -1,8 +1,11 @@
-
+---
 jobs:
-  - test-adventures:
-      matrix:
-        parameters:
-          answers:
-            - 1\n1
-          os: [linux]
+- test-adventures:
+    filters:
+      branches:
+        only: development
+    matrix:
+      parameters:
+        answers:
+          - 1\n1
+        os: [linux]

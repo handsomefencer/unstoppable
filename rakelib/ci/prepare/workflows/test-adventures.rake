@@ -1,6 +1,7 @@
 namespace :ci do
   namespace :prepare do
     namespace :workflows do
+
       desc 'Prepare workflow with matrix of adventures'
       task 'test-adventures' do |task|
         set_content(task)
