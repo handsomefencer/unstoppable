@@ -24,16 +24,3 @@ env:
     POSTGRES_HOST:
       name: Database host
       value: ${DATABASE_HOST}
-
-actions:
-  - |
-    insert_into_file(
-      'Dockerfile',
-      partial('packages'),
-      :after => '## Adventure packages')
-
-#  - |
-#    insert_into_file(
-#      'docker-compose.yml',
-#      partial('service_database'),
-#      :after => "\nservices:")

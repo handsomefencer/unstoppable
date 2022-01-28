@@ -13,12 +13,12 @@ do
 	fi
 done
 
-#. ${SCRIPTS}/git_commit.sh
+. ${SCRIPTS}/git_commit.sh
 . ${SCRIPTS}/down.sh
 . ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/prune.sh
-. ${SCRIPTS}/build_gem.sh
+. ${SCRIPTS}/build_gem1.sh
 . ${SCRIPTS}/run.sh
-#. ${SCRIPTS}/build_app.sh
+. ${SCRIPTS}/build_app.sh
 
 cd ${SRC}
