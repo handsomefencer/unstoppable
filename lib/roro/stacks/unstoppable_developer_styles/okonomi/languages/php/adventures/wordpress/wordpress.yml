@@ -13,5 +13,5 @@ env:
 
 actions:
   - directory 'stage_one', '.', @env
-  - system "sudo docker-compose build"
-  - system "sudo docker-compose up -d"
+#  - system "sudo docker-compose build"
+#  - system "sudo docker-compose up -d"

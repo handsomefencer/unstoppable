@@ -37,5 +37,5 @@ actions:
   - |
     insert_into_file(
       'docker-compose.yml',
-      partial('service_database', container: 'database'),
+      partial('service_database'),
       :after => "\nservices:")

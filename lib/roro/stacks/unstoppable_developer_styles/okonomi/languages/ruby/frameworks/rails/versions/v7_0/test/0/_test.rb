@@ -20,7 +20,6 @@ describe "#{adventure_name(__FILE__)}" do
 
   describe 'must have a' do
     describe 'docker entrypoint' do
-      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 
@@ -57,14 +56,10 @@ describe "#{adventure_name(__FILE__)}" do
         describe 'sqlite' do
           Then { assert_file 'Dockerfile', /sqlite-dev/ }
         end
-  #       nodejs \
-  # tzdata \
-  # yarn
+
         describe 'node' do
-          focus
           Then { assert_file 'Dockerfile', /nodejs/ }
         end
-
       end
     end
 
@@ -78,11 +73,13 @@ describe "#{adventure_name(__FILE__)}" do
       end
 
       describe 'database service' do
-        Then  { assert_file file, /database:/ }
-      end
+        describe 'database service' do
+          Then  { assert_file file, /\n\s\sdatabase:/ }
 
-      describe 'sqlite image' do
-        Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
+          describe 'image' do
+            Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
+          end
+        end
       end
     end
   end

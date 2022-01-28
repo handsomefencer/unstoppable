@@ -11,19 +11,20 @@ describe "#{adventure_name(__FILE__)}" do
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
-    # stub_run_actions
+    stub_run_actions
     cli.rollon
   }
 
-  # Given { quiet { rollon } }
-  Given { rollon }
+  Given { quiet { rollon } }
+  # Given { rollon }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct' do
+      Given(:file) { 'Gemfile'}
+
       describe 'ruby version' do
         Then  { assert_file file, /ruby ['"]2.7.4['"]/ }
       end
-      Given(:file) { 'Gemfile'}
 
       describe 'rails version' do
         Then  { assert_file file, /gem ['"]rails['"], ['"]~> 6.1.4/ }
@@ -65,7 +66,6 @@ describe "#{adventure_name(__FILE__)}" do
       describe 'services' do
         describe 'app' do
           describe 'depends_on' do
-            focus
             Then  { assert_file file, /\n\s\s\s\sdepends_on:/ }
             Then  { assert_file file, /\n\s\s\s\s\s\s- database/ }
           end

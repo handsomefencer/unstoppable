@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'omakase wordpress' do
+  Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { [''] }

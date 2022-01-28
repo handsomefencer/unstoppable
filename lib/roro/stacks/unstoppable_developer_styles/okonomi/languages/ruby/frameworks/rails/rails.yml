@@ -18,10 +18,10 @@ actions:
     'docker-compose.yml',
     partial('service_app'),
     :after => "\nservices:")
-  - insert_into_file(
+
+  - append_to_file(
       'docker-compose.yml',
-      "\n\s\sgem_cache:\n\s\snode_modules:\n\s\sdb_data:",
-      :after => "\nvolumes:")
+      partial('volumes'))
   - |
     generator = Roro::CLI.new
     generator.generate_mise

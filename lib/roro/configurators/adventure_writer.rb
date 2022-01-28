@@ -48,11 +48,14 @@ module Roro
           location = "#{source_paths.last}/partials"
           shared = File.expand_path('../..', source_paths.last)
           locations = Dir.glob("#{shared}/**/*/partials/shared") << location
-          partials = locations
+          partial = locations
                        .map! { |p| "#{p}/_#{name}.erb"}
-                       .select { |p| File.exist?(p) }
-          raise Error, source_paths.last if partials.empty?
-          ERB.new(File.read(partials.last)).result(binding)
+                       .select { |p| File.exist?(p) }.last
+          begin
+            ERB.new(File.read(partial)).result(binding) if partial
+          rescue
+            raise Roro::Error, msg: partial
+          end
         end
 
         def interpolated_stack_path

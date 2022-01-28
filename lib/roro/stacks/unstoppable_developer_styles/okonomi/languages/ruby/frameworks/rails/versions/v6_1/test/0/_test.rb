@@ -16,15 +16,15 @@ describe "#{adventure_name(__FILE__)}" do
     cli.rollon
   }
 
-  # Given { quiet { rollon } }
-  Given {  rollon }
+  Given { quiet { rollon } }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct' do
+      Given(:file) { 'Gemfile'}
+
       describe 'ruby version' do
         Then  { assert_file file, /ruby ['"]2.7.4['"]/ }
       end
-      Given(:file) { 'Gemfile'}
 
       describe 'rails version' do
         Then  { assert_file file, /gem ['"]rails['"], ['"]~> 6.1.4/ }
@@ -63,7 +63,7 @@ describe "#{adventure_name(__FILE__)}" do
 
     describe 'rails master key config' do
       Given(:file) { 'config/environments/production.rb' }
-      Then  { assert_file file, /require_master_key = false/ }
+      Then  { assert_file file, /# config.require_master_key = true/ }
     end
 
     describe 'entrypoints/docker-entrypoint.sh' do

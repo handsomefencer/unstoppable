@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'devops circleci' do
+  Given { skip }
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }

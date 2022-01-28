@@ -34,9 +34,9 @@ describe 'fixtures' do
 
   describe 'must be correct when' do
     describe 'simple' do
-      Given(:adventure) { [1,1] }
+      Given(:adventure) { [1,1,1] }
       Then { assert_equal cases[0], adventure }
-      And  { assert_match(/php\/wordpress/, itinerary) }
+      And  { assert_match(/php\/adventures\/wordpress/, itinerary) }
     end
 
     describe 'intermediate' do
