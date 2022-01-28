@@ -146,4 +146,5 @@ workflows:
                     parameters:
                         version:
                             - "3.0"
+                            - "2.7"
 
