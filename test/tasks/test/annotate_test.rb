@@ -4,12 +4,11 @@ require 'test_helper'
 require 'rake'
 
 describe 'rake test:annotate' do
-  Given(:workbench) { '.circleci' }
-  Given(:output) { capture_subprocess_io { run_task('ci:config:validate') }.first }
+  Given(:workbench) { 'test_annotate/lib' }
+  Given(:stacks)    { 'lib/roro/stacks/unstoppable_developer_styles/okonomi' }
+  Given(:file)      { "#{stacks}/languages/"}
+  Given { quiet { run_task('test:annotate') } }
 
-  Given { quiet { run_task('ci:config:pack') } }
-
-  Given { skip }
-  # Then { assert_match /Validating/, output }
+  Then { assert_file 'lib/roro/stacks' }
   # And  { assert_match /is valid/, output }
 end

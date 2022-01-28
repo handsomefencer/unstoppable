@@ -1,4 +1,5 @@
 namespace :test do
+
   desc 'Annotate adventure tests'
   task :annotate do
 
