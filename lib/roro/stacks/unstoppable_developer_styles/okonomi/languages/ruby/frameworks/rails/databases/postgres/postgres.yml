@@ -24,3 +24,7 @@ env:
     POSTGRES_HOST:
       name: Database host
       value: ${DATABASE_HOST}
+
+actions:
+  - directory 'stage_one', '.', @env
+
