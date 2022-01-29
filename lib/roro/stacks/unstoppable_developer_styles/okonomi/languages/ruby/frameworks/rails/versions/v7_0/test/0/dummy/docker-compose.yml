@@ -27,8 +27,8 @@ services:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
-      - /mise/env/base.env
-      - /mise/containers/database/env/base.env
+      - ./mise/env/base.env
+      - ./mise/containers/database/env/base.env
 
 volumes:
   db_data:
