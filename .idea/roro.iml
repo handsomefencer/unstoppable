@@ -319,14 +319,14 @@
                   <RakeTaskImpl id="config">
                     <subtasks>
                       <RakeTaskImpl description="Pack .circleci/config.yml from .circleci/src files" fullCommand="ci:prepare:config:pack" id="pack" />
-                      <RakeTaskImpl description="Validate .circleci/config.yml" fullCommand="ci:prepare:config:process" id="process" />
+                      <RakeTaskImpl description="Process .circleci/src into .circleci/config.yml" fullCommand="ci:prepare:config:process" id="process" />
                       <RakeTaskImpl description="Validate .circleci/config.yml" fullCommand="ci:prepare:config:validate" id="validate" />
                     </subtasks>
                   </RakeTaskImpl>
                   <RakeTaskImpl id="workflows">
                     <subtasks>
-                      <RakeTaskImpl description="Prepare workflow test-matrix-rollon" fullCommand="ci:prepare:workflows:test-matrix-rollon" id="test-matrix-rollon" />
-                      <RakeTaskImpl description="Prepare workflow test-matrix-rubies" fullCommand="ci:prepare:workflows:test-matrix-rubies" id="test-matrix-rubies" />
+                      <RakeTaskImpl description="Prepare workflow with matrix of adventures" fullCommand="ci:prepare:workflows:test-adventures" id="test-adventures" />
+                      <RakeTaskImpl description="Prepare workflow test-rubies" fullCommand="ci:prepare:workflows:test-rubies" id="test-rubies" />
                     </subtasks>
                   </RakeTaskImpl>
                 </subtasks>
@@ -339,6 +339,7 @@
                   <RakeTaskImpl description="" fullCommand="ci:test:run" id="run" />
                 </subtasks>
               </RakeTaskImpl>
+              <RakeTaskImpl description="prepare config" fullCommand="ci:update" id="update" />
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Remove any temporary products" fullCommand="clean" id="clean" />
