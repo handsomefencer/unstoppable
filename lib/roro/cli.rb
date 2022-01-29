@@ -5,7 +5,7 @@ module Roro
     include Thor::Actions
 
     def self.supported_rubies
-      %w[3.0]
+      %w[3.0 2.7 2.6]
     end
 
     def self.test_root

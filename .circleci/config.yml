@@ -59,7 +59,7 @@ jobs:
             - run: gem install gem-release
             - run: gem bump
             - run: gem release
-    test-rollon:
+    test-adventures:
         executor: << parameters.os >>
         parameters:
             answers:
@@ -95,41 +95,43 @@ workflows:
         jobs:
             - build
             - release:
-                requires:
-                    - build
+                filters:
+                    branches:
+                        only: main
     test-adventures:
         jobs:
-            - test-rollon:
+            - test-adventures:
+                filters:
+                    branches:
+                        only: development
                 matrix:
                     parameters:
                         answers:
-                            - 1\n1
+                            - 1\n1\n1
+                            - 1\n2\n1\n1
+                            - 1\n2\n1\n2
+                            - 1\n2\n2\n1
+                            - 1\n2\n2\n2
+                            - 1\n3\n2\n1
+                            - 1\n3\n2\n2
+                            - 1\n3\n1\n2\n1\n1
+                            - 1\n3\n1\n2\n1\n2
+                            - 1\n3\n1\n2\n2\n1
+                            - 1\n3\n1\n2\n2\n2
+                            - 1\n3\n1\n1\n1\n1\n1
+                            - 1\n3\n1\n1\n1\n1\n2
+                            - 1\n3\n1\n1\n1\n2\n1
+                            - 1\n3\n1\n1\n1\n2\n2
+                            - 1\n3\n1\n1\n2\n1\n1
+                            - 1\n3\n1\n1\n2\n1\n2
+                            - 1\n3\n1\n1\n2\n2\n1
+                            - 1\n3\n1\n1\n2\n2\n2
                             - 2\n1
                             - 2\n2
-                            - 2\n3
-                            - 3\n1\n1\n1
-                            - 3\n1\n1\n2
-                            - 3\n1\n2\n1
-                            - 3\n1\n2\n2
-                            - 3\n2\n2\n1
-                            - 3\n2\n2\n2
-                            - 3\n2\n1\n2\n1\n1
-                            - 3\n2\n1\n2\n1\n2
-                            - 3\n2\n1\n2\n2\n1
-                            - 3\n2\n1\n2\n2\n2
-                            - 3\n2\n1\n1\n1\n1\n1
-                            - 3\n2\n1\n1\n1\n1\n2
-                            - 3\n2\n1\n1\n1\n2\n1
-                            - 3\n2\n1\n1\n1\n2\n2
-                            - 3\n2\n1\n1\n2\n1\n1
-                            - 3\n2\n1\n1\n2\n1\n2
-                            - 3\n2\n1\n1\n2\n2\n1
-                            - 3\n2\n1\n1\n2\n2\n2
-                            - 4\n1
-                            - 4\n2
-                            - 5\n2
-                            - 5\n3
-                            - 5\n1\n1\n1\n1
+                            - 3\n2
+                            - 3\n3
+                            - 3\n1\n1\n1\n1
+                            - 3\n1\n1
                         os:
                             - linux
     test-matrix-rollon:
@@ -185,12 +187,11 @@ workflows:
             - test-rubies:
                 filters:
                     branches:
-                        only: main
+                        only: development
                 matrix:
                     parameters:
                         version:
-                            - "2.5"
-                            - "2.6"
-                            - "2.7"
                             - "3.0"
+                            - "2.7"
+                            - "2.6"
 

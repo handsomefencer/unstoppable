@@ -12,21 +12,22 @@ describe AdventureCaseBuilder do
     Given(:expected)    { adventures_from(stack) }
 
     context 'simple' do
-      Given(:stack) { "#{base}/devops/ci_styles/circleci" }
-      Then { assert_equal [[1,1]], expected }
+      Given(:stack) { "#{base}/sashimi/devops/ci_styles/circleci" }
+
+      Then { assert_includes expected, [3,2] }
     end
 
     context 'intermediate' do
       Given(:stack) { "#{ruby_stacks}/ruby_gem" }
-      Then { assert_includes expected, [3,2,2,1] }
-      And  { assert_includes expected, [3,2,2,2] }
+      Then { assert_includes expected, [1,3,2,1] }
+      And  { assert_includes expected, [1,3,2,2] }
     end
 
     context 'advanced' do
       Given(:stack) { "#{ruby_stacks}/rails/versions/v6_1" }
       Then { assert_equal expected.size, 6 }
-      And  { assert_includes expected, [3, 2, 1, 1, 1, 1, 1] }
-      And  { assert_includes expected, [3, 2, 1, 1, 2, 1, 2] }
+      And  { assert_includes expected, [1,3,1,1,1,1,1] }
+      And  { assert_includes expected, [1,3,1,1,2,1,2] }
     end
   end
 

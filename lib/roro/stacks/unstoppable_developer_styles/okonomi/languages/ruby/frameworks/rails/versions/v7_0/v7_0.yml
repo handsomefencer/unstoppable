@@ -1,14 +1,9 @@
-preface: some string
+preface: https://guides.rubyonrails.org/v7.0/
 
 env:
   base:
-    git_config_user_name:
-      name: The name you'd like associated with git activities
-      value: Jane Doe
-    git_config_user_email:
-      name: The email address you'd like associated with git activities
-      value: jane.doe@example.com
     rails_version:
+<<<<<<< HEAD
       name: Ruby on Rails minor version
       value: 7.0
     JOB_WORKER_URL:
@@ -47,3 +42,6 @@ actions:
 #  - run "sudo docker-compose up"
 #  - run "sudo docker-compose up"
 >>>>>>> stackr
+=======
+      value: 7.0
+>>>>>>> rake-test-annotate

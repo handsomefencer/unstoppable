@@ -6,9 +6,9 @@ namespace :ci do
       task 'test-rubies' do |task|
         set_content(task)
         matrix = @content['jobs'][0]['test-rubies']['matrix']
-        matrix['parameters']['version'] = %w[2.5 2.6 2.7 3.0]
+        matrix['parameters']['version'] = Roro::CLI.supported_rubies
         overwrite
-        notify('version')
+        notify 'version'
       end
     end
   end

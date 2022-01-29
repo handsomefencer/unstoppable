@@ -1,6 +1,7 @@
 require "test_helper"
 
 describe 'okonomi roll_your_own' do
+  Given { skip }
   Given(:cli)       { Roro::CLI.new }
   Given(:overrides) { %w[] }
   Given(:workbench) { 'empty'}

@@ -1,16 +1,14 @@
-
+## Base packages
 RUN apk add --update \
   build-base \
   file \
   git \
-  nodejs \
   tzdata \
+  nodejs \
   yarn
 
-RUN apk add --update\
+RUN apk add --update \
   <%= @env[:base][:db_pkg][:value] %>
 
-RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
-
-WORKDIR /app
+## Adventure packages
 

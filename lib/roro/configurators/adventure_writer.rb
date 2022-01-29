@@ -13,11 +13,16 @@ module Roro
         def write(buildenv, storyfile)
           @env = buildenv[:env]
           @env[:force] = true
+          @env[:exit_on_failure] = true
           actions = read_yaml(storyfile)[:actions]
           unless actions.nil?
             self.source_paths << "#{stack_parent_path(storyfile)}/templates"
             actions.each do |a|
-              eval a
+              begin
+                eval a
+              rescue
+                raise Error, msg: "#{a} #{storyfile}"
+              end
             end
             self.source_paths.shift
           end
@@ -39,8 +44,18 @@ module Roro
           end
         end
 
-        def partial(filename)
-          File.read("#{self.source_paths.last}/partials/_#{filename}")
+        def partial(name, args = {})
+          location = "#{source_paths.last}/partials"
+          shared = File.expand_path('../..', source_paths.last)
+          locations = Dir.glob("#{shared}/**/*/partials/shared") << location
+          partial = locations
+                       .map! { |p| "#{p}/_#{name}.erb"}
+                       .select { |p| File.exist?(p) }.last
+          begin
+            ERB.new(File.read(partial)).result(binding) if partial
+          rescue
+            raise Roro::Error, msg: partial
+          end
         end
 
         def interpolated_stack_path
