@@ -9,21 +9,21 @@ describe 'Roro::CLI#generate_annotations' do
   Given(:space)     { "#{base}/okonomi/languages/ruby/frameworks/rails" }
   Given(:file)      { "#{space}/versions/v6_1/test/0/_test.rb"}
 
+  Given(:expected)  { "describe 'adventure::rails_v6_1::0::sqlite & ruby_v2_7'" }
+
   describe 'after generate' do
     Given { subject.generate_annotations }
-    focus
-    Then  { assert_file file, /describe ["']adventure 0/ }
-  end
-
-  describe 'before generate' do
-    Then { assert_file base }
-    And  { assert_file space }
-    And  { assert_file file, /describe ["']#replace me/ }
+    Then  { assert_file file, /describe ["']adventure::rails_v6_1::0::sqlite/ }
   end
 
   describe '#adventure_test_files' do
-    Then { assert_includes subject.adventure_test_files, file }
+    Then { assert_includes subject.adventure_test_files, file, expected }
   end
+
+  describe '#adventure_description(stack)' do
+    Then { assert_match subject.adventure_description(file), expected }
+  end
+
 
 
 

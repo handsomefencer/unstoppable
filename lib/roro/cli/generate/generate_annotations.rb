@@ -13,8 +13,7 @@ module Roro
       files = adventure_test_files
       files.each do |file|
         gsub_file file, /^describe ["](.*?)["]/ do |match|
-          string = adventure_description(file.split('lib/roro/stacks').last)
-          "describe \"#{string}\""
+          adventure_description(file.split('lib/roro/stacks').last)
         end
       end
     end
@@ -23,24 +22,15 @@ module Roro
 
       def adventure_description(stack)
         index = stack.split('/')[-2]
-        story = stack.split("/test/#{index}/_test.rb").first
+        story = stack.split('lib/roro/stacks').last.split("/test/#{index}/_test.rb").first
         itineraries = read_yaml("#{Roro::CLI.test_root}/fixtures/matrixes/itineraries.yml")
-        itineraries.select! { |i| i.include?(story) }[index.to_i]
-        adventures = itineraries[index.to_i]
-        adventures.map! do |i|
-          i.split('/')[-3..-1]
-        end
-        adventures.map! do |i|
-          i.delete('versions')
-          i.size.eql?(3) ? i.last
-            : i.join('_')
-        end
-        adventures.join('-')
+        adventures = itineraries
+          .select { |i| i.include?(story) }[index.to_i].unshift(story).uniq!
+          .map { |i| i.split('/')[-3..-1] }
+          .each { |i| i.delete('versions') }
+          .map { |i| i.size.eql?(3) ? i.last : i.join('_') }
+        "describe 'adventure::#{adventures.shift}::#{index}::#{adventures.join(' & ')}'"
       end
-
-      # def itineraries
-      #   read_yaml("#{Roro::CLI.test_root}/fixtures/matrixes/itineraries.yml")
-      # end
 
       def adventure_test_files
         Dir.glob("#{Dir.pwd}/lib/roro/stacks/**/*_test.rb")

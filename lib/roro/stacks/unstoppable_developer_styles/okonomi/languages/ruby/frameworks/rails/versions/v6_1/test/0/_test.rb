@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe "#{adventure_name(__FILE__)}" do
+describe 'adventure 0: rails_v6_1 & sqlite & ruby_v2_7' do
   Given(:workbench)  { 'empty' }
   Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
