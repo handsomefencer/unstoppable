@@ -13,7 +13,7 @@ describe 'Roro::CLI#generate_annotations' do
 
   describe 'after generate' do
     Given { subject.generate_annotations }
-    Then  { assert_file file, /describe ["']adventure::rails_v6_1::0::sqlite/ }
+    Then  { assert_file file, /#{expected}/ }
   end
 
   describe '#adventure_test_files' do
