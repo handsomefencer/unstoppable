@@ -3,7 +3,7 @@ jobs:
 - test-adventures:
     filters:
       branches:
-        only: development
+        only: dev
     matrix:
       parameters:
         answers:

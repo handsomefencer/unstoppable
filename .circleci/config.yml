@@ -103,7 +103,7 @@ workflows:
             - test-adventures:
                 filters:
                     branches:
-                        only: development
+                        only: dev
                 matrix:
                     parameters:
                         answers:
@@ -139,7 +139,7 @@ workflows:
             - test-rubies:
                 filters:
                     branches:
-                        only: development
+                        only: dev
                 matrix:
                     parameters:
                         version:
