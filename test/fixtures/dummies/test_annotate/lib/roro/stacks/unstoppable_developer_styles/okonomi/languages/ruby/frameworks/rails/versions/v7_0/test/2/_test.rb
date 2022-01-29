@@ -11,11 +11,11 @@ describe "#{adventure_name(__FILE__)}" do
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
-    # stub_run_actions
+    stub_run_actions
     cli.rollon
   }
 
-  Given { rollon }
+  Given { quiet { rollon } }
 
   describe 'must have a' do
     describe 'docker entrypoint' do
