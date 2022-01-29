@@ -98,8 +98,6 @@ workflows:
                 filters:
                     branches:
                         only: main
-                requires:
-                    - build
     test-adventures:
         jobs:
             - test-adventures:
@@ -147,4 +145,5 @@ workflows:
                         version:
                             - "3.0"
                             - "2.7"
+                            - "2.6"
 
