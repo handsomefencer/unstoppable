@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test:lib:roro:stacks" type="TestUnitRunConfigurationType" factoryName="Test::Unit/Shoulda/Minitest">
+  <configuration default="false" name="test:adventures" type="TestUnitRunConfigurationType" factoryName="Test::Unit/Shoulda/Minitest">
     <module name="roro" />
     <predefined_log_file enabled="true" id="RUBY_TESTUNIT" />
     <RTEST_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="-Ilib:test" />

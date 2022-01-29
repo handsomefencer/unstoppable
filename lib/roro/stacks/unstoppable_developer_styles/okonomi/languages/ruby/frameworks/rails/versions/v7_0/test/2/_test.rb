@@ -19,7 +19,6 @@ describe "#{adventure_name(__FILE__)}" do
 
   describe 'must have a' do
     describe 'docker entrypoint' do
-      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 

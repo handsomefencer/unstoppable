@@ -12,9 +12,7 @@ RUN apk add --update \
 RUN apk add --update \
   postgresql-dev
 
-## Adventure packagesRUN apk add --update \
-build-base \
-
+## Adventure packages
 
 
 
