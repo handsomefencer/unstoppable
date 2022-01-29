@@ -5,10 +5,16 @@ require 'rake'
 
 describe 'rake test:annotate' do
   Given(:workbench) { 'test_annotate/lib' }
-  Given(:stacks)    { 'lib/roro/stacks/unstoppable_developer_styles/okonomi' }
-  Given(:file)      { "#{stacks}/languages/"}
+  Given(:base)      { 'lib/roro/stacks/unstoppable_developer_styles' }
+  Given(:space)     { "#{base}/okonomi/languages/ruby/frameworks/rails" }
+  Given(:file)      { "#{space}/versions/v6_1/test/0/_test.rb"}
+
   Given { quiet { run_task('test:annotate') } }
 
-  Then { assert_file 'lib/roro/stacks' }
+  Then { assert_file base }
+  And  { assert_file space }
+  And  { assert_file file, /describe ["']#\{adventure/ }
+
+
   # And  { assert_match /is valid/, output }
 end

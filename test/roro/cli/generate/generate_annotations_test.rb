@@ -1,0 +1,51 @@
+# frozen_string_literal: true
+
+require 'test_helper'
+
+describe 'Roro::CLI#generate_annotations' do
+  Given(:subject)   { Roro::CLI.new }
+  Given(:workbench) { 'test_annotate/lib' }
+  Given(:base)      { 'lib/roro/stacks/unstoppable_developer_styles' }
+  Given(:space)     { "#{base}/okonomi/languages/ruby/frameworks/rails" }
+  Given(:file)      { "#{space}/versions/v6_1/test/0/_test.rb"}
+
+  describe 'after generate' do
+    Given { subject.generate_annotations }
+    focus
+    Then  { assert_file file, /describe ["']adventure 0/ }
+  end
+
+  describe 'before generate' do
+    Then { assert_file base }
+    And  { assert_file space }
+    And  { assert_file file, /describe ["']#replace me/ }
+  end
+
+  describe '#adventure_test_files' do
+    Then { assert_includes subject.adventure_test_files, file }
+  end
+
+
+
+  #
+  # describe 'when non-directory sibling exists in workbench' do
+  #   Given { insert_dummy_env 'dummy.env' }
+  #   Then  { refute_file 'roro/annotations/dummy' }
+  # end
+
+  # context 'when no sibling folders and when' do
+  #   context 'no annotations supplied must generate default annotations' do
+  #     When(:annotations) { nil }
+  #     Then  { assert_directory 'roro/annotations/backend/scripts' }
+  #     And   { assert_directory 'roro/annotations/database/env' }
+  #     And   { assert_directory 'roro/annotations/frontend/scripts' }
+  #   end
+  #
+  #   context 'annotations supplied must generate specified annotations' do
+  #     When(:annotations) { %w[pistil stamen database] }
+  #     Then  { assert_directory 'roro/annotations/database/scripts' }
+  #     And   { assert_directory 'roro/annotations/pistil/scripts' }
+  #     And   { assert_directory 'roro/annotations/stamen/scripts' }
+  #   end
+  # end
+end
