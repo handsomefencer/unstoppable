@@ -37,29 +37,4 @@ describe 'Roro::CLI#generate_annotations' do
   describe '#adventure_description(stack)' do
     Then { assert_match subject.adventure_description(file), expected }
   end
-
-
-
-
-  #
-  # describe 'when non-directory sibling exists in workbench' do
-  #   Given { insert_dummy_env 'dummy.env' }
-  #   Then  { refute_file 'roro/annotations/dummy' }
-  # end
-
-  # context 'when no sibling folders and when' do
-  #   context 'no annotations supplied must generate default annotations' do
-  #     When(:annotations) { nil }
-  #     Then  { assert_directory 'roro/annotations/backend/scripts' }
-  #     And   { assert_directory 'roro/annotations/database/env' }
-  #     And   { assert_directory 'roro/annotations/frontend/scripts' }
-  #   end
-  #
-  #   context 'annotations supplied must generate specified annotations' do
-  #     When(:annotations) { %w[pistil stamen database] }
-  #     Then  { assert_directory 'roro/annotations/database/scripts' }
-  #     And   { assert_directory 'roro/annotations/pistil/scripts' }
-  #     And   { assert_directory 'roro/annotations/stamen/scripts' }
-  #   end
-  # end
 end
