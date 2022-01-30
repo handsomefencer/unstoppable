@@ -17,7 +17,8 @@ module Minitest
                         .returns(answer)
     end
 
-    def getsome(dir)
+    def rollon(dir)
+      cli = Roro::CLI.new
       workbench
       copy_stage_dummy(dir)
       stubs_adventure(dir)
@@ -62,7 +63,6 @@ module Minitest
       cli = Roro::CLI.new
       cli.rollon
     end
-
 
     def case_from_path(stack, array = nil)
       if @case.nil?
@@ -122,6 +122,7 @@ module Minitest
     end
 
     def stub_overrides(answer='')
+      overrides = @overrides || []
       Roro::Configurators::QuestionAsker
         .any_instance
         .stubs(:confirm_default)

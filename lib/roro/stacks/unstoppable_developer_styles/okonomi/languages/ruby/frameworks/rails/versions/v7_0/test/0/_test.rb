@@ -1,26 +1,14 @@
 require 'test_helper'
 
 describe "#{adventure_name(__FILE__)}" do
-  Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-  Given(:adventure)  { 0 }
-
-  Given(:rollon)    {
-    copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
-    stubs_dependencies_met?
-    stubs_yes?
-    stub_overrides
-    stub_run_actions
-    cli.rollon
-  }
-
-  # Given {  rollon  }
-  Given { quiet { getsome(__dir__) } }
+  Given(:workbench)  { }
+  Given { @rollon_quiet = true }
+  Given { @rollon_dummies = true }
+  Given { rollon(__dir__) }
 
   describe 'must have a' do
     describe 'docker entrypoint' do
+      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 
