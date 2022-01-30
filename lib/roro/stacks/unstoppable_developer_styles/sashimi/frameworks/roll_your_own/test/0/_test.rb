@@ -1,6 +1,6 @@
 require "test_helper"
 
-describe '' do
+describe 'adventure::roll_your_own::0 circleci' do
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }

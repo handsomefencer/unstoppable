@@ -20,7 +20,7 @@ module Roro
 
             "\ndescribe '#{description}' do",
             "\s\sGiven(:workbench)  { }",
-            "\s\sGiven { @rollon_loud    = true }",
+            "\s\sGiven { @rollon_loud    = false }",
             "\s\sGiven { @rollon_dummies = false }",
             "\s\sGiven { rollon(__dir__) }",
             "\n\s\sdescribe"
@@ -43,8 +43,8 @@ module Roro
         getsome.unshift(story)
         getsome.map! { |i| i.split('/')[-3..-1] }
         getsome.delete(story)
-        getsome.map! { |i| i[1].eql?('versions') ? "#{i[0]}_#{i[-1]}" : i.last }
-        "adventure::#{getsome.shift}::#{index}::#{getsome.join(' & ')}"
+        getsome.map! { |i| i[1].eql?('versions') ? "#{i[0]}-#{i[-1]}" : i.last }
+        "adventure::#{getsome.shift}::#{index} #{getsome.join(' & ')}"
       end
 
       def adventure_test_files

@@ -1,27 +1,10 @@
 require 'test_helper'
 
-describe 'adventure::rails_v7_0::2::postgres_v13_5 & ruby_v2_7' do
+describe 'adventure::rails-v7_0::2 postgres-v13_5 & ruby-v2_7' do
   Given(:workbench)  { }
-  Given { @rollon_loud    = true }
+  Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
- do
-  Given(:workbench)  { 'empty' }
-  # Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-
-  Given(:rollon)    {
-    copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
-    stubs_dependencies_met?
-    stubs_yes?
-    stub_overrides
-    simulate_rollon
-    run_rollon
-  }
-
-  # Given {  }
-  Given { rollon }# Given { quiet { rollon } }
 
   describe 'must have a' do
     describe 'docker entrypoint' do

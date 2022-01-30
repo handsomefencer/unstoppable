@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe '' do
+describe 'adventure::wordpress::0 ' do
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }

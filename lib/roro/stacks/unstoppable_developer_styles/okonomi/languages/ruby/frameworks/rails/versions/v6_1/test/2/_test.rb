@@ -1,27 +1,10 @@
 require 'test_helper'
 
-describe 'adventure::rails_v6_1::2::postgres_v13_5 & ruby_v2_7' do
+describe 'adventure::rails-v6_1::2 postgres-v13_5 & ruby-v2_7' do
   Given(:workbench)  { }
-  Given { @rollon_loud    = true }
+  Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
- do
-  Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-
-  Given(:rollon)    {
-    copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
-    stubs_dependencies_met?
-    stubs_yes?
-    stub_overrides
-    stub_run_actions
-    cli.rollon
-  }
-
-  Given { quiet { rollon } }
-  # Given { rollon }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct' do

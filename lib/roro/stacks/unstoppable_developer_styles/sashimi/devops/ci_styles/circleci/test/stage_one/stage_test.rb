@@ -1,21 +1,10 @@
 require 'test_helper'
 
-describe 'devops circleci' do
-  Given { skip }
-  Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-  Given(:adventure)  { 0 }
-
-  Given(:rollon)     {
-    copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__, adventure)
-    stub_overrides
-    stub_run_actions
-    cli.rollon
-  }
-
-  Given { quiet { rollon } }
+describe '' do
+  Given(:workbench)  { }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
+  Given { rollon(__dir__) }
 
   describe 'must generate a' do
     Given(:app_name) { 'unstoppable_devops' }
