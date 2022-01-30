@@ -17,7 +17,7 @@ describe "#{adventure_name(__FILE__)}" do
   }
 
   # Given {  rollon  }
-  Given { quiet { rollon } }
+  Given { quiet { getsome(__dir__) } }
 
   describe 'must have a' do
     describe 'docker entrypoint' do

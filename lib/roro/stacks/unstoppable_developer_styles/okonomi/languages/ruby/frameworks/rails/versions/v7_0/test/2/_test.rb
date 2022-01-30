@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe "#{adventure_name(__FILE__)}" do
   Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
+  # Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }
 
   Given(:rollon)    {
@@ -11,14 +11,16 @@ describe "#{adventure_name(__FILE__)}" do
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
-    stub_run_actions
-    cli.rollon
+    simulate_rollon
+    run_rollon
   }
 
-  Given { quiet { rollon } }
+  # Given {  }
+  Given { rollon }# Given { quiet { rollon } }
 
   describe 'must have a' do
     describe 'docker entrypoint' do
+      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 
@@ -76,6 +78,7 @@ describe "#{adventure_name(__FILE__)}" do
           Then  { assert_file file, /\n\s\sdatabase:/ }
 
           describe 'image' do
+            focus
             Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
           end
         end

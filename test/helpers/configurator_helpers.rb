@@ -7,10 +7,6 @@ module Minitest
       Dir.glob("#{Dir.pwd}/**/*")
     end
 
-    def adventure_descriptor
-      'blah'
-    end
-
     def copy_stage_dummy(path)
       FileUtils.cp_r("#{path}/dummy/.", Dir.pwd )
     end
@@ -19,6 +15,17 @@ module Minitest
       Thor::Shell::Basic.any_instance
                         .stubs(:yes?)
                         .returns(answer)
+    end
+
+    def getsome(dir)
+      workbench
+      copy_stage_dummy(dir)
+      stubs_adventure(dir)
+      stubs_dependencies_met?
+      stubs_yes?
+      stub_overrides
+      stub_run_actions
+      cli.rollon
     end
 
     def stubs_answer(answer)
@@ -39,6 +46,23 @@ module Minitest
         .any_instance
         .stubs(:run)
     end
+
+    def run_rollon
+      @build_dummies ? debug_rollon : simulate_rollon
+    end
+
+    def simulate_rollon
+      stub_run_actions
+      cli = Roro::CLI.new
+      # quiet { cli.rollon }
+      cli.rollon
+    end
+
+    def debug_rollon
+      cli = Roro::CLI.new
+      cli.rollon
+    end
+
 
     def case_from_path(stack, array = nil)
       if @case.nil?
