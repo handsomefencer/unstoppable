@@ -14,7 +14,7 @@ module Roro
       files.each do |file|
         stack_location = file.split('lib/roro/stacks').last
         description = adventure_description(stack_location)
-        gsub_file file, /^describe ["](.*?)["]/ do |match|
+        gsub_file file, /\ndescribe ["'](.*?)/ do |match|
           <<~HEREDOC
           describe '#{description}' do
             Given(:workbench)  { }
@@ -35,11 +35,8 @@ module Roro
                                  .test_root}/fixtures/matrixes/itineraries.yml")
         adventures.select! { |i| i.include?(story) }
         getsome = adventures[index.to_i]
-        begin
-          getsome.delete(story)
-        rescue
-          raise "Story for #{story} not found."
-        end
+        return unless getsome&.include?(story)
+        getsome.delete(story)
         getsome.unshift(story)
         getsome.map! { |i| i.split('/')[-3..-1] }
         getsome.delete(story)
