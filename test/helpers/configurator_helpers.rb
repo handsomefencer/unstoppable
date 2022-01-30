@@ -18,15 +18,15 @@ module Minitest
     end
 
     def rollon(dir)
-      cli = Roro::CLI.new
       workbench
       copy_stage_dummy(dir)
       stubs_adventure(dir)
       stubs_dependencies_met?
       stubs_yes?
       stub_overrides
-      stub_run_actions
-      cli.rollon
+      stub_run_actions unless @rollon_dummies
+      cli = Roro::CLI.new
+      @rollon_quiet ? cli.rollon : quiet { cli.rollon }
     end
 
     def stubs_answer(answer)

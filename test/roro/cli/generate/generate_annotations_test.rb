@@ -8,8 +8,7 @@ describe 'Roro::CLI#generate_annotations' do
   Given(:base)      { 'lib/roro/stacks/unstoppable_developer_styles' }
   Given(:space)     { "#{base}/okonomi/languages/ruby/frameworks/rails" }
   Given(:file)      { "#{space}/versions/v6_1/test/0/_test.rb"}
-
-  Given(:expected)  { "describe 'adventure::rails_v6_1::0::sqlite & ruby_v2_7'" }
+  Given(:expected)  { "describe 'adventure::rails_v6_1::0::sqlite & ruby_v" }
 
   describe 'after generate' do
     Given { subject.generate_annotations }

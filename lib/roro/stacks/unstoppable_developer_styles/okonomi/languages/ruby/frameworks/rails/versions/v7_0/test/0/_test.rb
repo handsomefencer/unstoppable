@@ -2,13 +2,12 @@ require 'test_helper'
 
 describe "#{adventure_name(__FILE__)}" do
   Given(:workbench)  { }
-  Given { @rollon_quiet = true }
-  Given { @rollon_dummies = true }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
 
   describe 'must have a' do
     describe 'docker entrypoint' do
-      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 
