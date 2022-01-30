@@ -1,6 +1,11 @@
 require 'test_helper'
 
-describe "#{adventure_name(__FILE__)}" do
+describe 'adventure::rails_v7_0::2::postgres_v13_5 & ruby_v2_7' do
+  Given(:workbench)  { }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = false }
+  Given { rollon(__dir__) }
+ do
   Given(:workbench)  { 'empty' }
   # Given(:cli)        { Roro::CLI.new }
   Given(:overrides)  { %w[] }

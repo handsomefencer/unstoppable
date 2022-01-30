@@ -35,13 +35,13 @@ module Roro
                                  .test_root}/fixtures/matrixes/itineraries.yml")
         adventures.select! { |i| i.include?(story) }
         getsome = adventures[index.to_i]
-        getsome.delete(story)
-        getsome.unshift(story)
         begin
-          getsome.map! { |i| i.split('/')[-3..-1] }
+          getsome.delete(story)
         rescue
           raise "Story for #{story} not found."
         end
+        getsome.unshift(story)
+        getsome.map! { |i| i.split('/')[-3..-1] }
         getsome.delete(story)
         getsome.map! { |i| i[1].eql?('versions') ? "#{i[0]}_#{i[-1]}" : i.last }
         "adventure::#{getsome.shift}::#{index}::#{getsome.join(' & ')}"
