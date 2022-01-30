@@ -16,13 +16,14 @@ module Roro
         description = adventure_description(stack_location)
         # describe (.*)[\s\S]*\n\s\sdescribe
         gsub_file file, /\ndescribe (.*)[\s\S]*\n\s\sdescribe/ do |match|
-          <<~HEREDOC
-          describe '#{description}' do
-            Given(:workbench)  { }
-            Given { @rollon_loud    = true }
-            Given { @rollon_dummies = false }
-            Given { rollon(__dir__) }
-          HEREDOC
+          [
+            "describe '#{description}' do",
+            "\s\sGiven(:workbench)  { }",
+            "\s\sGiven { @rollon_loud    = true }",
+            "\s\sGiven { @rollon_dummies = false }",
+            "\s\sGiven { rollon(__dir__) }",
+            "\s\sdescribe"
+          ].join("\n")
         end
       end
     end
