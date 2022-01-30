@@ -17,12 +17,13 @@ module Roro
         # describe (.*)[\s\S]*\n\s\sdescribe
         gsub_file file, /\ndescribe (.*)[\s\S]*\n\s\sdescribe/ do |match|
           [
-            "describe '#{description}' do",
+
+            "\ndescribe '#{description}' do",
             "\s\sGiven(:workbench)  { }",
             "\s\sGiven { @rollon_loud    = true }",
             "\s\sGiven { @rollon_dummies = false }",
             "\s\sGiven { rollon(__dir__) }",
-            "\s\sdescribe"
+            "\n\s\sdescribe"
           ].join("\n")
         end
       end
