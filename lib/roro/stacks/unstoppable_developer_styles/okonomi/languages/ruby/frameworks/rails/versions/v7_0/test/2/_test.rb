@@ -8,7 +8,6 @@ describe 'adventure::rails-v7_0::2 postgres-v13_5 & ruby-v2_7' do
 
   describe 'must have a' do
     describe 'docker entrypoint' do
-      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 
@@ -66,7 +65,6 @@ describe 'adventure::rails-v7_0::2 postgres-v13_5 & ruby-v2_7' do
           Then  { assert_file file, /\n\s\sdatabase:/ }
 
           describe 'image' do
-            focus
             Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
           end
         end
