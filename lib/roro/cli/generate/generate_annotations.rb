@@ -12,8 +12,16 @@ module Roro
     def generate_annotations
       files = adventure_test_files
       files.each do |file|
+        stack_location = file.split('lib/roro/stacks').last
+        description = adventure_description(stack_location)
         gsub_file file, /^describe ["](.*?)["]/ do |match|
-          adventure_description(file.split('lib/roro/stacks').last)
+          <<~HEREDOC
+          describe '#{description}' do
+            Given(:workbench)  { }
+            Given { @rollon_loud    = true }
+            Given { @rollon_dummies = false }
+            Given { rollon(__dir__) }
+          HEREDOC
         end
       end
     end
@@ -23,13 +31,20 @@ module Roro
       def adventure_description(stack)
         index = stack.split('/')[-2]
         story = stack.split('lib/roro/stacks').last.split("/test/#{index}/_test.rb").first
-        itineraries = read_yaml("#{Roro::CLI.test_root}/fixtures/matrixes/itineraries.yml")
-        adventures = itineraries
-          .select { |i| i.include?(story) }[index.to_i].unshift(story).uniq!
-          .map { |i| i.split('/')[-3..-1] }
-          .each { |i| i.delete('versions') }
-          .map { |i| i.size.eql?(3) ? i.last : i.join('_') }
-        "describe 'adventure::#{adventures.shift}::#{index}::#{adventures.join(' & ')}'"
+        adventures = read_yaml("#{Roro::CLI
+                                 .test_root}/fixtures/matrixes/itineraries.yml")
+        adventures.select! { |i| i.include?(story) }
+        getsome = adventures[index.to_i]
+        getsome.delete(story)
+        getsome.unshift(story)
+        begin
+          getsome.map! { |i| i.split('/')[-3..-1] }
+        rescue
+          raise "Story for #{story} not found."
+        end
+        getsome.delete(story)
+        getsome.map! { |i| i[1].eql?('versions') ? "#{i[0]}_#{i[-1]}" : i.last }
+        "adventure::#{getsome.shift}::#{index}::#{getsome.join(' & ')}"
       end
 
       def adventure_test_files
