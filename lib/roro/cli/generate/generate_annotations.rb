@@ -14,7 +14,8 @@ module Roro
       files.each do |file|
         stack_location = file.split('lib/roro/stacks').last
         description = adventure_description(stack_location)
-        gsub_file file, /\ndescribe ["'](.*?)/ do |match|
+        # describe (.*)[\s\S]*\n\s\sdescribe
+        gsub_file file, /\ndescribe (.*)[\s\S]*\n\s\sdescribe/ do |match|
           <<~HEREDOC
           describe '#{description}' do
             Given(:workbench)  { }
