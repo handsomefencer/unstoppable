@@ -16,7 +16,6 @@ module Roro
         description = adventure_description(stack_location)
         gsub_file file, /\ndescribe (.*)[\s\S]*\n\s\sdescribe/ do |match|
           [
-
             "\ndescribe '#{description}' do",
             "\s\sGiven(:workbench)  { }",
             "\s\sGiven { @rollon_loud    = false }",
