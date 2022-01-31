@@ -1,10 +1,9 @@
 require 'test_helper'
 
 describe 'adventure::rails-v6_1::0 sqlite & ruby-v2_7' do
-  Given { skip }
   Given(:workbench)  { }
-  Given { @rollon_loud    = true }
-  Given { @rollon_dummies = true }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
 
   describe 'must generate a' do
@@ -46,7 +45,6 @@ describe 'adventure::rails-v6_1::0 sqlite & ruby-v2_7' do
       end
 
       describe 'sqlite image' do
-        focus
         Then  { assert_file file, /image: nouchka\/sqlite3:latest/ }
       end
     end

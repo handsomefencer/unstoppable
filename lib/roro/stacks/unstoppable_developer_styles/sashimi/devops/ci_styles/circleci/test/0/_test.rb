@@ -1,9 +1,10 @@
 require 'test_helper'
 
-describe '' do
+describe 'adventure::circleci::0 rails' do
+  Given { skip }
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
-  Given { @rollon_dummies = true }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
 
   describe 'must generate a' do

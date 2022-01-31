@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'adventure::cert_manager::0 circleci' do
+  Given { skip }
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
