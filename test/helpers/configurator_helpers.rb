@@ -17,6 +17,12 @@ module Minitest
                         .returns(answer)
     end
 
+    def save_result(result, location = nil )
+      File.open("#{@roro_dir}/test/fixtures/files/#{location}", "w") do |f|
+        f.write(result)
+      end
+    end
+
     def rollon(dir)
       workbench
       copy_stage_dummy(dir)
