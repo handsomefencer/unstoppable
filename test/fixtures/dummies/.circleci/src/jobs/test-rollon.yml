@@ -1,0 +1,15 @@
+parameters:
+  answers:
+    type: string
+    default: 1\1
+  os:
+    type: executor
+    default: linux
+executor: << parameters.os >>
+steps:
+  - checkout
+  - setup_remote_docker:
+      version: 19.03.12
+  - restore-and-save-cache
+  - run: printf "<< parameters.answers >>\na$var\n" | roro rollon
+  - run: echo 'success'

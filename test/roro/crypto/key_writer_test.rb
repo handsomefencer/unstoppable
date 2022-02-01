@@ -7,7 +7,7 @@ describe Roro::Crypto::KeyWriter do
   Given(:subject)   { Roro::Crypto::KeyWriter.new }
 
   describe '#write_keyfile(environment)' do
-    Given { quiet { subject.write_keyfile *args } }
+    Given { quiet { subject.write_keyfile(*args) } }
 
     context 'when extension is impicit' do
       When(:args) { ['dummy']}
@@ -26,7 +26,7 @@ describe Roro::Crypto::KeyWriter do
   end
 
   describe '#write_keyfiles(environments, directory, extension' do
-    Given(:write_keyfiles) { quiet { subject.write_keyfiles *args } }
+    Given(:write_keyfiles) { quiet { subject.write_keyfiles(*args) } }
 
     context 'when no environments' do
       Given(:args) { %w[]}

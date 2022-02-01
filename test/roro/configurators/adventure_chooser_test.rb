@@ -27,7 +27,7 @@ describe 'AdventureChooser' do
     context 'when stack is story' do
       When(:stack) { 'story' }
       Given { build_itinerary }
-      Then  { assert_empty itinerary }
+      Then  { assert_equal 1, itinerary.size }
       And   { assert_equal 8, manifest.size }
     end
 
@@ -41,7 +41,7 @@ describe 'AdventureChooser' do
     context 'when stack has no inflections' do
       When(:stack) { 'stack/story' }
       Given { build_itinerary }
-      Then  { assert_empty itinerary }
+      Then  { assert_equal 1, itinerary.size }
       And   { assert_equal 1, manifest.size }
     end
 
@@ -71,14 +71,14 @@ describe 'AdventureChooser' do
         Given { build_itinerary }
         Then  { assert_file_match_in('plots/story1', itinerary) }
         Then  { assert_file_match_in('stories/story1', itinerary) }
-        And   { assert_equal 2, itinerary.size }
+        And   { assert_equal 3, itinerary.size }
         And   { assert_equal 4, manifest.size }
       end
 
       context 'when 1,2' do
         When(:answers) { %w[1 2] }
         Given { build_itinerary }
-        Then  { assert_equal 2, itinerary.size }
+        Then  { assert_equal 3, itinerary.size }
         And   { assert_file_match_in('plots/story1', itinerary) }
         And   { assert_file_match_in('stories/story2', itinerary) }
       end
@@ -86,7 +86,7 @@ describe 'AdventureChooser' do
       context 'when 2,1' do
         When(:answers) { %w[2 1] }
         Given { build_itinerary }
-        Then  { assert_equal 2, itinerary.size }
+        Then  { assert_equal 3, itinerary.size }
         And   { assert_file_match_in('plots/story2', itinerary) }
         And   { assert_file_match_in('stories/story1', itinerary) }
       end
@@ -94,7 +94,7 @@ describe 'AdventureChooser' do
       context 'when 2,2' do
         When(:answers) { %w[2 2] }
         Given { build_itinerary }
-        Then  { assert_equal 2, itinerary.size }
+        Then  { assert_equal 3, itinerary.size }
         And   { assert_file_match_in('plots/story2', itinerary) }
         And   { assert_file_match_in('stories/story2', itinerary) }
       end

@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
-require 'test_helper'
-
 describe 'Roro::Test::Helpers::Configurator' do
-  describe '.stubs_journey' do
-    Given(:args) { [:okonomi, :ruby, :rails, :v7_0] }
-    # Then { assert_equal [3,2,1,2], journey_choices(*args) }
-  end
-
-  describe '.stack_path' do
+  describe ':stack_path' do
     context 'when valid and when' do
       context 'not defined' do
         Then { assert_match 'valid', stack_path }

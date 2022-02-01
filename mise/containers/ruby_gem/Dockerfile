@@ -1,16 +1,32 @@
-ARG RUBY_VERSION=${RUBY_VERSION}
-ARG RUBY_IMAGE=ruby:${RUBY_VERSION}-alpine
-FROM $RUBY_IMAGE
+# syntax=docker/dockerfile:1
+FROM ruby:3.0-alpine AS builder
 
-RUN apk add --no-cache --update build-base linux-headers git
+RUN apk add \
+    build-base \
+    file \
+    git \
+    docker \
+    docker-compose \
+    sudo
 
-ENV APP_HOME /usr/src/app/
-ENV BUNDLE_PATH /gems
-ENV GEM_PATH ${BUNDLE_PATH}
-ENV GEM_HOME ${BUNDLE_PATH}
+WORKDIR /usr/src
 
-RUN mkdir ${BUNDLE_PATH}
+RUN gem install bundler:2.2.32
 
-WORKDIR ${APP_HOME}
-COPY . ${APP_HOME}
-RUN bundle install
+COPY . .
+
+RUN bundle install -j4 --retry 3
+
+RUN rm -rf ./lib/roro/stacks
+
+FROM builder AS stacker
+
+WORKDIR /usr/src
+
+COPY ./lib/roro/stacks ./lib/roro/stacks
+
+RUN gem build roro.gemspec
+RUN rake install
+
+
+WORKDIR /home/schadenfred

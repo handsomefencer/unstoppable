@@ -5,68 +5,54 @@ module Roro
     class AdventureCaseBuilder
 
       include Utilities
-      attr_reader :cases, :itineraries, :matrix
+
+      attr_reader :cases, :itineraries, :matrix, :stack
 
       def initialize(stack=nil)
         @stack = stack || Roro::CLI.stacks
-        @cases =  {}
-        @matrix = []
         build_cases
       end
 
-      def build_cases(stack = nil, cases = {})
-        stack ||= @stack
-        case
-        when stack_type(stack).eql?(:templates)
-          return
-        when stack_type(stack_parent_path(stack)).eql?(:inflection) && [:stack, :story].include?(stack_type(stack))
-          cases[name(stack).to_sym] = {}
-          cases = cases[name(stack).to_sym]
+      def build_cases(path = stack)
+        cases = {
+          inflections: [],
+          stacks: {},
+          stories: []
+        }
+        children(path).each_with_index do |c, index|
+          case
+          when [:inflection, :inflection_stub].include?(stack_type(c))
+            cases[:inflections] << { stack_name(c).to_sym => build_cases(c) }
+          when [:stack].include?(stack_type c)
+            cases[:stacks][index + 1] = build_cases c
+          when [:story].include?(stack_type c)
+            cases[:stories] << index + 1
+          end
         end
-        children(stack).each do |c|
-          build_cases(c, cases)
-        end
-        @cases = sort_hash_deeply(cases)
+        @cases = cases
       end
 
-      def document_cases
-        File.open("#{Dir.pwd}/test/helpers/adventure_cases.yml", "w") do |f|
-          f.write(cases.to_yaml)
+      def build_cases_matrix(hash = cases, array = [])
+        @matrix ||= []
+        hash[:inflections]&.each do |inflection|
+          beforesize = @matrix.dup
+          inflection.each do |k, v|
+            if inflection.eql?(hash[:inflections].first)
+              build_cases_matrix(v, array)
+              kreateds = @matrix - beforesize
+              if hash[:inflections].size > 1
+                kreateds.each do |kreated|
+                  @matrix.delete(kreated)
+                  build_cases_matrix(hash[:inflections].last.values.first, kreated)
+                end
+              end
+            end
+          end
         end
-        workflow = "#{Dir.pwd}/.circleci/src/workflows/test-matrix-rollon.yml"
-        hash = read_yaml("#{workflow}")
-        hash[:jobs][0][:"test-rollon"][:matrix][:parameters][:answers] = matrix_cases
-        File.open(workflow, "w") { |f| f.write(hash.to_yaml) }
-
-      end
-
-      def case_from_path(stack, array = nil)
-        if @case.nil?
-          @case = []
-          array = stack.split("#{@stack}/").last.split('/')
-          stack = @stack
+        hash[:stories]&.each do |k,_v|
+          @matrix << array + [k]
         end
-        folder = array.shift
-        stack = "#{stack}/#{folder}"
-        @case << folder if stack_is_adventure?(stack)
-        case_from_path(stack, array) unless array.empty?
-        @case
-      end
-
-      def case_from_stack(stack)
-        hash = cases
-        case_from_path(stack).map do |item|
-          index = hash.keys.index(item.to_sym)
-          hash = hash[item.to_sym]
-          index += 1
-        end
-      end
-
-      def matrix_cases(array = [], d = 0, hash = cases)
-        hash.each do |k, v|
-          array = (array.take(d) << hash.keys.index(k) + 1)
-          v.empty? ? @matrix << array : matrix_cases(array, d+1, v)
-        end
+        hash[:stacks]&.each  { |k, v| build_cases_matrix(v, array.dup + [k]) }
         @matrix
       end
     end

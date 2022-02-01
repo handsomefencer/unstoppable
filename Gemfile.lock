@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    roro (0.3.29)
+    roro (0.3.30)
       gem-release (~> 2.1)
       os (~> 1.1)
       rake (~> 13.0, >= 13.0.1)
@@ -173,4 +173,4 @@ DEPENDENCIES
   roro!
 
 BUNDLED WITH
-   2.2.22
+   2.2.32

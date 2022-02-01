@@ -17,6 +17,8 @@ module Roro
         :storyfile
       when stack_is_templates?(stack)
         :templates
+      when stack_is_inflection_stub?(stack)
+        :inflection_stub
       when stack_is_inflection?(stack)
         :inflection
       when stack_is_stack?(stack)
@@ -54,6 +56,20 @@ module Roro
       stack_is_file?(stack) &&
         !stack_is_storyfile?(stack) &&
         !stack_is_dotfile?(stack)
+    end
+
+    def stack_is_inflection_stub?(stack)
+      return unless stack_is_inflection?(stack)
+      choices = children(stack).select do |c|
+        stack_is_inflection?(stack) &&
+          !stack_is_stack?(stack) &&
+          !stack_is_story?(stack) &&
+          !stack_is_templates?(stack) &&
+          !stack_is_ignored?(stack) &&
+          !stack_is_storyfile?(stack) &&
+          stack_is_stack?(c) || stack_is_story?(c)
+      end
+      choices.size < 2
     end
 
     def stack_is_inflection?(stack)
@@ -127,7 +143,7 @@ module Roro
     end
 
     def stack_parent_path(stack)
-      stack.split("/#{name(stack)}").first
+      stack.split("/#{stack_name(stack)}").first
     end
 
     def stack_is_adventure?(stack)
@@ -169,7 +185,7 @@ module Roro
       end
     end
 
-    def name(stack)
+    def stack_name(stack)
       stack.split('/').last
     end
 
@@ -191,6 +207,10 @@ module Roro
 
     def read_yaml(yaml_file)
       JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
+    end
+
+    def adventure_name(location)
+      "Adventure #{stack_parent(location)} #{location.split(Roro::CLI.stacks).last}" #.split('/')
     end
   end
 end

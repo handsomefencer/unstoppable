@@ -6,6 +6,7 @@ require 'base64'
 require 'yaml'
 require 'roro/cli'
 require 'roro/cli/generate/generate'
+require 'roro/cli/generate/generate_annotations'
 require 'roro/cli/generate/generate_containers'
 require 'roro/cli/generate/generate_environments'
 require 'roro/cli/generate/generate_exposed'
@@ -35,6 +36,10 @@ require 'roro/error'
 require 'roro/version'
 
 module Roro
+
+  def self.gem_root
+    File.dirname __dir__
+  end
 
   include Roro::Configurators
   class CLI < Thor

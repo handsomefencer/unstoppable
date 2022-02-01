@@ -1,0 +1,8 @@
+jobs:
+  - build
+  - release:
+      filters:
+        branches:
+          only: main
+      requires:
+        - build

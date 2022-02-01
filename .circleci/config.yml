@@ -6,7 +6,7 @@ commands:
             - run: bundle config set --local path 'vendor/bundle'
             - run: bundle check || bundle install --jobs=4 --retry=3
             - run: gem build roro.gemspec
-            - run: gem install roro-0.3.29.gem
+            - run: gem install roro-0.3.30.gem
             - save_cache:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
@@ -59,21 +59,7 @@ jobs:
             - run: gem install gem-release
             - run: gem bump
             - run: gem release
-    test:
-        executor:
-            name: ruby
-            version: <<parameters.version>>
-        parameters:
-            version:
-                default: "3.0"
-                description: version tag
-                type: string
-        steps:
-            - checkout
-            - run: gem install bundler
-            - run: bundle
-            - run: bundle exec rake test
-    test-rollon:
+    test-adventures:
         executor: << parameters.os >>
         parameters:
             answers:
@@ -89,47 +75,75 @@ jobs:
             - restore-and-save-cache
             - run: printf "<< parameters.answers >>\na$var\n" | roro rollon
             - run: echo 'success'
+    test-rubies:
+        executor:
+            name: ruby
+            version: <<parameters.version>>
+        parameters:
+            version:
+                default: "3.0"
+                description: version tag
+                type: string
+        steps:
+            - checkout
+            - run: gem install bundler
+            - run: bundle
+            - run: bundle exec rake test
 version: 2.1
 workflows:
     gem-release:
         jobs:
             - build
             - release:
-                requires:
-                    - build
-    test-matrix-rollon:
-        jobs:
-            - test-rollon:
-                matrix:
-                    parameters:
-                        answers:
-                            - 1\n1
-                            - 2\n1
-                            - 2\n2
-                            - 2\n3
-                            - 2\n4
-                            - 2\n5
-                            - 3\n1
-                            - 3\n2\n1\n1
-                            - 3\n2\n1\n2
-                            - 4\n1
-                            - 4\n2
-                            - 5\n1\n1\n1\n1
-                            - 5\n2
-                            - 5\n3
-                        os:
-                            - linux
-    test-matrix-rubies:
-        jobs:
-            - test:
                 filters:
                     branches:
                         only: main
+    test-adventures:
+        jobs:
+            - test-adventures:
+                filters:
+                    branches:
+                        only: dev
+                matrix:
+                    parameters:
+                        answers:
+                            - 1\n1\n1
+                            - 1\n2\n1\n1
+                            - 1\n2\n1\n2
+                            - 1\n2\n2\n1
+                            - 1\n2\n2\n2
+                            - 1\n3\n2\n1
+                            - 1\n3\n2\n2
+                            - 1\n3\n1\n2\n1\n1
+                            - 1\n3\n1\n2\n1\n2
+                            - 1\n3\n1\n2\n2\n1
+                            - 1\n3\n1\n2\n2\n2
+                            - 1\n3\n1\n1\n1\n1\n1
+                            - 1\n3\n1\n1\n1\n1\n2
+                            - 1\n3\n1\n1\n1\n2\n1
+                            - 1\n3\n1\n1\n1\n2\n2
+                            - 1\n3\n1\n1\n2\n1\n1
+                            - 1\n3\n1\n1\n2\n1\n2
+                            - 1\n3\n1\n1\n2\n2\n1
+                            - 1\n3\n1\n1\n2\n2\n2
+                            - 2\n1
+                            - 2\n2
+                            - 3\n2
+                            - 3\n3
+                            - 3\n1\n1\n1\n1
+                            - 3\n1\n1
+                        os:
+                            - linux
+    test-rubies:
+        jobs:
+            - test-rubies:
+                filters:
+                    branches:
+                        only: dev
                 matrix:
                     parameters:
                         version:
-                            - "2.5"
-                            - "2.6"
-                            - "2.7"
                             - "3.0"
+                            - "2.7"
+                            - "2.6"
 

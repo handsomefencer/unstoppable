@@ -12,7 +12,7 @@ module Roro
         def choose_adventure(stack)
           build_inflection(stack)
           say("Rolling story on from stack: #{@stack}\n\n")
-          say(@getsome)
+          say(@prompt)
           choice = ask(@inflection)
           story_name = story_from(choice.to_s)
           "#{stack}/#{story_name}"
@@ -23,13 +23,13 @@ module Roro
           prompt = inflection_prompt
           options = inflection_options
           prompt_options = humanize(options)
-          @getsome = "#{prompt}\n"
+          @prompt = "#{prompt}\n"
           @inflection = ["#{prompt_options}\n\n", "Choices: [#{set_color(options.keys.map { |k| k.to_i }.join(' '), :blue)}]"]
         end
 
         def inflection_prompt
           prompt = 'Please choose from these'
-          collection = name(@stack).gsub('_', ' ') + ":\n"
+          collection = stack_name(@stack).gsub('_', ' ') + ":\n"
           [prompt, stack_parent(@stack), collection].join(' ')
         end
 
@@ -37,10 +37,10 @@ module Roro
           stack ||= @stack
           Hash.new.tap do |h|
             children(stack)
-              .map { |f| name(f) }
+              .map { |f| stack_name(f) }
               .sort
               .each_with_index do |c, i|
-              h[(i + 1).to_s] = name(c)
+              h[(i + 1).to_s] = stack_name(c)
             end
           end
         end
@@ -55,9 +55,9 @@ module Roro
         end
 
         def get_story_preface(story)
-          storyfile = "#{story}/#{name(story)}.yml"
+          storyfile = "#{story}/#{stack_name(story)}.yml"
           if stack_is_storyfile?(storyfile)
-            read_yaml("#{story}/#{name(story)}.yml")[:preface]
+            read_yaml("#{story}/#{stack_name(story)}.yml")[:preface]
           else
             nil
           end

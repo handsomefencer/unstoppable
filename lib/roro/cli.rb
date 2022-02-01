@@ -4,13 +4,18 @@ module Roro
   class CLI < Thor
     include Thor::Actions
 
+    def self.supported_rubies
+      %w[3.0 2.7 2.6]
+    end
+
     def self.test_root
       "#{ENV['PWD']}/test"
     end
 
     def self.stacks
-      "#{File.dirname(__FILE__)}/stacks/unstoppable/developer_styles"
+      "#{File.dirname(__FILE__)}/stacks"
     end
+
     def self.source_root
       "#{@template_root || File.dirname(__FILE__)}/templates"
     end

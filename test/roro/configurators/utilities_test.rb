@@ -100,12 +100,31 @@ describe 'Roro::Utilities' do
     Given(:result) { stack_is_inflection?(stack_path) }
 
     context 'when stack is an inflection' do
-      When(:stack) { 'stacks_1' }
+      When(:stack) { 'stacks' }
       Then { assert result }
     end
 
     context 'when stack is a dotfile' do
       When(:stack) { 'story/.keep' }
+      Then { refute result }
+    end
+  end
+
+  describe '#stack_is_inflection_stub?' do
+    Given(:result) { stack_is_inflection_stub?(stack_path) }
+
+    context 'when child inflections and no stories' do
+      When(:stack) { 'stacks_stub' }
+      Then { assert result }
+    end
+
+    context 'when children include one stack or story' do
+      When(:stack) { 'stacks_stub/stacks_stub' }
+      Then { assert result }
+    end
+
+    context 'when children include more than one stack or story' do
+      When(:stack) { 'stacks_stub/stacks_stub_2' }
       Then { refute result }
     end
   end
