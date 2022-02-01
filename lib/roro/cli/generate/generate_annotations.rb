@@ -7,10 +7,9 @@ module Roro
     desc 'generate:annotations', 'Generate annotations for adventure tests.'
     map 'generate:annotations' => 'generate_annotations'
 
-    method_options :annotations => :array
-
-    def generate_annotations
-      adventure_test_files.each do |adventure_test|
+    def generate_annotations(*files)
+      files ||= adventure_test_files
+      files.each do |adventure_test|
         gsub_file adventure_test, /\nrequire (.*)[\s\S]*\n\s\sdescribe/ do |match|
           adventure_boilerplate(adventure_test) + "\s\sdescribe"
         end
