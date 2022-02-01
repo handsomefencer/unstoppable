@@ -7,6 +7,10 @@ module Minitest
       Dir.glob("#{Dir.pwd}/**/*")
     end
 
+    def fixture_file_content(filename)
+      File.read("#{@roro_dir}/test/fixtures/files/#{filename}")
+    end
+
     def copy_stage_dummy(path)
       FileUtils.cp_r("#{path}/dummy/.", Dir.pwd )
     end
