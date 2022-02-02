@@ -25,7 +25,7 @@ env:
 actions:
   - directory 'manifest', '.'
   - run 'docker-compose run web django-admin startproject composeexample .'
-  - chown '.'
+#  - run 'sudo chown -R $USER:$USER .'
 #  - directory 'polish', '.'
   -
 #  - , 1"./#{@env[:base][:app_name][:value]}/settings.pycd
