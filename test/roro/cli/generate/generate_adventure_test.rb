@@ -3,46 +3,69 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_adventure' do
-  Given(:subject)        { Roro::CLI.new }
-  Given(:workbench)      { 'test_adventure/lib' }
-  Given(:base)           { 'lib/roro/stacks' }
-  Given(:adventure)   { 'starwars/episodes/iv' }
-  Given(:generate) { subject.generate_adventure(adventure) }
+  Given(:subject)   { Roro::CLI.new }
+  Given(:workbench) { 'test_adventure/lib' }
+  Given(:base)      { 'lib/roro/stacks' }
+  Given(:adventure) { "#{base}/#{story}" }
+  Given(:generated) { "#{adventure}/#{file}" }
+  Given(:generate)  { quiet { subject.generate_adventure(story) } }
 
-  Given { generate }
+  context 'when story story named like starwars' do
+    Given(:story) { 'starwars' }
+    Given { generate }
 
-  describe 'must generate' do
-    describe 'storyfile' do
-      Then { assert_file 'lib/roro/stacks/starwars/episodes/iv/iv.yml' }
+    describe 'must generate storyfile' do
+      Given(:file) { 'starwars.yml' }
+      Then { assert_file generated, /# preface/ }
+      And  { assert_file generated, /# env/ }
+      And  { assert_file generated, /# actions/ }
     end
 
-    describe 'templates directory' do
-      Then { assert_file 'lib/roro/stacks/starwars/episodes/iv/templates' }
+    describe 'must generate test file with newlines of' do
+      Given(:file) { 'test/0/_test.rb' }
 
-      describe 'manifest' do
-        Then { assert_file 'lib/roro/stacks/starwars/episodes/iv/templates/manifest' }
+      Then { assert_file generated, /# frozen_string_literal/ }
+      And  { assert_file generated, /\nrequire ['"]test_helper['"]/ }
+    end
+  end
+
+  context 'when story story named like starwars/episodes/empire-strikes' do
+    Given(:story) { 'starwars/episodes/empire-strikes' }
+    Given { generate }
+
+    describe 'must generate storyfile' do
+      Given(:file) { 'empire-strikes.yml' }
+      Then { assert_file generated, /# preface/ }
+    end
+
+    describe 'must generate templates directory' do
+      Given(:file) { 'templates' }
+      Then { assert_file generated }
+
+      describe 'with manifest/.keep' do
+        Given(:file) { 'templates/manifest/.keep' }
+        Then { assert_file generated }
       end
     end
 
-    describe 'test directory' do
-      Then { assert_file 'lib/roro/stacks/starwars/episodes/iv/test' }
+    describe 'must generate test directory' do
+      Given(:file) { 'test' }
+      Then { assert_file generated }
 
-      describe 'adventure index directory' do
-        Then { assert_file 'lib/roro/stacks/starwars/episodes/iv/test/0' }
+      describe 'with adventure index directory' do
+        Given(:file) { 'test/0' }
+        Then { assert_file generated }
 
-        describe 'adventure dummy directory' do
-          Then { assert_file 'lib/roro/stacks/starwars/episodes/iv/test/0/dummy/.keep' }
+        describe 'with _test.rb' do
+          Given(:file) { 'test/0/_test.rb' }
+          Then { assert_file generated }
+        end
+
+        describe 'with dummy directory' do
+          Given(:file) { 'test/0/dummy/.keep' }
+          Then { assert_file generated }
         end
       end
     end
-
-    describe '_test.rb' do
-      Given(:file) { 'lib/roro/stacks/starwars/episodes/iv/test/0/_test.rb'}
-      Then { assert_file file }
-      And do
-        save_result(File.read(file), 'generate_adventure.rb' )
-        end
-    end
-
   end
 end
