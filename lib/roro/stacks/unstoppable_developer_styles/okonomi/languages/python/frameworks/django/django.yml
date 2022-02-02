@@ -23,10 +23,14 @@ env:
       help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - template 'stage_two/settings.py', "./#{@env[:base][:app_name][:value]}/settings.pycd cd", @env
-  - |
-    run "sudo docker-compose run web \
-    django-admin startproject \"#{@env[:base][:app_name][:value]}\" ."
-  - run "sudo chown -R $USER:$USER ."
-  - run "sudo docker-compose up -d"
-  - say "Arigato http://localhost:8000 "
+  - directory 'manifest', '.'
+#  - run 'docker-compose run web django-admin startproject composeexample .'
+#  - , "./#{@env[:base][:app_name][:value]}/settings.pycd
+#  - cd", @env
+##  - template 'stage_two/settings.py', "./#{@env[:base][:app_name][:value]}/settings.pycd cd", @env
+#  - |
+#    run "sudo docker-compose run web \
+#    django-admin startproject \"#{@env[:base][:app_name][:value]}\" ."
+#  - run "sudo chown -R $USER:$USER ."
+#  - run "sudo docker-compose up -d"
+#  - say "Arigato http://localhost:8000 "

@@ -5,29 +5,35 @@ require 'test_helper'
 describe 'adventure::django::0 python-v3_10_1' do
   Given(:workbench) { }
 
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
-    describe 'README.md' do
-      Given(:file) { 'README.md' }
-      Then { assert_file file }
-  
-      describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
-        end
+    describe 'Dockerfile' do
+      Given(:file) { 'Dockerfile' }
 
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
+      describe 'must have content' do
+        describe 'matching' do
+          describe 'steps' do
+            Then { assert_file file, /# syntax=docker/ }
+          end
+
+          describe 'steps' do
+            Then { assert_file file, /\nFROM python:3/ }
+          end
         end
       end
     end
-  end
 
+    describe 'docker-compose.yml' do
+      Given(:file) { 'docker-compose.yml' }
 
-  describe 'other sting' do
+      describe 'must have content' do 
+        describe 'matching' do
+          Then { assert_file file, /version: '3.4'/ }
+        end
+      end
+    end
   end
 end
