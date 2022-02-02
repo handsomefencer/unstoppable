@@ -20,7 +20,6 @@ module Roro
       def adventure_name
         @getsome[:adventure_name]
       end
-
     end
   end
 end

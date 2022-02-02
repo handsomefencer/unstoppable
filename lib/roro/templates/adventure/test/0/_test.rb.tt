@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'some string' do
+describe '<%= @getsome[:adventure_name] %>' do
   describe 'other sting' do
   end
 end
