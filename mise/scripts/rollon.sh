@@ -14,11 +14,11 @@ do
 done
 
 #. ${SCRIPTS}/git_commit.sh
-. ${SCRIPTS}/build_gem.sh
 . ${SCRIPTS}/down.sh
 . ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/prune.sh
+. ${SCRIPTS}/build_gem.sh
 . ${SCRIPTS}/run.sh
-#. ${SCRIPTS}/build_app.sh
+. ${SCRIPTS}/build_app.sh
 
 cd ${SRC}
