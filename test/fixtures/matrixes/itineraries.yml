@@ -53,8 +53,6 @@
 - - "/unstoppable_developer_styles/sashimi/devops/ci_styles/circleci"
   - "/unstoppable_developer_styles/sashimi/frameworks/rails"
 - - "/unstoppable_developer_styles/sashimi/devops/ci_styles/circleci"
-  - "/unstoppable_developer_styles/sashimi/frameworks/roll_your_own"
-- - "/unstoppable_developer_styles/sashimi/devops/ci_styles/circleci"
   - "/unstoppable_developer_styles/sashimi/frameworks/kubernetes/stories/ingress/stories/nginx/stories/cert_manager"
 - - "/unstoppable_developer_styles/sashimi/devops/ci_styles/circleci"
   - "/unstoppable_developer_styles/sashimi/frameworks/kubernetes/stories/ingress/stories/nginx/stories/cert_manager"
