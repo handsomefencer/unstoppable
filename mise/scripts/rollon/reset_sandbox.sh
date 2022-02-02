@@ -8,5 +8,6 @@ if [[ $PWD = !$DST ]]; then
 elif [[ $PWD = $DST ]]; then
   echo "Removing contents of ${PWD}"
   sudo rm -rf ./*
+  sudo rm -rf ./.*
 fi
 

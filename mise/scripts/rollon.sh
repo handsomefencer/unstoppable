@@ -17,7 +17,7 @@ done
 . ${SCRIPTS}/down.sh
 . ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/prune.sh
-. ${SCRIPTS}/build_gem.sh
+. ${SCRIPTS}/build_gem.sh8admu7h3r$gems
 . ${SCRIPTS}/run.sh
 . ${SCRIPTS}/build_app.sh
 

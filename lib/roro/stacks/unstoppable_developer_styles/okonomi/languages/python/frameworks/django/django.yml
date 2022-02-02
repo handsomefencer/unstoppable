@@ -24,8 +24,11 @@ env:
 
 actions:
   - directory 'manifest', '.'
-#  - run 'docker-compose run web django-admin startproject composeexample .'
-#  - , "./#{@env[:base][:app_name][:value]}/settings.pycd
+  - run 'docker-compose run web django-admin startproject composeexample .'
+  - chown '.'
+#  - directory 'polish', '.'
+  -
+#  - , 1"./#{@env[:base][:app_name][:value]}/settings.pycd
 #  - cd", @env
 ##  - template 'stage_two/settings.py', "./#{@env[:base][:app_name][:value]}/settings.pycd cd", @env
 #  - |
