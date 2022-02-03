@@ -6,9 +6,12 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /code
 
 RUN python -m pip install Django
+RUN python -m pip install psycopg2
 RUN django-admin startproject <%= @env[:base][:app_name][:value] %> .
 
 COPY . /code/
+
+RUN pip freeze > requirements.txt
 
 FROM scratch AS export-stage
 
