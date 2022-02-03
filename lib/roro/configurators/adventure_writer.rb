@@ -66,6 +66,10 @@ module Roro
           "#{@env[:story]}"
         end
 
+        def interpolated_app_name
+          @env[:base][:app_name][:value]
+        end
+
         def epilogue(log)
           array = []
           log[:itinerary].each do |i|
