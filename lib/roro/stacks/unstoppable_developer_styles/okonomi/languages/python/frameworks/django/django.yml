@@ -23,6 +23,6 @@ env:
       help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - directory 'manifest', '.'
+  - directory 'manifest', '.', @env
   - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
-  - directory 'polish', '.'
+  - directory 'polish', '.', @env
