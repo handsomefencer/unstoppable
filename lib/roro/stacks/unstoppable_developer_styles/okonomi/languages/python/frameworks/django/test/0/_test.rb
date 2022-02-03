@@ -31,7 +31,7 @@ describe 'adventure::django::0 python-v3_10_1' do
 
       describe 'must have content' do 
         describe 'matching' do
-          Then { assert_file file, /version: '3.4'/ }
+          Then { assert_file file, /version: '3.9'/ }
         end
       end
     end
