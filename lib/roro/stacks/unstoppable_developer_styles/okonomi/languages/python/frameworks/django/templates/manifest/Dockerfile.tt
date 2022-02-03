@@ -4,14 +4,12 @@ FROM python:<%= @env[:base][:python_version][:value] %> AS builder
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
-COPY requirements.txt /code/
-RUN pip install -r requirements.txt
-COPY . /code/
-
 
 RUN python -m pip install Django
 RUN django-admin startproject <%= @env[:base][:app_name][:value] %> .
 RUN pip freeze > requirements.txt
+
+COPY . /code/
 
 FROM scratch AS export-stage
 
