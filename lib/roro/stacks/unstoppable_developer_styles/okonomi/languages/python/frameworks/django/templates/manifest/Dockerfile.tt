@@ -8,7 +8,10 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
 
+
+RUN python -m pip install Django
 RUN django-admin startproject <%= @env[:base][:app_name][:value] %> .
+RUN pip freeze > requirements.txt
 
 FROM scratch AS export-stage
 
