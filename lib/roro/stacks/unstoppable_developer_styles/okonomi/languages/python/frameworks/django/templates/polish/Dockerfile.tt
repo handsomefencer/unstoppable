@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 
 FROM python:<%= @env[:base][:python_version][:value] %>
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # establish the working directory 
 WORKDIR /code
