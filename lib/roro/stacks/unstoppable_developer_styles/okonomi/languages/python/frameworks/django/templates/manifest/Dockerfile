@@ -12,4 +12,4 @@ RUN django-admin startproject composeexample .
 
 FROM scratch AS export-stage
 
-COPY --from=builder ./app/ .
+COPY --from=builder ./code/ .
