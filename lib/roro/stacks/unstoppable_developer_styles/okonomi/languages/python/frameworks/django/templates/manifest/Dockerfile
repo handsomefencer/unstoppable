@@ -8,7 +8,7 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
 
-RUN django-admin startproject composeexample .
+RUN django-admin startproject <%= @env[:base][:app_name][:value] %> .
 
 FROM scratch AS export-stage
 
