@@ -48,6 +48,7 @@ module Roro
           array.empty? ? paths : set_manifest_paths(child, array, paths)
         end
 
+
         def copy_stage_dummy(stage)
           location = Dir.pwd
           stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
@@ -62,14 +63,19 @@ module Roro
           end
         end
 
+        def partials( stack = nil, array = nil, paths = [] )
+          stack  ||= Roro::CLI.stacks
+          crumbs ||= @storyfile.split("#{stack}/").last.split('/')
+          path = "#{stack}/templates/partials"
+          if File.exist?(path)
+            paths += Dir.glob("#{path}/**/*.erb")
+          end
+          child = "#{stack}/#{crumbs.shift}"
+          crumbs.empty? ? paths : partials(child, array, paths)
+        end
 
         def partial(name, args = {})
-          location = "#{source_paths.last}/partials"
-          shared = File.expand_path('../..', source_paths.last)
-          locations = Dir.glob("#{shared}/**/*/partials/shared") << location
-          partial = locations
-                       .map! { |p| "#{p}/_#{name}.erb"}
-                       .select { |p| File.exist?(p) }.last
+          partial = partials.select { |p| p.match? "#{name}.erb" }.last
           begin
             ERB.new(File.read(partial)).result(binding) if partial
           rescue
