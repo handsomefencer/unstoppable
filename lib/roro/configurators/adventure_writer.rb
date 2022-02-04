@@ -11,6 +11,7 @@ module Roro
       no_commands do
 
         def write(buildenv, storyfile)
+          @storyfile = storyfile
           @env = buildenv[:env]
           @env[:force] = true
           @env[:exit_on_failure] = true
@@ -28,21 +29,39 @@ module Roro
           end
         end
 
+        def copy_manifest
+          paths = set_manifest_paths
+          paths.each do |path|
+            self.source_paths << path
+            directory 'manifest', '.', @env
+          end
+        end
+
+        def set_manifest_paths( stack = nil, array = nil, paths = [] )
+          stack ||= Roro::CLI.stacks
+          array ||= @storyfile.split("#{stack}/").last.split('/')
+          path = "#{stack}/templates/manifest"
+          if File.exist?(path)
+            paths << path
+          end
+          child = "#{stack}/#{array.shift}"
+          array.empty? ? paths : set_manifest_paths(child, array, paths)
+        end
+
         def copy_stage_dummy(stage)
           location = Dir.pwd
           stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
           generated = Dir.glob("#{location}/**/*")
           dummies = Dir.glob("#{stage_dummy}/**/*")
           dummies.each do |dummy|
-            # dummy = dummy.split(stage_dummy).last
             generated.select do |g|
-              # g = g.split(Dir.pwd).last
               if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
                 FileUtils.cp(g, "#{stage_dummy}/#{stack_name(g)}")
               end
             end
           end
         end
+
 
         def partial(name, args = {})
           location = "#{source_paths.last}/partials"

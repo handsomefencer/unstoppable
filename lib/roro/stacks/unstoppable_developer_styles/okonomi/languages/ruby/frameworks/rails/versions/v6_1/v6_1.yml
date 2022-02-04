@@ -1,7 +1,11 @@
 preface: https://guides.rubyonrails.org/v6.0/
+
 env:
   base:
     rails_version:
       value: 6.1
+
+actions:
+  - copy_manifest
 
 
