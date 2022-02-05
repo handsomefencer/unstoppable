@@ -40,11 +40,13 @@ module Roro
               Roro::Error
             end
           end
+        end
+
+        def polish
           if File.exist?('polisher')
             FileUtils.cp_r('polisher/.', '.')
             FileUtils.rm_rf('polisher')
           end
-
         end
 
         def copy_stage_dummy(stage)

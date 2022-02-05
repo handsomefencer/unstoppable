@@ -25,8 +25,13 @@ describe 'adventure::django::0 python-v3_10_1' do
       end
     end
 
+    describe 'requirements.txt' do
+      Given(:file) { 'requirements.txt' }
+      Then { assert_file file, /Django==4.0.2/ }
+    end
+
     describe 'Dockerfile' do
-      Given(:file) { 'Dockerfile' }
+        Given(:file) { 'Dockerfile' }
 
       describe 'must have content' do
         describe 'matching' do
