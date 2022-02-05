@@ -3,11 +3,10 @@
 require 'test_helper'
 
 describe 'adventure::django::0 python-v3_10_1' do
-  Given { skip }
   Given(:workbench) { }
 
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
@@ -15,6 +14,7 @@ describe 'adventure::django::0 python-v3_10_1' do
       Given(:file) { 'docker-compose.yml' }
 
       describe 'correct docker-compose version' do
+        focus
         Then { assert_file file, /version: '3.9'/ }
       end
 
