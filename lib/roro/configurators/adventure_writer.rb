@@ -35,11 +35,16 @@ module Roro
             self.source_paths.shift
             self.source_paths << path
             begin
-              directory '', '.', @env[:env]
+              directory '', '.', @env
             rescue
               Roro::Error
             end
           end
+          if File.exist?('polisher')
+            FileUtils.cp_r('polisher/.', '.')
+            FileUtils.rm_rf('polisher')
+          end
+
         end
 
         def copy_stage_dummy(stage)
