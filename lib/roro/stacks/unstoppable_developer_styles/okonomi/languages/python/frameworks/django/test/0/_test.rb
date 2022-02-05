@@ -19,7 +19,6 @@ describe 'adventure::django::0 python-v3_10_1' do
 
       describe 'correct services' do
         describe 'db' do
-          focus
           Then { assert_includes read_yaml(file)[:services].keys, :db  }
           And  { assert_includes read_yaml(file)[:services].keys, :web  }
         end
@@ -37,6 +36,12 @@ describe 'adventure::django::0 python-v3_10_1' do
 
           describe 'steps' do
             Then { assert_file file, /\nFROM python:3/ }
+            And  { assert_file file, /\nRUN pip install -r requirements.txt/ }
+          end
+
+          describe 'polished' do
+            # Then { assert_file file, /\nrequirements.txt/ }
+            Then { refute File.exist?('polisher') }
           end
         end
       end
