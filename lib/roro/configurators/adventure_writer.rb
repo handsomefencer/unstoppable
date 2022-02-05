@@ -17,15 +17,15 @@ module Roro
           @env[:exit_on_failure] = true
           actions = read_yaml(storyfile)[:actions]
           unless actions.nil?
-            self.source_paths << "#{stack_parent_path(storyfile)}/templates"
             actions.each do |a|
+              self.source_paths.shift
+              self.source_paths << "#{stack_parent_path(storyfile)}/templates"
               begin
                 eval a
               rescue
                 raise Error, msg: "#{a} #{storyfile}"
               end
             end
-            self.source_paths.shift
           end
         end
 
@@ -39,7 +39,6 @@ module Roro
             rescue
               Roro::Error
             end
-
           end
         end
 
