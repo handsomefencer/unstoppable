@@ -29,14 +29,14 @@ module Minitest
 
     def rollon(dir)
       workbench
-      copy_stage_dummy(dir)
+      # copy_stage_dummy(dir)
       stubs_adventure(dir)
       stubs_dependencies_met?
       stubs_yes?
       stub_overrides
       stub_run_actions unless @rollon_dummies
       cli = Roro::CLI.new
-      @rollon_quiet ? cli.rollon : quiet { cli.rollon }
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def stubs_answer(answer)
@@ -65,13 +65,12 @@ module Minitest
     def simulate_rollon
       stub_run_actions
       cli = Roro::CLI.new
-      # quiet { cli.rollon }
-      cli.rollon
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def debug_rollon
       cli = Roro::CLI.new
-      cli.rollon
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def case_from_path(stack, array = nil)

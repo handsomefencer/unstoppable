@@ -30,24 +30,21 @@ module Roro
         end
 
         def copy_manifest
-          paths = set_manifest_paths
+          paths = manifest_paths
           paths.each do |path|
+            self.source_paths.shift
             self.source_paths << path
-            directory 'manifest', '.', @env
+            # Roro::Configurators::AdventureWriter.source_root(path)
+            begin
+              directory '', '.', @env[:env]
+            rescue
+              Roro::Error
+            end
+
+            # self.source_paths.shift
+
           end
         end
-
-        def set_manifest_paths( stack = nil, array = nil, paths = [] )
-          stack ||= Roro::CLI.stacks
-          array ||= @storyfile.split("#{stack}/").last.split('/')
-          path = "#{stack}/templates/manifest"
-          if File.exist?(path)
-            paths << path
-          end
-          child = "#{stack}/#{array.shift}"
-          array.empty? ? paths : set_manifest_paths(child, array, paths)
-        end
-
 
         def copy_stage_dummy(stage)
           location = Dir.pwd
@@ -61,38 +58,6 @@ module Roro
               end
             end
           end
-        end
-
-        def partials( stack = nil, array = nil, paths = [] )
-          stack  ||= Roro::CLI.stacks
-          crumbs ||= @storyfile.split("#{stack}/").last.split('/')
-          path = "#{stack}/templates/partials"
-          if File.exist?(path)
-            paths += Dir.glob("#{path}/**/*.erb")
-          end
-          child = "#{stack}/#{crumbs.shift}"
-          crumbs.empty? ? paths : partials(child, array, paths)
-        end
-
-        def partial(name, args = {})
-          partial = partials.select { |p| p.match? "#{name}.erb" }.last
-          begin
-            ERB.new(File.read(partial)).result(binding) if partial
-          rescue
-            raise Roro::Error, msg: partial
-          end
-        end
-
-        def interpolated_stack_path
-          "#{@env[:stack]}/#{@env[:story]}"
-        end
-
-        def interpolated_story_name
-          "#{@env[:story]}"
-        end
-
-        def interpolated_app_name
-          @env[:base][:app_name][:value]
         end
 
         def epilogue(log)
@@ -113,6 +78,100 @@ module Roro
           create_file 'mise/log.yml', log.to_yaml
           say 'Arigato.'
           say epilogue(log)
+        end
+
+        def section(name)
+          array = []
+          # section = partials.select do |p|
+          #   File.directory?(p)
+          #   p.match?("partials/#{name}")
+          # end
+          # if section.empty?
+          #   msg = "No #{name} section with partials"
+          #   raise Roro::Error, msg
+          # end
+          section_partials(name).each do |p|
+            array << read_partial(p)
+          end
+          array.join("\n")
+        end
+
+        def section_partials(name)
+          array = partials.select do  |p|
+            p.match? /#{name}/
+          end
+          matchers = array.map { |p| p.split("/partials/#{name}/").last }.uniq
+          foo = []
+          matchers.each do |m|
+            last = array.select do |p|
+              p.match? m
+            end
+            foo << last.last
+          end
+          foo
+        end
+
+        def partial(name)
+          read_partial(partials.select { |p| p.match? "/_#{name}*.erb" }.last)
+        end
+
+        def read_partial(partial)
+          begin
+            ERB.new(File.read(partial)).result(binding) if partial
+          rescue
+            msg = "Missing variable in #{partial}"
+            raise Roro::Error, msg
+          end
+        end
+
+        def select_innermost_partials
+          innermosts = []
+          partials.map do  |p|
+            matcher = p.split('templates/partials').last
+            innermosts.reject! { |i| i.match?(matcher) }
+            innermosts << p
+          end
+          foo = 'bar'
+        end
+
+        def partials( stack = nil, paths = [] )
+          stack  ||= Roro::CLI.stacks
+          crumbs ||= @storyfile.split("#{stack}/").last.split('/')
+          path = "#{stack}/templates/partials"
+          paths += Dir.glob("#{path}/**/_*.erb") if File.exist?(path)
+          child = "#{stack}/#{crumbs.shift}"
+          crumbs.empty? ? paths : partials(child, paths)
+        end
+
+        def prioritize_partials(paths)
+          duplicates = paths.map do  |p|
+            p.split('templates/partials/').last
+          end
+          foo = 'bar'
+        end
+
+
+        def manifest_paths( stack = nil, array = nil, paths = [] )
+          stack ||= Roro::CLI.stacks
+          array ||= @storyfile.split("#{stack}/").last.split('/')
+          path = "#{stack}/templates/manifest"
+          if File.exist?(path)
+            paths << path
+          end
+          child = "#{stack}/#{array.shift}"
+          array.empty? ? paths : manifest_paths(child, array, paths)
+        end
+
+        def interpolated_stack_path
+          "#{@env[:stack]}/#{@env[:story]}"
+        end
+
+        def interpolated_story_name
+          "#{@env[:story]}"
+        end
+
+        def interpolated_app_name
+          @env[:base][:app_name][:value]
         end
       end
     end

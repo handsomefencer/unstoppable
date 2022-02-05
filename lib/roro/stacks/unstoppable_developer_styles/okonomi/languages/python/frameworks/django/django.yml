@@ -1,4 +1,9 @@
-preface: Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of Web development, so you can focus on writing your app without needing to reinvent the wheel. It’s free and open source.
+preface: Django is a high-level Python Web framework that encourages rapid 
+  development and clean, pragmatic design. Built by experienced developers, 
+  it takes care of much of the hassle of Web development, so you can focus 
+  on writing your app without needing to reinvent the wheel. 
+  It’s free and open source.
+
 env:
   base:
     python_version:
@@ -23,6 +28,6 @@ env:
       help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - directory 'manifest', '.', @env
-  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
-  - directory 'polish', '.', @env
+  - copy_manifest
+#  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+#  - directory 'polish', '.', @env

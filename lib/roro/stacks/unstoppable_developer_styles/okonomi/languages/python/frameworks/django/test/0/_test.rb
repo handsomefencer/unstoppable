@@ -10,6 +10,21 @@ describe 'adventure::django::0 python-v3_10_1' do
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
+    describe 'docker-compose.yml with' do
+      Given(:file) { 'docker-compose.yml' }
+
+      describe 'correct docker-compose version' do
+        Then { assert_file file, /version: '3.9'/ }
+      end
+
+      describe 'correct services' do
+        describe 'db' do
+          Then { assert_includes read_yaml(file)[:services].keys, :db  }
+          And  { assert_includes read_yaml(file)[:services].keys, :web  }
+        end
+      end
+    end
+
     describe 'Dockerfile' do
       Given(:file) { 'Dockerfile' }
 
