@@ -30,6 +30,11 @@ describe 'adventure::django::0 python-v3_10_1' do
       Then { assert_file file, /Django==4.0.2/ }
     end
 
+    describe 'app_name/settings.py' do
+      Given(:file) { 'unstoppable_django/settings.py' }
+      Then { assert_file file, /os.environ.get/ }
+    end
+
     describe 'Dockerfile' do
         Given(:file) { 'Dockerfile' }
 
@@ -45,7 +50,6 @@ describe 'adventure::django::0 python-v3_10_1' do
           end
 
           describe 'polished' do
-            # Then { assert_file file, /\nrequirements.txt/ }
             Then { refute File.exist?('polisher') }
           end
         end
