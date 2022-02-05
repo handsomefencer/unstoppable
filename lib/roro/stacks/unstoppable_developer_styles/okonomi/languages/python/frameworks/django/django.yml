@@ -29,5 +29,5 @@ env:
 
 actions:
   - copy_manifest
-#  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
-#  - directory 'polish', '.', @env
+  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+  - directory 'polish', '.', @env
