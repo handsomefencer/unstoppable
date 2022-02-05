@@ -10,15 +10,15 @@ module Roro
     method_options :adventure => :string
 
     def generate_adventure(adventure)
-      @getsome = { adventure_name: adventure.split('/').last }
+      @env = { adventure_name: adventure.split('/').last }
       location =  "lib/roro/stacks/#{adventure}"
-      directory 'adventure', location, @getsome
+      directory 'adventure', location, @env
       generate_annotations("#{location}/test/0/_test.rb")
     end
 
     no_commands do
       def adventure_name
-        @getsome[:adventure_name]
+        @env[:adventure_name]
       end
     end
   end

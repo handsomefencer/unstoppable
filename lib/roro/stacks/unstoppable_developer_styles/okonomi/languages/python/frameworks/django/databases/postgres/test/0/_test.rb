@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '<%= @env[:adventure_name] %>' do
+describe 'postgres' do
   describe 'other sting' do
   end
 end
