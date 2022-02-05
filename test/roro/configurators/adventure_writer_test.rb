@@ -22,12 +22,9 @@ describe 'AdventureWriter' do
 
     describe 'must return correct' do
       describe 'number of partials' do
-        Then { assert_equal 5, writer.partials.size }
+        Then { assert_equal 3, writer.partials.size }
       end
 
-      describe '#partial(name)' do
-        Then { assert_equal 'getsome', writer.partial('packages') }
-      end
 
       describe '#section_partial(name)' do
         Then { assert_equal 2, writer.section_partials('services').size }
@@ -38,9 +35,7 @@ describe 'AdventureWriter' do
       describe 'partials' do
         Then { assert_match ( /_packages.erb/), writer.partials[0]  }
         And  { assert_match (/_web/), writer.partials[1]  }
-        And  { assert_match (/_packages/), writer.partials[2]  }
-        And  { assert_match (/_db/), writer.partials[3]  }
-        And  { assert_match (/_web/), writer.partials[4]  }
+        And  { assert_match (/_db/), writer.partials[2]  }
       end
     end
 

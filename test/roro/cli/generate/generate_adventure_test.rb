@@ -16,7 +16,7 @@ describe 'Roro::CLI#generate_adventure' do
 
     describe 'must generate storyfile' do
       Given(:file) { 'starwars.yml' }
-      Then { assert_file generated, /# preface/ }
+      Then { assert_file generated, /preface:/ }
       And  { assert_file generated, /# env/ }
       And  { assert_file generated, /# actions/ }
     end
@@ -35,7 +35,7 @@ describe 'Roro::CLI#generate_adventure' do
 
     describe 'must generate storyfile' do
       Given(:file) { 'empire-strikes.yml' }
-      Then { assert_file generated, /# preface/ }
+      Then { assert_file generated, /preface:/ }
     end
 
     describe 'must generate templates directory' do
