@@ -31,16 +31,16 @@ describe 'AdventureWriter' do
 
       describe '#section_partial(name)' do
         Then { assert_equal 2, writer.section_partials('services').size }
-        Then { assert_match /web/, writer.section_partials('services').first }
-        And  { assert_match /db/, writer.section_partials('services').last }
+        Then { assert_match (/web/), writer.section_partials('services').first }
+        And  { assert_match (/db/), writer.section_partials('services').last }
       end
 
       describe 'partials' do
-        Then { assert_match /_packages/, writer.partials[0]  }
-        And  { assert_match /_web/, writer.partials[1]  }
-        And  { assert_match /_packages/, writer.partials[2]  }
-        And  { assert_match /_db/, writer.partials[3]  }
-        And  { assert_match /_web/, writer.partials[4]  }
+        Then { assert_match ( /_packages.erb/), writer.partials[0]  }
+        And  { assert_match (/_web/), writer.partials[1]  }
+        And  { assert_match (/_packages/), writer.partials[2]  }
+        And  { assert_match (/_db/), writer.partials[3]  }
+        And  { assert_match (/_web/), writer.partials[4]  }
       end
     end
 
@@ -53,10 +53,6 @@ describe 'AdventureWriter' do
         Given(:section) { writer.section('services') }
         Then { assert_match 'db', section }
       end
-    end
-
-    describe '#select_innermost_partials' do
-      # Then { assert_equal 'blah', writer.select_innermost_partials }
     end
   end
 

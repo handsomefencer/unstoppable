@@ -27,7 +27,7 @@ describe 'Roro::CLI#generate_annotations' do
 
   describe '#description_helper(adventure_test)' do
     Given(:result) { subject.description_helper(adventure_test) }
-    Then { assert_match /idiot\.yaml/, result }
+    Then { assert_match (/idiot\.yaml/), result }
   end
 
   describe '#dummies_for(adventure_test) when dummies' do

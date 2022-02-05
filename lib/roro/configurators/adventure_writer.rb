@@ -34,14 +34,11 @@ module Roro
           paths.each do |path|
             self.source_paths.shift
             self.source_paths << path
-            # Roro::Configurators::AdventureWriter.source_root(path)
             begin
               directory '', '.', @env[:env]
             rescue
               Roro::Error
             end
-
-            # self.source_paths.shift
 
           end
         end
@@ -82,33 +79,25 @@ module Roro
 
         def section(name)
           array = []
-          # section = partials.select do |p|
-          #   File.directory?(p)
-          #   p.match?("partials/#{name}")
-          # end
-          # if section.empty?
-          #   msg = "No #{name} section with partials"
-          #   raise Roro::Error, msg
-          # end
           section_partials(name).each do |p|
             array << read_partial(p)
           end
-          array.join("\n")
+          array.empty? ? (raise Roro::Error) : array.join("\n")
         end
 
         def section_partials(name)
           array = partials.select do  |p|
-            p.match? /#{name}/
+            p.match?(/#{name}/)
           end
           matchers = array.map { |p| p.split("/partials/#{name}/").last }.uniq
-          foo = []
+          innermosts = []
           matchers.each do |m|
-            last = array.select do |p|
+            duplicates = array.select do |p|
               p.match? m
             end
-            foo << last.last
+            innermosts<< duplicates.last
           end
-          foo
+          innermosts
         end
 
         def partial(name)
@@ -124,16 +113,6 @@ module Roro
           end
         end
 
-        def select_innermost_partials
-          innermosts = []
-          partials.map do  |p|
-            matcher = p.split('templates/partials').last
-            innermosts.reject! { |i| i.match?(matcher) }
-            innermosts << p
-          end
-          foo = 'bar'
-        end
-
         def partials( stack = nil, paths = [] )
           stack  ||= Roro::CLI.stacks
           crumbs ||= @storyfile.split("#{stack}/").last.split('/')
@@ -142,14 +121,6 @@ module Roro
           child = "#{stack}/#{crumbs.shift}"
           crumbs.empty? ? paths : partials(child, paths)
         end
-
-        def prioritize_partials(paths)
-          duplicates = paths.map do  |p|
-            p.split('templates/partials/').last
-          end
-          foo = 'bar'
-        end
-
 
         def manifest_paths( stack = nil, array = nil, paths = [] )
           stack ||= Roro::CLI.stacks

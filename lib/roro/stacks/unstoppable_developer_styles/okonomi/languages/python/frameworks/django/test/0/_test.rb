@@ -19,6 +19,7 @@ describe 'adventure::django::0 python-v3_10_1' do
 
       describe 'correct services' do
         describe 'db' do
+          focus
           Then { assert_includes read_yaml(file)[:services].keys, :db  }
           And  { assert_includes read_yaml(file)[:services].keys, :web  }
         end

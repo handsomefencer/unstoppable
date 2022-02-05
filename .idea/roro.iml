@@ -339,7 +339,81 @@
   </component>
   <component name="RakeTasksCache">
     <option name="myRootTask">
-      <RakeTaskImpl id="rake" />
+      <RakeTaskImpl id="rake">
+        <subtasks>
+          <RakeTaskImpl description="Build roro-0.3.30.gem into the pkg directory" fullCommand="build" id="build" />
+          <RakeTaskImpl id="build">
+            <subtasks>
+              <RakeTaskImpl description="Generate SHA512 checksum if roro-0.3.30.gem into the checksums directory" fullCommand="build:checksum" id="checksum" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="ci">
+            <subtasks>
+              <RakeTaskImpl description="Prepare .circlecli/config.yml for deploy" fullCommand="ci:prepare" id="prepare" />
+              <RakeTaskImpl id="prepare">
+                <subtasks>
+                  <RakeTaskImpl description="prepare config" fullCommand="ci:prepare:config" id="config" />
+                  <RakeTaskImpl id="config">
+                    <subtasks>
+                      <RakeTaskImpl description="Pack .circleci/config.yml from .circleci/src files" fullCommand="ci:prepare:config:pack" id="pack" />
+                      <RakeTaskImpl description="Process .circleci/src into .circleci/config.yml" fullCommand="ci:prepare:config:process" id="process" />
+                      <RakeTaskImpl description="Validate .circleci/config.yml" fullCommand="ci:prepare:config:validate" id="validate" />
+                    </subtasks>
+                  </RakeTaskImpl>
+                  <RakeTaskImpl id="workflows">
+                    <subtasks>
+                      <RakeTaskImpl description="Prepare workflow with matrix of adventures" fullCommand="ci:prepare:workflows:test-adventures" id="test-adventures" />
+                      <RakeTaskImpl description="Prepare workflow test-rubies" fullCommand="ci:prepare:workflows:test-rubies" id="test-rubies" />
+                    </subtasks>
+                  </RakeTaskImpl>
+                </subtasks>
+              </RakeTaskImpl>
+              <RakeTaskImpl id="test">
+                <subtasks>
+                  <RakeTaskImpl description="Run tests in different rubies" fullCommand="ci:test:rubies[rubies]" id="rubies[rubies]" />
+                  <RakeTaskImpl description="" fullCommand="ci:test:adventures" id="adventures" />
+                  <RakeTaskImpl description="" fullCommand="ci:test:rubies" id="rubies" />
+                  <RakeTaskImpl description="" fullCommand="ci:test:run" id="run" />
+                </subtasks>
+              </RakeTaskImpl>
+              <RakeTaskImpl description="prepare config" fullCommand="ci:update" id="update" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Remove any temporary products" fullCommand="clean" id="clean" />
+          <RakeTaskImpl description="Remove any generated files" fullCommand="clobber" id="clobber" />
+          <RakeTaskImpl description="Build and install roro-0.3.30.gem into system gems" fullCommand="install" id="install" />
+          <RakeTaskImpl id="install">
+            <subtasks>
+              <RakeTaskImpl description="Build and install roro-0.3.30.gem into system gems without network access" fullCommand="install:local" id="local" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="Create tag v0.3.30 and build and push roro-0.3.30.gem to rubygems.org" fullCommand="release[remote]" id="release[remote]" />
+          <RakeTaskImpl description="Run tests for test" fullCommand="test" id="test" />
+          <RakeTaskImpl id="test">
+            <subtasks>
+              <RakeTaskImpl description="Run tests for test:stacks" fullCommand="test:stacks" id="stacks" />
+              <RakeTaskImpl description="Run tests for test:test" fullCommand="test:test" id="test" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="docker">
+            <subtasks>
+              <RakeTaskImpl id="image">
+                <subtasks>
+                  <RakeTaskImpl description="" fullCommand="docker:image:build" id="build" />
+                </subtasks>
+              </RakeTaskImpl>
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="" fullCommand="release" id="release" />
+          <RakeTaskImpl id="release">
+            <subtasks>
+              <RakeTaskImpl description="" fullCommand="release:guard_clean" id="guard_clean" />
+              <RakeTaskImpl description="" fullCommand="release:rubygem_push" id="rubygem_push" />
+              <RakeTaskImpl description="" fullCommand="release:source_control_push" id="source_control_push" />
+            </subtasks>
+          </RakeTaskImpl>
+        </subtasks>
+      </RakeTaskImpl>
     </option>
   </component>
 </module>
