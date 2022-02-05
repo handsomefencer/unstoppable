@@ -29,7 +29,7 @@ module Minitest
 
     def rollon(dir)
       workbench
-      # copy_stage_dummy(dir)
+      copy_stage_dummy(dir)
       stubs_adventure(dir)
       stubs_dependencies_met?
       stubs_yes?
