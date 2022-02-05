@@ -14,7 +14,6 @@ describe 'adventure::django::0 python-v3_10_1' do
       Given(:file) { 'docker-compose.yml' }
 
       describe 'correct docker-compose version' do
-        focus
         Then { assert_file file, /version: '3.9'/ }
       end
 

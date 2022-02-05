@@ -108,7 +108,7 @@ module Minitest
     end
 
     def adventures_from(stack)
-      fixtures    = "#{ENV['PWD']}/test/fixtures/matrixes"
+      fixtures = "#{ENV['PWD']}/test/fixtures/matrixes"
       matrix = {
         cases: read_yaml("#{fixtures}/cases.yml"),
         itineraries: read_yaml("#{fixtures}/itineraries.yml")
@@ -116,7 +116,7 @@ module Minitest
 
       adventures  = []
       matrix[:itineraries].each_with_index do |itinerary, index|
-        if itinerary.include?(stack)
+        if itinerary.any? { |itin| itin.match?(stack) }
           adventures << matrix[:cases][index]
         end
       end
