@@ -7,6 +7,10 @@ module Minitest
       Dir.glob("#{Dir.pwd}/**/*")
     end
 
+    def fixture_file_content(filename)
+      File.read("#{@roro_dir}/test/fixtures/files/#{filename}")
+    end
+
     def copy_stage_dummy(path)
       FileUtils.cp_r("#{path}/dummy/.", Dir.pwd )
     end
@@ -15,6 +19,12 @@ module Minitest
       Thor::Shell::Basic.any_instance
                         .stubs(:yes?)
                         .returns(answer)
+    end
+
+    def save_result(result, location = nil )
+      File.open("#{@roro_dir}/test/fixtures/files/#{location}", "w") do |f|
+        f.write(result)
+      end
     end
 
     def rollon(dir)
@@ -26,7 +36,7 @@ module Minitest
       stub_overrides
       stub_run_actions unless @rollon_dummies
       cli = Roro::CLI.new
-      @rollon_quiet ? cli.rollon : quiet { cli.rollon }
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def stubs_answer(answer)
@@ -55,13 +65,12 @@ module Minitest
     def simulate_rollon
       stub_run_actions
       cli = Roro::CLI.new
-      # quiet { cli.rollon }
-      cli.rollon
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def debug_rollon
       cli = Roro::CLI.new
-      cli.rollon
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def case_from_path(stack, array = nil)
@@ -99,7 +108,7 @@ module Minitest
     end
 
     def adventures_from(stack)
-      fixtures    = "#{ENV['PWD']}/test/fixtures/matrixes"
+      fixtures = "#{ENV['PWD']}/test/fixtures/matrixes"
       matrix = {
         cases: read_yaml("#{fixtures}/cases.yml"),
         itineraries: read_yaml("#{fixtures}/itineraries.yml")
@@ -107,7 +116,7 @@ module Minitest
 
       adventures  = []
       matrix[:itineraries].each_with_index do |itinerary, index|
-        if itinerary.include?(stack)
+        if itinerary.any? { |itin| itin.match?(stack) }
           adventures << matrix[:cases][index]
         end
       end

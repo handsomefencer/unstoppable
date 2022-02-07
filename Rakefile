@@ -23,12 +23,14 @@ Rake::TestTask.new('test:test') do |t|
   t.libs << "test"
   t.libs << "lib"
   t.test_files = FileList["test/**/*_test.rb"]
+                   .exclude('test/fixtures/dummies/**/*')
 end
 
 Rake::TestTask.new('test') do |t|
   t.libs << "test"
   t.libs << "lib"
-  t.test_files = FileList["./**/*_test.rb"]
+  t.test_files = FileList["./**/*/_test.rb"]
+                   .exclude('test/fixtures/dummies/test_annotate/**/*')
 end
 
 Rake::TestTask.new('test:stacks') do |t|
@@ -37,8 +39,3 @@ Rake::TestTask.new('test:stacks') do |t|
   t.test_files = FileList["./lib/roro/stacks/**/*_test.rb"]
 end
 
-Rake::TestTask.new('test:generate:stage_dummies') do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["./**/*_test.rb"]
-end

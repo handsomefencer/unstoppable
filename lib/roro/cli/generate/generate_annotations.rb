@@ -7,22 +7,11 @@ module Roro
     desc 'generate:annotations', 'Generate annotations for adventure tests.'
     map 'generate:annotations' => 'generate_annotations'
 
-    method_options :annotations => :array
-
-    def generate_annotations
-      files = adventure_test_files
-      files.each do |file|
-        stack_location = file.split('lib/roro/stacks').last
-        description = adventure_description(stack_location)
-        gsub_file file, /\ndescribe (.*)[\s\S]*\n\s\sdescribe/ do |match|
-          [
-            "\ndescribe '#{description}' do",
-            "\s\sGiven(:workbench)  { }",
-            "\s\sGiven { @rollon_loud    = false }",
-            "\s\sGiven { @rollon_dummies = false }",
-            "\s\sGiven { rollon(__dir__) }",
-            "\n\s\sdescribe"
-          ].join("\n")
+    def generate_annotations(*files)
+      files ||= adventure_test_files
+      files.each do |adventure_test|
+        gsub_file adventure_test, /\nrequire (.*)[\s\S]*\n\s\sdescribe/ do |match|
+          adventure_boilerplate(adventure_test) + "\s\sdescribe"
         end
       end
     end
@@ -45,9 +34,73 @@ module Roro
         "adventure::#{getsome.shift}::#{index} #{getsome.join(' & ')}"
       end
 
+      def adventure_boilerplate(adventure_test)
+<<-HEREDOC
+
+require 'test_helper'
+
+describe '#{adventure_description(adventure_test)}' do
+  Given(:workbench) { }
+
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
+  Given { rollon(__dir__) }
+  
+  describe 'directory must contain' do
+#{description_helper(adventure_test)}  end
+
+
+HEREDOC
+      end
+
+      def description_helper(adventure_test)
+        dummies_for(adventure_test)
+          .map! { |d| describe_dummy_file(d) }
+          .join("\n")
+      end
+
+      def describe_dummy_file(dummy_file_name)
+        <<-HEREDOC
+    describe '#{dummy_file_name}' do
+      Given(:file) { '#{dummy_file_name}' }
+      Then { assert_file file }
+  
+      describe 'must have content' do 
+        describe 'equal to' do 
+          Then { assert_file file, 'foo' }
+        end
+
+        describe 'matching' do 
+          Then { assert_file file, /foo/ }
+          Then { assert_content file, /foo/ }
+        end
+      end
+    end
+        HEREDOC
+      end
+
+      def dummies_for(adventure_test)
+        dummies = Dir.glob("#{dummy_path_for(adventure_test)}/**/*")
+        if dummies.empty?
+          ['README.md']
+        else
+          dummies
+            .select { |d| File.file?(d) }
+            .map { |f| f.split("/dummy/").last }
+        end
+      end
+
+      def dummy_path_for(adventure_test)
+        File.expand_path('../dummy', adventure_test)
+      end
+
+      def story_path_for(adventure_test)
+        File.expand_path('../../..', adventure_test)
+      end
+
       def adventure_test_files
         Dir.glob("#{Dir.pwd}/lib/roro/stacks/**/*_test.rb")
-           .map {|f| f.split("#{Dir.pwd}/").last }
+           .map { |atf| atf.split("#{Dir.pwd}/").last }
       end
     end
   end

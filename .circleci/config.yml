@@ -88,7 +88,8 @@ jobs:
             - checkout
             - run: gem install bundler
             - run: bundle
-            - run: bundle exec rake test
+            - run: bundle exec rake test:test
+            - run: bundle exec rake test:stacks
 version: 2.1
 workflows:
     gem-release:
@@ -129,7 +130,6 @@ workflows:
                             - 2\n1
                             - 2\n2
                             - 3\n2
-                            - 3\n3
                             - 3\n1\n1\n1\n1
                             - 3\n1\n1
                         os:

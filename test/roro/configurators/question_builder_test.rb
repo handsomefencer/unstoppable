@@ -15,7 +15,8 @@ describe QuestionBuilder do
         Given(:env_key)   { :SOME_KEY }
         Given(:env_value) { { :value=>"somevalue", :help=>"some_url"} }
 
-        context 'supplied must interpolate name into prompt' do
+        context 'supplied must
+interpolate name into prompt' do
           Given { env_value[:name] = "some environment variable name" }
           Then { assert_match 'name: some environment', builder.override(:development, env_key, env_value) }
         end

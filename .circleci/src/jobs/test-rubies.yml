@@ -10,4 +10,5 @@ steps:
   - checkout
   - run: gem install bundler
   - run: bundle
-  - run: bundle exec rake test
+  - run: bundle exec rake test:test
+  - run: bundle exec rake test:stacks
