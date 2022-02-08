@@ -67,6 +67,10 @@ describe 'AdventureWriter' do
       describe 'must return correct number of partials' do
         Then { assert_equal 7, writer.partials.size }
       end
+
+      describe 'must return correct number of partials' do
+        Then { assert_equal 7, writer.partials.size }
+      end
     end
 
     describe '#partial(name)' do
