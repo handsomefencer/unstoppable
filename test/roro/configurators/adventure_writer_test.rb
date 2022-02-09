@@ -7,12 +7,17 @@ describe 'AdventureWriter' do
   Given(:writer)    { AdventureWriter.new }
 
   Given { writer.instance_variable_set(:@env, buildenv[:env]) }
+  Given { writer.instance_variable_set(:@buildenv, buildenv) }
   Given { writer.instance_variable_set(:@storyfile, storyfile) }
 
-  Given(:buildenv)  { { env: { base: {
-    db_pkg: { value: 'sqlite' },
-    db_vendor: { value: 'sqlite' },
-    ruby_version: { value: '3.0' } } } } }
+  Given(:itinerary) { Reflector.new.itineraries.first }
+  Given(:buildenv)  { {
+    itinerary: itinerary,
+    env: {
+      base: {
+        db_pkg: { value: 'sqlite' },
+        db_vendor: { value: 'sqlite' },
+        ruby_version: { value: '3.0' } } } } }
 
   Given(:base) { "#{Roro::CLI.stacks}/unstoppable_developer_styles/okonomi" }
   Given(:storyfile) { [base, story].join('/') }
@@ -22,9 +27,9 @@ describe 'AdventureWriter' do
 
     describe 'must return correct' do
       describe 'number of partials' do
+        focus
         Then { assert_equal 3, writer.partials.size }
       end
-
 
       describe '#section_partial(name)' do
         Then { assert_equal 2, writer.section_partials('services').size }

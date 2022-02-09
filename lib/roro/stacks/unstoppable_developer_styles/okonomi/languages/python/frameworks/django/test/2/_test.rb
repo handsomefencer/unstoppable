@@ -5,8 +5,8 @@ require 'test_helper'
 describe 'adventure::django::0 python-v3_10_1' do
   Given(:workbench) { }
 
-  Given { @rollon_loud    = true }
-  Given { @rollon_dummies = true }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
@@ -36,22 +36,20 @@ describe 'adventure::django::0 python-v3_10_1' do
     end
 
     describe 'Dockerfile' do
-        Given(:file) { 'Dockerfile' }
+      Given(:file) { 'Dockerfile' }
 
       describe 'must have content' do
-        describe 'matching' do
-          describe 'steps' do
-            Then { assert_file file, /# syntax=docker/ }
-          end
+        describe 'steps' do
+          Then { assert_file file, /# syntax=docker/ }
+        end
 
-          describe 'steps' do
-            Then { assert_file file, /\nFROM python:3/ }
-            And  { assert_file file, /\nRUN pip install -r requirements.txt/ }
-          end
+        describe 'steps' do
+          Then { assert_file file, /\nFROM python:3/ }
+          And  { assert_file file, /\nRUN pip install -r requirements.txt/ }
+        end
 
-          describe 'polished' do
-            Then { refute File.exist?('polisher') }
-          end
+        describe 'polished' do
+          Then { refute File.exist?('polisher') }
         end
       end
     end

@@ -11,6 +11,7 @@ module Roro
       no_commands do
 
         def write(buildenv, storyfile)
+          @buildenv = buildenv
           @storyfile = storyfile
           @env = buildenv[:env]
           @env[:force] = true
@@ -119,13 +120,21 @@ module Roro
           end
         end
 
-        def partials( stack = nil, paths = [] )
+        def partials
+          array = []
+          @buildenv[:itinerary].each do |i|
+            array += partials_for(i)
+          end
+          array
+        end
+
+        def partials_for( storyfile = nil, stack = nil, paths = [] )
           stack  ||= Roro::CLI.stacks
-          crumbs ||= @storyfile.split("#{stack}/").last.split('/')
+          crumbs ||= storyfile.split('/')
           path = "#{stack}/templates/partials"
           paths += Dir.glob("#{path}/**/_*.erb") if File.exist?(path)
           child = "#{stack}/#{crumbs.shift}"
-          crumbs.empty? ? paths : partials(child, paths)
+          crumbs.empty? ? paths : partials_for(storyfile, child, paths)
         end
 
         def manifest_paths( stack = nil, array = nil, paths = [] )

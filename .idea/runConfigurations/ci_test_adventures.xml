@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ci:test:adventures" type="RakeRunConfigurationType" factoryName="Rake">
+  <configuration default="false" name="ci:test:adventures" type="RakeRunConfigurationType" factoryName="Rake" activateToolWindowBeforeRun="false">
     <module name="roro" />
     <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
     <RAKE_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$" />
@@ -17,7 +17,7 @@
       </COVERAGE_PATTERN>
     </EXTENSION>
     <EXTENSION ID="net.ashald.envfile">
-      <option name="IS_ENABLED" value="false" />
+      <option name="IS_ENABLED" value="true" />
       <option name="IS_SUBST" value="false" />
       <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
       <option name="IS_IGNORE_MISSING_FILES" value="false" />

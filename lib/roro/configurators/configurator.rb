@@ -97,6 +97,7 @@ module Roro
 
       def write_story
         @manifest.each do |m|
+          @structure[:itinerary] = @itinerary
           @writer.write(@structure, m)
           copy_stage_dummy(m) if ENV['RORO_ENV'].eql?('test')
         end
