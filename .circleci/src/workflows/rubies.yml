@@ -3,11 +3,11 @@ jobs:
 - test-rubies:
     filters:
       branches:
-        only: main
+        only: dev
     matrix:
       parameters:
         version:
-        - '2.5'
-        - '2.6'
-        - '2.7'
         - '3.0'
+        - '2.7'
+        - '2.6'
+        - '2.5'

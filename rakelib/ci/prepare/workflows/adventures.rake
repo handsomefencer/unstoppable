@@ -3,9 +3,10 @@ namespace :ci do
     namespace :workflows do
 
       desc 'Prepare workflow with matrix of adventures'
-      task 'test-adventures' do |task|
+      task 'adventures' do |task|
         set_content(task)
-        cases = YAML.load_file("test/fixtures/matrixes/cases.yml")
+        reflector = Roro::Configurators::Reflector.new
+        cases = reflector.cases
         matrix = @content['jobs'][0]['test-adventures']['matrix']
         matrix['parameters']['answers'] = cases.map { |c| c.join('\n') }
         overwrite

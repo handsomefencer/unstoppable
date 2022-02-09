@@ -1,0 +1,11 @@
+---
+jobs:
+- test-adventures:
+    filters:
+      branches:
+        only: dev
+    matrix:
+      parameters:
+        answers:
+          - 1\n1
+        os: [linux]

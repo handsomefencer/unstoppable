@@ -3,7 +3,7 @@ namespace :ci do
     namespace :workflows do
 
       desc 'Prepare workflow test-rubies'
-      task 'test-rubies' do |task|
+      task 'rubies' do |task|
         set_content(task)
         matrix = @content['jobs'][0]['test-rubies']['matrix']
         matrix['parameters']['version'] = Roro::CLI.supported_rubies
