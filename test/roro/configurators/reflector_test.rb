@@ -4,35 +4,30 @@ require 'test_helper'
 
 describe Reflector do
   Given(:stack_loc)       { Roro::CLI.stacks }
-  Given(:case_builder)    { Reflector.new(stack_loc) }
+  Given(:reflector)    { Reflector.new(stack_loc) }
 
-  describe '#cases_from_stack(stack)' do
-    Given(:base)        { "/unstoppable_developer_styles" }
-    Given(:ruby_stacks) { "#{base}/okonomi/languages/ruby/frameworks"}
-    Given(:expected)    { adventures_from(stack) }
 
-    context 'simple' do
-      Given(:stack) { "#{base}/sashimi/devops/ci_styles/circleci" }
+  describe '#reflection()' do
+    Then { assert_includes reflector.reflection.keys, :inflections }
+  end
 
-      Then { assert_includes expected, [3,2] }
-    end
-
-    context 'intermediate' do
-      Given(:stack) { "#{ruby_stacks}/ruby_gem" }
-      Then { assert_includes expected, [1,3,2,1] }
-      And  { assert_includes expected, [1,3,2,2] }
-    end
-
-    context 'advanced' do
-      Given(:stack) { "#{ruby_stacks}/rails/versions/v6_1" }
-      Then { assert_equal expected.size, 6 }
-      And  { assert_includes expected, [1,3,1,1,1,1,1] }
-      And  { assert_includes expected, [1,3,1,1,2,1,2] }
+  describe '#cases()' do
+    describe 'must return the expected number of cases' do
+      Then { assert_equal 26, reflector.cases.size }
     end
   end
 
-  describe '#build_cases' do
-    When(:expected) { [:inflections, :stacks, :stories] }
-    Then { assert_equal expected, case_builder.build_cases.keys }
+  describe '#itineraries()' do
+    describe 'must return the expected number of itineraries' do
+      Then { assert_equal 26, reflector.itineraries.size}
+    end
   end
+
+  describe 'wordpress' do
+    # And  { assert_equal [1,1,1], reflector.cases.first }
+    And  { assert_match /wordpress/, reflector.itineraries[0][0] }
+
+  end
+
 end
+
