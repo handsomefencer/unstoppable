@@ -16,14 +16,14 @@ module Minitest
     end
 
     def copy_stage_idiot(path )
-      foo = 'bar'
-      # idiot_path = "#{path.split("#{Roro::CLI.stacks}")
-      # }/idiot"
-      # idiots = Dir.glob("#{idiot_path}/**/*")
-      # idiots.each do |idiot|
-      #   generated = idiot.split("#{idiot_path}/").last
-      #   FileUtils.cp(generated, idiot_path)
-      # end
+      idiot_path = "#{path}/idiot"
+      idiots = Dir.glob("#{idiot_path}/**/*")
+      idiots.each do |idiot|
+        generated = idiot.split("#{idiot_path}/").last
+        puts generated
+        puts idiot_path
+        FileUtils.cp(generated, idiot_path)
+      end
     end
 
     def stubs_yes?(answer = 'yes')
@@ -50,8 +50,8 @@ module Minitest
       end
       cli = Roro::CLI.new
       @rollon_loud ? cli.rollon : quiet { cli.rollon }
-      copy_stage_idiot(dir)
       if @rollon_dummies
+        copy_stage_idiot(dir)
       end
     end
 

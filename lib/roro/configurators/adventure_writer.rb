@@ -50,19 +50,19 @@ module Roro
           end
         end
 
-        def copy_stage_dummy(stage)
-          location = Dir.pwd
-          stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
-          generated = Dir.glob("#{location}/**/*")
-          dummies = Dir.glob("#{stage_dummy}/**/*")
-          dummies.each do |dummy|
-            generated.select do |g|
-              if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
-                FileUtils.cp(g, "#{stage_dummy}/#{stack_name(g)}")
-              end
-            end
-          end
-        end
+        # def copy_stage_dummy(stage)
+        #   location = Dir.pwd
+        #   stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
+        #   generated = Dir.glob("#{location}/**/*")
+        #   dummies = Dir.glob("#{stage_dummy}/**/*")
+        #   dummies.each do |dummy|
+        #     generated.select do |g|
+        #       if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
+        #         FileUtils.cp(g, "#{stage_dummy}/#{stack_name(g)}")
+        #       end
+        #     end
+        #   end
+        # end
 
         def epilogue(log)
           array = []

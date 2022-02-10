@@ -36,7 +36,6 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
       describe 'syntax' do
         focus
-
         Then { assert_file file, /# syntax=docker\/dockerfile:1/ }
       end
 
