@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+    env_file:
+      - ./mise/env/base.env
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - ./mise/env/base.env
+    expose:
+      - "3306"
+
+volumes:
+  db_data:
+  gem_cache:
+  node_modules:
+
+
+
