@@ -10,5 +10,6 @@
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=<%= @env[:base][:POSTGRES_PASSWORD][:value] %>
     depends_on:
       - db

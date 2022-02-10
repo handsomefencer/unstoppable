@@ -108,7 +108,7 @@ module Roro
         end
 
         def partial(name)
-          read_partial(partials.select { |p| p.match? "/_#{name}*.erb" }.last)
+          read_partial(partials.select { |p| p.match?(/_#{name}.*.erb/) }.last)
         end
 
         def read_partial(partial)
@@ -122,19 +122,23 @@ module Roro
 
         def partials
           array = []
-          @buildenv[:itinerary].each do |i|
-            array += partials_for(i)
+          itinerary = @buildenv[:itinerary]
+          itinerary.each do |file|
+            array += partials_for(file)
           end
-          array
+          array.uniq
         end
 
-        def partials_for( storyfile = nil, stack = nil, paths = [] )
-          stack  ||= Roro::CLI.stacks
-          crumbs ||= storyfile.split('/')
-          path = "#{stack}/templates/partials"
+        def partials_for(ancestor = nil, crumbs = nil, paths = [] )
+          if crumbs.nil?
+            origin = Roro::CLI.stacks
+            crumbs = ancestor.split("#{origin}/").last.split('/')
+            ancestor = origin
+          end
+          path = "#{ancestor}/templates/partials"
           paths += Dir.glob("#{path}/**/_*.erb") if File.exist?(path)
-          child = "#{stack}/#{crumbs.shift}"
-          crumbs.empty? ? paths : partials_for(storyfile, child, paths)
+          child = "#{ancestor}/#{crumbs.shift}"
+          crumbs.empty? ? paths : partials_for(child, crumbs, paths)
         end
 
         def manifest_paths( stack = nil, array = nil, paths = [] )

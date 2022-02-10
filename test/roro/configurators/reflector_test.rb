@@ -3,8 +3,8 @@
 require 'test_helper'
 
 describe Reflector do
-  Given(:stack_loc)       { Roro::CLI.stacks }
-  Given(:reflector)    { Reflector.new(stack_loc) }
+  Given(:stack_loc) { Roro::CLI.stacks }
+  Given(:reflector) { Reflector.new(stack_loc) }
 
   describe '#reflection()' do
     Then { assert_includes reflector.reflection.keys, :inflections }
