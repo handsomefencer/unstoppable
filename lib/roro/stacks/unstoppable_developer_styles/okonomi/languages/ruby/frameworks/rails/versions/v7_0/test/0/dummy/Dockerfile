@@ -1,18 +1,8 @@
 FROM ruby:2.7.4-alpine
 
-## Base packages
-RUN apk add --update \
-  build-base \
-  file \
-  git \
-  tzdata \
-  nodejs \
-  yarn
 
 RUN apk add --update \
   sqlite-dev
-
-## Adventure packages
 
 
 

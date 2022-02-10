@@ -2,6 +2,13 @@ version: '3.4'
 
 services:
 
+  database:
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - db_data/:/root/db/
+
   app:
     build:
       context: .

@@ -1,10 +1,9 @@
 require 'test_helper'
 
 describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
-  Given { skip }
   Given(:workbench)  { }
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
 
   describe 'must have a' do
@@ -24,7 +23,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
     describe 'Gemfile with the correct' do
       describe 'rails version' do
-        Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
+        Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.2/ }
       end
 
       describe 'db' do
