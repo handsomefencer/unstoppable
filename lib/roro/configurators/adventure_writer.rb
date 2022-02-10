@@ -137,8 +137,11 @@ module Roro
           end
           path = "#{ancestor}/templates/partials"
           paths += Dir.glob("#{path}/**/_*.erb") if File.exist?(path)
-          child = "#{ancestor}/#{crumbs.shift}"
-          crumbs.empty? ? paths : partials_for(child, crumbs, paths)
+          if crumbs.empty?
+            paths
+          else
+            partials_for("#{ancestor}/#{crumbs.shift}", crumbs, paths)
+          end
         end
 
         def manifest_paths( stack = nil, array = nil, paths = [] )

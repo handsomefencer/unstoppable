@@ -97,7 +97,7 @@ module Minitest
 
     def stubs_adventure(path = nil, adventure = nil )
       adventure ||= path.split('/').last.to_i
-      story = path.split(Roro::CLI.stacks).last
+      story = path.split("#{Roro::CLI.stacks}/").last
       case_builder = AdventureCaseBuilder.new
       case_builder.build_cases
       adventures = adventures_from(story.split('/test').first)[adventure]
@@ -107,17 +107,16 @@ module Minitest
         .returns(*adventures)
     end
 
-    def adventures_from(stack)
-      fixtures = "#{ENV['PWD']}/test/fixtures/matrixes"
-      matrix = {
-        cases: read_yaml("#{fixtures}/cases.yml"),
-        itineraries: read_yaml("#{fixtures}/itineraries.yml")
-      }
+    ## [1, 2, 1, 2, 1]
 
-      adventures  = []
-      matrix[:itineraries].each_with_index do |itinerary, index|
+    def adventures_from(stack)
+      reflector  = Roro::Reflector.new
+      adventures = []
+      itineraries = []
+      reflector.itineraries.each_with_index do |itinerary, index|
         if itinerary.any? { |itin| itin.match?(stack) }
-          adventures << matrix[:cases][index]
+          adventures << reflector.cases[index]
+          itineraries << reflector.itineraries[index]
         end
       end
       adventures

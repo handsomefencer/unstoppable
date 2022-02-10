@@ -5,8 +5,8 @@ require 'test_helper'
 describe 'adventure::django::0 python-v3_10_1' do
   Given(:workbench) { }
 
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
@@ -60,16 +60,6 @@ describe 'adventure::django::0 python-v3_10_1' do
 
         describe 'polished' do
           Then { refute File.exist?('polisher') }
-        end
-      end
-    end
-
-    describe 'docker-compose.yml' do
-      Given(:file) { 'docker-compose.yml' }
-
-      describe 'must have content' do 
-        describe 'matching' do
-          Then { assert_file file, /version: '3.9'/ }
         end
       end
     end

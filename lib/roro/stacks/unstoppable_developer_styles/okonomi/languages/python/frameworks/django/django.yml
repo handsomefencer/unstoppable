@@ -20,7 +20,7 @@ env:
       help: https://www.postgresql.org/docs/8.0/user-manag.html#DATABASE-USERS
     POSTGRES_PASSWORD:
       name: Postgres password
-      value: password
+      value: postgres
       help: https://www.postgresql.org/docs/8.0/sql-alteruser.html
     app_name:
       name: Then name of your application or project
