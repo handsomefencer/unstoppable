@@ -42,7 +42,9 @@ describe 'adventure::django::0 python-v3_10_1' do
 
     describe 'app_name/settings.py' do
       Given(:file) { 'unstoppable_django/settings.py' }
-      Then { assert_file file, /os.environ.get/ }
+      # Then { assert_file file, /os.environ.get/ }
+      focus
+      Then { assert_file file, /'ENGINE': 'django.db.backends.postgresql'/ }
     end
 
     describe 'Dockerfile' do

@@ -6,9 +6,7 @@
       - .:/code
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=<%= @env[:base][:POSTGRES_PASSWORD][:value] %>
+    env_file:
+      - ./mise/env/base.env
     depends_on:
       - db

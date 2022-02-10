@@ -14,13 +14,13 @@ env:
       value: ':5.7'
     MYSQL_USER:
       name: MySQL user
-      value: root
+      value: mysql
     MYSQL_DATABASE:
       name: MySQL database
-      value: getsome
+      value: mysql
     MYSQL_PASSWORD:
       name: MySQL password
-      value: password
+      value: mysql
     MYSQL_ROOT_PASSWORD:
       name: MySQL root password
-      value: password
+      value: mysql

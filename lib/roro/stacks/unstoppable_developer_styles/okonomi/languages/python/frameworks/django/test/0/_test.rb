@@ -34,9 +34,6 @@ describe 'adventure::django::0 python-v3_10_1' do
 
           describe 'env_file' do
             Then { assert_match './mise/env/base.env', db[:env_file][0] }
-            And  { assert_match './mise/env/development.env', db[:env_file][1] }
-            And  { assert_match './mise/containers/database/env/base.env', db[:env_file][2] }
-            And  { assert_match './mise/containers/database/env/development.env', db[:env_file][3] }
           end
         end
       end
