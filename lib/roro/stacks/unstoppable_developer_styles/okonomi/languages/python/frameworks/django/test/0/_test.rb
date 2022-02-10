@@ -29,7 +29,7 @@ describe 'adventure::django::0 python-v3_10_1' do
           end
 
           describe 'volumes' do
-            Then { assert_match 'mysql_data:/var/lib/mysql', db[:volumes][0] }
+            Then { assert_match 'db_data:/var/lib/mysql', db[:volumes][0] }
           end
 
           describe 'env_file' do

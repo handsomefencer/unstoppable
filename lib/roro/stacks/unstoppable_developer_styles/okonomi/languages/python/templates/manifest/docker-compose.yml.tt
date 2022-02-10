@@ -3,3 +3,7 @@ version: '<%= @env[:base][:docker_compose_version][:value] %>'
 services:
 <%= section('services') %>
 
+<%= partial('volumes') %>
+
+
+
