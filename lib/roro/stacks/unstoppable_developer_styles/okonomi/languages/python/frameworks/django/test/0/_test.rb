@@ -18,18 +18,25 @@ describe 'adventure::django::0 python-v3_10_1' do
       end
 
       describe 'correct services' do
-        Then { assert_includes read_yaml(file)[:services].keys, :db  }
-        And  { assert_includes read_yaml(file)[:services].keys, :web  }
+        Then { assert_includes read_yaml(file)[:services].keys, :web  }
 
         describe 'db' do
           Given(:db) { read_yaml(file)[:services][:db] }
+          Then { assert_includes read_yaml(file)[:services].keys, :db  }
 
           describe 'image' do
-            Then { assert_equal 'postgres', db[:image] }
+            Then { assert_equal 'mysql:5.7', db[:image] }
           end
 
           describe 'volumes' do
-            Then { assert_match ':/var/lib/postgresql/data', db[:volumes][0] }
+            Then { assert_match 'mysql_data:/var/lib/mysql', db[:volumes][0] }
+          end
+
+          describe 'env_file' do
+            Then { assert_match './mise/env/base.env', db[:env_file][0] }
+            And  { assert_match './mise/env/development.env', db[:env_file][1] }
+            And  { assert_match './mise/containers/database/env/base.env', db[:env_file][2] }
+            And  { assert_match './mise/containers/database/env/development.env', db[:env_file][3] }
           end
         end
       end
@@ -39,10 +46,23 @@ describe 'adventure::django::0 python-v3_10_1' do
       Given(:file) { 'requirements.txt' }
       Then { assert_file file, /Django==4.0.2/ }
     end
+    # DATABASES = {
+    #   'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'my-app-db',
+    #     'USER': 'root',
+    #     'PASSWORD': 'password',
+    #     'HOST': 'db',
+    #     'PORT': 3306,
+    #   }
+    # }
 
     describe 'app_name/settings.py' do
       Given(:file) { 'unstoppable_django/settings.py' }
-      Then { assert_file file, /os.environ.get/ }
+      Then { assert_file file, /os.environ.get\('MYSQL_DATABASE'\)/ }
+      Then { assert_file file, /os.environ.get\('MYSQL_USER'\)/ }
+      Then { assert_file file, / os.environ.get\('MYSQL_PASSWORD'\)/ }
+
     end
 
     describe 'Dockerfile' do
