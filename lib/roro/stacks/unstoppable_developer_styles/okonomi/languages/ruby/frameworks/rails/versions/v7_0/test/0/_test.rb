@@ -2,8 +2,8 @@ require 'test_helper'
 
 describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
   Given(:workbench)  { }
-  Given { @rollon_loud    = true }
-  Given { @rollon_dummies = true }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
 
   describe 'must have a' do
@@ -32,8 +32,20 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
     end
 
     describe 'Dockerfile' do
+      Given(:file) { 'Dockerfile' }
+
+      describe 'syntax' do
+        focus
+
+        Then { assert_file file, /# syntax=docker\/dockerfile:1/ }
+      end
+
       describe 'ruby version' do
-        Then { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+        Then { assert_file file, /FROM ruby:2.7/ }
+      end
+
+      describe 'packages' do
+        Then { assert_file file, /RUN apk add / }
       end
 
       describe 'bundler version' do
@@ -55,6 +67,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
       Given(:file) { 'docker-compose.yml' }
 
       describe 'volumes' do
+
         Then { assert_file file, /\nvolumes:\n\s\sdb_data/ }
         And  { assert_file file, /\s\sgem_cache/ }
         And  { assert_file file, /\s\snode_modules/ }

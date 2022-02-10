@@ -25,6 +25,6 @@ env:
       name: Database host
       value: ${DATABASE_HOST}
 
-actions:
-  - directory 'stage_one', '.', @env
-
+#actions:
+#  - directory 'stage_one', '.', @env
+#

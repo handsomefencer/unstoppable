@@ -15,6 +15,17 @@ module Minitest
       FileUtils.cp_r("#{path}/dummy/.", Dir.pwd )
     end
 
+    def copy_stage_idiot(path )
+      foo = 'bar'
+      # idiot_path = "#{path.split("#{Roro::CLI.stacks}")
+      # }/idiot"
+      # idiots = Dir.glob("#{idiot_path}/**/*")
+      # idiots.each do |idiot|
+      #   generated = idiot.split("#{idiot_path}/").last
+      #   FileUtils.cp(generated, idiot_path)
+      # end
+    end
+
     def stubs_yes?(answer = 'yes')
       Thor::Shell::Basic.any_instance
                         .stubs(:yes?)
@@ -29,15 +40,21 @@ module Minitest
 
     def rollon(dir)
       workbench
-      copy_stage_dummy(dir)
       stubs_adventure(dir)
       stubs_dependencies_met?
       stubs_yes?
       stub_overrides
-      stub_run_actions unless @rollon_dummies
+      unless @rollon_dummies
+        # copy_stage_dummy(dir)
+        stub_run_actions
+      end
       cli = Roro::CLI.new
       @rollon_loud ? cli.rollon : quiet { cli.rollon }
+      copy_stage_idiot(dir)
+      if @rollon_dummies
+      end
     end
+
 
     def stubs_answer(answer)
       Thor::Shell::Basic.any_instance
@@ -106,8 +123,6 @@ module Minitest
         .stubs(:ask)
         .returns(*adventures)
     end
-
-    ## [1, 2, 1, 2, 1]
 
     def adventures_from(stack)
       reflector  = Roro::Reflector.new
