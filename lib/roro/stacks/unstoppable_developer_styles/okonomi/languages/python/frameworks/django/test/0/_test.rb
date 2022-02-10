@@ -44,18 +44,13 @@ describe 'adventure::django::0 python-v3_10_1' do
 
     describe 'requirements.txt' do
       Given(:file) { 'requirements.txt' }
-      Then { assert_file file, /Django==4.0.2/ }
+      Then {
+        assert_file file, /Django==4.0.2/
+        assert_file file, /mysqlclient==2.1.0/
+        assert_file file, /psycopg2==2.9.3/
+        assert_file file, /asgiref==3.5.0/
+        assert_file file, /sqlparse==0.4.2/ }
     end
-    # DATABASES = {
-    #   'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'my-app-db',
-    #     'USER': 'root',
-    #     'PASSWORD': 'password',
-    #     'HOST': 'db',
-    #     'PORT': 3306,
-    #   }
-    # }
 
     describe 'app_name/settings.py' do
       Given(:file) { 'unstoppable_django/settings.py' }

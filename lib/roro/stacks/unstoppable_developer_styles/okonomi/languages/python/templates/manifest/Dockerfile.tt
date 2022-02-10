@@ -5,9 +5,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 WORKDIR /code
 
-RUN python -m pip install Django
-RUN python -m pip install psycopg2
-RUN python -m pip install mysqlclient
+RUN python -m pip install Django psycopg2
+
+<%= partial('python_requirements') %>
 
 RUN django-admin startproject <%= @env[:base][:app_name][:value] %> .
 
