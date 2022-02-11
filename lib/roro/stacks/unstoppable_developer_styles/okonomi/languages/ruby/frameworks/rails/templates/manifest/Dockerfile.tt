@@ -2,9 +2,8 @@
 
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
-# Add only packages necessary to generate a new rails app
+<%= section('packages') %>
 
-<%= partial('packages') %>
 WORKDIR /app
 
 ## Create a Gemfile with just the Rails gem inside:
