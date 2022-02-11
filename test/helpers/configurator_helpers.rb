@@ -18,13 +18,9 @@ module Minitest
     def copy_stage_idiot(path )
       idiot_path = "#{path}/idiot"
       idiots = Dir.glob("#{idiot_path}/**/*")
-      idiots.each do |idiot|
-        generated = idiot.split("#{idiot_path}/").last
-        if File.directory?(generated)
-          FileUtils.cp_r("#{generated}/.", idiot_path)
-        else
-          FileUtils.cp_r(generated, idiot_path)
-        end
+      idiots.map {|idiot| idiot.split("#{idiot_path}/").last}.each do |idiot|
+        puts idiot
+        FileUtils.cp(idiot, idiot_path)
       end
     end
 

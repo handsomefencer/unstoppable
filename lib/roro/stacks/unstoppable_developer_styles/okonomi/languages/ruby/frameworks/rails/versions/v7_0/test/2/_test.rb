@@ -16,7 +16,7 @@ describe 'adventure::rails-v7_0::2 postgres-v13_5 & ruby-v2_7' do
       describe 'with postgres' do
         focus
         Then { assert_file file, /adapter: postgresql/ }
-        And  { assert_file file, /adapter: postgresql/ }
+        # And  { assert_file file, /adapter: postgresql/ }
       end
     end
 
