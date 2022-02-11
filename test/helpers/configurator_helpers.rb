@@ -19,8 +19,16 @@ module Minitest
       idiot_path = "#{path}/idiot"
       idiots = Dir.glob("#{idiot_path}/**/*")
       idiots.map {|idiot| idiot.split("#{idiot_path}/").last}.each do |idiot|
-        puts idiot
-        FileUtils.cp(idiot, idiot_path)
+        if File.file?(idiot)
+          puts idiot
+          FileUtils.cp(idiot, "#{idiot_path}/#{idiot}")
+        elsif File.directory?(idiot)
+          puts idiot
+          foo = 'bar'
+        else
+          baz = 'quz'
+        end
+
       end
     end
 
