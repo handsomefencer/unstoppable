@@ -6,8 +6,6 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
 
 WORKDIR /app
 
-WORKDIR /app
-
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 
 COPY Gemfile Gemfile.lock ./

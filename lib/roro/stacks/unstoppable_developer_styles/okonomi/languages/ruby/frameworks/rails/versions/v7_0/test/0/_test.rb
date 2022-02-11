@@ -2,8 +2,8 @@ require 'test_helper'
 
 describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
   Given(:workbench)  { }
-  Given { @rollon_loud    = true }
-  Given { @rollon_dummies = true }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
 
   describe 'must have a' do

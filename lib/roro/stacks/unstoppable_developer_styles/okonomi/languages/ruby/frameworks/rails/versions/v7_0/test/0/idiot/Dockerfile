@@ -15,8 +15,6 @@ RUN apk add --update \
 
 WORKDIR /app
 
-WORKDIR /app
-
 RUN gem install bundler:2.2.28
 
 COPY Gemfile Gemfile.lock ./

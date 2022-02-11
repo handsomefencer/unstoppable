@@ -20,9 +20,11 @@ module Minitest
       idiots = Dir.glob("#{idiot_path}/**/*")
       idiots.each do |idiot|
         generated = idiot.split("#{idiot_path}/").last
-        puts generated
-        puts idiot_path
-        FileUtils.cp(generated, idiot_path)
+        if File.directory?(generated)
+          FileUtils.cp_r("#{generated}/.", idiot_path)
+        else
+          FileUtils.cp_r(generated, idiot_path)
+        end
       end
     end
 
@@ -45,7 +47,7 @@ module Minitest
       stubs_yes?
       stub_overrides
       unless @rollon_dummies
-        # copy_stage_dummy(dir)
+        copy_stage_dummy(dir)
         stub_run_actions
       end
       cli = Roro::CLI.new
