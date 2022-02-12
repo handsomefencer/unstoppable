@@ -15,23 +15,6 @@ module Minitest
       FileUtils.cp_r("#{path}/dummy/.", Dir.pwd )
     end
 
-    def copy_stage_idiot(path )
-      idiot_path = "#{path}/idiot"
-      idiots = Dir.glob("#{idiot_path}/**/*")
-      idiots.map {|idiot| idiot.split("#{idiot_path}/").last}.each do |idiot|
-        if File.file?(idiot)
-          puts idiot
-          FileUtils.cp(idiot, "#{idiot_path}/#{idiot}")
-        elsif File.directory?(idiot)
-          puts idiot
-          foo = 'bar'
-        else
-          baz = 'quz'
-        end
-
-      end
-    end
-
     def stubs_yes?(answer = 'yes')
       Thor::Shell::Basic.any_instance
                         .stubs(:yes?)
@@ -50,17 +33,14 @@ module Minitest
       stubs_dependencies_met?
       stubs_yes?
       stub_overrides
-      unless @rollon_dummies
-        copy_stage_dummy(dir)
-        stub_run_actions
+      copy_stage_dummy(dir) unless @rollon_dummies
+      stub_run_actions unless @rollon_dummies
+      if @rollon_dummies
+        ENV['RORO_DOCUMENT_LAYERS'] = 'true'
       end
       cli = Roro::CLI.new
       @rollon_loud ? cli.rollon : quiet { cli.rollon }
-      if @rollon_dummies
-        copy_stage_idiot(dir)
-      end
     end
-
 
     def stubs_answer(answer)
       Thor::Shell::Basic.any_instance

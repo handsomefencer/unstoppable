@@ -58,6 +58,19 @@ module Roro
         matrix
       end
 
+      def stack_itineraries(stack)
+        itineraries.select do |itinerary|
+          parent = stack.split("#{Roro::CLI.stacks}/").last
+          itinerary.any? do |i|
+            i.match? parent
+          end
+        end
+      end
+
+      def itinerary_index(itinerary, stack)
+        stack_itineraries(stack).index(itinerary)
+      end
+
       def itineraries(hash = reflection, array = [], matrix = [])
         hash[:inflections]&.each do |inflection|
           artifact = matrix.dup

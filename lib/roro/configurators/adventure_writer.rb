@@ -23,6 +23,9 @@ module Roro
               self.source_paths << "#{stack_parent_path(storyfile)}/templates"
               begin
                 eval a
+                if ENV['RORO_DOCUMENT_LAYERS'].eql?('true')
+                  save_layer(storyfile)
+                end
               rescue
                 raise Error, msg: "#{a} #{storyfile}"
               end
@@ -36,6 +39,7 @@ module Roro
             self.source_paths.shift
             self.source_paths << path
             begin
+
               directory '', '.', @env
             rescue
               Roro::Error
@@ -50,19 +54,23 @@ module Roro
           end
         end
 
-        # def copy_stage_dummy(stage)
-        #   location = Dir.pwd
-        #   stage_dummy = "#{stack_parent_path(stage)}/test/stage_one/stage_dummy"
-        #   generated = Dir.glob("#{location}/**/*")
-        #   dummies = Dir.glob("#{stage_dummy}/**/*")
-        #   dummies.each do |dummy|
-        #     generated.select do |g|
-        #       if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
-        #         FileUtils.cp(g, "#{stage_dummy}/#{stack_name(g)}")
-        #       end
-        #     end
-        #   end
-        # end
+        def save_layer(stack)
+          stacks = Roro::CLI.stacks
+          reflector = Reflector.new
+          parent = stack_name(stack.split("#{stacks}/").last).split('.').first
+          @buildenv[:itinerary].each do |i|
+            index = reflector.itinerary_index(@buildenv[:itinerary], i)
+            ['dummy', "layers/#{parent}"].each do |dir|
+              target = "#{stacks}/#{i}/test/#{index}/#{dir}"
+              artifacts = Dir.glob("#{target}/**/{*,.*}")
+              artifacts.map! { |a| a.split("#{target}/").last }.each do |g|
+                if File.file?(g) && File.exist?(target)
+                  FileUtils.cp(g, "#{target}/#{g}")
+                end
+              end
+            end
+          end
+        end
 
         def epilogue(log)
           array = []
