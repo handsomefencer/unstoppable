@@ -33,7 +33,7 @@ module Roro
           end
         end
 
-        def copy_manifest
+        def copy_manifest(dir = nil)
           paths = manifest_paths
           paths.each do |path|
             self.source_paths.shift
@@ -152,15 +152,16 @@ module Roro
           end
         end
 
-        def manifest_paths( stack = nil, array = nil, paths = [] )
+        def manifest_paths(dir = nil, stack = nil, array = nil, paths = [] )
+          dir   ||= 'manifest'
           stack ||= Roro::CLI.stacks
           array ||= @storyfile.split("#{stack}/").last.split('/')
-          path = "#{stack}/templates/manifest"
+          path = "#{stack}/templates/#{dir}"
           if File.exist?(path)
             paths << path
           end
           child = "#{stack}/#{array.shift}"
-          array.empty? ? paths : manifest_paths(child, array, paths)
+          array.empty? ? paths : manifest_paths(dir, child, array, paths)
         end
 
         def interpolated_stack_path
