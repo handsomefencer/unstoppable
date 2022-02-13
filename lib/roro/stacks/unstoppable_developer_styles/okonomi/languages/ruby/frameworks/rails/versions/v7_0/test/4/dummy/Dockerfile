@@ -13,14 +13,6 @@ RUN apk add --update \
 RUN apk add --update \
   postgresql-dev
 
-RUN apk add --update \
-build-base \
-file \
-git \
-nodejs \
-tzdata \
-yarn
-
 WORKDIR /app
 
 RUN gem install bundler:2.2.28

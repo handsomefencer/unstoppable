@@ -1,6 +1,7 @@
+# syntax=docker/dockerfile:1
+
 FROM ruby:3.0-alpine
 
-## Base packages
 RUN apk add --update \
   build-base \
   file \
@@ -11,10 +12,6 @@ RUN apk add --update \
 
 RUN apk add --update \
   postgresql-dev
-
-## Adventure packages
-
-
 
 WORKDIR /app
 

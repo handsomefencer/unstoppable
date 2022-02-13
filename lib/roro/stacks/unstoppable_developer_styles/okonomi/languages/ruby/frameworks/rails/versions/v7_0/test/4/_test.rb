@@ -23,17 +23,17 @@ describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
 
     describe 'Gemfile with the correct' do
       describe 'rails version' do
-        Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.2/ }
+        Then { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.2/ }
       end
 
       describe 'db' do
-        Then  { assert_file 'Gemfile', /gem ["']pg["'], ["']~> 1.1/ }
+        Then { assert_file 'Gemfile', /gem ["']pg["'], ["']~> 1.1/ }
       end
     end
 
     describe 'Dockerfile' do
       describe 'ruby version' do
-        Then { assert_file 'Dockerfile', /FROM ruby:3.0/ }
+        Then { assert_file 'Dockerfile', /FROM ruby:2.7/ }
       end
 
       describe 'bundler version' do
@@ -41,7 +41,7 @@ describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
       end
 
       describe 'alpine db packages' do
-        describe 'sqlite' do
+        describe 'postgresql' do
           Then { assert_file 'Dockerfile', /postgresql-dev/ }
         end
 
@@ -62,10 +62,11 @@ describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
 
       describe 'database service' do
         describe 'database service' do
-          Then  { assert_file file, /\n\s\s\s\simage:/ }
+          Then  { assert_file file, /\n\s\sdb:/ }
 
           describe 'image' do
-            Then  { assert_file file, /\n\s\s\s\simage: postgres:13.5/ }
+
+            Then  { assert_file file, /\n\s\s\s\simage: postgres:14.1/ }
           end
         end
       end

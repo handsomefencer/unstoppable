@@ -1,7 +1,6 @@
 require 'test_helper'
 
 describe 'adventure::rails-v6_1::2 postgres-v13_5 & ruby-v2_7' do
-  Given { skip }
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
@@ -56,7 +55,7 @@ describe 'adventure::rails-v6_1::2 postgres-v13_5 & ruby-v2_7' do
         describe 'app' do
           describe 'depends_on' do
             Then  { assert_file file, /\n\s\s\s\sdepends_on:/ }
-            Then  { assert_file file, /\n\s\s\s\s\s\s- database/ }
+            Then  { assert_file file, /\n\s\s\s\s\s\s- db/ }
           end
 
           describe 'volumes' do
@@ -64,8 +63,9 @@ describe 'adventure::rails-v6_1::2 postgres-v13_5 & ruby-v2_7' do
             Then  { assert_file file, /\n\s\s\s\s\s\s- db_data:\/var\/lib/ }
           end
         end
+
         describe 'database' do
-          Then  { assert_file file, /\s\sdatabase:/ }
+          Then  { assert_file file, /\s\sdb:/ }
 
           describe 'image' do
             Then  { assert_file file, /image: postgres:13.5/ }

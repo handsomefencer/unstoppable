@@ -1,7 +1,6 @@
 require 'test_helper'
 
 describe 'adventure::circleci::0 rails' do
-  Given { skip }
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }

@@ -71,14 +71,6 @@ describe 'AdventureWriter' do
     end
   end
 
-  describe '#partial(name)' do
-    describe 'must return interpolation from the most specific partial' do
-      context 'when variable present' do
-        Then { assert_match /PASSWORD=password/, writer.partial('web') }
-      end
-    end
-  end
-
   describe '#manifest_paths' do
     Then { assert_match 'templates/manifest', writer.manifest_paths.first }
   end

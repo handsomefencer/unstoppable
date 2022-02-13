@@ -5,7 +5,6 @@ env:
     rails_version:
       value: 6.1
 
-actions:
-  - copy_manifest
+
 
 

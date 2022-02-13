@@ -20,7 +20,7 @@ services:
       RAILS_ENV: development
 
   db:
-    image: postgres:13.5
+    image: postgres:14.1
     volumes:
       - db_data:/var/lib/postgresql/data
     env_file:

@@ -1,7 +1,6 @@
 require 'test_helper'
 
 describe 'adventure::rails-v6_1::0 sqlite & ruby-v2_7' do
-  Given { skip }
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
@@ -25,8 +24,9 @@ describe 'adventure::rails-v6_1::0 sqlite & ruby-v2_7' do
     end
 
     describe 'Dockerfile' do
+      Given(:file) { 'Dockerfile' }
       describe 'ruby version' do
-        Then  { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+        Then  { assert_file file, /FROM ruby:2.7/ }
       end
 
       describe 'bundler version' do
@@ -34,7 +34,7 @@ describe 'adventure::rails-v6_1::0 sqlite & ruby-v2_7' do
       end
 
       describe 'yarn install command' do
-        Then   { assert_file 'Dockerfile', /RUN yarn install/ }
+        Then   { assert_file file, /RUN yarn install/ }
       end
     end
 

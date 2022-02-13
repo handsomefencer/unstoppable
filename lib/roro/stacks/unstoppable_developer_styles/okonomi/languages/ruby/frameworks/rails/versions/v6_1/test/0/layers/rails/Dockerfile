@@ -11,7 +11,7 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  postgresql-dev
+  sqlite-dev
 
 RUN apk add --update \
 build-base \
