@@ -8,7 +8,7 @@ sudo docker run \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
-  -it handsomefencer/roro:latest roro rollon &&
+  -it handsomefencer/roro:latest roro rollon
 
 
 ```
