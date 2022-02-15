@@ -34,7 +34,7 @@ describe 'AdventureWriter' do
 
       describe 'partials_for()' do
         context 'when file has immediate partials' do
-          Then  { assert_equal 3, writer.partials_for(itinerary[0]).size }
+          Then  { assert_equal 4, writer.partials_for(itinerary[0]).size }
         end
 
         context 'when file has no immediate partials' do
@@ -43,19 +43,13 @@ describe 'AdventureWriter' do
       end
 
       describe 'partials' do
-        Then { assert_equal 3, writer.partials.size }
+        Then { assert_equal 4, writer.partials.size }
       end
 
       describe '#section_partial(name)' do
         Then { assert_equal 2, writer.section_partials('services').size }
         And  { assert_match (/web/), writer.section_partials('services').first }
         And  { assert_match (/db/), writer.section_partials('services').last }
-      end
-
-      describe 'partials' do
-        Then { assert_match ( /_packages.erb/), writer.partials[0]  }
-        And  { assert_match (/_web/), writer.partials[1]  }
-        And  { assert_match (/_db/), writer.partials[2]  }
       end
     end
 

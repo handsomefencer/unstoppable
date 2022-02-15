@@ -33,11 +33,13 @@ module Minitest
       stubs_dependencies_met?
       stubs_yes?
       stub_overrides
-      copy_stage_dummy(dir) unless @rollon_dummies
-      stub_run_actions unless @rollon_dummies
       if @rollon_dummies
         ENV['RORO_DOCUMENT_LAYERS'] = 'true'
+      else
+        copy_stage_dummy(dir)
+        stub_run_actions
       end
+
       cli = Roro::CLI.new
       @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
