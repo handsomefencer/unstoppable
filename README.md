@@ -10,7 +10,6 @@ sudo docker run \
   -u 0 \
   -it handsomefencer/roro:latest roro rollon &&
 
-docker cp artifact:/artifact/. .
 
 ```
 
