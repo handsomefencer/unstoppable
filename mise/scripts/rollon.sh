@@ -18,6 +18,7 @@ done
 . ${SCRIPTS}/reset_sandbox.sh
 . ${SCRIPTS}/prune.sh
 #. ${SCRIPTS}/build_gem.sh
+. ${SCRIPTS}/image_push.sh
 . ${SCRIPTS}/run.sh
 #. ${SCRIPTS}/build_app.sh
 
