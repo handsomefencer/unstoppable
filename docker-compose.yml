@@ -8,8 +8,6 @@ services:
     build:
       context: .
       dockerfile: mise/containers/ruby_gem/Dockerfile
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - RUBY_VERSION='2.5'
 
