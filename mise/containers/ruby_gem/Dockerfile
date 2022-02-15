@@ -29,4 +29,3 @@ RUN gem build roro.gemspec
 RUN rake install
 
 
-WORKDIR /home/schadenfred
