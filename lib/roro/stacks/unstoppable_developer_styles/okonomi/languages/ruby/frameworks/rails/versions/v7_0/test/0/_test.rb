@@ -2,8 +2,8 @@ require 'test_helper'
 
 describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
   Given(:workbench)  { }
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
 
   describe 'must have a' do
@@ -72,7 +72,8 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
       describe 'database service' do
         describe 'database service' do
-          Then  { assert_file file, /\n\s\sdatabase:/ }
+          focus
+          Then  { assert_file file, /\n\s\sdb:/ }
 
           describe 'image' do
             Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
