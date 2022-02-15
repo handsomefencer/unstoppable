@@ -13,7 +13,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
     describe 'config/database.yml' do
       describe 'with sqlite' do
-        Then  { assert_file 'config/database.yml' }
+        Then  { assert_file 'config/database.yml',   /database: db\/test\.sqlite3/ }
       end
     end
 
@@ -72,11 +72,15 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
       describe 'database service' do
         describe 'database service' do
-          focus
           Then  { assert_file file, /\n\s\sdb:/ }
 
           describe 'image' do
             Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
+          end
+
+          describe 'env_file' do
+            Then { assert_file file, /\n\s\s\s\senv_file:/ }
+            And  { assert_file file, /\n\s\s\s\s\s\s- \.\/mise\/env\/base.env/ }
           end
         end
       end
