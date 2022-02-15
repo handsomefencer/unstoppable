@@ -1,5 +1,19 @@
 # RoRo
 
+tl; dr 
+
+```shell
+sudo docker run \
+  --name artifact \
+  -v $PWD:/artifact \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -u 0 \
+  -it handsomefencer/roro:latest roro rollon &&
+
+docker cp artifact:/artifact/. .
+
+```
+
 RoRo is a set of tools and stories for building, running continuous integration tests on, and deploying your containerized projects. It aims to provide everything you need to:
 
 1. Greenfield a new project with a containerized app and database and other containers you might need.
