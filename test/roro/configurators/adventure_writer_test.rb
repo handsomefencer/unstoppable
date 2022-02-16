@@ -68,4 +68,84 @@ describe 'AdventureWriter' do
   describe '#manifest_paths' do
     Then { assert_match 'templates/manifest', writer.manifest_paths.first }
   end
+
+  describe '#template_paths' do
+    context 'django' do
+      # Then { assert_equal 3, writer.template_paths.size }
+
+      describe 'must include parents' do
+        # Then { assert_match 'okonomi/templates', writer.template_paths[0] }
+        # And  { assert_match 'python/templates', writer.template_paths[1] }
+      end
+
+      describe 'must include self' do
+        # Then { assert_match 'django/templates', writer.template_paths[2] }
+      end
+    end
+  end
+
+  describe '#template_paths' do
+    context 'when rails-v6_1::0 sqlite & ruby-v2_7' do
+      Given(:itinerary)      { itineraries[11]}
+      Given(:template_paths) { writer.template_paths }
+      Given(:result)         { writer.template_paths_for(stack) }
+
+      describe 'must have correct itinerary' do
+        Then { assert_equal 3, itinerary.size }
+        And  { assert_match 'rails/databases/sqlite', itinerary[0] }
+        And  { assert_match 'rails/versions/v7_0', itinerary[1] }
+        And  { assert_match 'ruby/versions/v2_7', itinerary[2] }
+      end
+
+      describe '#template_paths' do
+        Then { assert_equal 4, template_paths.size }
+        And  { assert_match 'okonomi/templates', template_paths[0] }
+        And  { assert_match 'frameworks/rails/templates', template_paths[1] }
+        And  { assert_match 'databases/sqlite/templates', template_paths[2] }
+        And  { assert_match 'versions/v7_0/templates', template_paths[3] }
+      end
+
+      describe '#template_paths_for(stack)' do
+        context 'when stack is rails/versions/v7_0' do
+          Given(:stack)     { itinerary[1] }
+
+          describe 'must return correct number of template paths' do
+            Then { assert_equal 3, result.size }
+          end
+
+          describe 'must return grandparent' do
+            Then { assert_match 'okonomi/templates', result[0] }
+          end
+
+          describe 'must return grandparent' do
+            Then { assert_match 'frameworks/rails/templates', result[1] }
+          end
+
+          describe 'must return self' do
+            Then { assert_match 'versions/v7_0/templates', result[2] }
+          end
+        end
+
+        context 'when stack is databases/sqlite' do
+          Given(:stack)     { itinerary[0] }
+
+          describe 'must return correct number of template paths' do
+            Then { assert_equal 3, result.size }
+          end
+
+          describe 'must return grandparent' do
+            Then { assert_match 'okonomi/templates', result[0] }
+          end
+
+          describe 'must return grandparent' do
+            Then { assert_match 'frameworks/rails/templates', result[1] }
+          end
+
+          describe 'must return self' do
+            Then { assert_match 'databases/sqlite/templates', result[2] }
+          end
+        end
+      end
+    end
+  end
 end

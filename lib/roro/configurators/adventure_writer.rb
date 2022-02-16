@@ -72,6 +72,27 @@ module Roro
           end
         end
 
+        def generate_mise
+           generator = Roro::CLI.new
+           generator.generate_mise
+           generator.generate_containers 'app', 'db'
+           generator.generate_environments @env
+           generator.generate_keys
+        end
+
+        def copy_layer(dir)
+          paths = template_paths
+          paths.each do |path|
+            self.source_paths.shift
+            self.source_paths << path
+            begin
+              directory dir, '.', @env
+            rescue
+              Roro::Error
+            end
+          end
+        end
+
         def epilogue(log)
           array = []
           log[:itinerary].each do |i|
@@ -162,6 +183,26 @@ module Roro
           end
           child = "#{stack}/#{array.shift}"
           array.empty? ? paths : manifest_paths(dir, child, array, paths)
+        end
+
+        def template_paths_for(stack, array = nil, paths = [] )
+          if array.nil?
+            array ||= stack.split("#{stack}/").last.split('/')
+            stack = Roro::CLI.stacks
+          end
+          path = "#{stack}/templates"
+          if File.exist?(path)
+            paths << path
+          end
+          array.empty? ? paths : template_paths_for("#{stack}/#{array.shift}", array, paths)
+        end
+
+        def template_paths
+          array = []
+          @buildenv[:itinerary].each do |stack|
+            array += template_paths_for(stack)
+          end
+          array.uniq
         end
 
         def interpolated_stack_path

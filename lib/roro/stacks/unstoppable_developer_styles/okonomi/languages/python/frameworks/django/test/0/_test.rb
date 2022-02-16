@@ -5,30 +5,17 @@ require 'test_helper'
 describe '' do
   Given(:workbench) { }
 
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
-    describe 'requirements.txt' do
-      Given(:file) { 'requirements.txt' }
-      Then { assert_file file }
-  
-      describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
-        end
-
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
-        end
+    describe 'mise' do
+      describe 'mise/env' do
+        Then { assert_file 'mise/env/base.env'}
       end
     end
-  end
 
-
-  describe 'directory must contain' do
     describe 'docker-compose.yml with' do
       Given(:file) { 'docker-compose.yml' }
 
