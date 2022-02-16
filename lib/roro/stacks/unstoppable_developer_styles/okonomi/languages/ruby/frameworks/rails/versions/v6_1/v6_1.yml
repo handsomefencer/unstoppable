@@ -5,8 +5,3 @@ env:
     rails_version:
       value: 6.1
 
-
-actions:
-  - docker-compose run --rm app bin/rails webpacker:install
-  - docker-compose up
-
