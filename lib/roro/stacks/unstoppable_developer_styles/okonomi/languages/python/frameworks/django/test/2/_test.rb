@@ -10,25 +10,6 @@ describe '' do
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
-    describe 'requirements.txt' do
-      Given(:file) { 'requirements.txt' }
-      Then { assert_file file }
-  
-      describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
-        end
-
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
-        end
-      end
-    end
-  end
-
-
-  describe 'directory must contain' do
     describe 'docker-compose.yml with' do
       Given(:file) { 'docker-compose.yml' }
 
@@ -56,7 +37,10 @@ describe '' do
 
     describe 'requirements.txt' do
       Given(:file) { 'requirements.txt' }
-      Then { assert_file file, /Django==4.0.2/ }
+      Then { assert_file file, /asgiref==3.5.0/ }
+      And  { assert_file file, /psycopg2==2/ }
+      And  { assert_file file, /sqlparse==0.4.2/ }
+      And  { assert_file file, /Django==4.0.2/ }
     end
 
     describe 'app_name/settings.py' do

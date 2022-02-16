@@ -60,7 +60,6 @@ describe '' do
       Then { assert_file file, /os.environ.get\('MYSQL_DATABASE'\)/ }
       Then { assert_file file, /os.environ.get\('MYSQL_USER'\)/ }
       Then { assert_file file, / os.environ.get\('MYSQL_PASSWORD'\)/ }
-
     end
 
     describe 'Dockerfile' do
