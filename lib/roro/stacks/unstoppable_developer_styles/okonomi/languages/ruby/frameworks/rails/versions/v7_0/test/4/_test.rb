@@ -14,7 +14,6 @@ describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
     describe 'config/database.yml' do
       Given(:file) { 'config/database.yml' }
       describe 'with postgres docker' do
-        focus
         Then  { assert_file file, /<%= ENV\.fetch\('DATABASE_HOST'\)/ }
       end
     end
@@ -34,21 +33,26 @@ describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
     end
 
     describe 'Dockerfile' do
+      Given(:file) { 'Dockerfile' }
       describe 'ruby version' do
-        Then { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+        Then { assert_file file, /FROM ruby:2.7/ }
       end
 
       describe 'bundler version' do
-        Then { assert_file 'Dockerfile', /bundler:2.2.28/ }
+        Then { assert_file file, /bundler:2.2.28/ }
       end
 
       describe 'alpine db packages' do
         describe 'postgresql' do
-          Then { assert_file 'Dockerfile', /postgresql-dev/ }
+          Then { assert_file file, /postgresql-dev/ }
         end
 
         describe 'node' do
-          Then { assert_file 'Dockerfile', /nodejs/ }
+          Then { assert_file file, /nodejs/ }
+        end
+
+        describe 'node' do
+          Then { assert_file file, /RUN yarn install/ }
         end
       end
     end
