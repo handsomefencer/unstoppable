@@ -10,3 +10,4 @@ env:
 actions:
   - copy_layer('manifest')
   - generate_mise
+  - chmod 'entrypoints/docker-entrypoint.sh', 0755
