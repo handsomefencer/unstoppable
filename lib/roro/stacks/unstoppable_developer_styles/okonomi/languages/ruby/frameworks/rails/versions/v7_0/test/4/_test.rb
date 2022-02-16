@@ -2,8 +2,8 @@ require 'test_helper'
 
 describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
   Given(:workbench)  { }
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
 
   describe 'must have a' do
@@ -12,8 +12,10 @@ describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
     end
 
     describe 'config/database.yml' do
-      describe 'with sqlite' do
-        Then  { assert_file 'config/database.yml' }
+      Given(:file) { 'config/database.yml' }
+      describe 'with postgres docker' do
+        focus
+        Then  { assert_file file, /<%= ENV\.fetch\('DATABASE_HOST'\)/ }
       end
     end
 

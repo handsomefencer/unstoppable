@@ -8,31 +8,5 @@ env:
       value: 7.0
 
 actions:
-  - polish
-  - chmod 'entrypoints/docker-entrypoint.sh', 0755
-  - |
-    generator = Roro::CLI.new
-    generator.generate_mise
-    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-    generator.generate_environments @env
-    generator.generate_keys
-
-#  - polish
-#  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
-#  - directory 'stage_two', '.', @env
-#
-#  - |
-#    insert_into_file(
-#    'docker-compose.yml',
-#    partial('service_app'),
-#    :after => "\nservices:")
-#
-#  - append_to_file(
-#      'docker-compose.yml',
-#      partial('volumes'))
-#  - |
-#    generator = Roro::CLI.new
-#    generator.generate_mise
-#    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-#    generator.generate_environments @env
-#    generator.generate_keys
+  - copy_layer('manifest')
+  - generate_mise
