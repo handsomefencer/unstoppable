@@ -1,9 +1,9 @@
-require 'test_helper'
+girequire 'test_helper'
 
-describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
+describe 'replaceme' do
   Given(:workbench)  { }
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
 
   describe 'must have a' do
@@ -12,7 +12,8 @@ describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v3_0' do
     end
 
     describe 'config/database.yml' do
-      describe 'with sqlite' do
+      describe 'with postgres' do
+        focus
         Then  { assert_file 'config/database.yml' }
       end
     end

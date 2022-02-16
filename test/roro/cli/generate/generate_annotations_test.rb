@@ -16,9 +16,10 @@ describe 'Roro::CLI#generate_annotations' do
   Given { subject.generate_annotations }
 
   describe 'after generate' do
-    # Then  { assert_file adventure_test, expected }
-    # Then  { assert_file adventure_test, File.read("#{@roro_dir}/test/fixtures/files/after_annotate.rb") }
-    # Then { save_result(File.read(adventure_test), 'after_annotate.rb')}
+    focus
+    Then  { assert_file adventure_test, expected }
+    Then  { assert_file adventure_test, File.read("#{@roro_dir}/test/fixtures/files/after_annotate.rb") }
+    Then { save_result(File.read(adventure_test), 'after_annotate.rb')}
   end
 
   describe '#adventure_boilerplate' do
