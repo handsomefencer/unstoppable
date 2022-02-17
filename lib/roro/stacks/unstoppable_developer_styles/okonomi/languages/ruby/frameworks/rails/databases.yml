@@ -29,5 +29,5 @@ env:
       value: postgres
     DATABASE_HOST:
       name: Database host
-      value: database
+      value: db
 

@@ -71,7 +71,6 @@ describe 'adventure::rails-v7_0::4 postgres-v14_1 & ruby-v3_0' do
           Then  { assert_file file, /\n\s\sdb:/ }
 
           describe 'image' do
-
             Then  { assert_file file, /\n\s\s\s\simage: postgres:13.5/ }
           end
         end

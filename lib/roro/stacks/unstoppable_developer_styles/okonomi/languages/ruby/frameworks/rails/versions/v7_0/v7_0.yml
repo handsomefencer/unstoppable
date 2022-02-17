@@ -4,3 +4,7 @@ env:
   base:
     rails_version:
       value: 7.0
+
+actions:
+  - run 'docker-compose build'
+  - run 'docker-compose up'

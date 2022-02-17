@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'adventure::rails-v7_0::3 postgres-v13_5 & ruby-v2_7' do
+describe 'adventure::rails-v7_0::3 postgres-v14_1 & ruby-v2_7' do
   Given(:workbench)  { }
   Given { @rollon_loud    = true }
   Given { @rollon_dummies = true }

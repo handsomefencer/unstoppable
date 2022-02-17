@@ -18,6 +18,7 @@ RUN bundle exec rails new . \
   --skip-bundle \
   --skip-webpack-install
 
+RUN rm config/master.key
 FROM scratch AS export-stage
 
 ## Copy the generated files onto the host.
