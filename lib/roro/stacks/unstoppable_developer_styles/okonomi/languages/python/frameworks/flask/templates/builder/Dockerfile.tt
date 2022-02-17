@@ -7,8 +7,6 @@ WORKDIR /code
 
 RUN python -m pip install flask redis
 
-<%= partial('python_requirements') %>
-
 COPY . /code/
 
 RUN pip freeze > requirements.txt

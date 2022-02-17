@@ -5,8 +5,8 @@ require 'test_helper'
 describe '' do
   Given(:workbench) { }
 
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
 
   describe 'directory must contain' do
@@ -18,17 +18,15 @@ describe '' do
 
     describe 'docker-compose.yml with' do
       Given(:file) { 'docker-compose.yml' }
+      Given(:services) { read_yaml(file)[:services] }
 
       describe 'correct docker-compose version' do
-        Then { assert_file file, /version: '3.9'/ }
+        Then { assert_equal read_yaml(file)[:version], '3.9' }
       end
 
       describe 'correct services' do
-        Then { assert_includes read_yaml(file)[:services].keys, :web  }
-
-        describe 'web' do
-          Then { assert_includes read_yaml(file)[:services].keys, :redis  }
-        end
+        Then { assert_includes services.keys, :redis  }
+        And  { assert_includes services.keys, :web  }
       end
     end
 
