@@ -1,5 +1,5 @@
-preface: some string
+preface: Laravel is a web application framework with expressive, elegant syntax.
 
-# env:
-
-# actions:
+actions:
+  - copy_layer('manifest')
+#  - run "docker-compose build"
