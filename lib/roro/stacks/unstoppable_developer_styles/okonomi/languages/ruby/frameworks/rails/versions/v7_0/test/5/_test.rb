@@ -1,4 +1,4 @@
-require 'test_helper'
+.girequire 'test_helper'
 
 describe 'adventure::rails-v7_0::3 postgres-v14_1 & ruby-v2_7' do
   Given(:workbench)  { }

@@ -1,4 +1,4 @@
-require 'test_helper'
+git require 'test_helper'
 
 describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
   Given(:workbench)  { }

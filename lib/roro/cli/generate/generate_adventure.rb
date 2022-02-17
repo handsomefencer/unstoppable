@@ -13,7 +13,8 @@ module Roro
       @env = { adventure_name: adventure.split('/').last }
       location =  "lib/roro/stacks/#{adventure}"
       directory 'adventure', location, @env
-      generate_annotations("#{location}/test/0/_test.rb")
+      generate_annotations
+      # generate_annotations("#{location}/test/0/_test.rb")
     end
 
     no_commands do
