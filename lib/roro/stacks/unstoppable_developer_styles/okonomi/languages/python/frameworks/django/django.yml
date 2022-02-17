@@ -28,8 +28,6 @@ env:
       help: https://www.forbes.com/sites/allbusiness/2016/10/23/12-tips-for-naming-your-startup-business/
 
 actions:
-  - copy_layer('builder')
-  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
   - copy_layer('manifest')
   - generate_mise
   - run 'docker-compose build'
