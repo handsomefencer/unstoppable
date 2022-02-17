@@ -64,8 +64,8 @@ env:
       value: DEV
       
 actions:
-  - directory 'stage_one', '.', @env
-  - copy_file 'stage_one/docker-compose-dev.yml', './docker-compose.yml'
+  - directory 'manifest', '.', @env
+  - copy_file 'manifest/docker-compose-dev.yml', './docker-compose.yml'
   - |
     containers = ['wordpress', 'mysql', 'wordpress-cli', 'pma', 'nginx']
     generator = Roro::CLI.new
@@ -73,4 +73,4 @@ actions:
     generator.generate_containers(*containers)
     generator.generate_environments(@env)
     generator.generate_keys
-  - run "sudo docker-compose up"
+  - run "docker-compose up"
