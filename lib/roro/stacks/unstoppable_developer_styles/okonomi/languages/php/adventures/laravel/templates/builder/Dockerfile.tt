@@ -6,7 +6,7 @@ WORKDIR /app/
 
 RUN composer create-project laravel/laravel \
   <%= @env[:base][:app_name][:value]%>
-  
+
 FROM scratch AS export-stage
 
 COPY --from=builder ./app/<%= @env[:base][:app_name][:value]%> .
