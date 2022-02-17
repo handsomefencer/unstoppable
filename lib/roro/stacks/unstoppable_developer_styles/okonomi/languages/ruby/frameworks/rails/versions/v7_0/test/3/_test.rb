@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'adventure::rails-v7_0::4 postgres-v13_5 & ruby-v3_0' do
+describe 'adventure::rails-v7_0::4 postgres-v14_1 & ruby-v3_0' do
   Given(:workbench)  { }
   Given { @rollon_loud    = true }
   Given { @rollon_dummies = true }
@@ -35,7 +35,7 @@ describe 'adventure::rails-v7_0::4 postgres-v13_5 & ruby-v3_0' do
     describe 'Dockerfile' do
       Given(:file) { 'Dockerfile' }
       describe 'ruby version' do
-        Then { assert_file file, /FROM ruby:2.7/ }
+        Then { assert_file file, /FROM ruby:3.0/ }
       end
 
       describe 'bundler version' do
@@ -72,7 +72,7 @@ describe 'adventure::rails-v7_0::4 postgres-v13_5 & ruby-v3_0' do
 
           describe 'image' do
 
-            Then  { assert_file file, /\n\s\s\s\simage: postgres:14.1/ }
+            Then  { assert_file file, /\n\s\s\s\simage: postgres:13.5/ }
           end
         end
       end
