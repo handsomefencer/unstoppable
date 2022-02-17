@@ -24,11 +24,14 @@ describe '' do
       end
 
       describe 'correct services' do
-        Then { assert_includes read_yaml(file)[:services].keys, :web  }
+        Given(:services) { read_yaml(file)[:services] }
+
+        describe 'web' do
+          Then { assert_includes services[:web][:restart], 'always' }
+        end
 
         describe 'db' do
-          Given(:db) { read_yaml(file)[:services][:db] }
-          Then { assert_includes read_yaml(file)[:services].keys, :db  }
+          Given(:db) { services[:db] }
 
           describe 'image' do
             Then { assert_equal 'mysql:5.7', db[:image] }

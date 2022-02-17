@@ -32,4 +32,5 @@ actions:
   - generate_mise
   - run 'docker-compose build'
   - run 'docker-compose up'
+  - run 'docker-compose restart'
 
