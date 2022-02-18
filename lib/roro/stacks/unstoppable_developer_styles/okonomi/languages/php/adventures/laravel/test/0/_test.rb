@@ -19,8 +19,8 @@ describe '' do
       Given(:file) { 'composer.json' }
       focus
       Then {
-        # assert_file file
-        assert_file 'docker-compose.yml' }
+        assert_file file }
+        # assert_file 'docker-compose.yml' }
     end
 
     describe 'docker-compose.yml' do

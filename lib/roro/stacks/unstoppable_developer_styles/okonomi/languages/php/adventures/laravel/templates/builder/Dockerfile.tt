@@ -5,7 +5,7 @@ FROM composer as builder
 WORKDIR /app/
 
 RUN composer create-project laravel/laravel \
-  <%= @env[:base][:app_name][:value]%>
+  blog
 
 FROM scratch AS export-stage
 
