@@ -64,8 +64,8 @@ module Roro
               target = "#{stacks}/#{i}/test/#{index}/#{dir}"
               artifacts = Dir.glob("#{target}/**/{*,.*}")
               artifacts.map! { |a| a.split("#{target}/").last }.each do |g|
-                if File.file?(g) && File.exist?(target)
-                  t = "#{target}/#{g}"
+                t = "#{target}/#{g}"
+                if File.file?(g) && File.exist?(t)
                   FileUtils.cp(g, t) unless File.read(g).eql?(File.read(t))
                 end
               end

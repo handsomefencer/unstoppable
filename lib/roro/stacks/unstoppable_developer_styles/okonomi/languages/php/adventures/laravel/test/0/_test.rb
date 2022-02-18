@@ -14,27 +14,52 @@ describe '' do
       Then { assert_file 'docker/default.conf' }
       And  { assert_file 'docker/scheduler.sh' }
 
-      describe 'php.dockerfile' do
+      describe 'php.dockerfile must have correct' do
         Given(:file) { 'docker/php.dockerfile' }
-        focus
-        Then { assert_file file, /FROM php:7.4-fpm-alpine/ }
+
+        describe 'php version' do
+          Then { assert_file file, /FROM php:7.4-fpm-alpine/ }
+        end
+
+        describe 'db package' do
+          Then { assert_file file, /\n  postgresql-dev/ }
+        end
+
+        describe 'php extensions' do
+          Then { assert_file file, /\n  pdo_pgsql/ }
+        end
+
+        describe 'redis' do
+          Then { assert_file file, /\nRUN pecl install -o -f redis/ }
+        end
       end
     end
 
     describe 'composer.json' do
       Given(:file) { 'composer.json' }
-      Then {
-        assert_file file }
-        # assert_file 'docker-compose.yml' }
+      Then { assert_file file, /"php": "\^7.3|\^8.0"/ }
     end
 
     describe 'docker-compose.yml' do
       Given(:file) { 'docker-compose.yml' }
+      Given(:data) { read_yaml(file) }
       Then { assert_file file }
+      And { assert_includes data.keys, :version }
+      And { assert_includes data.keys, :networks }
+
+      describe 'services' do
+        focus
+        Then {
+          assert_includes data[:services].keys, :artisan
+          assert_includes data[:services].keys, :composer
+          assert_includes data[:services].keys, :npm
+          assert_includes data[:services].keys, :php
+          assert_includes data[:services].keys, :postgres
+          assert_includes data[:services].keys, :redis
+          assert_includes data[:services].keys, :scheduler
+          assert_includes data[:services].keys, :site
+          assert_includes data[:services].keys, :worker }
+      end
     end
-  end
-
-
-  describe 'other string' do
   end
 end
