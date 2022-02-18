@@ -2,4 +2,4 @@ preface: Laravel is a web application framework with expressive, elegant syntax.
 
 actions:
   - copy_layer('manifest')
-#  - run "docker-compose build"
+  - run "docker-compose build"
