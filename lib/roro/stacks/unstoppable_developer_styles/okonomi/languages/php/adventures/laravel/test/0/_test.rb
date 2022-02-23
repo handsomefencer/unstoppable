@@ -5,8 +5,8 @@ require 'test_helper'
 describe '' do
   Given(:workbench) { }
 
-  Given { @rollon_loud    = true }
-  Given { @rollon_dummies = true }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
   
   describe 'directory must contain' do
@@ -35,11 +35,6 @@ describe '' do
       end
     end
 
-    describe 'composer.json' do
-      Given(:file) { 'composer.json' }
-      Then { assert_file file, /"php": "\^7.3|\^8.0"/ }
-    end
-
     describe 'docker-compose.yml' do
       Given(:file) { 'docker-compose.yml' }
       Given(:data) { read_yaml(file) }
@@ -48,7 +43,6 @@ describe '' do
       And { assert_includes data.keys, :networks }
 
       describe 'services' do
-        focus
         Then {
           assert_includes data[:services].keys, :artisan
           assert_includes data[:services].keys, :composer
