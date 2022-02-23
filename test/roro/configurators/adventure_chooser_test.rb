@@ -20,7 +20,7 @@ describe 'AdventureChooser' do
     Given(:itinerary)       { adventure.itinerary }
     Given(:manifest)        { adventure.manifest }
     Given(:build_itinerary) do
-      stub_journey(answers) if defined?(answers)
+      stub_journey(answers)
       quiet { adventure.build_itinerary(stack_path) }
     end
 

@@ -1,10 +1,9 @@
 require 'test_helper'
 
 describe 'adventure::rails-v7_0::3 postgres-v14_1 & ruby-v2_7' do
-  Given { skip }
   Given(:workbench)  { }
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
+  Given { @rollon_loud    = true }
+  Given { @rollon_dummies = true }
   Given { rollon(__dir__) }
 
   describe 'must have a' do
@@ -36,6 +35,7 @@ describe 'adventure::rails-v7_0::3 postgres-v14_1 & ruby-v2_7' do
     describe 'Dockerfile' do
       Given(:file) { 'Dockerfile' }
       describe 'ruby version' do
+        focus
         Then { assert_file file, /FROM ruby:2.7/ }
       end
 

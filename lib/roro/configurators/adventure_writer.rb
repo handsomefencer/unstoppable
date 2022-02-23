@@ -47,12 +47,12 @@ module Roro
           end
         end
 
-        def polish
-          if File.exist?('polisher')
-            FileUtils.cp_r('polisher/.', '.')
-            FileUtils.rm_rf('polisher')
-          end
-        end
+        # def polish
+        #   if File.exist?('polisher')
+        #     FileUtils.cp_r('polisher/.', '.')
+        #     FileUtils.rm_rf('polisher')
+        #   end
+        # end
 
         def save_layer(stack)
           stacks = Roro::CLI.stacks

@@ -21,11 +21,6 @@ module Minitest
                         .returns(answer)
     end
 
-    def save_result(result, location = nil )
-      File.open("#{@roro_dir}/test/fixtures/files/#{location}", "w") do |f|
-        f.write(result)
-      end
-    end
 
     def rollon(dir)
       workbench
@@ -162,12 +157,12 @@ module Minitest
       }
     end
 
-    def generate_fixture_cases
-      File.open(cases_loc, "w+") { |f|
-        builder = Roro::Configurators::AdventureCaseBuilder.new
-        f.write(builder.build_cases_matrix.to_yaml)
-      }
-    end
+    # def generate_fixture_cases
+    #   File.open(cases_loc, "w+") { |f|
+    #     builder = Roro::Configurators::AdventureCaseBuilder.new
+    #     f.write(builder.build_cases_matrix.to_yaml)
+    #   }
+    # end
 
     def generate_fixture_itineraries
       File.open(itineraries_loc, "w+") do |f|

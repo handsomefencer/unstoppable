@@ -14,7 +14,11 @@ describe 'Roro::CLI#generate_annotations' do
   Given(:dummy)          { "#{story_path}/test/0/dummy/idiot.yaml" }
 
   Given { subject.generate_annotations }
-
+  def save_result(result, location = nil )
+    File.open("#{@roro_dir}/test/fixtures/files/#{location}", "w") do |f|
+      f.write(result)
+    end
+  end
   describe 'after generate' do
     Then  { assert_file adventure_test, expected }
     Then  { assert_file adventure_test, File.read("#{@roro_dir}/test/fixtures/files/after_annotate.rb") }
