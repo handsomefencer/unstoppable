@@ -20,11 +20,11 @@ describe 'rake ci:prepare:workflows:adventures' do
         Then { assert_equal answers[0], "1\\n1\\n1" }
 
         describe 'with correct number of answers' do
-          Then { assert_equal 26, answers.size  }
+          Then { assert_equal 27, answers.size  }
         end
         describe 'with correct answers' do
           Then { assert_equal answers[0], "1\\n1\\n1" }
-          And  { assert_equal answers[5], "1\\n2\\n1\\n2\\n1" }
+          And  { assert_equal answers[5], "1\\n2\\n1\\n1\\n2" }
         end
       end
     end
