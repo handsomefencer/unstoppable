@@ -8,7 +8,6 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
   describe 'must have a' do
     describe 'docker entrypoint' do
-      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 

@@ -1,6 +1,7 @@
 require 'test_helper'
 
 describe 'adventure::rails-v7_0::3 postgres-v14_1 & ruby-v2_7' do
+  Given { skip }
   Given(:workbench)  { }
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }

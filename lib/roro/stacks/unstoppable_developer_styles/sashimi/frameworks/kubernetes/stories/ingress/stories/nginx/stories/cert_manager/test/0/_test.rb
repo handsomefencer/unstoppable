@@ -3,8 +3,8 @@ require 'test_helper'
 describe 'adventure::cert_manager::0 circleci' do
   Given { skip }
   Given(:workbench)  { }
-  Given { @rollon_loud    = true }
-  Given { @rollon_dummies = true }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
 
   describe 'k8s manifests' do
