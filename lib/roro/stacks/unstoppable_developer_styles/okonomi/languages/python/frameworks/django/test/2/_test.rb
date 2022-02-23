@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe '' do
-  Given { skip }
   Given(:workbench) { }
 
   Given { @rollon_loud    = false }

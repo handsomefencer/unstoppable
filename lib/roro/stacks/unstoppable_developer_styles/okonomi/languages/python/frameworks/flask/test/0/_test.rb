@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe 'adventure::flask::0 python-v3_10_1' do
-  Given { skip }
   Given(:workbench) { }
 
   Given { @rollon_loud    = false }

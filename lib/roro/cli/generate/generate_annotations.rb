@@ -20,9 +20,11 @@ module Roro
 
       def adventure_description(stack)
         index = stack.split('/')[-2]
-        story = stack.split('lib/roro/stacks').last.split("/test/#{index}/_test.rb").first
-        adventures = read_yaml("#{Roro::CLI
-                                 .test_root}/fixtures/matrixes/itineraries.yml")
+        story = stack.split('lib/roro/stacks/').last.split("/test/#{index}/_test.rb").first
+        reflector = Roro::Reflector.new
+        adventures = reflector.itineraries
+        # adventures = read_yaml("#{Roro::CLI
+        #                          .test_root}/fixtures/matrixes/itineraries.yml")
         adventures.select! { |i| i.include?(story) }
         getsome = adventures[index.to_i]
         return unless getsome&.include?(story)

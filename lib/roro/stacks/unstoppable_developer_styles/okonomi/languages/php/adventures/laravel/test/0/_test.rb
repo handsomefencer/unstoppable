@@ -2,13 +2,96 @@
 
 require 'test_helper'
 
-describe '' do
+describe 'adventure::laravel::0 ' do
   Given(:workbench) { }
 
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
   
+  describe 'directory must contain' do
+    describe 'composer.json' do
+      Given(:file) { 'composer.json' }
+      Then { assert_file file }
+  
+      describe 'must have content' do 
+        describe 'equal to' do 
+          Then { assert_file file, 'foo' }
+        end
+
+        describe 'matching' do 
+          Then { assert_file file, /foo/ }
+          Then { assert_content file, /foo/ }
+        end
+      end
+    end
+
+    describe 'docker/default.conf' do
+      Given(:file) { 'docker/default.conf' }
+      Then { assert_file file }
+  
+      describe 'must have content' do 
+        describe 'equal to' do 
+          Then { assert_file file, 'foo' }
+        end
+
+        describe 'matching' do 
+          Then { assert_file file, /foo/ }
+          Then { assert_content file, /foo/ }
+        end
+      end
+    end
+
+    describe 'docker/php.dockerfile' do
+      Given(:file) { 'docker/php.dockerfile' }
+      Then { assert_file file }
+  
+      describe 'must have content' do 
+        describe 'equal to' do 
+          Then { assert_file file, 'foo' }
+        end
+
+        describe 'matching' do 
+          Then { assert_file file, /foo/ }
+          Then { assert_content file, /foo/ }
+        end
+      end
+    end
+
+    describe 'docker/scheduler.sh' do
+      Given(:file) { 'docker/scheduler.sh' }
+      Then { assert_file file }
+  
+      describe 'must have content' do 
+        describe 'equal to' do 
+          Then { assert_file file, 'foo' }
+        end
+
+        describe 'matching' do 
+          Then { assert_file file, /foo/ }
+          Then { assert_content file, /foo/ }
+        end
+      end
+    end
+
+    describe 'docker-compose.yml' do
+      Given(:file) { 'docker-compose.yml' }
+      Then { assert_file file }
+  
+      describe 'must have content' do 
+        describe 'equal to' do 
+          Then { assert_file file, 'foo' }
+        end
+
+        describe 'matching' do 
+          Then { assert_file file, /foo/ }
+          Then { assert_content file, /foo/ }
+        end
+      end
+    end
+  end
+
+
   describe 'directory must contain' do
     describe 'docker' do
       Then { assert_file 'docker/default.conf' }
