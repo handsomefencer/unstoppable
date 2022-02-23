@@ -12,6 +12,12 @@ module Roro
         @stack = stack || Roro::CLI.stacks
       end
 
+
+      def log_to_mise(name, content)
+        path = "#{Dir.pwd}/mise/logs/#{name}.yml"
+        File.open(path, "w") { |f| f.write(content.to_yaml) }
+      end
+
       def reflection(stack = nil)
         stack ||= @stack
         reflection = {

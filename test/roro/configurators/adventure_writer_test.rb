@@ -24,7 +24,7 @@ describe 'AdventureWriter' do
 
   context 'django' do
     describe 'must return correct' do
-      Given(:itinerary) { itineraries[5]}
+      Given(:itinerary) { itineraries[6]}
 
       describe 'must be using correct itinerary' do
         Then { assert_equal storyfile[0], itinerary.first }
@@ -38,7 +38,7 @@ describe 'AdventureWriter' do
         end
 
         context 'when file has no immediate partials' do
-          Then  { assert_equal 2, writer.partials_for(itinerary[1]).size }
+          Then  { assert_equal 0, writer.partials_for(itinerary[1]).size }
         end
       end
 
@@ -86,7 +86,7 @@ describe 'AdventureWriter' do
 
   describe '#template_paths' do
     context 'when rails-v6_1::0 sqlite & ruby-v2_7' do
-      Given(:itinerary)      { itineraries[11]}
+      Given(:itinerary)      { itineraries[12]}
       Given(:template_paths) { writer.template_paths }
       Given(:result)         { writer.template_paths_for(stack) }
 

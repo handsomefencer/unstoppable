@@ -13,18 +13,26 @@ describe Reflector do
     And  { assert_includes reflector.reflection.keys, :stacks }
   end
 
+  describe '#log_to_mise' do
+    Given { reflector.log_to_mise('cases', reflector.cases) }
+    Given { reflector.log_to_mise('itineraries', reflector.itineraries) }
+    Given { reflector.log_to_mise('reflector', reflector.reflection) }
+    Then { assert_file 'mise/logs/itineraries.yml'}
+  end
+
   describe '#cases()' do
     describe 'must return the expected' do
       describe 'number of cases' do
-        Then { assert_equal 26, reflector.cases.size }
+        Then { assert_equal 27, reflector.cases.size }
       end
 
       describe 'first case' do
+
         Then { assert_equal [1,1,1], reflector.cases[0] }
       end
 
       describe 'fifth case' do
-        Then { assert_equal [1,2,1,2,1], reflector.cases[5] }
+        Then { assert_equal [1,2,1,1,2], reflector.cases[5] }
       end
     end
   end
@@ -32,19 +40,19 @@ describe Reflector do
   describe '#itineraries()' do
     describe 'must return the expected' do
       describe 'number of itineraries' do
-        Then { assert_equal 26, reflector.itineraries.size}
+        Then { assert_equal 27, reflector.itineraries.size}
       end
 
       describe 'wordpress itinerary' do
-        Then { assert_match /wordpress/, reflector.itineraries[0][0] }
+        Then { assert_match /wordpress/, reflector.itineraries[1][0] }
       end
 
       describe 'django itinerary' do
-        Then { assert_match /django/, reflector.itineraries[5][0]}
+        Then { assert_match /django/, reflector.itineraries[4][0]}
       end
 
       describe 'rails itinerary' do
-        Then  { assert_match /databases\/postgres/, reflector.itineraries[5][0]}
+        Then  { assert_match /databases\/postgres/, reflector.itineraries[6][0]}
       end
     end
   end
