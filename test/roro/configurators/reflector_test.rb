@@ -33,8 +33,8 @@ describe Reflector do
 
       describe 'fifth case' do
         Then { assert_equal [1,2,1,2,1], reflector.cases[4] }
-        focus
-        Then  { assert_equal [1,2,1,1,1], reflector.itineraries[4] }
+        Then  { assert_match /versions\/v3_10_1/, reflector.itineraries[4][1] }
+        Then  { assert_match /databases\/postgres/, reflector.itineraries[4][0] }
       end
     end
   end
@@ -54,7 +54,11 @@ describe Reflector do
       end
 
       describe 'rails itinerary' do
-        Then  { assert_match /databases\/postgres/, reflector.itineraries[6][0]}
+        Then  { assert_match /databases\/postgres\/versions\/v13_5/, reflector.itineraries[8][0]}
+        Then  { assert_match /rails\/versions\/v6_1/, reflector.itineraries[8][1]}
+        Then  { assert_match /ruby\/versions\/v2_7/, reflector.itineraries[8][2]}
+
+        Then  { assert_equal [1, 3, 1, 1, 1, 1, 1], reflector.cases[8]}
       end
     end
   end

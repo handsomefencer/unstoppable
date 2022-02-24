@@ -93,11 +93,11 @@ module Roro
             end
           end
         end
-        hash[:stories]&.each do |k,_v|
-          matrix << array + [k]
-        end
         hash[:stacks]&.each  do |k, v|
           itineraries(v, array.dup, matrix)
+        end
+        hash[:stories]&.each do |k,_v|
+          matrix << array + [k]
         end
         matrix
       end

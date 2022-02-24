@@ -98,8 +98,6 @@ module Minitest
     def stubs_adventure(path = nil, adventure = nil )
       adventure ||= path.split('/').last.to_i
       story = path.split("#{Roro::CLI.stacks}/").last
-      case_builder = AdventureCaseBuilder.new
-      case_builder.build_cases
       adventures = adventures_from(story.split('/test').first)[adventure]
       Roro::Configurators::AdventurePicker
         .any_instance

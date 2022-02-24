@@ -86,15 +86,14 @@
                             :picks:
                             - 2
                         - :schedulers:
-                            :inflections:
-                            - :sidekiq:
-                                :inflections: []
-                                :stacks: {}
-                                :stories: []
-                                :picks: []
+                            :inflections: []
                             :stacks: {}
-                            :stories: []
-                            :picks: []
+                            :stories:
+                            - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/schedulers/resque
+                            - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/schedulers/sidekiq
+                            :picks:
+                            - 1
+                            - 2
                         - :versions:
                             :inflections: []
                             :stacks: {}

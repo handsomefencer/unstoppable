@@ -9,12 +9,5 @@ module Roro
       configurator.rollon
     end
 
-    desc 'log itineraries', 'logs all possible itineraries in specified location'
-    map 'log_itineraries' => 'log_itineraries'
-
-    def log_itineraries(location = 'test/fixtures/itineraries')
-      builder = Roro::Configurators::AdventureCaseBuilder.new
-      builder.log_itineraries('test/fixtures/itineraries')
-    end
   end
 end

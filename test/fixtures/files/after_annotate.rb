@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'adventure::rails-v6_1::0 sqlite & ruby-v2_7' do
+describe 'adventure::rails-v6_1::0 postgres-v13_5 & ruby-v2_7' do
   Given(:workbench) { }
 
   Given { @rollon_loud    = false }
