@@ -149,7 +149,6 @@ describe 'AdventureWriter' do
           end
 
           describe 'must return self' do
-            Given { skip }
             Then { assert_match 'databases/sqlite/templates', result[2] }
           end
         end

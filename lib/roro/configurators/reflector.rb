@@ -12,10 +12,39 @@ module Roro
         @stack = stack || Roro::CLI.stacks
       end
 
-
       def log_to_mise(name, content)
         path = "#{Dir.pwd}/mise/logs/#{name}.yml"
         File.open(path, "w") { |f| f.write(content.to_yaml) }
+      end
+
+      def reflect(stack=nil)
+        stack ||= @stack
+        reflection = {
+          inflections: [],
+          stacks: {},
+          stories: [],
+          picks: []
+        }
+        array = []
+        children(stack ).each_with_index do |c, index|
+          case
+          when [:inflection_stub].include?(stack_type(c))
+            array  << { stack_name(c).to_sym => reflect(c) }
+          when [:inflection].include?(stack_type(c))
+            array  << { stack_name(c).to_sym => reflect(c) }
+          when [:stack].include?(stack_type c)
+            reflection[:stacks][index + 1] = reflection c
+          when [:story].include?(stack_type c)
+            reflection[:picks] << index + 1
+            # story = c.split("#{Roro::CLI.stacks}/").last
+          when [:storyfile].include?(stack_type(c))
+            foo = 'bar'
+          else
+
+            foo = 'bar' # reflection[:stories] << story
+          end
+        end
+        # reflection
       end
 
       def reflection(stack = nil)
