@@ -32,7 +32,9 @@ describe Reflector do
       end
 
       describe 'fifth case' do
-        Then { assert_equal [1,2,1,1,2], reflector.cases[5] }
+        Then { assert_equal [1,2,1,2,1], reflector.cases[4] }
+        focus
+        Then  { assert_equal [1,2,1,1,1], reflector.itineraries[4] }
       end
     end
   end

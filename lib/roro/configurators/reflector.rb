@@ -57,10 +57,10 @@ module Roro
             end
           end
         end
+        hash[:stacks]&.each  { |k, v| cases(v, (array.dup + [k]), matrix) }
         hash[:picks]&.each do |k,_v|
           matrix << array + [k]
         end
-        hash[:stacks]&.each  { |k, v| cases(v, (array.dup + [k]), matrix) }
         matrix
       end
 
