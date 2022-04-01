@@ -18,6 +18,7 @@ Rake.add_rakelib 'rakelib/test'
 Rake.add_rakelib 'rakelib/fixtures'
 Rake.add_rakelib 'rakelib/fixtures/matrixes'
 Rake.add_rakelib 'rakelib/docker/image'
+Rake.add_rakelib 'rakelib/club'
 Rake.add_rakelib 'rakelib/club/harvest'
 
 Rake::TestTask.new('test:test') do |t|

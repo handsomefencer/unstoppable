@@ -1,7 +1,11 @@
 namespace :club do
   desc 'Creates yaml file with likely adventure titles'
   task :harvest do
-    sh 'docker-compose build'
+    stack = Roro::CLI.stacks
+    target = '.harvest.yml'
+    harvest = File.open(target, "w") { |f| f.write('blah') }
+    # harvest = File.open(target, "w") { |f| f.write(content.to_yaml) }
+
 
   end
 end
