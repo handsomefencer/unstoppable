@@ -1,32 +1,20 @@
 require 'test_helper'
 
-describe "#{adventure_name(__FILE__)}" do
-  Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-  Given(:adventure)  { 0 }
-
-  Given(:rollon)    {
-    copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
-    stubs_dependencies_met?
-    stubs_yes?
-    stub_overrides
-    # stub_run_actions
-    cli.rollon
-  }
-
-  Given { rollon }
+describe 'adventure::ragres-v14_1 & ruby-v3_0' do
+  Given(:workbench)  { }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
+  Given { rollon(__dir__) }
 
   describe 'must have a' do
     describe 'docker entrypoint' do
-      focus
       Then  { assert_file 'entrypoints/docker-entrypoint.sh' }
     end
 
     describe 'config/database.yml' do
-      describe 'with sqlite' do
-        Then  { assert_file 'config/database.yml' }
+      Given(:file) { 'config/database.yml' }
+      describe 'with postgres docker' do
+        Then  { assert_file file, /<%= ENV\.fetch\('DATABASE_HOST'\)/ }
       end
     end
 
@@ -36,30 +24,35 @@ describe "#{adventure_name(__FILE__)}" do
 
     describe 'Gemfile with the correct' do
       describe 'rails version' do
-        Then  { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.1/ }
+        Then { assert_file 'Gemfile', /gem \"rails\", \"~> 7.0.2/ }
       end
 
       describe 'db' do
-        Then  { assert_file 'Gemfile', /gem ["']sqlite3["'], ["']~> 1.4/ }
+        Then { assert_file 'Gemfile', /gem ["']pg["'], ["']~> 1.1/ }
       end
     end
 
     describe 'Dockerfile' do
+      Given(:file) { 'Dockerfile' }
       describe 'ruby version' do
-        Then { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+        Then { assert_file file, /FROM ruby:3.0/ }
       end
 
       describe 'bundler version' do
-        Then { assert_file 'Dockerfile', /bundler:2.2.28/ }
+        Then { assert_file file, /bundler:2.2.28/ }
       end
 
       describe 'alpine db packages' do
-        describe 'sqlite' do
-          Then { assert_file 'Dockerfile', /sqlite-dev/ }
+        describe 'postgresql' do
+          Then { assert_file file, /postgresql-dev/ }
         end
 
         describe 'node' do
-          Then { assert_file 'Dockerfile', /nodejs/ }
+          Then { assert_file file, /nodejs/ }
+        end
+
+        describe 'node' do
+          Then { assert_file file, /RUN yarn install/ }
         end
       end
     end
@@ -75,10 +68,10 @@ describe "#{adventure_name(__FILE__)}" do
 
       describe 'database service' do
         describe 'database service' do
-          Then  { assert_file file, /\n\s\sdatabase:/ }
+          Then  { assert_file file, /\n\s\sdb:/ }
 
           describe 'image' do
-            Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
+            Then  { assert_file file, /\n\s\s\s\simage: postgres:13.5/ }
           end
         end
       end

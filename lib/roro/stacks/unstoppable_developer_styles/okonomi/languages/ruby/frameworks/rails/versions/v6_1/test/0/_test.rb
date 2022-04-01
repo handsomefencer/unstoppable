@@ -1,22 +1,11 @@
 require 'test_helper'
 
-describe "#{adventure_name(__FILE__)}" do
-  Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-  Given(:adventure)  { 0 }
-
-  Given(:rollon)    {
-    copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
-    stubs_dependencies_met?
-    stubs_yes?
-    stub_overrides
-    stub_run_actions
-    cli.rollon
-  }
-
-  Given { quiet { rollon } }
+describe 'adventure::rails-v6_1::0 sqlite & ruby-v2_7' do
+  Given { skip }
+  Given(:workbench)  { }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
+  Given { rollon(__dir__) }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct' do
@@ -36,8 +25,9 @@ describe "#{adventure_name(__FILE__)}" do
     end
 
     describe 'Dockerfile' do
+      Given(:file) { 'Dockerfile' }
       describe 'ruby version' do
-        Then  { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+        Then  { assert_file file, /FROM ruby:2.7/ }
       end
 
       describe 'bundler version' do
@@ -45,7 +35,7 @@ describe "#{adventure_name(__FILE__)}" do
       end
 
       describe 'yarn install command' do
-        Then   { assert_file 'Dockerfile', /RUN yarn install/ }
+        Then   { assert_file file, /RUN yarn install/ }
       end
     end
 

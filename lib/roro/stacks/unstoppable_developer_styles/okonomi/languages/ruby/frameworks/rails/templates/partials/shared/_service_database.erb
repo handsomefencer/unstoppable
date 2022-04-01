@@ -1,8 +1,0 @@
-
-
-  database:
-    image: <%= @env[:base][:db_image][:value] %><%= ":#{@env[:base][:db_image_version][:value]}" %>
-    volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    <%= partial('env_file', container: 'database') %>

@@ -47,6 +47,7 @@ module Minitest
       @tmpdir_glob = Dir.glob("#{@tmpdir}/workbench/**/*")
     end
 
+
     def check_out_of_workbench
       Dir.chdir ENV['PWD'] if defined? workbench
     end

@@ -1,0 +1,26 @@
+preface: some string
+
+env:
+  base:
+    db_vendor:
+      value: mysql
+    db_pkg:
+      value: mysql
+    db_volume:
+      value: db_data:/var/lib/mysql
+    db_image:
+      value: mysql
+    db_image_tag:
+      value: ':5.7'
+    MYSQL_USER:
+      name: MySQL user
+      value: mysql
+    MYSQL_DATABASE:
+      name: MySQL database
+      value: mysql
+    MYSQL_PASSWORD:
+      name: MySQL password
+      value: mysql
+    MYSQL_ROOT_PASSWORD:
+      name: MySQL root password
+      value: mysql

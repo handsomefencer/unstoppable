@@ -3,45 +3,8 @@ preface: https://guides.rubyonrails.org/v7.0/
 env:
   base:
     rails_version:
-<<<<<<< HEAD
-      name: Ruby on Rails minor version
       value: 7.0
-    JOB_WORKER_URL:
-      name: Reids job worker url
-      value: redis://redis:6379/0
-    REDIS_URL:
-      name: Reids url
-      value: redis://redis:6379/0
-
-<<<<<<< HEAD
-actions:
-  - directory 'stage_one', '.', @env
-  - run 'sudo chown -R $USER:$USER .'
-  - |
-    generator = Roro::CLI.new
-    generator.generate_mise
-    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-    generator.generate_environments @env
-    generator.generate_keys
-  - run 'sudo chown -R $USER:$USER .'
-  - uncomment_lines 'config/environments/production.rb', /# config.require_master_key = true/
-  - gsub_file 'config/environments/production.rb', /require_master_key = true/, 'require_master_key = false'
-=======
+#
 #actions:
-#  - directory 'stage_one', '.', @env
-#  - run 'sudo chown -R $USER:$USER .'
-#  - |
-#    generator = Roro::CLI.new
-#    generator.generate_mise
-#    generator.generate_containers 'app', 'database', 'redis', 'sidekiq'
-#    generator.generate_environments @env
-#    generator.generate_keys
-#  - chmod 'entrypoints/docker-entrypoint.sh', 0755
-#  - chmod 'entrypoints/sidekiq-entrypoint.sh', 0755
-#  - insert_into_file 'Gemfile', "gem 'sidekiq', '~>6.0.0'", :before => "\ngroup :development, :test do"
-#  - run "sudo docker-compose up"
-#  - run "sudo docker-compose up"
->>>>>>> stackr
-=======
-      value: 7.0
->>>>>>> rake-test-annotate
+#  - run 'docker-compose build'
+#  - run 'docker-compose up'

@@ -1,22 +1,10 @@
 require 'test_helper'
 
-describe "#{adventure_name(__FILE__)}" do
-  Given(:workbench)  { 'empty' }
-  Given(:cli)        { Roro::CLI.new }
-  Given(:overrides)  { %w[] }
-
-  Given(:rollon)    {
-    copy_stage_dummy(__dir__)
-    stubs_adventure(__dir__)
-    stubs_dependencies_met?
-    stubs_yes?
-    stub_overrides
-    stub_run_actions
-    cli.rollon
-  }
-
-  Given { quiet { rollon } }
-  # Given { rollon }
+describe 'adventure::rails-v6_1::2 postgres-v13_5 & ruby-v2_7' do
+  Given(:workbench)  { }
+  Given { @rollon_loud    = false }
+  Given { @rollon_dummies = false }
+  Given { rollon(__dir__) }
 
   describe 'must generate a' do
     describe 'Gemfile with the correct' do
@@ -67,7 +55,7 @@ describe "#{adventure_name(__FILE__)}" do
         describe 'app' do
           describe 'depends_on' do
             Then  { assert_file file, /\n\s\s\s\sdepends_on:/ }
-            Then  { assert_file file, /\n\s\s\s\s\s\s- database/ }
+            Then  { assert_file file, /\n\s\s\s\s\s\s- db/ }
           end
 
           describe 'volumes' do
@@ -75,8 +63,9 @@ describe "#{adventure_name(__FILE__)}" do
             Then  { assert_file file, /\n\s\s\s\s\s\s- db_data:\/var\/lib/ }
           end
         end
+
         describe 'database' do
-          Then  { assert_file file, /\s\sdatabase:/ }
+          Then  { assert_file file, /\s\sdb:/ }
 
           describe 'image' do
             Then  { assert_file file, /image: postgres:13.5/ }

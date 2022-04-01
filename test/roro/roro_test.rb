@@ -7,6 +7,10 @@ describe Roro do
     assert ::Roro::VERSION
   end
 
+  it 'must be a module' do
+    assert_equal Module, Roro.class
+  end
+
   it 'must include child modules' do
     assert_includes Roro.constants, :Error
     assert_includes Roro.constants, :CLI

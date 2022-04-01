@@ -68,25 +68,24 @@ module Roro
         end
       end
 
-      def copy_stage_dummy(stage)
-        location = Dir.pwd
-        index = itinerary_index(stage).index(itinerary)
-        test_dir = "#{stack_parent_path(stage)}/test"
-        alive = File.exist?(test_dir)
-        return unless File.exist?(test_dir)
-        stage_dummy = "#{test_dir}/#{index}/dummy"
-        generated = Dir.glob("#{location}/**/*")
-        dummies = Dir.glob("#{stage_dummy}/**/*")
-        dummies.each do |dummy|
-          generated.select do |g|
-            if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
-              if File.file?(g)
-                FileUtils.cp_r(g, "#{stage_dummy}#{g.split(Dir.pwd).last}")
-              end
-            end
-          end
-        end
-      end
+      # def copy_stage_dummy(stage)
+      #   location = Dir.pwd
+      #   index = itinerary_index(stage).index(itinerary)
+      #   test_dir = "#{stack_parent_path(stage)}/test"
+      #   return unless File.exist?(test_dir)
+      #   stage_dummy = "#{test_dir}/#{index}/dummy"
+      #   generated = Dir.glob("#{location}/**/*")
+      #   dummies = Dir.glob("#{stage_dummy}/**/*")
+      #   dummies.each do |dummy|
+      #     generated.select do |g|
+      #       if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
+      #         if File.file?(g)
+      #           FileUtils.cp_r(g, "#{stage_dummy}#{g.split(Dir.pwd).last}")
+      #         end
+      #       end
+      #     end
+      #   end
+      # end
 
       def itinerary_index(stage)
         itineraries = read_yaml("#{Roro.gem_root}/test/fixtures/matrixes/itineraries.yml")
@@ -98,8 +97,9 @@ module Roro
 
       def write_story
         @manifest.each do |m|
+          @structure[:itinerary] = @itinerary
           @writer.write(@structure, m)
-          copy_stage_dummy(m) if ENV['RORO_ENV'].eql?('test')
+          # copy_stage_dummy(m) if ENV['RORO_ENV'].eql?('test')
         end
       end
 

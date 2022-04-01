@@ -9,6 +9,14 @@ module Roro
           files.any? {|file| file.match file_matcher }
         end
 
+        def assert_file_content(*content)
+          content = content.is_a?(Array) ? content : [c]
+          content.each do |c|
+            assert_file(file, /#{c}/)
+          end
+        end
+
+
         def assert_file_match_in(file_matcher, files)
           msg = "'...#{file_matcher}' doesn't match any files in: #{files}"
           assert(files.any? {|file| file.match file_matcher }, msg )

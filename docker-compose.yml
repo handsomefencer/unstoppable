@@ -1,14 +1,13 @@
+
 version: '3.5'
 
 services:
 
   ruby_gem:
-    image: roar
+    image: handsomefencer/roro
     build:
       context: .
       dockerfile: mise/containers/ruby_gem/Dockerfile
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - RUBY_VERSION='2.5'
 

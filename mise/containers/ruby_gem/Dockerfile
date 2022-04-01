@@ -21,12 +21,9 @@ RUN rm -rf ./lib/roro/stacks
 
 FROM builder AS stacker
 
-WORKDIR /usr/src
-
 COPY ./lib/roro/stacks ./lib/roro/stacks
 
 RUN gem build roro.gemspec
 RUN rake install
 
-
-WORKDIR /home/schadenfred
+WORKDIR /artifact
