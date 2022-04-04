@@ -15,14 +15,6 @@ describe '' do
       Then { assert_file file }
   
       describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
-        end
-
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
-        end
       end
     end
   end

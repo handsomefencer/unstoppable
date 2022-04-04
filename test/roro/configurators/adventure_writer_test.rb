@@ -149,7 +149,7 @@ describe 'AdventureWriter' do
           end
 
           describe 'must return self' do
-            Then { assert_match 'databases/sqlite/templates', result[2] }
+            Then { assert_match 'databases/postgres/templates', result[2] }
           end
         end
       end

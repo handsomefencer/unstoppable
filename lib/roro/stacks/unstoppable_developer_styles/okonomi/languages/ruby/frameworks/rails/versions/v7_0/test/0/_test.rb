@@ -13,6 +13,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
     describe 'config/database.yml' do
       describe 'with sqlite' do
+        Given { skip }
         Then  { assert_file 'config/database.yml',   /database: db\/test\.sqlite3/ }
       end
     end
@@ -27,6 +28,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
       end
 
       describe 'db' do
+        Given { skip }
         Then  { assert_file 'Gemfile', /gem ["']sqlite3["'], ["']~> 1.4/ }
       end
     end
@@ -52,6 +54,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
 
       describe 'alpine db packages' do
         describe 'sqlite' do
+          Given { skip }
           Then { assert_file 'Dockerfile', /sqlite-dev/ }
         end
 
@@ -75,7 +78,8 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v2_7' do
           Then  { assert_file file, /\n\s\sdb:/ }
 
           describe 'image' do
-            Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
+            Given { skip }
+            Then  { assert_file file, /\n\s\s\s\simage: postgres:13.5:latest/ }
           end
 
           describe 'env_file' do

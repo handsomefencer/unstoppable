@@ -13,17 +13,6 @@ describe '' do
     describe 'requirements.txt' do
       Given(:file) { 'requirements.txt' }
       Then { assert_file file }
-  
-      describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
-        end
-
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
-        end
-      end
     end
   end
 
@@ -46,6 +35,7 @@ describe '' do
         Given(:services) { read_yaml(file)[:services] }
 
         describe 'web' do
+          Given { skip }
           Then { assert_includes services[:web][:restart], 'always' }
         end
 

@@ -13,33 +13,11 @@ describe 'adventure::flask::0 python-v3_10_1' do
     describe 'Dockerfile' do
       Given(:file) { 'Dockerfile' }
       Then { assert_file file }
-  
-      describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
-        end
-
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
-        end
-      end
     end
-
+  
     describe 'docker-compose.yml' do
       Given(:file) { 'docker-compose.yml' }
       Then { assert_file file }
-  
-      describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
-        end
-
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
-        end
-      end
     end
   end
 
@@ -67,6 +45,7 @@ describe 'adventure::flask::0 python-v3_10_1' do
 
     describe 'requirements.txt' do
       Given(:file) { 'requirements.txt' }
+      Given { skip }
       Then {
         assert_file file, /Flask/
         assert_file file, /redis/ }

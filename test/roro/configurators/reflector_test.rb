@@ -6,51 +6,6 @@ describe Reflector do
   Given(:stack_loc) { Roro::CLI.stacks }
   Given(:reflector) { Reflector.new(stack_loc) }
 
-  describe '#reflect' do
-    Given(:expected) {
-      [
-        unstoppable_developer_styles: [
-          { okonomi: { languages: [
-            {
-              php: {
-                adventures: [:laravel, :wordpress]
-              },
-              ruby: { frameworks: [
-                { rails: { databases: [
-                  { postgres: { versions: [:v13_5, :v14_1] } },
-                  :sqlite
-                ] } },
-              :ruby_gem
-            ] } }] } }]
-      ]
-      #   unstoppable_developer_styles: [
-      #     { okonomi: {
-      #       { languages: [
-      #         {
-      #           ruby: {
-      #             frameworks: [
-      #               { rails: {
-      #                 databases: [
-      #                   postgres: {
-      #                     versions: %w[v13_5, v14_1]
-      #                   },
-      #                   'sqlite'
-      #                 ]
-      #               }},
-      #               'ruby_gem'
-      #             ]
-      #           },
-      #         ]
-      #       },
-      #       },
-      #     }
-      #   ]
-      # ]
-    }
-    focus
-    Then { assert_equal 'blah', reflector.reflect }
-  end
-
   describe '#reflection()' do
     Then { assert_includes reflector.reflection.keys, :inflections }
     And  { assert_includes reflector.reflection.keys, :stories }

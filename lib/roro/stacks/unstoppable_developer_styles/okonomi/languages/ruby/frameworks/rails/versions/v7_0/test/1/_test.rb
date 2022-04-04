@@ -9,6 +9,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v3_0' do
   describe 'must have a' do
     describe 'config/database.yml' do
       describe 'with sqlite' do
+        Given { skip }
         Then  { assert_file 'config/database.yml',   /database: db\/test\.sqlite3/ }
       end
     end
@@ -32,7 +33,7 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v3_0' do
 
       describe 'alpine db packages' do
         describe 'sqlite' do
-          Then { assert_file 'Dockerfile', /sqlite-dev/ }
+          Then { assert_file 'Dockerfile', /postgresql-dev/ }
         end
       end
     end
@@ -46,6 +47,8 @@ describe 'adventure::rails-v7_0::0 sqlite & ruby-v3_0' do
           Then  { assert_file file, /\n\s\sdb:/ }
 
           describe 'image' do
+            Given { skip }
+
             Then  { assert_file file, /\n\s\s\s\simage: nouchka\/sqlite3:latest/ }
           end
 

@@ -4,105 +4,52 @@ module Roro
 
   class CLI < Thor
 
-    desc 'generate:annotations', 'Generate annotations for adventure tests.'
-    map 'generate:annotations' => 'generate_annotations'
+    desc 'generate:harvest', 'Generate harvest.'
+    map 'generate:harvest' => 'generate_harvest'
 
-    def generate_annotations(files = nil )
-      files ||= adventure_test_files
-      files.each do |adventure_test|
-        gsub_file adventure_test, /\nrequire (.*)[\s\S]*\n\s\sdescribe/ do |match|
-          adventure_boilerplate(adventure_test) + "\s\sdescribe"
-        end
-      end
+    def generate_harvest
+      @reflector = Roro::Reflector.new
+      content = {
+        itineraries: harvest_itineraries,
+        cases:  @reflector.cases,
+        reflection: @reflector.reflection,
+        metadata: @reflector.metadata
+      }
+      create_file '.harvest.yml', content.to_yaml
+      # harvest_test_files
     end
 
     no_commands do
-
-      def adventure_description(stack)
-        index = stack.split('/')[-2]
-        story = stack.split('lib/roro/stacks/').last.split("/test/#{index}/_test.rb").first
-        reflector = Roro::Reflector.new
-        adventures = reflector.itineraries
-        # adventures = read_yaml("#{Roro::CLI
-        #                          .test_root}/fixtures/matrixes/itineraries.yml")
-        adventures.select! { |i| i.include?(story) }
-        getsome = adventures[index.to_i]
-        return unless getsome&.include?(story)
-        getsome.delete(story)
-        getsome.unshift(story)
-        getsome.map! { |i| i.split('/')[-3..-1] }
-        getsome.delete(story)
-        getsome.map! { |i| i[1].eql?('versions') ? "#{i[0]}-#{i[-1]}" : i.last }
-        "adventure::#{getsome.shift}::#{index} #{getsome.join(' & ')}"
-      end
-
-      def adventure_boilerplate(adventure_test)
-<<-HEREDOC
-
-require 'test_helper'
-
-describe '#{adventure_description(adventure_test)}' do
-  Given(:workbench) { }
-
-  Given { @rollon_loud    = false }
-  Given { @rollon_dummies = false }
-  Given { rollon(__dir__) }
-  
-  describe 'directory must contain' do
-#{description_helper(adventure_test)}  end
-
-
-HEREDOC
-      end
-
-      def description_helper(adventure_test)
-        dummies_for(adventure_test)
-          .map! { |d| describe_dummy_file(d) }
-          .join("\n")
-      end
-
-      def describe_dummy_file(dummy_file_name)
-        <<-HEREDOC
-    describe '#{dummy_file_name}' do
-      Given(:file) { '#{dummy_file_name}' }
-      Then { assert_file file }
-  
-      describe 'must have content' do 
-        describe 'equal to' do 
-          Then { assert_file file, 'foo' }
+      def harvest_itineraries
+        itineraries = {}
+        @reflector.itineraries.each do |i|
+          itineraries[harvest_adventure_title(i)] = 'blah'
         end
+        itineraries
+      end
 
-        describe 'matching' do 
-          Then { assert_file file, /foo/ }
-          Then { assert_content file, /foo/ }
+      def harvest_adventure_title(itinerary)
+        array = []
+        itinerary.each do |i|
+          parent_path = stack_parent_path(i)
+          # if stack_parent(i).eql?('versions')
+          #   keyword = stack_parent(parent_path)
+          # else
+          # end
+          keyword = i.split('/').last(3) - %w[adventures databases versions frameworks]
+          array << keyword.join('_')
         end
-      end
-    end
-        HEREDOC
+        array.join('-')
       end
 
-      def dummies_for(adventure_test)
-        dummies = Dir.glob("#{dummy_path_for(adventure_test)}/**/*")
-        if dummies.empty?
-          ['README.md']
-        else
-          dummies
-            .select { |d| File.file?(d) }
-            .map { |f| f.split("/dummy/").last }
-        end
+      def harvest_test_files
+        harvest = {}
+        harvest[:test_files] = gather_test_files
+        create_file '.harvest.yml', harvest.to_yaml
       end
 
-      def dummy_path_for(adventure_test)
-        File.expand_path('../dummy', adventure_test)
-      end
-
-      def story_path_for(adventure_test)
-        File.expand_path('../../..', adventure_test)
-      end
-
-      def adventure_test_files
+      def gather_test_files
         Dir.glob("#{Dir.pwd}/lib/roro/stacks/**/*_test.rb")
-           .map { |atf| atf.split("#{Dir.pwd}/").last }
       end
     end
   end
