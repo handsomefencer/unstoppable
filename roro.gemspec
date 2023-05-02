@@ -1,28 +1,27 @@
-
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "roro/version"
+require 'roro/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "roro"
+  spec.name          = 'roro'
   spec.version       = Roro::VERSION
-  spec.authors       = ["schadenfred"]
-  spec.email         = ["fred.schoeneman@gmail.com"]
+  spec.authors       = ['schadenfred']
+  spec.email         = ['fred.schoeneman@gmail.com']
 
-  spec.summary       = %q{Containerization framework for Ruby on Rails applications.}
-  spec.description   = %q{Roro is a containerization and continuous integration framework for Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity."}
-  spec.homepage      = "https://github.com/schadenfred/roro"
-  spec.license       = "MIT"
+  spec.summary       = 'Containerization framework for Ruby on Rails applications.'
+  spec.description   = 'Roro is a containerization and continuous integration framework for Ruby on Rails applications. Like Rails, it favors convention over configuration "...for programmer happiness and sustainable productivity."'
+  spec.homepage      = 'https://github.com/schadenfred/roro'
+  spec.license       = 'MIT'
 
   if spec.respond_to?(:metadata)
-    spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/schadenfred/roro"
+    spec.metadata['homepage_uri'] = spec.homepage
+    spec.metadata['source_code_uri'] = 'https://github.com/schadenfred/roro'
   else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
+    raise 'RubyGems 2.0 or newer is required to protect against ' \
+      'public gem pushes.'
   end
 
-  spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
+  spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
 
@@ -41,5 +40,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-profile'
   spec.add_development_dependency 'mocha', '~> 1.11', '>= 1.11.2'
   spec.add_development_dependency 'rb-readline'
-
+  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'pry-byebug'
 end

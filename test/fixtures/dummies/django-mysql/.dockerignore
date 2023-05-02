@@ -29,4 +29,5 @@ public/uploads
 tmp/*
 !tmp/pids/
 !tmp/pids/.keep
+!.git/config
 yarn-error.log

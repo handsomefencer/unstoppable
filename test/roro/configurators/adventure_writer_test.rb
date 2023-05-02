@@ -3,39 +3,43 @@
 require 'test_helper'
 
 describe 'AdventureWriter' do
-  Given(:workbench) { }
+  Given { skip }
+  Given(:workbench) {}
   Given(:writer)    { AdventureWriter.new }
 
   Given { writer.instance_variable_set(:@env, buildenv[:env]) }
   Given { writer.instance_variable_set(:@buildenv, buildenv) }
   Given { writer.instance_variable_set(:@storyfile, storyfile[0]) }
 
-  Given(:itinerary)   { itineraries[5]}
-  Given(:itineraries) { -> (index) { Reflector.new.itineraries[index] } }
-  Given(:storyfile)   { -> (index) { itinerary[index] } }
-  Given(:buildenv)    { {
-    itinerary: itinerary,
-    env: {
-      base: {
-        POSTGRES_PASSWORD: { value: 'password' },
-        db_pkg: { value: 'sqlite' },
-        db_vendor: { value: 'sqlite' },
-        ruby_version: { value: '3.0' } } } } }
+  Given(:itinerary)   { itineraries[5] }
+  Given(:itineraries) { ->(index) { Reflector.new.itineraries[index] } }
+  Given(:storyfile)   { ->(index) { itinerary[index] } }
+  Given(:buildenv)    do
+    {
+      itinerary: itinerary,
+      env: {
+        base: {
+          POSTGRES_PASSWORD: { value: 'password' },
+          db_pkg: { value: 'sqlite' },
+          db_vendor: { value: 'sqlite' },
+          ruby_version: { value: '3.0' }
+        }
+      }
+    }
+  end
 
   context 'django' do
     describe 'must return correct' do
-      Given(:itinerary) { itineraries[6]}
+      Given(:itinerary) { itineraries[6] }
 
       describe 'must be using correct itinerary' do
-        Given { skip }
         Then { assert_equal storyfile[0], itinerary.first }
-        And  { assert_match /django\/databases\/postgres/, itinerary.first }
-        And  { assert_match /python\/versions\/v3_10_1/, itinerary.last }
+        And  { assert_match(%r{django/databases/postgres}, itinerary.first) }
+        And  { assert_match(%r{python/versions/v3_10_1}, itinerary.last) }
       end
 
       describe 'partials_for()' do
         context 'when file has immediate partials' do
-          Given { skip }
           Then  { assert_equal 4, writer.partials_for(itinerary[0]).size }
         end
 
@@ -45,21 +49,19 @@ describe 'AdventureWriter' do
       end
 
       describe 'partials' do
-        Given { skip }
         Then { assert_equal 4, writer.partials.size }
       end
 
       describe '#section_partial(name)' do
-        Given { skip }
         Then { assert_equal 2, writer.section_partials('services').size }
-        And  { assert_match (/web/), writer.section_partials('services').first }
-        And  { assert_match (/db/), writer.section_partials('services').last }
+        And  { assert_match(/web/, writer.section_partials('services').first) }
+        And  { assert_match(/db/, writer.section_partials('services').last) }
       end
     end
 
     describe '#section(name)' do
       context 'when section not present' do
-        Then { assert_raises(Roro::Error) { writer.section ('not_present') } }
+        Then { assert_raises(Roro::Error) { writer.section('not_present') } }
       end
 
       describe 'must return interpolation from the most specific partial' do
@@ -90,12 +92,11 @@ describe 'AdventureWriter' do
 
   describe '#template_paths' do
     context 'when rails-v6_1::0 sqlite & ruby-v2_7' do
-      Given(:itinerary)      { itineraries[12]}
+      Given(:itinerary)      { itineraries[12] }
       Given(:template_paths) { writer.template_paths }
       Given(:result)         { writer.template_paths_for(stack) }
 
       describe 'must have correct itinerary' do
-        Given { skip }
         Then { assert_equal 3, itinerary.size }
         And  { assert_match 'rails/databases/sqlite', itinerary[0] }
         And  { assert_match 'rails/versions/v7_0', itinerary[1] }
@@ -103,7 +104,6 @@ describe 'AdventureWriter' do
       end
 
       describe '#template_paths' do
-        Given { skip }
         Then { assert_equal 4, template_paths.size }
         And  { assert_match 'okonomi/templates', template_paths[0] }
         And  { assert_match 'frameworks/rails/templates', template_paths[1] }
@@ -128,7 +128,6 @@ describe 'AdventureWriter' do
           end
 
           describe 'must return self' do
-            Given { skip }
             Then { assert_match 'versions/v7_0/templates', result[2] }
           end
         end

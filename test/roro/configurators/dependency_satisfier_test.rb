@@ -3,7 +3,6 @@
 # require 'test_helper'
 #
 # describe 'DependencySatisfier' do
-#   Given { skip }
 #   Given(:satisfier)    { DependencySatisfier.new }
 #   Given(:dependencies) { satisfier.dependencies }
 #   Given(:manifest)     { [] }

@@ -1,4 +1,3 @@
-
 version: '3.5'
 
 services:
@@ -11,3 +10,19 @@ services:
     environment:
       - RUBY_VERSION='2.5'
 
+  dev:
+    build:
+      context: .
+      dockerfile: mise/containers/ruby_gem/Dockerfile
+
+  guard:
+    build:
+      context: .
+      dockerfile: mise/containers/ruby_gem/Dockerfile
+    working_dir: /usr/src
+    volumes:
+      - .:/usr/src
+
+    environment:
+      - RAILS_ENV=development
+    command: bundle exec guard --no-bundler-warning
