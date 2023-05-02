@@ -41,5 +41,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'mocha', '~> 1.11', '>= 1.11.2'
   spec.add_development_dependency 'rb-readline'
   spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'pry-byebug'
+  # spec.add_development_dependency 'pry-byebug'
 end
