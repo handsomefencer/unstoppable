@@ -14,6 +14,9 @@ services:
     build:
       context: .
       dockerfile: mise/containers/ruby_gem/Dockerfile
+    working_dir: /usr/src
+    volumes:
+      - .:/usr/src
 
   guard:
     build:
@@ -22,7 +25,6 @@ services:
     working_dir: /usr/src
     volumes:
       - .:/usr/src
-
     environment:
       - RAILS_ENV=development
     command: bundle exec guard --no-bundler-warning
