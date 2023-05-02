@@ -26,7 +26,7 @@ commands:
 executors:
     linux:
         docker:
-            - image: cimg/ruby:2.7
+            - image: cimg/ruby:3.1
     mac:
         macos:
             xcode: 11.4
@@ -35,12 +35,12 @@ executors:
             - image: cimg/ruby:<<parameters.version>>
         parameters:
             version:
-                default: "2.5"
+                default: "3.1"
                 description: version tag
                 type: string
     ruby-executor:
         docker:
-            - image: cimg/ruby:2.7
+            - image: cimg/ruby:3.1
 jobs:
     build:
         executor:
@@ -102,18 +102,13 @@ workflows:
                     parameters:
                         answers:
                             - 1\n1\n1
-                            - 1\n2\n2\n1
-                            - 1\n2\n2\n2
+                            - 1\n1\n2
                             - 1\n2\n1\n1\n1
                             - 1\n2\n1\n1\n2
                             - 1\n2\n1\n2\n1
                             - 1\n2\n1\n2\n2
-                            - 1\n3\n2\n1
-                            - 1\n3\n2\n2
-                            - 1\n3\n1\n2\n1\n1
-                            - 1\n3\n1\n2\n1\n2
-                            - 1\n3\n1\n2\n2\n1
-                            - 1\n3\n1\n2\n2\n2
+                            - 1\n2\n2\n1
+                            - 1\n2\n2\n2
                             - 1\n3\n1\n1\n1\n1\n1
                             - 1\n3\n1\n1\n1\n1\n2
                             - 1\n3\n1\n1\n1\n2\n1
@@ -122,10 +117,16 @@ workflows:
                             - 1\n3\n1\n1\n2\n1\n2
                             - 1\n3\n1\n1\n2\n2\n1
                             - 1\n3\n1\n1\n2\n2\n2
+                            - 1\n3\n1\n2\n1\n1
+                            - 1\n3\n1\n2\n1\n2
+                            - 1\n3\n1\n2\n2\n1
+                            - 1\n3\n1\n2\n2\n2
+                            - 1\n3\n2\n1
+                            - 1\n3\n2\n2
                             - 2\n1
                             - 2\n2
-                            - 3\n2
                             - 3\n1\n1\n1\n1
+                            - 3\n2
                             - 3\n1\n1
                         os:
                             - linux
@@ -145,5 +146,6 @@ workflows:
                 matrix:
                     parameters:
                         version:
+                            - "3.1"
                             - "3.0"
 
