@@ -1,7 +1,6 @@
 namespace :ci do
   namespace :prepare do
     namespace :workflows do
-
       desc 'Prepare workflow with matrix of adventures'
       task 'adventures' do |task|
         set_content(task)
@@ -21,7 +20,7 @@ namespace :ci do
     end
 
     def overwrite
-      File.open(@dest, "w") { |f| f.write(@content.to_yaml) }
+      File.open(@dest, 'w') { |f| f.write(@content.to_yaml) }
     end
 
     def notify(string)
