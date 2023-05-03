@@ -51,7 +51,7 @@ docker run \
   -it handsomefencer/roro:latest roro rollon
 ```
 
-### Not efor Linux users
+### Note for Linux users
 Once you've rolled your greenfielded app out of the RoRo container and onto your development machine, you'll want to establish ownership of them 
 
 ```bash

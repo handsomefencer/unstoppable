@@ -18,6 +18,11 @@ services:
     volumes:
       - .:/usr/src
 
+  roro:
+    build:
+      context: .
+      dockerfile: mise/containers/ruby_gem/Dockerfile
+
   guard:
     build:
       context: .

@@ -1,3 +1,5 @@
+require 'byebug'
+
 namespace :ci do
   namespace :prepare do
     namespace :workflows do
