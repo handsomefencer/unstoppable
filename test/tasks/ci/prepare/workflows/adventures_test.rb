@@ -24,8 +24,44 @@ describe 'rake ci:prepare:workflows:adventures' do
         end
 
         describe 'with correct answers' do
-          Then { assert_equal answers[0], '1\\n1\\n1' }
-          # And  { assert_equal answers[5], '1\\n2\\n1\\n1\\n2' }
+          Given(:expected) do
+            [
+              '1\\n1\\n1',
+              '1\\n1\\n2',
+              '1\\n2\\n1\\n1\\n1',
+              '1\\n2\\n1\\n1\\n2',
+              '1\\n2\\n1\\n2\\n1',
+              '1\\n2\\n1\\n2\\n2',
+              '1\\n2\\n2\\n1',
+              '1\\n2\\n2\\n2',
+              '1\\n3\\n1\\n1\\n1\\n1\\n1',
+              '1\\n3\\n1\\n1\\n1\\n1\\n2',
+              '1\\n3\\n1\\n1\\n1\\n2\\n1',
+              '1\\n3\\n1\\n1\\n1\\n2\\n2',
+              '1\\n3\\n1\\n1\\n2\\n1\\n1',
+              '1\\n3\\n1\\n1\\n2\\n1\\n2',
+              '1\\n3\\n1\\n1\\n2\\n2\\n1',
+              '1\\n3\\n1\\n1\\n2\\n2\\n2',
+              '1\\n3\\n1\\n2\\n1\\n1',
+              '1\\n3\\n1\\n2\\n1\\n2',
+              '1\\n3\\n1\\n2\\n2\\n1',
+              '1\\n3\\n1\\n2\\n2\\n2\\n2',
+              '1\\n3\\n2\\n1',
+              '1\\n3\\n2\\n2',
+              '2\\n1',
+              '2\\n2',
+              '3\\n1\\n1\\n1\\n1',
+              '3\\n2',
+              '3\\n1\\n1'
+            ]
+          end
+
+          # focus
+          Then do
+            expected.each do |expected_answer|
+              assert_includes answers, expected_answer
+            end
+          end
         end
       end
     end

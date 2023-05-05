@@ -3,21 +3,20 @@
 module Roro
   module Configurators
     class Reflector
-
       include Utilities
 
-      attr_reader :cases, :itineraries,  :stack
+      attr_reader :cases, :itineraries, :stack
 
-      def initialize(stack=nil)
+      def initialize(stack = nil)
         @stack = stack || Roro::CLI.stacks
       end
 
       def log_to_mise(name, content)
         path = "#{Dir.pwd}/mise/logs/#{name}.yml"
-        File.open(path, "w") { |f| f.write(content.to_yaml) }
+        File.open(path, 'w') { |f| f.write(content.to_yaml) }
       end
 
-      def reflect(stack=nil)
+      def reflect(stack = nil)
         stack ||= @stack
         reflection = {
           inflections: [],
@@ -26,25 +25,24 @@ module Roro
           picks: []
         }
         array = []
-        children(stack ).each_with_index do |c, index|
-          case
-          when [:inflection_stub].include?(stack_type(c))
+        children(stack).each_with_index do |c, index|
+          if [:inflection_stub].include?(stack_type(c))
             array  << { stack_name(c).to_sym => reflect(c) }
-          when [:inflection].include?(stack_type(c))
+          elsif [:inflection].include?(stack_type(c))
             array  << { stack_name(c).to_sym => reflect(c) }
-          when [:stack].include?(stack_type c)
+          elsif [:stack].include?(stack_type(c))
             reflection[:stacks][index + 1] = reflection c
-          when [:story].include?(stack_type c)
+          elsif [:story].include?(stack_type(c))
             reflection[:picks] << index + 1
             # story = c.split("#{Roro::CLI.stacks}/").last
-          when [:storyfile].include?(stack_type(c))
+          elsif [:storyfile].include?(stack_type(c))
             foo = 'bar'
           else
 
             foo = 'bar' # reflection[:stories] << story
           end
         end
-        # reflection
+        reflection
       end
 
       def reflection(stack = nil)
@@ -56,12 +54,11 @@ module Roro
           picks: []
         }
         children(stack).each_with_index do |c, index|
-          case
-          when [:inflection, :inflection_stub].include?(stack_type(c))
+          if %i[inflection inflection_stub].include?(stack_type(c))
             reflection[:inflections] << { stack_name(c).to_sym => reflection(c) }
-          when [:stack].include?(stack_type c)
+          elsif [:stack].include?(stack_type(c))
             reflection[:stacks][index + 1] = reflection c
-          when [:story].include?(stack_type c)
+          elsif [:story].include?(stack_type(c))
             reflection[:picks] << index + 1
             story = c.split("#{Roro::CLI.stacks}/").last
             reflection[:stories] << story
@@ -73,21 +70,21 @@ module Roro
       def cases(hash = reflection, array = [], matrix = [])
         hash[:inflections]&.each do |inflection|
           artifact = matrix.dup
-          inflection.each do |k, v|
-            if inflection.eql?(hash[:inflections].first)
-              cases(v, array, matrix)
-              kreateds = matrix - artifact
-              if hash[:inflections].size > 1
-                kreateds.each do |kreated|
-                  matrix.delete(kreated)
-                  cases(hash[:inflections].last.values.first, kreated, matrix)
-                end
-              end
+          inflection.each do |_k, v|
+            next unless inflection.eql?(hash[:inflections].first)
+
+            cases(v, array, matrix)
+            kreateds = matrix - artifact
+            next unless hash[:inflections].size > 1
+
+            kreateds.each do |kreated|
+              matrix.delete(kreated)
+              cases(hash[:inflections].last.values.first, kreated, matrix)
             end
           end
         end
-        hash[:stacks]&.each  { |k, v| cases(v, (array.dup + [k]), matrix) }
-        hash[:picks]&.each do |k,_v|
+        hash[:stacks]&.each { |k, v| cases(v, (array.dup + [k]), matrix) }
+        hash[:picks]&.each do |k, _v|
           matrix << array + [k]
         end
         matrix
@@ -109,23 +106,23 @@ module Roro
       def itineraries(hash = reflection, array = [], matrix = [])
         hash[:inflections]&.each do |inflection|
           artifact = matrix.dup
-          inflection.each do |k, v|
-            if inflection.eql?(hash[:inflections].first)
-              itineraries(v, array, matrix)
-              kreateds = matrix - artifact
-              if hash[:inflections].size > 1
-                kreateds.each do |kreated|
-                  matrix.delete(kreated)
-                  itineraries(hash[:inflections].last.values.first, kreated, matrix)
-                end
-              end
+          inflection.each do |_k, v|
+            next unless inflection.eql?(hash[:inflections].first)
+
+            itineraries(v, array, matrix)
+            kreateds = matrix - artifact
+            next unless hash[:inflections].size > 1
+
+            kreateds.each do |kreated|
+              matrix.delete(kreated)
+              itineraries(hash[:inflections].last.values.first, kreated, matrix)
             end
           end
         end
-        hash[:stacks]&.each  do |k, v|
+        hash[:stacks]&.each do |_k, v|
           itineraries(v, array.dup, matrix)
         end
-        hash[:stories]&.each do |k,_v|
+        hash[:stories]&.each do |k, _v|
           matrix << array + [k]
         end
         matrix
@@ -156,10 +153,9 @@ module Roro
           i.split('/').each do |item|
             path = "#{path}/#{item}"
             tags += stack_stories(path)
-                  .map {|s| stack_name(s).split('.yml').first }
-                  .reject {|s| s.chr.eql?('_') }
-                  .map { |s| append_tech_to_version(s, path)}
-
+                    .map { |s| stack_name(s).split('.yml').first }
+                    .reject { |s| s.chr.eql?('_') }
+                    .map { |s| append_tech_to_version(s, path) }
           end
         end
         tags.uniq
@@ -197,7 +193,7 @@ module Roro
 
       def adventure_title(itinerary)
         versioned_tags = versioned_tech_tags(itinerary)
-        redundant = versioned_tags.map {|t| t.split(':').first }
+        redundant = versioned_tags.map { |t| t.split(':').first }
         tags = tech_tags(itinerary) - redundant
 
         (tags - @implicit_tags).join(' ')

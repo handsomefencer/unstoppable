@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'roro/configurators/reflector'
 
 describe Reflector do
   Given(:stack_loc) { Roro::CLI.stacks }
-  Given(:reflector) { Reflector.new(stack_loc) }
+  Given(:reflector) { Roro::Configurators::Reflector.new }
 
   describe '#reflection()' do
     Then { assert_includes reflector.reflection.keys, :inflections }
@@ -17,7 +18,7 @@ describe Reflector do
     Given { reflector.log_to_mise('cases', reflector.cases) }
     Given { reflector.log_to_mise('itineraries', reflector.itineraries) }
     Given { reflector.log_to_mise('reflector', reflector.reflection) }
-    Then { assert_file 'mise/logs/itineraries.yml'}
+    Then { assert_file 'mise/logs/itineraries.yml' }
   end
 
   describe '#cases()' do
@@ -27,14 +28,64 @@ describe Reflector do
       end
 
       describe 'first case' do
-
-        Then { assert_equal [1,1,1], reflector.cases[0] }
+        Then { assert_equal [1, 1, 1], reflector.cases[0] }
       end
 
       describe 'fifth case' do
-        Then { assert_equal [1,2,1,2,1], reflector.cases[4] }
-        Then  { assert_match /versions\/v3_10_1/, reflector.itineraries[4][1] }
-        Then  { assert_match /databases\/postgres/, reflector.itineraries[4][0] }
+        Then do
+          # binding.pry
+          assert_equal [1, 2, 1, 2, 1], reflector.cases[4]
+        end
+        And  { assert_match(%r{versions/v3_10_1}, reflector.itineraries[4][1]) }
+        And  { assert_match(%r{databases/postgres}, reflector.itineraries[4][0]) }
+      end
+
+      describe 'cases' do
+        Given(:unexpected) do
+          [
+            [1, 3, 1, 2, 2, 2],
+            [1, 3, 1, 2, 2, 1],
+            [1, 3, 1, 2, 1, 2],
+            [1, 3, 1, 2, 1, 1],
+            [1, 3, 1, 1, 2, 2, 2],
+            [1, 3, 1, 1, 2, 2, 1],
+            [1, 3, 1, 1, 2, 1, 2],
+            [1, 3, 1, 1, 2, 1, 1],
+            [1, 3, 1, 1, 1, 2, 2],
+            [1, 3, 1, 1, 1, 2, 1],
+            [1, 3, 1, 1, 1, 1, 2],
+            [1, 3, 1, 1, 1, 1, 1],
+            [1, 2, 1, 2, 2],
+            [1, 2, 1, 2, 1],
+            [1, 2, 1, 1, 2],
+            [1, 2, 1, 1, 1],
+            [3, 1, 1, 1, 1],
+            [3, 1, 1]
+
+          ]
+        end
+        Given(:expected) do
+          [
+            [1, 1, 1],
+            [1, 1, 2],
+            [1, 2, 2, 1],
+            [1, 2, 2, 2],
+            [1, 3, 1, 2, 1, 1, 1],
+            [1, 3, 2, 1],
+            [1, 3, 2, 2],
+            [2, 1],
+            [2, 2],
+            [3, 1],
+            [3, 2]
+          ]
+        end
+        focus
+        Then do
+          expected.each do |expected_case|
+            expected_case
+            assert_includes reflector.cases, expected_case
+          end
+        end
       end
     end
   end
@@ -42,25 +93,24 @@ describe Reflector do
   describe '#itineraries()' do
     describe 'must return the expected' do
       describe 'number of itineraries' do
-        Then { assert_equal 27, reflector.itineraries.size}
+        Then { assert_equal 27, reflector.itineraries.size }
       end
 
       describe 'wordpress itinerary' do
-        Then { assert_match /wordpress/, reflector.itineraries[1][0] }
+        Then { assert_match(/wordpress/, reflector.itineraries[1][0]) }
       end
 
       describe 'django itinerary' do
-        Then { assert_match /django/, reflector.itineraries[4][0]}
+        Then { assert_match(/django/, reflector.itineraries[4][0]) }
       end
 
       describe 'rails itinerary' do
-        Then  { assert_match /databases\/postgres\/versions\/v13_5/, reflector.itineraries[8][0]}
-        Then  { assert_match /rails\/versions\/v6_1/, reflector.itineraries[8][1]}
-        Then  { assert_match /ruby\/versions\/v2_7/, reflector.itineraries[8][2]}
+        Then  { assert_match(%r{databases/postgres/versions/v13_5}, reflector.itineraries[8][0]) }
+        Then  { assert_match(%r{rails/versions/v6_1}, reflector.itineraries[8][1]) }
+        Then  { assert_match(%r{ruby/versions/v2_7}, reflector.itineraries[8][2]) }
 
-        Then  { assert_equal [1, 3, 1, 1, 1, 1, 1], reflector.cases[8]}
+        Then  { assert_equal [1, 3, 1, 1, 1, 1, 1], reflector.cases[8] }
       end
     end
   end
 end
-
