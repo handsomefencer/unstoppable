@@ -26,10 +26,7 @@ commands:
 executors:
     linux:
         docker:
-            - image: cimg/ruby:2.7
-    mac:
-        macos:
-            xcode: 11.4
+            - image: cimg/ruby:3.1
     ruby:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -38,9 +35,6 @@ executors:
                 default: "2.5"
                 description: version tag
                 type: string
-    ruby-executor:
-        docker:
-            - image: cimg/ruby:2.7
 jobs:
     build:
         executor:

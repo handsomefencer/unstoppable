@@ -1,2 +1,0 @@
-docker:
-  - image: cimg/ruby:2.7
