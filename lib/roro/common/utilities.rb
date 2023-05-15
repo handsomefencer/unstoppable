@@ -1,29 +1,28 @@
 # frozen_string_literal: true
+
 require 'json'
 require 'yaml'
 
 module Roro
   module Utilities
-
     def stack_type(stack)
-      case
-      when stack_not_present?(stack)
+      if stack_not_present?(stack)
         :nonexistent
-      when stack_is_ignored?(stack)
+      elsif stack_is_ignored?(stack)
         :ignored
-      when stack_is_dotfile?(stack)
+      elsif stack_is_dotfile?(stack)
         :dotfile
-      when stack_is_storyfile?(stack)
+      elsif stack_is_storyfile?(stack)
         :storyfile
-      when stack_is_templates?(stack)
+      elsif stack_is_templates?(stack)
         :templates
-      when stack_is_inflection_stub?(stack)
+      elsif stack_is_inflection_stub?(stack)
         :inflection_stub
-      when stack_is_inflection?(stack)
+      elsif stack_is_inflection?(stack)
         :inflection
-      when stack_is_stack?(stack)
+      elsif stack_is_stack?(stack)
         :stack
-      when stack_is_story?(stack)
+      elsif stack_is_story?(stack)
         :story
       end
     end
@@ -60,6 +59,7 @@ module Roro
 
     def stack_is_inflection_stub?(stack)
       return unless stack_is_inflection?(stack)
+
       choices = children(stack).select do |c|
         stack_is_inflection?(stack) &&
           !stack_is_stack?(stack) &&
@@ -149,7 +149,7 @@ module Roro
     def stack_is_adventure?(stack)
       !stack_type(stack).eql?(:templates) &&
         stack_type(stack_parent_path(stack)).eql?(:inflection) &&
-        [:stack, :story].include?(stack_type(stack))
+        %i[stack story].include?(stack_type(stack))
     end
 
     def stack_is_empty?(stack)
@@ -210,7 +210,7 @@ module Roro
     end
 
     def adventure_name(location)
-      "Adventure #{stack_parent(location)} #{location.split(Roro::CLI.stacks).last}" #.split('/')
+      "Adventure #{stack_parent(location)} #{location.split(Roro::CLI.stacks).last}" # .split('/')
     end
   end
 end

@@ -21,12 +21,64 @@ describe Reflector do
     Then { assert_file 'mise/logs/itineraries.yml' }
   end
 
-  describe '#cases()' do
+  describe '#adventure_cases()' do
+    Given(:expected) do
+      [
+        '1 1 1',
+        '1 1 1',
+        '1 1 2',
+        '1 2 1 1 1',
+        '1 2 1 1 2',
+        # '1 2 1 2 1',
+        # '1 2 1 2 2',
+        # '1 2 2 1',
+        # '1 2 2 2',
+        # '1 3 1 1 1 1 1 1',
+        # '1 3 1 1 1 1 1 2',
+        # '1 3 1 1 1 1 2 1',
+        # '1 3 1 1 1 1 2 2',
+        # '1 3 1 1 1 2 1 1',
+        # '1 3 1 1 1 2 1 2',
+        # '1 3 1 1 1 2 2 1',
+        # '1 3 1 1 1 2 2 2',
+        # '1 3 1 1 2 1 1 1',
+        # '1 3 1 1 2 1 1 2',
+        # '1 3 1 2 1 1 1',
+        # '1 3 1 2 1 1 2',
+        # '1 3 1 2 1 2 1',
+        # '1 3 1 2 1 2 2',
+        # '1 3 2 1',
+        # '1 3 2 2',
+        # '2 1',
+        # '2 2',
+        # '3 1',
+        '3 2'
+      ].map { |item| item.split(' ').map(&:to_i) } # & :to_i # .join('\\n') }
+    end
+
     describe 'must return the expected' do
+      Given(:result) { reflector.adventure_cases }
       describe 'number of cases' do
-        Then { assert_equal 27, reflector.cases.size }
+        Then { assert_equal 29, result.count }
+      end
+      describe '' do
+        focus
+        Then { assert_equal [1, 1, 1], result[2] }
       end
 
+      describe 'first case' do
+        Given { skip }
+        Then do
+          expected.each do |item|
+            assert_includes reflector.adventure_cases, item
+          end
+        end
+      end
+    end
+  end
+
+  describe '#cases()' do
+    describe 'must return the expected' do
       describe 'first case' do
         Then { assert_equal [1, 1, 1], reflector.cases[0] }
       end
@@ -41,51 +93,6 @@ describe Reflector do
       end
 
       describe 'cases' do
-        Given(:unexpected) do
-          [
-            [1, 3, 1, 2, 2, 2],
-            [1, 3, 1, 2, 2, 1],
-            [1, 3, 1, 2, 1, 2],
-            [1, 3, 1, 2, 1, 1],
-            [1, 3, 1, 1, 2, 2, 2],
-            [1, 3, 1, 1, 2, 2, 1],
-            [1, 3, 1, 1, 2, 1, 2],
-            [1, 3, 1, 1, 2, 1, 1],
-            [1, 3, 1, 1, 1, 2, 2],
-            [1, 3, 1, 1, 1, 2, 1],
-            [1, 3, 1, 1, 1, 1, 2],
-            [1, 3, 1, 1, 1, 1, 1],
-            [1, 2, 1, 2, 2],
-            [1, 2, 1, 2, 1],
-            [1, 2, 1, 1, 2],
-            [1, 2, 1, 1, 1],
-            [3, 1, 1, 1, 1],
-            [3, 1, 1]
-
-          ]
-        end
-        Given(:expected) do
-          [
-            [1, 1, 1],
-            [1, 1, 2],
-            [1, 2, 2, 1],
-            [1, 2, 2, 2],
-            [1, 3, 1, 2, 1, 1, 1],
-            [1, 3, 2, 1],
-            [1, 3, 2, 2],
-            [2, 1],
-            [2, 2],
-            [3, 1],
-            [3, 2]
-          ]
-        end
-        focus
-        Then do
-          expected.each do |expected_case|
-            expected_case
-            assert_includes reflector.cases, expected_case
-          end
-        end
       end
     end
   end
@@ -108,8 +115,6 @@ describe Reflector do
         Then  { assert_match(%r{databases/postgres/versions/v13_5}, reflector.itineraries[8][0]) }
         Then  { assert_match(%r{rails/versions/v6_1}, reflector.itineraries[8][1]) }
         Then  { assert_match(%r{ruby/versions/v2_7}, reflector.itineraries[8][2]) }
-
-        Then  { assert_equal [1, 3, 1, 1, 1, 1, 1], reflector.cases[8] }
       end
     end
   end

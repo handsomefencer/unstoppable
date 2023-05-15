@@ -36,6 +36,7 @@ module Roro
             reflection[:picks] << index + 1
             # story = c.split("#{Roro::CLI.stacks}/").last
           elsif [:storyfile].include?(stack_type(c))
+            byebug
             foo = 'bar'
           else
 
@@ -67,11 +68,63 @@ module Roro
         reflection
       end
 
+      def adventure_cases(hash = reflection, siblings = [], kase = [], kases = [])
+        inflections = hash.dig(:inflections)
+        stacks      = hash.dig(:stacks)
+        stories     = hash.dig(:stories)
+        picks       = hash.dig(:picks)
+        stacks.each do |index, stack|
+          array = index.eql?(0) ? kase : kase.dup
+          array << index
+          adventure_cases(stack, siblings, array, kases)
+        end
+        picks.each do |pick|
+          # byebug
+          if siblings.empty?
+            kases << (kase.dup << pick)
+          else
+            adventure_cases(siblings.shift, siblings, kase << pick, kases)
+          end
+        end
+
+        unless inflections.empty?
+          name = inflections.first.keys.first
+          kase << name
+          foo = inflections.shift
+          byebug if name.eql?(:adventures)
+          adventure_cases(foo.values.first, (siblings << hash), kase.dup, kases)
+        end
+        kases
+      end
+      #   byebug# byebug if hash.dig(:inflections).size > 1
+      #   hash[:inflections]&.each do |inflection|
+      #     artifact = matrix.dup
+      #     inflection.each do |_k, v|
+      #       next unless inflection.eql?(hash[:inflections].first)
+
+      #       cases(v, array, matrix)
+      #       kreateds = matrix - artifact
+      #       next unless hash[:inflections].size > 1
+
+      #       kreateds.each do |kreated|
+      #         matrix.delete(kreated)
+      #         cases(hash[:inflections].last.values.first, kreated, matrix)
+      #       end
+      #     end
+      #   end
+      #   hash[:stacks]&.each { |k, v| cases(v, (array.dup + [k]), matrix) }
+      #   hash[:picks]&.each do |k, _v|
+      #     matrix << array + [k]
+      #   end
+      #   matrix
+      # end
+
       def cases(hash = reflection, array = [], matrix = [])
+        # byebug if hash.dig(:inflections).size > 1
         hash[:inflections]&.each do |inflection|
           artifact = matrix.dup
           inflection.each do |_k, v|
-            next unless inflection.eql?(hash[:inflections].first)
+            # next unless inflection.eql?(hash[:inflections].first)
 
             cases(v, array, matrix)
             kreateds = matrix - artifact
@@ -83,9 +136,14 @@ module Roro
             end
           end
         end
-        hash[:stacks]&.each { |k, v| cases(v, (array.dup + [k]), matrix) }
-        hash[:picks]&.each do |k, _v|
+        hash[:stacks]&.each do |k, v|
+          cases(v, (array + [k]), matrix)
+        end
+        hash[:picks]&.each do |k|
+          # byebug if array.eql?([1, 3, 1, 1, 1, 1])
+          # byebug if (array << k).eql?([1, 3, 1, 1, 1, 1, 1])
           matrix << array + [k]
+          # byebug if array.eql?([1, 3, 1, 1, 1, 1, 1])
         end
         matrix
       end

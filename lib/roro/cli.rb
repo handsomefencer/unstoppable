@@ -25,7 +25,7 @@ module Roro
     end
 
     def self.dependency_root
-      "#{self.roro_root}/dependencies"
+      "#{roro_root}/dependencies"
     end
 
     def self.catalog_root
@@ -34,11 +34,11 @@ module Roro
 
     def self.mise_location
       lookup = Dir.glob("#{Dir.pwd}/**/*.roro")&.first&.split("#{Dir.pwd}/")
-      if lookup
-        mise = lookup.last.split('/').first
-      else
-        mise = 'roro'
-      end
+      mise = if lookup
+               lookup.last.split('/').first
+             else
+               'roro'
+             end
       "#{Dir.pwd}/#{mise}"
     end
 

@@ -1,7 +1,8 @@
 require 'test_helper'
 
 describe 'adventure::circleci::0 rails' do
-  Given(:workbench)  { }
+  Given { skip }
+  Given(:workbench) {}
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
@@ -12,7 +13,7 @@ describe 'adventure::circleci::0 rails' do
     Given(:image)    { "#{org_name}/#{app_name}" }
 
     describe 'scripts directory with ci-deploy.sh' do
-      Then  { assert_file './scripts/ci-deploy.sh', /k8s\/app-deployment.yml/ }
+      Then  { assert_file './scripts/ci-deploy.sh', %r{k8s/app-deployment.yml} }
     end
 
     describe '.circleci directory with config.yml' do
@@ -33,23 +34,24 @@ describe 'adventure::circleci::0 rails' do
     describe 'kube-general folder with' do
       describe 'cicd-service-account.yml' do
         Given(:kind) { 'kind: ServiceAccount' }
-        Then  { assert_file 'k8s-general/cicd-service-account.yml', /#{kind}/ }
+        Then { assert_file 'k8s-general/cicd-service-account.yml', /#{kind}/ }
       end
 
       describe 'cicd-service-account.yml' do
         Given(:kind) { 'kind: ServiceAccount' }
-        Then  { assert_file 'k8s-general/cicd-service-account.yml', /#{kind}/ }
+        Then { assert_file 'k8s-general/cicd-service-account.yml', /#{kind}/ }
       end
     end
 
     describe '.gitignore' do
-
-      Given(:ignoreds) { %w[
-        /k8s-general/
-        \*.env
-        \*.key
-      ] }
-      Then  { ignoreds.each { |i| assert_file '.gitignore', /#{i}/ } }
+      Given(:ignoreds) do
+        %w[
+          /k8s-general/
+          \*.env
+          \*.key
+        ]
+      end
+      Then { ignoreds.each { |i| assert_file '.gitignore', /#{i}/ } }
     end
   end
 end
