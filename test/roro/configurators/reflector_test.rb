@@ -63,16 +63,19 @@ describe Reflector do
       end
       describe '' do
         focus
-        Then { assert_equal [1, 1, 1], result[2] }
+        Then do
+          # assert_equal 26, result.count
+          assert_equal [1, 1, 1], result[20]
+        end
       end
 
       describe 'first case' do
-        Given { skip }
-        Then do
-          expected.each do |item|
-            assert_includes reflector.adventure_cases, item
-          end
-        end
+        # Given { skip }
+        # Then do
+        #   expected.each do |item|
+        #     assert_includes reflector.adventure_cases, item
+        #   end
+        # end
       end
     end
   end

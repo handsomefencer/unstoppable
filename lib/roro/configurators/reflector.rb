@@ -68,56 +68,79 @@ module Roro
         reflection
       end
 
-      def adventure_cases(hash = reflection, siblings = [], kase = [], kases = [])
-        inflections = hash.dig(:inflections)
-        stacks      = hash.dig(:stacks)
-        stories     = hash.dig(:stories)
-        picks       = hash.dig(:picks)
-        stacks.each do |index, stack|
-          array = index.eql?(0) ? kase : kase.dup
-          array << index
-          adventure_cases(stack, siblings, array, kases)
-        end
-        picks.each do |pick|
-          # byebug
+      def adventure_cases(stack = @stack, siblings = [], kase = [])
+        @kases ||= []
+        kase
+        siblings
+        name = stack.split('/').last
+        # byebug if name.eql?('ruby')
+
+        st = stack_type(stack)
+        children = children(stack) # .select { |c| %i[stack inflection story].include? stack_type(c) }
+        inflections = children.select { |child| stack_type(child).eql?(:inflection) }
+        case stack_type(stack)
+        when :inflection
+          byebug if inflections.count > 0
+          # kase << name
+          children.each_with_index do |child, index|
+            index
+            choice = "#{index + 1}: #{child.split('/').last}"
+            choice = index + 1
+            # byebug if name.eql?('unstoppable_developer_styles')
+            # byebug if name.eql?('ruby')
+            # byebug if name.eql?('languages')
+            # byebug
+            adventure_cases(child, siblings.dup, kase.dup << choice) # if index.eql?(0)
+          end
+        when :stack
+          if inflections.count > 1
+            # siblings + +
+            inflections[1..-1].each { |inflection| siblings << inflection }
+            # byebug
+          end
+          # kase << name
+          # inflections = children.select { |child| stack_type(child).eql?(:inflection) }
+          # snapshot = []
+          # # byebug if inflections.count > 1
+          # inflections.each do |_inflection|
+          # end
+          children.each_with_index do |child, index|
+            index
+            cname = child.split('/').last
+
+            # byebug if cname.eql?('languages')
+            #   snapshot = []
+            #   choice = "#{index + 1}: #{child.split('/').last}"
+            #   byebug if name.eql?('unstoppable_developer_styles')
+            #   # byebug if name.eql?('adventures')
+            # byebug if stack_type(child).eql?(:inflection)
+            # byebug unless siblings.empty?
+            adventure_cases(child, siblings, kase)
+          end
+        when :story
+          # cname = child.split('/').last
           if siblings.empty?
-            kases << (kase.dup << pick)
+            @kases << kase
           else
-            adventure_cases(siblings.shift, siblings, kase << pick, kases)
+            # byebug
+            # byebug
+            adventure_cases(siblings.shift, siblings, kase)
+
+          end
+        else
+          children.each do |child|
+            cname = child.split('/').last
+            # byebug
+            name = stack.split('/').last
+            # byebug if name.eql?('laravel')
+            # byebug if name.eql?('ruby')
+
+            adventure_cases(child, siblings, kase)
           end
         end
-
-        unless inflections.empty?
-          name = inflections.first.keys.first
-          kase << name
-          foo = inflections.shift
-          byebug if name.eql?(:adventures)
-          adventure_cases(foo.values.first, (siblings << hash), kase.dup, kases)
-        end
-        kases
+        @kases
+        # byebug
       end
-      #   byebug# byebug if hash.dig(:inflections).size > 1
-      #   hash[:inflections]&.each do |inflection|
-      #     artifact = matrix.dup
-      #     inflection.each do |_k, v|
-      #       next unless inflection.eql?(hash[:inflections].first)
-
-      #       cases(v, array, matrix)
-      #       kreateds = matrix - artifact
-      #       next unless hash[:inflections].size > 1
-
-      #       kreateds.each do |kreated|
-      #         matrix.delete(kreated)
-      #         cases(hash[:inflections].last.values.first, kreated, matrix)
-      #       end
-      #     end
-      #   end
-      #   hash[:stacks]&.each { |k, v| cases(v, (array.dup + [k]), matrix) }
-      #   hash[:picks]&.each do |k, _v|
-      #     matrix << array + [k]
-      #   end
-      #   matrix
-      # end
 
       def cases(hash = reflection, array = [], matrix = [])
         # byebug if hash.dig(:inflections).size > 1
