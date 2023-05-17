@@ -78,6 +78,7 @@ module Roro
         st = stack_type(stack)
         children = children(stack) # .select { |c| %i[stack inflection story].include? stack_type(c) }
         inflections = children.select { |child| stack_type(child).eql?(:inflection) }
+        # byebug if name.eql?('devops')
         case stack_type(stack)
         when :inflection
           byebug if inflections.count > 0
@@ -88,7 +89,7 @@ module Roro
             choice = index + 1
             # byebug if name.eql?('unstoppable_developer_styles')
             # byebug if name.eql?('ruby')
-            # byebug if name.eql?('languages')
+            byebug if name.eql?('circleci')
             # byebug
             adventure_cases(child, siblings.dup, kase.dup << choice) # if index.eql?(0)
           end
@@ -104,6 +105,8 @@ module Roro
           # # byebug if inflections.count > 1
           # inflections.each do |_inflection|
           # end
+
+          # byebug if name.eql?('devops')
           children.each_with_index do |child, index|
             index
             cname = child.split('/').last
@@ -120,6 +123,7 @@ module Roro
         when :story
           # cname = child.split('/').last
           if siblings.empty?
+            byebug if kase.eql?([3])
             @kases << kase
           else
             # byebug

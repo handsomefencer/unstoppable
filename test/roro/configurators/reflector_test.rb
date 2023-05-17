@@ -55,13 +55,41 @@ describe Reflector do
       ].map { |item| item.split(' ').map(&:to_i) } # & :to_i # .join('\\n') }
     end
 
+    Given(:unexpected) do
+      [
+        # [1, 2, 1, 1],
+        # [1, 2, 1, 2],
+        # [1, 3, 1, 1, 2, 1, 2, 1],
+        # [1, 3, 1, 1, 2, 1, 2, 2],
+        # [1, 3, 1, 1, 2, 2, 1, 1],
+        #  [1, 3, 1, 1, 2, 2, 1, 2],
+        #  [1, 3, 1, 1, 2, 2, 2, 1],
+        #  [ 1, 3, 1, 1, 2, 2, 2, 2],
+        #  [1, 3, 1, 2, 2, 1, 1],
+        #  [1, 3, 1, 2, 2, 1, 2],
+        #  [1, 3, 1, 2, 2, 2, 1],
+        #  [1, 3, 1, 2, 2, 2, 2],
+        #  [1, 3, 1, 1, 1, 1, 1],
+        #  [1, 3, 1, 1, 1, 1, 2],
+        #  [1, 3, 1, 1, 1, 2, 1],
+        #  [1, 3, 1, 1, 1, 2, 2],
+        #  [1, 3, 1, 1, 2, 1, 1],
+        #  [1, 3, 1, 1, 2, 1, 2],
+        #  [1, 3, 1, 1, 2, 2, 1],
+        #  [1, 3, 1, 1, 2, 2, 2],
+        #  [1, 3, 1, 1],
+        #  [1, 3, 1, 2],
+        [3]
+      ]
+    end
+
     describe 'must return the expected' do
       Given(:result) { reflector.adventure_cases }
       describe 'number of cases' do
         focus
         Then do
           # assert_equal expected.size, result.size
-          assert_equal 'blah', (result - expected)
+          # assert_equal 'blah', (result - expected)
           expected.each do |e|
             assert_includes result, e
           end
