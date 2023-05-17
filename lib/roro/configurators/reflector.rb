@@ -138,7 +138,7 @@ module Roro
             adventure_cases(child, siblings, kase)
           end
         end
-        @kases
+        @kases.uniq
         # byebug
       end
 

@@ -25,33 +25,32 @@ describe Reflector do
     Given(:expected) do
       [
         '1 1 1',
-        '1 1 1',
         '1 1 2',
         '1 2 1 1 1',
         '1 2 1 1 2',
-        # '1 2 1 2 1',
-        # '1 2 1 2 2',
-        # '1 2 2 1',
-        # '1 2 2 2',
-        # '1 3 1 1 1 1 1 1',
-        # '1 3 1 1 1 1 1 2',
-        # '1 3 1 1 1 1 2 1',
-        # '1 3 1 1 1 1 2 2',
-        # '1 3 1 1 1 2 1 1',
-        # '1 3 1 1 1 2 1 2',
-        # '1 3 1 1 1 2 2 1',
-        # '1 3 1 1 1 2 2 2',
-        # '1 3 1 1 2 1 1 1',
-        # '1 3 1 1 2 1 1 2',
-        # '1 3 1 2 1 1 1',
-        # '1 3 1 2 1 1 2',
-        # '1 3 1 2 1 2 1',
-        # '1 3 1 2 1 2 2',
-        # '1 3 2 1',
-        # '1 3 2 2',
-        # '2 1',
-        # '2 2',
-        # '3 1',
+        '1 2 1 2 1',
+        '1 2 1 2 2',
+        '1 2 2 1',
+        '1 2 2 2',
+        '1 3 1 1 1 1 1 1',
+        '1 3 1 1 1 1 1 2',
+        '1 3 1 1 1 1 2 1',
+        '1 3 1 1 1 1 2 2',
+        '1 3 1 1 1 2 1 1',
+        '1 3 1 1 1 2 1 2',
+        '1 3 1 1 1 2 2 1',
+        '1 3 1 1 1 2 2 2',
+        '1 3 1 1 2 1 1 1',
+        '1 3 1 1 2 1 1 2',
+        '1 3 1 2 1 1 1',
+        '1 3 1 2 1 1 2',
+        '1 3 1 2 1 2 1',
+        '1 3 1 2 1 2 2',
+        '1 3 2 1',
+        '1 3 2 2',
+        '2 1',
+        '2 2',
+        '3 1',
         '3 2'
       ].map { |item| item.split(' ').map(&:to_i) } # & :to_i # .join('\\n') }
     end
@@ -59,14 +58,24 @@ describe Reflector do
     describe 'must return the expected' do
       Given(:result) { reflector.adventure_cases }
       describe 'number of cases' do
-        Then { assert_equal 29, result.count }
-      end
-      describe '' do
         focus
         Then do
-          # assert_equal 26, result.count
-          assert_equal [1, 1, 1], result[20]
+          # assert_equal expected.size, result.size
+          assert_equal 'blah', (result - expected)
+          expected.each do |e|
+            assert_includes result, e
+          end
+
+          unexpected.each do |e|
+            refute_includes result, e
+          end
         end
+      end
+      describe '' do
+        # Then do
+        #   # assert_equal 26, result.count
+        #   assert_equal [1, 1, 1], result[20]
+        # end
       end
 
       describe 'first case' do
