@@ -62,7 +62,7 @@ describe Reflector do
 
       describe 'first itinerary' do
         focus
-        Then { assert_equal 38, result }
+        Then { assert_equal 38, result[8] }
       end
       focus
 
