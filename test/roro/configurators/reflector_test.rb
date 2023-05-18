@@ -52,6 +52,17 @@ describe Reflector do
         '2 2',
         '3 1',
         '3 2'
+        
+        '1 3 1 1 2 1 2 1',
+        '1 3 1 1 2 1 2 2',
+        '1 3 1 1 2 2 1 1',
+        '1 3 1 1 2 2 1 2',
+        '1 3 1 1 2 2 2 1',
+        '1 3 1 1 2 2 2 2',
+        '1 3 1 2 2 1 1',
+        '1 3 1 2 2 1 2',
+        '1 3 1 2 2 2 1',
+        '1 3 1 2 2 2 2',
       ].map { |item| item.split(' ').map(&:to_i) } # & :to_i # .join('\\n') }
     end
 
@@ -78,8 +89,8 @@ describe Reflector do
         #  [1, 3, 1, 1, 2, 2, 1],
         #  [1, 3, 1, 1, 2, 2, 2],
         #  [1, 3, 1, 1],
-        #  [1, 3, 1, 2],
-        [3]
+        # [1, 3, 1, 2],
+        # [3]
       ]
     end
 
@@ -88,7 +99,8 @@ describe Reflector do
       describe 'number of cases' do
         focus
         Then do
-          # assert_equal expected.size, result.size
+          byebug
+          assert_equal expected.size, result.size
           # assert_equal 'blah', (result - expected)
           expected.each do |e|
             assert_includes result, e
@@ -98,21 +110,6 @@ describe Reflector do
             refute_includes result, e
           end
         end
-      end
-      describe '' do
-        # Then do
-        #   # assert_equal 26, result.count
-        #   assert_equal [1, 1, 1], result[20]
-        # end
-      end
-
-      describe 'first case' do
-        # Given { skip }
-        # Then do
-        #   expected.each do |item|
-        #     assert_includes reflector.adventure_cases, item
-        #   end
-        # end
       end
     end
   end

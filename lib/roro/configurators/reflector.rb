@@ -36,7 +36,6 @@ module Roro
             reflection[:picks] << index + 1
             # story = c.split("#{Roro::CLI.stacks}/").last
           elsif [:storyfile].include?(stack_type(c))
-            byebug
             foo = 'bar'
           else
 
@@ -70,80 +69,70 @@ module Roro
 
       def adventure_cases(stack = @stack, siblings = [], kase = [])
         @kases ||= []
-        kase
-        siblings
+        getsome = '/home/schadenfred/work/handsomefencer/gems/roro/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/versions'
+        getsome = '/home/schadenfred/work/handsomefencer/gems/roro/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python/versions/v3_10_1'
+        getsome = '/home/schadenfred/work/handsomefencer/gems/roro/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python/versions'
+        getsome = '/home/schadenfred/work/handsomefencer/gems/roro/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python'
+        parent = stack_parent_path(stack)
         name = stack.split('/').last
-        # byebug if name.eql?('ruby')
 
         st = stack_type(stack)
-        children = children(stack) # .select { |c| %i[stack inflection story].include? stack_type(c) }
-        inflections = children.select { |child| stack_type(child).eql?(:inflection) }
+        children = children(stack)
+        inflections = children.select { |child| %i[inflection inflection_stub].include?(stack_type(child)) }
+        choices = children.select { |child| %i[stack].include?(stack_type(child)) }
+        foo = stack_parent_path(stack)
+        bar = children(foo)
+        qux = ['1: okonomi', '3: ruby', '1: rails', '2: v7_0']
+        qux = [1, 3, 1, 2]
+        qux = [1, 2, 1, 1, 1]
+        qux = [1, 2, 1, 1]
+        # byebug if siblings.include?(getsome)
+        # byebug unless siblings.empty?
         # byebug if name.eql?('devops')
         case stack_type(stack)
-        when :inflection
-          byebug if inflections.count > 0
-          # kase << name
+        when :inflection_stub
           children.each_with_index do |child, index|
-            index
+            cname = child.split('/').last
             choice = "#{index + 1}: #{child.split('/').last}"
             choice = index + 1
-            # byebug if name.eql?('unstoppable_developer_styles')
-            # byebug if name.eql?('ruby')
-            byebug if name.eql?('circleci')
-            # byebug
-            adventure_cases(child, siblings.dup, kase.dup << choice) # if index.eql?(0)
-          end
-        when :stack
-          if inflections.count > 1
-            # siblings + +
-            inflections[1..-1].each { |inflection| siblings << inflection }
-            # byebug
-          end
-          # kase << name
-          # inflections = children.select { |child| stack_type(child).eql?(:inflection) }
-          # snapshot = []
-          # # byebug if inflections.count > 1
-          # inflections.each do |_inflection|
-          # end
-
-          # byebug if name.eql?('devops')
-          children.each_with_index do |child, index|
-            index
-            cname = child.split('/').last
-
-            # byebug if cname.eql?('languages')
-            #   snapshot = []
-            #   choice = "#{index + 1}: #{child.split('/').last}"
-            #   byebug if name.eql?('unstoppable_developer_styles')
-            #   # byebug if name.eql?('adventures')
-            # byebug if stack_type(child).eql?(:inflection)
-            # byebug unless siblings.empty?
             adventure_cases(child, siblings, kase)
           end
+        when :inflection # , :inflection_stub
+          children.each_with_index do |child, index|
+            cname = child.split('/').last
+            choice = "#{index + 1}: #{child.split('/').last}"
+            choice = index + 1
+            # byebug if kase.eql?(qux)
+
+            adventure_cases(child, siblings.dup, kase.dup << choice)
+          end
+        when :stack
+          inflections[1..-1].each { |inflection| siblings << inflection } # if inflections.count > 1
+          inflections.each_with_index do |child, index|
+            cname = child.split('/').last
+            index
+            # byebug if cname.eql?('devops')
+            # byebug if stack.eql?(getsome)
+
+            # if %i[inflection inflection_stub stack].include?(stack_type(child))
+            adventure_cases(child, siblings.dup, kase.dup) if index.eql?(0)
+          end
         when :story
-          # cname = child.split('/').last
           if siblings.empty?
-            byebug if kase.eql?([3])
+            # byebug if kase.eql?(qux)
             @kases << kase
           else
-            # byebug
-            # byebug
             adventure_cases(siblings.shift, siblings, kase)
-
           end
         else
-          children.each do |child|
-            cname = child.split('/').last
+          # byebug
+          inflections.each do |child|
             # byebug
-            name = stack.split('/').last
-            # byebug if name.eql?('laravel')
-            # byebug if name.eql?('ruby')
-
+            cname = child.split('/').last
             adventure_cases(child, siblings, kase)
           end
         end
         @kases.uniq
-        # byebug
       end
 
       def cases(hash = reflection, array = [], matrix = [])
