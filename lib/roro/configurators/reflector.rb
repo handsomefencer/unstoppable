@@ -77,29 +77,35 @@ module Roro
         stack_itineraries(stack).index(itinerary)
       end
 
-      def itineraries(hash = reflection, array = [], matrix = [])
-        hash[:inflections]&.each do |inflection|
-          artifact = matrix.dup
-          inflection.each do |_k, v|
-            next unless inflection.eql?(hash[:inflections].first)
-
-            itineraries(v, array, matrix)
-            kreateds = matrix - artifact
-            next unless hash[:inflections].size > 1
-
-            kreateds.each do |kreated|
-              matrix.delete(kreated)
-              itineraries(hash[:inflections].last.values.first, kreated, matrix)
-            end
+      def itineraries(stack = @stack, siblings = [], kase = [], kases = [])
+        name = stack_name(stack)
+        st = stack_type(stack)
+        case stack_type(stack)
+        when :inflection_stub
+          # byebug
+          children(stack).each { |child| itineraries(child, siblings, kase, kases) }
+        when :inflection
+          children(stack).each_with_index do |child, i|
+            foo = stack_name(child)
+            # byebug
+            itineraries(child, siblings.dup, (kase.dup << "#{name}: #{i += 1}-#{foo}"), kases)
           end
+        when :stack
+          inflections = children(stack).select do |c|
+            %i[inflection inflection_stub]
+              .include?(stack_type(c))
+          end
+
+          itineraries(inflections.shift, (siblings + inflections), kase, kases)
+        when :story
+          if siblings.empty?
+            kases << kase
+          else
+            itineraries(siblings.shift, siblings, kase, kases)
+          end
+          return
         end
-        hash[:stacks]&.each do |_k, v|
-          itineraries(v, array.dup, matrix)
-        end
-        hash[:stories]&.each do |k, _v|
-          matrix << array + [k]
-        end
-        matrix
+        kases
       end
 
       def metadata

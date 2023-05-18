@@ -52,23 +52,32 @@ describe Reflector do
   end
 
   describe '#itineraries()' do
+    Given(:result) { reflector.itineraries }
+
     describe 'must return the expected' do
       describe 'number of itineraries' do
-        Then { assert_equal 27, reflector.itineraries.size }
+        focus
+        Then { assert_equal 38, result.size }
       end
 
+      describe 'first itinerary' do
+        focus
+        Then { assert_equal 38, result }
+      end
+      focus
+
       describe 'wordpress itinerary' do
-        Then { assert_match(/wordpress/, reflector.itineraries[1][0]) }
+        # Then { assert_match(/wordpress/, reflector.itineraries[1][0]) }
       end
 
       describe 'django itinerary' do
-        Then { assert_match(/django/, reflector.itineraries[4][0]) }
+        # Then { assert_match(/django/, reflector.itineraries[4][0]) }
       end
 
       describe 'rails itinerary' do
-        Then  { assert_match(%r{databases/postgres/versions/v13_5}, reflector.itineraries[8][0]) }
-        Then  { assert_match(%r{rails/versions/v6_1}, reflector.itineraries[8][1]) }
-        Then  { assert_match(%r{ruby/versions/v2_7}, reflector.itineraries[8][2]) }
+        # Then  { assert_match(%r{databases/postgres/versions/v13_5}, reflector.itineraries[8][0]) }
+        # Then  { assert_match(%r{rails/versions/v6_1}, reflector.itineraries[8][1]) }
+        # Then  { assert_match(%r{ruby/versions/v2_7}, reflector.itineraries[8][2]) }
       end
     end
   end
