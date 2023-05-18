@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'roro/configurators/reflector'
 
 describe Reflector do
   Given(:stack_loc) { Roro::CLI.stacks }
@@ -21,115 +20,33 @@ describe Reflector do
     Then { assert_file 'mise/logs/itineraries.yml' }
   end
 
-  describe '#adventure_cases()' do
-    Given(:expected) do
-      [
-        '1 1 1',
-        '1 1 2',
-        '1 2 1 1 1',
-        '1 2 1 1 2',
-        '1 2 1 2 1',
-        '1 2 1 2 2',
-        '1 2 2 1',
-        '1 2 2 2',
-        '1 3 1 1 1 1 1 1',
-        '1 3 1 1 1 1 1 2',
-        '1 3 1 1 1 1 2 1',
-        '1 3 1 1 1 1 2 2',
-        '1 3 1 1 1 2 1 1',
-        '1 3 1 1 1 2 1 2',
-        '1 3 1 1 1 2 2 1',
-        '1 3 1 1 1 2 2 2',
-        '1 3 1 1 2 1 1 1',
-        '1 3 1 1 2 1 1 2',
-        '1 3 1 2 1 1 1',
-        '1 3 1 2 1 1 2',
-        '1 3 1 2 1 2 1',
-        '1 3 1 2 1 2 2',
-        '1 3 2 1',
-        '1 3 2 2',
-        '2 1',
-        '2 2',
-        '3 1',
-        '3 2'
-        
-        '1 3 1 1 2 1 2 1',
-        '1 3 1 1 2 1 2 2',
-        '1 3 1 1 2 2 1 1',
-        '1 3 1 1 2 2 1 2',
-        '1 3 1 1 2 2 2 1',
-        '1 3 1 1 2 2 2 2',
-        '1 3 1 2 2 1 1',
-        '1 3 1 2 2 1 2',
-        '1 3 1 2 2 2 1',
-        '1 3 1 2 2 2 2',
-      ].map { |item| item.split(' ').map(&:to_i) } # & :to_i # .join('\\n') }
-    end
-
-    Given(:unexpected) do
-      [
-        # [1, 2, 1, 1],
-        # [1, 2, 1, 2],
-        # [1, 3, 1, 1, 2, 1, 2, 1],
-        # [1, 3, 1, 1, 2, 1, 2, 2],
-        # [1, 3, 1, 1, 2, 2, 1, 1],
-        #  [1, 3, 1, 1, 2, 2, 1, 2],
-        #  [1, 3, 1, 1, 2, 2, 2, 1],
-        #  [ 1, 3, 1, 1, 2, 2, 2, 2],
-        #  [1, 3, 1, 2, 2, 1, 1],
-        #  [1, 3, 1, 2, 2, 1, 2],
-        #  [1, 3, 1, 2, 2, 2, 1],
-        #  [1, 3, 1, 2, 2, 2, 2],
-        #  [1, 3, 1, 1, 1, 1, 1],
-        #  [1, 3, 1, 1, 1, 1, 2],
-        #  [1, 3, 1, 1, 1, 2, 1],
-        #  [1, 3, 1, 1, 1, 2, 2],
-        #  [1, 3, 1, 1, 2, 1, 1],
-        #  [1, 3, 1, 1, 2, 1, 2],
-        #  [1, 3, 1, 1, 2, 2, 1],
-        #  [1, 3, 1, 1, 2, 2, 2],
-        #  [1, 3, 1, 1],
-        # [1, 3, 1, 2],
-        # [3]
-      ]
-    end
-
-    describe 'must return the expected' do
-      Given(:result) { reflector.adventure_cases }
-      describe 'number of cases' do
-        focus
-        Then do
-          byebug
-          assert_equal expected.size, result.size
-          # assert_equal 'blah', (result - expected)
-          expected.each do |e|
-            assert_includes result, e
-          end
-
-          unexpected.each do |e|
-            refute_includes result, e
-          end
-        end
-      end
-    end
-  end
-
   describe '#cases()' do
-    describe 'must return the expected' do
-      describe 'first case' do
-        Then { assert_equal [1, 1, 1], reflector.cases[0] }
+    Given(:result) { reflector.cases }
+
+    describe 'must return an array with' do
+      describe 'the correct number of cases' do
+        Then { assert_equal 38, result.size }
       end
 
-      describe 'fifth case' do
-        Then do
-          # binding.pry
-          assert_equal [1, 2, 1, 2, 1], reflector.cases[4]
+      describe 'the expected cases' do
+        Given(:expected) do
+          [
+            '1 1 1',           '1 1 2',           '1 2 1 1 1',
+            '1 2 1 1 2',       '1 2 1 2 1',       '1 2 1 2 2',
+            '1 2 2 1',         '1 2 2 2',         '1 3 1 1 1 1 1 1',
+            '1 3 1 1 1 1 1 2', '1 3 1 1 1 1 2 1', '1 3 1 1 1 1 2 2',
+            '1 3 1 1 1 2 1 1', '1 3 1 1 1 2 1 2', '1 3 1 1 1 2 2 1',
+            '1 3 1 1 1 2 2 2', '1 3 1 1 2 1 1 1', '1 3 1 1 2 1 1 2',
+            '1 3 1 1 2 1 2 1', '1 3 1 1 2 1 2 2', '1 3 1 1 2 2 1 1',
+            '1 3 1 1 2 2 1 2', '1 3 1 1 2 2 2 1', '1 3 1 1 2 2 2 2',
+            '1 3 1 2 1 1 1',   '1 3 1 2 2 1 1',   '1 3 1 2 1 1 2',
+            '1 3 1 2 2 1 2',   '1 3 1 2 1 2 1',   '1 3 1 2 1 2 2',
+            '1 3 1 2 2 2 1',   '1 3 1 2 2 2 2',   '1 3 2 1',
+            '1 3 2 2', '2 1',   '2 2', '3 1',     '3 2'
+          ].map { |i| i.split(' ').map(&:to_i) }
         end
-        And  { assert_match(%r{versions/v3_10_1}, reflector.itineraries[4][1]) }
-        And  { assert_match(%r{databases/postgres}, reflector.itineraries[4][0]) }
-      end
 
-      describe 'cases' do
+        Then { expected.each { |e| assert_includes result, e } }
       end
     end
   end
