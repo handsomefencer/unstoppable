@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
 module Roro
-
   class CLI < Thor
-
     desc 'generate:harvest', 'Generate harvest.'
     map 'generate:harvest' => 'generate_harvest'
 
     def generate_harvest
-      @reflector = Roro::Reflector.new
+      reflector = Roro::Reflector.new
       content = {
-        itineraries: harvest_itineraries,
-        cases:  @reflector.cases,
-        reflection: @reflector.reflection,
-        metadata: @reflector.metadata
+        cases: reflector.cases.map { |c| c.join(' ') },
+        structure_human: reflector.adventure_structure_human,
+        structure_choices: reflector.adventure_structure_choices
+        # itineraries: harvest_itineraries,
+        # metadata: @reflector.metadata
       }
-      create_file '.harvest.yml', content.to_yaml
-      # harvest_test_files
+      content.each do |key, value|
+        create_file ".harvest/#{key}.yml", value.to_yaml
+      end
     end
 
     no_commands do

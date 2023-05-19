@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'deep_merge'
+
 module Roro
   module Configurators
     class Reflector
@@ -38,28 +40,23 @@ module Roro
         reflection
       end
 
-      def cases(stack = @stack, siblings = [], kase = [], kases = [])
+      def cases(stack = @stack, sibs = [], kase = [], kases = [])
+        args = [sibs, kase, kases]
         case stack_type(stack)
         when :inflection_stub
-          children(stack).each { |child| cases(child, siblings, kase, kases) }
+          children(stack).each { |c| cases(c, sibs, kase, kases) }
         when :inflection
-          children(stack).each_with_index do |child, i|
-            cases(child, siblings.dup, (kase.dup << i += 1), kases)
+          children(stack).each_with_index do |c, i|
+            cases(c, sibs.dup, kase.dup << i += 1, kases)
           end
         when :stack
           inflections = children(stack).select do |c|
-            %i[inflection inflection_stub]
-              .include?(stack_type(c))
+            %i[inflection inflection_stub].include?(stack_type(c))
           end
 
-          cases(inflections.shift, (siblings + inflections), kase, kases)
+          cases(inflections.shift, (sibs + inflections), kase, kases)
         when :story
-          if siblings.empty?
-            kases << kase
-          else
-            cases(siblings.shift, siblings, kase, kases)
-          end
-          return
+          sibs.empty? ? kases << kase : cases(sibs.shift, sibs, kase, kases)
         end
         kases
       end
@@ -78,17 +75,13 @@ module Roro
       end
 
       def itineraries(stack = @stack, siblings = [], kase = [], kases = [])
-        name = stack_name(stack)
-        st = stack_type(stack)
         case stack_type(stack)
         when :inflection_stub
-          # byebug
-          children(stack).each { |child| itineraries(child, siblings, kase, kases) }
+          children(stack).each { |c| itineraries(c, siblings, kase, kases) }
         when :inflection
-          children(stack).each_with_index do |child, i|
-            foo = stack_name(child)
-            # byebug
-            itineraries(child, siblings.dup, (kase.dup << "#{name}: #{i += 1}-#{foo}"), kases)
+          children(stack).each do |c|
+            dup = (kase.dup << "#{stack_name(stack)}: #{stack_name(c)}")
+            itineraries(c, siblings.dup, dup, kases)
           end
         when :stack
           inflections = children(stack).select do |c|
@@ -103,9 +96,37 @@ module Roro
           else
             itineraries(siblings.shift, siblings, kase, kases)
           end
-          return
         end
         kases
+      end
+
+      def adventure_structure
+        {
+          human: adventure_structure_human,
+          choices: adventure_structure_choices
+        }
+      end
+
+      def adventure_structure_human
+        {}.tap do |h|
+          itineraries.each do |array|
+            hash = {}
+            array.reverse.each { |i| hash = { i.split(': ').last => hash } }
+            h.deep_merge(hash)
+          end
+        end
+      end
+
+      def adventure_structure_choices
+        {}.tap do |h|
+          cases.each do |array|
+            hash = {}
+            array.reverse.each do |c|
+              hash = { c => hash }
+            end
+            h.deep_merge(hash)
+          end
+        end
       end
 
       def metadata
@@ -126,19 +147,38 @@ module Roro
         data
       end
 
-      def tech_tags(itinerary)
-        tags = []
-        itinerary.each do |i|
-          path = "#{Roro::CLI.stacks}"
-          i.split('/').each do |item|
-            path = "#{path}/#{item}"
-            tags += stack_stories(path)
-                    .map { |s| stack_name(s).split('.yml').first }
-                    .reject { |s| s.chr.eql?('_') }
-                    .map { |s| append_tech_to_version(s, path) }
+      def tech_tags(kase = [], stack = @stack, tags = [], sibs = [])
+        tags
+        stack
+        kase
+        children = children(stack)
+        st = stack_type(stack)
+        stories = story_paths(stack).map { |story| stack_name(story) }
+        case stack_type(stack)
+        when :inflection_stub
+          children(stack).each { |c| tech_tags(kase, c, tags, sibs) }
+        when :inflection
+          choice = children[kase.shift - 1]
+          tech_tags(kase, choice, tags, sibs)
+        when :stack
+          inflections = children(stack).select do |c|
+            %i[inflection inflection_stub]
+              .include?(stack_type(c))
+          end
+          stack_stories(stack).each do |child|
+            tech_tags(kase, child, tags, sibs) if stack_is_storyfile?(child)
+          end
+          tech_tags(kase, inflections.shift, tags, (sibs + inflections))
+        when :storyfile
+          tags << stack_name(stack).split('.').first
+        when :story
+          children(stack).each do |child|
+            tech_tags(kase, child, tags, sibs)
           end
         end
-        tags.uniq
+        tech_tags(kase, sibs.shift, tags, sibs) unless sibs.empty?
+        ignored = %w[_builder databases]
+        tags.reject { |tag| ignored.include?(tag) }
       end
 
       def append_tech_to_version(tag, path)
@@ -172,11 +212,9 @@ module Roro
       end
 
       def adventure_title(itinerary)
-        versioned_tags = versioned_tech_tags(itinerary)
-        redundant = versioned_tags.map { |t| t.split(':').first }
-        tags = tech_tags(itinerary) - redundant
-
-        (tags - @implicit_tags).join(' ')
+        itinerary.map do |item|
+          item.split(': ').last
+        end.join(' ')
       end
 
       def adventure_canonical_slug(itinerary)

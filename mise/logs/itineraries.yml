@@ -1,235 +1,235 @@
 ---
-- - unstoppable_developer_styles
-  - languages
-  - adventures
-- - unstoppable_developer_styles
-  - languages
-  - adventures
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - databases
-  - versions
-  - schedulers
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - versions
-- - unstoppable_developer_styles
-  - languages
-  - frameworks
-  - versions
-- - unstoppable_developer_styles
-  - frameworks
-- - unstoppable_developer_styles
-  - frameworks
-- - unstoppable_developer_styles
-  - frameworks
-- - unstoppable_developer_styles
-  - frameworks
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: php'
+  - 'adventures: laravel'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: php'
+  - 'adventures: wordpress'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: python'
+  - 'frameworks: django'
+  - 'databases: mysql'
+  - 'versions: python_3_10_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: python'
+  - 'frameworks: django'
+  - 'databases: mysql'
+  - 'versions: python_3_9_9'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: python'
+  - 'frameworks: django'
+  - 'databases: postgres'
+  - 'versions: python_3_10_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: python'
+  - 'frameworks: django'
+  - 'databases: postgres'
+  - 'versions: python_3_9_9'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: python'
+  - 'frameworks: flask'
+  - 'versions: python_3_10_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: python'
+  - 'frameworks: flask'
+  - 'versions: python_3_9_9'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_2_7'
+  - 'schedulers: resque'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_2_7'
+  - 'schedulers: resque'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_2_7'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_2_7'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_3_0'
+  - 'schedulers: resque'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_3_0'
+  - 'schedulers: resque'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_3_0'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_13_5'
+  - 'versions: ruby_3_0'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_2_7'
+  - 'schedulers: resque'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_2_7'
+  - 'schedulers: resque'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_2_7'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_2_7'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_3_0'
+  - 'schedulers: resque'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_3_0'
+  - 'schedulers: resque'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_3_0'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: postgres'
+  - 'versions: postgres_14_1'
+  - 'versions: ruby_3_0'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_2_7'
+  - 'schedulers: resque'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_2_7'
+  - 'schedulers: resque'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_2_7'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_2_7'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_3_0'
+  - 'schedulers: resque'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_3_0'
+  - 'schedulers: resque'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_3_0'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_6_1'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: rails'
+  - 'databases: sqlite'
+  - 'versions: ruby_3_0'
+  - 'schedulers: sidekiq'
+  - 'versions: rails_7_0'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: ruby_gem'
+  - 'versions: ruby_2_7'
+- - 'unstoppable_developer_styles: okonomi'
+  - 'languages: ruby'
+  - 'frameworks: ruby_gem'
+  - 'versions: ruby_3_0'
+- - 'unstoppable_developer_styles: omakase'
+  - 'frameworks: rails'
+- - 'unstoppable_developer_styles: omakase'
+  - 'frameworks: wordpress'
+- - 'unstoppable_developer_styles: sashimi'
+  - 'frameworks: kubernetes'
+- - 'unstoppable_developer_styles: sashimi'
+  - 'frameworks: rails'

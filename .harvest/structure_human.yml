@@ -1,0 +1,73 @@
+---
+okonomi:
+  php:
+    laravel: {}
+    wordpress: {}
+  python:
+    django:
+      mysql:
+        python_3_10_1: {}
+        python_3_9_9: {}
+      postgres:
+        python_3_10_1: {}
+        python_3_9_9: {}
+    flask:
+      python_3_10_1: {}
+      python_3_9_9: {}
+  ruby:
+    rails:
+      postgres:
+        postgres_13_5:
+          ruby_2_7:
+            resque:
+              rails_6_1: {}
+              rails_7_0: {}
+            sidekiq:
+              rails_6_1: {}
+              rails_7_0: {}
+          ruby_3_0:
+            resque:
+              rails_6_1: {}
+              rails_7_0: {}
+            sidekiq:
+              rails_6_1: {}
+              rails_7_0: {}
+        postgres_14_1:
+          ruby_2_7:
+            resque:
+              rails_6_1: {}
+              rails_7_0: {}
+            sidekiq:
+              rails_6_1: {}
+              rails_7_0: {}
+          ruby_3_0:
+            resque:
+              rails_6_1: {}
+              rails_7_0: {}
+            sidekiq:
+              rails_6_1: {}
+              rails_7_0: {}
+      sqlite:
+        ruby_2_7:
+          resque:
+            rails_6_1: {}
+            rails_7_0: {}
+          sidekiq:
+            rails_6_1: {}
+            rails_7_0: {}
+        ruby_3_0:
+          resque:
+            rails_6_1: {}
+            rails_7_0: {}
+          sidekiq:
+            rails_6_1: {}
+            rails_7_0: {}
+    ruby_gem:
+      ruby_2_7: {}
+      ruby_3_0: {}
+omakase:
+  rails: {}
+  wordpress: {}
+sashimi:
+  kubernetes: {}
+  rails: {}

@@ -3,12 +3,10 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_harvest' do
-
   Given(:subject)        { Roro::CLI.new }
   Given(:workbench)      { 'harvest' }
 
   Given { subject.generate_harvest }
-
 
   describe 'must generate .harvest.yml' do
     Then { assert_file '.harvest.yml' }
@@ -17,8 +15,10 @@ describe 'Roro::CLI#generate_harvest' do
       Given(:content) { read_yaml('.harvest.yml') }
 
       describe 'title' do
-        Given(:title) { content[:metadata][:adventures][:"8"][:title] }
-        Then { assert_match /docker postgres:13.5 rails:6.1 ruby:2.7/, title  }
+        # Given(:title) { content[:metadata][:adventures][:"8"][:title] }
+        Given(:title) { content }
+        # focus
+        Then { assert_match(/docker postgres:13.5 rails:6.1 ruby:2.7/, title) }
       end
 
       describe 'tech_tags' do
