@@ -8,13 +8,14 @@ describe Roro::CLI do
   describe 'commands' do
     Given(:mappings) do
       {
-        generate_containers:   ['generate:containers'],
-        generate_exposed:      ['generate:exposed'],
+        generate_containers: ['generate:containers'],
+        generate_exposed: ['generate:exposed'],
         generate_environments: ['generate:environments'],
-        generate_keys:         ['generate:key'],
-        generate_mise:         ['generate:mise'],
-        generate_obfuscated:   ['generate:obfuscated'],
-        rollon:                ['rollon'],
+        generate_keys: ['generate:key'],
+        generate_mise: ['generate:mise'],
+        generate_obfuscated: ['generate:obfuscated'],
+        generate_choice_tests: ['generate:choice_tests'],
+        rollon: ['rollon']
       }
     end
 

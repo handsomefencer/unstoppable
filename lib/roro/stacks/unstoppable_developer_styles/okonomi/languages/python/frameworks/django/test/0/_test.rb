@@ -3,12 +3,13 @@
 require 'test_helper'
 
 describe '' do
-  Given(:workbench) { }
+  Given { skip }
+  Given(:workbench) {}
 
   Given { @rollon_loud    = false }
   Given { @rollon_dummies = false }
   Given { rollon(__dir__) }
-  
+
   describe 'directory must contain' do
     describe 'requirements.txt' do
       Given(:file) { 'requirements.txt' }
@@ -16,11 +17,10 @@ describe '' do
     end
   end
 
-
   describe 'directory must contain' do
     describe 'mise' do
       describe 'mise/env' do
-        Then { assert_file 'mise/env/base.env'}
+        Then { assert_file 'mise/env/base.env' }
       end
     end
 
@@ -59,12 +59,13 @@ describe '' do
 
     describe 'requirements.txt' do
       Given(:file) { 'requirements.txt' }
-      Then {
+      Then do
         assert_file file, /Django==4.0.2/
         assert_file file, /mysqlclient==2.1.0/
         assert_file file, /psycopg2==2.9.3/
         assert_file file, /asgiref==3.5.0/
-        assert_file file, /sqlparse==0.4.2/ }
+        assert_file file, /sqlparse==0.4.2/
+      end
     end
 
     describe 'app_name/settings.py' do

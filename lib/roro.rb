@@ -9,6 +9,7 @@ require 'roro/cli/generate/generate'
 require 'roro/cli/generate/generate_annotations'
 require 'roro/cli/generate/generate_harvest'
 require 'roro/cli/generate/generate_adventure'
+require 'roro/cli/generate/generate_choice_tests'
 require 'roro/cli/generate/generate_containers'
 require 'roro/cli/generate/generate_environments'
 require 'roro/cli/generate/generate_exposed'
@@ -38,7 +39,6 @@ require 'roro/error'
 require 'roro/version'
 
 module Roro
-
   def self.gem_root
     File.dirname __dir__
   end
@@ -58,6 +58,7 @@ module Roro
     class QuestionAsker < Thor; end
     class CatalogBuilder; end
   end
+
   module Configurators
     include Utilities
   end
