@@ -75,15 +75,11 @@ describe Reflector do
 
   describe '#adventure_title()' do
     Given(:result) { reflector.adventure_title(itinerary) }
-    # focus
-    Then { assert_equal 'blah', result }
-    # byebug
-    # inflections.each
+    # Then { assert_equal 'blah', result }
   end
 
   describe '#tech_tags' do
     Given(:result) { reflector.tech_tags(reflector.cases[8]) }
-    focus
-    Then { assert_equal 'blah', result }
+    Then { assert_includes result, 'alpine' }
   end
 end

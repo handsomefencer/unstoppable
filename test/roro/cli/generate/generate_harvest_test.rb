@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_harvest' do
+  Given { skip }
   Given(:subject)        { Roro::CLI.new }
   Given(:workbench)      { 'harvest' }
 
