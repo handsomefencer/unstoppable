@@ -14,7 +14,7 @@ describe Roro::CLI do
         generate_keys: ['generate:key'],
         generate_mise: ['generate:mise'],
         generate_obfuscated: ['generate:obfuscated'],
-        generate_choice_tests: ['generate:choice_tests'],
+        generate_adventure_tests: ['generate:adventure_tests'],
         rollon: ['rollon']
       }
     end

@@ -28,20 +28,6 @@ module Roro
         itineraries
       end
 
-      def harvest_adventure_title(itinerary)
-        array = []
-        itinerary.each do |i|
-          parent_path = stack_parent_path(i)
-          # if stack_parent(i).eql?('versions')
-          #   keyword = stack_parent(parent_path)
-          # else
-          # end
-          keyword = i.split('/').last(3) - %w[adventures databases versions frameworks]
-          array << keyword.join('_')
-        end
-        array.join('-')
-      end
-
       def harvest_test_files
         harvest = {}
         harvest[:test_files] = gather_test_files

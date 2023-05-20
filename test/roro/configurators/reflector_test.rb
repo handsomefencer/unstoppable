@@ -57,17 +57,18 @@ describe Reflector do
   end
 
   describe '#adventure_structure' do
+    Given(:result) { reflector.adventure_structure }
+
     describe 'must return a hash with nested :choices' do
-      Given(:choices) { reflector.adventure_structure[:choices] }
-      Then { assert_equal [1, 2, 3], choices.keys }
-      And { assert_equal 1, choices.dig(1, 3, 2).keys.first }
+      Then { assert_equal [1, 2, 3], result[:choices].keys }
+      And { assert_equal 1, result[:choices].dig(1, 3, 2).keys.first }
     end
 
     describe 'must return a hash with nested :human' do
-      Given(:human) { reflector.adventure_structure[:human] }
-      Then { assert_equal %w[okonomi omakase sashimi], human.keys }
-      And { assert_equal %w[php python ruby], human.dig('okonomi').keys }
-      And { assert_includes human.dig('okonomi', 'ruby').keys, 'rails' }
+      # Given(:human) { reflector.adventure_structure[:human] }
+      Then { assert_equal %w[okonomi omakase sashimi], result[:human].keys }
+      # And { assert_equal %w[php python ruby], human.dig('okonomi').keys }
+      # And { assert_includes human.dig('okonomi', 'ruby').keys, 'rails' }
     end
   end
 

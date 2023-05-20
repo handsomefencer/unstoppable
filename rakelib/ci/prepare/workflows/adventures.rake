@@ -4,8 +4,7 @@ namespace :ci do
       desc 'Prepare workflow with matrix of adventures'
       task 'adventures' do |task|
         set_content(task)
-        reflector = Roro::Configurators::Reflector.new
-        cases = reflector.cases
+        # reflector = Roro::Configurators::Reflector.new
         matrix = @content['jobs'][0]['test-adventures']['matrix']
         matrix['parameters']['answers'] = ci_cases # cases.map { |c| c.join('\n') }
         overwrite

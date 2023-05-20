@@ -41,7 +41,6 @@ module Roro
       end
 
       def cases(stack = @stack, sibs = [], kase = [], kases = [])
-        args = [sibs, kase, kases]
         case stack_type(stack)
         when :inflection_stub
           children(stack).each { |c| cases(c, sibs, kase, kases) }
@@ -148,12 +147,7 @@ module Roro
       end
 
       def tech_tags(kase = [], stack = @stack, tags = [], sibs = [])
-        tags
-        stack
-        kase
         children = children(stack)
-        st = stack_type(stack)
-        stories = story_paths(stack).map { |story| stack_name(story) }
         case stack_type(stack)
         when :inflection_stub
           children(stack).each { |c| tech_tags(kase, c, tags, sibs) }
