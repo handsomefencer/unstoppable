@@ -7,7 +7,7 @@ module Roro
     class Reflector
       include Utilities
 
-      attr_reader :cases, :itineraries, :stack
+      attr_reader :stack
 
       def initialize(stack = nil)
         @stack = stack || Roro::CLI.stacks

@@ -14,8 +14,8 @@ describe 'Roro::CLI#generate_annotations' do
   Given(:dummy)          { "#{story_path}/test/0/dummy/idiot.yaml" }
 
   Given { subject.generate_annotations }
-  def save_result(result, location = nil )
-    File.open("#{@roro_dir}/test/fixtures/files/#{location}", "w") do |f|
+  def save_result(result, location = nil)
+    File.open("#{@roro_dir}/test/fixtures/files/#{location}", 'w') do |f|
       f.write(result)
     end
   end
@@ -24,7 +24,7 @@ describe 'Roro::CLI#generate_annotations' do
     Given { skip }
     Then  { assert_file adventure_test, expected }
     Then  { assert_file adventure_test, File.read("#{@roro_dir}/test/fixtures/files/after_annotate.rb") }
-    Then { save_result(File.read(adventure_test), 'after_annotate.rb')}
+    Then { save_result(File.read(adventure_test), 'after_annotate.rb') }
   end
 
   describe '#adventure_boilerplate' do
@@ -33,7 +33,7 @@ describe 'Roro::CLI#generate_annotations' do
 
   describe '#description_helper(adventure_test)' do
     Given(:result) { subject.description_helper(adventure_test) }
-    Then { assert_match (/idiot\.yaml/), result }
+    Then { assert_match(/idiot\.yaml/, result) }
   end
 
   describe '#dummies_for(adventure_test) when dummies' do
@@ -61,8 +61,8 @@ describe 'Roro::CLI#generate_annotations' do
 
   describe '#story_path_for(adventure_test)' do
     Given(:result) { subject.story_path_for(adventure_test) }
-    Then { assert_match "versions/v6_1", result }
-    And  { refute_match "versions/v6_1/", result }
+    Then { assert_match 'versions/v6_1', result }
+    And  { refute_match 'versions/v6_1/', result }
   end
 
   describe '#adventure_test_files' do

@@ -32,6 +32,6 @@ describe 'Roro::CLI#generate_mise' do
   end
 
   describe 'must generate mise/mise.roro file' do
-    Then  { assert_directory 'mise/mise.roro' }
+    Then { assert_directory 'mise/mise.roro' }
   end
 end

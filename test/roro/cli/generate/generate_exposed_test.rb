@@ -13,7 +13,6 @@ describe 'Roro::CLI#generate_exposed' do
     Given { insert_dummy_env_enc 'roro/env/smart.env.enc' }
 
     describe 'must only expose matching files' do
-
       Given { insert_dummy_key }
       Given { insert_dummy_key 'smart.key' }
       Given { generate }

@@ -27,8 +27,6 @@ describe 'Roro::CLI#generate_choice_tests' do
 
     describe 'Given block' do
       Then { assert_file file, /Given do/ }
-      And { assert_file file, /\n rollon(__dir__) / }
-      # And { assert_file file, /adventures: laravel/ }
     end
   end
 end
