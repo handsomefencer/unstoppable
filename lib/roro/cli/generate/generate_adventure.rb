@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
 module Roro
-
   class CLI < Thor
-
     desc 'generate:adventure', 'Generate adventure for adventure tests.'
     map 'generate:adventure' => 'generate_adventure'
 
-    method_options :adventure => :string
+    method_options adventure: :string
 
     def generate_adventure(adventure)
       @env = { adventure_name: adventure.split('/').last }
-      location =  "lib/roro/stacks/#{adventure}"
+      location = "lib/roro/stacks/#{adventure}"
       directory 'adventure', location, @env
-      generate_annotations
-      # generate_annotations("#{location}/test/0/_test.rb")
+      generate_adventure_tests
     end
 
     no_commands do
