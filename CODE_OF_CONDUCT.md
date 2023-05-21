@@ -1,4 +1,4 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
 Sometimes working on software is fun, like when we solve a problem for another person; but other times it can be painful, like when I spend all day or all week failing to fix a bug. Software makes me feel dumb every day and I don't want this project to make a contributor feel dumb. 
 
