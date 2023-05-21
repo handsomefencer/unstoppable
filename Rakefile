@@ -1,8 +1,8 @@
-require "bundler/gem_tasks"
-require "rake/testtask"
-require "json"
-require "yaml"
-require "roro"
+require 'bundler/gem_tasks'
+require 'rake/testtask'
+require 'json'
+require 'yaml'
+require 'roro'
 
 Rake.add_rakelib 'rakelib/ci'
 Rake.add_rakelib 'rakelib/ci/config'
@@ -21,23 +21,22 @@ Rake.add_rakelib 'rakelib/docker/image'
 Rake.add_rakelib 'rakelib/club'
 Rake.add_rakelib 'rakelib/club/harvest'
 
-Rake::TestTask.new('test:test') do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["test/**/*_test.rb"]
-                   .exclude('test/fixtures/dummies/**/*')
-end
-
 Rake::TestTask.new('test') do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["./**/*/_test.rb"]
-                   .exclude('test/fixtures/dummies/test_annotate/**/*')
+  t.libs << 'test'
+  # t.libs << "lib"
+  t.test_files = FileList['test/**/*_test.rb']
+                 .exclude('test/fixtures/dummies/**/*')
 end
 
-Rake::TestTask.new('test:stacks') do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["./lib/roro/stacks/**/*_test.rb"]
-end
+# Rake::TestTask.new('test') do |t|
+#   t.libs << "test"
+#   t.libs << "lib"
+#   t.test_files = FileList["./**/*/_test.rb"]
+#                    .exclude('test/fixtures/dummies/test_annotate/**/*')
+# end
 
+# Rake::TestTask.new('test:stacks') do |t|
+#   t.libs << "test"
+#   t.libs << "lib"
+#   t.test_files = FileList["./lib/roro/stacks/**/*_test.rb"]
+# end
