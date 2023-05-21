@@ -35,7 +35,7 @@ docker-compose version 1.21.0, build 5920eb0
 
 ### Greenfield a new app:
 
-1. Make a new directory and navigate into it:
+1. Most RoRo adventures will copy files from their container and onto your host machine. To avoid making a mess, make a new directory and navigate into it:
 
 ```bash
 $ mkdir -p greenfield
