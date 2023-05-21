@@ -1,4 +1,4 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
 Softare is hard. It is complicated. Sometimes working on it is fun, like when we solve a problem for another person with it, and other times painful, like when we spend all day failing to fix a bug.  
 
