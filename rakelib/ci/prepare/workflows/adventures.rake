@@ -1,12 +1,14 @@
+require 'byebug'
+
 namespace :ci do
   namespace :prepare do
     namespace :workflows do
       desc 'Prepare workflow with matrix of adventures'
       task 'adventures' do |task|
+        # cases = Roro::Configurators::Reflector.new.cases
         set_content(task)
-        # reflector = Roro::Configurators::Reflector.new
         matrix = @content['jobs'][0]['test-adventures']['matrix']
-        matrix['parameters']['answers'] = ci_cases # cases.map { |c| c.join('\n') }
+        matrix['parameters']['answers'] = ci_cases
         overwrite
         notify('answers')
       end
@@ -58,6 +60,11 @@ namespace :ci do
         '3 1',
         '3 2'
       ].map { |item| item.split(' ').join('\n') }
+    end
+
+    def ci_cases
+      cases = Roro::Configurators::Reflector.new.cases
+      cases.map { |c| c.join('\\n') }
     end
   end
 end
