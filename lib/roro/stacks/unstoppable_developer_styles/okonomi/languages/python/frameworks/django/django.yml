@@ -31,5 +31,5 @@ actions:
   - copy_layer('manifest')
   - generate_mise
   - run 'docker-compose build'
-  - run 'docker-compose up'
+  - run 'docker-compose up -d'
 
