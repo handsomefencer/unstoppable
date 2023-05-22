@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: mise/containers/ruby_gem/Dockerfile
-
+    image: handsomefencer/roro
   guard:
     build:
       context: .
