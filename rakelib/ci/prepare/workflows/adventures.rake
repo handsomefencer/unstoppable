@@ -5,7 +5,6 @@ namespace :ci do
     namespace :workflows do
       desc 'Prepare workflow with matrix of adventures'
       task 'adventures' do |task|
-        # cases = Roro::Configurators::Reflector.new.cases
         set_content(task)
         matrix = @content['jobs'][0]['test-adventures']['matrix']
         matrix['parameters']['answers'] = ci_cases
@@ -26,40 +25,6 @@ namespace :ci do
 
     def notify(string)
       puts "Wrote #{string} to #{@dest}"
-    end
-
-    def ci_cases
-      [
-        '1 1 1',
-        '1 1 1',
-        '1 1 2',
-        '1 2 1 1 1',
-        '1 2 1 1 2',
-        '1 2 1 2 1',
-        '1 2 1 2 2',
-        '1 2 2 1',
-        '1 2 2 2',
-        '1 3 1 1 1 1 1 1',
-        '1 3 1 1 1 1 1 2',
-        '1 3 1 1 1 1 2 1',
-        '1 3 1 1 1 1 2 2',
-        '1 3 1 1 1 2 1 1',
-        '1 3 1 1 1 2 1 2',
-        '1 3 1 1 1 2 2 1',
-        '1 3 1 1 1 2 2 2',
-        '1 3 1 1 2 1 1 1',
-        '1 3 1 1 2 1 1 2',
-        '1 3 1 2 1 1 1',
-        '1 3 1 2 1 1 2',
-        '1 3 1 2 1 2 1',
-        '1 3 1 2 1 2 2',
-        '1 3 2 1',
-        '1 3 2 2',
-        '2 1',
-        '2 2',
-        '3 1',
-        '3 2'
-      ].map { |item| item.split(' ').join('\n') }
     end
 
     def ci_cases

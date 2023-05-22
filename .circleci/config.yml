@@ -10,18 +10,6 @@ commands:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
                     - vendor/bundle
-    run-test-case:
-        parameters:
-            answers:
-                default: 1\n1
-                type: string
-            os:
-                type: executor
-        steps:
-            - run: |
-                rake install &&
-                printf "<< parameters.answers >>\na$var\n" | roro rollon
-            - run: echo 'success'
 executors:
     linux:
         docker:
