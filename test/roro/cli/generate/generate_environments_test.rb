@@ -3,12 +3,12 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_environments' do
-  Given(:subject)   { Roro::CLI.new }
   Given(:workbench) { 'crypto/roro' }
   Given(:envs)      { nil }
+  Given(:generate)  { Roro::CLI.new.generate_environments(*envs) }
+  Given { quiet { generate } }
 
-  Given { quiet { subject.generate_environments(*envs) } }
-  context 'no environments supplied must generate default .env files' do
+  context 'must generate default .env files' do
     describe 'for the project' do
       Then { assert_file 'roro/env/base.env' }
       And  { assert_file 'roro/env/production.env' }

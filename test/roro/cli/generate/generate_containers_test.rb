@@ -3,11 +3,11 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_containers' do
-  Given(:subject)      { Roro::CLI.new }
   Given(:workbench)    { 'workbench' }
   Given(:default_apps) { %w[backend database frontend] }
   Given(:containers)   { nil }
-  Given { quiet { subject.generate_containers(*containers) } }
+  Given(:generate) { Roro::CLI.new.generate_containers(*containers) }
+  Given { quiet { generate } }
 
   describe 'when non-directory sibling exists in workbench' do
     Given { insert_dummy_env 'dummy.env' }
@@ -16,7 +16,6 @@ describe 'Roro::CLI#generate_containers' do
 
   context 'when no sibling folders and when' do
     context 'no containers supplied must generate default containers' do
-      When(:containers) { nil }
       Then  { assert_directory 'roro/containers/backend/scripts' }
       And   { assert_directory 'roro/containers/database/env' }
       And   { assert_directory 'roro/containers/frontend/scripts' }

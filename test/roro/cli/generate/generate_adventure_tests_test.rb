@@ -3,13 +3,10 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_choice_tests' do
-  Given(:subject) { Roro::CLI.new }
   Given(:workbench) { 'test_adventure/lib' }
-  Given(:base)      { 'test/roro/stacks' }
-  Given(:generate) { subject.generate_adventure_tests }
+  Given(:generate) { Roro::CLI.new.generate_adventure_tests }
 
-  Given { generate }
-
+  Given { quiet { generate } }
   describe 'must generate' do
     describe 'nested directories' do
       Then { assert_directory 'test/roro/stacks/1/1/1' }
@@ -17,16 +14,15 @@ describe 'Roro::CLI#generate_choice_tests' do
     end
   end
 
-  describe 'must generate a test file with' do
+  describe 'when case specified must generate a test file with' do
     Given(:file) { 'test/roro/stacks/1/3/1/1/1/1/1/1/_test.rb' }
     Then { assert_file file }
 
     describe 'adventure title in first describe block' do
       Then { assert_file file, /describe 'unstoppable_developer_styles:/ }
-    end
-
-    describe 'Given block' do
-      Then { assert_file file, /Given do/ }
+      And { assert_file file, /unstoppable_developer_styles: okonomi/ }
+      And { assert_file file, /languages: ruby/ }
+      And { assert_file file, /frameworks: rails/ }
     end
   end
 end

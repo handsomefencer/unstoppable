@@ -3,11 +3,10 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_mise' do
-  Given(:cli)       { Roro::CLI.new }
-  Given(:mise)      { 'mise' }
   Given(:workbench) { 'empty' }
-
-  Given { quiet { cli.generate_mise(mise) } }
+  Given(:mise)      { 'mise' }
+  Given(:generate) {  Roro::CLI.new.generate_mise(mise) }
+  Given { quiet { generate } }
 
   describe 'Roro::CLI.mise' do
     context 'when mise directory' do

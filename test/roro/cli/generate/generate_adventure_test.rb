@@ -3,17 +3,15 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_adventure' do
-  Given { skip }
-  Given(:subject)   { Roro::CLI.new }
   Given(:workbench) { 'test_adventure/lib' }
   Given(:base)      { 'lib/roro/stacks' }
   Given(:adventure) { "#{base}/#{story}" }
   Given(:generated) { "#{adventure}/#{file}" }
-  Given(:generate)  { quiet { subject.generate_adventure(story) } }
+  Given(:generate)  { Roro::CLI.new.generate_adventure(story) }
 
   context 'when story story named like starwars' do
     Given(:story) { 'starwars' }
-    Given { generate }
+    Given { quiet { generate } }
 
     describe 'must generate storyfile' do
       Given(:file) { 'starwars.yml' }
@@ -32,7 +30,7 @@ describe 'Roro::CLI#generate_adventure' do
 
   context 'when story story named like starwars/episodes/empire-strikes' do
     Given(:story) { 'starwars/episodes/empire-strikes' }
-    Given { generate }
+    Given { quiet { generate } }
 
     describe 'must generate storyfile' do
       Given(:file) { 'empire-strikes.yml' }

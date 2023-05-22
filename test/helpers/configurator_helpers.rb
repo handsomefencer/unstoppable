@@ -2,8 +2,7 @@
 
 module Minitest
   class Spec
-
-    def glob_dir(regex=nil)
+    def glob_dir(_regex = nil)
       Dir.glob("#{Dir.pwd}/**/*")
     end
 
@@ -12,7 +11,7 @@ module Minitest
     end
 
     def copy_stage_dummy(path)
-      FileUtils.cp_r("#{path}/dummy/.", Dir.pwd )
+      FileUtils.cp_r("#{path}/dummy/.", Dir.pwd)
     end
 
     def stubs_yes?(answer = 'yes')
@@ -20,7 +19,6 @@ module Minitest
                         .stubs(:yes?)
                         .returns(answer)
     end
-
 
     def rollon(dir)
       workbench
@@ -95,7 +93,7 @@ module Minitest
       end
     end
 
-    def stubs_adventure(path = nil, adventure = nil )
+    def stubs_adventure(path = nil, adventure = nil)
       adventure ||= path.split('/').last.to_i
       story = path.split("#{Roro::CLI.stacks}/").last
       adventures = adventures_from(story.split('/test').first)[adventure]
@@ -125,7 +123,7 @@ module Minitest
         .returns(*answers)
     end
 
-    def stub_overrides(answer='')
+    def stub_overrides(answer = '')
       overrides = @overrides || []
       Roro::Configurators::QuestionAsker
         .any_instance
@@ -133,7 +131,7 @@ module Minitest
         .returns(*overrides).then.returns(answer)
     end
 
-    def stack_path(args = nil )
+    def stack_path(args = nil)
       append = defined?(stack) ? "/#{stack}" : nil
       prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
       stack_root ||= "#{fixture_path}/stack/#{prepend_valid}"
@@ -149,21 +147,14 @@ module Minitest
     end
 
     def generate_fixtures
-      capture_subprocess_io {
+      capture_subprocess_io do
         generate_fixture_cases
         generate_fixture_itineraries
-      }
+      end
     end
 
-    # def generate_fixture_cases
-    #   File.open(cases_loc, "w+") { |f|
-    #     builder = Roro::Configurators::AdventureCaseBuilder.new
-    #     f.write(builder.build_cases_matrix.to_yaml)
-    #   }
-    # end
-
     def generate_fixture_itineraries
-      File.open(itineraries_loc, "w+") do |f|
+      File.open(itineraries_loc, 'w+') do |f|
         itineraries = []
         cases.each do |c|
           Roro::Configurators::AdventurePicker
