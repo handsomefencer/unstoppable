@@ -34,7 +34,8 @@ module Minitest
       end
 
       cli = Roro::CLI.new
-      @rollon_loud ? cli.rollon : quiet { cli.rollon }
+      cli.rollon
+      # @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def stubs_answer(answer)
@@ -93,14 +94,31 @@ module Minitest
       end
     end
 
-    def stubs_adventure(path = nil, adventure = nil)
-      adventure ||= path.split('/').last.to_i
-      story = path.split("#{Roro::CLI.stacks}/").last
-      adventures = adventures_from(story.split('/test').first)[adventure]
+    def stubs_adventure(path = nil, _adventure = nil)
+      # adventure ||= path.split('/').last.to_i
+      # story = path.split("#{Roro::CLI.stacks}/").last
+      answers = infer_answers_from_testfile_location(path)
+      # adventures = adventures_from(story.split('/test').first)[adventure]
+      byebug
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)
-        .returns(*adventures)
+        .returns(*answers)
+    end
+
+    def infer_answers_from_testfile_location(path = nil)
+      test_stack_root = "#{Roro::CLI.test_root}/roro/stacks"
+      parent_path = test_stack_root
+      test_file = path.split("#{test_stack_root}/").last
+      array = test_file.split('/')
+      answers = []
+      array.each do |item|
+        children = children("#{parent_path}")
+        location = "#{parent_path}/#{item}"
+        answers << children.index(location) + 1 if children.size > 1
+        parent_path = location
+      end
+      answers
     end
 
     def adventures_from(stack)

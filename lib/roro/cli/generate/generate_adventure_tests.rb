@@ -7,14 +7,17 @@ module Roro
 
     method_options adventure: :string
 
-    def generate_adventure_tests(kase = nil)
+    def generate_adventure_tests(_kase = nil)
       reflector = Roro::Configurators::Reflector.new
       itineraries = reflector.itineraries
 
-      kases = kase ? [kase] : reflector.cases
-      kases.each_with_index do |choice, index|
-        @env = { adventure_title: itineraries[index].join(' & ') }
-        location = "test/roro/stacks/#{choice.join('/')}"
+      # kases = kase ? [kase] : reflector.cases
+      itineraries.each_with_index do |itinerary, _index|
+        @env = { adventure_title: itinerary.join(' & ') }
+        # byebug
+        path = itinerary.map { |item| item.split(': ').join('/') }.join('/')
+        # byebug
+        location = "test/roro/stacks/#{path}"
         directory 'adventure_test', location, @env
       end
     end
