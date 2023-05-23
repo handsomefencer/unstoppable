@@ -99,7 +99,6 @@ module Minitest
       # story = path.split("#{Roro::CLI.stacks}/").last
       answers = infer_answers_from_testfile_location(path)
       # adventures = adventures_from(story.split('/test').first)[adventure]
-      byebug
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)

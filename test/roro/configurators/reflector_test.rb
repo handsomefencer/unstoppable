@@ -54,6 +54,17 @@ describe Reflector do
     describe 'must return the expected number of itineraries' do
       Then { assert_equal 38, result.size }
     end
+
+    describe 'must return an itinerary in correct order' do
+      Given(:expected) do
+        [
+          'unstoppable_developer_styles: okonomi', 'languages: ruby',
+          'frameworks: rails', 'databases: postgres', 'versions: postgres_13_5',
+          'schedulers: resque', 'versions: rails_6_1', 'versions: ruby_2_7'
+        ]
+      end
+      Then { assert_equal expected, result[8] }
+    end
   end
 
   describe '#adventure_structure' do
@@ -65,10 +76,11 @@ describe Reflector do
     end
 
     describe 'must return a hash with nested :human' do
-      # Given(:human) { reflector.adventure_structure[:human] }
-      Then { assert_equal %w[okonomi omakase sashimi], result[:human].keys }
-      # And { assert_equal %w[php python ruby], human.dig('okonomi').keys }
-      # And { assert_includes human.dig('okonomi', 'ruby').keys, 'rails' }
+      Then do
+        assert_includes result[:human]
+          .dig('okonomi', 'ruby', 'rails',
+               'postgres', 'postgres_13_5').keys, 'resque'
+      end
     end
   end
 
@@ -76,7 +88,6 @@ describe Reflector do
 
   describe '#adventure_title()' do
     Given(:result) { reflector.adventure_title(itinerary) }
-    # Then { assert_equal 'blah', result }
   end
 
   describe '#tech_tags' do

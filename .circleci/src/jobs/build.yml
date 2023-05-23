@@ -3,3 +3,5 @@ executor:
 steps:
   - checkout
   - run: whoami
+  - run: echo ${UID}:${GID}
+

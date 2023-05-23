@@ -88,7 +88,7 @@ module Roro
               .include?(stack_type(c))
           end
 
-          itineraries(inflections.shift, (siblings + inflections), kase, kases)
+          itineraries(inflections.shift, (inflections + siblings), kase, kases)
         when :story
           if siblings.empty?
             kases << kase
