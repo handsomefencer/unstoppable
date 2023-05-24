@@ -20,13 +20,37 @@ module Minitest
                         .returns(answer)
     end
 
+    def capture_stage_dummy(dir)
+      location = Dir.pwd
+      # byebug
+      # index = itinerary_index(stage).index(itinerary)
+      # test_dir = "#{stack_parent_path(stage)}/test"
+      # return unless File.exist?(test_dir)
+      dummy_dir = "#{dir}/dummy"
+      dummies = Dir.glob("#{dir}/dummy/**/*")
+      # stage_dummy = "#{test_dir}/#{index}/dummy"
+      # generated = Dir.glob("#{location}/**/*")
+      # dummies = Dir.glob("#{stage_dummy}/**/*")
+      dummies.each do |dummy|
+        dummyfile = dummy.split(dummy_dir).last
+        FileUtils.cp("#{Dir.pwd + dummyfile}", dummy_dir)
+        #     generated.select do |g|
+        #       if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
+        #         if File.file?(g)
+        #           FileUtils.cp_r(g, "#{stage_dummy}#{g.split(Dir.pwd).last}")
+        #         end
+        #       end
+        #     end
+      end
+    end
+
     def rollon(dir)
       workbench
       stubs_adventure(dir)
       stubs_dependencies_met?
       stubs_yes?
       stub_overrides
-      if @rollon_dummies
+      if @rollon_dummies.eql?(true)
         ENV['RORO_DOCUMENT_LAYERS'] = 'true'
       else
         copy_stage_dummy(dir)
@@ -35,6 +59,7 @@ module Minitest
 
       cli = Roro::CLI.new
       cli.rollon
+      capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
       # @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
@@ -95,10 +120,7 @@ module Minitest
     end
 
     def stubs_adventure(path = nil, _adventure = nil)
-      # adventure ||= path.split('/').last.to_i
-      # story = path.split("#{Roro::CLI.stacks}/").last
       answers = infer_answers_from_testfile_location(path)
-      # adventures = adventures_from(story.split('/test').first)[adventure]
       Roro::Configurators::AdventurePicker
         .any_instance
         .stubs(:ask)

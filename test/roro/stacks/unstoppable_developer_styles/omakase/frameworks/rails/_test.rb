@@ -2,11 +2,12 @@
 
 require 'test_helper'
 
-describe '<%= @env[:adventure_title] %>' do
+describe 'unstoppable_developer_styles: omakase & frameworks: rails' do
   Given(:workbench) {}
   
   Given do 
     skip
+    @rollon_loud    = false 
     @rollon_dummies = false 
     rollon(__dir__) 
   end

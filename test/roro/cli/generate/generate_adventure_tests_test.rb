@@ -5,17 +5,14 @@ require 'test_helper'
 describe 'Roro::CLI#generate_choice_tests' do
   Given(:workbench) { 'test_adventure/lib' }
   Given(:generate) { Roro::CLI.new.generate_adventure_tests }
+  Given { quiet { generate } }
 
-  # Given { quiet { generate } }
-  Given { generate }
   describe 'must generate' do
     Given(:directory) do
-      [
-        'test/roro/stacks/unstoppable_developer_styles/okonomi',
-        'languages/ruby/frameworks/rails/databases/postgres',
-        'versions/postgres_13_5/schedulers/resque/versions/rails_6_1',
-        '/versions/ruby_2_7'
-      ].join('/')
+      ['test/roro/stacks/unstoppable_developer_styles/okonomi',
+       'languages/ruby/frameworks/rails/databases/postgres',
+       'versions/postgres_13_5/schedulers/resque/versions/rails_6_1',
+       '/versions/ruby_2_7'].join('/')
     end
 
     describe 'nested directories' do

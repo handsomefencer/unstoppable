@@ -2,29 +2,30 @@
 
 require 'test_helper'
 
-describe '<%= @env[:adventure_title] %>' do
+describe 'unstoppable_developer_styles: sashimi & frameworks: rails' do
   Given(:workbench) {}
-  
-  Given do 
+
+  Given do
     skip
-    @rollon_dummies = false 
-    rollon(__dir__) 
+    @rollon_loud    = false
+    @rollon_dummies = false
+    rollon(__dir__)
   end
-  
+
   describe 'must have directory' do
     Given(:directory) { 'expected/directory' }
     Then { assert_directory directory }
-    
-    describe 'with file' do 
+
+    describe 'with file' do
       Given(:file) { "#{directory}/expected/file.name" }
 
       Then { assert_file file }
 
-      describe 'with content' do 
+      describe 'with content' do
         Given(:content) { /expected content string/ }
 
         Then { assert_file file, content }
-      end 
+      end
     end
-  end 
+  end
 end
