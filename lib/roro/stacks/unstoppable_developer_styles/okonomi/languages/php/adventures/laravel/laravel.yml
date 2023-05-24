@@ -8,4 +8,3 @@ env:
 
 actions:
   - copy_layer('manifest')
-  - run "docker-compose build"

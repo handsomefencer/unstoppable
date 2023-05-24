@@ -29,7 +29,7 @@ jobs:
         steps:
             - checkout
             - run: whoami
-            - run: echo ${UID}:${GID}
+            - run: echo ${USER}
     release:
         executor:
             name: ruby
@@ -55,8 +55,7 @@ jobs:
             - setup_remote_docker:
                 version: 19.03.12
             - restore-and-save-cache
-            - run: printf "<< parameters.answers >>\na$var\n" | roro rollon
-            - run: echo 'success'
+            - run: "mkdir -p sandbox \ncd sandbox \nprintf \"<< parameters.answers >>\\na$var\\n\" | roro rollon\nls    "
     test-rubies:
         executor:
             name: ruby

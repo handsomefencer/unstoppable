@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'unstoppable_developer_styles: okonomi & languages: ruby & frameworks: rails & databases: postgres & versions: postgres_13_5 & schedulers: sidekiq & versions: rails_7_0 & versions: ruby_2_7' do
+describe 'unstoppable_developer_styles: okonomi & languages: ruby & frameworks: rails & databases: postgres & versions: postgres_13_5 & schedulers: resque & versions: rails_7_1 & versions: ruby_2_7' do
   Given(:workbench) {}
   
   Given do 

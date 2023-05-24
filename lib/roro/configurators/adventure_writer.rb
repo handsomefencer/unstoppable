@@ -9,7 +9,6 @@ module Roro
       attr_reader :itinerary, :stack, :manifest
 
       no_commands do
-
         def write(buildenv, storyfile)
           @buildenv = buildenv
           @storyfile = storyfile
@@ -17,42 +16,33 @@ module Roro
           @env[:force] = true
           @env[:exit_on_failure] = true
           actions = read_yaml(storyfile)[:actions]
-          unless actions.nil?
-            actions.each do |a|
-              self.source_paths.shift
-              self.source_paths << "#{stack_parent_path(storyfile)}/templates"
-              begin
-                eval a
-                if ENV['RORO_DOCUMENT_LAYERS'].eql?('true')
-                  save_layer(storyfile)
-                end
-              rescue
-                raise Error, msg: "#{a} #{storyfile}"
-              end
+          return if actions.nil?
+
+          actions.each do |a|
+            source_paths.shift
+            source_paths << "#{stack_parent_path(storyfile)}/templates"
+            begin
+              @buildenv[:actions] << a
+              eval a
+              save_layer(storyfile) if ENV['RORO_DOCUMENT_LAYERS'].eql?('true')
+            rescue StandardError
+              raise Error, msg: "#{a} #{storyfile}"
             end
           end
         end
 
-        def copy_manifest(dir = nil)
+        def copy_manifest(_dir = nil)
           paths = manifest_paths
           paths.each do |path|
-            self.source_paths.shift
-            self.source_paths << path
+            source_paths.shift
+            source_paths << path
             begin
-
               directory '', '.', @env
-            rescue
+            rescue StandardError
               Roro::Error
             end
           end
         end
-
-        # def polish
-        #   if File.exist?('polisher')
-        #     FileUtils.cp_r('polisher/.', '.')
-        #     FileUtils.rm_rf('polisher')
-        #   end
-        # end
 
         def save_layer(stack)
           stacks = Roro::CLI.stacks
@@ -65,35 +55,33 @@ module Roro
               artifacts = Dir.glob("#{target}/**/{*,.*}")
               artifacts.map! { |a| a.split("#{target}/").last }.each do |g|
                 t = "#{target}/#{g}"
-                if File.file?(g) && File.exist?(t)
-                  FileUtils.cp(g, t) unless File.read(g).eql?(File.read(t))
-                end
+                FileUtils.cp(g, t) if File.file?(g) && File.exist?(t) && !File.read(g).eql?(File.read(t))
               end
             end
           end
         end
 
-        def success_response(url, desired_response = '200')
-          actual_response = system("curl -o /dev/null -s -w '%{http_code}\n' http://localhost")
+        def success_response(_url, desired_response = '200')
+          actual_response = system("curl -o /dev/null -s -w '%<http_code>s\n' http://localhost")
           raise Roro::Error unless actual_response.eql?(desired_response)
         end
 
         def generate_mise
-           generator = Roro::CLI.new
-           generator.generate_mise
-           generator.generate_containers 'app', 'db'
-           generator.generate_environments @env
-           generator.generate_keys
+          generator = Roro::CLI.new
+          generator.generate_mise
+          generator.generate_containers 'app', 'db'
+          generator.generate_environments @env
+          generator.generate_keys
         end
 
         def copy_layer(dir)
           paths = template_paths
           paths.each do |path|
-            self.source_paths.shift
-            self.source_paths << path
+            source_paths.shift
+            source_paths << path
             begin
               directory dir, '.', @env
-            rescue
+            rescue StandardError
               Roro::Error
             end
           end
@@ -103,11 +91,11 @@ module Roro
           array = []
           log[:itinerary].each do |i|
             parent_path = stack_parent_path(i)
-            if stack_parent(i).eql?('versions')
-              keyword = stack_parent(parent_path)
-            else
-              keyword = stack_name(i)
-            end
+            keyword = if stack_parent(i).eql?('versions')
+                        stack_parent(parent_path)
+                      else
+                        stack_name(i)
+                      end
             array << keyword
           end
           "https://www.handsomefencer.com/tutorials/#{array.join('-')}"
@@ -128,7 +116,7 @@ module Roro
         end
 
         def section_partials(name)
-          array = partials.select do  |p|
+          array = partials.select do |p|
             p.match?(/#{name}/)
           end
           matchers = array.map { |p| p.split("/partials/#{name}/").last }.uniq
@@ -137,7 +125,7 @@ module Roro
             duplicates = array.select do |p|
               p.match? m
             end
-            innermosts<< duplicates.last
+            innermosts << duplicates.last
           end
           innermosts
         end
@@ -147,12 +135,10 @@ module Roro
         end
 
         def read_partial(partial)
-          begin
-            ERB.new(File.read(partial)).result(binding) if partial
-          rescue
-            msg = "Missing variable in #{partial}"
-            raise Roro::Error, msg
-          end
+          ERB.new(File.read(partial)).result(binding) if partial
+        rescue StandardError
+          msg = "Missing variable in #{partial}"
+          raise Roro::Error, msg
         end
 
         def partials
@@ -164,7 +150,7 @@ module Roro
           array.uniq
         end
 
-        def partials_for(ancestor = nil, crumbs = nil, paths = [] )
+        def partials_for(ancestor = nil, crumbs = nil, paths = [])
           if crumbs.nil?
             origin = Roro::CLI.stacks
             crumbs = ancestor.split("#{origin}/").last.split('/')
@@ -179,27 +165,23 @@ module Roro
           end
         end
 
-        def manifest_paths(dir = nil, stack = nil, array = nil, paths = [] )
+        def manifest_paths(dir = nil, stack = nil, array = nil, paths = [])
           dir   ||= 'manifest'
           stack ||= Roro::CLI.stacks
           array ||= @storyfile.split("#{stack}/").last.split('/')
           path = "#{stack}/templates/#{dir}"
-          if File.exist?(path)
-            paths << path
-          end
+          paths << path if File.exist?(path)
           child = "#{stack}/#{array.shift}"
           array.empty? ? paths : manifest_paths(dir, child, array, paths)
         end
 
-        def template_paths_for(stack, array = nil, paths = [] )
+        def template_paths_for(stack, array = nil, paths = [])
           if array.nil?
             array ||= stack.split("#{stack}/").last.split('/')
             stack = Roro::CLI.stacks
           end
           path = "#{stack}/templates"
-          if File.exist?(path)
-            paths << path
-          end
+          paths << path if File.exist?(path)
           array.empty? ? paths : template_paths_for("#{stack}/#{array.shift}", array, paths)
         end
 

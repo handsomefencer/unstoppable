@@ -11,5 +11,9 @@ steps:
   - setup_remote_docker:
       version: 19.03.12
   - restore-and-save-cache
-  - run: printf "<< parameters.answers >>\na$var\n" | roro rollon
-  - run: echo 'success'
+  - run: | 
+      mkdir -p sandbox 
+      cd sandbox 
+      printf "<< parameters.answers >>\na$var\n" | roro rollon
+      ls    
+  - run: sudo docker ps
