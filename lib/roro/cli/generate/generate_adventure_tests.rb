@@ -12,6 +12,7 @@ module Roro
       itineraries = reflector.itineraries
 
       # kases = kase ? [kase] : reflector.cases
+      byebug
       itineraries.each_with_index do |itinerary, _index|
         @env = { adventure_title: itinerary.join(' & ') }
         # byebug
