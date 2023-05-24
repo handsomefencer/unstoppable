@@ -21,19 +21,26 @@ module Minitest
     end
 
     def capture_stage_dummy(dir)
-      location = Dir.pwd
+      # location = Dir.pwd
       # byebug
       # index = itinerary_index(stage).index(itinerary)
       # test_dir = "#{stack_parent_path(stage)}/test"
       # return unless File.exist?(test_dir)
       dummy_dir = "#{dir}/dummy"
-      dummies = Dir.glob("#{dir}/dummy/**/*")
+      dummies = Dir.glob("#{dir}/dummy/**/*").map do |f|
+        f.split("#{dummy_dir}/").last
+      end
+
       # stage_dummy = "#{test_dir}/#{index}/dummy"
       # generated = Dir.glob("#{location}/**/*")
       # dummies = Dir.glob("#{stage_dummy}/**/*")
       dummies.each do |dummy|
         dummyfile = dummy.split(dummy_dir).last
-        FileUtils.cp("#{Dir.pwd + dummyfile}", dummy_dir)
+        generated = "#{Dir.pwd}/#{dummy}"
+        # dummy.split(dummy_dir).last
+        if File.file?("#{Dir.pwd}/#{dummyfile}") && File.file?(dummyfile)
+          FileUtils.cp_r(dummyfile, "#{dummy_dir}/#{dummy}")
+        end
         #     generated.select do |g|
         #       if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
         #         if File.file?(g)

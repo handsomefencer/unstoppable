@@ -8,9 +8,8 @@ schedulers: resque & versions: rails_6_1 & versions: ruby_2_7' do
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = true
-    # quiet { rollon(__dir__) }
-    rollon(__dir__)
+    @rollon_dummies = false
+    quiet { rollon(__dir__) }
   end
 
   describe 'must generate a' do
@@ -83,7 +82,7 @@ schedulers: resque & versions: rails_6_1 & versions: ruby_2_7' do
 
     describe 'rails master key config' do
       Given(:file) { 'config/environments/production.rb' }
-      focus
+
       Then { assert_file file, /# config.require_master_key = true/ }
     end
 

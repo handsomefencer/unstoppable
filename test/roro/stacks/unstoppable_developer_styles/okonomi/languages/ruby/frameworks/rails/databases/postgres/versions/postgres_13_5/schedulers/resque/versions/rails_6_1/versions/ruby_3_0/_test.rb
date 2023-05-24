@@ -8,9 +8,8 @@ describe 'unstoppable_developer_styles: okonomi & languages: ruby
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = true
-    # quiet { rollon(__dir__) }
-    rollon(__dir__)
+    @rollon_dummies = false
+    quiet { rollon(__dir__) }
   end
 
   describe 'must generate a' do
@@ -18,7 +17,7 @@ describe 'unstoppable_developer_styles: okonomi & languages: ruby
       Given(:file) { 'Gemfile' }
 
       describe 'ruby version' do
-        Then  { assert_file file, /ruby ['"]2.7.4['"]/ }
+        Then  { assert_file file, /ruby ['"]3.0.6['"]/ }
       end
 
       describe 'rails version' do
@@ -32,7 +31,7 @@ describe 'unstoppable_developer_styles: okonomi & languages: ruby
 
     describe 'Dockerfile' do
       describe 'ruby version' do
-        Then  { assert_file 'Dockerfile', /FROM ruby:2.7/ }
+        Then  { assert_file 'Dockerfile', /FROM ruby:3.0-alpine/ }
       end
 
       describe 'bundler version' do
