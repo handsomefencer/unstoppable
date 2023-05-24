@@ -24,7 +24,7 @@ describe Reflector do
     Given(:result) { reflector.cases }
 
     describe 'must return the correct number of cases' do
-      Then { assert_equal 38, result.size }
+      Then { assert_equal 50, result.size }
     end
 
     describe 'must return the expected cases' do
@@ -52,7 +52,7 @@ describe Reflector do
     Given(:result) { reflector.itineraries }
 
     describe 'must return the expected number of itineraries' do
-      Then { assert_equal 38, result.size }
+      Then { assert_equal 50, result.size }
     end
 
     describe 'must return an itinerary in correct order' do

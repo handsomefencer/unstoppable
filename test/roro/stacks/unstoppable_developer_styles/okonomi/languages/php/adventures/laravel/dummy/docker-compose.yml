@@ -3,7 +3,6 @@ version: '3'
 networks:
   laravel:
 
-
 services:
   site:
     image: nginx:stable-alpine
@@ -47,7 +46,6 @@ services:
       context: .
       dockerfile: docker/php.dockerfile
     container_name: laravel_php
-    user: "${UID}:${GID}"
     volumes:
       - ./:/var/www/html
     ports:
@@ -72,7 +70,7 @@ services:
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
-    entrypoint: [ 'npm' ]
+    entrypoint: ['npm']
     networks:
       - laravel
 
@@ -81,8 +79,6 @@ services:
       context: .
       dockerfile: docker/php.dockerfile
     container_name: laravel_artisan
-    user: "${UID}:${GID}"
-
     volumes:
       - ./:/var/www/html
     depends_on:
@@ -90,13 +86,12 @@ services:
       - php
       - redis
     working_dir: /var/www/html
-    entrypoint: [ 'php', '/var/www/html/artisan' ]
+    entrypoint: ['php', '/var/www/html/artisan']
     networks:
       - laravel
 
   scheduler:
     container_name: laravel_scheduler
-    user: "${UID}:${GID}"
     build:
       context: .
       dockerfile: docker/php.dockerfile
@@ -112,7 +107,6 @@ services:
 
   worker:
     container_name: laravel_worker
-    user: "${UID}:${GID}"
     build:
       context: .
       dockerfile: docker/php.dockerfile

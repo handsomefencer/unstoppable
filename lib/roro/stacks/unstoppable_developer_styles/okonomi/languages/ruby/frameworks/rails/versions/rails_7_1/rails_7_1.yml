@@ -1,5 +1,10 @@
-preface: some string
+preface: https://guides.rubyonrails.org/v7.1/
 
-# env:
-
-# actions:
+env:
+  base:
+    rails_version:
+      value: 7.1
+#
+#actions:
+#  - run 'docker-compose build'
+#  - run 'docker-compose up'

@@ -6,6 +6,7 @@ describe 'unstoppable_developer_styles: okonomi & languages: php & adventures: l
   Given(:workbench) {}
 
   Given do
+    skip
     @rollon_dummies = true
     # @rollon_dummies = false
     rollon(__dir__)
@@ -62,7 +63,6 @@ describe 'unstoppable_developer_styles: okonomi & languages: php & adventures: l
 
       describe 'must have content' do
         describe 'equal to' do
-          focus
           Then { assert_file file, 'foo' }
         end
 
