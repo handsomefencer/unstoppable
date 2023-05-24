@@ -1,3 +1,5 @@
+preface: Docker is a hyperviser that allows developers to run software in containers.
+
 env:
   base:
     docker_compose_version:
