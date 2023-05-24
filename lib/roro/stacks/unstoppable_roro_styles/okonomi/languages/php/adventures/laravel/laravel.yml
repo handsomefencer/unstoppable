@@ -1,0 +1,10 @@
+preface: Laravel is a web application framework with expressive, elegant syntax.
+env:
+  base:
+    php_version:
+      name: PHP version
+      value: "7.4"
+      help: https://www.php.net/supported-versions.php
+
+actions:
+  - copy_layer('manifest')

@@ -1,0 +1,10 @@
+preface: A dynamic, open source programming language with a focus on simplicity and productivity. https://www.ruby-lang.org/en/
+
+env:
+  base:
+    ruby_version:
+      name: Ruby minor version
+      value: 3.0
+    bundler_version:
+      name: Bundler version
+      value: 2.2.28

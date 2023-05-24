@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1
+
+FROM python:<%= @env[:base][:python_version][:value] %> AS builder
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+WORKDIR /code
+
+RUN python -m pip install Django psycopg2
+
+<%= partial('python_requirements') %>
+
+RUN django-admin startproject <%= @env[:base][:app_name][:value] %> .
+
+COPY . /code/
+
+RUN pip freeze > requirements.txt
+
+FROM scratch AS export-stage
+
+COPY --from=builder ./code/ .

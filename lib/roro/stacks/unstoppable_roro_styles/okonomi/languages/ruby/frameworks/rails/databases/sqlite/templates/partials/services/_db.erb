@@ -1,0 +1,9 @@
+
+  db:
+    image: <%= @env[:base][:db_image][:value] %><%= ":#{@env[:base][:db_image_version][:value]}" %>
+    stdin_open: true
+    tty: true
+    volumes:
+      - db_data/:/root/db/
+    env_file:
+      - ./mise/env/base.env
