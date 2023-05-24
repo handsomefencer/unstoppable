@@ -1,8 +1,0 @@
-# frozen_string_literal: true
-
-require 'test_helper'
-
-describe '<%= @env[:adventure_name] %>' do
-  describe 'other string' do
-  end
-end
