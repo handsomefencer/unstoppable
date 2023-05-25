@@ -1,4 +1,0 @@
-env:
-  base:
-    db_image_version:
-      value: 13.5

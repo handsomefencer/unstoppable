@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'byebug'
 module Roro
   module Configurators
     class AdventureWriter < Thor
@@ -172,6 +173,7 @@ module Roro
           path = "#{stack}/templates/#{dir}"
           paths << path if File.exist?(path)
           child = "#{stack}/#{array.shift}"
+
           array.empty? ? paths : manifest_paths(dir, child, array, paths)
         end
 
