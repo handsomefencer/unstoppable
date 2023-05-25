@@ -1,7 +1,0 @@
-
-  db:
-    image: <%= @env[:base][:db_image][:value] %><%= ":#{@env[:base][:db_image_version][:value]}" %>
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    env_file:
-      - ./mise/env/base.env

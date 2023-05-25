@@ -1,3 +1,0 @@
-actions:
-  - copy_layer('builder')
-  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'

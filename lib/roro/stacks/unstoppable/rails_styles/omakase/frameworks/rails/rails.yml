@@ -1,12 +1,6 @@
 preface: A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant
   syntax that is natural to read and easy to write.
 
-env:
-  base:
-    rails_version:
-      name: Ruby on Rails minor version
-      value: 7.0
-
 actions:
   - directory 'stage_one', '.', @env
   - system "sudo docker-compose build"
