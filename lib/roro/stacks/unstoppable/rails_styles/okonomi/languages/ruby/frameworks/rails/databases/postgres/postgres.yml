@@ -2,6 +2,10 @@ preface: PostgreSQL is a powerful, open source object-relational database system
 
 env:
   base:
+    db_image_version:
+      value: 14.1
+env:
+  base:
     db_vendor:
       value: postgresql
     db_pkg:
