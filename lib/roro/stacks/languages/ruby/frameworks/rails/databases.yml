@@ -12,9 +12,6 @@ env:
     db_image:
       name: database image
       value: nouchka/sqlite3
-    db_image_version:
-      name: database image
-      value: latest
     db_gem:
       name: Gemfile gem for interacting with db
       value: sqlite

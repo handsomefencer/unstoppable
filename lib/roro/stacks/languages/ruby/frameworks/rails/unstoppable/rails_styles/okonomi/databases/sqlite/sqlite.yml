@@ -1,8 +1,1 @@
 preface: SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine. SQLite is the most used database engine in the world. SQLite is built into all mobile phones and most computers and comes bundled inside countless other applications that people use every day.
-
-#actions:
-#  - |
-#    insert_into_file(
-#      'docker-compose.yml',
-#      partial('app_volumes'),
-#      :after => "- node_modules:/app/node_modules")
