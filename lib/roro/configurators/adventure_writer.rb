@@ -22,7 +22,6 @@ module Roro
             source_paths.shift
             source_paths << "#{stack_parent_path(storyfile)}/templates"
             begin
-              @buildenv[:actions] << a
               eval a
               save_layer(storyfile) if ENV['RORO_DOCUMENT_LAYERS'].eql?('true')
             rescue StandardError
