@@ -2,11 +2,11 @@
 
 require 'test_helper'
 
-describe 'rails_styles: okonomi & databases: postgres & versions: rails_6_1 & schedulers: resque' do
+describe 'rails_styles: okonomi & databases: postgres & versions: rails_7_0' do
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = true
+    @rollon_dummies = false
     rollon(__dir__)
   end
 
@@ -27,7 +27,7 @@ describe 'rails_styles: okonomi & databases: postgres & versions: rails_6_1 & sc
 
   describe 'Gemfile with the correct' do
     describe 'rails version' do
-      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 6.1.7/ }
+      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 7.0.5/ }
     end
 
     describe 'db' do
@@ -37,9 +37,10 @@ describe 'rails_styles: okonomi & databases: postgres & versions: rails_6_1 & sc
 
   describe 'Dockerfile' do
     Given(:file) { 'Dockerfile' }
+    Given(:assert_content) { ->(content) { assert_file file, content } }
 
     describe 'ruby version' do
-      Then { assert_file file, /FROM ruby:3.0/ }
+      Then { assert_content[/FROM ruby:3.0/] }
     end
 
     describe 'bundler version' do

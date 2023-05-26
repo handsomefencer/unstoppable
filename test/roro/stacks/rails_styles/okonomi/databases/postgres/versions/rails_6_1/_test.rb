@@ -2,11 +2,11 @@
 
 require 'test_helper'
 
-describe 'rails_styles: okonomi & databases: postgres & versions: rails_6_1 & schedulers: sidekiq' do
+describe 'rails_styles: okonomi & databases: postgres & versions: rails_6_1' do
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = true
+    @rollon_dummies = false
     rollon(__dir__)
   end
 

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'rails_styles: okonomi & databases: postgres & versions: rails_7_0 & schedulers: resque' do
+describe 'rails_styles: okonomi & databases: sqlite & versions: rails_6_1' do
   Given(:workbench) {}
   
   Given do 
