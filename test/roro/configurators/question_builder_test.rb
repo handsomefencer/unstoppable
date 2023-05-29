@@ -6,18 +6,18 @@ require 'stringio'
 describe QuestionBuilder do
   Given(:builder)  { QuestionBuilder.new(options) }
   Given(:env_hash) { read_yaml(stack_path)[:env] }
-  Given(:stack)    { 'story/story.yml'}
+  Given(:stack)    { 'story/story.yml' }
   Given(:options)  { { storyfile: stack_path } }
 
   describe '#build_overrides_from_storyfile' do
     describe '#override(hash)' do
       context 'when name' do
         Given(:env_key)   { :SOME_KEY }
-        Given(:env_value) { { :value=>"somevalue", :help=>"some_url"} }
+        Given(:env_value) { { value: 'somevalue', help: 'some_url' } }
 
         context 'supplied must
 interpolate name into prompt' do
-          Given { env_value[:name] = "some environment variable name" }
+          Given { env_value[:name] = 'some environment variable name' }
           Then { assert_match 'name: some environment', builder.override(:development, env_key, env_value) }
         end
 
@@ -90,8 +90,8 @@ interpolate name into prompt' do
     describe '#humanize_options(hash)' do
       context 'when two stories' do
         Then { assert humanized.is_a?(String) }
-        And  { assert_match '(1) story:', humanized}
-        And  { assert_match '(2) story2:', humanized}
+        And  { assert_match '(1) story:', humanized }
+        And  { assert_match '(2) story2:', humanized }
       end
     end
 

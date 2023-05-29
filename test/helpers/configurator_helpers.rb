@@ -134,7 +134,7 @@ module Minitest
     def stack_path(args = nil)
       append = defined?(stack) ? "/#{stack}" : nil
       prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
-      stack_root ||= "#{fixture_path}/stack/#{prepend_valid}"
+      stack_root ||= "#{fixture_path}/dummies/stack/#{prepend_valid}"
       "#{stack_root}#{append}"
     end
 
