@@ -1,0 +1,12 @@
+preface: https://guides.rubyonrails.org/v6.0/
+
+env:
+  base:
+    rails_version:
+      value: 6.1
+
+#actions:
+#  - run 'docker-compose build'
+#  - run 'docker-compose run --rm app bin/rails webpacker:install'
+#  - run 'docker-compose up'
+#

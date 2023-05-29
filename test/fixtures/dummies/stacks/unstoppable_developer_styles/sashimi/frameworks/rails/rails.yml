@@ -1,0 +1,51 @@
+preface: some string
+
+depends_on:
+  - doctl
+
+env:
+  base:
+    do_cluster_id:
+      name: Digital Ocean Kubernetes cluster id
+      value: 0e23750a-05a4-49f0-8fad-42a201995afc
+      help: https://docs.digitalocean.com/reference/doctl/reference/kubernetes/cluster/get/
+    do_cluster_name:
+      name: Digital Ocean Kubernetes cluster name
+      value: k8s-1-21-5-do-0-sfo3-1635359659910
+      help: https://docs.digitalocean.com/products/kubernetes/how-to/connect-to-cluster/
+    domain_name:
+      name: Domain name people will use to find your app
+      value: bierstiefel.com
+    docker_hub_username:
+      name: The username you log into hub.docker.com with
+      value: dhusername
+      required: true
+    docker_hub_password:
+      name: The password you log into hub.docker.com with
+      value: dhpassword
+      required: true
+    docker_hub_organization:
+      name: The hub.docker.com organization for your image is often but not always the same as your username.
+      value: handsomefencer
+    app_name:
+      name: Name for your app
+      value: rails-kubernetes
+    DATABASE_NAME:
+      name: Database name
+      value: postgres
+    DATABASE_PASSWORD:
+      name: Database password
+      value: postgres
+    DATABASE_USER:
+      name: Database username
+      value: postgres
+
+actions:
+  - directory 'stage_one', '.', @env
+  - run "doctl kubernetes cluster kubeconfig save \"#{@env[:base][:do_cluster_id][:value]}\""
+  - |
+    inside('k8s') do
+      run "kubectl create -f ./ --validate=true"
+      run "kubectl get pods -l io.kompose.service=app"
+    end
+  - run "kubectl exec $(kubectl get pods -o=name -l io.kompose.service=app) -- rake db:migrate"
