@@ -6,6 +6,12 @@ module Minitest
       Dir.glob("#{Dir.pwd}/**/*")
     end
 
+    def use_stub_stack
+      Roro::CLI
+        .stubs(:stacks)
+        .returns("#{Roro::CLI.test_root}/fixtures/dummies/stacks/lib/roro/stacks")
+    end
+
     def fixture_file_content(filename)
       File.read("#{@roro_dir}/test/fixtures/files/#{filename}")
     end

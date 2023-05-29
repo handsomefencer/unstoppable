@@ -4,9 +4,9 @@ require 'test_helper'
 
 describe Configurator do
   Given(:options)    { {} }
-  Given(:config)     { Configurator.new() }
-  Given(:adventures) { %w[ fatsufodo django ] }
-
+  Given(:config)     { Configurator.new }
+  Given(:adventures) { %w[fatsufodo django] }
+  Given { use_stub_stack }
   context 'without options' do
     describe '#initialize' do
       Then { assert_match 'lib/roro/stacks', config.stack }
