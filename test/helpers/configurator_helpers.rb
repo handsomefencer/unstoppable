@@ -9,7 +9,7 @@ module Minitest
     def use_stub_stack
       Roro::CLI
         .stubs(:stacks)
-        .returns("#{Roro::CLI.test_root}/fixtures/dummies/stacks/lib/roro/stacks")
+        .returns("#{Roro::CLI.test_root}/fixtures/files/stacks")
     end
 
     def fixture_file_content(filename)

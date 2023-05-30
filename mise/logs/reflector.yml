@@ -14,8 +14,8 @@
                     :inflections: []
                     :stacks: {}
                     :stories:
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/php/adventures/laravel
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/php/adventures/wordpress
+                    - unstoppable_developer_styles/okonomi/languages/php/adventures/laravel
+                    - unstoppable_developer_styles/okonomi/languages/php/adventures/wordpress
                     :picks:
                     - 1
                     - 2
@@ -33,8 +33,8 @@
                             :inflections: []
                             :stacks: {}
                             :stories:
-                            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python/frameworks/django/databases/mysql
-                            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python/frameworks/django/databases/postgres
+                            - unstoppable_developer_styles/okonomi/languages/python/frameworks/django/databases/mysql
+                            - unstoppable_developer_styles/okonomi/languages/python/frameworks/django/databases/postgres
                             :picks:
                             - 1
                             - 2
@@ -42,15 +42,15 @@
                         :stories: []
                         :picks: []
                     :stories:
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python/frameworks/flask
+                    - unstoppable_developer_styles/okonomi/languages/python/frameworks/flask
                     :picks:
                     - 2
                 - :versions:
                     :inflections: []
                     :stacks: {}
                     :stories:
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python/versions/python_3_10_1
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/python/versions/python_3_9_9
+                    - unstoppable_developer_styles/okonomi/languages/python/versions/python_3_10_1
+                    - unstoppable_developer_styles/okonomi/languages/python/versions/python_3_9_9
                     :picks:
                     - 1
                     - 2
@@ -73,8 +73,8 @@
                                     :inflections: []
                                     :stacks: {}
                                     :stories:
-                                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/databases/postgres/versions/postgres_13_5
-                                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/databases/postgres/versions/postgres_14_1
+                                    - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/databases/postgres/versions/postgres_13_5
+                                    - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/databases/postgres/versions/postgres_14_1
                                     :picks:
                                     - 1
                                     - 2
@@ -82,15 +82,15 @@
                                 :stories: []
                                 :picks: []
                             :stories:
-                            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/databases/sqlite
+                            - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/databases/sqlite
                             :picks:
                             - 2
                         - :schedulers:
                             :inflections: []
                             :stacks: {}
                             :stories:
-                            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/schedulers/resque
-                            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/schedulers/sidekiq
+                            - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/schedulers/resque
+                            - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/schedulers/sidekiq
                             :picks:
                             - 1
                             - 2
@@ -98,8 +98,8 @@
                             :inflections: []
                             :stacks: {}
                             :stories:
-                            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/versions/rails_6_1
-                            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/versions/rails_7_0
+                            - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/versions/rails_6_1
+                            - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/versions/rails_7_0
                             :picks:
                             - 1
                             - 2
@@ -107,15 +107,15 @@
                         :stories: []
                         :picks: []
                     :stories:
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/ruby_gem
+                    - unstoppable_developer_styles/okonomi/languages/ruby/frameworks/ruby_gem
                     :picks:
                     - 2
                 - :versions:
                     :inflections: []
                     :stacks: {}
                     :stories:
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/versions/ruby_2_7
-                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/okonomi/languages/ruby/versions/ruby_3_0
+                    - unstoppable_developer_styles/okonomi/languages/ruby/versions/ruby_2_7
+                    - unstoppable_developer_styles/okonomi/languages/ruby/versions/ruby_3_0
                     :picks:
                     - 1
                     - 2
@@ -133,8 +133,8 @@
             :inflections: []
             :stacks: {}
             :stories:
-            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/omakase/frameworks/rails
-            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/omakase/frameworks/wordpress
+            - unstoppable_developer_styles/omakase/frameworks/rails
+            - unstoppable_developer_styles/omakase/frameworks/wordpress
             :picks:
             - 1
             - 2
@@ -162,7 +162,7 @@
                                     :inflections: []
                                     :stacks: {}
                                     :stories:
-                                    - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/sashimi/frameworks/kubernetes/stories/ingress/stories/nginx/stories/cert_manager
+                                    - unstoppable_developer_styles/sashimi/frameworks/kubernetes/stories/ingress/stories/nginx/stories/cert_manager
                                     :picks:
                                     - 1
                                 :stacks: {}
@@ -179,7 +179,7 @@
                 :stories: []
                 :picks: []
             :stories:
-            - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/sashimi/frameworks/rails
+            - unstoppable_developer_styles/sashimi/frameworks/rails
             :picks:
             - 2
         :stacks:
@@ -189,7 +189,7 @@
                 :inflections: []
                 :stacks: {}
                 :stories:
-                - test/fixtures/dummies/stacks/lib/roro/stacks/unstoppable_developer_styles/sashimi/devops/ci_styles/circleci
+                - unstoppable_developer_styles/sashimi/devops/ci_styles/circleci
                 :picks:
                 - 1
             :stacks: {}

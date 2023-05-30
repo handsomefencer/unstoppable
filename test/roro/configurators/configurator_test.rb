@@ -9,8 +9,7 @@ describe Configurator do
   Given { use_stub_stack }
   context 'without options' do
     describe '#initialize' do
-      Then { assert_match 'lib/roro/stacks', config.stack }
-      And  { assert_equal Hash, config.structure.class }
+      Then { assert_equal Hash, config.structure.class }
     end
 
     describe '#validate_stack' do
