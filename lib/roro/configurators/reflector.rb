@@ -61,7 +61,6 @@ module Roro
       end
 
       def adventures(stack = @stack, sibs = [], kase = [], kases = [])
-        st = stack_stories(stack)
         case stack_type(stack)
         when :inflection_stub
           children(stack).each { |c| adventures(c, sibs, kase, kases) }
