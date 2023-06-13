@@ -19,6 +19,45 @@ describe Reflector do
     Then { assert_file 'mise/logs/itineraries.yml' }
   end
 
+  describe '#adventures()' do
+    Given(:result) { reflector.adventures }
+    Given(:base_chapters) do
+      [
+        'alpine.yml', 'databases.yml', 'docker.yml', 'git.yml',
+        'redis.yml'
+      ]
+    end
+
+    describe 'must return the correct number of adventures' do
+      Then { assert_equal 38, result.size }
+    end
+
+    describe 'must return the expected chapters for each adventure' do
+      describe 'okonomi php laravel' do
+        Given(:expected) do
+          base_chapters + ['okonomi.yml', 'php.yml', '_builder.yml',
+                           'laravel.yml']
+        end
+        Then { assert_equal(expected, result[0].map { |f| f.split('/').last }) }
+      end
+    end
+
+    describe 'okonomi ruby rails pg' do
+      Given(:expected) do
+        base_chapters + ['okonomi.yml',
+                         'ruby.yml', '_builder.yml', 'databases.yml',
+                         'rails.yml', 'postgres.yml', 'postgres_14_1.yml', 'ruby_3_0.yml',
+                         'sidekiq.yml', 'rails_7_0.yml']
+      end
+      Then { assert_equal(expected, result[23].map { |f| f.split('/').last }) }
+    end
+
+    describe 'sashimi rails' do
+      Given(:expected) { base_chapters + ['sashimi.yml', 'rails.yml'] }
+      Then { assert_equal(expected, result[-1].map { |f| f.split('/').last }) }
+    end
+  end
+
   describe '#cases()' do
     Given(:result) { reflector.cases }
 
@@ -27,23 +66,11 @@ describe Reflector do
     end
 
     describe 'must return the expected cases' do
-      Given(:expected) do
-        [
-          '1 1 1',           '1 1 2',           '1 2 1 1 1',
-          '1 2 1 1 2',       '1 2 1 2 1',       '1 2 1 2 2',
-          '1 2 2 1',         '1 2 2 2',         '1 3 1 1 1 1 1 1',
-          '1 3 1 1 1 1 1 2', '1 3 1 1 1 1 2 1', '1 3 1 1 1 1 2 2',
-          '1 3 1 1 1 2 1 1', '1 3 1 1 1 2 1 2', '1 3 1 1 1 2 2 1',
-          '1 3 1 1 1 2 2 2', '1 3 1 1 2 1 1 1', '1 3 1 1 2 1 1 2',
-          '1 3 1 1 2 1 2 1', '1 3 1 1 2 1 2 2', '1 3 1 1 2 2 1 1',
-          '1 3 1 1 2 2 1 2', '1 3 1 1 2 2 2 1', '1 3 1 1 2 2 2 2',
-          '1 3 1 2 1 1 1',   '1 3 1 2 2 1 1',   '1 3 1 2 1 1 2',
-          '1 3 1 2 2 1 2',   '1 3 1 2 1 2 1',   '1 3 1 2 1 2 2',
-          '1 3 1 2 2 2 1',   '1 3 1 2 2 2 2',   '1 3 2 1',
-          '1 3 2 2', '2 1',   '2 2', '3 1',     '3 2'
-        ].map { |i| i.split(' ').map(&:to_i) }
+      Then do
+        expected_adventure_cases.each do |e|
+          assert_includes result, e.split(' ').map(&:to_i)
+        end
       end
-      Then { expected.each { |e| assert_includes result, e } }
     end
   end
 
@@ -64,10 +91,7 @@ describe Reflector do
     end
 
     describe 'must return a hash with nested :human' do
-      # Given(:human) { reflector.adventure_structure[:human] }
       Then { assert_equal %w[okonomi omakase sashimi], result[:human].keys }
-      # And { assert_equal %w[php python ruby], human.dig('okonomi').keys }
-      # And { assert_includes human.dig('okonomi', 'ruby').keys, 'rails' }
     end
   end
 
@@ -75,7 +99,6 @@ describe Reflector do
 
   describe '#adventure_title()' do
     Given(:result) { reflector.adventure_title(itinerary) }
-    # Then { assert_equal 'blah', result }
   end
 
   describe '#tech_tags' do

@@ -60,6 +60,31 @@ module Roro
         kases
       end
 
+      def adventures(stack = @stack, sibs = [], kase = [], kases = [])
+        st = stack_stories(stack)
+        case stack_type(stack)
+        when :inflection_stub
+          children(stack).each { |c| adventures(c, sibs, kase, kases) }
+        when :inflection
+          children(stack).each_with_index do |c, _i|
+            adventures(c, sibs.dup, kase, kases)
+          end
+        when :stack
+          inflections = children(stack).select do |c|
+            %i[inflection inflection_stub].include?(stack_type(c))
+          end
+          adventures(inflections.shift, (sibs + inflections), kase + stack_stories(stack), kases)
+        when :story
+          if sibs.empty?
+            kases << (kase + stack_stories(stack))
+          else
+            adventures(sibs.shift, sibs,
+                       kase + stack_stories(stack), kases)
+          end
+        end
+        kases
+      end
+
       def stack_itineraries(stack)
         itineraries.select do |itinerary|
           parent = stack.split("#{Roro::CLI.stacks}/").last
