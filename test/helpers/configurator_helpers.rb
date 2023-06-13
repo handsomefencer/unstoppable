@@ -6,10 +6,10 @@ module Minitest
       Dir.glob("#{Dir.pwd}/**/*")
     end
 
-    def use_stub_stack
+    def use_stub_stack(location = nil)
       Roro::CLI
         .stubs(:stacks)
-        .returns("#{Roro::CLI.test_root}/fixtures/files/stacks")
+        .returns("#{Roro::CLI.test_root}/fixtures/files/stacks/#{location}")
     end
 
     def expected_adventure_cases

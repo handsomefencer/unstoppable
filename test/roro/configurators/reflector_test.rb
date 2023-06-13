@@ -3,24 +3,25 @@
 require 'test_helper'
 
 describe Reflector do
-  Given(:reflector) { Roro::Configurators::Reflector.new }
-  Given { use_stub_stack }
+  Given { use_stub_stack('complex') }
+  Given(:subject) { Roro::Configurators::Reflector.new }
+
   describe '#reflection()' do
-    Then { assert_includes reflector.reflection.keys, :inflections }
-    And  { assert_includes reflector.reflection.keys, :stories }
-    And  { assert_includes reflector.reflection.keys, :picks }
-    And  { assert_includes reflector.reflection.keys, :stacks }
+    Then { assert_includes subject.reflection.keys, :inflections }
+    And  { assert_includes subject.reflection.keys, :stories }
+    And  { assert_includes subject.reflection.keys, :picks }
+    And  { assert_includes subject.reflection.keys, :stacks }
   end
 
   describe '#log_to_mise' do
-    Given { reflector.log_to_mise('cases', reflector.cases) }
-    Given { reflector.log_to_mise('itineraries', reflector.itineraries) }
-    Given { reflector.log_to_mise('reflector', reflector.reflection) }
+    Given { subject.log_to_mise('cases', subject.cases) }
+    Given { subject.log_to_mise('itineraries', subject.itineraries) }
+    Given { subject.log_to_mise('subject', subject.reflection) }
     Then { assert_file 'mise/logs/itineraries.yml' }
   end
 
   describe '#adventures()' do
-    Given(:result) { reflector.adventures }
+    Given(:result) { subject.adventures }
     Given(:base_chapters) do
       [
         'alpine.yml', 'databases.yml', 'docker.yml', 'git.yml',
@@ -59,7 +60,7 @@ describe Reflector do
   end
 
   describe '#cases()' do
-    Given(:result) { reflector.cases }
+    Given(:result) { subject.cases }
 
     describe 'must return the correct number of cases' do
       Then { assert_equal 38, result.size }
@@ -75,7 +76,7 @@ describe Reflector do
   end
 
   describe '#itineraries()' do
-    Given(:result) { reflector.itineraries }
+    Given(:result) { subject.itineraries }
 
     describe 'must return the expected number of itineraries' do
       Then { assert_equal 38, result.size }
@@ -83,7 +84,7 @@ describe Reflector do
   end
 
   describe '#adventure_structure' do
-    Given(:result) { reflector.adventure_structure }
+    Given(:result) { subject.adventure_structure }
 
     describe 'must return a hash with nested :choices' do
       Then { assert_equal [1, 2, 3], result[:choices].keys }
@@ -95,14 +96,14 @@ describe Reflector do
     end
   end
 
-  Given(:itinerary) { reflector.itineraries[8] }
+  Given(:itinerary) { subject.itineraries[8] }
 
   describe '#adventure_title()' do
-    Given(:result) { reflector.adventure_title(itinerary) }
+    Given(:result) { subject.adventure_title(itinerary) }
   end
 
   describe '#tech_tags' do
-    Given(:result) { reflector.tech_tags(reflector.cases[8]) }
+    Given(:result) { subject.tech_tags(subject.cases[8]) }
     Then { assert_includes result, 'alpine' }
   end
 end
