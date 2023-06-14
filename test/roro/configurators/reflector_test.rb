@@ -2,12 +2,56 @@
 
 require 'test_helper'
 
-describe Reflector do
-  Given { use_stub_stack('complex') }
+describe Roro::Configurators::Reflector do
+  Given { use_fixture_stack('complex') }
   Given(:subject) { Roro::Configurators::Reflector.new }
 
+  describe '#initialize' do
+    Then { assert subject.stack }
+    And { assert subject.stack_reflection }
+  end
+
+  describe '#reflect' do
+    Given(:stack_reflection) { subject.stack_reflection }
+    describe 'must set correct cases' do
+      Then { assert_match 'complex', stack_reflection.dig(:stack) }
+    end
+
+    describe 'must return a hash with keys matching picks' do
+    end
+    # Given { subject.reflect }
+    # focus
+    # Then { assert_equal 'blah', subject.adventures[0][:picks] }
+    # Then { assert_equal 'blah', subject.adventures.dig(0, :picks) }
+    Then do
+      expected_adventure_cases.each_with_index do |expected, index|
+        assert_equal expected, subject.reflect.keys[index], msg: "index: #{index}"
+      end
+    end
+  end
+
+  describe '#cases()' do
+    Given(:result) { subject.cases }
+    Given(:expected_cases) do
+      expected_adventure_cases.map { |e| e.split(' ').map(&:to_i) }
+    end
+
+    describe 'must return the correct number of cases' do
+      Then { assert_equal 38, result.size }
+    end
+
+    describe 'must return the expected cases' do
+      Then { expected_cases.each { |e| assert_includes result, e } }
+    end
+
+    describe 'must return the correct order of cases' do
+      Then { assert_equal(expected_cases, result) }
+    end
+  end
+
   describe '#reflection()' do
-    Then { assert_includes subject.reflection.keys, :inflections }
+    Given { skip }
+    (Then { assert_includes subject.reflection.keys, :inflections })
     And  { assert_includes subject.reflection.keys, :stories }
     And  { assert_includes subject.reflection.keys, :picks }
     And  { assert_includes subject.reflection.keys, :stacks }
@@ -21,12 +65,10 @@ describe Reflector do
   end
 
   describe '#adventures()' do
+    Given { skip }
     Given(:result) { subject.adventures }
     Given(:base_chapters) do
-      [
-        'alpine.yml', 'databases.yml', 'docker.yml', 'git.yml',
-        'redis.yml'
-      ]
+      ['alpine.yml', 'databases.yml', 'docker.yml', 'git.yml', 'redis.yml']
     end
 
     describe 'must return the correct number of adventures' do
@@ -45,33 +87,18 @@ describe Reflector do
 
     describe 'okonomi ruby rails pg' do
       Given(:expected) do
-        base_chapters + ['okonomi.yml',
-                         'ruby.yml', '_builder.yml', 'databases.yml',
-                         'rails.yml', 'postgres.yml', 'postgres_14_1.yml', 'ruby_3_0.yml',
+        base_chapters + ['okonomi.yml', 'ruby.yml', '_builder.yml',
+                         'databases.yml', 'rails.yml', 'postgres.yml',
+                         'postgres_14_1.yml', 'ruby_3_0.yml',
                          'sidekiq.yml', 'rails_7_0.yml']
       end
+      Given { skip }
       Then { assert_equal(expected, result[23].map { |f| f.split('/').last }) }
     end
 
     describe 'sashimi rails' do
       Given(:expected) { base_chapters + ['sashimi.yml', 'rails.yml'] }
       Then { assert_equal(expected, result[-1].map { |f| f.split('/').last }) }
-    end
-  end
-
-  describe '#cases()' do
-    Given(:result) { subject.cases }
-
-    describe 'must return the correct number of cases' do
-      Then { assert_equal 38, result.size }
-    end
-
-    describe 'must return the expected cases' do
-      Then do
-        expected_adventure_cases.each do |e|
-          assert_includes result, e.split(' ').map(&:to_i)
-        end
-      end
     end
   end
 

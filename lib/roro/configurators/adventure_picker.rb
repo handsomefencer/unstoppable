@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
+require 'byebug'
 module Roro
   module Configurators
     class AdventurePicker < Thor
-
       include Utilities
 
       attr_reader :inflection
@@ -13,9 +13,7 @@ module Roro
           build_inflection(stack)
           say("Rolling story on from stack: #{@stack}\n\n")
           say(@prompt)
-          choice = ask(@inflection)
-          story_name = story_from(choice.to_s)
-          "#{stack}/#{story_name}"
+          ask(@inflection)
         end
 
         def build_inflection(stack)
@@ -24,7 +22,9 @@ module Roro
           options = inflection_options
           prompt_options = humanize(options)
           @prompt = "#{prompt}\n"
-          @inflection = ["#{prompt_options}\n\n", "Choices: [#{set_color(options.keys.map { |k| k.to_i }.join(' '), :blue)}]"]
+          @inflection = ["#{prompt_options}\n\n", "Choices: [#{set_color(options.keys.map do |k|
+                                                                           k.to_i
+                                                                         end.join(' '), :blue)}]"]
         end
 
         def inflection_prompt
@@ -35,7 +35,7 @@ module Roro
 
         def inflection_options(stack = nil)
           stack ||= @stack
-          Hash.new.tap do |h|
+          {}.tap do |h|
             children(stack)
               .map { |f| stack_name(f) }
               .sort
@@ -56,11 +56,9 @@ module Roro
 
         def get_story_preface(story)
           storyfile = "#{story}/#{stack_name(story)}.yml"
-          if stack_is_storyfile?(storyfile)
-            read_yaml("#{story}/#{stack_name(story)}.yml")[:preface]
-          else
-            nil
-          end
+          return unless stack_is_storyfile?(storyfile)
+
+          read_yaml("#{story}/#{stack_name(story)}.yml")[:preface]
         end
 
         def story_from(key)

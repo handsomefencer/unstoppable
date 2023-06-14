@@ -6,7 +6,7 @@ describe Configurator do
   Given(:options)    { {} }
   Given(:config)     { Configurator.new }
   Given(:adventures) { %w[fatsufodo django] }
-  Given { use_stub_stack }
+  Given { use_fixture_stack }
   context 'without options' do
     describe '#initialize' do
       Then { assert_equal Hash, config.structure.class }

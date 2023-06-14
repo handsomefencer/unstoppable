@@ -7,11 +7,120 @@ module Roro
     class Reflector
       include Utilities
 
-      attr_reader :stack
+      attr_reader :stack, :adventures, :stack_reflection
 
       def initialize(stack = nil)
         @stack = stack || Roro::CLI.stacks
+        reflect
+        @stack_reflection = {
+          stack: @stack
+        }
       end
+
+      def deep_copy(o)
+        Marshal.load(Marshal.dump(o))
+      end
+
+      def reflect(stack = @stack, sibs = [], adventure = nil, adventures = {})
+        adventure ||= {
+          picks: []
+        }
+        case stack_type(stack)
+        when :inflection_stub
+          children(stack).each { |c| reflect(c, sibs, adventure, adventures) }
+        when :inflection
+          children(stack).each_with_index do |c, index|
+            newAdventure = deep_copy(adventure)
+            newAdventure[:picks] << index += 1
+            reflect(c, sibs.dup, newAdventure, adventures)
+          end
+        when :stack
+          inflections = children(stack).select do |c|
+            %i[inflection inflection_stub].include?(stack_type(c))
+          end
+
+          reflect(inflections.shift, (sibs + inflections), adventure, adventures)
+        when :story
+          if sibs.empty?
+            # byebug
+            adventures[adventure[:picks].join(' ')] = adventure.dup
+          else
+            reflect(sibs.shift, sibs, adventure, adventures)
+          end
+        end
+        # byebug
+        # @stack_reflection[:adventures] = adventures
+        adventures
+      end
+
+      # def adventures(stack = @stack, sibs = [], kase = [], kases = [])
+      #   case stack_type(stack)
+      #   when :inflection_stub
+      #     children(stack).each { |c| adventures(c, sibs, kase, kases) }
+      #   when :inflection
+      #     children(stack).each_with_index do |c, _i|
+      #       adventures(c, sibs.dup, kase, kases)
+      #     end
+      #   when :stack
+      #     inflections = children(stack).select do |c|
+      #       %i[inflection inflection_stub].include?(stack_type(c))
+      #     end
+      #     adventures(inflections.shift, (sibs + inflections), kase + stack_stories(stack), kases)
+      #   when :story
+      #     if sibs.empty?
+      #       kases << (kase + stack_stories(stack))
+      #     else
+      #       adventures(sibs.shift, sibs,
+      #                  kase + stack_stories(stack), kases)
+      #     end
+      #   end
+      #   kases
+      # end
+
+      def cases(stack = @stack, sibs = [], kase = [], kases = [])
+        case stack_type(stack)
+        when :inflection_stub
+          children(stack).each { |c| cases(c, sibs, kase, kases) }
+        when :inflection
+          children(stack).each_with_index do |c, i|
+            # byebug
+            cases(c, sibs.dup, kase.dup << i + 1, kases)
+          end
+        when :stack
+          inflections = children(stack).select do |c|
+            %i[inflection inflection_stub].include?(stack_type(c))
+          end
+
+          cases(inflections.shift, (sibs + inflections), kase, kases)
+        when :story
+          sibs.empty? ? kases << kase : cases(sibs.shift, sibs, kase, kases)
+        end
+        kases
+      end
+
+      # def adventures(stack = @stack, sibs = [], kase = [], kases = [])
+      #   case stack_type(stack)
+      #   when :inflection_stub
+      #     children(stack).each { |c| adventures(c, sibs, kase, kases) }
+      #   when :inflection
+      #     children(stack).each_with_index do |c, _i|
+      #       adventures(c, sibs.dup, kase, kases)
+      #     end
+      #   when :stack
+      #     inflections = children(stack).select do |c|
+      #       %i[inflection inflection_stub].include?(stack_type(c))
+      #     end
+      #     adventures(inflections.shift, (sibs + inflections), kase + stack_stories(stack), kases)
+      #   when :story
+      #     if sibs.empty?
+      #       kases << (kase + stack_stories(stack))
+      #     else
+      #       adventures(sibs.shift, sibs,
+      #                  kase + stack_stories(stack), kases)
+      #     end
+      #   end
+      #   kases
+      # end
 
       def log_to_mise(name, content)
         path = "#{Dir.pwd}/mise/logs/#{name}.yml"
@@ -38,50 +147,6 @@ module Roro
           end
         end
         reflection
-      end
-
-      def cases(stack = @stack, sibs = [], kase = [], kases = [])
-        case stack_type(stack)
-        when :inflection_stub
-          children(stack).each { |c| cases(c, sibs, kase, kases) }
-        when :inflection
-          children(stack).each_with_index do |c, i|
-            cases(c, sibs.dup, kase.dup << i += 1, kases)
-          end
-        when :stack
-          inflections = children(stack).select do |c|
-            %i[inflection inflection_stub].include?(stack_type(c))
-          end
-
-          cases(inflections.shift, (sibs + inflections), kase, kases)
-        when :story
-          sibs.empty? ? kases << kase : cases(sibs.shift, sibs, kase, kases)
-        end
-        kases
-      end
-
-      def adventures(stack = @stack, sibs = [], kase = [], kases = [])
-        case stack_type(stack)
-        when :inflection_stub
-          children(stack).each { |c| adventures(c, sibs, kase, kases) }
-        when :inflection
-          children(stack).each_with_index do |c, _i|
-            adventures(c, sibs.dup, kase, kases)
-          end
-        when :stack
-          inflections = children(stack).select do |c|
-            %i[inflection inflection_stub].include?(stack_type(c))
-          end
-          adventures(inflections.shift, (sibs + inflections), kase + stack_stories(stack), kases)
-        when :story
-          if sibs.empty?
-            kases << (kase + stack_stories(stack))
-          else
-            adventures(sibs.shift, sibs,
-                       kase + stack_stories(stack), kases)
-          end
-        end
-        kases
       end
 
       def stack_itineraries(stack)

@@ -5,7 +5,7 @@ require 'rake'
 
 describe 'rake ci:prepare:workflows:adventures' do
   Given(:workbench) { '.circleci' }
-  Given { use_stub_stack }
+  Given { use_fixture_stack }
   Given { run_task('ci:prepare:workflows:adventures') }
 
   describe 'adventures.yml' do
@@ -24,43 +24,9 @@ describe 'rake ci:prepare:workflows:adventures' do
         end
 
         describe 'with correct answers' do
-          Given(:expected) do
-            [
-              '1 1 1',
-              '1 1 1',
-              '1 1 2',
-              '1 2 1 1 1',
-              '1 2 1 1 2',
-              '1 2 1 2 1',
-              '1 2 1 2 2',
-              '1 2 2 1',
-              '1 2 2 2',
-              '1 3 1 1 1 1 1 1',
-              '1 3 1 1 1 1 1 2',
-              '1 3 1 1 1 1 2 1',
-              '1 3 1 1 1 1 2 2',
-              '1 3 1 1 1 2 1 1',
-              '1 3 1 1 1 2 1 2',
-              '1 3 1 1 1 2 2 1',
-              '1 3 1 1 1 2 2 2',
-              '1 3 1 1 2 1 1 1',
-              '1 3 1 1 2 1 1 2',
-              '1 3 1 2 1 1 1',
-              '1 3 1 2 1 1 2',
-              '1 3 1 2 1 2 1',
-              '1 3 1 2 1 2 2',
-              '1 3 2 1',
-              '1 3 2 2',
-              '2 1',
-              '2 2',
-              '3 1',
-              '3 2'
-            ].map { |item| item.split(' ').join('\\n') }
-          end
-
           Then do
-            expected.each do |expected_answer|
-              assert_includes answers, expected_answer
+            expected_adventure_cases.each do |e|
+              assert_includes answers, e.gsub(' ', '\\\n')
             end
           end
         end

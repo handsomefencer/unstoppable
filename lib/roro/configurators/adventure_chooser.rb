@@ -3,10 +3,9 @@
 module Roro
   module Configurators
     class AdventureChooser
-
       include Utilities
 
-      attr_reader :itinerary, :stack, :manifest
+      attr_reader :itinerary, :stack, :manifest, :choices
 
       def initialize
         @asker     = AdventurePicker.new
@@ -14,7 +13,7 @@ module Roro
         @stack     = Roro::CLI.stacks
       end
 
-      def build_itinerary(stack=nil)
+      def build_itinerary(stack = nil)
         @manifest ||= []
         stack ||= @stack
         case stack_type(stack)
@@ -34,11 +33,6 @@ module Roro
         end
         @manifest.uniq!
         @itinerary.uniq!
-      end
-
-      def stack_is_alias?(catalog)
-        stack_is_storyfile?(catalog) &&
-          !read_yaml(catalog)[:aliased_to].nil?
       end
 
       def choose_adventure(inflection)

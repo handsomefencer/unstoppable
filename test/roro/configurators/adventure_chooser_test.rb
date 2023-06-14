@@ -2,26 +2,27 @@
 
 require 'test_helper'
 
-describe 'AdventureChooser' do
-  Given(:adventure) { AdventureChooser.new }
+describe 'Roro::Configurators::AdventureChooser' do
+  Given(:subject) { Roro::Configurators::AdventureChooser.new }
 
   describe '#initialize' do
     describe '#stack' do
-      Then { assert_equal Roro::CLI.stacks, adventure.stack }
+      Then { assert_equal Roro::CLI.stacks, subject.stack }
     end
 
     describe '#itinerary' do
-      Then { assert_equal [], adventure.itinerary}
+      Then { assert_equal [], subject.itinerary }
     end
   end
 
   describe '#build_itinerary' do
     Given(:answers) { %w[1] }
-    Given(:itinerary)       { adventure.itinerary }
-    Given(:manifest)        { adventure.manifest }
+    Given(:itinerary)       { subject.itinerary }
+    Given(:manifest)        { subject.manifest }
     Given(:build_itinerary) do
       stub_journey(answers)
-      quiet { adventure.build_itinerary(stack_path) }
+      # quiet { subject.build_itinerary(stack_path) }
+      subject.build_itinerary(stack_path)
     end
 
     context 'when stack is story' do
@@ -51,8 +52,8 @@ describe 'AdventureChooser' do
 
       Given { build_itinerary }
       Then  { assert_file_match_in('stacks/story', itinerary) }
-      And   { assert_equal 1, adventure.itinerary.size }
-      And   { assert_equal 1, adventure.manifest.size }
+      And   { assert_equal 1, subject.itinerary.size }
+      And   { assert_equal 1, subject.manifest.size }
     end
 
     context 'when stack has one inflection' do
