@@ -9,9 +9,9 @@ describe 'rake ci:prepare:workflows:adventures' do
   Given { run_task('ci:prepare:workflows:adventures') }
 
   describe 'adventures.yml' do
-    Given(:file) { '.circleci/src/workflows/adventures.yml' }
-    Given(:data)     { read_yaml(file).dig(:jobs, 0, :"test-adventures") }
-    Given(:answers)  { data.dig(:matrix, :parameters, :answers) }
+    Given(:file)    { '.circleci/src/workflows/adventures.yml' }
+    Given(:data)    { read_yaml(file).dig(:jobs, 0, :"test-adventures") }
+    Given(:answers) { data.dig(:matrix, :parameters, :answers) }
 
     describe 'must exist' do
       Then { assert_file file }
