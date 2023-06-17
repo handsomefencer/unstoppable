@@ -8,7 +8,7 @@ module Roro
     method_options adventure: :string
 
     def generate_adventure_tests(_kase = nil)
-      reflector = Roro::Configurators::Reflector.new
+      reflector = Roro::Configurators::StackReflector.new
       itineraries = reflector.itineraries
 
       itineraries.each_with_index do |itinerary, _index|
