@@ -12,7 +12,6 @@ module Roro
       adventures = reflector.adventures
 
       adventures.each do |key, value|
-        # byebug_key
         @env = { adventure_title: "#{key.gsub(' ', ' -> ')}: #{value.dig(:title)}" }
         path = value[:itinerary].map { |item| item.split(': ').join('/') }.join('/')
         location = "test/roro/stacks/#{path}"

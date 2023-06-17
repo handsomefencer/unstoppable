@@ -6,8 +6,8 @@ describe 'Roro::CLI#generate_choice_tests' do
   Given(:workbench) {}
   Given(:generate) { Roro::CLI.new.generate_adventure_tests }
   Given { use_fixture_stack('complex') }
+  Given { quiet { generate }}
 
-  Given { generate }
   describe 'must generate' do
     Given(:directory) do
       ['test/roro/stacks/unstoppable_developer_style/sashimi',
