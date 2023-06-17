@@ -7,6 +7,8 @@ module Minitest
     end
 
     def use_fixture_stack(stack = nil)
+      return unless stack
+
       fixture_stacks = 'fixtures/files/stacks'
       Roro::CLI
         .stubs(:stacks)
