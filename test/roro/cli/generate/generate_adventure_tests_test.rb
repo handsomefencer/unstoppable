@@ -6,12 +6,11 @@ describe 'Roro::CLI#generate_choice_tests' do
   Given(:workbench) {}
   Given(:generate) { Roro::CLI.new.generate_adventure_tests }
   Given { use_fixture_stack('complex') }
-  Given { quiet { generate }}
+  Given { quiet { generate } }
 
   describe 'must generate' do
     Given(:directory) do
-      ['test/roro/stacks/unstoppable_developer_style/sashimi',
-       'framework/rails'].join('/')
+      ['test/roro/stacks/3/2'].join('/')
     end
 
     describe 'nested directories' do
