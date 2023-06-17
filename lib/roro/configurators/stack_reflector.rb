@@ -17,6 +17,7 @@ module Roro
         @adventures = @reflection[:adventures]
         @cases = @reflection[:cases]
         @reflection[:structure] = structure
+        @reflection[:itineraries] = itineraries
       end
 
       def reflect(s, sibs = [], adventure = nil, a = {})

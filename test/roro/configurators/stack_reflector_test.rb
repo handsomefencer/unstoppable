@@ -15,10 +15,12 @@ describe Roro::Configurators::StackReflector do
     end
 
     And do
-      assert_match 'stacks/complex', subject.stack
-      assert_includes subject.reflection.keys, :adventures
-      assert_includes subject.reflection.keys, :stack
-      assert_includes subject.reflection.keys, :structure
+      keys = subject.reflection.keys
+      assert_includes keys, :adventures
+      assert_includes keys, :cases
+      assert_includes keys, :itineraries
+      assert_includes keys, :stack
+      assert_includes keys, :structure
     end
   end
 
@@ -56,67 +58,17 @@ describe Roro::Configurators::StackReflector do
     Given(:adventure) { subject.adventure_for(*picks) }
 
     Given(:assert_expected_adventure) do
-      expected[:chapters] = %w[alpine databases docker git redis] + expected[:chapters]
-      adventure[:chapters].map! { |f| f.split('/').last.split('.yml').first }
       expected_keys = %i[chapters itinerary picks tags title versions]
+      expected_base_chapters = %w[alpine databases docker git redis]
+      expected[:chapters] = expected_base_chapters + expected[:chapters]
+      adventure[:chapters].map! { |f| f.split('/').last.split('.yml').first }
       assert_equal(expected_keys, adventure.keys.sort)
       expected_keys.each do |key|
         assert_equal(expected[key], adventure[key]) if expected[key]
       end
     end
 
-    Given(:assert_expected_keys) do
-      assert_includes(adventure.keys, :chapters)
-      assert_includes(adventure.keys, :picks)
-      assert_includes(adventure.keys, :itinerary)
-      assert_includes(adventure.keys, :tags)
-    end
-
-    Given(:assert_expected_picks) do
-      assert_equal(expected[:picks], adventure[:picks])
-    end
-
-    Given(:assert_expected_itinerary) do
-      assert_equal(expected[:itinerary], adventure[:itinerary]) if expected[:itinerary]
-    end
-
-    Given(:assert_expected_chapters) do
-      expected_chapters = %w[alpine databases docker git redis] + expected[:chapters]
-      if expected[:chapters]
-        assert_equal(expected_chapters.size, adventure[:chapters].size)
-        assert_equal(expected_chapters, adventure[:chapters].map { |f| f.split('/').last.split('.yml').first })
-      end
-    end
-
-    Given(:assert_expected_tags) do
-      assert_equal(expected[:tags], adventure[:tags]) if expected[:tags]
-    end
-
-    Given(:assert_expected_title) do
-      assert_equal(expected[:title], adventure[:title]) if expected[:title]
-    end
-
-    Given(:assert_expected_versions) do
-      assert_equal(expected[:versions], adventure[:versions]) if expected[:versions]
-    end
-
-    describe 'must handle string or array picks arg' do
-      Given(:expected) { { picks: [1, 1, 1] } }
-      Given(:picks) { '1 1 1' }
-
-      describe 'when picks arg is a string' do
-        Then { assert_expected_picks }
-      end
-
-      describe 'when picks arg is an array' do
-        Given(:picks) { [1, 1, 1] }
-        Then { assert_expected_picks }
-      end
-    end
-
     describe 'when adventure is okonomi php laravel' do
-      Given(:picks) { '1 1 1' }
-
       Given(:expected) do
         {
           chapters: %w[okonomi php _builder laravel],
@@ -133,7 +85,16 @@ describe Roro::Configurators::StackReflector do
           versions: {}
         }
       end
-      Then { assert_expected_adventure }
+
+      describe 'when picks is a string' do
+        When(:picks) { '1 1 1' }
+        Then { assert_expected_adventure }
+      end
+
+      describe 'when picks arg is an array' do
+        When(:picks) { [1, 1, 1] }
+        Then { assert_expected_adventure }
+      end
     end
 
     describe 'when adventure is okonomi ruby rails pg' do
@@ -152,7 +113,6 @@ describe Roro::Configurators::StackReflector do
             'scheduler: sidekiq', 'rails version: 7_0'
           ],
           picks: [1, 3, 1, 1, 2, 2, 2, 2],
-          slug: 'some-slug',
           tags: %w[
             alpine databases docker git redis okonomi ruby
             rails postgres sidekiq
@@ -170,23 +130,28 @@ describe Roro::Configurators::StackReflector do
     end
 
     describe 'when adventure is okonomi ruby rails pg' do
-      Given(:picks) { '3 2' }
-
       Given(:expected) do
         {
-          picks: [3, 2],
           chapters: %w[sashimi rails],
           itinerary: [
             'unstoppable_developer_style: sashimi', 'framework: rails'
           ],
+          picks: [3, 2],
           tags: %w[
             alpine databases docker git redis sashimi
             rails
-          ]
+          ],
+          title: [
+            'unstoppable_developer_style: sashimi, framework: rails'
+          ].join(', '),
+          versions: {}
         }
       end
 
-      Then { assert_expected_adventure }
+      describe 'when picks arg is string' do
+        When(:picks) { '3 2' }
+        Then { assert_expected_adventure }
+      end
     end
   end
 
