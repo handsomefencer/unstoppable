@@ -28,8 +28,7 @@ namespace :ci do
     end
 
     def ci_cases
-      cases = Roro::Configurators::Reflector.new.cases
-      cases.map { |c| c.join('\\n') }
+      cases = Roro::Configurators::StackReflector.new.cases
     end
   end
 end

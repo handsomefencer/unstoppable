@@ -5,6 +5,7 @@ require 'test_helper'
 describe Validator do
   Given(:args)      { nil }
   Given(:validator) { Validator.new(*args) }
+  Given { use_fixture_stack }
 
   context 'when no args supplied' do
     describe '#initialize' do
@@ -13,13 +14,17 @@ describe Validator do
       end
 
       describe '#permitted_hidden_extensions' do
-        Then { assert_equal %w[.keep .gitkeep],
-                            validator.permitted_hidden_extensions }
+        Then do
+          assert_equal %w[.keep .gitkeep],
+                       validator.permitted_hidden_extensions
+        end
       end
 
       describe '#permitted_story_extensions' do
-        Then { assert_equal %w[yml yaml],
-                            validator.permitted_story_extensions }
+        Then do
+          assert_equal %w[yml yaml],
+                       validator.permitted_story_extensions
+        end
       end
 
       describe '#structure' do
@@ -71,7 +76,7 @@ describe Validator do
         end
 
         context 'plot top level is a hash' do
-          When(:stack) { ('story/hash.yml') }
+          When(:stack) { 'story/hash.yml' }
           Then { assert_valid_stack }
 
           context 'when :preface returns a string' do
@@ -170,7 +175,7 @@ describe Validator do
 
           context 'an empty array' do
             When(:error_msg) { 'Story contains an empty array' }
-            When(:stack  )   { 'actions/empty_array.yml' }
+            When(:stack) { 'actions/empty_array.yml' }
             Then { assert_correct_error }
           end
 

@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1
+
+FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
+
+<%= section('packages') %>
+
+WORKDIR /app
+
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install -j4 --retry 3
+
+COPY . .
+
+RUN chmod -R 755 entrypoints/docker-entrypoint.sh
+
+RUN yarn install
+
+CMD ["./entrypoints/docker-entrypoint.sh"]

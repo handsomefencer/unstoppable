@@ -5,7 +5,7 @@ require 'rake'
 
 describe 'rake ci:prepare:workflows:adventures' do
   Given(:workbench) { '.circleci' }
-
+  Given { use_fixture_stack }
   Given { run_task('ci:prepare:workflows:adventures') }
 
   describe 'adventures.yml' do
@@ -17,50 +17,16 @@ describe 'rake ci:prepare:workflows:adventures' do
       Then { assert_file file }
 
       describe 'with adventure workflow' do
-        Then { assert_equal answers[0], '1\\n1\\n1' }
+        Then { assert_equal('1 1 1', answers[0]) }
 
         describe 'with correct number of answers' do
-          Then { assert_equal 50, answers.size }
+          Then { assert_equal(38, answers.size) }
         end
 
         describe 'with correct answers' do
-          Given(:expected) do
-            [
-              '1 1 1',
-              '1 1 1',
-              '1 1 2',
-              '1 2 1 1 1',
-              '1 2 1 1 2',
-              '1 2 1 2 1',
-              '1 2 1 2 2',
-              '1 2 2 1',
-              '1 2 2 2',
-              '1 3 1 1 1 1 1 1',
-              '1 3 1 1 1 1 1 2',
-              '1 3 1 1 1 1 2 1',
-              '1 3 1 1 1 1 2 2',
-              '1 3 1 1 1 2 1 1',
-              '1 3 1 1 1 2 1 2',
-              '1 3 1 1 1 2 2 1',
-              '1 3 1 1 1 2 2 2',
-              '1 3 1 1 2 1 1 1',
-              '1 3 1 1 2 1 1 2',
-              '1 3 1 2 1 1 1',
-              '1 3 1 2 1 1 2',
-              '1 3 1 2 1 2 1',
-              '1 3 1 2 1 2 2',
-              '1 3 2 1',
-              '1 3 2 2',
-              '2 1',
-              '2 2',
-              '3 1',
-              '3 2'
-            ].map { |item| item.split(' ').join('\\n') }
-          end
-
           Then do
-            expected.each do |expected_answer|
-              assert_includes answers, expected_answer
+            expected_adventure_cases.each do |e|
+              assert_includes(answers, e)
             end
           end
         end

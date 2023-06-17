@@ -2,8 +2,15 @@
 
 module Minitest
   class Spec
-    def glob_dir(_regex = nil)
-      Dir.glob("#{Dir.pwd}/**/*")
+    def glob_dir(regex = '**/*')
+      Dir.glob("#{Dir.pwd}/#{regex}")
+    end
+
+    def use_fixture_stack(stack = nil)
+      fixture_stacks = 'fixtures/files/stacks'
+      Roro::CLI
+        .stubs(:stacks)
+        .returns("#{Roro::CLI.test_root}/#{fixture_stacks}/#{stack}")
     end
 
     def fixture_file_content(filename)
@@ -180,7 +187,7 @@ module Minitest
     def stack_path(args = nil)
       append = defined?(stack) ? "/#{stack}" : nil
       prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
-      stack_root ||= "#{fixture_path}/stack/#{prepend_valid}"
+      stack_root ||= "#{fixture_path}/dummies/stack/#{prepend_valid}"
       "#{stack_root}#{append}"
     end
 
@@ -224,6 +231,24 @@ module Minitest
     ensure
       $stdout.reopen(original_stdout)
       $stderr.reopen(original_stderr)
+    end
+
+    def expected_adventure_cases
+      [
+        '1 1 1',           '1 1 2',           '1 2 1 1 1',
+        '1 2 1 1 2',       '1 2 1 2 1',       '1 2 1 2 2',
+        '1 2 2 1',         '1 2 2 2',         '1 3 1 1 1 1 1 1',
+        '1 3 1 1 1 1 1 2', '1 3 1 1 1 1 2 1', '1 3 1 1 1 1 2 2',
+        '1 3 1 1 1 2 1 1', '1 3 1 1 1 2 1 2', '1 3 1 1 1 2 2 1',
+        '1 3 1 1 1 2 2 2', '1 3 1 1 2 1 1 1', '1 3 1 1 2 1 1 2',
+        '1 3 1 1 2 1 2 1', '1 3 1 1 2 1 2 2', '1 3 1 1 2 2 1 1',
+        '1 3 1 1 2 2 1 2', '1 3 1 1 2 2 2 1', '1 3 1 1 2 2 2 2',
+        '1 3 1 2 1 1 1',   '1 3 1 2 1 1 2',   '1 3 1 2 1 2 1',
+        '1 3 1 2 1 2 2',   '1 3 1 2 2 1 1',   '1 3 1 2 2 1 2',
+        '1 3 1 2 2 2 1',   '1 3 1 2 2 2 2',   '1 3 2 1',
+        '1 3 2 2',         '2 1',             '2 2',
+        '3 1',             '3 2'
+      ]
     end
   end
 end

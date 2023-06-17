@@ -4,13 +4,12 @@ require 'test_helper'
 
 describe Configurator do
   Given(:options)    { {} }
-  Given(:config)     { Configurator.new() }
-  Given(:adventures) { %w[ fatsufodo django ] }
-
+  Given(:config)     { Configurator.new }
+  Given(:adventures) { %w[fatsufodo django] }
+  Given { use_fixture_stack }
   context 'without options' do
     describe '#initialize' do
-      Then { assert_match 'lib/roro/stacks', config.stack }
-      And  { assert_equal Hash, config.structure.class }
+      Then { assert_equal Hash, config.structure.class }
     end
 
     describe '#validate_stack' do

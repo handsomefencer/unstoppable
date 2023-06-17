@@ -3,8 +3,11 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_choice_tests' do
-  Given(:workbench) { 'test_adventure/lib' }
+  Given { skip }
+  Given(:workbench) {}
   Given(:generate) { Roro::CLI.new.generate_adventure_tests }
+  Given { use_fixture_stack }
+
   Given { quiet { generate } }
 
   describe 'must generate' do

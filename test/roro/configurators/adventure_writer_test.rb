@@ -6,6 +6,7 @@ describe 'AdventureWriter' do
   Given { skip }
   Given(:workbench) {}
   Given(:writer)    { AdventureWriter.new }
+  Given { use_fixture_stack }
 
   Given { writer.instance_variable_set(:@env, buildenv[:env]) }
   Given { writer.instance_variable_set(:@buildenv, buildenv) }

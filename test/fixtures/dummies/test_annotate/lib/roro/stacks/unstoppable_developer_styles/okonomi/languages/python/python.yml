@@ -1,8 +1,0 @@
-preface: Python is a programming language that lets you work quickly and integrate systems more effectively. https://www.python.org/
-
-env:
-  base:
-    app_name:
-      name: Name for your app
-      value: 'unstoppable app name'
-

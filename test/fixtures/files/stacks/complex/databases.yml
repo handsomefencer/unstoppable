@@ -1,0 +1,30 @@
+env:
+  base:
+    db_vendor:
+      name: Database vendor name
+      value: sqlite3
+    db_pkg:
+      name: Alpine db package
+      value: sqlite-dev
+    db_volume:
+      name: database volume path
+      value: /var/local-db
+    db_image:
+      name: database image
+      value: nouchka/sqlite3
+    db_gem:
+      name: Gemfile gem for interacting with db
+      value: sqlite
+    DATABASE_NAME:
+      name: Database name
+      value: postgres
+    DATABASE_PASSWORD:
+      name: Database password
+      value: postgres
+    DATABASE_USERNAME:
+      name: Database username
+      value: postgres
+    DATABASE_HOST:
+      name: Database host
+      value: db
+

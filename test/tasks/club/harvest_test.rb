@@ -14,7 +14,6 @@
 #     # Given(:answers)  {  data.dig(:matrix, :parameters, :answers) }
 #
 #     describe 'must exist' do
-#       focus
 #       Then { assert_file file }
 #
 #       describe 'with adventure workflow' do

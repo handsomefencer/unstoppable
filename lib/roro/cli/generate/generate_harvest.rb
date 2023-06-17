@@ -11,8 +11,6 @@ module Roro
         cases: reflector.cases.map { |c| c.join(' ') },
         structure_human: reflector.adventure_structure_human,
         structure_choices: reflector.adventure_structure_choices
-        # itineraries: harvest_itineraries,
-        # metadata: @reflector.metadata
       }
       content.each do |key, value|
         create_file ".harvest/#{key}.yml", value.to_yaml
