@@ -3,12 +3,12 @@
 require 'test_helper'
 
 describe 'AdventurePicker' do
-  Given { skip }
   Given(:subject)          { AdventurePicker.new }
   Given(:build_inflection) { subject.build_inflection(stack_path) }
   Given(:stack)            { 'stacks' }
 
   describe '#build_inflection' do
+    focus
     Then { assert_equal Array, build_inflection.class }
   end
 

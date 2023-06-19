@@ -10,25 +10,25 @@ module Roro
       attr_reader :structure, :itinerary, :manifest, :stack, :env
 
       def initialize(options = {})
-        @options   = options || {}
-        @stack     = options[:stack] || CatalogBuilder.build
-        @validator = Validator.new(@stack)
-        @adventure = AdventureChooser.new
-        @builder   = QuestionBuilder.new
-        @structure = StructureBuilder.build
-        @asker     = QuestionAsker.new
-        @writer    = AdventureWriter.new
-        @env       = @structure[:env]
-        @log       = @structure
+        @options    = options || {}
+        @stack      = options[:stack] || CatalogBuilder.build
+        @validator  = Validator.new(@stack)
+        @reflection = StackReflector.new(@stack)
+        @adventure  = AdventureChooser.new
+        @chooser    = AdventureChooser.new
+        @builder    = QuestionBuilder.new
+        @structure  = StructureBuilder.build
+        @asker      = QuestionAsker.new
+        @writer     = AdventureWriter.new
+        @env        = @structure[:env]
+        @log        = @structure
       end
 
       def rollon
         validate_stack
         choose_adventure
-        # satisfy_dependencies
         build_env
         write_story
-        # structure[:env] = structure[:env].merge(@dependency_hash)
         write_log
       end
 
@@ -37,9 +37,10 @@ module Roro
       end
 
       def choose_adventure
-        @adventure.build_itinerary(@stack)
-        @itinerary = @adventure.itinerary
-        @manifest  = @adventure.manifest
+        answers = @chooser.record_answers
+        reflection = Roro::Configurators::StackReflector.new
+        adventure = reflection.adventure_for(answers.map(&:to_i))
+        @manifest = adventure[:chapters]
       end
 
       def build_env
@@ -48,11 +49,6 @@ module Roro
         end
         override_environment_variables
       end
-
-      # def satisfy_dependencies
-      #   @satisfier = DependencySatisfier.new
-      #   @dependency_hash = @satisfier.satisfy_dependencies(manifest)
-      # end
 
       def accrete_story(story)
         content = read_yaml(story)[:env]
@@ -68,25 +64,6 @@ module Roro
         end
       end
 
-      # def copy_stage_dummy(stage)
-      #   location = Dir.pwd
-      #   index = itinerary_index(stage).index(itinerary)
-      #   test_dir = "#{stack_parent_path(stage)}/test"
-      #   return unless File.exist?(test_dir)
-      #   stage_dummy = "#{test_dir}/#{index}/dummy"
-      #   generated = Dir.glob("#{location}/**/*")
-      #   dummies = Dir.glob("#{stage_dummy}/**/*")
-      #   dummies.each do |dummy|
-      #     generated.select do |g|
-      #       if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
-      #         if File.file?(g)
-      #           FileUtils.cp_r(g, "#{stage_dummy}#{g.split(Dir.pwd).last}")
-      #         end
-      #       end
-      #     end
-      #   end
-      # end
-
       def itinerary_index(stage)
         itineraries = read_yaml("#{Roro.gem_root}/test/fixtures/matrixes/itineraries.yml")
         itineraries.select! do |i|
@@ -96,9 +73,8 @@ module Roro
 
       def write_story
         @manifest.each do |m|
-          @structure[:itinerary] = @itinerary
+          # @structure[:itinerary] = @itinerary
           @writer.write(@structure, m)
-          # copy_stage_dummy(m) if ENV['RORO_ENV'].eql?('test')
         end
       end
 

@@ -3,7 +3,8 @@
 require 'test_helper'
 
 describe 'Roro::Configurators::AdventureChooser' do
-  Given { skip }
+  Given { use_fixture_stack('complex') }
+
   Given(:subject) { Roro::Configurators::AdventureChooser.new }
 
   describe '#initialize' do
@@ -16,13 +17,29 @@ describe 'Roro::Configurators::AdventureChooser' do
     end
   end
 
+  describe '#record_answers' do
+    Given(:answers) { %w[1 1 1] }
+    Given(:record_answers) do
+      stub_journey(answers)
+      subject.record_answers
+    end
+
+    context 'when stack has multiple inflections' do
+      context 'when okonomi php laravel' do
+        When(:answers) { %w[1 1 1] }
+        Given { record_answers }
+        Then { assert_equal(%w[1 1 1], subject.record_answers) }
+      end
+    end
+  end
+
   describe '#build_itinerary' do
+    Given { skip }
     Given(:answers) { %w[1] }
     Given(:itinerary)       { subject.itinerary }
     Given(:manifest)        { subject.manifest }
     Given(:build_itinerary) do
       stub_journey(answers)
-      # quiet { subject.build_itinerary(stack_path) }
       subject.build_itinerary(stack_path)
     end
 

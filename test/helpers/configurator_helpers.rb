@@ -30,33 +30,16 @@ module Minitest
     end
 
     def capture_stage_dummy(dir)
-      # location = Dir.pwd
-      # byebug
-      # index = itinerary_index(stage).index(itinerary)
-      # test_dir = "#{stack_parent_path(stage)}/test"
-      # return unless File.exist?(test_dir)
       dummy_dir = "#{dir}/dummy"
       dummies = Dir.glob("#{dir}/dummy/**/*").map do |f|
         f.split("#{dummy_dir}/").last
       end
-
-      # stage_dummy = "#{test_dir}/#{index}/dummy"
-      # generated = Dir.glob("#{location}/**/*")
-      # dummies = Dir.glob("#{stage_dummy}/**/*")
       dummies.each do |dummy|
         dummyfile = dummy.split(dummy_dir).last
         generated = "#{Dir.pwd}/#{dummy}"
-        # dummy.split(dummy_dir).last
         if File.file?("#{Dir.pwd}/#{dummyfile}") && File.file?(dummyfile)
           FileUtils.cp_r(dummyfile, "#{dummy_dir}/#{dummy}")
         end
-        #     generated.select do |g|
-        #       if dummy.split(stage_dummy).last.match?(g.split(Dir.pwd).last)
-        #         if File.file?(g)
-        #           FileUtils.cp_r(g, "#{stage_dummy}#{g.split(Dir.pwd).last}")
-        #         end
-        #       end
-        #     end
       end
     end
 
@@ -76,7 +59,6 @@ module Minitest
       cli = Roro::CLI.new
       cli.rollon
       capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
-      # @rollon_loud ? cli.rollon : quiet { cli.rollon }
     end
 
     def stubs_answer(answer)

@@ -78,6 +78,10 @@ module Roro
       end
 
       def add_metadata(adventure)
+        adventure[:chapters].reject! do |c|
+          # byebug
+          stack_name(c).chars.first.match?('_')
+        end
         adventure[:tags] = tags_from(adventure[:chapters])
         adventure[:versions] = versions_from(adventure[:chapters])
         adventure[:title] = title_from(adventure)

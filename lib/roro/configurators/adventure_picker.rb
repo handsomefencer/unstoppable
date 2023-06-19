@@ -22,9 +22,12 @@ module Roro
           options = inflection_options
           prompt_options = humanize(options)
           @prompt = "#{prompt}\n"
-          @inflection = ["#{prompt_options}\n\n", "Choices: [#{set_color(options.keys.map do |k|
-                                                                           k.to_i
-                                                                         end.join(' '), :blue)}]"]
+          @inflection = [
+            "#{prompt_options}\n\n",
+            "Choices: [#{set_color(options.keys.map do |k|
+                                     k.to_i
+                                   end.join(' '), :blue)}]"
+          ]
         end
 
         def inflection_prompt
@@ -59,10 +62,6 @@ module Roro
           return unless stack_is_storyfile?(storyfile)
 
           read_yaml("#{story}/#{stack_name(story)}.yml")[:preface]
-        end
-
-        def story_from(key)
-          inflection_options[key]
         end
       end
     end

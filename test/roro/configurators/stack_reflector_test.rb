@@ -71,7 +71,7 @@ describe Roro::Configurators::StackReflector do
     describe 'when adventure is okonomi php laravel' do
       Given(:expected) do
         {
-          chapters: %w[okonomi php _builder laravel],
+          chapters: %w[okonomi php laravel],
           itinerary: [
             'unstoppable_developer_style: okonomi', 'language: php',
             'adventure: laravel'
@@ -103,7 +103,7 @@ describe Roro::Configurators::StackReflector do
       Given(:expected) do
         {
           chapters: %w[
-            okonomi ruby _builder databases rails postgres
+            okonomi ruby databases rails postgres
             14_1 3_0 sidekiq 7_0
           ],
           itinerary: [

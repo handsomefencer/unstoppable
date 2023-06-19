@@ -24,7 +24,7 @@ module Roro
             begin
               eval a
               save_layer(storyfile) if ENV['RORO_DOCUMENT_LAYERS'].eql?('true')
-            rescue StandardError
+            rescue StandardError => e
               raise Error, msg: "#{a} #{storyfile}"
             end
           end
@@ -45,7 +45,7 @@ module Roro
 
         def save_layer(stack)
           stacks = Roro::CLI.stacks
-          reflector = Reflector.new
+          reflector = StackReflector.new
           parent = stack_name(stack.split("#{stacks}/").last).split('.').first
           @buildenv[:itinerary].each do |i|
             index = reflector.itinerary_index(@buildenv[:itinerary], i)
