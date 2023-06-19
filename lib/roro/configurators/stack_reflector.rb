@@ -95,7 +95,7 @@ module Roro
       end
 
       def title_from(adventure)
-        tags = adventure.dig(:tags)
+        # tags = adventure.dig(:tags)
         itinerary = adventure.dig(:itinerary)
         versions = adventure.dig(:versions)
         array = itinerary.reject do |i|

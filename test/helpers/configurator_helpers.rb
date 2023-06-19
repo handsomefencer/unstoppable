@@ -36,7 +36,7 @@ module Minitest
       end
       dummies.each do |dummy|
         dummyfile = dummy.split(dummy_dir).last
-        generated = "#{Dir.pwd}/#{dummy}"
+        # generated = "#{Dir.pwd}/#{dummy}"
         if File.file?("#{Dir.pwd}/#{dummyfile}") && File.file?(dummyfile)
           FileUtils.cp_r(dummyfile, "#{dummy_dir}/#{dummy}")
         end

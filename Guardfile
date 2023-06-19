@@ -1,6 +1,6 @@
-require 'pry'
-Pry.config.input = STDIN
-Pry.config.output = STDOUT
+# require 'pry'
+# Pry.config.input = STDIN
+# Pry.config.output = STDOUT
 
 guard :minitest, test_folders: ['test'] do
   stack_tests = 'test/roro/stacks'

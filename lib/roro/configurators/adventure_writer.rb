@@ -25,7 +25,7 @@ module Roro
             begin
               eval a
               save_layer(storyfile) if ENV['RORO_DOCUMENT_LAYERS'].eql?('true')
-            rescue StandardError => e
+            rescue StandardError
               raise Error, msg: "#{a} #{storyfile}"
             end
           end
