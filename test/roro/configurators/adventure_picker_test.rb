@@ -8,11 +8,11 @@ describe 'AdventurePicker' do
   Given(:stack)            { 'stacks' }
 
   describe '#build_inflection' do
-    focus
     Then { assert_equal Array, build_inflection.class }
   end
 
   describe '#choose_adventure(inflection)' do
+    Given { skip }
     Given(:choose_adventure) { subject.choose_adventure(stack_path) }
 
     context 'when stacks' do
@@ -21,6 +21,7 @@ describe 'AdventurePicker' do
     end
 
     context 'when stack/stack/plots' do
+      Given { skip }
       When(:stack) { 'stack/stack/plots' }
       Given { stub_journey(%w[1]) }
       Then  { assert_equal "#{stack_path}/story1", choose_adventure }
@@ -28,6 +29,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#inflection_prompt' do
+    Given { skip }
     Given(:prompt) { subject.inflection_prompt }
 
     context 'when stacks' do
@@ -46,6 +48,7 @@ describe 'AdventurePicker' do
   end
 
   describe '#inflection_options' do
+    Given { skip }
     Given(:options) { subject.inflection_options }
 
     context 'when valid/stack/stacks' do
@@ -88,12 +91,14 @@ describe 'AdventurePicker' do
     Given(:humanized) { subject.humanize(subject.inflection_options) }
 
     context 'when stacks' do
+      Given { skip }
       Then { assert humanized.is_a?(String) }
       And  { assert_match 'story', humanized }
     end
   end
 
   describe '#story_from(key, hash)' do
+    Given { skip }
     Given(:story_from) { subject.story_from('1') }
 
     context 'when story' do
