@@ -6,7 +6,6 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
-    skip
     @rollon_dummies = false
     rollon(__dir__)
   end
