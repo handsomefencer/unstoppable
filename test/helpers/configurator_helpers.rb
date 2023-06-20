@@ -125,34 +125,6 @@ module Minitest
         .returns(*answers)
     end
 
-    def infer_answers_from_testfile_location(path = nil)
-      test_stack_root = "#{Roro::CLI.test_root}/roro/stacks"
-      parent_path = test_stack_root
-      test_file = path.split("#{test_stack_root}/").last
-      array = test_file.split('/')
-      answers = []
-      array.each do |item|
-        children = children("#{parent_path}")
-        location = "#{parent_path}/#{item}"
-        answers << children.index(location) + 1 if children.size > 1
-        parent_path = location
-      end
-      answers
-    end
-
-    def adventures_from(stack)
-      reflector  = Roro::Reflector.new
-      adventures = []
-      itineraries = []
-      reflector.itineraries.each_with_index do |itinerary, index|
-        if itinerary.any? { |itin| itin.match?(stack) }
-          adventures << reflector.cases[index]
-          itineraries << reflector.itineraries[index]
-        end
-      end
-      adventures
-    end
-
     def stub_journey(answers)
       Thor::Shell::Basic
         .any_instance
@@ -171,39 +143,12 @@ module Minitest
     def stack_path(args = nil)
       append = defined?(stack) ? "/#{stack}" : nil
       prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
-      stack_root ||= "#{fixture_path}/dummies/stack/#{prepend_valid}"
+      stack_root ||= "#{Roro::CLI.test_root}/fixtures/dummies/stack/#{prepend_valid}"
       "#{stack_root}#{append}"
-    end
-
-    def fixture_path
-      "#{Roro::CLI.test_root}/fixtures"
     end
 
     def assert_valid_stack
       assert_nil validator.validate(stack_path)
-    end
-
-    def generate_fixtures
-      capture_subprocess_io do
-        generate_fixture_cases
-        generate_fixture_itineraries
-      end
-    end
-
-    def generate_fixture_itineraries
-      File.open(itineraries_loc, 'w+') do |f|
-        itineraries = []
-        cases.each do |c|
-          Roro::Configurators::AdventurePicker
-            .any_instance
-            .stubs(:ask)
-            .returns(*c)
-          chooser = AdventureChooser.new
-          chooser.build_itinerary
-          itineraries << chooser.itinerary
-        end
-        f.write(itineraries.to_yaml)
-      end
     end
 
     def quiet

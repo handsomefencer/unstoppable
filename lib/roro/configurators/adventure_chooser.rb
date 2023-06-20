@@ -17,7 +17,6 @@ module Roro
         case stack_type(s)
         when :inflection
           a = choose_adventure(s)
-          byebug
           record_answers(children(s)[(a.to_i - 1)], r << a)
         when :story
           @itinerary << stack.split("#{Roro::CLI.stacks}/").last
