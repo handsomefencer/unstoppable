@@ -2,12 +2,12 @@
 
 module Roro
   module Configurators
-    module ActionCommands
-      include Utilities
+    # module ActionCommands
+    #   # include Utilities
 
-      def interpolated_app_name
-        @env[:base][:app_name][:value]
-      end
-    end
+    #   def interpolated_app_name
+    #     @env[:base][:app_name][:value]
+    #   end
+    # end
   end
 end

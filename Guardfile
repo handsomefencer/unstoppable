@@ -1,3 +1,7 @@
+require 'pry'
+Pry.config.input = STDIN
+Pry.config.output = STDOUT
+
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 

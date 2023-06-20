@@ -74,6 +74,7 @@ describe 'AdventurePicker' do
   describe '#inflection_options()' do
     Given(:result) { subject.inflection_options(inflection) }
 
+    focus
     Then do
       assert_equal 3, result.size
       assert_equal %w[1 2 3], result.keys

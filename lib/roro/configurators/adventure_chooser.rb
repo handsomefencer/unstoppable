@@ -17,6 +17,7 @@ module Roro
         case stack_type(s)
         when :inflection
           a = choose_adventure(s)
+          byebug
           record_answers(children(s)[(a.to_i - 1)], r << a)
         when :story
           @itinerary << stack.split("#{Roro::CLI.stacks}/").last
@@ -25,28 +26,6 @@ module Roro
         end
         @itinerary.uniq!
         @answers = r
-      end
-
-      def build_itinerary(stack = nil)
-        @manifest ||= []
-        stack ||= @stack
-        case stack_type(stack)
-        when :storyfile
-          @manifest << stack
-        when :story
-          @itinerary << stack.split("#{Roro::CLI.stacks}/").last
-          @manifest += stack_stories(stack)
-        when :stack
-          @manifest += stack_stories(stack)
-          children(stack).each { |c| build_itinerary(c) }
-        when :inflection_stub
-          children(stack).each { |c| build_itinerary(c) }
-        when :inflection
-          child = choose_adventure(stack)
-          build_itinerary(child)
-        end
-        @manifest.uniq!
-        @itinerary.uniq!
       end
 
       def choose_adventure(inflection)
