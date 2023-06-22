@@ -73,7 +73,7 @@ module Roro
 
       def write_story
         @manifest.each do |m|
-          # @structure[:itinerary] = @itinerary
+          @structure[:itinerary] = @itinerary
           @writer.write(@structure, m)
         end
       end

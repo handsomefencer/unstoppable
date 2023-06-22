@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'deep_merge'
-require 'active_support'
 require 'active_support/inflector'
 
 module Roro
@@ -16,6 +15,7 @@ module Roro
         @reflection = reflect(stack)
         @adventures = @reflection[:adventures]
         @cases = @reflection[:cases]
+        @reflection[:strack] = stack
         @reflection[:structure] = structure
         @reflection[:itineraries] = itineraries
       end
@@ -23,11 +23,17 @@ module Roro
       def reflect(s, sibs = [], adventure = nil, a = {})
         adventure ||= {
           chapters: [],
+          template_paths: [],
+          partial_paths: [],
           itinerary: [],
           picks: [],
           tags: []
         }
         adventure[:chapters] += stack_stories(s)
+        template_path = "#{s}/templates"
+        partial_path = "#{s}/templates/partials"
+        adventure[:template_paths] << template_path if File.exist?(template_path)
+        adventure[:partial_paths] << partial_path if File.exist?(partial_path)
         case stack_type(s)
         when :inflection_stub
           children(s).each { |c| reflect(c, sibs, adventure, a) }
@@ -71,7 +77,7 @@ module Roro
         }
       end
 
-      private
+      # private
 
       def deep_copy(o)
         Marshal.load(Marshal.dump(o))
@@ -79,13 +85,39 @@ module Roro
 
       def add_metadata(adventure)
         adventure[:chapters].reject! do |c|
-          # byebug
           stack_name(c).chars.first.match?('_')
         end
         adventure[:tags] = tags_from(adventure[:chapters])
+        # adventure[:template_paths] = template_paths_for(adventure[:chapters][0])
         adventure[:versions] = versions_from(adventure[:chapters])
         adventure[:title] = title_from(adventure)
         adventure
+      end
+
+      def template_paths_for(chapter, array = nil, paths = [])
+        base = @stack
+        array ||= chapter.split("#{base}/").last.split('/')
+        # candidate = paths <<
+        parent = stack_parent_path(chapter)
+
+        byebug
+        array.each do |_item|
+        end
+        paths
+        # foo = base + array.join
+        # candidate = "#{foo}/templates"
+        # byebug # if File.exist?(candidate)
+        # # template_paths
+
+        # chapters.each do |chapter|
+        #   array ||= chapter.split
+        #   byebug
+        #   array = chapter.split('/')
+        #   array.pop
+        #   array << 'templates'
+        #   newArray = array.join('/')
+        #   byebug
+        # end
       end
 
       def tags_from(chapters)
@@ -95,7 +127,6 @@ module Roro
       end
 
       def title_from(adventure)
-        # tags = adventure.dig(:tags)
         itinerary = adventure.dig(:itinerary)
         versions = adventure.dig(:versions)
         array = itinerary.reject do |i|

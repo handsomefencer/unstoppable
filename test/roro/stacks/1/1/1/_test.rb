@@ -16,8 +16,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
     Then { assert_directory directory }
 
     describe 'with file' do
-      Given(:file) { "#{directory}/expected/file.name" }
-
+      Given(:file) { 'Gemfile' }
       Then { assert_file file }
 
       describe 'with content' do

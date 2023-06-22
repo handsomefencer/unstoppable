@@ -125,6 +125,21 @@ module Minitest
         .returns(*answers)
     end
 
+    def infer_answers_from_testfile_location(path = nil)
+      test_stack_root = "#{Roro::CLI.test_root}/roro/stacks"
+      parent_path = test_stack_root
+      test_file = path.split("#{test_stack_root}/").last
+      array = test_file.split('/')
+      answers = []
+      array.each do |item|
+        children = children("#{parent_path}")
+        location = "#{parent_path}/#{item}"
+        answers << children.index(location) + 1 if children.size > 1
+        parent_path = location
+      end
+      answers
+    end
+
     def stub_journey(answers)
       Thor::Shell::Basic
         .any_instance
