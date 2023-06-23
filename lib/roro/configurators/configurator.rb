@@ -14,14 +14,12 @@ module Roro
         @stack      = options[:stack] || CatalogBuilder.build
         @validator  = Validator.new(@stack)
         @reflection = StackReflector.new(@stack)
-        @adventure  = AdventureChooser.new
         @chooser    = AdventureChooser.new
         @builder    = QuestionBuilder.new
         @structure  = StructureBuilder.build
         @asker      = QuestionAsker.new
         @writer     = AdventureWriter.new
         @env        = @structure[:env]
-        @log        = @structure
       end
 
       def rollon
@@ -29,11 +27,11 @@ module Roro
         choose_adventure
         build_env
         write_story
-        write_log
       end
 
       def validate_stack
-        @validator.validate(@stack)
+        validator = Validator.new(@stack)
+        validator.validate(@stack)
       end
 
       def choose_adventure
@@ -64,38 +62,11 @@ module Roro
         end
       end
 
-      def itinerary_index(stage)
-        itineraries = read_yaml("#{Roro.gem_root}/test/fixtures/matrixes/itineraries.yml")
-        itineraries.select! do |i|
-          i.include?(stack_parent_path(stage.split(Roro::CLI.stacks).last))
-        end
-      end
-
       def write_story
         @manifest.each do |m|
           @structure[:itinerary] = @itinerary
           @writer.write(@structure, m)
         end
-      end
-
-      def write_log
-        @log[:dependency_hash] = @dependency_hash
-        @log[:itinerary]       = @itinerary
-        @log[:manifest]        = @manifest
-        @log[:stack]           = @stack
-        @log[:structure]       = @structure
-        @writer.write_log(@log)
-      end
-
-      private
-
-      def stage_dummy_index(stack)
-        itineraries = read_yaml("#{Roro::CLI.test_root}/fixtures/matrixes/itineraries.yml")
-        adventures = itineraries.select! do |i|
-          candidate = stack.split(Roro::CLI.stacks).last
-          i.include? stack_parent_path(candidate)
-        end
-        adventures.index(itinerary)
       end
     end
   end

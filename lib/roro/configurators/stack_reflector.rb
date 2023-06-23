@@ -15,25 +15,13 @@ module Roro
         @reflection = reflect(stack)
         @adventures = @reflection[:adventures]
         @cases = @reflection[:cases]
-        @reflection[:strack] = stack
-        @reflection[:structure] = structure
         @reflection[:itineraries] = itineraries
+        @reflection[:stack] = stack
+        @reflection[:structure] = structure
       end
 
       def reflect(s, sibs = [], adventure = nil, a = {})
-        adventure ||= {
-          chapters: [],
-          template_paths: [],
-          partial_paths: [],
-          itinerary: [],
-          picks: [],
-          tags: []
-        }
-        adventure[:chapters] += stack_stories(s)
-        template_path = "#{s}/templates"
-        partial_path = "#{s}/templates/partials"
-        adventure[:template_paths] << template_path if File.exist?(template_path)
-        adventure[:partial_paths] << partial_path if File.exist?(partial_path)
+        adventure = build_adventure(adventure, s)
         case stack_type(s)
         when :inflection_stub
           children(s).each { |c| reflect(c, sibs, adventure, a) }
@@ -77,47 +65,25 @@ module Roro
         }
       end
 
-      # private
-
-      def deep_copy(o)
-        Marshal.load(Marshal.dump(o))
-      end
-
       def add_metadata(adventure)
         adventure[:chapters].reject! do |c|
           stack_name(c).chars.first.match?('_')
         end
         adventure[:tags] = tags_from(adventure[:chapters])
-        # adventure[:template_paths] = template_paths_for(adventure[:chapters][0])
         adventure[:versions] = versions_from(adventure[:chapters])
         adventure[:title] = title_from(adventure)
+        adventure[:env] = env_vars_from(adventure)
         adventure
       end
 
-      def template_paths_for(chapter, array = nil, paths = [])
-        base = @stack
-        array ||= chapter.split("#{base}/").last.split('/')
-        # candidate = paths <<
-        parent = stack_parent_path(chapter)
-
-        byebug
-        array.each do |_item|
+      def env_vars_from(adventure)
+        hash ||= {}
+        chapters = adventure.dig(:chapters)
+        chapters.each do |chapter|
+          foo = read_yaml(chapter).dig(:env)
+          hash.deep_merge!(foo) if foo
         end
-        paths
-        # foo = base + array.join
-        # candidate = "#{foo}/templates"
-        # byebug # if File.exist?(candidate)
-        # # template_paths
-
-        # chapters.each do |chapter|
-        #   array ||= chapter.split
-        #   byebug
-        #   array = chapter.split('/')
-        #   array.pop
-        #   array << 'templates'
-        #   newArray = array.join('/')
-        #   byebug
-        # end
+        hash
       end
 
       def tags_from(chapters)
@@ -189,6 +155,34 @@ module Roro
             foo.deep_merge!(hash)
           end
         end
+      end
+
+      private
+
+      def deep_copy(o)
+        Marshal.load(Marshal.dump(o))
+      end
+
+      def instantiate_adventure
+        {
+          chapters: [],
+          env: {},
+          itinerary: [],
+          picks: [],
+          templates_paths: [],
+          templates_partials_paths: [],
+          tags: []
+        }
+      end
+
+      def build_adventure(adventure, stack)
+        adventure ||= instantiate_adventure
+        template = "#{stack}/templates"
+        partial = "#{stack}/templates/partials"
+        adventure[:chapters] += stack_stories(stack)
+        adventure[:templates_paths] += [template] if File.exist?(template)
+        adventure[:templates_partials_paths] += [partial] if File.exist?(partial)
+        adventure
       end
     end
   end

@@ -5,7 +5,7 @@ module Roro
     class AdventureChooser
       include Utilities
 
-      attr_reader :answers, :itinerary, :stack, :manifest, :choices
+      attr_reader :answers, :stack
 
       def initialize
         @asker     = AdventurePicker.new
@@ -14,21 +14,13 @@ module Roro
       end
 
       def record_answers(s = @stack, r = [])
-        case stack_type(s)
-        when :inflection
-          a = choose_adventure(s)
+        if stack_type(s).eql?(:inflection)
+          a = @asker.choose_adventure(s)
           record_answers(children(s)[(a.to_i - 1)], r << a)
-        when :story
-          @itinerary << stack.split("#{Roro::CLI.stacks}/").last
         else
           children(s).each { |c| record_answers(c, r) }
         end
-        @itinerary.uniq!
-        @answers = r
-      end
-
-      def choose_adventure(inflection)
-        @asker.choose_adventure(inflection)
+        r
       end
     end
   end

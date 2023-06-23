@@ -6,6 +6,9 @@ env:
       value: "7.4"
       help: https://www.php.net/supported-versions.php
 
+    db_vendor:
+      name: Database vendor name
+      value: postgres
 actions:
   - copy_layer('manifest')
   - run "docker-compose build"

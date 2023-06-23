@@ -9,9 +9,11 @@ describe 'AdventurePicker' do
      'complex/unstoppable_developer_styles'].join('/')
   end
 
-  describe '#choose_adventure()' do
-    Given(:result) { subject.choose_adventure(inflection) }
+  Given(:result) do
+    quiet { subject.choose_adventure(inflection) }
+  end
 
+  describe '#choose_adventure()' do
     describe 'when okonomi' do
       Given { stub_journey(%w[1]) }
       Then { assert_equal '1', result }

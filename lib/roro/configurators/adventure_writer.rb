@@ -30,19 +30,6 @@ module Roro
           end
         end
 
-        def copy_manifest(_dir = nil)
-          paths = manifest_paths
-          paths.each do |path|
-            source_paths.shift
-            source_paths << path
-            begin
-              directory '', '.', @env
-            rescue StandardError
-              Roro::Error
-            end
-          end
-        end
-
         def save_layer(stack)
           stacks = Roro::CLI.stacks
           reflector = StackReflector.new

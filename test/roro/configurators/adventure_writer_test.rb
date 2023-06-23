@@ -59,8 +59,6 @@ describe 'AdventureWriter' do
   context 'django' do
     Given { skip }
     describe 'must return correct' do
-      # Given(:itinerary) { itineraries[6] }
-
       describe 'must be using correct itinerary' do
         Then do
           assert_equal storyfile[0], itinerary.first
