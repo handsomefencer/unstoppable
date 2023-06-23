@@ -4,7 +4,7 @@ require 'test_helper'
 require 'helpers/reflection_helpers'
 
 describe Roro::Configurators::StackReflector do
-  Given { use_fixture_stack('simple') }
+  Given { use_fixture_stack('bravo') }
   Given(:subject) { Roro::Configurators::StackReflector.new }
 
   Given(:adventure) { subject.adventure_for(*picks) }

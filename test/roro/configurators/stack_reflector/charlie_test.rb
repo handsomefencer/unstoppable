@@ -3,8 +3,7 @@
 require 'test_helper'
 
 describe Roro::Configurators::StackReflector do
-  # Given { skip }
-  # Given { use_fixture_stack }
+  Given { use_fixture_stack('charlie') }
   Given(:subject) { Roro::Configurators::StackReflector.new }
 
   describe '#adventure_for(picks)' do

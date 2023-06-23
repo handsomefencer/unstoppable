@@ -6,7 +6,7 @@ describe 'AdventurePicker' do
   Given(:subject) { AdventurePicker.new }
   Given(:inflection) do
     ["#{Roro::CLI.test_root}/fixtures/files/stacks",
-     'complex/unstoppable_developer_styles'].join('/')
+     'alpha/unstoppable_developer_styles'].join('/')
   end
 
   Given(:result) do
@@ -33,7 +33,7 @@ describe 'AdventurePicker' do
   describe '#inflection_prompt()' do
     Given(:result) { subject.inflection_prompt(inflection) }
     Then { assert_match('Please choose from these', result) }
-    And { assert_match('complex unstoppable developer styles:', result) }
+    And { assert_match('alpha unstoppable developer styles:', result) }
   end
 
   describe '#inflection_options()' do

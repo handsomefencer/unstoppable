@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::Configurators::AdventureChooser' do
-  Given { use_fixture_stack('complex') }
+  Given { use_fixture_stack('alpha') }
 
   Given(:subject) { Roro::Configurators::AdventureChooser.new }
 

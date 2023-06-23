@@ -5,7 +5,7 @@ require 'test_helper'
 describe 'Roro::CLI#generate_choice_tests' do
   Given(:workbench) {}
   Given(:generate) { Roro::CLI.new.generate_adventure_tests }
-  Given { use_fixture_stack('complex') }
+  Given { use_fixture_stack('alpha') }
   Given { quiet { generate } }
 
   describe 'must generate' do

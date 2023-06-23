@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'AdventureWriter' do
-  Given { use_fixture_stack('complex') }
+  Given { use_fixture_stack('alpha') }
 
   Given(:workbench) {}
   Given(:writer)    { AdventureWriter.new }
@@ -11,7 +11,7 @@ describe 'AdventureWriter' do
   describe 'partials_for(stack)' do
     Given(:stack_base) do
       ['/home/schadenfred/work/handsomefencer/gems/roro/test',
-       'fixtures/files/stacks/complex/unstoppable_developer_styles',
+       'fixtures/files/stacks/alpha/unstoppable_developer_styles',
        'okonomi/languages/ruby'].join('/')
     end
 

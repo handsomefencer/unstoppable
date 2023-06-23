@@ -5,7 +5,7 @@ require 'rake'
 
 describe 'rake ci:prepare:workflows:adventures' do
   Given(:workbench) { '.circleci' }
-  Given { use_fixture_stack('complex') }
+  Given { use_fixture_stack('alpha') }
   Given { run_task('ci:prepare:workflows:adventures') }
 
   describe 'adventures.yml' do
