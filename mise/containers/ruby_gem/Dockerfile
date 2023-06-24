@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ruby:3.0-alpine AS builder
+FROM ruby:3.2.1-alpine AS builder
 
 RUN apk add \
     build-base \
@@ -11,7 +11,7 @@ RUN apk add \
 
 WORKDIR /usr/src
 
-RUN gem install bundler:2.2.32
+RUN gem install bundler:2.4.13
 
 COPY . .
 

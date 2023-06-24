@@ -32,6 +32,10 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
         Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 6.1.7/ }
       end
 
+      describe 'ruby version' do
+        Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 6.1.7/ }
+      end
+
       describe 'db' do
         Then { assert_file 'Gemfile', /gem ["']pg["'], ["']~> 1.1/ }
       end
