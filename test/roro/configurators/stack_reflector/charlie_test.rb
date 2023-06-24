@@ -12,7 +12,7 @@ describe Roro::Configurators::StackReflector do
     describe 'when adventure is okonomi php laravel' do
       Given(:expected) do
         {
-          chapters: %w[ruby rails okonomi postgres
+          chapters: %w[ruby _builder rails okonomi postgres
                        6_1 sidekiq],
           env: { base: { db_vendor: { value: 'postgresql' } } },
           itinerary: [

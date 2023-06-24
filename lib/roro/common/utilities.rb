@@ -212,5 +212,9 @@ module Roro
     def adventure_name(location)
       "Adventure #{stack_parent(location)} #{location.split(Roro::CLI.stacks).last}" # .split('/')
     end
+
+    def glob_dir(regex = '**/*')
+      Dir.glob("#{Dir.pwd}/#{regex}")
+    end
   end
 end

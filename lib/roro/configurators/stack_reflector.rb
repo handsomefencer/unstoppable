@@ -66,9 +66,6 @@ module Roro
       end
 
       def add_metadata(adventure)
-        adventure[:chapters].reject! do |c|
-          stack_name(c).chars.first.match?('_')
-        end
         adventure[:tags] = tags_from(adventure[:chapters])
         adventure[:versions] = versions_from(adventure[:chapters])
         adventure[:title] = title_from(adventure)
@@ -89,6 +86,7 @@ module Roro
       def tags_from(chapters)
         chapters
           .map { |c| c.split('/').last.split('.').first }
+          .reject { |c| stack_name(c).chars.first.match?('_') }
           .reject { |c| c.match?('_') }.uniq
       end
 

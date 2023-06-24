@@ -55,6 +55,7 @@ guard :minitest, minitest_options do
   ## focus:
 
   watch('lib/roro/configurators/adventure_writer.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
+  watch('lib/roro/configurators/configurator.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
   # watch('lib/roro/configurators/configurator.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
 
   # with Minitest::Unit

@@ -13,6 +13,7 @@ module Roro
         @options    = options || {}
         @stack      = options[:stack] || CatalogBuilder.build
         @validator  = Validator.new(@stack)
+
         @reflection = StackReflector.new(@stack)
         @chooser    = AdventureChooser.new
         @builder    = QuestionBuilder.new
@@ -26,7 +27,8 @@ module Roro
         validate_stack
         choose_adventure
         build_env
-        write_story
+        write_adventure
+        # write_story
       end
 
       def validate_stack
@@ -36,9 +38,9 @@ module Roro
 
       def choose_adventure
         answers = @chooser.record_answers
-        reflection = Roro::Configurators::StackReflector.new
-        adventure = reflection.adventure_for(answers.map(&:to_i))
-        @manifest = adventure[:chapters]
+        # reflection = Roro::Configurators::StackReflector.new
+        @adventure = @reflection.adventure_for(answers.map(&:to_i))
+        @manifest = @adventure[:chapters]
       end
 
       def build_env
@@ -60,6 +62,16 @@ module Roro
             answer.eql?('') ? return : v[:value] = answer
           end
         end
+      end
+
+      def write_adventure
+        @adventure.dig(:chapters).each do |chapter|
+          @writer.write(@adventure, chapter)
+        end
+        # @manifest.each do |m|
+        #   @structure[:itinerary] = @itinerary
+        #   @writer.write(@structure, m)
+        # end
       end
 
       def write_story
