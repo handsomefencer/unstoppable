@@ -11,15 +11,14 @@ WORKDIR /app
 # RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 # RUN bundle config --local && \
 #   bundle install -j4 --retry 3
+
+
+## Install rails 
 RUN gem install rails
 ## Use Rails to generate a new app. We'll configure it later.
 RUN rails new . \
   --database=<%= @env[:base][:db_vendor][:value] %> \
-  --skip-bundle \
   --skip-webpack-install
-
-RUN bundle config --local && \
-  bundle install -j4 --retry 3
 
 RUN rm config/master.key
 FROM scratch AS export-stage

@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile ./
 RUN bundle install -j4 --retry 3
 
 COPY . .

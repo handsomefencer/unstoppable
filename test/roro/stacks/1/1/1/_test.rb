@@ -6,7 +6,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = false
+    @rollon_dummies = true
     rollon(__dir__)
   end
 
@@ -28,7 +28,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
 
   describe 'Gemfile with the correct' do
     describe 'rails version' do
-      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 7.0.5/ }
+      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 6.1.7/ }
     end
 
     describe 'ruby version' do
