@@ -6,21 +6,16 @@ FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
 WORKDIR /app
 
-## Create a Gemfile with just the Rails gem inside:
-# RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> <%= @env[:base][:rails_version][:value] %>'" > Gemfile
-# RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
-# RUN bundle config --local && \
-#   bundle install -j4 --retry 3
-
-
 ## Install rails 
-RUN gem install rails
+RUN gem install rails -v <%= @env[:base][:rails_version][:value] %>
+
 ## Use Rails to generate a new app. We'll configure it later.
 RUN rails new . \
   --database=<%= @env[:base][:db_vendor][:value] %> \
   --skip-bundle \
   --skip-webpack-install
 
+## Needed later builds:
 RUN touch Gemfile.lock
 
 RUN rm config/master.key

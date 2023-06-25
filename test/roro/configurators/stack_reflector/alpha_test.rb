@@ -47,13 +47,25 @@ describe Roro::Configurators::StackReflector do
         {
           chapters: %w[
             okonomi ruby _builder databases rails postgres
-            14_1 3_0 sidekiq 7_0
+            13_5 3_0 sidekiq 7_0
           ],
-          env: { base: { db_vendor: { value: 'postgresql' } } },
+          env: {
+            base: {
+              db_vendor: {
+                value: 'postgresql'
+              },
+              rails_version: {
+                value: 6.1
+              },
+              db_image_version: {
+                value: 13.5
+              }
+            }
+          },
           itinerary: [
             'unstoppable_developer_style: okonomi', 'language: ruby',
             'framework: rails', 'database: postgres',
-            'postgres version: 14_1', 'ruby version: 3_0',
+            'postgres version: 13_5', 'ruby version: 3_0',
             'scheduler: sidekiq', 'rails version: 7_0'
           ],
 
@@ -61,7 +73,7 @@ describe Roro::Configurators::StackReflector do
             'rails/templates/partials', 'postgres/templates/partials',
             '7_0/templates/partials'
           ],
-          picks: [1, 3, 1, 1, 2, 2, 2, 2],
+          picks: [1, 3, 1, 1, 1, 2, 2, 2],
           tags: %w[
             alpine databases docker git redis okonomi ruby
             rails postgres sidekiq
@@ -76,14 +88,14 @@ describe Roro::Configurators::StackReflector do
           ],
           title: [
             'unstoppable_developer_style: okonomi, scheduler: sidekiq',
-            'postgres version: 14.1, ruby version: 3.0, rails version: 7.0'
+            'postgres version: 13.5, ruby version: 3.0, rails version: 7.0'
           ].join(', '),
           versions: {
-            'postgres' => '14.1', 'ruby' => '3.0', 'rails' => '7.0'
+            'postgres' => '13.5', 'ruby' => '3.0', 'rails' => '7.0'
           }
         }
       end
-      When(:picks) { '1 3 1 1 2 2 2 2' }
+      When(:picks) { '1 3 1 1 1 2 2 2' }
       Then { assert_expected_adventure }
     end
 

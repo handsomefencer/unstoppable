@@ -6,8 +6,8 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = true
-    rollon(__dir__)
+    @rollon_dummies = false
+    quiet { rollon(__dir__) }
   end
 
   describe 'entrypoints/docker-entrypoint.sh' do

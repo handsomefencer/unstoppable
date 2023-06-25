@@ -1,5 +1,8 @@
 # syntax=docker/dockerfile:1
 
+ARG UID=1000
+ARG GID=1000
+
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
 
 <%= section('packages') %>
@@ -11,9 +14,7 @@ RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
 COPY Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
-COPY --chown=1000:1000 . .
-
-# RUN chown -r ${user}:${user} .
+COPY --chown=${UID}:${GID} . .
 
 RUN chmod -R 755 entrypoints/docker-entrypoint.sh
 

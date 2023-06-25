@@ -5,7 +5,7 @@ env:
   base:
     rails_version:
       name: Ruby on Rails minor version
-      value: 7.0
+      value: '7.0.5'
 
 actions:
   - copy_layer('manifest')

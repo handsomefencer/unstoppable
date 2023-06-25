@@ -40,7 +40,7 @@ end
 
 minitest_options = {
   test_folders: ['test'],
-  all_after_pass: false,
+  all_after_pass: true,
   all_on_start: false
 }
 guard :minitest, minitest_options do

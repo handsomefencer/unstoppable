@@ -11,15 +11,13 @@ module Roro
       no_commands do
         def write(buildenv, storyfile)
           @adventure = buildenv
-          @buildenv = buildenv
-          @storyfile = storyfile
-          @env = buildenv[:env]
+          @env = @adventure[:env]
           @env[:force] = true
           @env[:exit_on_failure] = true
           actions = read_yaml(storyfile)[:actions]
           return if actions.nil?
 
-          actions.each do |a|
+          actions&.each do |a|
             source_paths.shift
             source_paths << "#{stack_parent_path(storyfile)}/templates"
             begin
@@ -30,8 +28,7 @@ module Roro
           end
         end
 
-        def assert_service_running(name = 'dev')
-          name
+        def assert_service_running(_name = 'dev')
           byebug
         end
 
@@ -135,35 +132,6 @@ module Roro
             partials_for("#{ancestor}/#{crumbs.shift}", crumbs, paths)
           end
         end
-
-        # def manifest_paths(dir = nil, stack = nil, array = nil, paths = [])
-        #   dir   ||= 'manifest'
-        #   stack ||= Roro::CLI.stacks
-        #   array ||= @storyfile.split("#{stack}/").last.split('/')
-        #   path = "#{stack}/templates/#{dir}"
-        #   paths << path if File.exist?(path)
-        #   child = "#{stack}/#{array.shift}"
-
-        #   array.empty? ? paths : manifest_paths(dir, child, array, paths)
-        # end
-
-        # def template_paths_for(stack, array = nil, paths = [])
-        #   if array.nil?
-        #     array ||= stack.split("#{stack}/").last.split('/')
-        #     stack = Roro::CLI.stacks
-        #   end
-        #   path = "#{stack}/templates"
-        #   paths << path if File.exist?(path)
-        #   array.empty? ? paths : template_paths_for("#{stack}/#{array.shift}", array, paths)
-        # end
-
-        # def template_paths
-        #   array = []
-        #   @buildenv[:itinerary].each do |stack|
-        #     array += template_paths_for(stack)
-        #   end
-        #   array.uniq
-        # end
 
         def epilogue(log)
           array = []
