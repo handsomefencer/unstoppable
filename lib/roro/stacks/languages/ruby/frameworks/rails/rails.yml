@@ -11,9 +11,6 @@ actions:
   - copy_layer('manifest')
   - generate_mise
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
-  - |
-    run 'docker-compose build'
-    run 'docker-compose up'
 
 
 
