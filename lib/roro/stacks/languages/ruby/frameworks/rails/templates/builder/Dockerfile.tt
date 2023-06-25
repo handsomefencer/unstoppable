@@ -18,7 +18,10 @@ RUN gem install rails
 ## Use Rails to generate a new app. We'll configure it later.
 RUN rails new . \
   --database=<%= @env[:base][:db_vendor][:value] %> \
+  --skip-bundle \
   --skip-webpack-install
+
+RUN touch Gemfile.lock
 
 RUN rm config/master.key
 FROM scratch AS export-stage
