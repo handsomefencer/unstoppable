@@ -106,18 +106,6 @@ module Roro
           array.uniq
         end
 
-        def interpolated_stack_path
-          "#{@env[:stack]}/#{@env[:story]}"
-        end
-
-        def interpolated_story_name
-          "#{@env[:story]}"
-        end
-
-        def interpolated_app_name
-          @env[:base][:app_name][:value]
-        end
-
         def partials_for(ancestor = nil, crumbs = nil, paths = [])
           if crumbs.nil?
             origin = Roro::CLI.stacks

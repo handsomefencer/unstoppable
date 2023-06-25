@@ -6,7 +6,7 @@ module Roro
     map 'generate:harvest' => 'generate_harvest'
 
     def generate_harvest
-      reflector = Roro::Reflector.new
+      reflector = Roro::StackReflector.new
       content = {
         cases: reflector.cases.map { |c| c.join(' ') },
         structure_human: reflector.adventure_structure_human,
