@@ -2,12 +2,12 @@
 
 require 'test_helper'
 
-describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
+describe '2: unstoppable_rails_style: omakase' do
   Given(:workbench) {}
 
   Given do
     @rollon_dummies = true
-    quiet { rollon(__dir__) }
+    rollon(__dir__)
   end
 
   describe 'entrypoints/docker-entrypoint.sh' do
@@ -17,8 +17,9 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
   describe 'config/database.yml' do
     Given(:file) { 'config/database.yml' }
 
-    describe 'with postgres' do
-      Then { assert_file file, /adapter: postgresql/ }
+    describe 'must be configured with sqlite3 adapter' do
+      focus
+      Then { assert_file file, /adapter: sqlite3/ }
     end
   end
 
@@ -28,7 +29,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
 
   describe 'Gemfile with the correct' do
     describe 'rails version' do
-      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 6.1.7/ }
+      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 7.0.5/ }
     end
 
     describe 'ruby version' do
@@ -36,7 +37,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
     end
 
     describe 'db' do
-      Then { assert_file 'Gemfile', /gem ["']pg["'], ["']~> 1.1/ }
+      Then { assert_file 'Gemfile', /gem ["']sqlite3["'], ["']~> 1.4/ }
     end
   end
 
