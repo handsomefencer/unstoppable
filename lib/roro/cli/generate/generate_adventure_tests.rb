@@ -13,7 +13,6 @@ module Roro
 
       adventures.each do |key, value|
         @env = { adventure_title: "#{key.gsub(' ', ' -> ')}: #{value.dig(:title)}" }
-        # path = value[:itinerary].map { |item| item.split(': ').join('/') }.join('/')
         location = "test/roro/stacks/#{key.gsub(' ', '/')}"
         directory 'adventure_test', location, @env
       end
