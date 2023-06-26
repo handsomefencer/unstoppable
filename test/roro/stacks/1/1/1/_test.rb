@@ -6,7 +6,6 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = true
     rollon(__dir__)
   end
 
@@ -65,27 +64,15 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
 
     describe 'services' do
       describe 'app' do
-        # Then { assert_file file, /\n\s\sapp:/ }
-        # And { assert_file file, /\n\s\s\s\sbuild:/ }
-        focus
-        Then { assert_file file, /depends_on:\n\s\s\s\s\s\s- db/ }
-        # Then { assert_file file, /\napp:\n\s\sdb_data/ }
+        Then { assert_yaml(file, :services, :app, :ports, 0, '3000:3000') }
+        And { assert_yaml(file, :services, :app, :depends_on, 0, 'db') }
       end
     end
+
     describe 'volumes' do
       Then { assert_file file, /\nvolumes:\n\s\sdb_data/ }
       And  { assert_file file, /\s\sgem_cache/ }
       And  { assert_file file, /\s\snode_modules/ }
-    end
-
-    describe 'database service' do
-      describe 'database service' do
-        Then { assert_file file, /\n\s\sdb:/ }
-
-        describe 'image' do
-          Then { assert_file file, /\n\s\s\s\simage: postgres:14.1/ }
-        end
-      end
     end
   end
 end

@@ -4,9 +4,8 @@ module Roro
   module Test
     module Helpers
       module FilesHelper
-
         def file_match_in_files?(file_matcher, files)
-          files.any? {|file| file.match file_matcher }
+          files.any? { |file| file.match file_matcher }
         end
 
         def assert_file_content(*content)
@@ -16,10 +15,9 @@ module Roro
           end
         end
 
-
         def assert_file_match_in(file_matcher, files)
           msg = "'...#{file_matcher}' doesn't match any files in: #{files}"
-          assert(files.any? {|file| file.match file_matcher }, msg )
+          assert(files.any? { |file| file.match file_matcher }, msg)
         end
 
         def assert_file(file, *contents)
@@ -39,6 +37,36 @@ module Roro
         end
 
         alias assert_directory assert_file
+
+        def assert_yaml(*args)
+          file = args.shift
+          candidates = Dir.glob("#{Dir.pwd}/**/*")
+          assert(File.exist?(file),
+                 "Expected #{file} to exist, but does not. actual: #{candidates}")
+          expected = args.pop
+          return if args.empty?
+
+          yaml = JSON.parse(
+            YAML.load_file(file).to_json, symbolize_names: true
+          )
+          actual = yaml.dig(*args)
+          assert_equal(expected, actual)
+        end
+
+        def refute_yaml(*args)
+          file = args.shift
+          candidates = Dir.glob("#{Dir.pwd}/**/*")
+          assert(File.exist?(file),
+                 "Expected #{file} to exist, but does not. actual: #{candidates}")
+          expected = args.pop
+          return if args.empty?
+
+          yaml = JSON.parse(
+            YAML.load_file(file).to_json, symbolize_names: true
+          )
+          actual = yaml.dig(*args)
+          assert_nil actual
+        end
 
         def refute_file(file, *_contents)
           refute File.exist?(file), "Expected #{file} to not exist, but it does."

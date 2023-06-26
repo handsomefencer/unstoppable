@@ -42,6 +42,11 @@ module Minitest
       end
     end
 
+    def debuggerer
+      @rollon_dummies = true
+      @rollon_loud = true
+    end
+
     def rollon(dir)
       workbench
       stubs_adventure(dir)
@@ -56,7 +61,7 @@ module Minitest
       end
 
       cli = Roro::CLI.new
-      cli.rollon
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
       capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
     end
 
@@ -77,43 +82,6 @@ module Minitest
       Roro::Configurators::AdventureWriter
         .any_instance
         .stubs(:run)
-    end
-
-    def run_rollon
-      @build_dummies ? debug_rollon : simulate_rollon
-    end
-
-    def simulate_rollon
-      stub_run_actions
-      cli = Roro::CLI.new
-      @rollon_loud ? cli.rollon : quiet { cli.rollon }
-    end
-
-    def debug_rollon
-      cli = Roro::CLI.new
-      @rollon_loud ? cli.rollon : quiet { cli.rollon }
-    end
-
-    def case_from_path(stack, array = nil)
-      if @case.nil?
-        @case = []
-        array = stack.split("#{@stack}/").last.split('/')
-        stack = @stack
-      end
-      folder = array.shift
-      stack = "#{stack}/#{folder}"
-      @case << folder if stack_is_adventure?(stack)
-      case_from_path(stack, array) unless array.empty?
-      @case
-    end
-
-    def case_from_stack(stack)
-      hash = cases
-      case_from_path(stack).map do |item|
-        _index = hash.keys.index(item.to_sym)
-        hash = hash[item.to_sym]
-        _index += 1
-      end
     end
 
     def stubs_adventure(path = nil, _adventure = nil)

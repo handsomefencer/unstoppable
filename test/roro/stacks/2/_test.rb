@@ -6,7 +6,6 @@ describe '2: unstoppable_rails_style: omakase' do
   Given(:workbench) {}
 
   Given do
-    @rollon_dummies = true
     rollon(__dir__)
   end
 
@@ -18,7 +17,6 @@ describe '2: unstoppable_rails_style: omakase' do
     Given(:file) { 'config/database.yml' }
 
     describe 'must be configured with sqlite3 adapter' do
-      focus
       Then { assert_file file, /adapter: sqlite3/ }
     end
   end
@@ -50,8 +48,8 @@ describe '2: unstoppable_rails_style: omakase' do
       Then { assert_file 'Dockerfile', /bundler:2.4.13/ }
     end
     describe 'packages' do
-      describe 'postgresql-dev' do
-        Then { assert_file 'Dockerfile', /postgresql-dev/ }
+      describe 'sqlite-dev' do
+        Then { assert_file 'Dockerfile', /sqlite-dev/ }
       end
 
       describe 'nodejs' do
@@ -65,24 +63,15 @@ describe '2: unstoppable_rails_style: omakase' do
 
     describe 'services' do
       describe 'app' do
-        # focus
-        # Then { assert_file file, /\napp:\n\s\sdb_data/ }
+        Then { assert_yaml(file, :services, :app, :ports, 0, '3000:3000') }
+        And { refute_yaml(file, :services, :app, :depends_on, 0, 'db') }
       end
     end
+
     describe 'volumes' do
       Then { assert_file file, /\nvolumes:\n\s\sdb_data/ }
       And  { assert_file file, /\s\sgem_cache/ }
       And  { assert_file file, /\s\snode_modules/ }
-    end
-
-    describe 'database service' do
-      describe 'database service' do
-        Then { assert_file file, /\n\s\sdb:/ }
-
-        describe 'image' do
-          Then { assert_file file, /\n\s\s\s\simage: postgres:14.1/ }
-        end
-      end
     end
   end
 end

@@ -1,3 +1,6 @@
+version: '3.9'
+
+services:
   app:
     build:
       context: .
@@ -5,7 +8,7 @@
       args:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
-<%= partial('app_depends_on')%>
+
     env_file:
       - ./mise/env/base.env
     environment:
@@ -16,3 +19,8 @@
       - .:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
+
+volumes:
+  db_data:
+  gem_cache:
+  node_modules:
