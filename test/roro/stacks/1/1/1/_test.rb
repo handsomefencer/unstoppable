@@ -6,6 +6,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 
@@ -41,6 +42,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
 
   describe 'Dockerfile' do
     describe 'ruby version' do
+      focus
       Then { assert_file 'Dockerfile', /FROM ruby:3.2.1-alpine/ }
     end
 
