@@ -6,7 +6,6 @@ describe '1 -> 2 -> 1: database: sqlite, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
-    debuggerer
     rollon(__dir__)
   end
 
@@ -28,7 +27,7 @@ describe '1 -> 2 -> 1: database: sqlite, rails version: 6.1' do
 
   describe 'Gemfile with the correct' do
     describe 'rails version' do
-      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 7.0.5/ }
+      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 6.1.7/ }
     end
 
     describe 'ruby version' do
@@ -64,7 +63,6 @@ describe '1 -> 2 -> 1: database: sqlite, rails version: 6.1' do
 
     describe 'services' do
       describe 'app' do
-        focus
         Then { assert_yaml(file, :services, :app, :ports, 0, '3000:3000') }
         And { refute_yaml(file, :services, :app, :depends_on, 0, 'db') }
       end
