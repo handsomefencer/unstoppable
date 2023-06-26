@@ -63,6 +63,12 @@ describe '2: unstoppable_rails_style: omakase' do
   describe 'docker-compose.yml' do
     Given(:file) { 'docker-compose.yml' }
 
+    describe 'services' do
+      describe 'app' do
+        # focus
+        # Then { assert_file file, /\napp:\n\s\sdb_data/ }
+      end
+    end
     describe 'volumes' do
       Then { assert_file file, /\nvolumes:\n\s\sdb_data/ }
       And  { assert_file file, /\s\sgem_cache/ }

@@ -7,7 +7,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
 
   Given do
     @rollon_dummies = true
-    quiet { rollon(__dir__) }
+    rollon(__dir__)
   end
 
   describe 'entrypoints/docker-entrypoint.sh' do
@@ -48,6 +48,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
     describe 'bundler version' do
       Then { assert_file 'Dockerfile', /bundler:2.4.13/ }
     end
+
     describe 'packages' do
       describe 'postgresql-dev' do
         Then { assert_file 'Dockerfile', /postgresql-dev/ }
@@ -62,6 +63,15 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
   describe 'docker-compose.yml' do
     Given(:file) { 'docker-compose.yml' }
 
+    describe 'services' do
+      describe 'app' do
+        # Then { assert_file file, /\n\s\sapp:/ }
+        # And { assert_file file, /\n\s\s\s\sbuild:/ }
+        focus
+        Then { assert_file file, /depends_on:\n\s\s\s\s\s\s- db/ }
+        # Then { assert_file file, /\napp:\n\s\sdb_data/ }
+      end
+    end
     describe 'volumes' do
       Then { assert_file file, /\nvolumes:\n\s\sdb_data/ }
       And  { assert_file file, /\s\sgem_cache/ }

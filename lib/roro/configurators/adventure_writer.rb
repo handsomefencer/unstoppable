@@ -28,9 +28,6 @@ module Roro
           end
         end
 
-        def assert_service_running(_name = 'dev')
-          byebug
-        end
 
         def success_response(_url, desired_response = '200')
           actual_response = system("curl -o /dev/null -s -w '%<http_code>s\n' http://localhost")
