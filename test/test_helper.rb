@@ -15,13 +15,13 @@ require 'mocha/minitest'
 require 'climate_control'
 require 'roro'
 
-Dir["#{Dir.pwd}/test/helpers/**/*.rb"].each { |f| require f }
-
 include Roro::Configurators
 include Roro::Crypto
 
-# include Roro::Test::Helpers::Mocks
-include Roro::Test::Helpers::FilesHelper
-# include Roro::Test::Helpers::Stories
-# include Roro::Test::Helpers::Stories::Rails
-# include Roro::Test::Helpers::Stories::WorkBench
+Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
+
+include Roro::TestHelpers::FilesHelper
+include Roro::TestHelpers::RakeTaskHelper
+include Roro::TestHelpers::ReflectionHelper
+include Roro::TestHelpers::AdventureHelper
+include Roro::TestHelpers::ConfiguratorHelper

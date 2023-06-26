@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
-require 'helpers/reflection_helpers'
+require 'test_helpers/reflection_helpers'
 
 describe Roro::Configurators::StackReflector do
   Given { use_fixture_stack('bravo') }
