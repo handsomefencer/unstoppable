@@ -2,7 +2,7 @@
 
 require_relative '../shared_test'
 
-describe '1 -> 2 -> 1: database: sqlite, rails version: 6.1' do
+describe '1 -> 2 -> 1: database: postgres, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
@@ -12,6 +12,6 @@ describe '1 -> 2 -> 1: database: sqlite, rails version: 6.1' do
   Invariant { assert_1_2_tests }
 
   describe 'must have correct rails' do
-    Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 6.1.7/ }
+    Then { assert_file('Gemfile', /gem ["']rails["'], ["']~> 6.1.7/) }
   end
 end

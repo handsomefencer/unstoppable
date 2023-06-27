@@ -14,7 +14,7 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  sqlite-dev
+  postgresql-dev
 
 WORKDIR /app
 

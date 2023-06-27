@@ -1,28 +1,14 @@
-preface: PostgreSQL is a powerful, open source object-relational database system with over 30 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
+preface: Similar to mariadb
 
 env:
   base:
     db_image:
-      value: postgres
+      value: mysql
     db_image_version:
-      value: 14.1
+      value: '8.0.21'
     db_vendor:
-      value: postgresql
+      value: mysql
     db_pkg:
-      value: postgresql-dev
+      value: mysql mysql-client mysql-dev
     db_volume:
-      value: /var/lib/postgresql/data
-    db_gem:
-      value: pg
-    POSTGRES_NAME:
-      name: Database name
-      value: ${DATABASE_NAME}
-    POSTGRES_PASSWORD:
-      name: Database password
-      value: ${DATABASE_PASSWORD}
-    POSTGRES_USERNAME:
-      name: Database username
-      value: ${DATABASE_USERNAME}
-    POSTGRES_HOST:
-      name: Database host
-      value: ${DATABASE_HOST}
+      value: /var/lib/mysql

@@ -14,7 +14,7 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  postgresql-dev
+  mysql mysql-client mysql-dev
 
 WORKDIR /app
 

@@ -14,7 +14,7 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  mysql mysql-client mysql-dev
+  sqlite-dev
 
 WORKDIR /app
 

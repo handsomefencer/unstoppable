@@ -38,7 +38,12 @@ module Roro
           YAML.load_file(file).to_json, symbolize_names: true
         )
         actual = yaml.dig(*args)
-        assert_equal(expected, actual)
+        case expected 
+        when String 
+          assert_equal(expected, actual)
+        when Regexp 
+          assert_match(expected, actual)
+        end
       end
 
       def refute_yaml(*args)
