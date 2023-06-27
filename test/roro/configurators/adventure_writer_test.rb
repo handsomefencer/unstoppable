@@ -10,7 +10,7 @@ describe 'AdventureWriter' do
 
   describe 'partials_for(stack)' do
     Given(:stack_base) do
-      ['/home/schadenfred/work/handsomefencer/gems/roro/test',
+      [Roro::CLI.test_root,
        'fixtures/files/stacks/alpha/unstoppable_developer_styles',
        'okonomi/languages/ruby'].join('/')
     end

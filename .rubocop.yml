@@ -1,0 +1,16 @@
+
+Metrics/BlockLength:
+  Description: 'Avoid long blocks with many lines.'
+  Enabled: false
+  VersionAdded: '0.44'
+  VersionChanged: '1.5'
+  CountComments: false  # count full line comments?
+  Max: 25
+  CountAsOne: []
+  AllowedMethods:
+    # By default, exclude the `#refine` method, as it tends to have larger
+    # associated blocks.
+    - refine
+  AllowedPatterns: []
+  Exclude:
+    - '**/*_test.rb'
