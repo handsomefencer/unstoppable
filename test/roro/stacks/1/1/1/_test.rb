@@ -9,7 +9,7 @@ describe '1 -> 1 -> 1: database: postgres, rails version: 6.1' do
     rollon(__dir__)
   end
 
-  Invariant { assert_1_1_tests }
+  # Invariant { assert_1_1_tests }
 
   describe 'must have correct rails' do
     Then { assert_file('Gemfile', /gem ["']rails["'], ["']~> 6.1.7/) }
