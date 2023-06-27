@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'byebug'
 module Roro
   class CLI < Thor
     desc 'generate:adventure', 'Generate adventure for adventure tests.'
@@ -11,7 +12,6 @@ module Roro
       @env = { adventure_name: adventure.split('/').last }
       location = "lib/roro/stacks/#{adventure}"
       directory 'adventure', location, @env
-      generate_adventure_tests
     end
 
     no_commands do
