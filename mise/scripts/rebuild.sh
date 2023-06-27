@@ -7,7 +7,7 @@ dc build roro
 docker rm artifact 
 
 ## recreate and change into greenfield directory
-greenfield = '~/work/sandbox/greenfield'
+greenfield = '~/sandbox/greenfield'
 sudo rm -rf greenfield
 mkdir -p ${greenfield} 
 cd ${greenfield} 
