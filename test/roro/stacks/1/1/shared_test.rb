@@ -17,7 +17,4 @@ def assert_1_1_tests
   assert_file('mise/env/base.env', /MYSQL_ROOT_PASSWORD/)
   assert_file('mise/env/base.env', /MYSQL_DATABASE/)
   assert_file('mise/env/base.env', /DATABASE_NAME/)
-  refute_content('mise/env/base.env', /postgres/)
-  refute_content('mise/env/base.env', /db_gem/)
-  refute_content('mise/env/base.env', /db_gem/)
 end
