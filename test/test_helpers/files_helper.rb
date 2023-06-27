@@ -30,7 +30,7 @@ module Roro
         file = args.shift
         candidates = Dir.glob("#{Dir.pwd}/**/*")
         assert(File.exist?(file),
-                "Expected #{file} to exist, but does not. actual: #{candidates}")
+               "Expected #{file} to exist, but does not. actual: #{candidates}")
         expected = args.pop
         return if args.empty?
 
@@ -38,10 +38,10 @@ module Roro
           YAML.load_file(file).to_json, symbolize_names: true
         )
         actual = yaml.dig(*args)
-        case expected 
-        when String 
+        case expected
+        when String
           assert_equal(expected, actual)
-        when Regexp 
+        when Regexp
           assert_match(expected, actual)
         end
       end
@@ -50,7 +50,7 @@ module Roro
         file = args.shift
         candidates = Dir.glob("#{Dir.pwd}/**/*")
         assert(File.exist?(file),
-                "Expected #{file} to exist, but does not. actual: #{candidates}")
+               "Expected #{file} to exist, but does not. actual: #{candidates}")
         expected = args.pop
         return if args.empty?
 
@@ -63,6 +63,20 @@ module Roro
 
       def refute_file(file, *_contents)
         refute File.exist?(file), "Expected #{file} to not exist, but it does."
+      end
+
+      def refute_content(file, content)
+        actual = Dir.glob("#{Dir.pwd}/**/*")
+        assert File.exist?(file), "Expected #{file} to exist, but does not. actual: #{actual}"
+
+        read = File.read(file)
+        yield read if block_given?
+        case content
+        when String
+          refute_equal content, read
+        when Regexp
+          refute_match content, read
+        end
       end
 
       def insert_file(source, destination)

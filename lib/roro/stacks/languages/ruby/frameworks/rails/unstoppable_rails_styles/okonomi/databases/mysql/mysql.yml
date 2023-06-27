@@ -12,3 +12,13 @@ env:
       value: mysql mysql-client mysql-dev
     db_volume:
       value: /var/lib/mysql
+    MYSQL_HOST:
+      value: mysql
+    MYSQL_USER:
+      value: root
+    MYSQL_PASSWORD:
+      value: root
+    MYSQL_ROOT_PASSWORD:
+      value: root
+    MYSQL_DATABASE:
+      value: development

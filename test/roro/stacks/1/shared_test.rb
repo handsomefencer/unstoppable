@@ -2,7 +2,7 @@ require 'test_helper'
 
 def assert_1_tests
   assert_file('entrypoints/docker-entrypoint.sh')
-  assert_file('mise/env/base.env')
+  assert_file('mise/env/base.env', /db_vendor/)
   assert_file('Gemfile', /ruby ["']3.2.1["']/)
   assert_file('Dockerfile', /FROM ruby:3.2.1-alpine/)
   assert_file('Dockerfile', /bundler:2.4.13/)

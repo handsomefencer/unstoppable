@@ -1,8 +1,1 @@
-env:
-  base:
-    git_config_user_name:
-      name: The name you'd like associated with git activities
-      value: Jane Doe
-    git_config_user_email:
-      name: The email address you'd like associated with git activities
-      value: jane.doe@example.com
+preface: "Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency."
