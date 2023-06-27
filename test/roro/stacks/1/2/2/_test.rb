@@ -10,6 +10,6 @@ describe '1 -> 2 -> 2: database: sqlite, rails version: 7.0' do
   end
 
   describe 'Gemfile with the correct rails version' do
-      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 7.0.5/ }
+    Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 7.0.5/ }
   end
 end
