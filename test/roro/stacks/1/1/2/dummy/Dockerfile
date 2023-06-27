@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:1
 
+FROM ruby:3.2.1-alpine
+
 ARG UID=1000
 ARG GID=1000
-
-FROM ruby:3.2.1-alpine
 
 RUN apk add --update \
   build-base \
@@ -14,7 +14,9 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  mysql mysql-client mysql-dev
+  mariadb-dev
+  
+
 
 WORKDIR /app
 

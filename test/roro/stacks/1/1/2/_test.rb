@@ -2,10 +2,11 @@
 
 require_relative '../shared_test'
 
-describe '1 -> 1 -> 2: database: postgres, rails version: 7.0' do
+describe '1 -> 1 -> 2: database: mysql, rails version: 7.0' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 
