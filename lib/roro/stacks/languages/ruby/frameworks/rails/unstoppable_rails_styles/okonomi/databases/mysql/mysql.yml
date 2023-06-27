@@ -22,3 +22,6 @@ env:
       value: root
     MYSQL_DATABASE:
       value: development
+    DATABASE_NAME:
+      value: mysql
+    
