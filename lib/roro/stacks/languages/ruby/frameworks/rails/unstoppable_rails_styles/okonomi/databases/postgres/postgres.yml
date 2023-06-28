@@ -20,6 +20,10 @@ env:
     DATABASE_HOST:
       name: Database host
       value: db
+    DATABASE_PASSWORD:
+      name: 
+      value: password
+    
     POSTGRES_NAME:
       name: Database name
       value: postgres

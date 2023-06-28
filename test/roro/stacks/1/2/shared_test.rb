@@ -16,6 +16,7 @@ end
 def assert_correct_base_env
   assert_file('mise/env/base.env', /DATABASE_NAME/)
   assert_file('mise/env/base.env', /DATABASE_HOST/)
+  assert_file('mise/env/base.env', /DATABASE_PASSWORD/)
   assert_file('mise/env/base.env', /POSTGRES_PASSWORD/)
   assert_file('mise/env/base.env', /POSTGRES_USERNAME/)
 end
