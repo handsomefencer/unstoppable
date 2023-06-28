@@ -24,4 +24,5 @@ env:
       value: development
     DATABASE_NAME:
       value: mysql
-    
+    DATABASE_HOST:
+      value: db

@@ -20,5 +20,6 @@ def assert_correct_base_env
   assert_file('mise/env/base.env', /MYSQL_ROOT_PASSWORD/)
   assert_file('mise/env/base.env', /MYSQL_DATABASE/)
   assert_file('mise/env/base.env', /DATABASE_NAME/)
+  assert_file('mise/env/base.env', /DATABASE_HOST/)
   assert_file('mise/env/base.env', /db_pkg=mariadb-dev/)
 end
