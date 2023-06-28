@@ -17,6 +17,9 @@ env:
     DATABASE_NAME:
       name: Database name
       value: postgres
+    DATABASE_HOST:
+      name: Database host
+      value: db
     POSTGRES_NAME:
       name: Database name
       value: postgres
@@ -26,6 +29,4 @@ env:
     POSTGRES_USERNAME:
       name: Database username
       value: postgres
-    POSTGRES_HOST:
-      name: Database host
-      value: db
+    

@@ -6,7 +6,6 @@ gcam 'getsome'
 git push origin mysql
 cd ${greenfield} 
 docker-compose down
-docker system prune 
 docker volume rm greenfield_db_data
 docker rm artifact 
 

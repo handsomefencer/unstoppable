@@ -6,6 +6,10 @@ env:
     rails_version:
       name: Ruby on Rails minor version
       value: '7.0.5'
+    RAILS_MAX_THREADS:
+      name: Maximum number of threads for the database. Important for redis.
+      value: '5'
+    
 
 actions:
   - copy_layer('manifest')
