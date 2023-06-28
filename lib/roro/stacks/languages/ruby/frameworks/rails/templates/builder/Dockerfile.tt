@@ -2,9 +2,6 @@
 
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
-ARG UID=1000
-ARG GID=1000
-
 <%= section('packages') %>
 
 WORKDIR /app
@@ -23,4 +20,4 @@ RUN rm config/master.key
 FROM scratch AS export-stage
 
 ## Copy the generated files onto the host.
-COPY --chown=${UID}:${GID} --from=builder ./app/ .
+COPY --from=builder ./app/ .

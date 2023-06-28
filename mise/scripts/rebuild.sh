@@ -1,18 +1,21 @@
 #!/bin/bash
 
-## build roro image 
-dc build roro  
-
-## remove any previously greenfielded artifact 
-docker rm artifact 
-
-## recreate and change into greenfield directory
-greenfield = '~/sandbox/greenfield'
-sudo rm -rf ${greenfield}
-mkdir -p ${greenfield} 
+greenfield=~/sandbox/greenfield
+roro=~/work/handsomefencer/gems/roro
+gcam 'getsome'
 cd ${greenfield} 
 
-## run rollon 
+docker-compose down
+docker rm artifact 
+
+cd ${roro}
+
+sudo rm -rf ${greenfield}
+mkdir -p ${greenfield} 
+
+dc build roro  
+
+cd ${greenfield} 
 
 docker run \
   --name artifact \
@@ -24,4 +27,4 @@ docker run \
 schown  
 dc build
 dc run --rm app bundle 
-dc up
+dc up --build
