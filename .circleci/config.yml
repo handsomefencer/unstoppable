@@ -5,18 +5,12 @@ commands:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
             - run: bundle config set --local path 'vendor/bundle'
             - run: bundle check || bundle install --jobs=4 --retry=3
-            - run: gem install roro
+            - run: rake install
             - save_cache:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
                     - vendor/bundle
 executors:
-    alpine:
-        docker:
-            - image: ruby:3.2.1-alpine
-    linux:
-        docker:
-            - image: cimg/ruby:3.2.2
     ruby:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -31,8 +25,10 @@ jobs:
             name: ruby
         steps:
             - checkout
-            - run: whoami
-            - run: echo ${USER}
+            - setup_remote_docker:
+                docker_layer_caching: true
+            - run: sudo docker-compose build
+            - run: sudo docker-compose run --rm roro roro rollon
     release:
         executor:
             name: ruby
@@ -51,14 +47,17 @@ jobs:
                 default: 1\1
                 type: string
             os:
-                default: linux
+                default: ruby
                 type: executor
         steps:
             - checkout
             - setup_remote_docker:
                 version: 19.03.12
             - restore-and-save-cache
-            - run: "mkdir -p sandbox \ncd sandbox \nprintf \"<< parameters.answers >>\\na$var\\n\" | roro rollon\nls    \n"
+            - run: |
+                docker-compose build roro
+                docker-compose run --rm roro \
+                printf "<< parameters.answers >>\na\n" | roro rollon
             - run: sudo docker ps
     test-rubies:
         executor:
@@ -86,15 +85,15 @@ workflows:
                 matrix:
                     parameters:
                         answers:
-                            - 1 1 1
-                            - 1 1 2
-                            - 1 2 1
-                            - 1 2 2
-                            - 1 3 1
-                            - 1 3 2
+                            - 1\n1\n1
+                            - 1\n1\n2
+                            - 1\n2\n1
+                            - 1\n2\n2
+                            - 1\n3\n1
+                            - 1\n3\n2
                             - "2"
                         os:
-                            - linux
+                            - ruby
     gem-release:
         jobs:
             - build

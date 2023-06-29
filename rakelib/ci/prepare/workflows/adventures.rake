@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'byebug'
 
 namespace :ci do
@@ -7,7 +9,7 @@ namespace :ci do
       task 'adventures' do |task|
         set_content(task)
         matrix = @content['jobs'][0]['test-adventures']['matrix']
-        matrix['parameters']['answers'] = ci_cases
+        matrix['parameters']['answers'] = ci_cases.map { |c| c.to_s.gsub(' ', '\\n') }
         overwrite
         notify('answers')
       end
