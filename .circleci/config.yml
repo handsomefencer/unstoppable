@@ -5,7 +5,7 @@ commands:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
             - run: bundle config set --local path 'vendor/bundle'
             - run: bundle check || bundle install --jobs=4 --retry=3
-            - run: rake install
+            - run: gem build roro.gemspec
             - save_cache:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
@@ -27,8 +27,8 @@ jobs:
             - checkout
             - setup_remote_docker:
                 docker_layer_caching: true
+                version: 19.03.12
             - run: sudo docker-compose build
-            - run: sudo docker-compose run --rm roro roro rollon
     release:
         executor:
             name: ruby
@@ -50,15 +50,31 @@ jobs:
                 default: ruby
                 type: executor
         steps:
-            - checkout
             - setup_remote_docker:
+                docker_layer_caching: true
                 version: 19.03.12
-            - restore-and-save-cache
             - run: |
-                docker-compose build roro
-                docker-compose run --rm roro \
-                printf "<< parameters.answers >>\na\n" | roro rollon
-            - run: sudo docker ps
+                answers=<< parameters.answers >>
+                name=${answers//\\/_}
+                # echo $name
+                sudo docker run \
+                  --name ${name} \
+                  -v ${PWD}:/${name} \
+                  -v /var/run/docker.sock:/var/run/docker.sock \
+                  -u 0 \
+                  -it handsomefencer/roro:latest \
+                  sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
+
+                bar="$(sudo docker ps -aqf "name=${name}")"
+                baz="$(sudo docker ps -aqf "name=sandbox-app*")"
+                echo "baz = ${baz}"
+                echo "bar = ${bar}"
+                echo "all = $(sudo docker ps -a)"
+                sudo docker cp ${bar}:/${name}/. .
+            - run: |
+                ls -a
+            - run: "sudo docker-compose build \nsudo docker-compose up  -d\n"
+        working_directory: ~/sandbox
     test-rubies:
         executor:
             name: ruby

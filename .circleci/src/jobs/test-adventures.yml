@@ -6,14 +6,71 @@ parameters:
     type: executor
     default: ruby
 executor: << parameters.os >>
+working_directory: ~/sandbox
+
 steps:
-  - checkout
+  # - checkout
   - setup_remote_docker:
       docker_layer_caching: true
       version: 19.03.12
-  - restore-and-save-cache
-  - run: | 
-      docker-compose build roro
-      docker-compose run --rm roro \
-      printf "<< parameters.answers >>\na\n" | roro rollon
-  - run: sudo docker ps
+  # - restore-and-save-cache
+  # - run: sudo docker-compose build roro
+  # - run: sudo docker system prune
+  # - run: echo $PWD
+  # - run: echo ${CIRCLE_WORKING_DIRECTORY}
+  # - run: ls -a
+  - run: |
+      answers=<< parameters.answers >>
+      name=${answers//\\/_}
+      # echo $name
+      sudo docker run \
+        --name ${name} \
+        -v ${PWD}:/${name} \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -u 0 \
+        -it handsomefencer/roro:latest \
+        sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
+  
+      bar="$(sudo docker ps -aqf "name=${name}")"
+      baz="$(sudo docker ps -aqf "name=sandbox-app*")"
+      echo "baz = ${baz}"
+      echo "bar = ${bar}"
+      echo "all = $(sudo docker ps -a)"
+      sudo docker cp ${bar}:/${name}/. .
+  - run: |
+      ls -a
+  # - run: ls -a 
+      # echo $(sudo docker ps)
+      # echo ${bar}
+      # echo ${bar}
+  - run: |
+      sudo docker-compose build 
+      sudo docker-compose up  -d
+  # - run:       # sudo docker-compose up -d --remove-orphans
+      # sudo docker-compose run --rm app bin/rails g scaffold user name
+      # sudo docker-compose run --rm app bin/rails db:migrate
+      # sudo docker-compose run --rm app bundle 
+      # sudo docker-compose exec app bundle install 
+      # sudo docker-compose run --rm app bundle 
+
+  # - run: |
+      # sudo docker-compose exec app bin/rails db:create
+  #     sudo docker ps -aqf "name="
+  # - run: |
+  # - run: sudo docker-compose run --rm app bin/rails db:migrate
+  # - run:    sudo docker cp ${bar}:. .
+  # - run:   ls -a
+
+      
+
+
+  # - run: sudo docker run << parameters.answers >> dc up --build 
+  # - run: echo ${CIRCLE_WORKING_DIRECTORY}
+  # - run: ls -a /home/circleci
+  # - run: sudo docker ps
+  # /home/circleci/sandbox 
+  # ${PWD}
+  # - run: ls ${CIRCLE_WORKING_DIRECTORY}
+  # - run: echo ${CI}
+  # sudo docker run -it handsomefencer/roro:latest printf '<< parameters.answers >>\na\n' |  roro rollon
+  # - run: sudo docker ps
