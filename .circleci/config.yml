@@ -56,7 +56,6 @@ jobs:
             - run: |
                 answers=<< parameters.answers >>
                 name=${answers//\\/_}
-                # echo $name
                 sudo docker run \
                   --name ${name} \
                   -v ${PWD}:/${name} \
@@ -65,15 +64,10 @@ jobs:
                   -it handsomefencer/roro:latest \
                   sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
 
-                bar="$(sudo docker ps -aqf "name=${name}")"
-                baz="$(sudo docker ps -aqf "name=sandbox-app*")"
-                echo "baz = ${baz}"
-                echo "bar = ${bar}"
-                echo "all = $(sudo docker ps -a)"
-                sudo docker cp ${bar}:/${name}/. .
-            - run: |
-                ls -a
-            - run: "sudo docker-compose build \nsudo docker-compose up  -d\n"
+                container_id="$(sudo docker ps -aqf "name=${name}")"
+                sudo docker cp ${container_id}:/${name}/. .
+            - run: sudo docker-compose build
+            - run: sudo docker-compose up -d
         working_directory: ~/sandbox
     test-rubies:
         executor:
