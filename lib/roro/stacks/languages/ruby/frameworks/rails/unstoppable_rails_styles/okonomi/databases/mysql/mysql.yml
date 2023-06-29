@@ -12,17 +12,17 @@ env:
       value: mariadb-dev
     db_volume:
       value: /var/lib/mysql
+    DATABASE_HOST:
+      value: db
+    DATABASE_NAME:
+      value: development
+    MYSQL_DATABASE:
+      value: development
     MYSQL_HOST:
-      value: mysql
+      value: db
     MYSQL_USER:
       value: root
     MYSQL_PASSWORD:
       value: root
     MYSQL_ROOT_PASSWORD:
       value: root
-    MYSQL_DATABASE:
-      value: development
-    DATABASE_NAME:
-      value: mysql
-    DATABASE_HOST:
-      value: db

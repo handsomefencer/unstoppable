@@ -1,30 +1,35 @@
 #!/bin/bash
 
-greenfield=~/sandbox/greenfield
+app='111'
+sandbox_dir=~/sandbox/${app}
 roro=~/work/handsomefencer/gems/roro
-gcam 'getsome'
-git push origin mysql
-cd ${greenfield} 
+
+git add .
+
+cd ${sandbox_dir} 
 docker-compose down
-docker volume rm greenfield_db_data
-docker rm artifact 
+docker system prune
+docker volume rm ${app}_db_data
+docker volume rm ${app}_gem_cache
+docker network rm ${app}_default
 
 cd ${roro}
 
-sudo rm -rf ${greenfield}
-mkdir -p ${greenfield} 
+sudo rm -rf ${sandbox_dir}
+mkdir -p ${sandbox_dir} 
 
 dc build roro  
 
-cd ${greenfield} 
+cd ${sandbox_dir} 
 
 docker run \
   --name artifact \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
-  -it handsomefencer/roro:latest printf "1\n3\n1\n2\n2\n1\na\n" | roro rollon
-  # -it handsomefencer/roro:latest roro rollon
+  -it handsomefencer/roro:latest roro rollon
+  # -i handsomefencer/roro:latest printf "1\n1\n1\na\n" | roro rollon
+
 
 schown  
 dc build

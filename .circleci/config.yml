@@ -11,15 +11,18 @@ commands:
                 paths:
                     - vendor/bundle
 executors:
+    alpine:
+        docker:
+            - image: ruby:3.2.1-alpine
     linux:
         docker:
-            - image: cimg/ruby:3.0
+            - image: cimg/ruby:3.2.2
     ruby:
         docker:
             - image: cimg/ruby:<<parameters.version>>
         parameters:
             version:
-                default: "2.5"
+                default: 3.2.2
                 description: version tag
                 type: string
 jobs:
@@ -55,7 +58,8 @@ jobs:
             - setup_remote_docker:
                 version: 19.03.12
             - restore-and-save-cache
-            - run: "mkdir -p sandbox \ncd sandbox \nprintf \"<< parameters.answers >>\\na$var\\n\" | roro rollon\nls    "
+            - run: "mkdir -p sandbox \ncd sandbox \nprintf \"<< parameters.answers >>\\na$var\\n\" | roro rollon\nls    \n"
+            - run: sudo docker ps
     test-rubies:
         executor:
             name: ruby
@@ -82,44 +86,13 @@ workflows:
                 matrix:
                     parameters:
                         answers:
-                            - 1\n1\n1
-                            - 1\n1\n2
-                            - 1\n2\n1\n1\n1
-                            - 1\n2\n1\n1\n2
-                            - 1\n2\n1\n2\n1
-                            - 1\n2\n1\n2\n2
-                            - 1\n2\n2\n1
-                            - 1\n2\n2\n2
-                            - 1\n3\n1\n1\n1\n1\n1\n1
-                            - 1\n3\n1\n1\n1\n1\n1\n2
-                            - 1\n3\n1\n1\n1\n1\n2\n1
-                            - 1\n3\n1\n1\n1\n1\n2\n2
-                            - 1\n3\n1\n1\n1\n2\n1\n1
-                            - 1\n3\n1\n1\n1\n2\n1\n2
-                            - 1\n3\n1\n1\n1\n2\n2\n1
-                            - 1\n3\n1\n1\n1\n2\n2\n2
-                            - 1\n3\n1\n1\n2\n1\n1\n1
-                            - 1\n3\n1\n1\n2\n1\n1\n2
-                            - 1\n3\n1\n1\n2\n1\n2\n1
-                            - 1\n3\n1\n1\n2\n1\n2\n2
-                            - 1\n3\n1\n1\n2\n2\n1\n1
-                            - 1\n3\n1\n1\n2\n2\n1\n2
-                            - 1\n3\n1\n1\n2\n2\n2\n1
-                            - 1\n3\n1\n1\n2\n2\n2\n2
-                            - 1\n3\n1\n2\n1\n1\n1
-                            - 1\n3\n1\n2\n1\n1\n2
-                            - 1\n3\n1\n2\n1\n2\n1
-                            - 1\n3\n1\n2\n1\n2\n2
-                            - 1\n3\n1\n2\n2\n1\n1
-                            - 1\n3\n1\n2\n2\n1\n2
-                            - 1\n3\n1\n2\n2\n2\n1
-                            - 1\n3\n1\n2\n2\n2\n2
-                            - 1\n3\n2\n1
-                            - 1\n3\n2\n2
-                            - 2\n1
-                            - 2\n2
-                            - 3\n1
-                            - 3\n2
+                            - 1 1 1
+                            - 1 1 2
+                            - 1 2 1
+                            - 1 2 2
+                            - 1 3 1
+                            - 1 3 2
+                            - "2"
                         os:
                             - linux
     gem-release:

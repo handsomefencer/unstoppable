@@ -1,8 +1,5 @@
 # syntax=docker/dockerfile:1
 
-ARG UID=1000
-ARG GID=1000
-
 FROM ruby:3.2.1-alpine
 
 RUN apk add --update \
@@ -14,16 +11,17 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  mysql mysql-client mysql-dev
+  mysql-dev
+
 
 WORKDIR /app
 
 RUN gem install bundler:2.4.13
 
-COPY Gemfile Gemfile.lock ./
+COPY  Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
 
-COPY --chown=${UID}:${GID} . .
+COPY . .
 
 RUN chmod -R 755 entrypoints/docker-entrypoint.sh
 
