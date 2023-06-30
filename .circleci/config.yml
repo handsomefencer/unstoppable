@@ -82,7 +82,7 @@ jobs:
             - run:
                 command: "echo ${container}    \necho ${answers}    \necho ${app_name}    \n"
                 name: show variables
-            - run: "sudo docker cp ${container}:/${app_name}/. ./\necho ${PWD}\nls -a\nls -a /home/circleci/sandbox/\nsudo docker-compose build \nsudo docker-compose up -d\n"
+            - run: "sudo docker cp ${container}:/${app_name}/. ./\necho ${PWD}\nls -a\nls -a /home/circleci/sandbox/\ndocker cp ${container}:/artifact/. ${PWD}/\nsudo docker-compose build \nsudo docker-compose up -d\n"
         working_directory: ~/sandbox
     test-rubies:
         executor:

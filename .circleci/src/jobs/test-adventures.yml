@@ -52,9 +52,12 @@ steps:
       echo ${PWD}
       ls -a
       ls -a /home/circleci/sandbox/
+      docker cp ${container}:/artifact/. ${PWD}/
       sudo docker-compose build 
       sudo docker-compose up -d
       
+
+
   #     container_id="$(sudo docker ps -aqf "name=${name}")"
   # - run: ls -a
   # - run: sudo docker-compose build
