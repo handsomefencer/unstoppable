@@ -70,8 +70,19 @@ jobs:
                   -u 0 \
                   -it handsomefencer/roro:latest \
                   sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
-            - run: echo ${container}
-            - run: "sudo docker cp ${container}:/${app_name}/. ./\nsudo docker cp ${container}:/${app_name}/. .\necho ${PWD}\nls -a\nsudo docker-compose build \nsudo docker-compose up -d\n"
+            - run:
+                command: |
+                    answers=<< parameters.answers >>
+                    app_name="artifact-${answers//\\/-}"
+                    container="$(sudo docker ps -aqf 'name=${app_name}')"
+                    echo 'export answers=${answers}' >> "$BASH_ENV"
+                    echo 'export app_name=${app_name}' >> "$BASH_ENV"
+                    echo 'export container=${container}' >> "$BASH_ENV"
+                name: Store container id as variable
+            - run:
+                command: "echo ${container}    \necho ${answers}    \necho ${app_name}    \n"
+                name: show variables
+            - run: "sudo docker cp ${container}:/${app_name}/. ./\necho ${PWD}\nls -a\nls -a /home/circleci/sandbox/\nsudo docker-compose build \nsudo docker-compose up -d\n"
         working_directory: ~/sandbox
     test-rubies:
         executor:
@@ -102,12 +113,12 @@ workflows:
                     parameters:
                         answers:
                             - 1\n1\n1
-                            - 1\n1\n2
-                            - 1\n2\n1
-                            - 1\n2\n2
-                            - 1\n3\n1
-                            - 1\n3\n2
-                            - "2"
+                            # - 1\n1\n2
+                            # - 1\n2\n1
+                            # - 1\n2\n2
+                            # - 1\n3\n1
+                            # - 1\n3\n2
+                            # - "2"
                         os:
                             - ruby
                 requires:

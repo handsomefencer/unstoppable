@@ -31,12 +31,27 @@ steps:
         -u 0 \
         -it handsomefencer/roro:latest \
         sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
-  - run: echo ${container}    
+  - run:
+      name: "Store container id as variable"
+      command: |
+        answers=<< parameters.answers >>
+        app_name="artifact-${answers//\\/-}"
+        container="$(sudo docker ps -aqf 'name=${app_name}')"
+        echo 'export answers=${answers}' >> "$BASH_ENV"
+        echo 'export app_name=${app_name}' >> "$BASH_ENV"
+        echo 'export container=${container}' >> "$BASH_ENV"
+  
+  - run: 
+      name: 'show variables' 
+      command: | 
+        echo ${container}    
+        echo ${answers}    
+        echo ${app_name}    
   - run: |
       sudo docker cp ${container}:/${app_name}/. ./
-      sudo docker cp ${container}:/${app_name}/. .
       echo ${PWD}
       ls -a
+      ls -a /home/circleci/sandbox/
       sudo docker-compose build 
       sudo docker-compose up -d
       
