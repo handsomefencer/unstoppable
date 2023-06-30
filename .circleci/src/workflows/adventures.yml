@@ -12,6 +12,5 @@ jobs:
       parameters:
         answers:
         - 1\n1\n1
-        - 1\n1\n2
         os:
         - ruby
