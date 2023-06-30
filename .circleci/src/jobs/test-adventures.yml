@@ -34,10 +34,11 @@ steps:
   - run: echo ${container}    
   - run: |
       sudo docker cp ${container}:/${app_name}/. ~/sandbox/
+      ls -a
   #     container_id="$(sudo docker ps -aqf "name=${name}")"
   #     sudo docker-compose build 
   #     sudo docker-compose up -d
-  - run: ls -a
+  # - run: ls -a
   # - run: sudo docker-compose build
   # - run: sudo docker-compose build
   # - run: printenv
