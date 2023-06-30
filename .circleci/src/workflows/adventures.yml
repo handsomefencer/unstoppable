@@ -2,6 +2,8 @@
 jobs:
 - build
 - test-adventures:
+    requires:
+    - build
     filters:
       branches:
         only:

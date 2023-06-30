@@ -107,6 +107,8 @@ workflows:
                             - "2"
                         os:
                             - ruby
+                requires:
+                    - build
     gem-release:
         jobs:
             - build
