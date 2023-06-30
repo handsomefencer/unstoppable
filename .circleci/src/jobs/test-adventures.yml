@@ -6,9 +6,9 @@ parameters:
     type: executor
     default: ruby
 executor: << parameters.os >>
-working_directory: ~/sandbox
 
 steps:
+  - checkout
   - setup_remote_docker:
       docker_layer_caching: true
       version: 20.10.24
@@ -23,8 +23,11 @@ steps:
       sudo docker run \
         --name ${app_name} \
         -v ${PWD}:/${app_name} \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -u 0 \
         -it handsomefencer/roro:latest \
         sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
+      ls 
   - run:
       name: "Store container id variable"
       command: |
@@ -37,11 +40,12 @@ steps:
       command: |
         cat $BASH_ENV
         source $BASH_ENV
-        sudo docker cp ${container}:/${app_name}/. ./
-        sudo docker-compose build 
-        sudo docker-compose up -d
 
   # - run: 
+        # sudo chown -R $USER:$USER .
+        # sudo docker cp ${container}:/${app_name}/. ./
+        # sudo docker-compose build 
+        # sudo docker-compose up -d
         # echo ${container}
         # echo ${answers}
         # echo ${PWD}

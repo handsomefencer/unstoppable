@@ -51,6 +51,7 @@ jobs:
                 default: ruby
                 type: executor
         steps:
+            - checkout
             - setup_remote_docker:
                 docker_layer_caching: true
                 version: 20.10.24
@@ -61,12 +62,7 @@ jobs:
                     echo "export answers=${answers}" >> "$BASH_ENV"
                     echo "export app_name='${app_name}'" >> "$BASH_ENV"
                 name: Store answers and app_name variables
-            - run: |
-                sudo docker run \
-                  --name ${app_name} \
-                  -v ${PWD}:/${app_name} \
-                  -it handsomefencer/roro:latest \
-                  sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
+            - run: "sudo docker run \\\n  --name ${app_name} \\\n  -v ${PWD}:/${app_name} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '<< parameters.answers >>\\na\\n' | roro rollon\"\nls \n"
             - run:
                 command: |
                     source $BASH_ENV
@@ -74,9 +70,10 @@ jobs:
                     echo "export container=${container}" >> "$BASH_ENV"
                 name: Store container id variable
             - run:
-                command: "cat $BASH_ENV\nsource $BASH_ENV\nsudo docker cp ${container}:/${app_name}/. ./\nsudo docker-compose build \nsudo docker-compose up -d\n"
+                command: |
+                    cat $BASH_ENV
+                    source $BASH_ENV
                 name: Copy from container into sandbox
-        working_directory: ~/sandbox
     test-rubies:
         executor:
             name: ruby
