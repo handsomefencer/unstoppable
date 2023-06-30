@@ -33,10 +33,12 @@ steps:
         sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
   - run: echo ${container}    
   - run: |
-      sudo docker cp ${container}:/${app_name}/. .
+      sudo docker cp ${container}:/${app_name}/. ~/sandbox/
   #     container_id="$(sudo docker ps -aqf "name=${name}")"
   #     sudo docker-compose build 
   #     sudo docker-compose up -d
-  - run: sudo docker-compose build
-  - run: printenv
+  - run: ls -a
+  # - run: sudo docker-compose build
+  # - run: sudo docker-compose build
+  # - run: printenv
   # - run: echo ${PWD}

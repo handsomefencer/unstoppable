@@ -72,9 +72,8 @@ jobs:
                   sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
             - run: echo ${container}
             - run: |
-                sudo docker cp ${container}:/${app_name}/. .
-            - run: sudo docker-compose build
-            - run: printenv
+                sudo docker cp ${container}:/${app_name}/. ~/sandbox/
+            - run: ls -a
         working_directory: ~/sandbox
     test-rubies:
         executor:
