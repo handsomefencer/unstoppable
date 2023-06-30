@@ -14,7 +14,9 @@ steps:
       version: 19.03.12
   - run: |
       answers=<< parameters.answers >>
-      name=${answers//\\/_}
+      name=artifact_${answers//\\/_}
+      echo ${answers}
+      echo ${name}
       sudo docker run \
         --name ${name} \
         -v ${PWD}:/${name} \
