@@ -88,6 +88,7 @@ version: 2.1
 workflows:
     adventures:
         jobs:
+            - build
             - test-adventures:
                 filters:
                     branches:
