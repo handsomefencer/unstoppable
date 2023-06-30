@@ -53,6 +53,7 @@ steps:
       ls -a
       ls -a /home/circleci/sandbox/
       docker cp ${container}:/artifact/. ${PWD}/
+      sudo chown -R $USER:$USER . 
       sudo docker-compose build 
       sudo docker-compose up -d
       
