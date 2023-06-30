@@ -4,7 +4,8 @@ jobs:
 - test-adventures:
     filters:
       branches:
-        only: development
+        only: 
+        - adventures
     matrix:
       parameters:
         answers:

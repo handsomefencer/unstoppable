@@ -5,7 +5,7 @@ steps:
   - restore-and-save-cache
   - setup_remote_docker:
       docker_layer_caching: true
-      version: 19.03.12
+      version: 20.10.24
 
   - run: sudo docker-compose build roro
 

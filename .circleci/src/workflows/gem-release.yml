@@ -6,4 +6,5 @@ jobs:
   - release:
       filters:
         branches:
-          only: adventures
+          only: 
+          - adventures
