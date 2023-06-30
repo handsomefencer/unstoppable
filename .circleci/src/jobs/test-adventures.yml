@@ -12,22 +12,31 @@ steps:
   - setup_remote_docker:
       docker_layer_caching: true
       version: 20.10.24
+  - run:
+      name: "Setup job environment variables"
+      command: |
+        echo 'export answers=<< parameters.answers>>' >> "$BASH_ENV"
+        echo 'export app_name=artifact-${answers//\\/-}' >> "$BASH_ENV"
+        echo 'export container=$(sudo docker ps -aqf "name=${app_name}")' >> "$BASH_ENV"
+  - run: echo ${answers}    
+  - run: echo ${app_name}    
+  # - run: echo ${container}    
+  # - run: sudo docker rm ${container}
+  # - run: echo ${container}    
   - run: |
-      answers=<< parameters.answers >>
-      name=artifact_${answers//\\/_}
-      echo ${answers}
-      echo ${name}
       sudo docker run \
-        --name ${name} \
-        -v ${PWD}:/${name} \
+        --name ${app_name} \
+        -v ${PWD}:/${app_name} \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -u 0 \
         -it handsomefencer/roro:latest \
         sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
-
-      container_id="$(sudo docker ps -aqf "name=${name}")"
-      sudo docker cp ${container_id}:/${name}/. .
-      sudo docker-compose build 
-      sudo docker-compose up -d
-  - run: ls -a
-  - run: echo ${PWD}
+  - run: echo ${container}    
+  - run: |
+      sudo docker cp ${container}:/${app_name}/. .
+  #     container_id="$(sudo docker ps -aqf "name=${name}")"
+  #     sudo docker-compose build 
+  #     sudo docker-compose up -d
+  - run: sudo docker-compose build
+  - run: printenv
+  # - run: echo ${PWD}
