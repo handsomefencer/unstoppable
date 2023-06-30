@@ -71,9 +71,7 @@ jobs:
                   -it handsomefencer/roro:latest \
                   sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
             - run: echo ${container}
-            - run: |
-                sudo docker cp ${container}:/${app_name}/. ./
-                ls -a
+            - run: "sudo docker cp ${container}:/${app_name}/. ./\nsudo docker cp ${container}:/${app_name}/. .\necho ${PWD}\nls -a\nsudo docker-compose build \nsudo docker-compose up -d\n"
         working_directory: ~/sandbox
     test-rubies:
         executor:
