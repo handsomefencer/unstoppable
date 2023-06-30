@@ -56,33 +56,26 @@ jobs:
                 version: 20.10.24
             - run:
                 command: |
-                    echo 'export answers=<< parameters.answers>>' >> "$BASH_ENV"
-                    echo 'export app_name=artifact-${answers//\\/-}' >> "$BASH_ENV"
-                    echo 'export container=$(sudo docker ps -aqf "name=${app_name}")' >> "$BASH_ENV"
-                name: Setup job environment variables
-            - run: echo ${answers}
-            - run: echo ${app_name}
+                    answers=<< parameters.answers >>
+                    app_name="artifact-${answers//\\/-}"
+                    echo "export answers=${answers}" >> "$BASH_ENV"
+                    echo "export app_name='${app_name}'" >> "$BASH_ENV"
+                name: Store answers and app_name variables
             - run: |
                 sudo docker run \
                   --name ${app_name} \
                   -v ${PWD}:/${app_name} \
-                  -v /var/run/docker.sock:/var/run/docker.sock \
-                  -u 0 \
                   -it handsomefencer/roro:latest \
                   sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
             - run:
                 command: |
-                    answers=<< parameters.answers >>
-                    app_name="artifact-${answers//\\/-}"
-                    container="$(sudo docker ps -aqf 'name=${app_name}')"
-                    echo 'export answers=${answers}' >> "$BASH_ENV"
-                    echo 'export app_name=${app_name}' >> "$BASH_ENV"
-                    echo 'export container=${container}' >> "$BASH_ENV"
-                name: Store container id as variable
+                    source $BASH_ENV
+                    container=$(sudo docker ps -aqf "name=${app_name}")
+                    echo "export container=${container}" >> "$BASH_ENV"
+                name: Store container id variable
             - run:
-                command: "echo ${container}    \necho ${answers}    \necho ${app_name}    \n"
-                name: show variables
-            - run: "sudo docker cp ${container}:/${app_name}/. ./\necho ${PWD}\nls -a\nls -a /home/circleci/sandbox/\ndocker cp ${container}:/artifact/. ${PWD}/\nsudo chown -R $USER:$USER . \nsudo docker-compose build \nsudo docker-compose up -d\n"
+                command: "cat $BASH_ENV\nsource $BASH_ENV\nsudo docker cp ${container}:/${app_name}/. ./\nsudo docker-compose build \nsudo docker-compose up -d\n"
+                name: Copy from container into sandbox
         working_directory: ~/sandbox
     test-rubies:
         executor:

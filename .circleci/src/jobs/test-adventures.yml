@@ -13,49 +13,41 @@ steps:
       docker_layer_caching: true
       version: 20.10.24
   - run:
-      name: "Setup job environment variables"
+      name: "Store answers and app_name variables"
       command: |
-        echo 'export answers=<< parameters.answers>>' >> "$BASH_ENV"
-        echo 'export app_name=artifact-${answers//\\/-}' >> "$BASH_ENV"
-        echo 'export container=$(sudo docker ps -aqf "name=${app_name}")' >> "$BASH_ENV"
-  - run: echo ${answers}    
-  - run: echo ${app_name}    
-  # - run: echo ${container}    
-  # - run: sudo docker rm ${container}
-  # - run: echo ${container}    
+        answers=<< parameters.answers >>
+        app_name="artifact-${answers//\\/-}"
+        echo "export answers=${answers}" >> "$BASH_ENV"
+        echo "export app_name='${app_name}'" >> "$BASH_ENV"
   - run: |
       sudo docker run \
         --name ${app_name} \
         -v ${PWD}:/${app_name} \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -u 0 \
         -it handsomefencer/roro:latest \
         sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
   - run:
-      name: "Store container id as variable"
+      name: "Store container id variable"
       command: |
-        answers=<< parameters.answers >>
-        app_name="artifact-${answers//\\/-}"
-        container="$(sudo docker ps -aqf 'name=${app_name}')"
-        echo 'export answers=${answers}' >> "$BASH_ENV"
-        echo 'export app_name=${app_name}' >> "$BASH_ENV"
-        echo 'export container=${container}' >> "$BASH_ENV"
+        source $BASH_ENV
+        container=$(sudo docker ps -aqf "name=${app_name}")
+        echo "export container=${container}" >> "$BASH_ENV"
   
   - run: 
-      name: 'show variables' 
-      command: | 
-        echo ${container}    
-        echo ${answers}    
-        echo ${app_name}    
-  - run: |
-      sudo docker cp ${container}:/${app_name}/. ./
-      echo ${PWD}
-      ls -a
-      ls -a /home/circleci/sandbox/
-      docker cp ${container}:/artifact/. ${PWD}/
-      sudo chown -R $USER:$USER . 
-      sudo docker-compose build 
-      sudo docker-compose up -d
+      name: 'Copy from container into sandbox'
+      command: |
+        cat $BASH_ENV
+        source $BASH_ENV
+        sudo docker cp ${container}:/${app_name}/. ./
+        sudo docker-compose build 
+        sudo docker-compose up -d
+
+  # - run: 
+        # echo ${container}
+        # echo ${answers}
+        # echo ${PWD}
+        # ls -a
+        # ls -a /home/circleci/sandbox/
+        # sudo chown -R $USER:$USER . 
       
 
 
