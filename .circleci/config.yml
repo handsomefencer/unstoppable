@@ -124,7 +124,7 @@ workflows:
             - test-rubies:
                 filters:
                     branches:
-                        only: adventures
+                        only: rubies
                 matrix:
                     parameters:
                         version:
