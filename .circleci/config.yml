@@ -73,6 +73,7 @@ jobs:
             - run: echo ${container}
             - run: |
                 sudo docker cp ${container}:/${app_name}/. ~/sandbox/
+
                 ls -a
         working_directory: ~/sandbox
     test-rubies:
