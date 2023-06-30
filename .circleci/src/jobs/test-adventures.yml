@@ -27,5 +27,5 @@ steps:
 
       container_id="$(sudo docker ps -aqf "name=${name}")"
       sudo docker cp ${container_id}:/${name}/. .
-  - run: sudo docker-compose build 
-  - run: sudo docker-compose up -d
+      sudo docker-compose build 
+      sudo docker-compose up -d

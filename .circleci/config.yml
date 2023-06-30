@@ -54,23 +54,7 @@ jobs:
             - setup_remote_docker:
                 docker_layer_caching: true
                 version: 19.03.12
-            - run: |
-                answers=<< parameters.answers >>
-                name=artifact_${answers//\\/_}
-                echo ${answers}
-                echo ${name}
-                sudo docker run \
-                  --name ${name} \
-                  -v ${PWD}:/${name} \
-                  -v /var/run/docker.sock:/var/run/docker.sock \
-                  -u 0 \
-                  -it handsomefencer/roro:latest \
-                  sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
-
-                container_id="$(sudo docker ps -aqf "name=${name}")"
-                sudo docker cp ${container_id}:/${name}/. .
-            - run: sudo docker-compose build
-            - run: sudo docker-compose up -d
+            - run: "answers=<< parameters.answers >>\nname=artifact_${answers//\\\\/_}\necho ${answers}\necho ${name}\nsudo docker run \\\n  --name ${name} \\\n  -v ${PWD}:/${name} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '<< parameters.answers >>\\na\\n' | roro rollon\"\n\ncontainer_id=\"$(sudo docker ps -aqf \"name=${name}\")\"\nsudo docker cp ${container_id}:/${name}/. .\nsudo docker-compose build \nsudo docker-compose up -d"
         working_directory: ~/sandbox
     test-rubies:
         executor:
