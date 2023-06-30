@@ -2,8 +2,10 @@ executor:
   name: ruby
 steps:
   - checkout
+  - restore-and-save-cache
   - setup_remote_docker:
       docker_layer_caching: true
       version: 19.03.12
-  - run: sudo docker-compose build
+
+  - run: sudo docker-compose build roro
 

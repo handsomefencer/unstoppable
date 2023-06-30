@@ -25,10 +25,11 @@ jobs:
             name: ruby
         steps:
             - checkout
+            - restore-and-save-cache
             - setup_remote_docker:
                 docker_layer_caching: true
                 version: 19.03.12
-            - run: sudo docker-compose build
+            - run: sudo docker-compose build roro
     release:
         executor:
             name: ruby
@@ -111,13 +112,13 @@ workflows:
             - release:
                 filters:
                     branches:
-                        only: main
+                        only: adventures
     rubies:
         jobs:
             - test-rubies:
                 filters:
                     branches:
-                        only: dev
+                        only: adventures
                 matrix:
                     parameters:
                         version:
