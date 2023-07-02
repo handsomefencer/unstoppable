@@ -4,10 +4,4 @@ steps:
     - run: |
       sudo chown -R $USER:$USER .
       sudo env UID=${UID} GID=${GID} docker-compose build roro
-  # - restore-and-save-cache
-  # - setup_remote_docker:
-  #     docker_layer_caching: true
-  #     version: 20.10.24
-
-  # - run: sudo docker-compose build roro
 
