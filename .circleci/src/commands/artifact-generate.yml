@@ -1,0 +1,11 @@
+steps:
+  - run: 
+      name: Run rollon with answers to generate container artifact 
+      command: |
+        sudo docker run \
+          --name ${APP_NAME} \
+          -v ${PWD}:/${APP_NAME} \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -u 0 \
+          -it handsomefencer/roro:latest \
+          sh -c "printf '${ANSWERS}\na\n' | roro rollon"

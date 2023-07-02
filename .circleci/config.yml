@@ -23,7 +23,7 @@ commands:
     artifact-up:
         steps:
             - run:
-                command: "ls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n"
+                command: "ls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n"
                 name: Artifact up using docker-compose
     restore-and-save-cache:
         steps:
