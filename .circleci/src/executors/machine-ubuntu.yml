@@ -1,0 +1,3 @@
+
+machine: # executor type
+    image: ubuntu-2004:202010-01

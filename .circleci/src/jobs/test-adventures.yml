@@ -7,13 +7,10 @@ parameters:
   os:
     type: executor
     default: cimg-base
-executor: << parameters.os >>
+executor: machine-ubuntu
 
 steps:
   - checkout
-  - setup_remote_docker:
-      docker_layer_caching: true
-      version: 20.10.24
   - set-variables  
   - build-roro-image   
       

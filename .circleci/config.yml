@@ -2,7 +2,7 @@ commands:
     build-roro-image:
         steps:
             - run: sudo docker-compose build
-            - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\n"
+            - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\n \n"
     restore-and-save-cache:
         steps:
             - restore_cache:
@@ -32,6 +32,9 @@ executors:
     cimg-base:
         docker:
             - image: cimg/base:2023.06
+    machine-ubuntu:
+        machine:
+            image: ubuntu-2004:202010-01
     ruby:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -60,7 +63,7 @@ jobs:
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
-        executor: << parameters.os >>
+        executor: machine-ubuntu
         parameters:
             answers:
                 default: 1\1
@@ -70,9 +73,6 @@ jobs:
                 type: executor
         steps:
             - checkout
-            - setup_remote_docker:
-                docker_layer_caching: true
-                version: 20.10.24
             - set-variables
             - build-roro-image
     test-rubies:
