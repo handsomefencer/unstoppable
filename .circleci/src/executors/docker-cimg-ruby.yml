@@ -1,0 +1,7 @@
+parameters:
+  version:
+    description: "version tag"
+    default: "3.2.2"
+    type: string
+docker:
+  - image: cimg/ruby:<<parameters.version>>
