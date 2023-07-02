@@ -12,8 +12,11 @@ executor: machine-ubuntu
 steps:
   - checkout
   - restore-and-save-cache
+  - run: |
+      docker --version
+      docker-compose --version
   - set-variables  
-  - build-roro-image   
+  # - build-roro-image   
       
 #      echo "answers = ${ANSWERS}"   
 

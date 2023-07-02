@@ -76,8 +76,10 @@ jobs:
         steps:
             - checkout
             - restore-and-save-cache
+            - run: |
+                docker --version
+                docker-compose --version
             - set-variables
-            - build-roro-image
     test-rubies:
         executor:
             name: ruby
