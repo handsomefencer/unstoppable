@@ -6,7 +6,7 @@ parameters:
     default: 1\1
   os:
     type: executor
-    default: cimg-base
+    default: docker-cimg-base
 executor: << parameters.os >>
 
 
@@ -14,6 +14,7 @@ steps:
   - checkout
   - set-variables  
   - roro-rollon-adventure   
+  - roro-artifact-up   
       
 #      echo "answers = ${ANSWERS}"   
 
