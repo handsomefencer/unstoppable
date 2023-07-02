@@ -1,4 +1,8 @@
 commands:
+    build-roro-image:
+        steps:
+            - run: sudo docker-compose build
+            - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\nsudo docker-compose build \nsudo chown -R $USER:$USER ./${APP_NAME}\nsudo docker-compose up\n"
     restore-and-save-cache:
         steps:
             - restore_cache:
@@ -10,7 +14,24 @@ commands:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
                     - vendor/bundle
+    rollon-adventure-with-roro:
+        steps:
+            - run:
+                command: |
+                    app_name="artifact-${answers//\\/-}"
+                    echo "export answers=${answers}" >> "$BASH_ENV"
+                    echo "export app_name='${app_name}'" >> "$BASH_ENV"
+                name: rollon from roro image
+    set-variables:
+        steps:
+            - run:
+                command: |
+                    echo "APP_NAME=${CIRCLE_JOB//\\n/-}" >> "$BASH_ENV"
+                name: Store answers and app_name variables
 executors:
+    cimg-base:
+        docker:
+            - image: cimg/base:2023.06
     ruby:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -22,14 +43,9 @@ executors:
 jobs:
     build:
         executor:
-            name: ruby
+            name: cimg-base
         steps:
             - checkout
-            - restore-and-save-cache
-            - setup_remote_docker:
-                docker_layer_caching: true
-                version: 20.10.24
-            - run: sudo docker-compose build roro
     release:
         executor:
             name: ruby
@@ -42,38 +58,23 @@ jobs:
             - run: gem bump
             - run: gem release
     test-adventures:
+        environment:
+            - ANSWERS: << parameters.answers >>
         executor: << parameters.os >>
         parameters:
             answers:
                 default: 1\1
                 type: string
             os:
-                default: ruby
+                default: cimg-base
                 type: executor
         steps:
             - checkout
             - setup_remote_docker:
                 docker_layer_caching: true
                 version: 20.10.24
-            - run:
-                command: |
-                    answers=<< parameters.answers >>
-                    app_name="artifact-${answers//\\/-}"
-                    echo "export answers=${answers}" >> "$BASH_ENV"
-                    echo "export app_name='${app_name}'" >> "$BASH_ENV"
-                name: Store answers and app_name variables
-            - run: "sudo docker run \\\n  --name ${app_name} \\\n  -v ${PWD}:/${app_name} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '<< parameters.answers >>\\na\\n' | roro rollon\"\nls \n"
-            - run:
-                command: |
-                    source $BASH_ENV
-                    container=$(sudo docker ps -aqf "name=${app_name}")
-                    echo "export container=${container}" >> "$BASH_ENV"
-                name: Store container id variable
-            - run:
-                command: |
-                    cat $BASH_ENV
-                    source $BASH_ENV
-                name: Copy from container into sandbox
+            - set-variables
+            - build-roro-image
     test-rubies:
         executor:
             name: ruby
@@ -104,7 +105,7 @@ workflows:
                         answers:
                             - 1\n1\n1
                         os:
-                            - ruby
+                            - cimg-base
                 requires:
                     - build
     gem-release:

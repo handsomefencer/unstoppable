@@ -1,10 +1,12 @@
+environment: 
+  - ANSWERS: "<< parameters.answers >>"
 parameters:
   answers:
     type: string
     default: 1\1
   os:
     type: executor
-    default: ruby
+    default: cimg-base
 executor: << parameters.os >>
 
 steps:
@@ -12,34 +14,44 @@ steps:
   - setup_remote_docker:
       docker_layer_caching: true
       version: 20.10.24
-  - run:
-      name: "Store answers and app_name variables"
-      command: |
-        answers=<< parameters.answers >>
-        app_name="artifact-${answers//\\/-}"
-        echo "export answers=${answers}" >> "$BASH_ENV"
-        echo "export app_name='${app_name}'" >> "$BASH_ENV"
-  - run: |
-      sudo docker run \
-        --name ${app_name} \
-        -v ${PWD}:/${app_name} \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -u 0 \
-        -it handsomefencer/roro:latest \
-        sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
-      ls 
-  - run:
-      name: "Store container id variable"
-      command: |
-        source $BASH_ENV
-        container=$(sudo docker ps -aqf "name=${app_name}")
-        echo "export container=${container}" >> "$BASH_ENV"
+  - set-variables  
+  - build-roro-image   
+      
+#      echo "answers = ${ANSWERS}"   
+
+      
+  # - run: 
+      # echo "bar     = ${bar}"
+      # echo "params  = $(<< parameters.answers >>)"   
+  # - run: echo "${demo_app}"   
+  # - run: |
+  #     source $BASH_ENV 
+  #     sudo docker run \
+  #       --name ${app_name} \
+  #       -v ${PWD}:/${app_name} \
+  #       -v /var/run/docker.sock:/var/run/docker.sock \
+  #       -u 0 \
+  #       -it handsomefencer/roro:latest \
+  #       sh -c "printf \"${answers}\na\n\" | roro rollon"
+  #     container=$(sudo docker ps -aqf "name=${app_name}")
+  #     echo "export container=${container}" >> "$BASH_ENV"
+  #     source $BASH_ENV
+  #     sudo docker cp ${container}:/${app_name} ./
+
+  #     ls ${app_name}
+  # - run:
+        # sh -c "printf '<< parameters.answers >>\na\n' | roro rollon"
+  #     name: "Store container id variable"
+  #     command: |
+  #       source $BASH_ENV
+  #       container=$(sudo docker ps -aqf "name=${app_name}")
+  #       echo "export container=${container}" >> "$BASH_ENV"
   
-  - run: 
-      name: 'Copy from container into sandbox'
-      command: |
-        cat $BASH_ENV
-        source $BASH_ENV
+  # - run: 
+  #     name: 'Copy from container into sandbox'
+  #     command: |
+  #       cat $BASH_ENV
+  #       source $BASH_ENV
 
   # - run: 
         # sudo chown -R $USER:$USER .

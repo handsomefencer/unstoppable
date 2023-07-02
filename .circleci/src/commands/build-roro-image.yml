@@ -1,0 +1,27 @@
+steps:
+  - run: sudo docker-compose build
+  - run: |
+      sudo docker run \
+        --name ${APP_NAME} \
+        -v ${PWD}:/${APP_NAME} \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -u 0 \
+        -it handsomefencer/roro:latest \
+        sh -c "printf '${ANSWERS}\na\n' | roro rollon"
+      container=$(sudo docker ps -aqf "name=${APP_NAME}")
+      echo "export container=${container}" >> "$BASH_ENV"
+      cat $BASH_ENV
+      sudo docker cp ${container}:/artifact ./${APP_NAME}
+      ls -a
+      sudo chown -R $USER:$USER ./${APP_NAME}
+      ls ${APP_NAME} 
+      cd ${APP_NAME} 
+      ls -a
+      sudo docker-compose build 
+      sudo chown -R $USER:$USER ./${APP_NAME}
+      sudo docker-compose up
+
+#      # sudo docker-compose build roro
+#      sudo docker-compose build
+      
+

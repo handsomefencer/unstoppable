@@ -12,4 +12,4 @@ jobs:
       parameters:
         answers:
           - 1\n1
-        os: [ruby]
+        os: [cimg-base]

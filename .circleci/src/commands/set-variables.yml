@@ -1,0 +1,5 @@
+steps: 
+  - run:
+      name: "Store answers and app_name variables"
+      command: |
+        echo "APP_NAME=${CIRCLE_JOB//\\n/-}" >> "$BASH_ENV"
