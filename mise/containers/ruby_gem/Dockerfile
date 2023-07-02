@@ -11,10 +11,10 @@ RUN apk add \
 
 WORKDIR /usr/src
 
-RUN gem install bundler:2.4.13
 
 COPY . .
 
+RUN gem install bundler:2.4.13
 RUN bundle install -j4 --retry 3
 
 RUN rm -rf ./lib/roro/stacks

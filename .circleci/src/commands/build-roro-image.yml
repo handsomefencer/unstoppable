@@ -1,7 +1,7 @@
 steps:
   - run: |
       sudo chown -R $USER:$USER .
-      sudo docker-compose build
+      sudo docker-compose build roro
   - run: |
       sudo docker run \
         --name ${APP_NAME} \
