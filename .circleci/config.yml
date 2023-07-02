@@ -75,7 +75,6 @@ jobs:
                 type: executor
         steps:
             - checkout
-            - restore-and-save-cache
             - run: |
                 docker --version
                 docker-compose --version
