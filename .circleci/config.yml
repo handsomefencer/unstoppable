@@ -47,8 +47,7 @@ executors:
                 type: string
 jobs:
     build:
-        executor:
-            name: cimg-base
+        executor: machine-ubuntu
         steps:
             - checkout
     release:
