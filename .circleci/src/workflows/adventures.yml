@@ -7,7 +7,7 @@ jobs:
     filters:
       branches:
         only:
-        - adventures
+        - machine-ubuntu
     matrix:
       parameters:
         answers:
