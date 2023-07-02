@@ -23,6 +23,9 @@ executors:
     cimg-base:
         docker:
             - image: cimg/base:2023.06
+    machine-osx:
+        macos:
+            xcode: 14.2.0
     machine-ubuntu:
         machine:
             docker_layer_caching: true
@@ -61,7 +64,7 @@ jobs:
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
-        executor: machine-ubuntu
+        executor: << parameters.os >>
         parameters:
             answers:
                 default: 1\1
