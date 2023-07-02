@@ -48,6 +48,10 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
+    build-roro-image:
+        executor: machine-ubuntu
+        steps:
+            - checkout
             - run: |
                 sudo chown -R $USER:$USER .
                 sudo env UID=${UID} GID=${GID} docker-compose build roro
@@ -100,6 +104,7 @@ workflows:
     adventures:
         jobs:
             - build
+            - build-roro-image
             - test-adventures:
                 filters:
                     branches:
@@ -112,7 +117,7 @@ workflows:
                         os:
                             - cimg-base
                 requires:
-                    - build
+                    - build-roro-image
     gem-release:
         jobs:
             - build

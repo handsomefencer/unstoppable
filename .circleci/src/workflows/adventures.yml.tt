@@ -1,9 +1,10 @@
 ---
 jobs:
 - build
+- build-roro-image
 - test-adventures:
     requires: 
-      - build
+      - build-roro-image
     filters:
       branches:
         only: 
