@@ -22,7 +22,7 @@ steps:
       cat entrypoints/docker-entrypoint.sh
       chmod +x entrypoints/docker-entrypoint.sh
       sudo docker-compose build 
-      sudo docker-compose up
+      sudo docker-compose up -d
        
 #      # sudo docker-compose build 
       # sudo chown -R $USER:$USER ./${APP_NAME}

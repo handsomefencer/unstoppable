@@ -4,7 +4,7 @@ commands:
             - run: |
                 sudo chown -R $USER:$USER .
                 sudo env UID=${UID} GID=${GID} docker-compose build roro
-            - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up\n \n"
+            - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n \n"
     restore-and-save-cache:
         steps:
             - restore_cache:
