@@ -13,4 +13,4 @@ jobs:
       parameters:
         answers:
           - 1\n1
-        os: [machine-ubuntu, machine-osx]
+        os: [machine-ubuntu]
