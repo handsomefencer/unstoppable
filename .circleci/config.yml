@@ -36,7 +36,7 @@ executors:
             - image: cimg/base:2023.06
     machine-ubuntu:
         machine:
-            image: ubuntu-2004:202010-01
+            image: ubuntu-2204:2023.04.2
     ruby:
         docker:
             - image: cimg/ruby:<<parameters.version>>
