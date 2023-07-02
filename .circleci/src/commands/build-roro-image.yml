@@ -1,8 +1,5 @@
 steps:
   - run: |
-      sudo chown -R $USER:$USER .
-      sudo env UID=${UID} GID=${GID} docker-compose build roro
-  - run: |
       sudo docker run \
         --name ${APP_NAME} \
         -v ${PWD}:/${APP_NAME} \
