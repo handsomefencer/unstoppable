@@ -1,5 +1,7 @@
 steps:
-  - run: sudo docker-compose build
+  - run: |
+      sudo chown -R $USER:$USER .
+      sudo docker-compose build
   - run: |
       sudo docker run \
         --name ${APP_NAME} \
