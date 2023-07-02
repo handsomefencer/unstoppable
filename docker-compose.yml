@@ -23,6 +23,7 @@ services:
       context: .
       dockerfile: mise/containers/ruby_gem/Dockerfile
     image: handsomefencer/roro
+    user: "${UID}:${GID}"
 
   guard:
     build:
