@@ -16,7 +16,7 @@ steps:
       docker --version
       docker-compose --version
   - set-variables  
-  # - build-roro-image   
+  - build-roro-image   
       
 #      echo "answers = ${ANSWERS}"   
 

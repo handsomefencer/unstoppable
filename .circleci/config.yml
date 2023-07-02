@@ -79,6 +79,7 @@ jobs:
                 docker --version
                 docker-compose --version
             - set-variables
+            - build-roro-image
     test-rubies:
         executor:
             name: ruby
