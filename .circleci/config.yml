@@ -6,7 +6,7 @@ commands:
                     container=$(sudo docker ps -aqf "name=${APP_NAME}")
                     echo "export container=${container}" >> "$BASH_ENV"
                     cat $BASH_ENV
-                    sudo docker cp ${container}:/artifact ./${APP_NAME}
+                    sudo docker cp $(sudo docker ps -aqf "name=${APP_NAME}"):/artifact ./${APP_NAME}
                 name: Copy artifact from roro container to host
     artifact-generate:
         steps:
@@ -23,7 +23,7 @@ commands:
     artifact-up:
         steps:
             - run:
-                command: "ls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n"
+                command: "cat entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n"
                 name: Artifact up using docker-compose
     restore-and-save-cache:
         steps:
@@ -143,7 +143,6 @@ workflows:
                     - build-roro-image
     gem-release:
         jobs:
-            - build
             - release:
                 filters:
                     branches:
