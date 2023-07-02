@@ -1,4 +1,30 @@
 commands:
+    artifact-copy:
+        steps:
+            - run:
+                command: |
+                    container=$(sudo docker ps -aqf "name=${APP_NAME}")
+                    echo "export container=${container}" >> "$BASH_ENV"
+                    cat $BASH_ENV
+                    sudo docker cp ${container}:/artifact ./${APP_NAME}
+                name: Copy artifact from roro container to host
+    artifact-generate:
+        steps:
+            - run:
+                command: |
+                    sudo docker run \
+                      --name ${APP_NAME} \
+                      -v ${PWD}:/${APP_NAME} \
+                      -v /var/run/docker.sock:/var/run/docker.sock \
+                      -u 0 \
+                      -it handsomefencer/roro:latest \
+                      sh -c "printf '${ANSWERS}\na\n' | roro rollon"
+                name: Run rollon with answers to generate container artifact
+    artifact-up:
+        steps:
+            - run:
+                command: "ls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n"
+                name: Artifact up using docker-compose
     restore-and-save-cache:
         steps:
             - restore_cache:
@@ -10,19 +36,6 @@ commands:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
                     - vendor/bundle
-    roro-artifact-up:
-        steps:
-            - run: "container=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n"
-    roro-rollon-adventure:
-        steps:
-            - run: |
-                sudo docker run \
-                  --name ${APP_NAME} \
-                  -v ${PWD}:/${APP_NAME} \
-                  -v /var/run/docker.sock:/var/run/docker.sock \
-                  -u 0 \
-                  -it handsomefencer/roro:latest \
-                  sh -c "printf '${ANSWERS}\na\n' | roro rollon"
     set-variables:
         steps:
             - run:
@@ -85,8 +98,9 @@ jobs:
         steps:
             - checkout
             - set-variables
-            - roro-rollon-adventure
-            - roro-artifact-up
+            - artifact-generate
+            - artifact-copy
+            - artifact-up
     test-rubies:
         executor:
             name: ruby

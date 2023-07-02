@@ -13,8 +13,9 @@ executor: << parameters.os >>
 steps:
   - checkout
   - set-variables  
-  - roro-rollon-adventure   
-  - roro-artifact-up   
+  - artifact-generate
+  - artifact-copy
+  - artifact-up
       
 #      echo "answers = ${ANSWERS}"   
 
