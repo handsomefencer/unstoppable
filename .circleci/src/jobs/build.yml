@@ -1,7 +1,7 @@
 executor: machine-ubuntu
 steps:
   - checkout
-    - run: |
+  - run: |
       sudo chown -R $USER:$USER .
       sudo env UID=${UID} GID=${GID} docker-compose build roro
 
