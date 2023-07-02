@@ -15,3 +15,4 @@ jobs:
         - 1\n1\n1
         os:
         - machine-ubuntu
+        - machine-osx
