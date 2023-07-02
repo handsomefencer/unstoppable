@@ -17,9 +17,12 @@ steps:
       ls ${APP_NAME} 
       cd ${APP_NAME} 
       ls -a
-      sudo docker-compose build 
-      sudo chown -R $USER:$USER ./${APP_NAME}
-      sudo docker-compose up
+      cat entrypoints/docker-entrypoint.sh
+      chmod +x entrypoints/docker-entrypoint.sh
+       
+#      # sudo docker-compose build 
+      # sudo chown -R $USER:$USER ./${APP_NAME}
+      # sudo docker-compose up
 
 #      # sudo docker-compose build roro
 #      sudo docker-compose build
