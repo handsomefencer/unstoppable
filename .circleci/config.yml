@@ -7,7 +7,7 @@ commands:
                     echo "export container=${container}" >> "$BASH_ENV"
                     cat $BASH_ENV
                     sudo docker cp $(sudo docker ps -aqf "name=${APP_NAME}"):/artifact ./${APP_NAME}
-                name: Copy artifact from roro container to host
+                name: Artifact copy from container to host
     artifact-generate:
         steps:
             - run:
@@ -19,7 +19,7 @@ commands:
                       -u 0 \
                       -it handsomefencer/roro:latest \
                       sh -c "printf '${ANSWERS}\na\n' | roro rollon"
-                name: Run rollon with answers to generate container artifact
+                name: Artifact generate in roro container
     artifact-up:
         steps:
             - run:
@@ -46,14 +46,7 @@ executors:
     docker-cimg-base:
         docker:
             - image: cimg/base:2023.06
-    machine-osx:
-        macos:
-            xcode: 14.2.0
-    machine-ubuntu:
-        machine:
-            docker_layer_caching: true
-            image: ubuntu-2204:2023.04.2
-    ruby:
+    docker-cimg-ruby:
         docker:
             - image: cimg/ruby:<<parameters.version>>
         parameters:
@@ -61,6 +54,13 @@ executors:
                 default: 3.2.2
                 description: version tag
                 type: string
+    machine-osx:
+        macos:
+            xcode: 14.2.0
+    machine-ubuntu:
+        machine:
+            docker_layer_caching: true
+            image: ubuntu-2204:2023.04.2
 jobs:
     build:
         executor: machine-ubuntu
@@ -74,8 +74,7 @@ jobs:
                 sudo chown -R $USER:$USER .
                 sudo env UID=${UID} GID=${GID} docker-compose build roro
     release:
-        executor:
-            name: ruby
+        executor: docker-cimg-ruby
         steps:
             - checkout
             - run: |
@@ -102,9 +101,7 @@ jobs:
             - artifact-copy
             - artifact-up
     test-rubies:
-        executor:
-            name: ruby
-            version: <<parameters.version>>
+        executor: docker-cimg-ruby
         parameters:
             version:
                 default: "3.0"
@@ -114,8 +111,7 @@ jobs:
             - checkout
             - run: gem install bundler
             - run: bundle
-            - run: bundle exec rake test:test
-            - run: bundle exec rake test:stacks
+            - run: bundle exec rake test
 version: 2.1
 workflows:
     adventures:

@@ -1,5 +1,4 @@
-executor:
-  name: ruby
+executor: docker-cimg-ruby
 steps:
   - checkout
   - run: |

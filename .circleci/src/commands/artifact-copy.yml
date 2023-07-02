@@ -1,6 +1,6 @@
 steps:
   - run: 
-      name: Copy artifact from roro container to host 
+      name: Artifact copy from container to host 
       command: |
         container=$(sudo docker ps -aqf "name=${APP_NAME}")
         echo "export container=${container}" >> "$BASH_ENV"

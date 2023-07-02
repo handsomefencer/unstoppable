@@ -1,6 +1,6 @@
 steps:
   - run: 
-      name: Run rollon with answers to generate container artifact 
+      name: Artifact generate in roro container 
       command: |
         sudo docker run \
           --name ${APP_NAME} \

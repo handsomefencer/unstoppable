@@ -3,12 +3,9 @@ parameters:
     description: "version tag"
     default: "3.0"
     type: string
-executor:
-  name: ruby
-  version: <<parameters.version>>
+executor: docker-cimg-ruby
 steps:
   - checkout
   - run: gem install bundler
   - run: bundle
-  - run: bundle exec rake test:test
-  - run: bundle exec rake test:stacks
+  - run: bundle exec rake test
