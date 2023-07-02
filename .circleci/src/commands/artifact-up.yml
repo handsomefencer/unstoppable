@@ -2,7 +2,7 @@ steps:
   - run: 
       name: Artifact up using docker-compose
       command: |
-        cat entrypoints/docker-entrypoint.sh
+        cd ${APP_NAME} 
         sudo docker-compose build 
         sudo docker-compose up -d
 
