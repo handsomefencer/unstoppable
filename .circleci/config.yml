@@ -10,14 +10,6 @@ commands:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
                     - vendor/bundle
-    rollon-adventure-with-roro:
-        steps:
-            - run:
-                command: |
-                    app_name="artifact-${answers//\\/-}"
-                    echo "export answers=${answers}" >> "$BASH_ENV"
-                    echo "export app_name='${app_name}'" >> "$BASH_ENV"
-                name: rollon from roro image
     roro-rollon-adventure:
         steps:
             - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n \n"
@@ -112,7 +104,7 @@ workflows:
                         answers:
                             - 1\n1\n1
                         os:
-                            - cimg-base
+                            - machine-ubuntu
                 requires:
                     - build-roro-image
     gem-release:

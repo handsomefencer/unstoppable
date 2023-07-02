@@ -1,8 +1,0 @@
-steps: 
-  - run:
-      name: "rollon from roro image"
-      command: |
-        app_name="artifact-${answers//\\/-}"
-        echo "export answers=${answers}" >> "$BASH_ENV"
-        echo "export app_name='${app_name}'" >> "$BASH_ENV"
-  

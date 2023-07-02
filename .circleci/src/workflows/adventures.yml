@@ -14,4 +14,4 @@ jobs:
         answers:
         - 1\n1\n1
         os:
-        - cimg-base
+        - machine-ubuntu
