@@ -1,7 +1,4 @@
 commands:
-    build-roro-image:
-        steps:
-            - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n \n"
     restore-and-save-cache:
         steps:
             - restore_cache:
@@ -21,6 +18,9 @@ commands:
                     echo "export answers=${answers}" >> "$BASH_ENV"
                     echo "export app_name='${app_name}'" >> "$BASH_ENV"
                 name: rollon from roro image
+    roro-rollon-adventure:
+        steps:
+            - run: "sudo docker run \\\n  --name ${APP_NAME} \\\n  -v ${PWD}:/${APP_NAME} \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -u 0 \\\n  -it handsomefencer/roro:latest \\\n  sh -c \"printf '${ANSWERS}\\na\\n' | roro rollon\"\ncontainer=$(sudo docker ps -aqf \"name=${APP_NAME}\")\necho \"export container=${container}\" >> \"$BASH_ENV\"\ncat $BASH_ENV\nsudo docker cp ${container}:/artifact ./${APP_NAME}\nls -a\nsudo chown -R $USER:$USER ./${APP_NAME}\nls ${APP_NAME} \ncd ${APP_NAME} \nls -a\ncat entrypoints/docker-entrypoint.sh\nchmod +x entrypoints/docker-entrypoint.sh\nsudo docker-compose build \nsudo docker-compose up -d\n \n"
     set-variables:
         steps:
             - run:
@@ -79,11 +79,8 @@ jobs:
                 type: executor
         steps:
             - checkout
-            - run: |
-                docker --version
-                docker-compose --version
             - set-variables
-            - build-roro-image
+            - roro-rollon-adventure
     test-rubies:
         executor:
             name: ruby

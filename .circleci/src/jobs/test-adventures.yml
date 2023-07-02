@@ -11,11 +11,8 @@ executor: machine-ubuntu
 
 steps:
   - checkout
-  - run: |
-      docker --version
-      docker-compose --version
   - set-variables  
-  - build-roro-image   
+  - roro-rollon-adventure   
       
 #      echo "answers = ${ANSWERS}"   
 
