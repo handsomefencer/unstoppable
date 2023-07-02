@@ -75,6 +75,7 @@ jobs:
                 type: executor
         steps:
             - checkout
+            - restore-and-save-cache
             - set-variables
             - build-roro-image
     test-rubies:
