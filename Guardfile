@@ -47,15 +47,15 @@ guard :minitest, minitest_options do
   stack_tests = 'test/roro/stacks'
   watch(%r{^#{stack_tests}/(.*)/?(.*)_test\.rb$})
 
-  watch(%r{^test/(.*)/?(.*)_test\.rb$})
-  watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
-  watch(%r{^test/test_helper\.rb$})      { 'test' }
-  watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }
+  # watch(%r{^test/(.*)/?(.*)_test\.rb$})
+  # watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
+  # watch(%r{^test/test_helper\.rb$})      { 'test' }
+  # watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }
 
   ## focus:
 
-  watch('lib/roro/configurators/adventure_writer.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
-  watch('lib/roro/configurators/configurator.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
+  # watch('lib/roro/configurators/adventure_writer.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
+  # watch('lib/roro/configurators/configurator.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
   # watch('lib/roro/configurators/configurator.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
 
   # with Minitest::Unit

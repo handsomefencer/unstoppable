@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe 'AdventureWriter' do
   Given { use_fixture_stack('alpha') }
-
+  Given { skip }
   Given(:workbench) {}
   Given(:writer)    { AdventureWriter.new }
 

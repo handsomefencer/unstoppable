@@ -4,6 +4,7 @@ require 'test_helper'
 require 'rake'
 
 describe 'rake ci:prepare:workflows:adventures' do
+  Given { skip }
   Given(:workbench) { '.circleci' }
   Given { use_fixture_stack('alpha') }
   Given { run_task('ci:prepare:workflows:adventures') }

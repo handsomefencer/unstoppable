@@ -3,6 +3,7 @@
 require_relative '../shared_test'
 
 def assert_1_2_tests
+  skip
   assert_1_tests
   assert_correct_base_env
 

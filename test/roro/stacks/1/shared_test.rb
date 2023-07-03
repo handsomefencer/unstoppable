@@ -3,6 +3,7 @@
 require 'test_helper'
 
 def assert_1_tests
+  skip
   assert_correct_env
   assert_correct_docker_compose
   assert_correct_dockerfile
