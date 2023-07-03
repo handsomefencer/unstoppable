@@ -8,48 +8,48 @@ describe 'Roro::Utilities' do
 
     context 'when dotfile' do
       When(:stack) { 'story/.keep' }
-      Then { assert_equal :dotfile, result}
+      Then { assert_equal :dotfile, result }
     end
 
     context 'when storyfile' do
       When(:stack) { 'stack/story/story.yml' }
-      Then { assert_equal :storyfile, result}
+      Then { assert_equal :storyfile, result }
     end
 
     context 'when templates' do
       When(:stack) { 'templates' }
-      Then { assert_equal :templates, result}
+      Then { assert_equal :templates, result }
     end
 
     context 'when ignored' do
       When(:stack) { 'story/test_dummy' }
-      Then { assert_equal :ignored, result}
+      Then { assert_equal :ignored, result }
     end
 
     context 'when inflection' do
       When(:stack) { 'stacks' }
-      Then { assert_equal :inflection, result}
+      Then { assert_equal :inflection, result }
     end
 
     context 'when nonexistent' do
       When(:stack) { 'stack/stacks/staks_1' }
-      Then { assert_equal :nonexistent, result}
+      Then { assert_equal :nonexistent, result }
     end
 
     context 'when story with ignored folders' do
       When(:stack) { 'story' }
-      Then { assert_equal :story, result}
+      Then { assert_equal :story, result }
     end
 
     context 'when stack' do
       context 'has story, inflection and stack' do
         When(:stack) { 'stack' }
-        Then { assert_equal :stack, result}
+        Then { assert_equal :stack, result }
       end
 
       context 'has story' do
         When(:stack) { 'stack/stack' }
-        Then { assert_equal :stack, result}
+        Then { assert_equal :stack, result }
       end
     end
   end
@@ -163,12 +163,12 @@ describe 'Roro::Utilities' do
     Given(:result) { children(stack_path) }
 
     context 'when directory has a file' do
-      When(:stack) { 'stack/story'}
+      When(:stack) { 'stack/story' }
       Then { assert_equal 1, result.size }
     end
 
     context 'when directory has several folders' do
-      When(:stack) { 'stack'}
+      When(:stack) { 'stack' }
       Then { assert_equal 5, result.size }
     end
   end
@@ -198,7 +198,7 @@ describe 'Roro::Utilities' do
   end
 
   describe '#sentence_from' do
-    Given(:call) { -> (array) { sentence_from(array) } }
+    Given(:call) { ->(array) { sentence_from(array) } }
 
     Then { assert_equal 'one, two and three', call[%w[one two three]] }
     And  { assert_equal 'one and two', call[%w[one two]] }

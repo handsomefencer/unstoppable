@@ -3,9 +3,8 @@
 require_relative '../shared_test'
 
 def assert_1_2_tests
-  skip
   assert_1_tests
-  assert_correct_base_env
+  assert_1_2_base_env_test
 
   assert_yaml('docker-compose.yml', :services, :app, :depends_on, 0, 'db')
   assert_yaml('docker-compose.yml', :services, :db, :image, 'postgres:14.1')
@@ -14,7 +13,7 @@ def assert_1_2_tests
   assert_file('Dockerfile', /postgresql-dev/)
 end
 
-def assert_correct_base_env
+def assert_1_2_base_env_test
   assert_file('mise/env/base.env', /DATABASE_NAME/)
   assert_file('mise/env/base.env', /DATABASE_HOST/)
   assert_file('mise/env/base.env', /DATABASE_PASSWORD/)

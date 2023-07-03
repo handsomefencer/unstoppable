@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe 'Roro::CLI#generate_adventure' do
-  Given { skip }
   Given(:workbench) { 'test_adventure/lib' }
   Given(:base)      { 'lib/roro/stacks' }
   Given(:adventure) { "#{base}/#{story}" }

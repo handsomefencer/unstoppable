@@ -35,7 +35,6 @@ describe 'Roro::Crypto::Exposer.new' do
         Given { insert_dummy_key }
 
         context 'exists' do
-
           Given { insert_dummy_env_enc }
           Given { execute }
           Then  { assert_file 'roro/env/dummy.env' }
@@ -43,7 +42,6 @@ describe 'Roro::Crypto::Exposer.new' do
         end
 
         context 'is a subenv' do
-
           Given { insert_dummy_key }
           Given { insert_dummy_env_enc 'roro/env/dummy.subenv.env.enc' }
           Given { execute }
@@ -51,7 +49,6 @@ describe 'Roro::Crypto::Exposer.new' do
         end
 
         context 'os deeply nested' do
-
           Given { insert_dummy_env_enc 'roro/containers/dummy.subenv.smart.env.enc' }
           Given { execute }
           Then  { assert_file 'roro/containers/dummy.subenv.smart.env' }
@@ -67,7 +64,6 @@ describe 'Roro::Crypto::Exposer.new' do
       end
 
       context 'when no matching key but matching decryptable files' do
-
         Given { insert_dummy_env_enc }
         Then  { assert_raises(Roro::Error) { execute } }
       end
@@ -78,14 +74,12 @@ describe 'Roro::Crypto::Exposer.new' do
         Given { insert_dummy_env_enc 'roro/containers/backend/env/dummy.env.enc' }
 
         describe 'must decrypt file' do
-
           Given { execute }
           Then  { assert_file 'roro/env/dummy.env' }
           And   { assert_file 'roro/containers/backend/env/dummy.env' }
         end
 
         describe 'must not decrypt any other file' do
-
           Given { insert_dummy_env_enc 'roro/env/smart.env.enc' }
           Given { execute }
           Then  { assert_file 'roro/env/dummy.env' }

@@ -9,7 +9,7 @@ describe 'Roro::FileReflection' do
   Given(:environments) { gather_environments directory, extension }
 
   describe ':source_files(directory, pattern)' do
-    Given(:execute)    { source_files directory, pattern }
+    Given(:execute) { source_files directory, pattern }
 
     context 'when directory contains obfuscated files' do
       Then { assert_includes execute, 'roro/env/base.env.enc' }
@@ -88,10 +88,12 @@ describe 'Roro::FileReflection' do
         end
 
         context 'set in ENV returns key from ENV' do
-          Then { with_env_set {
-            assert_equal execute, var_from_ENV
-            refute_equal execute, dummy_key
-          } }
+          Then do
+            with_env_set do
+              assert_equal execute, var_from_ENV
+              refute_equal execute, dummy_key
+            end
+          end
         end
       end
 
@@ -103,10 +105,12 @@ describe 'Roro::FileReflection' do
         end
 
         context 'set in ENV must return key from ENV' do
-          Then { with_env_set {
-            assert_equal execute, var_from_ENV
-            refute_equal execute, dummy_key
-          } }
+          Then do
+            with_env_set do
+              assert_equal execute, var_from_ENV
+              refute_equal execute, dummy_key
+            end
+          end
         end
       end
     end

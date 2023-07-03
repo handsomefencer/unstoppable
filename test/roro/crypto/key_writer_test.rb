@@ -10,7 +10,7 @@ describe Roro::Crypto::KeyWriter do
     Given { quiet { subject.write_keyfile(*args) } }
 
     context 'when extension is impicit' do
-      When(:args) { ['dummy']}
+      When(:args) { ['dummy'] }
       Then { assert_file 'roro/keys/dummy.key', /=/ }
     end
 
@@ -29,12 +29,12 @@ describe Roro::Crypto::KeyWriter do
     Given(:write_keyfiles) { quiet { subject.write_keyfiles(*args) } }
 
     context 'when no environments' do
-      Given(:args) { %w[]}
+      Given(:args) { %w[] }
 
       context 'when no directory' do
         context 'when no extension' do
           context 'when no encryptable must return error' do
-            Given(:workbench) { 'mise/fresh/roro'}
+            Given(:workbench) { 'mise/fresh/roro' }
             Given(:error)     { Roro::Error }
             Given(:error_msg) { 'No .env files in' }
             Given(:execute)   { quiet { subject.write_keyfiles } }
@@ -42,18 +42,18 @@ describe Roro::Crypto::KeyWriter do
           end
 
           context 'when encryptable must generate keys' do
-            Given(:workbench) { 'mise/exposed/roro'}
-            Given(:args)      { %w[]}
+            Given(:workbench) { 'mise/exposed/roro' }
+            Given(:args)      { %w[] }
             Given { write_keyfiles }
-            Then { assert_file 'roro/keys/ci.key'  }
-            And  { assert_file 'roro/keys/base.key'  }
-            And  { assert_file 'roro/keys/dummy.key'  }
+            Then { assert_file 'roro/keys/ci.key' }
+            And  { assert_file 'roro/keys/base.key' }
+            And  { assert_file 'roro/keys/dummy.key' }
           end
         end
 
         context 'when specified extension' do
           context 'when encryptable must not generate any keys' do
-            Given(:workbench) { 'mise/exposed/roro'}
+            Given(:workbench) { 'mise/exposed/roro' }
             Given(:args)      { [[], nil, '.passkey'] }
             Given { write_keyfiles }
             Then { assert_file 'roro/keys/ci.passkey' }
@@ -62,7 +62,7 @@ describe Roro::Crypto::KeyWriter do
       end
 
       context 'when directory' do
-        Given(:workbench) { 'mise/exposed/mise'}
+        Given(:workbench) { 'mise/exposed/mise' }
         Given(:args)      { [[], 'mise'] }
         Given { write_keyfiles }
         Then { assert_file 'mise/keys/dummy.key' }
@@ -76,15 +76,15 @@ describe Roro::Crypto::KeyWriter do
     end
 
     context 'when one environment supplied' do
-      Given(:args) { [['dummy']]}
+      Given(:args) { [['dummy']] }
       Given { write_keyfiles }
       Then  { assert_file 'roro/keys/dummy.key' }
     end
 
     context 'when multiple environments supplied' do
       context 'when no files match the pattern' do
-        Given(:args) { [['dummy']]}
-        Given(:args) { [%w[dummy smart stupid]]}
+        Given(:args) { [['dummy']] }
+        Given(:args) { [%w[dummy smart stupid]] }
         Given { write_keyfiles }
         Then  { assert_file 'roro/keys/dummy.key' }
         And   { assert_file 'roro/keys/smart.key' }

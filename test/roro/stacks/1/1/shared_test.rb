@@ -15,14 +15,15 @@ def assert_1_1_tests
 end
 
 def assert_correct_base_env
-  assert_file('mise/env/base.env', /MYSQL_USER/)
-  assert_file('mise/env/base.env', /MYSQL_HOST/)
-  assert_file('mise/env/base.env', /MYSQL_PASSWORD/)
-  assert_file('mise/env/base.env', /MYSQL_ROOT_PASSWORD/)
-  assert_file('mise/env/base.env', /MYSQL_DATABASE/)
-  assert_file('mise/env/base.env', /DATABASE_NAME/)
-  assert_file('mise/env/base.env', /DATABASE_HOST/)
-  assert_file('mise/env/base.env', /db_pkg=mariadb-dev/)
+  f = 'mise/env/base.env'
+  assert_file(f, /MYSQL_USER/)
+  assert_file(f, /MYSQL_HOST/)
+  assert_file(f, /MYSQL_PASSWORD/)
+  assert_file(f, /MYSQL_ROOT_PASSWORD/)
+  assert_file(f, /MYSQL_DATABASE/)
+  assert_file(f, /DATABASE_NAME/)
+  assert_file(f, /DATABASE_HOST/)
+  assert_file(f, /db_pkg=mariadb-dev/)
 end
 
 def assert_correct_config_database

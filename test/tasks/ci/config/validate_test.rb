@@ -8,5 +8,4 @@ describe 'rake ci:config:validate' do
   Given(:output) { capture_subprocess_io { run_task('ci:config:validate') }.first }
 
   Given { quiet { run_task('ci:config:pack') } }
-
 end

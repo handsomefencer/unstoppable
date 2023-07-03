@@ -5,7 +5,7 @@ require 'test_helper'
 describe Roro::Crypto::Obfuscator do
   Given(:subject)   { Roro::Crypto::Obfuscator.new }
   Given(:workbench) { 'mise/exposed/roro' }
-  Given(:execute) { quiet { subject.obfuscate(*args)} }
+  Given(:execute) { quiet { subject.obfuscate(*args) } }
 
   describe '#obfuscate(environments, directory, extension)' do
     Given(:args) { nil }
@@ -40,7 +40,7 @@ describe Roro::Crypto::Obfuscator do
         end
 
         context 'when obfuscatable subenv file' do
-          Given { insert_dummy 'roro/env/dummy.subenv.env'}
+          Given { insert_dummy 'roro/env/dummy.subenv.env' }
           Given { execute }
           Then  { assert_file 'roro/env/dummy.subenv.env.enc' }
         end
