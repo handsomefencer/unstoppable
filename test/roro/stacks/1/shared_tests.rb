@@ -12,14 +12,12 @@ end
 
 def assert_correct_okonomi_base_env
   f = 'mise/env/base.env'
-  assert_file(f, /RAILS_MAX_THREADS/)
-  assert_file(f, /docker_compose_version=3.9/)
-  assert_file(f, /ruby_version=3.2.1/)
   assert_file(f, /bundler_version=2.4.13/)
   assert_file(f, /docker_compose_version=3.9/)
+  assert_file(f, /ruby_version=3.2.1/)
+  assert_file(f, /RAILS_MAX_THREADS=5/)
   assert_file(f, %r{JOB_WORKER_URL=redis://redis:6379/0})
   assert_file(f, %r{REDIS_URL=redis://redis:6379/0})
-  assert_file(f, /ruby_version=3.2.1/)
 end
 
 def assert_correct_okonomi_dockerfile

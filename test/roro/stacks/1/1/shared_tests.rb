@@ -13,14 +13,14 @@ end
 
 def assert_correct_mariadb_base_env
   f = 'mise/env/base.env'
+  assert_file(f, /DATABASE_NAME/)
+  assert_file(f, /DATABASE_HOST/)
+  assert_file(f, /MYSQL_DATABASE/)
   assert_file(f, /MYSQL_USER/)
   assert_file(f, /MYSQL_HOST/)
   assert_file(f, /MYSQL_PASSWORD/)
   assert_file(f, /MYSQL_ROOT_PASSWORD/)
-  assert_file(f, /MYSQL_DATABASE/)
-  assert_file(f, /DATABASE_NAME/)
-  assert_file(f, /DATABASE_HOST/)
-  assert_file(f, /db_pkg=mariadb-dev/)
+  assert_file(f, /db_pkg=mariadb-dddev/)
 end
 
 def assert_correct_mariadb_docker_compose
