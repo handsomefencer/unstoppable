@@ -8,8 +8,7 @@ services:
       args:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
-    depends_on: 
-      - db
+
     env_file:
       - ./mise/env/base.env
     environment:
@@ -20,14 +19,6 @@ services:
       - .:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
-
-  db:
-    image: mysql:8.0.21
-    volumes:
-      - db_data:/var/lib/mysql
-    env_file:
-      - ./mise/env/base.env
-
 
 volumes:
   db_data:

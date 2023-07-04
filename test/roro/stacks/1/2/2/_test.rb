@@ -2,14 +2,15 @@
 
 require_relative '../shared_test'
 
-describe '1 -> 2 -> 2: database: postgres, rails version: 7.0' do
+describe '1 -> 1 -> 2: database: mysql, rails version: 7.0' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 
-  Invariant { assert_1_2_tests }
+  Invariant { assert_configuration_mysql }
 
   describe 'Gemfile with the correct' do
     describe 'rails version' do

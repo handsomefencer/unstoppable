@@ -2,29 +2,33 @@
 
 require 'test_helper'
 
-def assert_1_tests
-  assert_correct_env
-  assert_correct_docker_compose
-  assert_correct_dockerfile
+def assert_configuration_okonomi
+  assert_correct_okonomi_base_env
+  assert_correct_okonomi_dockerfile
+  assert_correct_okonomi_docker_compose
+  assert_correct_okonomi_gemfile
   assert_file('entrypoints/docker-entrypoint.sh')
-  assert_file('mise/env/base.env', /db_vendor/)
-  assert_file('Gemfile', /ruby ["']3.2.1["']/)
 end
 
-def assert_correct_docker_compose
-  assert_file('docker-compose.yml', /\nvolumes:\n\s\sdb_data/)
-  assert_file('docker-compose.yml', /\s\sgem_cache/)
-  assert_file('docker-compose.yml', /\s\snode_modules/)
-  assert_yaml('docker-compose.yml', :services, :app, :ports, 0, '3000:3000')
-  assert_yaml('docker-compose.yml', :services, :app, :ports, 0, '3000:3000')
-end
-
-def assert_correct_dockerfile
-  assert_file('Dockerfile', /FROM ruby:3.2.1-alpine/)
-  assert_file('Dockerfile', /bundler:2.4.13/)
-  assert_file('Dockerfile', /nodejs/)
-end
-
-def assert_correct_env
+def assert_correct_okonomi_base_env
   assert_file('mise/env/base.env', /RAILS_MAX_THREADS/)
+end
+
+def assert_correct_okonomi_dockerfile
+  f = 'Dockerfile'
+  assert_file(f, /FROM ruby:3.2.1-alpine/)
+  assert_file(f, /bundler:2.4.13/)
+  assert_file(f, /nodejs/)
+end
+
+def assert_correct_okonomi_docker_compose
+  f = 'docker-compose.yml'
+  assert_file(f, /\nvolumes:\n\s\sdb_data/)
+  assert_file(f, /\s\sgem_cache/)
+  assert_file(f, /\s\snode_modules/)
+  assert_yaml(f, :services, :app, :ports, 0, '3000:3000')
+end
+
+def assert_correct_okonomi_gemfile
+  assert_file('Gemfile', /ruby ["']3.2.1["']/)
 end

@@ -2,18 +2,17 @@
 
 require_relative '../shared_test'
 
-describe '1 -> 1 -> 2: database: mysql, rails version: 7.0' do
+describe '1 -> 1 -> 2: database: mariadb, rails version: 7.0' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 
-  Invariant { assert_1_1_tests }
+  Invariant { assert_configuration_mariadb }
 
-  describe 'Gemfile with the correct' do
-    describe 'rails version' do
-      Then { assert_file 'Gemfile', /gem ["']rails["'], ["']~> 7.0.5/ }
-    end
+  describe 'must have correct rails version' do
+    Then { assert_file('Gemfile', /gem ["']rails["'], ["']~> 7.0.5/) }
   end
 end
