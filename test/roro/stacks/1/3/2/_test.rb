@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../shared_test'
+require_relative '../shared_tests'
 
 describe '1 -> 2 -> 2: database: postgres, rails version: 7.0' do
   Given(:workbench) {}

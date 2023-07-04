@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../shared_test'
+require_relative '../shared_tests'
 
 def assert_configuration_sqlite
   assert_file('config/database.yml', /adapter: sqlite3/)

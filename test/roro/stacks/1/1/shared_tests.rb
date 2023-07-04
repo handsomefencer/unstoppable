@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../shared_test'
+require_relative '../shared_tests'
 
 def assert_configuration_mariadb
   assert_configuration_okonomi
@@ -17,7 +17,7 @@ def assert_correct_okonomi_mariadb_docker_compose
   assert_file(f, /\s\sgem_cache/)
   assert_file(f, /\s\snode_modules/)
   assert_yaml(f, :services, :app, :ports, 0, '3000:3000')
-
+  assert_yaml(f, :services, :db, :ports, 0, '3306:3306')
   assert_yaml(f, :services, :app, :depends_on, 0, 'db')
   assert_yaml(f, :services, :db, :image, 'mariadb')
   assert_yaml(f, :services, :db, :volumes, 0, %r{lib/mysql})
