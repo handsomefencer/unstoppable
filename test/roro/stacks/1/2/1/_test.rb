@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../shared_testss'
+require_relative '../shared_tests'
 
 describe '1 -> 2 -> 1: ' do
   Given(:workbench) {}
 
   Given do
-    debuggerer
     rollon(__dir__)
   end
 

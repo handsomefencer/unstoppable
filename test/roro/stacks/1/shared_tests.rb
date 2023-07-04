@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-def assert_configuration_okonomi
+def assert_correct_configuration_okonomi
   assert_correct_okonomi_base_env
   assert_correct_okonomi_dockerfile
   assert_correct_okonomi_docker_compose
@@ -11,7 +11,15 @@ def assert_configuration_okonomi
 end
 
 def assert_correct_okonomi_base_env
-  assert_file('mise/env/base.env', /RAILS_MAX_THREADS/)
+  f = 'mise/env/base.env'
+  assert_file(f, /RAILS_MAX_THREADS/)
+  assert_file(f, /docker_compose_version=3.9/)
+  assert_file(f, /ruby_version=3.2.1/)
+  assert_file(f, /bundler_version=2.4.13/)
+  assert_file(f, /docker_compose_version=3.9/)
+  assert_file(f, %r{JOB_WORKER_URL=redis://redis:6379/0})
+  assert_file(f, %r{REDIS_URL=redis://redis:6379/0})
+  assert_file(f, /ruby_version=3.2.1/)
 end
 
 def assert_correct_okonomi_dockerfile

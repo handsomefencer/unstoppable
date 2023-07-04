@@ -6,11 +6,10 @@ describe '1 -> 1 -> 1: database: mariadb, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
-    debuggerer
     rollon(__dir__)
   end
 
-  Invariant { assert_configuration_mariadb }
+  Invariant { assert_correct_configuration_mariadb }
 
   describe 'must have correct rails' do
     Then { assert_file('Gemfile', /gem ["']rails["'], ["']~> 6.1.7/) }

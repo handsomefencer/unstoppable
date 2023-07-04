@@ -3,4 +3,4 @@ preface: https://guides.rubyonrails.org/v7.0/
 env:
   base:
     rails_version:
-      value: '7.0.5'
+      value: '7.0.6'
