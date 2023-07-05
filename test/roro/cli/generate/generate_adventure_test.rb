@@ -4,40 +4,41 @@ require 'test_helper'
 
 describe 'Roro::CLI#generate_adventure' do
   Given(:workbench) { 'test_adventure/lib' }
-  Given(:base)      { 'lib/roro/stacks' }
-  Given(:adventure) { "#{base}/#{story}" }
-  Given(:generated) { "#{adventure}/#{file}" }
-  Given(:generate)  { Roro::CLI.new.generate_adventure(story) }
+  Given(:generate)  { Roro::CLI.new.generate_adventure(path) }
+  Given(:path) { 'lib/roro/stacks/starwars' }
+  Given(:stack) { path }
 
-  context 'when story story named like starwars' do
-    Given(:story) { 'starwars' }
-    Given { quiet { generate } }
+  Given { quiet { generate } }
 
-    describe 'must generate storyfile' do
-      Given(:file) { 'starwars.yml' }
-      Then { assert_file generated, /preface:/ }
-      And  { assert_file generated, /# env/ }
-      And  { assert_file generated, /# actions/ }
-    end
+  describe 'when path is like lib/roro/stacks/starwars' do
+    Then { assert_directory stack }
   end
 
-  context 'when story story named like starwars/episodes/empire-strikes' do
-    Given(:story) { 'starwars/episodes/empire-strikes' }
-    Given { quiet { generate } }
+  describe 'when path is like lib/roro/stacks/starwars/episodes/iv' do
+    When(:path) { 'lib/roro/stacks/starwars/episodes/iv' }
+    Then { assert_file 'lib/roro/stacks/starwars/episodes/iv/.keep' }
+  end
 
-    describe 'must generate storyfile' do
-      Given(:file) { 'empire-strikes.yml' }
-      Then { assert_file generated, /preface:/ }
-    end
+  describe 'must generate storyfile' do
+    Given(:storyfile) { "#{stack}/starwars.yml" }
+    Then { assert_file storyfile, /preface:/ }
+    And  { assert_file storyfile, /# env/ }
+    And  { assert_file storyfile, /# actions/ }
+  end
 
-    describe 'must generate templates directory' do
-      Given(:file) { 'templates' }
-      Then { assert_file generated }
+  describe 'must generate _builder.yml' do
+    Then { assert_file "#{stack}/_builder.yml", /actions:/ }
+  end
 
-      describe 'with manifest/.keep' do
-        Given(:file) { 'templates/manifest/.keep' }
-        Then { assert_file generated }
-      end
-    end
+  describe 'must generate templates directory' do
+    Then { assert_file "#{stack}/templates/.keep" }
+  end
+
+  describe 'must generate builder directory' do
+    Then { assert_file "#{stack}/templates/builder/.keep" }
+  end
+
+  describe 'must generate partials' do
+    Then { assert_file "#{stack}/templates/partials/.keep" }
   end
 end

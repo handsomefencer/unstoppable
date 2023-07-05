@@ -45,7 +45,7 @@ minitest_options = {
   all_on_start: false
 }
 guard :minitest, minitest_options do
-  # ENV['DEBUGGERER'] = 'true'
+  # ENV['DEBUGGERER'] = 'false'
 
   stack_tests = 'test/roro/stacks'
   watch(%r{^#{stack_tests}/(.*)/?(.*)_test\.rb$})

@@ -8,9 +8,8 @@ module Roro
 
     method_options adventure: :string
 
-    def generate_adventure(adventure)
-      @env = { adventure_name: adventure.split('/').last }
-      location = "lib/roro/stacks/#{adventure}"
+    def generate_adventure(location)
+      @env = { adventure_name: location.split('/').last }
       directory 'adventure', location, @env
     end
 
