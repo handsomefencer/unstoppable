@@ -6,6 +6,4 @@ env:
     db_pkg:
       name: Alpine db package
       value: sqlite-dev
-    db_volume:
-      name: database volume path
 

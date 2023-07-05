@@ -9,7 +9,7 @@ describe '1 -> 3 -> 2: ' do
     rollon(__dir__)
   end
 
-  Invariant { assert_correct_configuration_postgres }
+  Invariant { assert_stacked_postgres }
 
   describe 'Gemfile with the correct' do
     describe 'rails version' do

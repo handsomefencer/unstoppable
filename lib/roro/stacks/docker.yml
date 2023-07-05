@@ -2,4 +2,4 @@ env:
   base:
     docker_compose_version:
       name: Docker Compose version
-      value: 3.9
+      value: '3.9'

@@ -9,7 +9,7 @@ describe '1 -> 2 -> 2: ' do
     rollon(__dir__)
   end
 
-  Invariant { assert_correct_configuration_mysql }
+  Invariant { assert_stacked_mysql }
 
   describe 'Gemfile with the correct' do
     describe 'rails version' do

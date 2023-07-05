@@ -49,6 +49,7 @@ module Roro
       end
 
       def rollon(dir)
+        debuggerer if ENV['DEBUGGERER'].eql?('true')
         workbench
         stubs_adventure(dir)
         stubs_dependencies_met?
