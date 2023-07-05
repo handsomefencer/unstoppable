@@ -12,6 +12,10 @@ module Roro
       "#{ENV['PWD']}/test"
     end
 
+    def self.test_stacks
+      "#{ENV['PWD']}/test/roro/stacks"
+    end
+
     def self.stacks
       "#{File.dirname(__FILE__)}/stacks"
     end
