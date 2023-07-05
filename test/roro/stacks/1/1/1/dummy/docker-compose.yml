@@ -12,8 +12,6 @@ services:
       - db
     env_file:
       - ./mise/env/base.env
-    environment:
-      RAILS_ENV: development
     ports:
       - "3000:3000"
     volumes:
@@ -29,7 +27,6 @@ services:
       - db_data:/var/lib/mysql
     env_file:
       - ./mise/env/base.env
-
 
 volumes:
   db_data:

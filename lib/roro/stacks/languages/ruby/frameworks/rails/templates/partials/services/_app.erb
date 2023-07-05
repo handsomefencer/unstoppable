@@ -8,8 +8,6 @@
 <%= partial('app_depends_on')%>
     env_file:
       - ./mise/env/base.env
-    environment:
-      RAILS_ENV: development
     ports:
       - "3000:3000"
     volumes:
