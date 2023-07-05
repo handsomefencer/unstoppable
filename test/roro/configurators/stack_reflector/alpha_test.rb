@@ -13,6 +13,7 @@ describe Roro::Configurators::StackReflector do
       Given(:expected) do
         {
           chapters: %w[okonomi php _builder laravel],
+          choices: %w[okonomi php laravel],
           itinerary: [
             'unstoppable_developer_style: okonomi', 'language: php',
             'adventure: laravel'
@@ -46,8 +47,9 @@ describe Roro::Configurators::StackReflector do
         {
           chapters: %w[
             okonomi ruby _builder databases rails postgres
-            13_5 3_0 sidekiq 7_0
+            13_5 sidekiq 7_0 3_0
           ],
+          choices: %w[okonomi ruby rails postgres 13_5 sidekiq 7_0 3_0],
           env: {
             base: {
               db_vendor: {
@@ -64,8 +66,8 @@ describe Roro::Configurators::StackReflector do
           itinerary: [
             'unstoppable_developer_style: okonomi', 'language: ruby',
             'framework: rails', 'database: postgres',
-            'postgres version: 13_5', 'ruby version: 3_0',
-            'scheduler: sidekiq', 'rails version: 7_0'
+            'postgres version: 13_5', 'scheduler: sidekiq',
+            'rails version: 7_0', 'ruby version: 3_0'
           ],
 
           partial_paths: [
@@ -87,7 +89,7 @@ describe Roro::Configurators::StackReflector do
           ],
           title: [
             'unstoppable_developer_style: okonomi, scheduler: sidekiq',
-            'postgres version: 13.5, ruby version: 3.0, rails version: 7.0'
+            'postgres version: 13.5', 'rails version: 7.0', 'ruby version: 3.0'
           ].join(', '),
           versions: {
             'postgres' => '13.5', 'ruby' => '3.0', 'rails' => '7.0'
@@ -98,10 +100,70 @@ describe Roro::Configurators::StackReflector do
       Then { assert_expected_adventure }
     end
 
+    describe 'when adventure is okonomi ruby rails sqlite' do
+      Given(:expected) do
+        {
+          chapters: %w[
+            okonomi ruby _builder databases rails sqlite
+            resque 6_1 2_7
+          ],
+          choices: %w[okonomi ruby rails sqlite resque 6_1 2_7],
+          env: {
+            base: {
+              db_vendor: {
+                value: 'sqlite3'
+              },
+              rails_version: {
+                value: 6.1
+              },
+              db_image_version: {
+                value: 13.5
+              }
+            }
+          },
+          itinerary: [
+            'unstoppable_developer_style: okonomi', 'language: ruby',
+            'framework: rails', 'database: sqlite',
+            'scheduler: resque',
+            'rails version: 6_1', 'ruby version: 2_7'
+          ],
+
+          partial_paths: [
+            'rails/templates/partials', 'postgres/templates/partials',
+            '7_0/templates/partials'
+          ],
+          picks: [1, 3, 1, 2, 1, 1, 1],
+          tags: %w[
+            alpine databases docker git redis okonomi ruby
+            rails sqlite resque
+          ],
+          templates_partials_paths: [
+            'rails/templates/partials', 'sqlite/templates/partials',
+            '6_1/templates/partials'
+          ],
+          templates_paths: [
+            'okonomi/templates', 'rails/templates',
+            'sqlite/templates', 'resque/templates', '6_1/templates'
+          ],
+          title: [
+            'unstoppable_developer_style: okonomi', 'database: sqlite',
+            'scheduler: resque', 'rails version: 6.1', 'ruby version: 2.7'
+          ].join(', '),
+          versions: {
+            'rails' => '6.1', 'ruby' => '2.7'
+          }
+        }
+      end
+      # When(:picks) { '1 3 1 1 1 2 2 2' }
+      When(:picks) { '1 3 1 2 1 1 1' }
+      Then { assert_expected_adventure }
+    end
+
     describe 'when adventure is sashimi rails' do
       Given(:expected) do
         {
           chapters: %w[sashimi rails],
+          choices: %w[sashimi rails],
           env: { base: { db_vendor: { value: 'sqlite3' } } },
           itinerary: [
             'unstoppable_developer_style: sashimi', 'framework: rails'

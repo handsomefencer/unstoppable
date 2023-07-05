@@ -10,7 +10,7 @@ module Roro
 
     def generate_adventure(location)
       @env = { adventure_name: location.split('/').last }
-      directory 'adventure', location, @env
+      directory 'stack/stack', location, @env
     end
 
     no_commands do

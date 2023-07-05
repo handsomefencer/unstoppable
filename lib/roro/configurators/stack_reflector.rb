@@ -21,6 +21,7 @@ module Roro
       end
 
       def reflect(s, sibs = [], adventure = nil, a = {})
+        # byebug if stack_name(s).eql?('rails')
         adventure = build_adventure(adventure, s)
         case stack_type(s)
         when :inflection_stub
@@ -33,12 +34,13 @@ module Roro
           inflections = children(s).select do |c|
             %i[inflection inflection_stub].include?(stack_type(c))
           end
-
-          reflect(inflections.shift, (sibs + inflections), adventure, a)
+          # byebug if stack_name(s).eql?('rails')
+          reflect(inflections.shift, (inflections + sibs), adventure, a)
         when :story
           if sibs.empty?
             a[adventure[:picks].join(' ')] = add_metadata(adventure)
           else
+            # byebug if stack_name(s).eql?('postgres')
             reflect(sibs.shift, sibs, adventure, a)
           end
         end
@@ -128,6 +130,7 @@ module Roro
 
       def fork_adventure(adventure, index, stack, child)
         deep_copy(adventure).tap do |hash|
+          hash[:choices] << stack_name(child)
           hash[:picks] << index += 1
           hash[:itinerary] << inflection_choice(stack, child)
         end
@@ -164,6 +167,7 @@ module Roro
       def instantiate_adventure
         {
           chapters: [],
+          choices: [],
           env: {},
           itinerary: [],
           picks: [],
