@@ -7,11 +7,8 @@ namespace :ci do
     namespace :workflows do
       desc 'Prepare workflow with matrix of adventures'
       task 'adventures' do |task|
-        byebug
         set_content(task)
         matrix = @content.dig('jobs', 2, 'test-adventures', 'matrix')
-
-        byebug
         matrix['parameters']['answers'] = ci_cases.map { |c| c.to_s.gsub(' ', '\\n') }
         overwrite
         notify('answers')

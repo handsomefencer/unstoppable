@@ -8,7 +8,7 @@ jobs:
     filters:
       branches:
         only:
-        - machine-ubuntu
+        - development
     matrix:
       parameters:
         answers:
@@ -18,6 +18,8 @@ jobs:
         - 1\n2\n2
         - 1\n3\n1
         - 1\n3\n2
+        - 1\n4\n1
+        - 1\n4\n2
         - '2'
         os:
         - machine-ubuntu
