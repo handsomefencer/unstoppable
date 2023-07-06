@@ -9,33 +9,39 @@ module Roro
 
     def generate_adventure_tests(_kase = nil)
       reflector = Roro::Configurators::StackReflector.new
-      reflector.adventures.each do |_key, adventure|
-        generate_test_stack(adventure)
-      end
+      reflector.adventures.values.each { |a| generate_test_stack(a) }
     end
 
     no_commands do
+      def describe_block(hash)
+        {}.tap do |h|
+          h[:adventure_title] = [].tap do |a|
+            hash.dig(:choices).each_with_index do |c, i|
+              a << "#{hash.dig(:picks)[i]} #{c}"
+            end
+          end.join(' -> ')
+        end
+      end
+
       def generate_test_stack(hash)
-        @env = { adventure_title: 'describe block' }
-        @env[:force] = true
+        @env = describe_block(hash)
         dest = 'test/roro/stacks'
-        choices = hash[:choices]
-        choices.each do |choice|
-          @env[:choice] = choice
-          @env[:shared_method] = dest.split('/').last
-          if choice.eql?(choices.first)
-            copy_shared_tests(dest)
-          else
-            template('stack/shared_tests/shared.rb.tt', "#{dest}/shared_tests.rb", @env)
+        hash[:choices].each do |c|
+          copy_shared_tests(dest)
+          if c.eql?(hash[:choices][-1])
+            src = 'stack/tests/tests'
+            directory(src, "#{dest}/#{c}", @env)
           end
-          directory('stack/stack_test', "#{dest}/#{choice}", @env) if choice.eql?(choices.last)
-          dest = "#{dest}/#{choice}"
+          dest = "#{dest}/#{c}"
         end
       end
 
       def copy_shared_tests(dest)
-        # byebug if dest.eql?('test/roro/stacks')
-        template('stack/shared_tests/base.rb.tt', "#{dest}/shared_tests.rb", @env)
+        @env[:shared_method] = dest.split('/').last
+        filename = dest.eql?('test/roro/stacks') ? 'base' : 'shared'
+        src = "stack/tests/shared/#{filename}.rb.tt"
+        dest = "#{dest}/shared_tests.rb"
+        template(src, dest, @env)
       end
     end
   end

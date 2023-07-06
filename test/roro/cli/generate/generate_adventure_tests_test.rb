@@ -6,90 +6,66 @@ describe 'Roro::CLI#generate_choice_tests' do
   Given(:workbench) {}
   Given(:generate) { Roro::CLI.new.generate_adventure_tests }
   Given { use_fixture_stack('alpha') }
-  Given(:stacks_test_dir) { 'test/roro/stacks' }
   Given { generate }
+  Given(:base) { 'test/roro/stacks' }
 
   Given(:directories) do
     %w[111 112 32].map { |d| "#{stacks_test_dir}/#{d.chars.join('/')}" }
   end
 
   Given(:directory) { directories.first }
+  Given(:stacks_test_dir) { 'test/roro/stacks' }
+  Given(:shared_tests_file) { "#{dir}/shared_tests.rb" }
+  Given(:case_test_file) { "#{dir}/_test.rb" }
+  Given(:dir) { 'test/roro/stacks/okonomi/php/laravel' }
 
-  describe 'when directory is base ancestor' do
-    Given(:base) { 'test/roro/stacks' }
-    Given(:file) { "#{base}/shared_tests.rb" }
-
-    Then { assert_file(base) }
-
-    describe 'must not have _test file' do 
-      Then { refute_file("#{base}/_test.rb") }
-    end
+  describe 'when directory is ancestor base must have shared_tests.rb' do
+    Given(:dir) { 'test/roro/stacks' }
 
     describe 'must require test helper' do
-      Then { assert_file(file, /require 'test_helper'/) }
+      Then { assert_file(shared_tests_file, /require 'test_helper'/) }
     end
 
-    describe 'must have assert_stacked_stack method' do
-      Then { assert_file(file, /def assert_stacked_stack/) }
+    describe 'must have stacked method' do
+      Then { assert_file(shared_tests_file, /def assert_stacked_stack/) }
     end
   end
 
   describe 'when directory is ancestor' do
-    Given(:file) { 'test/roro/stacks/okonomi/shared_tests.rb' }
-    Then do
-      assert_file(file, %r{require_relative '../shared_tests'})
-      assert_file(file, /def assert_stacked_okonomi/)
+    Given(:dir) { 'test/roro/stacks/okonomi' }
+
+    describe 'must require shared tests' do
+      Then { assert_file(shared_tests_file, %r{relative '../shared_tests'}) }
+    end
+
+    describe 'must not have a _test.rb file' do
+      Then { refute_file(case_test_file) }
     end
   end
 
-  describe 'must when directory has no children' do
-    Given(:file) { 'test/roro/stacks/okonomi/php/laravel/_test.rb' }
-    Then { assert_file(file, %r{require_relative '../shared_tests'}) }
-  end
+  describe 'when directory is not ancestor' do
+    describe 'will not contain shared_tests.rb' do
+      Then { refute_file(shared_tests_file) }
+    end
 
-  describe 'must generate shared tests in ancestor directories' do
-    Then do
-      assert_file('test/roro/stacks/shared_tests.rb')
-      assert_file('test/roro/stacks/okonomi/shared_tests.rb')
-      assert_file('test/roro/stacks/okonomi/php/shared_tests.rb')
+    describe 'must contain _tests.rb' do
+      Then { assert_file(case_test_file) }
+    end
+
+    describe 'must contain dummy directory' do
+      Then { assert_file("#{dir}/dummy/.keep") }
     end
   end
 
-  describe 'will not generate shared tests unless in ancestor directory' do
-    Then do
-      refute_file('test/roro/stacks/okonomi/php/laravel/shared_tests.rb')
-    end
-  end
+  describe '_test.rb' do
+    Given(:f) { case_test_file }
 
-  describe 'shared_tests.rb' do
-    Given(:file) { 'test/roro/stacks/shared_tests.rb' }
-
-    describe 'when at top level of stack' do
-      Then { assert_file(file, /require 'test_helper'/) }
+    describe 'must require shared tests' do
+      Then { assert_file(f, %r{relative '../shared_tests'}) }
     end
 
-    describe 'when not top level of stack' do
-      Given(:file) { 'test/roro/stacks/okonomi/shared_tests.rb' }
-      Then { assert_file(file, %r{require_relative '../shared_tests'}) }
-    end
-  end
-
-  describe 'must create correct directories' do
-    # And { assert_equal 'test/roro/stacks/3/2', directories[-1] }
-  end
-
-  describe 'must generate shared_tests.rb' do
-    # Then { assert_file "#{stacks_test_dir}/1/shared_test.rb" }
-    # And { assert_file "#{stacks_test_dir}/1/1/shared_test.rb" }
-    # And { assert_file "#{stacks_test_dir}/1/1/1/shared_test.rb" }
-  end
-
-  describe 'must generate _test.rb file in each directory' do
-    # Given(:file) { "#{directory}/_test.rb" }
-    # Then { assert_file file }
-
-    describe 'adventure title in first describe block' do
-      #   Then { assert_file file, /describe '3 -> 2: unstoppable/ }
+    describe 'must describe whata the case' do
+      Then { assert_file(f, /describe '1 okonomi -> 1 php -> 1 laravel'/) }
     end
   end
 end

@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+require_relative '../shared_tests'
+
+describe '<%= @env[:adventure_title] %>' do
+  Given(:workbench) {}
+  
+  Given do 
+    rollon(__dir__) 
+  end 
+end
