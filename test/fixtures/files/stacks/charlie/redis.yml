@@ -1,8 +1,5 @@
 env:
   base:
-    JOB_WORKER_URL:
-      name: Redis job worker url
-      value: redis://redis:6379/0
     REDIS_URL:
       name: Redis url
       value: redis://redis:6379/0

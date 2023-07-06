@@ -16,7 +16,6 @@ def assert_stacked_stacks_base_env
   assert_file(f, /docker_compose_version=3.9/)
   assert_file(f, /ruby_version=3.2.1/)
   assert_file(f, /RAILS_MAX_THREADS=5/)
-  assert_file(f, %r{JOB_WORKER_URL=redis://redis:6379/0})
   assert_file(f, %r{REDIS_URL=redis://redis:6379/0})
 end
 

@@ -27,7 +27,7 @@ guard 'livereload' do
           (?:app|vendor)
           (?:/assets/\w+/(?<path>[^.]+) # path+base without extension
            (?<ext>\.#{ext})) # matching extension (must be first encountered)
-          (?:\.\w+|$) # other extensions
+          (?:\.\w+|$)
           }x) do |m|
       path = m[1]
       "/assets/#{path}.#{type}"
@@ -42,7 +42,7 @@ end
 minitest_options = {
   test_folders: ['test'],
   all_env: {
-    'DEBUGGERER' => 'false'
+    'DEBUGGERER' => 'true'
   },
   all_after_pass: false,
   all_on_start: false
