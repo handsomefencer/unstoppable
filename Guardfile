@@ -41,12 +41,13 @@ end
 
 minitest_options = {
   test_folders: ['test'],
+  all_env: {
+    'DEBUGGERER' => 'false'
+  },
   all_after_pass: false,
   all_on_start: false
 }
 guard :minitest, minitest_options do
-  # ENV['DEBUGGERER'] = 'false'
-
   stack_tests = 'test/roro/stacks'
   watch(%r{^#{stack_tests}/(.*)/?(.*)_test\.rb$})
 
@@ -56,7 +57,4 @@ guard :minitest, minitest_options do
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }
-
-  watch('lib/roro/configurators/adventure_writer.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
-  watch('lib/roro/configurators/configurator.rb') { 'test/roro/stacks/1/1/1/_test.rb' }
 end
