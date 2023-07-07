@@ -3,7 +3,6 @@
 require_relative '../shared_tests'
 
 def assert_stacked_postgres
-  assert_stacked_stacks
   assert_stacked_postgres_base_env
   assert_stacked_postgres_docker_compose
 

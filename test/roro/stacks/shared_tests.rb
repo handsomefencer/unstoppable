@@ -10,13 +10,29 @@ def assert_stacked_stacks
   assert_file('entrypoints/docker-entrypoint.sh')
 end
 
+def assert_stacked_6_1
+  assert_file('Gemfile', /gem ["']rails["'], ["']~> 6.1.7/)
+end
+
+def assert_stacked_7_0
+  assert_file('Gemfile', /gem ["']rails["'], ["']~> 7.0.6/)
+end
+
+def refute_stacked_sidekiq
+  f = 'mise/env/base.env'
+  refute_content('mise/env/base.env', %r{REDIS_URL=redis://redis:6379/0})
+
+  f = 'docker-compose.yml'
+  refute_content('docker-compose.yml', /\s\sredis/)
+  refute_yaml('docker-compose.yml', :services, :redis, :image, /redis/)
+end
+
 def assert_stacked_stacks_base_env
   f = 'mise/env/base.env'
   assert_file(f, /bundler_version=2.4.13/)
   assert_file(f, /docker_compose_version=3.9/)
   assert_file(f, /ruby_version=3.2.1/)
   assert_file(f, /RAILS_MAX_THREADS=5/)
-  assert_file(f, %r{REDIS_URL=redis://redis:6379/0})
 end
 
 def assert_stacked_stacks_dockerfile

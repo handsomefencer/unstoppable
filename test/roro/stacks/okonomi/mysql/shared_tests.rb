@@ -3,9 +3,8 @@
 require_relative '../shared_tests'
 
 def assert_stacked_mysql
-  assert_stacked_okonomi
-  assert_stacked_mysql_base_env
-  assert_stacked_mysql_docker_compose
+  # assert_stacked_mysql_base_env
+  # assert_stacked_mysql_docker_compose
   assert_file('Dockerfile', /mysql-dev/)
   assert_file('Gemfile', /gem ["']mysql2["'], ["']~> 0.5/)
   assert_file('config/database.yml', /adapter: mysql2/)

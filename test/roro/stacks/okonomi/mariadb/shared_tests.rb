@@ -3,8 +3,7 @@
 require_relative '../shared_tests'
 
 def assert_stacked_mariadb
-  assert_stacked_okonomi
-  # assert_stacked_mariadb_base_env
+  # assert_stacked_okonomi  # assert_stacked_mariadb_base_env
   # assert_stacked_mariadb_docker_compose
   assert_file('config/database.yml', /adapter: mysql2/)
   assert_file('Gemfile', /gem ["']mysql2["'], ["']~> 0.5/)

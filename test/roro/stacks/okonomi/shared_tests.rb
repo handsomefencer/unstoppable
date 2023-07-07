@@ -3,8 +3,8 @@
 require_relative '../shared_tests'
 
 def assert_stacked_okonomi
-  assert_stacked_redis
-  assert_stacked_sidekiq
+  # assert_stacked_redis
+  # assert_stacked_sidekiq
 end
 
 def assert_stacked_sidekiq

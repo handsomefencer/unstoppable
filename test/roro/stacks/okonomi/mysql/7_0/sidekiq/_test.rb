@@ -2,7 +2,7 @@
 
 require_relative '../shared_tests'
 
-describe '2: unstoppable_rails_style: omakase' do
+describe '1 -> 2 -> 2: ' do
   Given(:workbench) {}
 
   Given do
@@ -11,6 +11,10 @@ describe '2: unstoppable_rails_style: omakase' do
   end
 
   Then do
-    assert_stacked_sqlite
+    assert_stacked_stacks
+    assert_stacked_okonomi
+    assert_stacked_mysql
+    assert_stacked_7_0
+    assert_stacked_sidekiq
   end
 end
