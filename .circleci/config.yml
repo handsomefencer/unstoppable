@@ -164,6 +164,15 @@ workflows:
                     branches:
                         only:
                             - gem-release
+    release-image:
+        jobs:
+            - build
+            - roro-image-build
+            - roro-image-push:
+                filters:
+                    branches:
+                        only:
+                            - release-image
     rubies:
         jobs:
             - test-rubies:
