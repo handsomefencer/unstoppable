@@ -1,0 +1,9 @@
+
+
+---
+jobs:
+  - release:
+      filters:
+        branches:
+          only: 
+          - release-image

@@ -84,9 +84,15 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - run: |
-                sudo chown -R $USER:$USER .
-                sudo env UID=${UID} GID=${GID} docker-compose build roro
+            - run:
+                command: |
+                    sudo chown -R $USER:$USER .
+                    sudo env UID=${UID} GID=${GID} docker-compose build roro
+                name: Build Roro image
+            - run:
+                command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro generate:exposed
+                name: expose ci.env
+            - run: cat mise/env/ci.env
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>

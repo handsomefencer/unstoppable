@@ -24,6 +24,9 @@ services:
       dockerfile: mise/containers/ruby_gem/Dockerfile
     image: handsomefencer/roro
     user: "${UID}:${GID}"
+    working_dir: /usr/src
+    volumes:
+      - .:/usr/src
 
   guard:
     build:

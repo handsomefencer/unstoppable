@@ -1,7 +1,13 @@
 executor: machine-ubuntu
 steps:
   - checkout
-  - run: |
-      sudo chown -R $USER:$USER .
-      sudo env UID=${UID} GID=${GID} docker-compose build roro
+  - run: 
+      name: Build Roro image
+      command: |
+        sudo chown -R $USER:$USER .
+        sudo env UID=${UID} GID=${GID} docker-compose build roro
 
+  - run: 
+      name: expose ci.env 
+      command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro generate:exposed
+  - run: cat mise/env/ci.env
