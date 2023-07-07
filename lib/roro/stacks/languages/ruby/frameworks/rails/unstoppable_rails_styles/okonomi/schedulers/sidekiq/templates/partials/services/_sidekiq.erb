@@ -1,0 +1,12 @@
+
+  sidekiq:
+    image: unstoppable
+    command: bundle exec sidekiq
+    depends_on:
+      - redis
+    env_file:
+      - ./mise/env/base.env
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle/gems
+      - node_modules:/app/node_modules
