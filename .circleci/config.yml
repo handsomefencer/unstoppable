@@ -98,10 +98,11 @@ jobs:
                 echo ${DOCKERHUB_TOKEN} | docker login \
                   -u ${DOCKERHUB_USERNAME} \
                   --password-stdin
-            - run: "name: build \ncommand: |\n  source mise/env/ci.env\n  sudo docker build \\\n    -t handsomefencer/roro:latest \\\n    -t handsomefencer/roro:${CIRCLE_SHA1} .\n"
+            - run:
+                command: "sudo docker tag handsomefencer/roro handsomefencer/roro:latest \nsudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
+                name: build
             - run:
                 command: |-
-                    source mise/env/ci.env
                     sudo docker image push handsomefencer/roro:latest
                     sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
                 name: push
