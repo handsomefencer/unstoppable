@@ -17,7 +17,12 @@ steps:
         -u ${DOCKERHUB_USERNAME} \
         --password-stdin
   - run: |
+      source mise/env/ci.env
       sudo docker tag handsomefencer/roro handsomefencer/roro:latest 
       sudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
-  - run: sudo docker image push handsomefencer/roro:latest
-  - run: sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
+  - run: |
+      source mise/env/ci.env
+      sudo docker image push handsomefencer/roro:latest
+  - run: |
+      source mise/env/ci.env
+      sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
