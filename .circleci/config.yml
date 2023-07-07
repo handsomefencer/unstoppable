@@ -63,13 +63,6 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-    build-roro-image:
-        executor: machine-ubuntu
-        steps:
-            - checkout
-            - run: |
-                sudo chown -R $USER:$USER .
-                sudo env UID=${UID} GID=${GID} docker-compose build roro
     release:
         executor: docker-cimg-ruby
         steps:
@@ -80,6 +73,20 @@ jobs:
             - run: gem install gem-release
             - run: gem bump
             - run: gem release
+    roro-image-build:
+        executor: machine-ubuntu
+        steps:
+            - checkout
+            - run: |
+                sudo chown -R $USER:$USER .
+                sudo env UID=${UID} GID=${GID} docker-compose build roro
+    roro-image-push:
+        executor: machine-ubuntu
+        steps:
+            - checkout
+            - run: |
+                sudo chown -R $USER:$USER .
+                sudo env UID=${UID} GID=${GID} docker-compose build roro
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
@@ -114,7 +121,7 @@ workflows:
     adventures:
         jobs:
             - build
-            - build-roro-image
+            - roro-image-build
             - test-adventures:
                 filters:
                     branches:
@@ -143,7 +150,7 @@ workflows:
                         os:
                             - machine-ubuntu
                 requires:
-                    - build-roro-image
+                    - roro-image-build
     gem-release:
         jobs:
             - release:
