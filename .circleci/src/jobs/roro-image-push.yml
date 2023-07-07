@@ -16,13 +16,9 @@ steps:
       echo ${DOCKERHUB_TOKEN} | docker login \
         -u ${DOCKERHUB_USERNAME} \
         --password-stdin
+  - run: |
+      sudo docker tag handsomefencer/roro handsomefencer/roro:latest 
+      sudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
   - run: 
-      name: build 
-      command: |
-        sudo docker tag handsomefencer/roro handsomefencer/roro:latest 
-        sudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
-  - run: 
-      name: push 
-      command: | 
-        sudo docker image push handsomefencer/roro:latest
-        sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
+      sudo docker image push handsomefencer/roro:latest
+      sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}

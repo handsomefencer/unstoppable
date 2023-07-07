@@ -98,14 +98,8 @@ jobs:
                 echo ${DOCKERHUB_TOKEN} | docker login \
                   -u ${DOCKERHUB_USERNAME} \
                   --password-stdin
-            - run:
-                command: "sudo docker tag handsomefencer/roro handsomefencer/roro:latest \nsudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
-                name: build
-            - run:
-                command: |-
-                    sudo docker image push handsomefencer/roro:latest
-                    sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
-                name: push
+            - run: "sudo docker tag handsomefencer/roro handsomefencer/roro:latest \nsudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
+            - run: sudo docker image push handsomefencer/roro:latest sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
