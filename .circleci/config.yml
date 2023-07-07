@@ -93,6 +93,18 @@ jobs:
                 command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
                 name: expose ci.env
             - run: cat mise/env/ci.env
+            - run: |
+                source mise/env/ci.env
+                echo ${DOCKERHUB_TOKEN} | docker login \
+                  -u ${DOCKERHUB_USERNAME} \
+                  --password-stdin
+            - run: "name: build \ncommand: |\n  source mise/env/ci.env\n  sudo docker build \\\n    -t handsomefencer/roro:latest \\\n    -t handsomefencer/roro:${CIRCLE_SHA1} .\n"
+            - run:
+                command: |-
+                    source mise/env/ci.env
+                    sudo docker image push handsomefencer/roro:latest
+                    sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
+                name: push
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>

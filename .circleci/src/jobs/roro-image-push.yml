@@ -11,3 +11,21 @@ steps:
       name: expose ci.env 
       command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
   - run: cat mise/env/ci.env
+  - run: |
+      source mise/env/ci.env
+      echo ${DOCKERHUB_TOKEN} | docker login \
+        -u ${DOCKERHUB_USERNAME} \
+        --password-stdin
+  - run: |
+      name: build 
+      command: |
+        source mise/env/ci.env
+        sudo docker build \
+          -t handsomefencer/roro:latest \
+          -t handsomefencer/roro:${CIRCLE_SHA1} .
+  - run: 
+      name: push 
+      command: | 
+        source mise/env/ci.env
+        sudo docker image push handsomefencer/roro:latest
+        sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
