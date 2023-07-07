@@ -9,3 +9,5 @@ jobs:
         branches:
           only: 
           - release-image
+      requires:
+          - roro-image-build

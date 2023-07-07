@@ -9,5 +9,5 @@ steps:
 
   - run: 
       name: expose ci.env 
-      command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro generate:exposed
+      command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
   - run: cat mise/env/ci.env
