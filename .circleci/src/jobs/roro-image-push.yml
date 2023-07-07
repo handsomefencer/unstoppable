@@ -1,28 +1,17 @@
 executor: machine-ubuntu
 steps:
   - checkout
-  - run: 
-      name: Build Roro image
-      command: |
-        sudo chown -R $USER:$USER .
-        sudo env UID=${UID} GID=${GID} docker-compose build roro
-
-  - run: 
-      name: expose ci.env 
-      command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
-  - run: cat mise/env/ci.env
+  - run: docker run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
+  - run: echo $(cat mise/env/ci.env) >> $BASH_ENV
   - run: |
-      source mise/env/ci.env
-      echo ${DOCKERHUB_TOKEN} | docker login \
-        -u ${DOCKERHUB_USERNAME} \
-        --password-stdin
+      echo "token\:    ${DOCKERHUB_TOKEN}"
+      echo "username\: ${DOCKERHUB_PASSWORD}"
   - run: |
-      source mise/env/ci.env
       sudo docker tag handsomefencer/roro handsomefencer/roro:latest 
       sudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
   - run: |
-      source mise/env/ci.env
-      sudo docker image push handsomefencer/roro:latest
-  - run: |
-      source mise/env/ci.env
-      sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
+      echo ${DOCKERHUB_TOKEN} | docker login \
+        -u ${DOCKERHUB_USERNAME} \
+        --password-stdin
+      docker image push handsomefencer/roro:latest
+      docker image push handsomefencer/roro:${CIRCLE_SHA1}
