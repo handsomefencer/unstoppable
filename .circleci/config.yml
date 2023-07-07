@@ -84,7 +84,7 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - run: docker run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
+            - run: docker run -e CI_KEY=${CI_KEY} --rm handsomefencer/roro roro generate:exposed
             - run: echo $(cat mise/env/ci.env) >> $BASH_ENV
             - run: |
                 echo "token\:    ${DOCKERHUB_TOKEN}"
