@@ -2,12 +2,8 @@
 
 ---
 jobs:
-  - build
-  - roro-image-build
   - roro-image-push:
       filters:
         branches:
           only: 
           - release-image
-      requires:
-          - roro-image-build

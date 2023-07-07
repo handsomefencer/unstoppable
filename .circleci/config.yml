@@ -84,12 +84,13 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - run: docker run -e CI_KEY=${CI_KEY} --rm handsomefencer/roro roro generate:exposed
+            - run: docker-compose build roro
+            - run: "sudo docker tag handsomefencer/roro handsomefencer/roro:latest \nsudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
+            - run: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
             - run: echo $(cat mise/env/ci.env) >> $BASH_ENV
             - run: |
                 echo "token\:    ${DOCKERHUB_TOKEN}"
                 echo "username\: ${DOCKERHUB_PASSWORD}"
-            - run: "sudo docker tag handsomefencer/roro handsomefencer/roro:latest \nsudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
             - run: |-
                 echo ${DOCKERHUB_TOKEN} | docker login \
                   -u ${DOCKERHUB_USERNAME} \
@@ -169,15 +170,11 @@ workflows:
                             - gem-release
     release-image:
         jobs:
-            - build
-            - roro-image-build
             - roro-image-push:
                 filters:
                     branches:
                         only:
                             - release-image
-                requires:
-                    - roro-image-build
     rubies:
         jobs:
             - test-rubies:
