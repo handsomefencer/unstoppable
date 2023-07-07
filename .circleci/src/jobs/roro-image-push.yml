@@ -19,6 +19,5 @@ steps:
   - run: |
       sudo docker tag handsomefencer/roro handsomefencer/roro:latest 
       sudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
-  - run: 
-      sudo docker image push handsomefencer/roro:latest
-      sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
+  - run: sudo docker image push handsomefencer/roro:latest
+  - run: sudo docker image push handsomefencer/roro:${CIRCLE_SHA1}
