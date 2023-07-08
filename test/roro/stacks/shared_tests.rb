@@ -33,6 +33,7 @@ def assert_stacked_stacks_base_env
   assert_file(f, /docker_compose_version=3.9/)
   assert_file(f, /ruby_version=3.2.1/)
   assert_file(f, /RAILS_MAX_THREADS=5/)
+  assert_file('mise/containers/app/Dockerfile')
 end
 
 def assert_stacked_stacks_dockerfile
@@ -51,15 +52,44 @@ def assert_stacked_stacks_docker_compose
   assert_yaml(f, :services, :app, :ports, 0, '3000:3000')
 end
 
+def assert_stacked_stacks_env_files
+  f = 'docker-compose.yml'
+  assert_yaml(f, :services, :app, :env_file, 0, %r{./mise/env/base.env})
+  assert_yaml(f, :services, :app, :env_file, 1, %r{./mise/env/development.env})
+  assert_yaml(f, :services, :app, :env_file, 2, %r{./mise/containers/app/env/base.env})
+  assert_yaml(f, :services, :app, :env_file, 3, %r{./mise/containers/app/env/development.env})
+  # assert_yaml(f, :services, :db, :env_file, 0, %r{./mise/env/base.env})
+  assert_yaml(f, :services, :db, :env_file, 1, %r{./mise/env/development.env})
+  # assert_yaml(f, :services, :db, :env_file, 2, %r{./mise/containers/db/env/base.env})
+  # assert_yaml(f, :services, :db, :env_file, 3, %r{./mise/containers/db/env/development.env})
+end
+
 def assert_stacked_stacks_gemfile
   assert_file('Gemfile', /ruby ["']3.2.1["']/)
 end
 
 def assert_stacked_sqlite
-  assert_stacked_stacks
   assert_file('config/database.yml', /adapter: sqlite3/)
   assert_file('Gemfile', /gem ["']sqlite3["'], ["']~> 1.4/)
   assert_file('Dockerfile', /sqlite-dev/)
   refute_yaml('docker-compose.yml', :services, :app, :depends_on, 0, 'db')
   refute_content('mise/env/base.env', /db_volume/)
+end
+
+def assert_stacked_sidekiq
+  f = 'docker-compose.yml'
+  assert_yaml(f, :services, :sidekiq, :image, 'unstoppable')
+end
+
+def assert_stacked_redis
+  f = 'mise/env/base.env'
+  assert_file(f, %r{REDIS_URL=redis://redis:6379/0})
+  assert_yaml('docker-compose.yml')
+
+  f = 'docker-compose.yml'
+  assert_file(f, /\nvolumes:\n\s\sdb_data/)
+  assert_file(f, /\s\sgem_cache/)
+  assert_file(f, /\s\snode_modules/)
+  assert_file(f, /\s\sredis/)
+  assert_yaml(f, :services, :redis, :image, 'redis:7.0-alpine')
 end

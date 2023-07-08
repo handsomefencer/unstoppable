@@ -5,13 +5,16 @@ services:
     image: unstoppable
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./mise/containers/app/Dockerfile
       args:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
 
     env_file:
       - ./mise/env/base.env
+      - ./mise/env/development.env
+      - ./mise/containers/app/env/base.env
+      - ./mise/containers/app/env/development.env
     ports:
       - "3000:3000"
     volumes:

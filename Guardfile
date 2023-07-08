@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'pry'
 require 'byebug'
+
 Pry.config.input = STDIN
 Pry.config.output = STDOUT
 

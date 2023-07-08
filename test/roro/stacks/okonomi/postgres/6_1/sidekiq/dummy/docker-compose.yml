@@ -5,7 +5,7 @@ services:
     image: unstoppable
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./mise/containers/app/Dockerfile
       args:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
@@ -13,6 +13,9 @@ services:
       - db
     env_file:
       - ./mise/env/base.env
+      - ./mise/env/development.env
+      - ./mise/containers/app/env/base.env
+      - ./mise/containers/app/env/development.env
     ports:
       - "3000:3000"
     volumes:
@@ -26,6 +29,11 @@ services:
       - db_data:/var/lib/postgresql/data
     env_file:
       - ./mise/env/base.env
+      - ./mise/env/development.env
+      - ./mise/containers/db/env/base.env
+      - ./mise/containers/db/env/development.env
+
+
 
   redis:
     image: 'redis:7.0-alpine'

@@ -10,11 +10,7 @@ env:
       name: Maximum number of threads for the database. Important for redis.
       value: '5'
 
-
 actions:
-  - copy_layer('manifest')
   - generate_mise
+  - copy_layer('manifest')
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
-
-
-

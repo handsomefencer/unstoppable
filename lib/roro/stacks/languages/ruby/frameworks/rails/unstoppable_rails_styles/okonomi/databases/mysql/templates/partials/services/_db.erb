@@ -3,5 +3,4 @@
     image: <%= @env[:base][:db_image][:value] %><%= ":#{@env[:base][:db_image_version][:value]}" %>
     volumes:
       - db_data:/var/lib/mysql
-    env_file:
-      - ./mise/env/base.env
+<%= partial('db_env_files') %>
