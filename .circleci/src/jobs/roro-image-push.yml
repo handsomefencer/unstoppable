@@ -3,8 +3,8 @@ steps:
   - checkout
   - run: docker-compose build roro
   - run: |
-      sudo docker tag handsomefencer/roro handsomefencer/roro:latest 
-      sudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
+      docker tag handsomefencer/roro handsomefencer/roro:latest 
+      docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
   - run: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
   - run: echo $(cat mise/env/ci.env) >> $BASH_ENV
   - run: |

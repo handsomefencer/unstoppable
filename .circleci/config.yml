@@ -85,7 +85,7 @@ jobs:
         steps:
             - checkout
             - run: docker-compose build roro
-            - run: "sudo docker tag handsomefencer/roro handsomefencer/roro:latest \nsudo docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
+            - run: "docker tag handsomefencer/roro handsomefencer/roro:latest \ndocker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
             - run: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
             - run: echo $(cat mise/env/ci.env) >> $BASH_ENV
             - run: |
