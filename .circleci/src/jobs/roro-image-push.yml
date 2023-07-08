@@ -2,7 +2,6 @@ executor: machine-ubuntu
 steps:
   - checkout
   - run: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
-  - run: echo $(cat mise/env/ci.env) >> $BASH_ENV
   - run: |
       echo ${DOCKERHUB_TOKEN} | docker login \
         -u ${DOCKERHUB_USERNAME} \
