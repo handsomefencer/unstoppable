@@ -6,11 +6,27 @@ env:
     rails_version:
       name: Ruby on Rails minor version
       value: '7.0.6'
-    RAILS_MAX_THREADS:
-      name: Maximum number of threads for the database. Important for redis.
-      value: '5'
+    app_name:
+      name: Name for your app
+      value: unstoppable
+    app: 
+      RAILS_MAX_THREADS:
+        name: Maximum number of threads for the database. Important for redis.
+        value: '5'
+  development:
+    app: 
+      RAILS_ENV:
+        name: Development Rails environment
+        value: development
+  production:
+    app: 
+      RAILS_ENV:
+        name: Production Rails environment
+        value: production
 
 actions:
-  - generate_mise
+  - remove_file 'Dockerfile'
+
   - copy_layer('manifest')
+  - generate_mise
   - chmod 'entrypoints/docker-entrypoint.sh', 0755

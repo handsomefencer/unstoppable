@@ -18,7 +18,7 @@ namespace :ci do
     def set_content(task)
       wf = "#{Dir.pwd}/.circleci/src/workflows/#{task.name.split(':').last}"
       @dest = "#{wf}.yml"
-      @content = JSON.parse(YAML.load_file("#{wf}.yml.tt").to_json)
+      @content = JSON.parse(YAML.unsafe_load("#{wf}.yml.tt").to_json)
     end
 
     def overwrite

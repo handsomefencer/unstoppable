@@ -12,25 +12,23 @@ env:
       value: postgresql-dev
     db_volume:
       value: /var/lib/postgresql/data
-    db_gem:
-      value: pg
-    DATABASE_NAME:
-      name: Database name
-      value: postgres
-    DATABASE_HOST:
-      name: Database host
-      value: db
-    DATABASE_PASSWORD:
-      name: 
-      value: password
-    
-    POSTGRES_NAME:
-      name: Database name
-      value: postgres
-    POSTGRES_PASSWORD:
-      name: Database password
-      value: password
-    POSTGRES_USERNAME:
-      name: Database username
-      value: postgres
-    
+  development:
+      DATABASE_NAME:
+        name: Database name
+        value: postgres
+      DATABASE_HOST:
+        name: Database host
+        value: db
+      DATABASE_PASSWORD:
+        name: 
+        value: password
+      POSTGRES_NAME:
+        name: Database name
+        value: postgres
+      POSTGRES_PASSWORD:
+        name: Database password
+        value: password
+      POSTGRES_USERNAME:
+        name: Database username
+        value: postgres
+      

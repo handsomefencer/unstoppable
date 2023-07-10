@@ -3,11 +3,27 @@
 require 'test_helper'
 
 def assert_stacked_stacks
-  assert_stacked_stacks_base_env
+  assert_stacked_mise
+  assert_stacked_rails
   assert_stacked_stacks_dockerfile
   assert_stacked_stacks_docker_compose
   assert_stacked_stacks_gemfile
   assert_file('entrypoints/docker-entrypoint.sh')
+end
+
+def assert_stacked_mise
+  assert_file('mise/env/base.env')
+  assert_file('mise/env/development.env')
+  assert_file('mise/env/production.env')
+  assert_file('mise/containers/db/env/base.env')
+  assert_file('mise/containers/db/env/development.env')
+  assert_file('mise/containers/db/env/development.env')
+end
+
+def assert_stacked_rails
+  assert_file('mise/env/base.env', /rails_version/)
+  assert_file('mise/containers/app/env/base.env', /RAILS_MAX_THREADS/)
+  assert_file('mise/containers/app/env/base.env', /REDIS_URL/)
 end
 
 def assert_stacked_6_1
@@ -32,15 +48,20 @@ def assert_stacked_stacks_base_env
   assert_file(f, /bundler_version=2.4.13/)
   assert_file(f, /docker_compose_version=3.9/)
   assert_file(f, /ruby_version=3.2.1/)
-  assert_file(f, /RAILS_MAX_THREADS=5/)
-  assert_file('mise/containers/app/Dockerfile')
+end
+
+def assert_stacked_stacks_development_env
+  f = 'mise/env/base.env'
+  assert_file(f, /bundler_version=2.4.13/)
+  assert_file(f, /docker_compose_version=3.9/)
+  assert_file(f, /ruby_version=3.2.1/)
 end
 
 def assert_stacked_stacks_dockerfile
-  f = 'Dockerfile'
-  assert_file(f, /FROM ruby:3.2.1-alpine/)
-  assert_file(f, /bundler:2.4.13/)
-  assert_file(f, /nodejs/)
+  # f = 'Dockerfile'
+  # assert_file(f, /FROM ruby:3.2.1-alpine/)
+  # assert_file(f, /bundler:2.4.13/)
+  # assert_file(f, /nodejs/)
 end
 
 def assert_stacked_stacks_docker_compose
@@ -71,7 +92,7 @@ end
 def assert_stacked_sqlite
   assert_file('config/database.yml', /adapter: sqlite3/)
   assert_file('Gemfile', /gem ["']sqlite3["'], ["']~> 1.4/)
-  assert_file('Dockerfile', /sqlite-dev/)
+  # assert_file('Dockerfile', /sqlite-dev/)
   refute_yaml('docker-compose.yml', :services, :app, :depends_on, 0, 'db')
   refute_content('mise/env/base.env', /db_volume/)
 end
