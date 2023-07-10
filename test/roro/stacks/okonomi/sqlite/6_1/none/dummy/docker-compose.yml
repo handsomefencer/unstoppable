@@ -2,45 +2,35 @@ version: '3.9'
 
 x-app:
   &app
-  extends:
-    file: mise/containers/app/common.yml
-    service: app
-  depends_on:
-    - db
-    - redis
+
+  env_file:
+    - ./mise/env/base.env
+    - ./mise/env/development.env
+    - ./mise/containers/app/env/base.env
+    - ./mise/containers/app/env/development.env
+  image: unstoppable
+  stdin_open: true
+  tmpfs:
+    - "/app/tmp"
+    - "/app/log"
+  tty: true
   user: root
   volumes:
     - $PWD:/app
     - gem_cache:/usr/local/bundle/gems
     - node_modules:/app/node_modules
-  tmpfs:
-    - "/app/tmp"
-    - "/app/log"
-  stdin_open: true
-  tty: true
-
 
 services:
   app:
-    image: unstoppable
+    <<: *app
     build:
       context: .
       dockerfile: ./mise/containers/app/Dockerfile
       args:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
-
-    env_file:
-      - ./mise/env/base.env
-      - ./mise/env/development.env
-      - ./mise/containers/app/env/base.env
-      - ./mise/containers/app/env/development.env
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
-      - gem_cache:/usr/local/bundle/gems
-      - node_modules:/app/node_modules
 
 volumes:
   db_data:

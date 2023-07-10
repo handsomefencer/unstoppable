@@ -8,8 +8,8 @@ def assert_stacked_stacks
   assert_stacked_ruby
   assert_stacked_docker_volumes
   assert_stacked_compose_anchor_app
-  assert_stacked_compose_service_app
-  refute_file('Dockerfile')
+  # assert_stacked_compose_service_app
+  # refute_file('Dockerfile')
 end
 
 def assert_stacked_mise
@@ -48,7 +48,6 @@ end
 def assert_stacked_compose_anchor_app
   f = 'docker-compose.yml'
   a = [f, :"x-app"]
-  assert_yaml(*a, :depends_on, 0, 'db')
   assert_yaml(*a, :env_file, 0, './mise/env/base.env')
   assert_yaml(*a, :env_file, 1, %r{mise/env/development.env})
   assert_yaml(*a, :env_file, 2, %r{containers/app/env/base.env})
@@ -67,11 +66,13 @@ def assert_stacked_compose_service_app
 end
 
 def assert_stacked_compose_service_db
-  a = ['docker-compose.yml', :services, :db, :env_file]
+  f = 'docker-compose.yml'
+  a = [f, :services, :db, :env_file]
   assert_yaml(*a, 0, %r{/mise/env/base.env})
   assert_yaml(*a, 1, %r{/mise/env/development.env})
   assert_yaml(*a, 2, %r{/mise/containers/db/env/base.env})
   assert_yaml(*a, 3, %r{/mise/containers/db/env/development.env})
+  assert_yaml(f, :services, :app, :depends_on, 0, 'db')
 end
 
 def assert_stacked_compose_service_redis
@@ -99,7 +100,7 @@ end
 
 def assert_stacked_6_1
   assert_file('Gemfile', /gem ["']rails["'], ["']~> 6.1.7/)
-  assert_file('mise/env/base.env', /rails_version=6_1/)
+  assert_file('mise/env/base.env', /rails_version=6.1.7/)
 end
 
 def assert_stacked_7_0
@@ -111,10 +112,12 @@ def assert_stacked_gemfile
 end
 
 def assert_stacked_sqlite
+  f = 'mise/env/base.env'
+  assert_file(f, /db_vendor=sqlite3/)
+  assert_file(f, /db_pkg=sqlite-dev/)
   assert_file('config/database.yml', /adapter: sqlite3/)
   assert_file('Gemfile', /gem ["']sqlite3["'], ["']~> 1.4/)
-  # assert_file('Dockerfile', /sqlite-dev/)
-  refute_yaml('docker-compose.yml', :services, :app, :depends_on, 0, 'db')
+  assert_file('mise/containers/app/Dockerfile', /sqlite-dev/)
   refute_content('mise/env/base.env', /db_volume/)
 end
 

@@ -14,6 +14,7 @@ describe '1 okonomi -> 1 mariadb -> 1 6_1 -> 1 none' do
     assert_stacked_okonomi
     assert_stacked_mariadb
     assert_stacked_6_1
-    assert_stacked_sidekiq
+    assert_stacked_compose_service_redis
+    assert_stacked_compose_service_sidekiq
   end
 end

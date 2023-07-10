@@ -14,6 +14,7 @@ describe '1 -> 2 -> 1: database: postgres, rails version: 6.1' do
     assert_stacked_okonomi
     assert_stacked_postgres
     assert_stacked_6_1
-    refute_stacked_sidekiq
+    refute_stacked_compose_service_redis
+    refute_stacked_compose_service_sidekiq
   end
 end

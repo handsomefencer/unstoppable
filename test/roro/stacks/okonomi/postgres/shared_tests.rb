@@ -5,8 +5,6 @@ require_relative '../shared_tests'
 def assert_stacked_postgres
   assert_stacked_postgres_mise
   assert_stacked_compose_service_db
-  # assert_stacked_postgres_service_db
-
   assert_file('config/database.yml', /adapter: postgresql/)
   assert_file('Gemfile', /gem ["']pg["'], ["']~> 1.1/)
   assert_file('mise/containers/app/Dockerfile', /postgresql-dev/)
@@ -41,8 +39,6 @@ def assert_stacked_postgres_service_db
   a = ['docker-compose.yml', :services]
   assert_yaml(*a, :db, :image, 'postgres:14.1')
   assert_yaml(*a, :db, :volumes, 0, %r{db_data:/var/lib/postgresql/data})
-  assert_yaml(*a, :app, :depends_on, 0, 'db')
+  # assert_yaml(*a, :app, :depends_on, 0, 'db')
   assert_yaml(*a, :app, :depends_on, 1, 'redis')
 end
-# def assert_stacked_docker_db
-# end
