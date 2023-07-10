@@ -42,7 +42,7 @@ module Roro
           generator = Roro::CLI.new
           generator.generate_mise
           generator.generate_containers 'app', 'db'
-          generator.generate_environments @env
+          generator.generate_environment_files(@env)
           generator.generate_keys
         end
 

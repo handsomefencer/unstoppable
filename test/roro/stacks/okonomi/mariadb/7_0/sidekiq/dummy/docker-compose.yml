@@ -1,5 +1,25 @@
 version: '3.9'
 
+x-app:
+  &app
+  extends:
+    file: mise/containers/app/common.yml
+    service: app
+  depends_on:
+    - db
+    - redis
+  user: root
+  volumes:
+    - $PWD:/app
+    - gem_cache:/usr/local/bundle/gems
+    - node_modules:/app/node_modules
+  tmpfs:
+    - "/app/tmp"
+    - "/app/log"
+  stdin_open: true
+  tty: true
+
+
 services:
   app:
     image: unstoppable
@@ -34,7 +54,6 @@ services:
       - ./mise/env/development.env
       - ./mise/containers/db/env/base.env
       - ./mise/containers/db/env/development.env
-
 
 
   redis:
