@@ -40,7 +40,7 @@ module Roro::TestHelpers::FilesHelper
   def refute_yaml(*args)
     file = args.shift
     assert_file(file)
-    yaml = JSON.parse(YAML.load_file(file).to_json, symbolize_names: true)
+    yaml = JSON.parse(YAML.load_file(file, aliases: true).to_json, symbolize_names: true)
     assert_nil yaml.dig(*args)
   end
 

@@ -4,6 +4,7 @@ x-app:
   &app
   depends_on: 
     - db
+    - redis
   env_file:
     - ./mise/env/base.env
     - ./mise/env/development.env
@@ -50,6 +51,7 @@ services:
       - '6379:6379'
     volumes:
       - 'redis:/data'
+
   sidekiq:
     <<: *app
 

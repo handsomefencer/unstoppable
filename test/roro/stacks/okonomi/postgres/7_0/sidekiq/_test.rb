@@ -15,17 +15,7 @@ describe '1 okonomi -> 3 postgres -> 2 7_0 -> 2 sidekiq' do
     assert_stacked_okonomi
     assert_stacked_postgres
     assert_stacked_7_0
-    assert_stacked_sidekiq
-    # f = 'docker-compose.yml'
-    # assert_yaml(f, :services, :db, :image, 'postgres:14.1')
-    # assert_yaml(f, :services, :db, :volumes, 0, %r{lib/postgresql/data})
-    # refute_file('Dockerfile')
-
-    # assert_file('mise/containers/app/Dockerfile')
-    # assert_file(f, /DATABASE_NAME/)
-
-    # assert_file(f, /RAILS_MAX_THREADS=5/)
-    # assert_file('mise/containers/app/Dockerfile')
-    # assert_file('mise/containers/app/env/development.env', /RAILS_MAX_THREADS=5/)
+    assert_stacked_compose_service_redis
+    assert_stacked_compose_service_sidekiq
   end
 end

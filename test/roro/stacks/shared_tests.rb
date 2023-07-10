@@ -7,10 +7,9 @@ def assert_stacked_stacks
   assert_stacked_rails
   assert_stacked_ruby
   assert_stacked_docker_volumes
-  assert_stacked_docker_anchor_app
+  assert_stacked_compose_anchor_app
   assert_stacked_compose_service_app
-  # assert_stacked_docker_db
-  assert_file('entrypoints/docker-entrypoint.sh')
+  refute_file('Dockerfile')
 end
 
 def assert_stacked_mise
@@ -26,6 +25,7 @@ end
 
 def assert_stacked_rails
   assert_file('mise/containers/app/env/base.env', /RAILS_MAX_THREADS/)
+  assert_file('entrypoints/docker-entrypoint.sh')
 end
 
 def assert_stacked_ruby
@@ -45,7 +45,7 @@ def assert_stacked_docker_volumes
   assert_file(f, /\s\snode_modules/)
 end
 
-def assert_stacked_docker_anchor_app
+def assert_stacked_compose_anchor_app
   f = 'docker-compose.yml'
   a = [f, :"x-app"]
   assert_yaml(*a, :depends_on, 0, 'db')
@@ -74,6 +74,29 @@ def assert_stacked_compose_service_db
   assert_yaml(*a, 3, %r{/mise/containers/db/env/development.env})
 end
 
+def assert_stacked_compose_service_redis
+  a = ['docker-compose.yml', :services, :redis]
+  assert_yaml(*a, :image, /redis:7.0-alpine/)
+  assert_yaml(*a, :command, 'redis-server')
+  assert_yaml(*a, :ports, 0, '6379:6379')
+  assert_yaml(*a, :volumes, 0, 'redis:/data')
+  # assert_yaml(*a, 1, %r{/mise/env/development.env})
+  # assert_yaml(*a, 2, %r{/mise/containers/db/env/base.env})
+  # assert_yaml(*a, 3, %r{/mise/containers/db/env/development.env})
+end
+
+def refute_stacked_compose_service_redis
+  f = 'docker-compose.yml'
+  a = ['docker-compose.yml', :services, :redis]
+  assert_yaml(f, :services, :app, :depends_on, 1, nil)
+  # assert_yaml(*a, :command, 'redis-server')
+  # assert_yaml(*a, :ports, 0, '6379:6379')
+  # assert_yaml(*a, :volumes, 0, 'redis:/data')
+  # assert_yaml(*a, 1, %r{/mise/env/development.env})
+  # assert_yaml(*a, 2, %r{/mise/containers/db/env/base.env})
+  # assert_yaml(*a, 3, %r{/mise/containers/db/env/development.env})
+end
+
 def assert_stacked_6_1
   assert_file('Gemfile', /gem ["']rails["'], ["']~> 6.1.7/)
   assert_file('mise/env/base.env', /rails_version=6_1/)
@@ -81,15 +104,6 @@ end
 
 def assert_stacked_7_0
   assert_file('Gemfile', /gem ["']rails["'], ["']~> 7.0.6/)
-end
-
-def refute_stacked_sidekiq
-  f = 'mise/env/base.env'
-  refute_content('mise/env/base.env', %r{REDIS_URL=redis://redis:6379/0})
-
-  f = 'docker-compose.yml'
-  refute_content('docker-compose.yml', /\s\sredis/)
-  refute_yaml('docker-compose.yml', :services, :redis, :image, /redis/)
 end
 
 def assert_stacked_gemfile
@@ -104,21 +118,26 @@ def assert_stacked_sqlite
   refute_content('mise/env/base.env', /db_volume/)
 end
 
-def assert_stacked_sidekiq
+def assert_stacked_compose_service_sidekiq
+  f = 'mise/containers/app/env/base.env'
+  assert_file(f, %r{REDIS_URL=redis://redis:6379/0})
   f = 'docker-compose.yml'
   assert_yaml(f, :services, :sidekiq, :image, 'unstoppable')
-  assert_file('mise/containers/app/env/base.env', /REDIS_URL/)
-end
-
-def assert_stacked_redis
-  f = 'mise/env/base.env'
-  assert_file(f, %r{REDIS_URL=redis://redis:6379/0})
-  assert_yaml('docker-compose.yml')
-
-  f = 'docker-compose.yml'
   assert_file(f, /\nvolumes:\n\s\sdb_data/)
   assert_file(f, /\s\sgem_cache/)
   assert_file(f, /\s\snode_modules/)
   assert_file(f, /\s\sredis/)
-  assert_yaml(f, :services, :redis, :image, 'redis:7.0-alpine')
+  assert_yaml(f, :services, :app, :depends_on, 1, 'redis')
+end
+
+def refute_stacked_compose_service_sidekiq
+  f = 'mise/containers/app/env/base.env'
+  refute_content(f, %r{REDIS_URL=redis://redis:6379/0})
+  f = 'docker-compose.yml'
+  refute_yaml(f, :services, :sidekiq, :image, 'unstoppable')
+  # assert_file(f, /\nvolumes:\n\s\sdb_data/)
+  # assert_file(f, /\s\sgem_cache/)
+  # assert_file(f, /\s\snode_modules/)
+  # assert_file(f, /\s\sredis/)
+  # assert_yaml(f, :services, :app, :depends_on, 1, 'redis')
 end
