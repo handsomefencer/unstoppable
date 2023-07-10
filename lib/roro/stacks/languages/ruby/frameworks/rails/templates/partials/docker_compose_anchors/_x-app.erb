@@ -6,7 +6,7 @@ x-app:
     - ./mise/env/development.env
     - ./mise/containers/app/env/base.env
     - ./mise/containers/app/env/development.env
-  image: unstoppable
+  image: <%= @env[:base][:app_name][:value] %>
   stdin_open: true
   tmpfs:
     - "/app/tmp"

@@ -8,7 +8,7 @@ def assert_stacked_stacks
   assert_stacked_ruby
   assert_stacked_docker_volumes
   assert_stacked_docker_anchor_app
-  assert_stacked_docker_app
+  assert_stacked_compose_service_app
   # assert_stacked_docker_db
   assert_file('entrypoints/docker-entrypoint.sh')
 end
@@ -58,7 +58,7 @@ def assert_stacked_docker_anchor_app
   assert_yaml(*a, :volumes, 0, %r{\$PWD:/app})
 end
 
-def assert_stacked_docker_app
+def assert_stacked_compose_service_app
   f = 'docker-compose.yml'
   a = [f, :services, :app]
   assert_yaml(*a, :ports, 0, '3000:3000')
@@ -66,12 +66,12 @@ def assert_stacked_docker_app
   assert_yaml(*a, :build, :dockerfile, %r{/mise/containers/app/Dockerfile})
 end
 
-def assert_stacked_docker_db
-  f = 'docker-compose.yml'
-  a = [f, :services, :db]
-  assert_yaml(*a, :ports, 0, '3000:3000')
-  assert_yaml(*a, :build, :context, '.')
-  assert_yaml(*a, :build, :dockerfile, %r{/mise/containers/app/Dockerfile})
+def assert_stacked_compose_service_db
+  a = ['docker-compose.yml', :services, :db, :env_file]
+  assert_yaml(*a, 0, %r{/mise/env/base.env})
+  assert_yaml(*a, 1, %r{/mise/env/development.env})
+  assert_yaml(*a, 2, %r{/mise/containers/db/env/base.env})
+  assert_yaml(*a, 3, %r{/mise/containers/db/env/development.env})
 end
 
 def assert_stacked_6_1

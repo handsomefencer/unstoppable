@@ -1,12 +1,21 @@
 # syntax=docker/dockerfile:1
 
-FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
+FROM ruby:3.2.1-alpine
 
-<%= section('packages') %>
+RUN apk add --update \
+  build-base \
+  file \
+  git \
+  tzdata \
+  nodejs \
+  yarn
+
+RUN apk add --update \
+  postgresql-dev
 
 WORKDIR /app
 
-RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+RUN gem install bundler:2.4.13
 
 COPY  Gemfile Gemfile.lock ./
 RUN bundle install -j4 --retry 3
