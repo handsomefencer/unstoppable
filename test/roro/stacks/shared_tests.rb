@@ -52,7 +52,7 @@ def assert_stacked_compose_anchor_app
   assert_yaml(*a, :env_file, 3, %r{containers/app/env/development.env})
   assert_yaml(*a, :image, 'unstoppable')
   assert_yaml(*a, :user, 'root')
-  assert_yaml(*a, :volumes, 0, %r{\$PWD:/app})
+  assert_yaml(*a, :volumes, 0, %r{.:/app})
 end
 
 def assert_stacked_compose_service_app
