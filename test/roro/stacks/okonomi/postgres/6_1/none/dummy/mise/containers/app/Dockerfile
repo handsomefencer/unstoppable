@@ -13,7 +13,6 @@ RUN apk add --update \
 RUN apk add --update \
   postgresql-dev
 
-
 WORKDIR /app
 
 RUN gem install bundler:2.4.13

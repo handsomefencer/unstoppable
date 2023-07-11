@@ -9,9 +9,10 @@ env:
     db_vendor:
       value: mysql
     db_pkg:
-      value: mariadb-dev
+      value: mysql-dev
     db_volume:
       value: /var/lib/mysql
+  development: 
     DATABASE_HOST:
       value: db
     DATABASE_NAME:

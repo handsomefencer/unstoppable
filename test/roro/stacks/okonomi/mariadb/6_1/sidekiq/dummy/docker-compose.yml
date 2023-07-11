@@ -47,7 +47,6 @@ services:
       - ./mise/containers/db/env/base.env
       - ./mise/containers/db/env/development.env
 
-
   redis:
     image: 'redis:7.0-alpine'
     command: redis-server

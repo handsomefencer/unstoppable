@@ -3,28 +3,37 @@
 require_relative '../shared_tests'
 
 def assert_stacked_mariadb
-  # assert_stacked_okonomi  # assert_stacked_mariadb_base_env
-  # assert_stacked_mariadb_docker_compose
-  assert_file('config/database.yml', /adapter: mysql2/)
-  assert_file('Gemfile', /gem ["']mysql2["'], ["']~> 0.5/)
-  # assert_file('Dockerfile', /mysql-dev/)
+  assert_stacked_compose_service_db
+  assert_stacked_compose_service_db_mariadb
+  # assert_stacked_mise_base_env_postgres
+  # assert_stacked_mise_development_env_postgres
+  # assert_file('config/database.yml', /adapter: postgresql/)
+  # assert_file('Gemfile', /gem ["']pg["'], ["']~> 1.1/)
+  # assert_file('mise/containers/app/Dockerfile', /postgresql-dev/)
 end
 
-def assert_stacked_mariadb_base_env
+def assert_stacked_compose_service_db_mariadb
+  a = ['docker-compose.yml', :services]
+  # assert_yaml(*a, :db, :image, 'postgres:14.1')
+  # assert_yaml(*a, :db, :volumes, 0, %r{db_data:/var/lib/postgresql/data})
+end
+
+def assert_stacked_mise_development_env_mysql
+  f = 'mise/env/development.env'
+  assert_file(f, /DATABASE_NAME=postgres/)
+  assert_file(f, /DATABASE_NAME=postgres/)
+  assert_file(f, /DATABASE_HOST=db/)
+  assert_file(f, /DATABASE_PASSWORD=password/)
+  assert_file(f, /POSTGRES_NAME=postgres/)
+  assert_file(f, /POSTGRES_PASSWORD=password/)
+  assert_file(f, /POSTGRES_USERNAME=postgres/)
+end
+
+def assert_stacked_mise_base_env_mysql
   f = 'mise/env/base.env'
-  # # assert_file(f, /DATABASE_HOST/)
-  # assert_file(f, /MYSQL_DATABASE/)
-  # assert_file(f, /MYSQL_USER/)
-  # assert_file(f, /MYSQL_HOST/)
-  # assert_file(f, /MYSQL_PASSWORD/)
-  # assert_file(f, /MYSQL_ROOT_PASSWORD/)
-  assert_file(f, /db_pkg=mariadb-dev/)
-end
-
-def assert_stacked_mariadb_docker_compose
-  f = 'docker-compose.yml'
-  assert_yaml(f, :services, :app, :depends_on, 0, 'db')
-  assert_yaml(f, :services, :db, :image, 'mariadb')
-  assert_yaml(f, :services, :db, :ports, 0, '3306:3306')
-  assert_yaml(f, :services, :db, :volumes, 0, %r{lib/mysql})
+  # assert_file(f, /db_vendor=postgresql/)
+  # assert_file(f, /db_pkg=postgresql-dev/)
+  # assert_file(f, /db_image=postgres/)
+  # assert_file(f, /db_image_version=14.1/)
+  # assert_file(f, %r{db_volume=/var/lib/postgresql/data})
 end
