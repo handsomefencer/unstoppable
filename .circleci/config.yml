@@ -24,11 +24,11 @@ commands:
                 name: Artifact up using docker-compose
             - run:
                 command: sleep 120
-                name: Wait and try again on fail
+                name: Sleep for 2 minutes on fail
                 when: on_fail
             - run:
                 command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
-                name: Artifact up using docker-compose
+                name: Try again on fail
                 when: on_fail
     restore-and-save-cache:
         steps:
@@ -37,10 +37,16 @@ commands:
             - run: bundle config set --local path 'vendor/bundle'
             - run: bundle check || bundle install --jobs=4 --retry=3
             - run: gem build roro.gemspec
+            - run: gem install roro-0.3.30.gem
             - save_cache:
                 key: circlev2-{{ checksum "Gemfile.lock" }}
                 paths:
                     - vendor/bundle
+    roro-image-build:
+        steps:
+            - run: |
+                sudo chown -R $USER:$USER .
+                sudo env UID=${UID} GID=${GID} docker-compose build roro
     set-variables:
         steps:
             - run:
@@ -66,6 +72,14 @@ executors:
         machine:
             docker_layer_caching: true
             image: ubuntu-2204:2023.04.2
+    ruby-alpine:
+        docker:
+            - image: ruby:<<parameters.version>>-alpine
+        parameters:
+            version:
+                default: 3.2.2
+                description: version tag
+                type: string
 jobs:
     build:
         executor: machine-ubuntu
@@ -101,6 +115,11 @@ jobs:
             - run: |-
                 docker image push handsomefencer/roro:latest
                 docker image push handsomefencer/roro:${CIRCLE_SHA1}
+    test:
+        executor: machine-ubuntu
+        steps:
+            - checkout
+            - restore-and-save-cache
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
@@ -127,7 +146,6 @@ jobs:
                 type: string
         steps:
             - checkout
-            - run: gem install bundler
             - run: bundle
             - run: bundle exec rake test
 version: 2.1

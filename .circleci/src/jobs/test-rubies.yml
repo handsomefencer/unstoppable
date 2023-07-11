@@ -6,6 +6,5 @@ parameters:
 executor: docker-cimg-ruby
 steps:
   - checkout
-  - run: gem install bundler
   - run: bundle
   - run: bundle exec rake test

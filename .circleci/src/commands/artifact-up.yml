@@ -1,5 +1,4 @@
 steps:
-
   - run: 
       name: Artifact up using docker-compose
       command: |
@@ -7,11 +6,11 @@ steps:
         sudo docker-compose build 
         sudo docker-compose up -d
   - run: 
-      name: Wait and try again on fail
+      name: Sleep for 2 minutes on fail
       command: sleep 120
       when: on_fail
   - run: 
-      name: Artifact up using docker-compose
+      name: Try again on fail
       command: |
         cd ${APP_NAME} 
         sudo docker-compose build 
