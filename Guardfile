@@ -47,7 +47,8 @@ minitest_options = {
   all_after_pass: false,
   all_on_start: false,
   all_env: {
-    'DEBUGGERER' => 'true'
+    # 'DEBUGGERER' => 'true'
+    'DEBUGGERER' => 'false'
   }
 }
 guard :minitest, minitest_options do
