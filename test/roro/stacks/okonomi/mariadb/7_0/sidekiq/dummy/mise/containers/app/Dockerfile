@@ -11,7 +11,7 @@ RUN apk add --update \
   yarn
 
 RUN apk add --update \
-  mysql-dev
+  mariadb-dev
 
 WORKDIR /app
 

@@ -13,6 +13,9 @@ RUN apk add --update \
 RUN apk add --update \
   sqlite-dev
 
+RUN apk add --update \
+  sqlite-dev
+
 WORKDIR /app
 
 RUN gem install bundler:2.4.13

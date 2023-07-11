@@ -6,7 +6,6 @@ describe '1 -> 2 -> 1: database: postgres, rails version: 6.1' do
   Given(:workbench) {}
 
   Given do
-    debuggerer
     rollon(__dir__)
   end
 

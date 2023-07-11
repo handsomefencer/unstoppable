@@ -1,8 +1,8 @@
 
   db:
-    image: mariadb
+    image: <%= @env[:base][:db_image][:value] %>:<%= @env[:base][:db_image_version][:value] %>
     ports:
       - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - <%= @env[:base][:db_volume][:value] %>
 <%= partial('db_env_files') %>

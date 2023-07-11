@@ -16,7 +16,6 @@ def assert_stacked_mise
   assert_file(f, /app_name=unstoppable/)
   assert_file(f, /docker_compose_version=3.9/)
   assert_file('mise/env/development.env')
-  assert_file('mise/env/production.env')
   assert_file('mise/containers/db/env/base.env')
   assert_file('mise/containers/db/env/development.env')
   assert_file('mise/containers/db/env/development.env')

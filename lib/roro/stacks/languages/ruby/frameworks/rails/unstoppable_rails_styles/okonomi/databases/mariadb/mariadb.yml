@@ -3,15 +3,16 @@ preface: Similar to mariadb
 env:
   base:
     db_image:
-      value: mysql
+      value: mariadb
     db_image_version:
-      value: '8.0.21'
+      value: '11.2'
     db_vendor:
       value: mysql
     db_pkg:
       value: mariadb-dev
     db_volume:
-      value: /var/lib/mysql
+      value: /var/lib/mariadb
+  development:
     DATABASE_HOST:
       value: db
     DATABASE_NAME:

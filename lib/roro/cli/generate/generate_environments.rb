@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Roro
-  ## getsome
   class CLI < Thor
     desc 'generate:environments', 'Generate environment files and keys'
     map 'generate:environments' => 'generate_environments'
@@ -40,9 +39,9 @@ module Roro
         content = hash&.dig(env.to_sym)&.sort&.each&.map do |key, value|
                     "#{key}=#{value[:value]}" if value.is_a?(Hash)
                   end&.join("\n") || 'SOME_KEY=some_value'
-        create_file "./#{mise}/env/#{env}.env", content
+        create_file("./#{mise}/env/#{env}.env", content, force: true)
         containers.each do |container|
-          create_file "#{container}/env/#{env}.env", content
+          create_file("#{container}/env/#{env}.env", content, force: true)
         end
       end
     end
