@@ -20,7 +20,7 @@ commands:
     artifact-up:
         steps:
             - run:
-                command: docker volume rm ${APP_NAME}_gem_cache
+                command: "docker volume rm $(docker volume ls --filter name=test-adventures -q) \n"
                 name: Remove cached gem volumes to prevent clash
             - run:
                 command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
