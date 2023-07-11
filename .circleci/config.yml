@@ -20,6 +20,9 @@ commands:
     artifact-up:
         steps:
             - run:
+                command: docker volume rm ${APP_NAME}_gem_cache
+                name: Remove cached gem volumes to prevent clash
+            - run:
                 command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
                 name: Artifact up using docker-compose
     restore-and-save-cache:

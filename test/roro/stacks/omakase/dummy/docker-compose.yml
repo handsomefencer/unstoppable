@@ -2,9 +2,7 @@ version: '3.9'
 
 x-app:
   &app
-  depends_on:
-    - db 
-    - redis
+
   env_file:
     - ./mise/env/base.env
     - ./mise/env/development.env
