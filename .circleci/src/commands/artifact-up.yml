@@ -1,8 +1,4 @@
 steps:
-  - run: 
-      name: Remove cached gem volumes to prevent clash
-      command: |
-        docker volume rm $(docker volume ls --filter name=test-adventures -q) 
 
   - run: 
       name: Artifact up using docker-compose
@@ -11,3 +7,11 @@ steps:
         sudo docker-compose build 
         sudo docker-compose up -d
 
+  - run: 
+      name: Remove cached gem volumes to prevent clash and try again
+      command: |
+        docker volume rm $(docker volume ls --filter name=test-adventures -q) 
+        cd ${APP_NAME} 
+        sudo docker-compose build 
+        sudo docker-compose up -d
+      when: on_fail
