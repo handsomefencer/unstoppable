@@ -2,8 +2,7 @@ version: '3.9'
 
 x-app:
   &app
-  depends_on: 
-    - db
+
   env_file:
     - ./mise/env/base.env
     - ./mise/env/development.env

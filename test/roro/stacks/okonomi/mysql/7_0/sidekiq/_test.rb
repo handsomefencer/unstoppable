@@ -16,5 +16,6 @@ describe '1 -> 2 -> 2: ' do
     assert_stacked_7_0
     assert_stacked_compose_service_redis
     assert_stacked_compose_service_sidekiq
+    assert_stacked_compose_app_depends_on
   end
 end

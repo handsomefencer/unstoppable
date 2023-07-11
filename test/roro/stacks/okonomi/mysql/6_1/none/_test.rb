@@ -6,6 +6,7 @@ describe '1 -> 2 -> 1: ' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 

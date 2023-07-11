@@ -16,5 +16,6 @@ describe '1 -> 2 -> 1: database: postgres, rails version: 6.1' do
     assert_stacked_6_1
     assert_stacked_compose_service_redis
     assert_stacked_compose_service_sidekiq
+    asssert_stacked_compose_app_depends_on
   end
 end

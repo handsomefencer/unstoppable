@@ -2,7 +2,9 @@ version: '3.9'
 
 x-app:
   &app
-
+  depends_on:
+    - db 
+    - redis
   env_file:
     - ./mise/env/base.env
     - ./mise/env/development.env
@@ -16,7 +18,7 @@ x-app:
   tty: true
   user: root
   volumes:
-    - $PWD:/app
+    - .:/app
     - gem_cache:/usr/local/bundle/gems
     - node_modules:/app/node_modules
 

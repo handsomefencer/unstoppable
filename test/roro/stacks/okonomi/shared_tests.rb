@@ -18,7 +18,6 @@ def assert_stacked_compose_service_sidekiq
   assert_file(f, /\s\sgem_cache/)
   assert_file(f, /\s\snode_modules/)
   assert_file(f, /\s\sredis/)
-  assert_yaml(f, :services, :app, :depends_on, 1, 'redis')
 end
 
 def refute_stacked_compose_service_sidekiq
