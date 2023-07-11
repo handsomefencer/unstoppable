@@ -16,6 +16,6 @@ describe '1 okonomi -> 3 postgres -> 2 7_0 -> 2 sidekiq' do
     assert_stacked_7_0
     assert_stacked_compose_service_redis
     assert_stacked_compose_service_sidekiq
-    asssert_stacked_compose_app_depends_on
+    assert_stacked_compose_app_depends_on
   end
 end
