@@ -6,11 +6,13 @@ steps:
         cd ${APP_NAME} 
         sudo docker-compose build 
         sudo docker-compose up -d
-
   - run: 
-      name: Remove cached gem volumes to prevent clash and try again
+      name: Wait and try again on fail
+      command: sleep 120
+      when: on_fail
+  - run: 
+      name: Artifact up using docker-compose
       command: |
-        docker volume rm $(docker volume ls --filter name=test-adventures -q) 
         cd ${APP_NAME} 
         sudo docker-compose build 
         sudo docker-compose up -d

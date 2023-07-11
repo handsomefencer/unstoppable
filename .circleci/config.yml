@@ -23,8 +23,12 @@ commands:
                 command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
                 name: Artifact up using docker-compose
             - run:
-                command: "docker volume rm $(docker volume ls --filter name=test-adventures -q) \ncd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
-                name: Remove cached gem volumes to prevent clash and try again
+                command: sleep 120
+                name: Wait and try again on fail
+                when: on_fail
+            - run:
+                command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
+                name: Artifact up using docker-compose
                 when: on_fail
     restore-and-save-cache:
         steps:
