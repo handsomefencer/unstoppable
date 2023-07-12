@@ -128,7 +128,7 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - login-into-dockerhub
+            - log-into-dockerhub
             - run: "docker tag handsomefencer/roro handsomefencer/roro:latest \ndocker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
             - run: |-
                 docker image push handsomefencer/roro:latest
