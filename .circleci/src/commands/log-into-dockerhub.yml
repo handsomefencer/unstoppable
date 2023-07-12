@@ -1,0 +1,23 @@
+steps:
+  - run:
+      name: Expose credentials in mise/env/ci.env.enc 
+      command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
+  - run: 
+      name: Export credentials from mise/env/ci.env 
+      command: echo $(cat mise/env/ci.env) >> $BASH_ENV
+  - run:
+      name: Log into Docker Hub 
+      command: |
+        echo ${DOCKERHUB_TOKEN} | docker login \
+          -u ${DOCKERHUB_USERNAME} \
+          --password-stdin
+  - run: 
+      name: Tag image with latest and circle (git) sha
+      command: |
+        docker tag handsomefencer/roro handsomefencer/roro:latest 
+        docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 
+  - run: 
+      name: Push tagged images 
+      command: |
+        docker image push handsomefencer/roro:latest
+        docker image push handsomefencer/roro:${CIRCLE_SHA1}
