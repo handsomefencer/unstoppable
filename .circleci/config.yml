@@ -30,6 +30,28 @@ commands:
                 command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
                 name: Try again on fail
                 when: on_fail
+    log-into-dockerhub:
+        steps:
+            - run:
+                command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
+                name: Expose credentials in mise/env/ci.env.enc
+            - run:
+                command: echo $(cat mise/env/ci.env) >> $BASH_ENV
+                name: Export credentials from mise/env/ci.env
+            - run:
+                command: |
+                    echo ${DOCKERHUB_TOKEN} | docker login \
+                      -u ${DOCKERHUB_USERNAME} \
+                      --password-stdin
+                name: Log into Docker Hub
+            - run:
+                command: "docker tag handsomefencer/roro handsomefencer/roro:latest \ndocker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
+                name: Tag image with latest and circle (git) sha
+            - run:
+                command: |-
+                    docker image push handsomefencer/roro:latest
+                    docker image push handsomefencer/roro:${CIRCLE_SHA1}
+                name: Push tagged images
     restore-and-save-cache:
         steps:
             - restore_cache:
