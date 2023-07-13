@@ -34,8 +34,12 @@ env:
 
 actions:
   - remove_file 'Dockerfile'
-
   - copy_layer('manifest')
   - generate_mise
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - comment_lines 'Gemfile', /webdrivers/
+  - append_to_file( 
+    'test/test_helper.rb', 
+    "\nDir[\"\#{Dir.pwd}\/test\/support\/**\/*.rb\"]
+      .each { |f| require f }"
+    )
