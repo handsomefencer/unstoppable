@@ -9,10 +9,18 @@ env:
     app_name:
       name: Name for your app
       value: unstoppable
+    chrome-server-image:
+      name: Selenium based image for system tests
+      value: selenium/standalone-chrome
+    chrome-server-image-version:
+      name: Chrome server imag version
+      value: '96.0'
     app: 
       RAILS_MAX_THREADS:
         name: Maximum number of threads for the database. Important for redis.
         value: '5'
+
+
   development:
     app: 
       RAILS_ENV:
@@ -30,3 +38,4 @@ actions:
   - copy_layer('manifest')
   - generate_mise
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
+  - comment_lines 'Gemfile', /webdrivers/

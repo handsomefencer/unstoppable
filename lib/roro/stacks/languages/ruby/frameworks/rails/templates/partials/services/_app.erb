@@ -6,5 +6,7 @@
       args:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
+    links: 
+      - chrome-server
     ports:
       - "3000:3000"

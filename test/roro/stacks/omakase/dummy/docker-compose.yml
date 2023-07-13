@@ -29,8 +29,15 @@ services:
       args:
         - "UID=${UID:-1000}"
         - "GID=${GID:-1000}"
+    links: 
+      - chrome-server
     ports:
       - "3000:3000"
+
+  chrome-server:
+    image: selenium/standalone-chrome:96.0 
+    ports: 
+      - "7900:7900"
 
 volumes:
   db_data:
