@@ -2,6 +2,28 @@ version: '3.5'
 
 services:
 
+  dev:
+    build:
+      context: .
+      dockerfile: mise/containers/ruby_gem/Dockerfile
+      target: development
+    image: handsomefencer/roro
+    user: "${UID}:${GID}"
+    working_dir: /usr/src
+    volumes:
+      - .:/usr/src
+
+  prod:
+    build:
+      context: .
+      dockerfile: mise/containers/ruby_gem/Dockerfile
+      target: production
+    image: handsomefencer/roro-prod
+    user: "${UID}:${GID}"
+    working_dir: /usr/src
+    volumes:
+      - .:/usr/src
+
   roro:
     build:
       context: .

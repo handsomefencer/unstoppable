@@ -1,6 +1,6 @@
 #!/bin/bash
 
-app='111'
+app='foobar'
 sandbox_dir=~/sandbox/${app}
 roro=~/work/handsomefencer/gems/roro
 
@@ -20,8 +20,7 @@ mkdir -p ${sandbox_dir}
 
 git add .
 
-
-dc build roro  
+dc build prod
 
 mkdir -p ${sandbox_dir}
 cd ${sandbox_dir} 
@@ -32,8 +31,7 @@ docker run \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
-  -it handsomefencer/roro:latest sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
-  # -it handsomefencer/roro:latest roro rollon
+  -it handsomefencer/roro-prod sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
 
 schown  
 
@@ -42,7 +40,3 @@ dc up app
 
 
 cd ${roro}
-
-# dc build
-# dc run --rm app bundle 
-# dc up --build
