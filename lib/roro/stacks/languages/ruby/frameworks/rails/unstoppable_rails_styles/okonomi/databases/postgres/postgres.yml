@@ -10,10 +10,6 @@ env:
       value: postgresql
     db_volume:
       value: /var/lib/postgresql/data
-  development:
-    db_pkg:
-      name: Name of alpine db pkgs in development
-      value: postgresql-dev
     DATABASE_NAME:
       name: Database name
       value: postgres
@@ -32,6 +28,10 @@ env:
     POSTGRES_USERNAME:
       name: Database username
       value: postgres
+  development:
+    db_pkg:
+      name: Name of alpine db pkgs in development
+      value: postgresql-dev
   production:
     db_pkg:
       name: Name of alpine db pkgs in production

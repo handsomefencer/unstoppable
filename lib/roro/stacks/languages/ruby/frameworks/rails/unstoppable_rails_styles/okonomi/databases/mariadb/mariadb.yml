@@ -10,10 +10,6 @@ env:
       value: mysql
     db_volume:
       value: /var/lib/mariadb
-  development:
-    db_pkg:
-      name: Alpine pkg for maria for development
-      value: mariadb-dev
     DATABASE_HOST:
       value: db
     DATABASE_NAME:
@@ -28,6 +24,11 @@ env:
       value: root
     MYSQL_ROOT_PASSWORD:
       value: root
+  development:
+    db_pkg:
+      name: Alpine pkg for maria for development
+      value: mariadb-dev
+
   production:
     db_pkg:
       name: Alpine pkg for maria for production

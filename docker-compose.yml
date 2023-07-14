@@ -2,22 +2,6 @@ version: '3.5'
 
 services:
 
-  ruby_gem:
-    image: handsomefencer/roro
-    build:
-      context: .
-      dockerfile: mise/containers/ruby_gem/Dockerfile
-    environment:
-      - RUBY_VERSION='2.5'
-
-  dev:
-    build:
-      context: .
-      dockerfile: mise/containers/ruby_gem/Dockerfile
-    working_dir: /usr/src
-    volumes:
-      - .:/usr/src
-
   roro:
     build:
       context: .

@@ -6,6 +6,7 @@ describe '2: unstoppable_rails_style: omakase' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 

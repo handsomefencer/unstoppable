@@ -20,23 +20,28 @@ RUN apk add --update --no-cache \
 RUN apk add --update --no-cache \
   mysql-dev 
 
-RUN gem install bundler:2.4.13
-COPY  Gemfile* ./app/
-
 FROM builder AS development
 
-RUN bundle install -j4 --retry 3
-
+RUN gem install bundler:2.4.13
 WORKDIR /app
+
+COPY  Gemfile* ./
+
+RUN bundle install -j4 --retry 3
 
 COPY . .
 
 RUN yarn install
+
 RUN chmod -R 755 entrypoints/docker-entrypoint.sh
 
 CMD ["./entrypoints/docker-entrypoint.sh"]
 
-FROM builder AS cleaner
+FROM builder AS stripper
+
+WORKDIR /app
+
+COPY Gemfile* .
 
 RUN bundle config --local without 'development test' 
 RUN bundle install -j4 --retry 3 
@@ -46,23 +51,15 @@ RUN rm -rf /usr/local/bundle/cache
 RUN find /usr/local/bundle/gems/ -name "*.c" -delete
 RUN find /usr/local/bundle/gems/ -name "*.o" -delete
 
-# Copy the whole application folder into the image
 COPY . /app
 
-# Precompile application code with Bootsnap (and ignore errors)
 RUN bundle exec bootsnap precompile app/ lib/ || true
 RUN bundle exec rails assets:precompile
 
-# Remove folders not needed in resulting image
-# This includes `app/javascript` which contains the JavaScript source code.
-# Normally it is not needed in the resulting image, because it was compiled
-# to `public/`. But if the app uses importmaps, the folder is still required
-# for pinning and must not be removed.
 RUN rm -rf node_modules yarn.lock .yarn vendor/bundle test spec app/packs
 RUN if [ ! -f config/importmap.rb ]; then rm -rf app/javascript; fi
 
 FROM base AS production
-
 
 RUN apk add --no-cache \
   xz-libs \
@@ -72,3 +69,13 @@ RUN apk add --no-cache \
   mysql-client 
 
 WORKDIR /app
+
+RUN addgroup -g 1000 -S app && \
+  adduser -u 1000 -S app -G app
+
+COPY --from=stripper --chown=app:app /usr/local/bundle/ /usr/local/bundle/
+COPY --from=stripper --chown=app:app /app /app
+
+RUN chmod -R 755 entrypoints/docker-entrypoint.sh
+
+CMD ["./entrypoints/docker-entrypoint.sh"]

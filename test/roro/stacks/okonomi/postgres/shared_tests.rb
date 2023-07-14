@@ -21,6 +21,12 @@ def assert_stacked_mise_base_env_postgres
   assert_file(f, /db_image=postgres/)
   assert_file(f, /db_image_version=14.1/)
   assert_file(f, %r{db_volume=/var/lib/postgresql/data})
+  assert_file(f, /DATABASE_NAME=postgres/)
+  assert_file(f, /DATABASE_HOST=db/)
+  assert_file(f, /DATABASE_PASSWORD=password/)
+  assert_file(f, /POSTGRES_NAME=postgres/)
+  assert_file(f, /POSTGRES_PASSWORD=password/)
+  assert_file(f, /POSTGRES_USERNAME=postgres/)
 end
 
 def assert_stacked_mise_development_env_postgres
@@ -31,17 +37,6 @@ end
 def assert_stacked_mise_production_env_postgres
   f = 'mise/env/production.env'
   assert_file(f, /db_pkg=postgresql-client/)
-end
-
-def assert_stacked_mise_development_env_postgres
-  f = 'mise/env/development.env'
-  assert_file(f, /DATABASE_NAME=postgres/)
-  assert_file(f, /DATABASE_NAME=postgres/)
-  assert_file(f, /DATABASE_HOST=db/)
-  assert_file(f, /DATABASE_PASSWORD=password/)
-  assert_file(f, /POSTGRES_NAME=postgres/)
-  assert_file(f, /POSTGRES_PASSWORD=password/)
-  assert_file(f, /POSTGRES_USERNAME=postgres/)
 end
 
 def assert_stacked_compose_service_db_postgres

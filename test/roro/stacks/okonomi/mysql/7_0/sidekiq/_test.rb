@@ -6,11 +6,9 @@ describe '1 -> 2 -> 2: ' do
   Given(:workbench) {}
 
   Given do
-    debuggerer
     rollon(__dir__)
   end
 
-  focus
   Then do
     assert_stacked_stacks
     assert_stacked_okonomi

@@ -18,24 +18,31 @@ cd ${roro}
 sudo rm -rf ${sandbox_dir}
 mkdir -p ${sandbox_dir} 
 
-# git add .
-
-# docker-compose build
-
-# dc build roro  
-
-# cd ${sandbox_dir} 
-
-# docker run \
-#   --name artifact \
-#   -v $PWD:/artifact \
-#   -v /var/run/docker.sock:/var/run/docker.sock \
-#   -u 0 \
-#   -it handsomefencer/roro:latest roro rollon
-#   # -i handsomefencer/roro:latest printf "1\n1\n1\na\n" | roro rollon
+git add .
 
 
-# schown  
+dc build roro  
+
+mkdir -p ${sandbox_dir}
+cd ${sandbox_dir} 
+
+docker rm artifact
+docker run \
+  --name artifact \
+  -v $PWD:/artifact \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -u 0 \
+  -it handsomefencer/roro:latest sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
+  # -it handsomefencer/roro:latest roro rollon
+
+schown  
+
+dc build app 
+dc up app
+
+
+cd ${roro}
+
 # dc build
 # dc run --rm app bundle 
 # dc up --build

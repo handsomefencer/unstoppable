@@ -20,11 +20,17 @@ env:
         name: Maximum number of threads for the database. Important for redis.
         value: '5'
   development:
+    db_pkg:
+      name: Name of alpine db pkgs in development
+      value: sqlite-dev
     app: 
       RAILS_ENV:
         name: Development Rails environment
         value: development
   production:
+    db_pkg:
+      name: Name of alpine db pkgs in production
+      value: sqlite-dev      
     app: 
       RAILS_ENV:
         name: Production Rails environment
