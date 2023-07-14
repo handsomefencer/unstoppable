@@ -3,7 +3,10 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
 RUN apk add \
-  build-base 
+  build-base \
+  file \
+  git \
+  tzdata
 
 WORKDIR /app
 
@@ -18,6 +21,7 @@ RUN rails new . \
 RUN touch Gemfile.lock
 
 RUN rm config/master.key
+
 FROM scratch AS export-stage
 
 ## Copy the generated files onto the host.

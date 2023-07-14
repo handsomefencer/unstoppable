@@ -21,6 +21,7 @@ RUN apk add --update --no-cache \
   postgresql-dev 
 
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
 COPY  Gemfile* ./app/
 
 FROM builder AS development
