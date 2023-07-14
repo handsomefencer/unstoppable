@@ -73,6 +73,3 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 
-RUN chmod -R 755 entrypoints/docker-entrypoint.sh
-
-CMD ["./entrypoints/docker-entrypoint.sh"]

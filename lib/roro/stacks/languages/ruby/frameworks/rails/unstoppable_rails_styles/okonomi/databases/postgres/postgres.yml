@@ -5,30 +5,34 @@ env:
     db_image:
       value: postgres
     db_image_version:
-      value: 14.1
+      value: '14.1'
     db_vendor:
       value: postgresql
-    db_pkg:
-      value: postgresql-dev
     db_volume:
       value: /var/lib/postgresql/data
   development:
-      DATABASE_NAME:
-        name: Database name
-        value: postgres
-      DATABASE_HOST:
-        name: Database host
-        value: db
-      DATABASE_PASSWORD:
-        name: 
-        value: password
-      POSTGRES_NAME:
-        name: Database name
-        value: postgres
-      POSTGRES_PASSWORD:
-        name: Database password
-        value: password
-      POSTGRES_USERNAME:
-        name: Database username
-        value: postgres
-      
+    db_pkg:
+      name: Name of alpine db pkgs in development
+      value: postgresql-dev
+    DATABASE_NAME:
+      name: Database name
+      value: postgres
+    DATABASE_HOST:
+      name: Database host
+      value: db
+    DATABASE_PASSWORD:
+      name: 
+      value: password
+    POSTGRES_NAME:
+      name: Database name
+      value: postgres
+    POSTGRES_PASSWORD:
+      name: Database password
+      value: password
+    POSTGRES_USERNAME:
+      name: Database username
+      value: postgres
+  production:
+    db_pkg:
+      name: Name of alpine db pkgs in production
+      value: postgresql-client

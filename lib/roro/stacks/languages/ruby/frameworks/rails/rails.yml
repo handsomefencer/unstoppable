@@ -19,13 +19,11 @@ env:
       RAILS_MAX_THREADS:
         name: Maximum number of threads for the database. Important for redis.
         value: '5'
-
   development:
     app: 
       RAILS_ENV:
         name: Development Rails environment
         value: development
-      
   production:
     app: 
       RAILS_ENV:

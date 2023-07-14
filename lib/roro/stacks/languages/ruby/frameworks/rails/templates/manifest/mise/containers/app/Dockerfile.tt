@@ -18,10 +18,9 @@ RUN apk add --update --no-cache \
   yarn 
 
 RUN apk add --update --no-cache \
-  postgresql-dev 
+  <%= @env[:development][:db_pkg][:value] %> 
 
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
-
 COPY  Gemfile* ./app/
 
 FROM builder AS development
@@ -70,10 +69,6 @@ RUN apk add --no-cache \
   brotli-libs 
 
 RUN apk add --no-cache \
-  postgresql-client 
+  <%= @env[:production][:db_pkg][:value] %> 
 
 WORKDIR /app
-
-RUN chmod -R 755 entrypoints/docker-entrypoint.sh
-
-CMD ["./entrypoints/docker-entrypoint.sh"]

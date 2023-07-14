@@ -8,11 +8,11 @@ env:
       value: '8.0.21'
     db_vendor:
       value: mysql
-    db_pkg:
-      value: mysql-dev
     db_volume:
       value: /var/lib/mysql
   development: 
+    db_pkg:
+      value: mysql-dev
     DATABASE_HOST:
       value: db
     DATABASE_NAME:
@@ -27,3 +27,7 @@ env:
       value: root
     MYSQL_ROOT_PASSWORD:
       value: root
+  production: 
+    db_pkg:
+      value: mysql-client
+  

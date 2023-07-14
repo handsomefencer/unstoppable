@@ -9,7 +9,7 @@ describe '1 okonomi -> 3 postgres -> 2 7_0 -> 2 sidekiq' do
     debuggerer
     rollon(__dir__)
   end
-  focus
+
   Then do
     assert_stacked_stacks
     assert_stacked_okonomi
