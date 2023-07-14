@@ -2,7 +2,8 @@
 
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
-<%= section('packages') %>
+RUN apk add \
+  build-base 
 
 WORKDIR /app
 

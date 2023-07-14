@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS base
+FROM ruby:3.2.1-alpine AS base
 
 RUN apk add --update --no-cache \
   file \
@@ -20,7 +20,7 @@ RUN apk add --update --no-cache \
 RUN apk add --update --no-cache \
   postgresql-dev 
 
-RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+RUN gem install bundler:2.4.13
 COPY  Gemfile* ./app/
 
 FROM builder AS development
