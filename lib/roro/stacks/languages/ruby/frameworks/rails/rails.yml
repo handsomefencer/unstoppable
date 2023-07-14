@@ -20,18 +20,27 @@ env:
         name: Maximum number of threads for the database. Important for redis.
         value: '5'
 
-
   development:
     app: 
       RAILS_ENV:
         name: Development Rails environment
         value: development
+      
   production:
     app: 
       RAILS_ENV:
         name: Production Rails environment
         value: production
-
+      MALLOC_ARENA_MAX:
+        name: Reduce glibc memory count
+        value: '2'
+      RAILS_LOG_TO_STDOUT:
+        name: Makes it possiblt to send logs to logs/[environment].rb
+        value: 'true'
+      RAILS_SERVE_STATIC_FILES:
+        name: Serve static files from rails
+        value: 'true'
+  
 actions:
   - remove_file 'Dockerfile'
   - copy_layer('manifest')

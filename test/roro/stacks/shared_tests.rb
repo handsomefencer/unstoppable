@@ -9,6 +9,8 @@ def assert_stacked_stacks
   assert_stacked_docker_volumes
   assert_stacked_compose_anchor_app
   assert_stacked_compose_service_app
+  assert_stacked_compose_service_chrome_server
+  assert_stacked_compose_service_app_prod
 end
 
 def assert_stacked_mise
@@ -16,14 +18,30 @@ def assert_stacked_mise
   assert_file(f, /app_name=unstoppable/)
   assert_file(f, /docker_compose_version=3.9/)
   assert_file('mise/env/development.env')
+  assert_file('mise/containers/app/env/base.env')
+  assert_file('mise/containers/app/env/development.env')
   assert_file('mise/containers/db/env/base.env')
-  assert_file('mise/containers/db/env/development.env')
   assert_file('mise/containers/db/env/development.env')
 end
 
 def assert_stacked_rails
-  assert_file('mise/containers/app/env/base.env', /RAILS_MAX_THREADS/)
   assert_file('entrypoints/docker-entrypoint.sh')
+  assert_file('mise/containers/app/env/base.env', /RAILS_MAX_THREADS/)
+  f = 'mise/containers/app/env/production.env'
+  assert_file(f, /RAILS_ENV=production/)
+  assert_file(f, /MALLOC_ARENA_MAX=2/)
+  assert_file(f, /RAILS_LOG_TO_STDOUT=true/)
+  assert_file(f, /RAILS_SERVE_STATIC_FILES=true/)
+end
+
+def assert_stacked_compose_service_chrome_server
+  assert_file('Gemfile', /# gem ["']webdrivers["']/)
+  assert_file('test/application_system_test_case.rb', /browser: :remote/)
+  assert_file('test/support/capybara_support.rb', /Capybara.server_host = ['"]0.0.0.0['"]/)
+  assert_file('test/support/capybara_support.rb', /Capybara.app_host = /)
+  a = ['docker-compose.yml', :services, :'chrome-server']
+  assert_yaml(*a, :image, %r{selenium/standalone-chrome:96.0})
+  assert_yaml(*a, :ports, 0, '7900:7900')
 end
 
 def assert_stacked_ruby
@@ -61,6 +79,21 @@ def assert_stacked_compose_service_app
   assert_yaml(*a, :ports, 0, '3000:3000')
   assert_yaml(*a, :build, :context, '.')
   assert_yaml(*a, :build, :dockerfile, %r{/mise/containers/app/Dockerfile})
+  assert_yaml(*a, :build, :target, 'development')
+end
+
+def assert_stacked_compose_service_app_prod
+  f = 'docker-compose.yml'
+  a = [f, :services, :'app-prod']
+  assert_yaml(*a, :build, :target, 'production')
+  assert_yaml(*a, :ports, 0, '3001:3000')
+  assert_yaml(*a, :profiles, 0, 'production')
+  assert_yaml(*a, :env_file, 0, './mise/env/base.env')
+  assert_yaml(*a, :env_file, 1, './mise/env/production.env')
+  assert_yaml(*a, :env_file, 2, './mise/containers/app/env/base.env')
+  assert_yaml(*a, :env_file, 3, './mise/containers/app/env/production.env')
+  assert_yaml(*a, :build, :dockerfile, %r{/mise/containers/app/Dockerfile})
+  assert_yaml(*a, :build, :target, 'production')
 end
 
 def assert_stacked_compose_service_db
