@@ -139,8 +139,7 @@ jobs:
         steps:
             - checkout
             - setup_remote_docker
-            - run: docker-compose build test
-            - run: sudo docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
+            - run: docker-compose build test && docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
