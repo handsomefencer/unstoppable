@@ -16,10 +16,12 @@ RUN apk add --no-cache \
 
 RUN gem install bundler:2.4.13
 
+
 FROM builder AS development
 
-
 WORKDIR /usr/src
+
+COPY . .
 
 RUN gem install bundler:2.4.13
 
@@ -30,6 +32,8 @@ RUN bundle install -j4 --retry 3
 RUN gem build roro.gemspec
 RUN rake install
 
+WORKDIR /artifact
+
 FROM builder AS stripper
 
 WORKDIR /usr/src
@@ -38,8 +42,12 @@ COPY . .
 
 RUN bundle install -j4 --retry 3
 
+COPY . .
+
 RUN gem build roro.gemspec
 RUN rake install
+RUN rm -rf /usr/local/bundle/cache
+RUN find /usr/local/bundle/gems/ -name "*.c" -delete
 
 FROM builder AS production
 

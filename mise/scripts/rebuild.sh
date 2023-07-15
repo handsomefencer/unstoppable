@@ -21,18 +21,20 @@ mkdir -p ${sandbox_dir}
 # git add .
 
 # dc build --no-cache dev
-dc build roro
+dc build roro-dev
 
-mkdir -p ${sandbox_dir}
-cd ${sandbox_dir} 
+dc up roro-dev
 
-docker rm artifact
-docker run \
-  --name artifact \
-  -v $PWD:/artifact \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -u 0 \
-  -it handsomefencer/roro sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
+# mkdir -p ${sandbox_dir}
+# cd ${sandbox_dir} 
+
+# docker rm artifact
+# docker run \
+#   --name artifact \
+#   -v $PWD:/artifact \
+#   -v /var/run/docker.sock:/var/run/docker.sock \
+#   -u 0 \
+#   -it handsomefencer/roro-dev sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
 
 # schown  
 

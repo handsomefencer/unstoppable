@@ -1,3 +1,9 @@
+require 'pry'
+require 'byebug'
+
+Pry.config.input = STDIN
+Pry.config.output = STDOUT
+
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
@@ -17,6 +23,7 @@
 
 minitest_options = {
   test_folders: ['test'],
+  # cli: '--profile',
   all_after_pass: false,
   all_on_start: false,
   all_env: {

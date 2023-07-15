@@ -6,10 +6,23 @@ services:
     build:
       context: .
       dockerfile: mise/containers/ruby_gem/Dockerfile
-      # target: stripper
       target: production
     image: handsomefencer/roro
     user: "${UID}:${GID}"
+    working_dir: /usr/src
+    volumes:
+      - .:/usr/src
+      - gem_cache:/usr/local/bundle/gems
+
+  roro-dev:
+    build:
+      context: .
+      dockerfile: mise/containers/ruby_gem/Dockerfile
+      target: development
+    image: handsomefencer/roro-dev
+    user: "${UID}:${GID}"
+    stdin_open: true
+    tty: true
     working_dir: /usr/src
     volumes:
       - .:/usr/src
@@ -19,12 +32,24 @@ services:
     build:
       context: .
       dockerfile: mise/containers/ruby_gem/Dockerfile
+      target: development
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
     working_dir: /usr/src
+    stdin_open: true
+    tty: true
+    user: root
+
     volumes:
       - .:/usr/src
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gem_cache:/usr/local/bundle/gems
+
     environment:
       - RAILS_ENV=development
-    command: bundle exec guard --no-bundler-warning
+    # command: bundle exec guard --no-bundler-warning
+    command: bundle exec guard
 
 volumes:
   gem_cache:
