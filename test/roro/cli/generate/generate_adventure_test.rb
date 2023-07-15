@@ -27,7 +27,6 @@ describe 'Roro::CLI#generate_adventure' do
   end
 
   describe 'must generate _builder.yml' do
-    # focus
     Then { assert_file "#{stack}/_builder.yml", /actions:/ }
   end
 

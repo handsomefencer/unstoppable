@@ -30,7 +30,7 @@ module Roro::TestHelpers::ConfiguratorHelper
 
   def capture_stage_dummy(dir)
     dummy_dir = "#{dir}/dummy"
-    dummies = Dir.glob("#{dir}/dummy/**/*").map do |f|
+    dummies = Dir.glob("#{dir}/dummy/**/*", File::FNM_DOTMATCH).map do |f|
       f.split("#{dummy_dir}/").last
     end
     dummies.each do |dummy|

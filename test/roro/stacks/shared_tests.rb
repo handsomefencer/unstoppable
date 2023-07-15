@@ -3,6 +3,8 @@
 require 'test_helper'
 
 def assert_stacked_stacks
+  assert_stacked_dot_dockerignore
+  assert_stacked_dot_gitignore
   assert_stacked_mise
   assert_stacked_rails
   assert_stacked_ruby
@@ -11,6 +13,21 @@ def assert_stacked_stacks
   assert_stacked_compose_service_app
   assert_stacked_compose_service_chrome_server
   assert_stacked_compose_service_app_prod
+end
+
+def assert_stacked_dot_dockerignore
+  f = './.gitignore'
+  assert_file(f, /### Rails/)
+  assert_file(f, /### Roro/)
+  assert_file(f, /### Ruby/)
+end
+
+def assert_stacked_dot_gitignore
+  f = './.dockerignore'
+  assert_file(f, /### Git/)
+  assert_file(f, /### Rails/)
+  assert_file(f, /### Roro/)
+  assert_file(f, /### Ruby/)
 end
 
 def assert_stacked_mise
