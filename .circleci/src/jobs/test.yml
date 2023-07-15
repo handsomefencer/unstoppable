@@ -1,5 +1,6 @@
 executor: docker-cimg-base
 steps:
   - checkout
-  - run: docker-compose build test 
-  - run: docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
+  - setup_remote_docker
+  - run: sudo docker-compose build test 
+  - run: sudo docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
