@@ -1,4 +1,5 @@
 executor: docker-cimg-base
 steps:
   - checkout
-  - restore-and-save-cache
+  - run: docker-compose build test 
+  - run: docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
