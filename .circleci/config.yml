@@ -135,7 +135,7 @@ jobs:
                 docker image push handsomefencer/roro:latest
                 docker image push handsomefencer/roro:${CIRCLE_SHA1}
     test:
-        executor: docker-cimg-base
+        executor: machine-ubuntu
         steps:
             - checkout
             - setup_remote_docker

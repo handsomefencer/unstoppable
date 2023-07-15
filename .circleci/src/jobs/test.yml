@@ -1,4 +1,4 @@
-executor: docker-cimg-base
+executor: machine-ubuntu
 steps:
   - checkout
   - setup_remote_docker
