@@ -18,9 +18,10 @@ cd ${roro}
 sudo rm -rf ${sandbox_dir}
 mkdir -p ${sandbox_dir} 
 
-git add .
+# git add .
 
-dc build prod
+# dc build --no-cache dev
+dc build roro
 
 mkdir -p ${sandbox_dir}
 cd ${sandbox_dir} 
@@ -31,12 +32,12 @@ docker run \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
-  -it handsomefencer/roro-prod sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
+  -it handsomefencer/roro sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
 
-schown  
+# schown  
 
-dc build app 
-dc up app
+# dc build app 
+# dc up app
 
 
-cd ${roro}
+# cd ${roro}

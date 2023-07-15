@@ -1,26 +1,34 @@
 # syntax=docker/dockerfile:1
-FROM ruby:3.2.1-alpine AS builder
+FROM ruby:3.2.1-alpine AS base
 
-RUN apk add \
-    build-base \
+RUN apk add --no-cache \
     file \
-    git \
-    docker \
-    docker-compose \
     sudo
 
-FROM builder AS development
+RUN apk add --no-cache \
+    docker 
+
+FROM base AS builder
+
+RUN apk add --no-cache \
+    build-base \  
+    git 
 
 RUN gem install bundler:2.4.13
 
+FROM builder AS development
+
+
 WORKDIR /usr/src
+
+RUN gem install bundler:2.4.13
 
 COPY . .
 
 RUN bundle install -j4 --retry 3
 
-COPY lib .
-COPY test .
+RUN gem build roro.gemspec
+RUN rake install
 
 FROM builder AS stripper
 
@@ -28,22 +36,17 @@ WORKDIR /usr/src
 
 COPY . .
 
-RUN bundle config --local without 'development test' 
-RUN bundle install -j4 --retry 3 
-RUN bundle exec bootsnap precompile --gemfile || true  
-RUN bundle clean --force
-RUN rm -rf /usr/local/bundle/cache
-RUN find /usr/local/bundle/gems/ -name "*.c" -delete
-RUN find /usr/local/bundle/gems/ -name "*.o" -delete
+RUN bundle install -j4 --retry 3
 
-RUN rm -rf  vendor/bundle test 
+RUN gem build roro.gemspec
+RUN rake install
 
 FROM builder AS production
-
-WORKDIR /artifact
 
 RUN addgroup -g 1000 -S app && \
     adduser -u 1000 -S app -G app
 
-# Copy app with gems from former build stage
 COPY --from=stripper --chown=app:app /usr/local/bundle/ /usr/local/bundle/
+COPY --from=stripper --chown=app:app /usr/src /user/src
+
+WORKDIR /artifact
