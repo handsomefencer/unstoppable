@@ -1,5 +1,4 @@
 executor: machine-ubuntu
 steps:
   - checkout
-  - setup_remote_docker
   - run: docker-compose build test && docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
