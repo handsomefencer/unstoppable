@@ -171,13 +171,11 @@ version: 2.1
 workflows:
     adventures:
         jobs:
-            - build
-            - roro-image-build
             - test-adventures:
                 filters:
                     branches:
                         only:
-                            - development
+                            - adventures
                 matrix:
                     parameters:
                         answers:
@@ -200,8 +198,6 @@ workflows:
                             - "2"
                         os:
                             - machine-ubuntu
-                requires:
-                    - roro-image-build
     gem-release:
         jobs:
             - release:
@@ -218,7 +214,11 @@ workflows:
                             - release-image
     rollon-tests:
         jobs:
-            - test
+            - test:
+                filters:
+                    branches:
+                        only:
+                            - development
     rubies:
         jobs:
             - test-rubies:

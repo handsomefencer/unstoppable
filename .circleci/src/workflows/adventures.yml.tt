@@ -1,14 +1,10 @@
 ---
 jobs:
-- build
-- roro-image-build
 - test-adventures:
-    requires: 
-      - roro-image-build
     filters:
       branches:
         only: 
-        - development
+        - adventures
     matrix:
       parameters:
         answers:

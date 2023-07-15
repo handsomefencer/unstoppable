@@ -1,3 +1,8 @@
 ---
 jobs:
-- test
+- test:
+    filters:
+      branches:
+        only:
+        - development
+    
