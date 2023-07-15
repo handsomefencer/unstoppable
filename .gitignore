@@ -23,7 +23,9 @@ roro/**/*.key
 !/.gitignore
 *.gem
 tmp/*
+!/tmp/.keep
 !tmp/.keep
+
 TUTORIAL.md
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

@@ -33,7 +33,6 @@ pickle-email-*.html
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-!tmp/.keep
 
 
 # TODO Comment out this rule if you are OK with secrets being uploaded to the repo
