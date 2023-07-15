@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ruby:3.2.1-alpine AS base
+FROM ruby:3.2.2-alpine AS base
 
 RUN apk add --no-cache \
     file \
@@ -28,6 +28,8 @@ RUN gem install bundler:2.4.13
 COPY . .
 
 RUN bundle install -j4 --retry 3
+
+RUN git config --global --add safe.directory /usr/src
 
 RUN gem build roro.gemspec
 RUN rake install

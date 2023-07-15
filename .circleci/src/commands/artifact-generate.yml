@@ -1,4 +1,5 @@
 steps:
+  - run: docker-compose build roro
   - run: 
       name: Artifact generate in roro container 
       command: |
@@ -7,5 +8,5 @@ steps:
           -v ${PWD}:/${APP_NAME} \
           -v /var/run/docker.sock:/var/run/docker.sock \
           -u 0 \
-          -it handsomefencer/roro:latest \
+          -it handsomefencer/roro \
           sh -c "printf '${ANSWERS}\na\n' | roro rollon"

@@ -1,4 +1,4 @@
-executor: machine-ubuntu
+executor: docker-cimg-base
 steps:
   - checkout
   - restore-and-save-cache

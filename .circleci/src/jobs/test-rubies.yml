@@ -6,5 +6,5 @@ parameters:
 executor: docker-cimg-ruby
 steps:
   - checkout
-  - run: bundle
-  - run: bundle exec rake test
+  - run: docker-compose build test 
+  - run: docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
