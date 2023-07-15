@@ -47,6 +47,5 @@ RUN addgroup -g 1000 -S app && \
     adduser -u 1000 -S app -G app
 
 COPY --from=stripper --chown=app:app /usr/local/bundle/ /usr/local/bundle/
-COPY --from=stripper --chown=app:app /usr/src /user/src
 
 WORKDIR /artifact
