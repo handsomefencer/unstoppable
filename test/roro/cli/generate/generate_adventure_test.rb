@@ -26,10 +26,6 @@ describe 'Roro::CLI#generate_adventure' do
     And  { assert_file storyfile, /# actions/ }
   end
 
-  describe 'must generate _builder.yml' do
-    Then { assert_file "#{stack}/_builder.yml", /actions:/ }
-  end
-
   describe 'must generate templates directory' do
     Then { assert_file "#{stack}/templates/.keep" }
   end

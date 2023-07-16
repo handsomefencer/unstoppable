@@ -2,10 +2,20 @@
 
 require_relative '../shared_tests'
 
-describe '1 okonomi -> 3 postgres -> 2 7_0 -> 2 vite -> 1 none' do
+describe '1 -> 2 -> 2: ' do
   Given(:workbench) {}
-  
-  Given do 
-    rollon(__dir__) 
-  end 
+
+  Given do
+    rollon(__dir__)
+  end
+
+  Then do
+    assert_stacked_stacks
+    assert_stacked_okonomi
+    assert_stacked_postgres
+    assert_stacked_7_0
+    refute_stacked_compose_service_redis
+    refute_stacked_compose_service_sidekiq
+    assert_stacked_compose_service_vite
+  end
 end

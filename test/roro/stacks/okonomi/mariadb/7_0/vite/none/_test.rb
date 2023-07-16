@@ -16,5 +16,6 @@ describe '1 -> 1 -> 2: database: mariadb, rails version: 7.0' do
     assert_stacked_7_0
     refute_stacked_compose_service_redis
     refute_stacked_compose_service_sidekiq
+    assert_stacked_compose_service_vite
   end
 end

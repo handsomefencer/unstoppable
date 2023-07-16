@@ -15,6 +15,7 @@ RUN gem install rails -v <%= @env[:base][:rails_version][:value] %>
 
 ## Use Rails to generate a new app. We'll configure it later.
 RUN rails new . \
+  --skip-bundle \
   --database=<%= @env[:base][:db_vendor][:value] %> 
 
 ## Needed later builds:

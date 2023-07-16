@@ -22,6 +22,15 @@ def assert_stacked_dot_dockerignore
   assert_file(f, /### Ruby/)
 end
 
+def assert_stacked_compose_service_vite
+  assert_file('Gemfile', /gem ["']vite_rails["']/)
+  assert_file('bin/vite')
+  assert_file('config/vite.json')
+  assert_file('vite.config.ts')
+  a = ['docker-compose.yml', :services]
+  assert_yaml(*a, :vite, :ports, 0, '3036:3036')
+end
+
 def assert_stacked_dot_gitignore
   f = './.dockerignore'
   assert_file(f, /### Git/)
