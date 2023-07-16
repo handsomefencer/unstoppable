@@ -87,14 +87,9 @@ yarn-debug.log*
 
 # End of https://www.toptal.com/developers/gitignore/api/rails
 ### Roro ###
-roro/**/*.env
-roro/**/*.key
-*.key
-*.env
-!/lib/roro/stacks/**/*.key
-!/lib/roro/stacks/**/*.env
-!test/**/*.key
-!test/**/*.env
+/mise/**/*.env
+/mise/**/*.key
+!/mise/**/*.env.enc
 
 
 ### Ruby ###

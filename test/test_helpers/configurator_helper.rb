@@ -30,14 +30,22 @@ module Roro::TestHelpers::ConfiguratorHelper
 
   def capture_stage_dummy(dir)
     dummy_dir = "#{dir}/dummy"
+    FileUtils.remove_dir(dummy_dir)
+    FileUtils.mkdir_p(dummy_dir)
     dummies = Dir.glob("#{dir}/dummy/**/*", File::FNM_DOTMATCH).map do |f|
       f.split("#{dummy_dir}/").last
     end
-    dummies.each do |dummy|
+    @dummyfiles.each do |dummy|
       dummyfile = dummy.split(dummy_dir).last
-      if File.file?("#{Dir.pwd}/#{dummyfile}") && File.file?(dummyfile)
-        FileUtils.cp_r(dummyfile, "#{dummy_dir}/#{dummy}")
-      end
+      artifact = "#{Dir.pwd}/#{dummyfile}"
+      next unless File.file?("#{Dir.pwd}/#{dummyfile}") && File.file?(dummyfile)
+
+      array = dummyfile.split('/')
+      filename = array.pop
+      target = array.join('/')
+      # byebug unless array.empty?
+      FileUtils.mkdir_p("#{dummy_dir}/#{target}")
+      FileUtils.cp_r(artifact, "#{dummy_dir}/#{dummy}")
     end
   end
 
@@ -47,9 +55,8 @@ module Roro::TestHelpers::ConfiguratorHelper
   end
 
   def insert_dummy_files(*files)
-    files.each do |f|
-      byebug if File.exist?(f)
-    end
+    @dummyfiles ||= []
+    @dummyfiles += files
   end
 
   def rollon(dir)
