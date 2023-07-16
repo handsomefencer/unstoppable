@@ -10,9 +10,8 @@ env:
       value: '0.0.0.0'
 
 actions:
-  - run 'docker compose down'
   - run 'docker compose build app'
   - run 'docker compose up -d --no-deps app'
   - run 'docker compose exec app bundle add vite_rails' 
   - run 'docker compose exec app bundle exec vite install' 
-  - run 'docker compose down'
+  - run 'docker compose down app'

@@ -46,6 +46,12 @@ module Roro::TestHelpers::ConfiguratorHelper
     @rollon_loud = true
   end
 
+  def insert_dummy_files(*files)
+    files.each do |f|
+      byebug if File.exist?(f)
+    end
+  end
+
   def rollon(dir)
     debuggerer if ENV['DEBUGGERER'].eql?('true')
     workbench

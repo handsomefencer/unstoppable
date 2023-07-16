@@ -1,1 +1,1 @@
-<%= section('dockerignore') %>
+<%= section('dot_dockerignore') %>

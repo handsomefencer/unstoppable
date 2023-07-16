@@ -18,7 +18,7 @@ RUN apk add --update --no-cache \
   yarn 
 
 RUN apk add --update --no-cache \
-  postgresql-dev 
+  sqlite-dev 
 
 FROM builder AS development
 
@@ -67,7 +67,7 @@ RUN apk add --no-cache \
   brotli-libs 
 
 RUN apk add --no-cache \
-  postgresql-client 
+  sqlite-dev 
 
 WORKDIR /app
 

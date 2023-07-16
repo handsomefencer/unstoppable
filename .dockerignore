@@ -87,12 +87,10 @@ yarn-debug.log*
 /public/uploads
 
 ### Roro ###
-roro/**/*.env
-roro/**/*.key
-*.key
-*.env
-!/lib/roro/stacks/**/*.key
-!/lib/roro/stacks/**/*.env
+/mise/**/*.env
+/mise/**/*.key
+!/mise/**/*.env.enc
+
 !test/**/*.key
 !test/**/*.env
 

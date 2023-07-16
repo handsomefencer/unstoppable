@@ -6,9 +6,13 @@ describe '1 -> 2 -> 2: ' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
+    files = ['mise/env/base.env']
+    insert_dummy_files(*files)
   end
 
+  focus
   Then do
     assert_stacked_stacks
     assert_stacked_okonomi
