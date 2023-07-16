@@ -61,8 +61,10 @@ module Roro::TestHelpers::ConfiguratorHelper
     end
 
     cli = Roro::CLI.new
+    system 'docker-compose down'
     @rollon_loud ? cli.rollon : quiet { cli.rollon }
     capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
+    system 'docker-compose down'
   end
 
   def stubs_answer(answer)

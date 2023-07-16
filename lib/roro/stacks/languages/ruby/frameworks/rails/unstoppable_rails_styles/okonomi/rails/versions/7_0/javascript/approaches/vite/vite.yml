@@ -10,19 +10,13 @@ env:
       value: ' 0.0.0.0'
 
 actions:
-
-  - run 'docker-compose up -d --no-deps app'
-  - run 'docker-compose exec app bundle add vite_rails'
-  - run 'docker-compose exec app bundle exec vite install'
-  # - run 'docker-compose run --rm app bundle add vite_rails'
-  # - run 'docker-compose run --rm bundle'
-  # - remove_file 'Dockerfile'
-  # - copy_layer('manifest')
-  # - generate_mise
-  # - chmod 'entrypoints/docker-entrypoint.sh', 0755
-  # - comment_lines 'Gemfile', /webdrivers/
-  # - append_to_file( 
-  #   'test/test_helper.rb', 
-  #   "\nDir[\"\#{Dir.pwd}\/test\/support\/**\/*.rb\"]
-  #     .each { |f| require f }"
-  #   )
+  - run 'docker compose down'
+  # - run 'docker network rm workbench_default'
+  # - run 'docker volume prune'
+  - run 'docker compose build app'
+  - run 'docker compose up -d --no-deps app'
+  - run 'docker compose exec app bundle add vite_rails' 
+  - run 'docker compose exec app bundle exec vite install' 
+  - run 'docker compose down'
+  # - run 'docker-compose up -d --no-deps vite' 
+  # - run 'docker-compose run --rm vite bundle add vite_rails' 

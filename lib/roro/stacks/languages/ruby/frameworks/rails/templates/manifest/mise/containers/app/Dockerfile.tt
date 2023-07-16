@@ -23,6 +23,7 @@ RUN apk add --update --no-cache \
 FROM builder AS development
 
 RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
 WORKDIR /app
 
 COPY  Gemfile* ./

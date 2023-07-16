@@ -23,6 +23,7 @@ RUN apk add --update --no-cache \
 FROM builder AS development
 
 RUN gem install bundler:2.4.13
+
 WORKDIR /app
 
 COPY  Gemfile* ./
