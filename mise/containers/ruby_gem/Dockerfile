@@ -22,7 +22,7 @@ FROM builder AS development
 WORKDIR /usr/src
 
 COPY . .
-
+RUN git config --global --add safe.directory /usr/src
 RUN gem install bundler:2.4.13
 
 COPY . .
