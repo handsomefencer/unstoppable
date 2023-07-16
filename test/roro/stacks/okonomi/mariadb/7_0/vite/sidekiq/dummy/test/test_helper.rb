@@ -11,3 +11,5 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+Dir["#{Dir.pwd}/test/support/**/*.rb"] .each { |f| require f }

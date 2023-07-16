@@ -74,6 +74,10 @@ services:
       - ./mise/containers/db/env/base.env
       - ./mise/containers/db/env/development.env
 
+  vite:
+    <<: *app
+    ports:
+      - "3036:3036"
 
   redis:
     image: 'redis:7.0-alpine'

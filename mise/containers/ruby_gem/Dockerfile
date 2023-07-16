@@ -6,7 +6,8 @@ RUN apk add --no-cache \
     sudo
 
 RUN apk add --no-cache \
-    docker 
+    docker \
+    docker-compose
 
 FROM base AS builder
 
