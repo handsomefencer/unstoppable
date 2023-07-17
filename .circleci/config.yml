@@ -144,9 +144,11 @@ jobs:
                 command: ruby -v
                 name: Which ruby?
             - run: bundle
-            - run: |-
+            - run: |
                 TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
                 DEBUGGER='true' bundle exec rake test $TEST
+            - store_test_results:
+                path: test-results
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
