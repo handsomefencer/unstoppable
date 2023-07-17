@@ -143,6 +143,7 @@ jobs:
                     rvm install 3.2.1
                     echo . $(rvm 3.2.1 do rvm env --path) >> $BASH_ENV
                 name: Set ruby version to 3.2.1
+            - run: bundle
             - run: DEBUGGERER='true' rake test
     test-adventures:
         environment:

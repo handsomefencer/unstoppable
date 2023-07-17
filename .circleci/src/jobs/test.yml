@@ -6,4 +6,5 @@ steps:
       command: |
           rvm install 3.2.1
           echo . $(rvm 3.2.1 do rvm env --path) >> $BASH_ENV
+  - run: bundle 
   - run: DEBUGGERER='true' rake test
