@@ -3,10 +3,8 @@
 FROM ruby:3.2.1-alpine AS builder
 
 RUN apk add \
-  build-base \
-  file \
-  git \
-  tzdata
+  build-base \ 
+  git
 
 WORKDIR /app
 

@@ -93,6 +93,10 @@ executors:
         machine:
             docker_layer_caching: true
             image: ubuntu-2204:2023.04.2
+    machine-ubuntu-no-caching:
+        machine:
+            docker_layer_caching: false
+            image: ubuntu-2204:2023.04.2
     ruby-alpine:
         docker:
             - image: ruby:<<parameters.version>>-alpine
@@ -208,7 +212,7 @@ workflows:
                             - 1\n4\n2\n2\n2
                             - "2"
                         os:
-                            - machine-ubuntu
+                            - machine-ubuntu-no-caching
     gem-release:
         jobs:
             - release:

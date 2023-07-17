@@ -3,10 +3,8 @@
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
 
 RUN apk add \
-  build-base \
-  file \
-  git \
-  tzdata
+  build-base \ 
+  git
 
 WORKDIR /app
 
