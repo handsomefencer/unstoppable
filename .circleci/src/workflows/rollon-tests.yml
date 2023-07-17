@@ -1,5 +1,6 @@
 ---
 jobs:
+- build
 - test:
     filters:
       branches:

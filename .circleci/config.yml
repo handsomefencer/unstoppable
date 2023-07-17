@@ -108,6 +108,7 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
+            - restore-and-save-cache
     release:
         executor: docker-cimg-ruby
         steps:
@@ -140,9 +141,16 @@ jobs:
         steps:
             - checkout
             - setup_remote_docker
+            - restore-and-save-cache
             - run:
                 command: ruby -v
                 name: Which ruby?
+            - run:
+                command: docker -v
+                name: Which docker?
+            - run:
+                command: docker-compose -v
+                name: Which docker-compose?
             - run: bundle
             - run: |
                 TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
@@ -232,6 +240,7 @@ workflows:
                             - release-image
     rollon-tests:
         jobs:
+            - build
             - test:
                 filters:
                     branches:

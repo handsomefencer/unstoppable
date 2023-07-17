@@ -3,9 +3,16 @@ parallelism: 5
 steps:
   - checkout
   - setup_remote_docker
+  - restore-and-save-cache
   - run: 
       name: Which ruby?
       command: ruby -v
+  - run: 
+      name: Which docker?
+      command: docker -v
+  - run: 
+      name: Which docker-compose?
+      command: docker-compose -v
   - run: bundle 
   - run: |
       TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
