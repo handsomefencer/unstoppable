@@ -34,16 +34,13 @@ module Roro::TestHelpers::ConfiguratorHelper
     dummy_dir = "#{dir}/dummy"
     FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir)
     FileUtils.mkdir_p(dummy_dir)
-    dummies = Dir.glob("#{dir}/dummy/**/*", File::FNM_DOTMATCH).map do |f|
-      f.split("#{dummy_dir}/").last
-    end
     @dummyfiles.each do |dummy|
       dummyfile = dummy.split(dummy_dir).last
       artifact = "#{Dir.pwd}/#{dummyfile}"
       next unless File.file?("#{Dir.pwd}/#{dummyfile}") && File.file?(dummyfile)
 
       array = dummyfile.split('/')
-      filename = array.pop
+      array.pop
       target = array.join('/')
       FileUtils.mkdir_p("#{dummy_dir}/#{target}")
       FileUtils.cp_r(artifact, "#{dummy_dir}/#{dummy}")
@@ -60,12 +57,15 @@ module Roro::TestHelpers::ConfiguratorHelper
     @dummyfiles += files
   end
 
-  def set_manifest_for_rollon(dir)
+  def set_manifest_for_rollon(dir, array = [])
+    @filematchers ||= []
     array = dir.split('/')
     name = array.pop
+    @filematchers << name
     stack_test_root = "#{Roro::CLI.test_root}/roro/stacks"
     manifest = "#{stack_test_root}/_manifest.yml"
     insert_dummy_files(*read_yaml(manifest)[name.to_sym])
+    foo = read_yaml(manifest)[:stacks]
     return if dir.eql?(stack_test_root)
 
     set_manifest_for_rollon(array.join('/'))
@@ -94,9 +94,22 @@ module Roro::TestHelpers::ConfiguratorHelper
     system 'docker-compose down' if @rollon_dummies.eql?(true)
   end
 
-  def assert_correct_manifest
-    @dummyfiles.each do |f|
-      assert_file(f)
+  def assert_correct_manifest(hash = nil)
+    hash ||= read_yaml("#{Roro::CLI.test_root}/roro/stacks/_manifest.yml")
+    @filematchers.reverse.each do |fm|
+      hash.dig(fm.to_sym)&.each do |filename, matchers|
+        if matchers.nil?
+          assert_file filename.to_s
+        else
+          matchers.each do |matcher|
+            if matcher.is_a?(Hash)
+              assert_yaml(filename.to_s, matcher)
+            else
+              assert_file(filename.to_s, eval(matcher))
+            end
+          end
+        end
+      end
     end
   end
 

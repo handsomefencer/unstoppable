@@ -1,37 +1,134 @@
-stacks: 
-  - .dockerignore
-  - .gitignore
-  - Gemfile 
-  - config/database.yml  
-  - docker-compose.yml
-  - mise/env/base.env 
-  - mise/env/development.env 
-  - mise/env/production.env 
-  - mise/containers/app/env/base.env 
-  - mise/containers/app/env/development.env 
-  - mise/containers/app/env/production.env 
-  - mise/containers/app/Dockerfile 
-  - test/application_system_test_case.rb 
-  - test/test_helper.rb
-postgres: 
-  - config/database.yml  
-  - mise/containers/db/env/base.env 
-  - mise/containers/db/env/development.env 
-  - mise/containers/db/env/production.env 
-  
-mysql: 
-  - config/database.yml  
-  - mise/containers/db/env/base.env 
-  - mise/containers/db/env/development.env 
-  - mise/containers/db/env/production.env 
+x-database:
+  &database 
+  docker-compose.yml:
+    - services: 
+        app:
+          image: unstoppable 
+  mise/containers/db/env/base.env:
+  mise/containers/db/env/development.env:
+  mise/containers/db/env/production.env:
 
 mariadb: 
-  - config/database.yml  
-  - mise/containers/db/env/base.env 
-  - mise/containers/db/env/development.env 
-  - mise/containers/db/env/production.env 
+  <<: *database
+
+
+mysql: 
+  <<: *database
+  config/database.yml: 
+    - '/adapter: mysql/'
+  docker-compose.yml: 
+    - services: 
+        db:
+          image: mysql:8.0.21
+          volumes: 
+            - db_data:/var/lib/mysql
+  Gemfile: 
+    - /gem ["']mysql2["'], ["']~> 0.5/
+  mise/env/base.env:
+    - /db_vendor=mysql/
+    - /db_image=mysql/
+    - /db_image_version=8.0.21/
+    - /db_volume=\/var\/lib\/mysql/
+  mise/env/development.env:
+    - /DATABASE_HOST=db/
+    - /DATABASE_NAME=development/
+    - /MYSQL_DATABASE=development/
+    - /MYSQL_HOST=db/
+    - /MYSQL_USER=root/
+    - /MYSQL_PASSWORD=root/
+    - /MYSQL_ROOT_PASSWORD=root/
+  mise/containers/app/Dockerfile:
+    - /mysql-dev/
+    - /mysql-client/
+
+
+stacks: 
+  .dockerignore:
+    - /### Git/
+    - /### Rails/
+    - /### Roro/
+    - /### Ruby/
+  .gitignore:
+    - /### Rails/
+    - /### Roro/
+    - /### Ruby/
+  config/database.yml:  
+  docker-compose.yml:
+    - volumes: 
+        db_data:
+        gem_cache:
+        node_modules:
+        redis:
+    - services:
+        app-prod:
+          build: 
+            target: production
+          profiles: 
+            - production
+          ports: 
+            - '3001:3000'
+        app:
+          image: unstoppable 
+          ports:
+            - '3000:3000'
+          build: 
+            context: .
+            dockerfile: ./mise/containers/app/Dockerfile
+            target: development
+          env_file: 
+            - ./mise/env/base.env
+            - ./mise/env/development.env
+            - ./mise/containers/app/env/base.env
+            - ./mise/containers/app/env/development.env
+  Gemfile:
+    - /ruby ["']3.2.1["']/
+  mise/env/base.env: 
+    - /app_name=unstoppable/
+    - /docker_compose_version=3.9/
+    - /ruby_version=3.2.1/
+    - /bundler_version=2.4.13/
+  mise/env/development.env: 
+  mise/env/production.env: 
+  mise/containers/app/env/base.env: 
+    - /RAILS_MAX_THREADS/
+  mise/containers/app/env/development.env: 
+  mise/containers/app/env/production.env: 
+    - /RAILS_ENV=production/
+    - /MALLOC_ARENA_MAX=2/
+    - /RAILS_LOG_TO_STDOUT=true/
+    - /RAILS_SERVE_STATIC_FILES=true/
+  mise/containers/app/Dockerfile: 
+    - /FROM ruby:3.2.1-alpine/
+    - /bundler:2.4.13/
+
+  test/application_system_test_case.rb: 
+  test/test_helper.rb:
+
+sidekiq: 
+  mise/env/base.env:
+    - /bundler_version=2.4.13/
+    - /docker_compose_version=3.9/
+    - /ruby_version=3.2.1/
+  mise/containers/app/env/base.env:
+    - /REDIS_URL=redis:\/\/redis:6379\/0/
 
 vite: 
-  - bin/vite
-  - config/vite.json
-  - vite.config.ts
+  bin/vite:
+  config/vite.json:
+  Gemfile:
+    - /gem ["']vite_rails["']/
+  vite.config.ts:
+  docker-compose.yml:
+    - services: 
+        vite: 
+          ports:
+            - '3036:3036'
+
+'7_0':
+  Gemfile:
+    - /gem ["']rails["'], ["']~> 7.0.6/
+
+'6_1':
+  Gemfile:
+    - /gem ["']rails["'], ["']~> 7.0.6/
+

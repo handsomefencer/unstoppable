@@ -206,7 +206,7 @@ module Roro
     end
 
     def read_yaml(yaml_file)
-      JSON.parse(YAML.load_file(yaml_file).to_json, symbolize_names: true)
+      JSON.parse(YAML.load_file(yaml_file, aliases: true).to_json, symbolize_names: true)
     end
 
     def adventure_name(location)

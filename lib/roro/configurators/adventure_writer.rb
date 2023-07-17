@@ -34,11 +34,6 @@ module Roro
           raise Roro::Error unless actual_response.eql?(desired_response)
         end
 
-        def success_response(_url, desired_response = '200')
-          actual_response = system("curl -o /dev/null -s -w '%<http_code>s\n' http://localhost")
-          raise Roro::Error unless actual_response.eql?(desired_response)
-        end
-
         def generate_mise
           generator = Roro::CLI.new
           generator.generate_mise

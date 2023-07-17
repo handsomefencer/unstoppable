@@ -30,7 +30,7 @@ namespace :ci do
     end
 
     def ci_cases
-      cases = Roro::Configurators::StackReflector.new.cases
+      Roro::Configurators::StackReflector.new.cases
     end
   end
 end

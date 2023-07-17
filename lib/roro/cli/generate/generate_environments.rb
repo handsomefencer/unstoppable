@@ -20,7 +20,6 @@ module Roro
     map 'generate:environment_files' => 'generate_environment_files'
 
     def generate_environment_files(hash, location = 'mise')
-      content = []
       hash.each do |key, value|
         next unless value.is_a?(Hash)
 

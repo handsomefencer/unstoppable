@@ -34,6 +34,12 @@ module Roro::TestHelpers::FilesHelper
       assert_equal(expected, yaml.dig(*args))
     when Regexp
       assert_match(expected, yaml.dig(*args))
+    when Hash
+      if expected.values.first.is_a?(Array)
+        byebug
+      else
+        assert_equal(yaml, yaml.deep_merge(expected))
+      end
     end
   end
 
@@ -49,7 +55,6 @@ module Roro::TestHelpers::FilesHelper
   end
 
   def refute_content(file, content)
-    actual = Dir.glob("#{Dir.pwd}/**/*")
     assert_file(file)
     read = File.read(file)
     yield read if block_given?
