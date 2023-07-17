@@ -135,17 +135,15 @@ jobs:
                 docker image push handsomefencer/roro:latest
                 docker image push handsomefencer/roro:${CIRCLE_SHA1}
     test:
-        executor: machine-ubuntu
+        executor: docker-cimg-ruby
         parallelism: 5
         steps:
             - checkout
+            - setup_remote_docker
             - run:
-                command: |
-                    rvm install 3.2.1
-                    echo . $(rvm 3.2.1 do rvm env --path) >> $BASH_ENV
-                name: Set ruby version to 3.2.1
+                command: ruby -v
+                name: Which ruby?
             - run: bundle
-            - run: DEBUGGERER='true' rake test
             - run: |-
                 TEST=$(circleci tests glob "test/**/*_test.rb" | circleci tests split)
                 rake $TEST
