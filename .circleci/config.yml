@@ -145,7 +145,7 @@ jobs:
                 name: Which ruby?
             - run: bundle
             - run: |-
-                TEST=$(circleci tests glob "test/**/*_test.rb" | circleci tests split)
+                TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
                 rake $TEST
     test-adventures:
         environment:
