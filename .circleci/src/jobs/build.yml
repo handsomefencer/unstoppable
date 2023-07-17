@@ -1,4 +1,4 @@
-executor: machine-ubuntu
+executor: docker-cimg-ruby
 steps:
   - checkout
   - restore-and-save-cache
