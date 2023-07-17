@@ -16,4 +16,4 @@ steps:
       TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
       DEBUGGERER='true' bundle exec rake test $TEST
   - store_test_results:
-      path: .circleci/test-results
+      path: test/test-results
