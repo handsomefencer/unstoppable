@@ -2,4 +2,4 @@ steps:
   - run:
       name: "Store answers and app_name variables"
       command: |
-        echo "APP_NAME=${CIRCLE_JOB//\\n/-}" >> "$BASH_ENV"
+        echo "APP_NAME=${CIRCLE_JOB//\\n/_}-${CIRCLE_WORKFLOW_JOB_ID}" >> "$BASH_ENV"

@@ -71,8 +71,7 @@ commands:
     set-variables:
         steps:
             - run:
-                command: |
-                    echo "APP_NAME=${CIRCLE_JOB//\\n/-}" >> "$BASH_ENV"
+                command: echo "APP_NAME=${CIRCLE_JOB//\\n/_}-${CIRCLE_WORKFLOW_JOB_ID}" >> "$BASH_ENV"
                 name: Store answers and app_name variables
 executors:
     docker-cimg-base:
