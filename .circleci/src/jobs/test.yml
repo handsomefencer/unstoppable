@@ -6,8 +6,7 @@ steps:
   - run: 
       name: Which ruby?
       command: ruby -v
-  # - run: bundle 
+  - run: bundle 
   - run: |
       TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
-      $TEST 
-      echo $TEST
+      DEBUGGER='true' bundle exec rake test $TEST
