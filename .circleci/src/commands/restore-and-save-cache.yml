@@ -2,9 +2,9 @@ steps:
   - restore_cache:
       key: circlev2-{{ checksum "Gemfile.lock" }}
   - run: bundle config set --local path 'vendor/bundle'
-  - run: bundle check || bundle install --jobs=4 --retry=3
+  - run: bundle install --jobs=4 --retry=3
   - run: gem build roro.gemspec
-  - run: rake install
+  - run: gem install roro-0.3.32.gem
   - save_cache:
       key: circlev2-{{ checksum "Gemfile.lock" }}
       paths:

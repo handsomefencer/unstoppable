@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.executables << 'roro'
   spec.require_paths = ['lib']
   spec.add_dependency 'gem-release', '~> 2.1'
-  spec.add_dependency 'deep_merge'
+  spec.add_dependency 'deep_merge', '~> 1.2', '>= 1.2.2'
 
   spec.add_dependency 'os', '~> 1.1'
   spec.add_dependency 'rake', '~> 13.0', '>= 13.0.1'
