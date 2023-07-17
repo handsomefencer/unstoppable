@@ -139,27 +139,16 @@ jobs:
         steps:
             - checkout
             - restore-and-save-cache
-            - run:
-                command: ruby -v
-                name: Which ruby?
-            - run:
-                command: docker -v
-                name: Which docker?
-            - run:
-                command: docker-compose -v
-                name: Which docker-compose?
-            - run: |
+            - run: |-
                 TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
                 DEBUGGERER='true' bundle exec rake test $TEST
-            - store_test_results:
-                path: test/test-results
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
         executor: << parameters.os >>
         parameters:
             answers:
-                default: 1\1
+                default: "2"
                 type: string
             os:
                 default: docker-cimg-base
@@ -189,7 +178,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - adventures
+                            - development
                 matrix:
                     parameters:
                         answers:

@@ -3,7 +3,7 @@ environment:
 parameters:
   answers:
     type: string
-    default: 1\1
+    default: '2'
   os:
     type: executor
     default: docker-cimg-base
