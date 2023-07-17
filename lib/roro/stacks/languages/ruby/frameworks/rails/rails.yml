@@ -9,10 +9,10 @@ env:
     app_name:
       name: Name for your app
       value: unstoppable
-    chrome-server-image:
+    chrome_server_image:
       name: Selenium based image for system tests
       value: selenium/standalone-chrome
-    chrome-server-image-version:
+    chrome_server_image_version:
       name: Chrome server imag version
       value: '96.0'
     app: 

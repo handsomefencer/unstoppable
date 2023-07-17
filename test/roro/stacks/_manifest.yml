@@ -21,6 +21,8 @@ mysql:
   Gemfile: 
     - /gem ["']mysql2["'], ["']~> 0.5/
   mise/env/base.env:
+    - /chrome_server_image=selenium\/standalone-chrome/
+    - /chrome_server_image_version=96.0/
     - /db_vendor=mysql/
     - /db_image=mysql/
     - /db_image_version=8.0.21/
