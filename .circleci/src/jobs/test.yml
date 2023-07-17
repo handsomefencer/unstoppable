@@ -1,4 +1,5 @@
 executor: machine-ubuntu
 steps:
   - checkout
-  - run: docker-compose build test && docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
+  - restore-and-save-cache
+  - run: DEBUGGERER='true' rake test
