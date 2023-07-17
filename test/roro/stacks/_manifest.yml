@@ -8,10 +8,6 @@ x-database:
   mise/containers/db/env/development.env:
   mise/containers/db/env/production.env:
 
-# mariadb: 
-  # <<: *database
-
-
 mysql: 
   <<: *database
   config/database.yml: 

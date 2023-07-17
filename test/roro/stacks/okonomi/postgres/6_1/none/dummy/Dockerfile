@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1
+
+FROM ruby:3.2.1-alpine AS builder
+
+RUN apk add \
+  build-base \
+  file \
+  git \
+  tzdata
+
+WORKDIR /app
+
+## Install rails 
+RUN gem install rails -v 6.1.7
+
+## Use Rails to generate a new app. We'll configure it later.
+RUN rails new . \
+  --skip-bundle \
+  --database=postgresql 
+
+## Needed later builds:
+RUN touch Gemfile.lock
+
+RUN rm config/master.key
+
+FROM scratch AS export-stage
+
+## Copy the generated files onto the host.
+COPY --from=builder ./app/ .
