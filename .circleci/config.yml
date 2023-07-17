@@ -145,6 +145,9 @@ jobs:
                 name: Set ruby version to 3.2.1
             - run: bundle
             - run: DEBUGGERER='true' rake test
+            - run: |-
+                TEST=$(circleci tests glob "test/**/*_test.rb" | circleci tests split)
+                rake $TEST
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
