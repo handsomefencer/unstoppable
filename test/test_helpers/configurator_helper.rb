@@ -19,7 +19,9 @@ module Roro::TestHelpers::ConfiguratorHelper
   end
 
   def copy_stage_dummy(path)
-    FileUtils.cp_r("#{path}/dummy/.", Dir.pwd)
+    dummy_dir = "#{path}/dummy/."
+
+    FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
   end
 
   def stubs_yes?(answer = 'yes')
@@ -30,7 +32,7 @@ module Roro::TestHelpers::ConfiguratorHelper
 
   def capture_stage_dummy(dir)
     dummy_dir = "#{dir}/dummy"
-    FileUtils.remove_dir(dummy_dir)
+    FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir)
     FileUtils.mkdir_p(dummy_dir)
     dummies = Dir.glob("#{dir}/dummy/**/*", File::FNM_DOTMATCH).map do |f|
       f.split("#{dummy_dir}/").last
@@ -43,7 +45,6 @@ module Roro::TestHelpers::ConfiguratorHelper
       array = dummyfile.split('/')
       filename = array.pop
       target = array.join('/')
-      # byebug unless array.empty?
       FileUtils.mkdir_p("#{dummy_dir}/#{target}")
       FileUtils.cp_r(artifact, "#{dummy_dir}/#{dummy}")
     end
@@ -59,7 +60,19 @@ module Roro::TestHelpers::ConfiguratorHelper
     @dummyfiles += files
   end
 
+  def set_manifest_for_rollon(dir)
+    array = dir.split('/')
+    name = array.pop
+    stack_test_root = "#{Roro::CLI.test_root}/roro/stacks"
+    manifest = "#{stack_test_root}/_manifest.yml"
+    insert_dummy_files(*read_yaml(manifest)[name.to_sym])
+    return if dir.eql?(stack_test_root)
+
+    set_manifest_for_rollon(array.join('/'))
+  end
+
   def rollon(dir)
+    set_manifest_for_rollon(dir)
     debuggerer if ENV['DEBUGGERER'].eql?('true')
     workbench
     stubs_adventure(dir)
@@ -74,10 +87,17 @@ module Roro::TestHelpers::ConfiguratorHelper
     end
 
     cli = Roro::CLI.new
-    system 'docker-compose down'
+    system 'docker-compose down' if @rollon_dummies.eql?(true)
     @rollon_loud ? cli.rollon : quiet { cli.rollon }
     capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
-    system 'docker-compose down'
+    assert_correct_manifest
+    system 'docker-compose down' if @rollon_dummies.eql?(true)
+  end
+
+  def assert_correct_manifest
+    @dummyfiles.each do |f|
+      assert_file(f)
+    end
   end
 
   def stubs_answer(answer)

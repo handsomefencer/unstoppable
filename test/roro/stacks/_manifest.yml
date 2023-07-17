@@ -1,0 +1,37 @@
+stacks: 
+  - .dockerignore
+  - .gitignore
+  - Gemfile 
+  - config/database.yml  
+  - docker-compose.yml
+  - mise/env/base.env 
+  - mise/env/development.env 
+  - mise/env/production.env 
+  - mise/containers/app/env/base.env 
+  - mise/containers/app/env/development.env 
+  - mise/containers/app/env/production.env 
+  - mise/containers/app/Dockerfile 
+  - test/application_system_test_case.rb 
+  - test/test_helper.rb
+postgres: 
+  - config/database.yml  
+  - mise/containers/db/env/base.env 
+  - mise/containers/db/env/development.env 
+  - mise/containers/db/env/production.env 
+  
+mysql: 
+  - config/database.yml  
+  - mise/containers/db/env/base.env 
+  - mise/containers/db/env/development.env 
+  - mise/containers/db/env/production.env 
+
+mariadb: 
+  - config/database.yml  
+  - mise/containers/db/env/base.env 
+  - mise/containers/db/env/development.env 
+  - mise/containers/db/env/production.env 
+
+vite: 
+  - bin/vite
+  - config/vite.json
+  - vite.config.ts

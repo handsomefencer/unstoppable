@@ -43,15 +43,9 @@ def assert_stacked_mise
   f = 'mise/env/base.env'
   assert_file(f, /app_name=unstoppable/)
   assert_file(f, /docker_compose_version=3.9/)
-  assert_file('mise/env/development.env')
-  assert_file('mise/containers/app/env/base.env')
-  assert_file('mise/containers/app/env/development.env')
-  assert_file('mise/containers/db/env/base.env')
-  assert_file('mise/containers/db/env/development.env')
 end
 
 def assert_stacked_rails
-  assert_file('entrypoints/docker-entrypoint.sh')
   assert_file('mise/containers/app/env/base.env', /RAILS_MAX_THREADS/)
   f = 'mise/containers/app/env/production.env'
   assert_file(f, /RAILS_ENV=production/)
