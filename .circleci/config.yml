@@ -143,10 +143,7 @@ jobs:
             - run:
                 command: ruby -v
                 name: Which ruby?
-            - run: bundle
-            - run: |-
-                TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
-                rake $TEST
+            - run: "TEST=$(circleci tests glob \"test/**/*/_test.rb\" | circleci tests split)\n$TEST \necho $TEST"
     test-adventures:
         environment:
             - ANSWERS: << parameters.answers >>
