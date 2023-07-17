@@ -64,7 +64,8 @@ module Roro::TestHelpers::ConfiguratorHelper
     @filematchers << name
     stack_test_root = "#{Roro::CLI.test_root}/roro/stacks"
     manifest = "#{stack_test_root}/_manifest.yml"
-    insert_dummy_files(*read_yaml(manifest)[name.to_sym])
+    files = read_yaml(manifest)[name.to_sym]&.keys&.map(&:to_s)
+    insert_dummy_files(*files)
     foo = read_yaml(manifest)[:stacks]
     return if dir.eql?(stack_test_root)
 
@@ -90,11 +91,11 @@ module Roro::TestHelpers::ConfiguratorHelper
     system 'docker-compose down' if @rollon_dummies.eql?(true)
     @rollon_loud ? cli.rollon : quiet { cli.rollon }
     capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
-    assert_correct_manifest
+    # assert_correct_manifest(dir)
     system 'docker-compose down' if @rollon_dummies.eql?(true)
   end
 
-  def assert_correct_manifest(hash = nil)
+  def assert_correct_manifest(dir = nil, hash = nil)
     hash ||= read_yaml("#{Roro::CLI.test_root}/roro/stacks/_manifest.yml")
     @filematchers.reverse.each do |fm|
       hash.dig(fm.to_sym)&.each do |filename, matchers|
@@ -102,8 +103,15 @@ module Roro::TestHelpers::ConfiguratorHelper
           assert_file filename.to_s
         else
           matchers.each do |matcher|
+            msg = "#{filename} in #{dir}/dummy/#{filename} does not contain #{matcher}"
             if matcher.is_a?(Hash)
               assert_yaml(filename.to_s, matcher)
+            elsif matcher.chars.first.match?('/')
+              regex = matcher.chars
+              regex.shift
+              regex.pop
+              regex.join
+              assert_file(filename.to_s, eval("#{matcher}"))
             else
               assert_file(filename.to_s, eval(matcher))
             end

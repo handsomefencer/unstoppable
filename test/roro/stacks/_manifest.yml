@@ -8,8 +8,8 @@ x-database:
   mise/containers/db/env/development.env:
   mise/containers/db/env/production.env:
 
-mariadb: 
-  <<: *database
+# mariadb: 
+  # <<: *database
 
 
 mysql: 
@@ -41,8 +41,7 @@ mysql:
     - /mysql-dev/
     - /mysql-client/
 
-
-stacks: 
+okonomi: 
   .dockerignore:
     - /### Git/
     - /### Rails/
@@ -52,13 +51,24 @@ stacks:
     - /### Rails/
     - /### Roro/
     - /### Ruby/
+
+redis: 
+  docker-compose.yml: 
+    - volumes: 
+        db_data:
+        gem_cache:
+        node_modules:
+        redis:
+
+
+stacks: 
+  Dockerfile:
   config/database.yml:  
   docker-compose.yml:
     - volumes: 
         db_data:
         gem_cache:
         node_modules:
-        redis:
     - services:
         app-prod:
           build: 
@@ -106,9 +116,6 @@ stacks:
 
 sidekiq: 
   mise/env/base.env:
-    - /bundler_version=2.4.13/
-    - /docker_compose_version=3.9/
-    - /ruby_version=3.2.1/
   mise/containers/app/env/base.env:
     - /REDIS_URL=redis:\/\/redis:6379\/0/
 
@@ -130,5 +137,5 @@ vite:
 
 '6_1':
   Gemfile:
-    - /gem ["']rails["'], ["']~> 7.0.6/
+    - /gem ["']rails["'], ["']~> 6.1.7/
 

@@ -45,8 +45,7 @@ env:
         name: Serve static files from rails
         value: 'true'
   
-actions:
-  - remove_file 'Dockerfile'
+actions:  
   - copy_layer('manifest')
   - generate_mise
   - chmod 'entrypoints/docker-entrypoint.sh', 0755

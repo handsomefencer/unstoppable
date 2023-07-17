@@ -9,11 +9,5 @@ describe '2: unstoppable_rails_style: omakase' do
     rollon(__dir__)
   end
 
-  Then do
-    assert_stacked_stacks
-    assert_stacked_sqlite
-    assert_stacked_7_0
-    refute_stacked_compose_service_redis
-    refute_stacked_compose_service_sidekiq
-  end
+  Then { assert_correct_manifest(__dir__) }
 end

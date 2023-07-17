@@ -14,3 +14,4 @@ actions:
   - run 'docker compose up -d --no-deps app'
   - run 'docker compose exec app bundle add vite_rails' 
   - run 'docker compose exec app bundle exec vite install' 
+  - run 'docker-compose down'

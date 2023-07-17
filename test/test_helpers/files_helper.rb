@@ -36,7 +36,6 @@ module Roro::TestHelpers::FilesHelper
       assert_match(expected, yaml.dig(*args))
     when Hash
       if expected.values.first.is_a?(Array)
-        byebug
       else
         assert_equal(yaml, yaml.deep_merge(expected))
       end
