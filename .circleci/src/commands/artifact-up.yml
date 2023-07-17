@@ -13,6 +13,6 @@ steps:
       name: Try again on fail
       command: |
         cd ${APP_NAME} 
-        sudo docker-compose build 
-        sudo docker-compose up -d
+        sudo docker-compose build app
+        sudo docker-compose up -d app
       when: on_fail

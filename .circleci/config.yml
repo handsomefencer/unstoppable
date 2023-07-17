@@ -28,7 +28,7 @@ commands:
                 name: Sleep for 2 minutes on fail
                 when: on_fail
             - run:
-                command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
+                command: "cd ${APP_NAME} \nsudo docker-compose build app\nsudo docker-compose up -d app\n"
                 name: Try again on fail
                 when: on_fail
     log-into-dockerhub:
