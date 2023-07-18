@@ -2,6 +2,8 @@
 jobs:
 - roro-image-build
 - rollon-adventure:
+    requires:
+    - roro-image-build
     filters:
       branches:
         only:
