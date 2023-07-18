@@ -1,5 +1,7 @@
 ---
 jobs:
+
+- roro-image-build
 - test-adventures:
     filters:
       branches:
