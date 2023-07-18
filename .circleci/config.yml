@@ -111,6 +111,24 @@ jobs:
             - run: gem install gem-release
             - run: gem bump
             - run: gem release
+    rollon-adventure:
+        environment:
+            - ANSWERS: << parameters.answers >>
+        executor: << parameters.os >>
+        parameters:
+            answers:
+                default: "2"
+                type: string
+            os:
+                default: docker-cimg-base
+                type: executor
+        steps:
+            - checkout
+            - set-variables
+            - roro-image-build
+            - artifact-generate
+            - artifact-copy
+            - artifact-up
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -134,24 +152,6 @@ jobs:
             - run: |-
                 TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
                 DEBUGGERER='true' bundle exec rake test $TEST
-    test-adventures:
-        environment:
-            - ANSWERS: << parameters.answers >>
-        executor: << parameters.os >>
-        parameters:
-            answers:
-                default: "2"
-                type: string
-            os:
-                default: docker-cimg-base
-                type: executor
-        steps:
-            - checkout
-            - set-variables
-            - roro-image-build
-            - artifact-generate
-            - artifact-copy
-            - artifact-up
     test-rubies:
         executor: docker-cimg-ruby
         parameters:
@@ -165,10 +165,24 @@ jobs:
             - run: docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
 version: 2.1
 workflows:
-    adventures:
+    gem-release:
+        jobs:
+            - release:
+                filters:
+                    branches:
+                        only:
+                            - gem-release
+    release-image:
+        jobs:
+            - roro-image-push:
+                filters:
+                    branches:
+                        only:
+                            - release-image
+    rollon-adventures:
         jobs:
             - roro-image-build
-            - test-adventures:
+            - rollon-adventure:
                 filters:
                     branches:
                         only:
@@ -203,20 +217,6 @@ workflows:
                             - "2"
                         os:
                             - machine-ubuntu
-    gem-release:
-        jobs:
-            - release:
-                filters:
-                    branches:
-                        only:
-                            - gem-release
-    release-image:
-        jobs:
-            - roro-image-push:
-                filters:
-                    branches:
-                        only:
-                            - release-image
     rollon-tests:
         jobs:
             - build

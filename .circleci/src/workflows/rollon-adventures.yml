@@ -1,7 +1,7 @@
 ---
 jobs:
 - roro-image-build
-- test-adventures:
+- rollon-adventure:
     filters:
       branches:
         only:

@@ -5,10 +5,10 @@ require 'byebug'
 namespace :ci do
   namespace :prepare do
     namespace :workflows do
-      desc 'Prepare workflow with matrix of adventures'
-      task 'adventures' do |task|
+      desc 'Prepare workflow with matrix of rollon-adventures'
+      task 'rollon-adventures' do |task|
         set_content(task)
-        matrix = @content.dig('jobs', 1, 'test-adventures', 'matrix')
+        matrix = @content.dig('jobs', 1, 'rollon-adventure', 'matrix')
         matrix['parameters']['answers'] = ci_cases.map { |c| c.to_s.gsub(' ', '\\n') }
         overwrite
         notify('answers')
