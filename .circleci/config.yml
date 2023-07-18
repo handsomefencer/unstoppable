@@ -3,13 +3,13 @@ commands:
         steps:
             - run:
                 command: |
-                    sudo docker cp $(sudo docker ps -aqf "name=${APP_NAME}"):/artifact ./${APP_NAME}
+                    docker cp $(sudo docker ps -aqf "name=${APP_NAME}"):/artifact ./${APP_NAME}
                 name: Artifact copy from container to host
     artifact-generate:
         steps:
             - run:
                 command: |
-                    sudo docker run \
+                    docker run \
                       --name ${APP_NAME} \
                       -v ${PWD}:/${APP_NAME} \
                       -v /var/run/docker.sock:/var/run/docker.sock \
@@ -20,16 +20,8 @@ commands:
     artifact-up:
         steps:
             - run:
-                command: "cd ${APP_NAME} \nsudo docker-compose build app\nsudo docker-compose up -d app\n"
+                command: "cd ${APP_NAME} \ndocker-compose build app\ndocker-compose up -d app\n"
                 name: Artifact up using docker-compose
-            - run:
-                command: sleep 120
-                name: Sleep for 2 minutes on fail
-                when: on_fail
-            - run:
-                command: "cd ${APP_NAME} \nsudo docker-compose build app\nsudo docker-compose up -d app\n"
-                name: Try again on fail
-                when: on_fail
     log-into-dockerhub:
         steps:
             - run:
@@ -64,9 +56,9 @@ commands:
                     - vendor/bundle
     roro-image-build:
         steps:
-            - run: |
-                sudo chown -R $USER:$USER .
-                sudo env UID=${UID} GID=${GID} docker-compose build roro
+            - run:
+                command: docker-compose build roro
+                name: Build Roro image
     set-variables:
         steps:
             - run:

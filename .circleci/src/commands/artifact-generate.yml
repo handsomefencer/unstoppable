@@ -2,7 +2,7 @@ steps:
   - run: 
       name: Artifact generate in roro container 
       command: |
-        sudo docker run \
+        docker run \
           --name ${APP_NAME} \
           -v ${PWD}:/${APP_NAME} \
           -v /var/run/docker.sock:/var/run/docker.sock \

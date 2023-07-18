@@ -1,5 +1,5 @@
 steps:
-  - run: |
-      sudo chown -R $USER:$USER .
-      sudo env UID=${UID} GID=${GID} docker-compose build roro
+  - run: 
+      name: Build Roro image 
+      command: docker-compose build roro
 

@@ -2,4 +2,4 @@ steps:
   - run: 
       name: Artifact copy from container to host 
       command: |
-        sudo docker cp $(sudo docker ps -aqf "name=${APP_NAME}"):/artifact ./${APP_NAME}
+        docker cp $(sudo docker ps -aqf "name=${APP_NAME}"):/artifact ./${APP_NAME}
