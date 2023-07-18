@@ -1,5 +1,4 @@
 steps:
-  - run: docker-compose build roro
   - run: 
       name: Artifact generate in roro container 
       command: |

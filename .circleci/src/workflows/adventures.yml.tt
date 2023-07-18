@@ -9,4 +9,4 @@ jobs:
       parameters:
         answers:
           - 1\n1
-        os: [machine-ubuntu-no-caching]
+        os: [machine-ubuntu]

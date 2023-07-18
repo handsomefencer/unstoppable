@@ -34,4 +34,4 @@ jobs:
         - 1\n4\n2\n2\n2
         - '2'
         os:
-        - machine-ubuntu-no-caching
+        - machine-ubuntu

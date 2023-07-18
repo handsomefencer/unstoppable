@@ -7,7 +7,6 @@ commands:
                 name: Artifact copy from container to host
     artifact-generate:
         steps:
-            - run: docker-compose build roro
             - run:
                 command: |
                     sudo docker run \
@@ -124,9 +123,7 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - run: |
-                sudo chown -R $USER:$USER .
-                sudo env UID=${UID} GID=${GID} docker-compose build roro
+            - roro-image-build
     roro-image-push:
         executor: machine-ubuntu
         steps:
@@ -159,6 +156,7 @@ jobs:
         steps:
             - checkout
             - set-variables
+            - roro-image-build
             - artifact-generate
             - artifact-copy
             - artifact-up
@@ -211,7 +209,7 @@ workflows:
                             - 1\n4\n2\n2\n2
                             - "2"
                         os:
-                            - machine-ubuntu-no-caching
+                            - machine-ubuntu
     gem-release:
         jobs:
             - release:

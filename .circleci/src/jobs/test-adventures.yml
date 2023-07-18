@@ -13,6 +13,7 @@ executor: << parameters.os >>
 steps:
   - checkout
   - set-variables  
+  - roro-image-build
   - artifact-generate
   - artifact-copy
   - artifact-up
