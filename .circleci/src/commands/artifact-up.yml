@@ -3,8 +3,8 @@ steps:
       name: Artifact up using docker-compose
       command: |
         cd ${APP_NAME} 
-        sudo docker-compose build 
-        sudo docker-compose up -d
+        sudo docker-compose build app
+        sudo docker-compose up -d app
   - run: 
       name: Sleep for 2 minutes on fail
       command: sleep 120

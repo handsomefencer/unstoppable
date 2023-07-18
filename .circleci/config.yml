@@ -21,7 +21,7 @@ commands:
     artifact-up:
         steps:
             - run:
-                command: "cd ${APP_NAME} \nsudo docker-compose build \nsudo docker-compose up -d\n"
+                command: "cd ${APP_NAME} \nsudo docker-compose build app\nsudo docker-compose up -d app\n"
                 name: Artifact up using docker-compose
             - run:
                 command: sleep 120
