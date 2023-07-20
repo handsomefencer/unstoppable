@@ -9,3 +9,4 @@ env:
 actions:
   - generate_mise
   - copy_layer('manifest')
+  - run 'docker-compose up --build flutter-stable'

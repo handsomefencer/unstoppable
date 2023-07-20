@@ -50,6 +50,8 @@ COPY . .
 RUN gem build roro.gemspec
 RUN rake install
 RUN rm -rf /usr/local/bundle/cache
+RUN rm -rf ./test
+
 RUN find /usr/local/bundle/gems/ -name "*.c" -delete
 
 FROM builder AS production
