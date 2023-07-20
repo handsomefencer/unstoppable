@@ -8,6 +8,24 @@ x-database:
   mise/containers/db/env/development.env:
   mise/containers/db/env/production.env:
 
+flutter: 
+  docker-compose.yml:
+    - services: 
+        flutter-stable:
+          image: unstoppable/flutter:stable
+          build: 
+            dockerfile: mise/containers/flutter/Dockerfile
+          env_file: 
+            - mise/env/stable.env
+  mise/env/stable.env:
+    - /VERSION=stable/
+  mise/env/master.env:
+    - /VERSION=master/
+  mise/env/beta.env:
+    - /VERSION=beta/
+
+  mise/containers/flutter/Dockerfile:
+
 mysql: 
   <<: *database
   config/database.yml: 
@@ -59,7 +77,7 @@ redis:
         redis:
 
 
-stacks: 
+ruby: 
   Dockerfile:
   config/database.yml:  
   docker-compose.yml:

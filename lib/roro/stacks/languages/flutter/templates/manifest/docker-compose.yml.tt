@@ -1,31 +1,17 @@
-version: '3.9'
+version: "3.9"
 
-x-app:
-  &app
-  env_file:
-    - ./mise/env/base.env
-    - ./mise/env/development.env
-    - ./mise/containers/app/env/base.env
-    - ./mise/containers/app/env/development.env
-  image: unstoppable
-  stdin_open: true
-  tmpfs:
-    - "/app/tmp"
-    - "/app/log"
-  tty: true
-  user: root
-  volumes:
-    - .:/app
-  ports:  
-    - "8080:8080" 
+services: <%  
+  branches   = ['stable', 'beta', 'master']
+  containers   = [nil, 'web', 'android'] 
+  branches.each do |b|
+  containers.each do |c| %>
 
-services:
-  app:
-    <<: *app
-    build:
-      args:
-        - "UID=${UID:-1000}"
-        - "GID=${GID:-1000}"
+  flutter-<%= b %><%= c.nil? ? '' : "-#{c}" %>:
+    image: <%= "#{@env[:base][:flutter_app_name][:value]}/flutter:#{b}#{c.nil? ? '' : ("-" + c)}" %>
+    build: 
+      dockerfile: mise/containers/flutter<%= c.nil? ? '' : ("_" + c ) %>/Dockerfile
       context: .
-      dockerfile: ./mise/containers/app/Dockerfile
-
+      args: 
+        - VERSION=<%= b %>
+    env_file: 
+      - mise/env/<%= b %>.env<% end %><% end %>
