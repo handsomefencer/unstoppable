@@ -1,0 +1,31 @@
+version: '3.9'
+
+x-app:
+  &app
+  env_file:
+    - ./mise/env/base.env
+    - ./mise/env/development.env
+    - ./mise/containers/app/env/base.env
+    - ./mise/containers/app/env/development.env
+  image: unstoppable
+  stdin_open: true
+  tmpfs:
+    - "/app/tmp"
+    - "/app/log"
+  tty: true
+  user: root
+  volumes:
+    - .:/app
+  ports:  
+    - "8080:8080" 
+
+services:
+  app:
+    <<: *app
+    build:
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
+      context: .
+      dockerfile: ./mise/containers/app/Dockerfile
+

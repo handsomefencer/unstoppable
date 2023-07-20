@@ -1,0 +1,5 @@
+preface: Flutter is a cross-platform UI toolkit created by Google. It allows developers to build native mobile applications with a single codebase and programming language.
+
+actions:
+  - generate_mise
+  - copy_layer('manifest')
