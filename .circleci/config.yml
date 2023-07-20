@@ -139,6 +139,7 @@ jobs:
         steps:
             - checkout
             - log-into-dockerhub
+            - roro-image-build
             - run: "docker tag handsomefencer/roro handsomefencer/roro:latest \ndocker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
             - run: |-
                 docker image push handsomefencer/roro:latest
@@ -178,7 +179,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - release-image
+                            - main
     rollon-adventures:
         jobs:
             - roro-image-build

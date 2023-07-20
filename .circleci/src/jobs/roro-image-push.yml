@@ -2,6 +2,7 @@ executor: machine-ubuntu
 steps:
   - checkout
   - log-into-dockerhub
+  - roro-image-build
   - run: |
       docker tag handsomefencer/roro handsomefencer/roro:latest 
       docker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} 

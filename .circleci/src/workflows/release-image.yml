@@ -6,4 +6,4 @@ jobs:
       filters:
         branches:
           only: 
-          - release-image
+          - main
