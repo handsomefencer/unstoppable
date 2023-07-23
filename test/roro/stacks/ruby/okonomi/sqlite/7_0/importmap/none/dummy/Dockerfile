@@ -16,6 +16,7 @@ RUN rails new . \
   --skip-bundle \
   --database=sqlite3 
 
+
 ## Needed later builds:
 RUN touch Gemfile.lock
 

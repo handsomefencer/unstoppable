@@ -1,0 +1,4 @@
+## Use Rails to generate a new app. We'll configure it later.
+RUN rails new . \
+  --skip-bundle \
+  --database=<%= @env[:base][:db_vendor][:value] %> 

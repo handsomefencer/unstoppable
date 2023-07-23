@@ -47,7 +47,6 @@ env:
   
 actions:  
   - copy_layer('manifest')
-  - generate_mise
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
   - comment_lines 'Gemfile', /webdrivers/
   - append_to_file( 

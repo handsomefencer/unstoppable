@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1
+
+FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS builder
+
+RUN apk add \
+  build-base \ 
+  git
+
+RUN apk add --update --no-cache \
+  <%= @env[:development][:db_pkg][:value] %> 
+
+WORKDIR /app
+
+RUN gem install bundler:<%= @env[:base][:bundler_version][:value] %>
+
+COPY  Gemfile* ./
+RUN bundle install -j4 --retry 3
+
+## Use Rails to generate a new app. We'll configure it later.
+RUN bundle exec rails new . \
+  --database=<%= @env[:base][:db_vendor][:value] %> \
+  --skip-bundle 
+
+RUN rm config/master.key
+
+FROM scratch AS export-stage
+
+## Copy the generated files onto the host.
+COPY --from=builder ./app/ .

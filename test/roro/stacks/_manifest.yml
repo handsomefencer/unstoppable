@@ -108,6 +108,7 @@ ruby:
             - ./mise/containers/app/env/development.env
   Gemfile:
     - /ruby ["']3.2.2["']/
+  Gemfile.lock:
   mise/env/base.env: 
     - /app_name=unstoppable/
     - /docker_compose_version=3.9/
@@ -126,6 +127,8 @@ ruby:
   mise/containers/app/Dockerfile: 
     - /FROM ruby:3.2.2-alpine/
     - /bundler:2.4.13/
+  mise/containers/builder/Dockerfile: 
+    - /FROM ruby:3.2.2-alpine/
 
   test/application_system_test_case.rb: 
   test/test_helper.rb:

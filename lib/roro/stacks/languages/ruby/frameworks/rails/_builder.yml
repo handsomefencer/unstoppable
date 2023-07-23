@@ -1,3 +1,5 @@
 actions:
   - copy_layer('builder')
-  - run 'DOCKER_BUILDKIT=1 docker build --file Dockerfile --output . .'
+  - generate_mise
+  - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/builder/Dockerfile --output . .'
+  # - run 'docker-compose up -d -o . builder'

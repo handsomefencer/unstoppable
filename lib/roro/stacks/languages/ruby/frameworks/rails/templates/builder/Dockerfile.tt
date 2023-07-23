@@ -11,10 +11,7 @@ WORKDIR /app
 ## Install rails 
 RUN gem install rails -v <%= @env[:base][:rails_version][:value] %>
 
-## Use Rails to generate a new app. We'll configure it later.
-RUN rails new . \
-  --skip-bundle \
-  --database=<%= @env[:base][:db_vendor][:value] %> 
+<%= section('dockerfile_sections') %>
 
 ## Needed later builds:
 RUN touch Gemfile.lock
