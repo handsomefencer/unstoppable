@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ruby:3.2.1-alpine AS builder
+FROM ruby:3.2.2-alpine AS builder
 
 RUN apk add \
   build-base \ 
