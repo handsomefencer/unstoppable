@@ -1,4 +1,4 @@
-executor: docker-cimg-base
+executor: docker-cimg-ruby
 parallelism: 5
 steps:
   - checkout
