@@ -25,14 +25,14 @@ FROM builder AS generator
 WORKDIR /app
 
 RUN gem install bundler:2.4.13
+RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> 7.0.6'" > Gemfile
 
-COPY  Gemfile* ./
 RUN bundle install -j4 --retry 3
 
 ## Use Rails to generate a new app. We'll configure it later.
+
 RUN bundle exec rails new . \
-  --database=mysql \
-  --skip-bundle 
+  --database=mysql 
 
 
 RUN bundle add vite_rails 
