@@ -10,6 +10,8 @@ x-database:
 
 devise: 
   db/migrate:
+  app/controllers/application_controller.rb:
+    - /  before_action :authenticate_user!/ 
   app/views/layouts/application.html.erb:
   app/views/shared/_messages.html.erb:
   app/models/user.rb:
@@ -18,6 +20,9 @@ devise:
     - /config.navigational_formats/
     - /config.sign_out_via \= :get/
   config/environments/development.rb:
+    - /config.action_mailer.default_url_options = { host/
+    - /config.action_mailer.delivery_method = :letter_opener/
+    - /config.action_mailer.perform_deliveries = true/
   Gemfile:
     - /gem ["']devise["'], ["']~> 4.9/
     - /gem ["']letter_opener["'], ["']~> 1.8/
@@ -144,15 +149,32 @@ ruby:
   test/application_system_test_case.rb: 
 
 sidekiq: 
+  Gemfile: 
+    - /gem ["']sidekiq["']/
   mise/env/base.env:
   mise/containers/app/env/base.env:
     - /REDIS_URL=redis:\/\/redis:6379\/0/
+  config/environments/development.rb:
+    - /config.active_job.queue_adapter = :sidekiq/
 
 stripe:
+  config/initializers/stripe.rb:
+    - /Stripe.api_key = ENV\['STRIPE_PRIVATE_KEY'\]/
   docker-compose.yml:
     - services:
         stripe:
           image: 'stripe/stripe-cli:latest'
+  Gemfile:
+    - /gem ["']pay["']/
+    - /gem ["']stripe["']/
+  mise/containers/app/env/development.env:
+    - /STRIPE_PRIVATE_KEY=Replace me/
+    - /STRIPE_PUBLIC_KEY=Replace me/
+    - /STRIPE_SIGNING_SECRET=Replace me/
+  mise/containers/app/env/production.env:
+    - /STRIPE_PRIVATE_KEY=Replace me/
+    - /STRIPE_PUBLIC_KEY=Replace me/
+    - /STRIPE_SIGNING_SECRET=Replace me/
 
 vite: 
   bin/vite:
