@@ -2,12 +2,12 @@
 
 require 'test_helper'
 
-describe '1 -> 2 -> 1: database: postgres, rails version: 6.1' do
+describe '2 ruby -> 1 okonomi -> 3 postgres -> 1 6_1 -> 1 other-scheduler' do
   Given(:workbench) {}
-
-  Given do
-    rollon(__dir__)
-  end
+  
+  Given do 
+    rollon(__dir__) 
+  end 
 
   Then { assert_correct_manifest(__dir__) }
 end

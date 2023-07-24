@@ -2,12 +2,12 @@
 
 require 'test_helper'
 
-describe '1 -> 2 -> 2: ' do
+describe '2 ruby -> 1 okonomi -> 2 mysql -> 2 7_0 -> 1 devise -> 2 vite -> 1 other-scheduler' do
   Given(:workbench) {}
-
-  Given do
-    rollon(__dir__)
-  end
+  
+  Given do 
+    rollon(__dir__) 
+  end 
 
   Then { assert_correct_manifest(__dir__) }
 end

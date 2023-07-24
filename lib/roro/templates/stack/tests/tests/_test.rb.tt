@@ -5,9 +5,9 @@ require 'test_helper'
 describe '<%= @env[:adventure_title] %>' do
   Given(:workbench) {}
   
-  Given do 
-    rollon(__dir__) 
-  end 
+  Given do
+    rollon(__dir__)
+  end
 
   Then { assert_correct_manifest(__dir__) }
 end

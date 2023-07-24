@@ -2,13 +2,12 @@
 
 require 'test_helper'
 
-describe '1 -> 1 -> 2: database: mariadb, rails version: 7.0' do
+describe '2 ruby -> 1 okonomi -> 1 mariadb -> 2 7_0 -> 1 devise -> 1 importmap -> 2 sidekiq' do
   Given(:workbench) {}
-
-  Given do
-    debuggerer
-    rollon(__dir__)
-  end
+  
+  Given do 
+    rollon(__dir__) 
+  end 
 
   Then { assert_correct_manifest(__dir__) }
 end
