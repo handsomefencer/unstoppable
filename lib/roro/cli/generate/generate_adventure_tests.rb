@@ -27,7 +27,7 @@ module Roro
         @env = describe_block(hash)
         dest = 'test/roro/stacks'
         hash[:choices].each do |c|
-          copy_shared_tests(dest)
+          # copy_shared_tests(dest)
           if c.eql?(hash[:choices][-1])
             src = 'stack/tests/tests'
             directory(src, "#{dest}/#{c}", @env)
@@ -36,13 +36,13 @@ module Roro
         end
       end
 
-      def copy_shared_tests(dest)
-        @env[:shared_method] = dest.split('/').last
-        filename = dest.eql?('test/roro/stacks') ? 'base' : 'shared'
-        src = "stack/tests/shared/#{filename}.rb.tt"
-        dest = "#{dest}/shared_tests.rb"
-        template(src, dest, @env)
-      end
+      # def copy_shared_tests(dest)
+      #   @env[:shared_method] = dest.split('/').last
+      #   filename = dest.eql?('test/roro/stacks') ? 'base' : 'shared'
+      #   src = "stack/tests/shared/#{filename}.rb.tt"
+      #   dest = "#{dest}/shared_tests.rb"
+      #   template(src, dest, @env)
+      # end
     end
   end
 end
