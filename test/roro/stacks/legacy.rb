@@ -246,13 +246,6 @@ def refute_stacked_compose_service_redis
   refute_content(f, /redis:/)
 end
 
-def refute_stacked_compose_service_sidekiq
-  f = 'mise/containers/app/env/base.env'
-  refute_content(f, %r{REDIS_URL=redis://redis:6379/0})
-  f = 'docker-compose.yml'
-  refute_yaml(f, :services, :sidekiq, :image, 'unstoppable')
-end
-
 def assert_stacked_compose_app_depends_on
   assert_yaml('docker-compose.yml', :services, :app, :depends_on, 0, 'db')
   assert_yaml('docker-compose.yml', :services, :app, :depends_on, 1, 'redis')

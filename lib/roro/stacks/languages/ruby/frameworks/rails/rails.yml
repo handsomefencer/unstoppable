@@ -3,6 +3,12 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 env:
   base:
+    css:
+      name: Choose your css approach from tailwind, bootstrap, bulma, postcss, and sass.
+      value: tailwind
+    javascript:
+      name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
+      value: importmap
     rails_version:
       name: Ruby on Rails minor version
       value: '7.0.6'

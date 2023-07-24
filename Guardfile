@@ -8,7 +8,6 @@ Pry.config.output = STDOUT
 
 minitest_options = {
   test_folders: ['test'],
-  # cli: '--profile',
   all_after_pass: false,
   all_on_start: false,
   all_env: {

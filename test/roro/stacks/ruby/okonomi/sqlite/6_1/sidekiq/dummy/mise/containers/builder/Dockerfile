@@ -32,7 +32,9 @@ RUN bundle install -j4 --retry 3
 ## Use Rails to generate a new app. We'll configure it later.
 
 RUN bundle exec rails new . \
-  --database=sqlite3 
+  --database=sqlite3 \
+  --css=tailwind \
+  --javascript=importmap
 
 
 
