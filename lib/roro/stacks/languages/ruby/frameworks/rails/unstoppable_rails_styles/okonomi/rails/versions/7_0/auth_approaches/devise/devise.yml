@@ -12,3 +12,15 @@ actions:
     'app/models/user.rb', 
     ':confirmable, :trackable, ',
     :after => 'devise ')  
+  - glob_dir(
+    'db/migrate/**/*')
+    .each do |m| 
+      uncomment_lines(m, 'sign_in_count') ;
+      uncomment_lines(m, 'current_sign_in_at') ;
+      uncomment_lines(m, 'last_sign_in_at') ;
+      uncomment_lines(m, 'current_sign_in_ip') ;
+      uncomment_lines(m, 'last_sign_in_ip') ;
+      uncomment_lines(m, 'confirmation_token') ;
+      uncomment_lines(m, 'confirmed_at') ;
+      uncomment_lines(m, 'confirmation_sent_at') ;
+    end 
