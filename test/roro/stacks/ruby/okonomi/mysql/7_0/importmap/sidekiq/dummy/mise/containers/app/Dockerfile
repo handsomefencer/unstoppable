@@ -5,7 +5,7 @@ FROM ruby:3.2.2-alpine AS base
 RUN apk add --update --no-cache \
   file \
   gcompat \
-  tzdata 
+  tzdata
 
 FROM base AS builder
 
@@ -18,7 +18,7 @@ RUN apk add --update --no-cache \
   yarn 
 
 RUN apk add --update --no-cache \
-  mysql-dev 
+  mysql-dev
 
 FROM builder AS development
 

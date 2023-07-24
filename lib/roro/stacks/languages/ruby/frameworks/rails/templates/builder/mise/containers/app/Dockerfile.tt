@@ -2,23 +2,11 @@
 
 FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine AS base
 
-RUN apk add --update --no-cache \
-  file \
-  gcompat \
-  tzdata 
+<%= partial('dockerfile_base') %>
 
 FROM base AS builder
 
-RUN apk add --update --no-cache \
-  build-base \
-  git \
-  nodejs \
-  npm \
-  vips-dev \
-  yarn 
-
-RUN apk add --update --no-cache \
-  <%= @env[:development][:db_pkg][:value] %> 
+<%= partial('dockerfile_builder') %>
 
 FROM builder AS development
 

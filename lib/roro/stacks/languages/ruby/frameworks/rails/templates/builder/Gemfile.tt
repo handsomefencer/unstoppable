@@ -1,3 +1,0 @@
-source 'https://rubygems.org'
-
-gem 'rails', '~> <%= @env[:base][:rails_version][:value] %>'

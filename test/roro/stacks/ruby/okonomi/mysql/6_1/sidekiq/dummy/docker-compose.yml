@@ -56,6 +56,17 @@ services:
     ports:
       - "3000:3000"
 
+  builder:
+    <<: *app
+    build:
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
+      context: .
+      dockerfile: ./mise/containers/builder/Dockerfile
+    environment: 
+      DOCKER_BUILDKIT: '1'
+
   chrome-server:
     image: selenium/standalone-chrome:96.0 
     ports: 

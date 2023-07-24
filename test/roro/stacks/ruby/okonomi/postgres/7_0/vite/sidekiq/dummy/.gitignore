@@ -135,11 +135,3 @@ build-iPhoneSimulator/
 
 # Used by RuboCop. Remote config files pulled in from inherit_from directive.
 # .rubocop-https?--*
-
-# Vite Ruby
-/public/vite*
-node_modules
-# Vite uses dotenv and suggests to ignore local-only env files. See
-# https://vitejs.dev/guide/env-and-mode.html#env-files
-*.local
-

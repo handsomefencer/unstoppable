@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../shared_tests'
+require 'test_helper'
 
 describe '1 -> 2 -> 1: ' do
   Given(:workbench) {}

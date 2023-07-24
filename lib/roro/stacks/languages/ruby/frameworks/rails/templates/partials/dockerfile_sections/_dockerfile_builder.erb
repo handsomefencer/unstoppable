@@ -1,0 +1,10 @@
+RUN apk add --update --no-cache \
+  build-base \
+  git \
+  nodejs \
+  npm \
+  vips-dev \
+  yarn 
+
+RUN apk add --update --no-cache \
+  <%= @env[:development][:db_pkg][:value] %>
