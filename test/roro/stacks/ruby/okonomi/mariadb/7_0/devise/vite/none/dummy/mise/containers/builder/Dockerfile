@@ -37,6 +37,7 @@ RUN bundle exec rails new . \
   --javascript=importmap
 
 
+RUN bundle add devise
 RUN bundle add vite_rails 
 RUN bundle exec vite install
 

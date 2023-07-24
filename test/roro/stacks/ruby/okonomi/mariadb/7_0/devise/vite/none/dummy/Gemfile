@@ -74,4 +74,6 @@ group :test do
   # gem "webdrivers"
 end
 
+gem "devise", "~> 4.9"
+
 gem "vite_rails", "~> 3.0"

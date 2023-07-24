@@ -3,4 +3,12 @@ preface: some string
 # env:
 
 actions:
-  
+  - insert_into_file(
+    'config/environments/development.rb', 
+    partial('config_environments_development_devise'),
+    :after => "Rails.application.configure do\n"
+    )
+  - insert_into_file(
+    'app/models/user.rb', 
+    ':confirmable, :trackable, ',
+    :after => 'devise ')  

@@ -37,6 +37,7 @@ RUN bundle exec rails new . \
   --javascript=importmap
 
 
+RUN bundle add devise
 
 RUN rm config/master.key
 

@@ -74,4 +74,8 @@ group :test do
   # gem "webdrivers"
 end
 
+gem "devise", "~> 4.9"
+
+gem "letter_opener", "~> 1.8", :group => :development
+
 gem "vite_rails", "~> 3.0"

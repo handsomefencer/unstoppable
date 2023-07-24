@@ -8,6 +8,14 @@ x-database:
   mise/containers/db/env/development.env:
   mise/containers/db/env/production.env:
 
+devise: 
+  app/models/user.rb:
+    - /devise :confirmable, :trackable/
+  config/environments/development.rb:
+  Gemfile:
+    - /gem ["']devise["'], ["']~> 4.9/
+    - /gem ["']letter_opener["'], ["']~> 1.8/
+  
 flutter: 
   docker-compose.yml:
     - services: 
@@ -23,7 +31,6 @@ flutter:
     - /VERSION=master/
   mise/env/beta.env:
     - /VERSION=beta/
-
   mise/containers/flutter/Dockerfile:
 
 mysql: 

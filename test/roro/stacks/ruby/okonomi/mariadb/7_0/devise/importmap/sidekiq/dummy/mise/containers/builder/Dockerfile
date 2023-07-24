@@ -37,6 +37,11 @@ RUN bundle exec rails new . \
   --javascript=importmap
 
 
+RUN bundle add devise
+RUN bundle add letter_opener -g development
+RUN bin/rails generate devise:install
+RUN bin/rails generate devise User
+RUN bin/rails generate devise:views
 
 RUN rm config/master.key
 
