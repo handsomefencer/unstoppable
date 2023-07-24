@@ -9,6 +9,7 @@ x-database:
   mise/containers/db/env/production.env:
 
 devise: 
+  db/migrate:
   app/models/user.rb:
     - /devise :confirmable, :trackable/
   config/environments/development.rb:
