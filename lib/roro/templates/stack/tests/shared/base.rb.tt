@@ -1,7 +1,0 @@
-# frozen_string_literal: true
-
-require 'test_helper'
-
-def assert_stacked_<%= @env[:shared_method] %>
-  assert true
-end
