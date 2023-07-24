@@ -145,7 +145,7 @@ jobs:
                 docker image push handsomefencer/roro:latest
                 docker image push handsomefencer/roro:${CIRCLE_SHA1}
     test:
-        executor: machine-ubuntu
+        executor: docker-cimg-base
         parallelism: 5
         steps:
             - checkout
@@ -187,7 +187,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - development
+                            - main
                 matrix:
                     parameters:
                         answers:

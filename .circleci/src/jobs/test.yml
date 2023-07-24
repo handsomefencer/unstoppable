@@ -1,4 +1,4 @@
-executor: machine-ubuntu
+executor: docker-cimg-base
 parallelism: 5
 steps:
   - checkout
