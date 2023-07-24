@@ -79,3 +79,9 @@ gem "devise", "~> 4.9"
 gem "letter_opener", "~> 1.8", :group => :development
 
 gem "vite_rails", "~> 3.0"
+
+gem "pay", "~> 6.7"
+
+gem "stripe", "~> 8.6"
+
+gem "sidekiq", "~> 7.1"

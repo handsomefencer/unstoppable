@@ -29,6 +29,10 @@ actions:
       'app/views/layouts/application.html.erb', 
       "\n\s\s\s\s\<\%= render 'messages' \%\>\n",
       :after => "\<body\>")
+  - insert_into_file(
+      'app/controllers/application_controller.rb', 
+      "\n\s\sbefore_action :authenticate_user!\n",
+      :after => "Base")
   - gsub_file(
       'config/initializers/devise.rb', 
       /config.sign_out_via = \:delete/,

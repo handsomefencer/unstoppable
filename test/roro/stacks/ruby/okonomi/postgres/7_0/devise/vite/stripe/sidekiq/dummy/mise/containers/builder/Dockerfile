@@ -44,6 +44,12 @@ RUN bin/rails generate devise User
 RUN bin/rails generate devise:views
 RUN bundle add vite_rails 
 RUN bundle exec vite install
+RUN bundle add pay
+RUN bundle add stripe
+RUN bin/rails pay:install:migrations
+RUN bin/rails generate pay:views
+RUN bin/rails generate pay:email_views
+RUN bundle add sidekiq
 
 RUN rm config/master.key
 
