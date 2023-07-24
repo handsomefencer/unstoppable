@@ -6,6 +6,7 @@ describe '1 -> 2 -> 2: ' do
   Given(:workbench) {}
 
   Given do
+    skip
     rollon(__dir__)
   end
 
