@@ -148,6 +148,12 @@ sidekiq:
   mise/containers/app/env/base.env:
     - /REDIS_URL=redis:\/\/redis:6379\/0/
 
+stripe:
+  docker-compose.yml:
+    - services:
+        stripe:
+          image: 'stripe/stripe-cli:latest'
+
 vite: 
   bin/vite:
   config/vite.json:
