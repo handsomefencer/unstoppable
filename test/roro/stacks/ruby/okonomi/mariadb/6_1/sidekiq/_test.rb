@@ -9,5 +9,6 @@ describe '2 ruby -> 1 okonomi -> 1 mariadb -> 1 6_1 -> 2 sidekiq' do
     rollon(__dir__)
   end
 
+  focus
   Then { assert_correct_manifest(__dir__) }
 end
