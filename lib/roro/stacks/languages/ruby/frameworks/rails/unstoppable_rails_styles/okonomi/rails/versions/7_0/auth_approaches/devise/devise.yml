@@ -24,3 +24,15 @@ actions:
       uncomment_lines(m, 'confirmed_at') ;
       uncomment_lines(m, 'confirmation_sent_at') ;
     end 
+  - uncomment_lines('config/initializers/devise.rb', 'turbo_stream')  
+  - insert_into_file(
+      'app/views/layouts/application.html.erb', 
+      "\n\s\s\s\s\<\%= render 'messages' \%\>\n",
+      :after => "\<body\>")
+  - gsub_file(
+      'config/initializers/devise.rb', 
+      /config.sign_out_via = \:delete/,
+      "config.sign_out_via = :get")
+    
+    
+    

@@ -10,8 +10,13 @@ x-database:
 
 devise: 
   db/migrate:
+  app/views/layouts/application.html.erb:
+  app/views/shared/_messages.html.erb:
   app/models/user.rb:
     - /devise :confirmable, :trackable/
+  config/initializers/devise.rb:
+    - /config.navigational_formats/
+    - /config.sign_out_via \= :get/
   config/environments/development.rb:
   Gemfile:
     - /gem ["']devise["'], ["']~> 4.9/
