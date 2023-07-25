@@ -1,0 +1,93 @@
+version: "3.9"
+
+services: 
+
+  flutter-stable:
+    image: unstoppable/flutter:stable
+    build: 
+      dockerfile: mise/containers/flutter/Dockerfile
+      context: .
+      args: 
+        - VERSION=stable
+    env_file: 
+      - mise/env/stable.env
+
+  flutter-stable-web:
+    image: unstoppable/flutter:stable-web
+    build: 
+      dockerfile: mise/containers/flutter_web/Dockerfile
+      context: .
+      args: 
+        - VERSION=stable
+    env_file: 
+      - mise/env/stable.env
+
+  flutter-stable-android:
+    image: unstoppable/flutter:stable-android
+    build: 
+      dockerfile: mise/containers/flutter_android/Dockerfile
+      context: .
+      args: 
+        - VERSION=stable
+    env_file: 
+      - mise/env/stable.env
+
+  flutter-beta:
+    image: unstoppable/flutter:beta
+    build: 
+      dockerfile: mise/containers/flutter/Dockerfile
+      context: .
+      args: 
+        - VERSION=beta
+    env_file: 
+      - mise/env/beta.env
+
+  flutter-beta-web:
+    image: unstoppable/flutter:beta-web
+    build: 
+      dockerfile: mise/containers/flutter_web/Dockerfile
+      context: .
+      args: 
+        - VERSION=beta
+    env_file: 
+      - mise/env/beta.env
+
+  flutter-beta-android:
+    image: unstoppable/flutter:beta-android
+    build: 
+      dockerfile: mise/containers/flutter_android/Dockerfile
+      context: .
+      args: 
+        - VERSION=beta
+    env_file: 
+      - mise/env/beta.env
+
+  flutter-master:
+    image: unstoppable/flutter:master
+    build: 
+      dockerfile: mise/containers/flutter/Dockerfile
+      context: .
+      args: 
+        - VERSION=master
+    env_file: 
+      - mise/env/master.env
+
+  flutter-master-web:
+    image: unstoppable/flutter:master-web
+    build: 
+      dockerfile: mise/containers/flutter_web/Dockerfile
+      context: .
+      args: 
+        - VERSION=master
+    env_file: 
+      - mise/env/master.env
+
+  flutter-master-android:
+    image: unstoppable/flutter:master-android
+    build: 
+      dockerfile: mise/containers/flutter_android/Dockerfile
+      context: .
+      args: 
+        - VERSION=master
+    env_file: 
+      - mise/env/master.env
