@@ -27,8 +27,8 @@ docker run \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
-  -it handsomefencer/roro roro rollon
-  # -it handsomefencer/roro sh -c "printf '1\n3\n2\n2\na\n' | roro rollon"
+  -it handsomefencer/roro sh -c "printf '2\n1\n3\n2\n1\n2\n2\n2\na\n' | roro rollon"
+  # -it handsomefencer/roro roro rollon
 
 schown  
 
