@@ -17,9 +17,9 @@ roro/**/*.key
 *.key
 *.env
 
-**/test/dummy
-# test/roro/stacks/**/dummy
-# !/test/roro/stacks/**/dummy/.keep
+**dummy/
+!**dummy/.keep
+
 !/lib/roro/stacks/**/*.key
 !/lib/roro/stacks/**/*.env
 !test/**/*.key
