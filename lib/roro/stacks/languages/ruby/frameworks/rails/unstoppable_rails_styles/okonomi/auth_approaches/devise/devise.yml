@@ -22,6 +22,7 @@ actions:
       uncomment_lines(m, 'last_sign_in_ip') ;
       uncomment_lines(m, 'confirmation_token') ;
       uncomment_lines(m, 'confirmed_at') ;
+      uncomment_lines(m, 'unconfirmed_email') ;
       uncomment_lines(m, 'confirmation_sent_at') ;
     end 
   - uncomment_lines('config/initializers/devise.rb', 'turbo_stream')  
