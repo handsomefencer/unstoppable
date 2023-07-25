@@ -13,7 +13,7 @@ process.yml
 
 ## roro
 roro/**/*.env
-roro/**/*.key
+roro/**/*.key 
 *.key
 *.env
 test/roro/stacks/**/dummy
