@@ -17,7 +17,7 @@ roro/**/*.key
 *.key
 *.env
 
-**dummy/
+**dummy/*
 !**dummy/.keep
 
 !/lib/roro/stacks/**/*.key
