@@ -2,3 +2,7 @@
     <<: *app
     ports:
       - "3036:3036"
+
+    environment:
+      DEBUG: '*vite*'
+      VITE_RUBY_HOST: 0.0.0.0
