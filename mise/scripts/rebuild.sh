@@ -1,6 +1,6 @@
 #!/bin/bash
 
-app='foobar'
+app='vite_foobar'
 sandbox_dir=~/sandbox/${app}
 roro=~/work/handsomefencer/gems/roro
 
@@ -27,7 +27,7 @@ docker run \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
-  -it handsomefencer/roro sh -c "printf '2\n1\n3\n2\n1\n2\n2\n2\na\n' | roro rollon"
+  -it handsomefencer/roro sh -c "printf '2\n1\n1\n2\n3\n2\n2\n2\na\n' | roro rollon"
   # -it handsomefencer/roro roro rollon
 
 schown  

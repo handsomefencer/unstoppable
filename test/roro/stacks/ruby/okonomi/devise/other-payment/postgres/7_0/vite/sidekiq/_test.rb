@@ -6,6 +6,7 @@ describe '2 ruby -> 1 okonomi -> 1 devise -> 1 other-payment -> 3 postgres -> 2 
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 

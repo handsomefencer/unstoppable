@@ -6,3 +6,19 @@ env:
       VITE_RUBY_HOST:
         name: Vite ruby host. Vite service environment declartion in docker-compose.yml overrides this to 0.0.0.0.
         value: vite
+
+actions:
+  - insert_into_file(
+    'app/views/layouts/application.html.erb', 
+    "\n\s\s\s\s<%= vite_stylesheet_tag 'application.scss', :media => :all %>",
+    :after => "stylesheet_link_tag \"application\" %>")
+  - insert_into_file(
+    'vite.config.ts', 
+    "import FullReload from 'vite-plugin-full-reload'",
+    :after => "import RubyPlugin from 'vite-plugin-ruby'\n")
+  - > 
+    insert_into_file(
+      'vite.config.ts', 
+      "FullReload(['app/views/**/*'], {delay: 0}),",
+      :after => "RubyPlugin(),")
+  

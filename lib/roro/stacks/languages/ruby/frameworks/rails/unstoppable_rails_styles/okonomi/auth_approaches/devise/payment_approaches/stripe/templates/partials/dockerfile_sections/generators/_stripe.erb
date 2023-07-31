@@ -1,5 +1,4 @@
-RUN bundle add pay
-RUN bundle add stripe
+RUN bundle add pay stripe
 RUN bin/rails pay:install:migrations
 RUN bin/rails generate pay:views
 RUN bin/rails generate pay:email_views

@@ -177,11 +177,21 @@ stripe:
     - /STRIPE_SIGNING_SECRET=Replace me/
 
 vite: 
+  app/frontend/entrypoints/application.js:
+  app/frontend/entrypoints/application.scss:
+  app/assets/stylesheets/application.scss:
+  app/assets/stylesheets/application.tailwind.css:
+  app/views/layouts/application.html.erb:
+    - /vite_stylesheet_tag/
+    - /vite_client_tag/
+    - /vite_javascript_tag/
   bin/vite:
+  config/tailwind.config.js:
   config/vite.json:
   Gemfile:
     - /gem ["']vite_rails["']/
   vite.config.ts:
+    - /import FullReload from 'vite-plugin-full-reload'/
   docker-compose.yml:
     - services: 
         vite: 
