@@ -20,9 +20,8 @@ RUN bundle install -j4 --retry 3
 ## Use Rails to generate a new app. We'll configure it later.
 
 RUN bundle exec rails new . \
-  --database=<%=   @env[:base][:db_vendor][:value] %> \
-  --css=<%=        @env[:base][:css][:value] %> \
-  --javascript=<%= @env[:base][:javascript][:value] %>
+  <%= section('dockerfile_sections/rails_new_flags') %>
+<%= partial('dockerfile_sections/database') %>
 
 <%= section('dockerfile_sections/generators') %>
 

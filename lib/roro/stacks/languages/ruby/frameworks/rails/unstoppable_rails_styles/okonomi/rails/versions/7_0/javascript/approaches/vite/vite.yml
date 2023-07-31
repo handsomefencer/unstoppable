@@ -1,5 +1,6 @@
 preface: some string
 
+env: 
   development:
     app: 
       VITE_RUBY_HOST:
