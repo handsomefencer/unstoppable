@@ -1,9 +1,4 @@
-RUN bundle add vite_rails 
+RUN bundle add vite_rails turbo-rails stimulus-rails 
+RUN bin/rails turbo:install
+RUN bin/rails stimulus:install
 RUN bundle exec vite install
-RUN mv ./app/assets/stylesheets/application.css ./app/assets/stylesheets/application.scss
-RUN echo "" > ./app/assets/stylesheets/application.scss
-RUN touch app/frontend/entrypoints/application.scss
-RUN npm i sass
-RUN npm i --save-dev vite-plugin-full-reload
-RUN npm i vite-plugin-stimulus-hmr
-RUN npm i vite-plugin-rails
