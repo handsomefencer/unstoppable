@@ -1,6 +1,11 @@
 preface: some string
 
 env: 
+  base: 
+    javascript:
+      name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
+      value: esbuild
+
   development:
     app: 
       VITE_RUBY_HOST:
@@ -8,17 +13,22 @@ env:
         value: vite
 
 actions:
+  - > 
+    gsub_file(
+      'package.json',
+      /^*."build\a*.*$/,
+      '')
   - insert_into_file(
     'app/views/layouts/application.html.erb', 
     "\n\s\s\s\s<%= vite_stylesheet_tag 'application.scss', :media => :all %>",
     :after => "stylesheet_link_tag \"application\" %>")
-  - insert_into_file(
-    'vite.config.ts', 
-    "import FullReload from 'vite-plugin-full-reload'",
-    :after => "import RubyPlugin from 'vite-plugin-ruby'\n")
-  - > 
-    insert_into_file(
-      'vite.config.ts', 
-      "FullReload(['app/views/**/*'], {delay: 0}),",
-      :after => "RubyPlugin(),")
+  # - insert_into_file(
+  #   'vite.config.js', 
+  #   "import FullReload from 'vite-plugin-full-reload'",
+  #   :after => "import RubyPlugin from 'vite-plugin-ruby'\n")
+  # - > 
+  #   insert_into_file(
+  #     'vite.config.js', 
+  #     "FullReload(['app/views/**/*'], {delay: 0}),",
+  #     :after => "RubyPlugin(),")
   

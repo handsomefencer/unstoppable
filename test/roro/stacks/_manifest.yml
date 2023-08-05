@@ -177,16 +177,19 @@ stripe:
     - /STRIPE_SIGNING_SECRET=Replace me/
 
 vite: 
-  app/assets/stylesheets/application.tailwind.css:
+  config/routes.rb:
+  app/views/home/index.html.erb:
+  app/assets/stylesheets/application.css:
+  app/javascript/entrypoints/application.css:
   app/views/layouts/application.html.erb:
     - /vite_client_tag/
     - /vite_javascript_tag/
   bin/vite:
-  config/tailwind.config.js:
   config/vite.json:
+  postcss.config.js: 
   Gemfile:
     - /gem ["']vite_rails["']/
-  vite.config.ts:
+  vite.config.js:
     - /import { defineConfig } from 'vite'/
     - /import FullReload from "vite-plugin-full-reload"/
     - /import FullReload from 'vite-plugin-full-reload'/
@@ -195,6 +198,7 @@ vite:
         vite: 
           ports:
             - '3036:3036'
+  package.json:
 
 '7_0':
   Gemfile:
