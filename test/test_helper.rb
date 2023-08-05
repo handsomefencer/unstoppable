@@ -25,3 +25,7 @@ include Roro::TestHelpers::RakeTaskHelper
 include Roro::TestHelpers::ReflectionHelper
 include Roro::TestHelpers::AdventureHelper
 include Roro::TestHelpers::ConfiguratorHelper
+
+if ENV["CIRCLECI"]
+  Minitest::Ci.report_dir = "#{ENV["CIRCLE_TEST_REPORTS"]}/reports"
+end

@@ -150,9 +150,11 @@ jobs:
         steps:
             - checkout
             - restore-and-save-cache
-            - run: |-
-                TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
-                DEBUGGERER='true' bundle exec rake test $TEST
+            - run:
+                command: bundle exec rake test:stories
+                when: always
+            - store_test_results:
+                path: test/reports
     test-rubies:
         executor: docker-cimg-ruby
         parameters:
@@ -192,78 +194,78 @@ workflows:
                     parameters:
                         answers:
                             - "1"
-                            - 2\n1\n1\n1\n1
-                            - 2\n1\n1\n1\n2
-                            - 2\n1\n1\n2\n1\n1\n1\n1
-                            - 2\n1\n1\n2\n1\n1\n1\n2
-                            - 2\n1\n1\n2\n1\n1\n2\n1
-                            - 2\n1\n1\n2\n1\n1\n2\n2
+                            - 2\n1\n1\n1\n1\n1\n1
+                            - 2\n1\n1\n1\n1\n1\n2
+                            - 2\n1\n1\n1\n1\n2\n1\n1
+                            - 2\n1\n1\n1\n1\n2\n1\n2
+                            - 2\n1\n1\n1\n1\n2\n2\n1
+                            - 2\n1\n1\n1\n1\n2\n2\n2
+                            - 2\n1\n1\n1\n2\n1\n1
+                            - 2\n1\n1\n1\n2\n1\n2
+                            - 2\n1\n1\n1\n2\n2\n1\n1
+                            - 2\n1\n1\n1\n2\n2\n1\n2
+                            - 2\n1\n1\n1\n2\n2\n2\n1
+                            - 2\n1\n1\n1\n2\n2\n2\n2
+                            - 2\n1\n1\n1\n3\n1\n1
+                            - 2\n1\n1\n1\n3\n1\n2
+                            - 2\n1\n1\n1\n3\n2\n1\n1
+                            - 2\n1\n1\n1\n3\n2\n1\n2
+                            - 2\n1\n1\n1\n3\n2\n2\n1
+                            - 2\n1\n1\n1\n3\n2\n2\n2
+                            - 2\n1\n1\n1\n4\n1\n1
+                            - 2\n1\n1\n1\n4\n1\n2
+                            - 2\n1\n1\n1\n4\n2\n1\n1
+                            - 2\n1\n1\n1\n4\n2\n1\n2
+                            - 2\n1\n1\n1\n4\n2\n2\n1
+                            - 2\n1\n1\n1\n4\n2\n2\n2
+                            - 2\n1\n1\n2\n1\n1\n1
+                            - 2\n1\n1\n2\n1\n1\n2
                             - 2\n1\n1\n2\n1\n2\n1\n1
                             - 2\n1\n1\n2\n1\n2\n1\n2
                             - 2\n1\n1\n2\n1\n2\n2\n1
                             - 2\n1\n1\n2\n1\n2\n2\n2
-                            - 2\n1\n1\n2\n2\n1\n1\n1
-                            - 2\n1\n1\n2\n2\n1\n1\n2
-                            - 2\n1\n1\n2\n2\n1\n2\n1
-                            - 2\n1\n1\n2\n2\n1\n2\n2
+                            - 2\n1\n1\n2\n2\n1\n1
+                            - 2\n1\n1\n2\n2\n1\n2
                             - 2\n1\n1\n2\n2\n2\n1\n1
                             - 2\n1\n1\n2\n2\n2\n1\n2
                             - 2\n1\n1\n2\n2\n2\n2\n1
                             - 2\n1\n1\n2\n2\n2\n2\n2
-                            - 2\n1\n2\n1\n1
-                            - 2\n1\n2\n1\n2
-                            - 2\n1\n2\n2\n1\n1\n1\n1
-                            - 2\n1\n2\n2\n1\n1\n1\n2
-                            - 2\n1\n2\n2\n1\n1\n2\n1
-                            - 2\n1\n2\n2\n1\n1\n2\n2
-                            - 2\n1\n2\n2\n1\n2\n1\n1
-                            - 2\n1\n2\n2\n1\n2\n1\n2
-                            - 2\n1\n2\n2\n1\n2\n2\n1
-                            - 2\n1\n2\n2\n1\n2\n2\n2
-                            - 2\n1\n2\n2\n2\n1\n1\n1
-                            - 2\n1\n2\n2\n2\n1\n1\n2
-                            - 2\n1\n2\n2\n2\n1\n2\n1
-                            - 2\n1\n2\n2\n2\n1\n2\n2
-                            - 2\n1\n2\n2\n2\n2\n1\n1
-                            - 2\n1\n2\n2\n2\n2\n1\n2
-                            - 2\n1\n2\n2\n2\n2\n2\n1
-                            - 2\n1\n2\n2\n2\n2\n2\n2
-                            - 2\n1\n3\n1\n1
-                            - 2\n1\n3\n1\n2
-                            - 2\n1\n3\n2\n1\n1\n1\n1
-                            - 2\n1\n3\n2\n1\n1\n1\n2
-                            - 2\n1\n3\n2\n1\n1\n2\n1
-                            - 2\n1\n3\n2\n1\n1\n2\n2
-                            - 2\n1\n3\n2\n1\n2\n1\n1
-                            - 2\n1\n3\n2\n1\n2\n1\n2
-                            - 2\n1\n3\n2\n1\n2\n2\n1
-                            - 2\n1\n3\n2\n1\n2\n2\n2
-                            - 2\n1\n3\n2\n2\n1\n1\n1
-                            - 2\n1\n3\n2\n2\n1\n1\n2
-                            - 2\n1\n3\n2\n2\n1\n2\n1
-                            - 2\n1\n3\n2\n2\n1\n2\n2
-                            - 2\n1\n3\n2\n2\n2\n1\n1
-                            - 2\n1\n3\n2\n2\n2\n1\n2
-                            - 2\n1\n3\n2\n2\n2\n2\n1
-                            - 2\n1\n3\n2\n2\n2\n2\n2
-                            - 2\n1\n4\n1\n1
-                            - 2\n1\n4\n1\n2
-                            - 2\n1\n4\n2\n1\n1\n1\n1
-                            - 2\n1\n4\n2\n1\n1\n1\n2
-                            - 2\n1\n4\n2\n1\n1\n2\n1
-                            - 2\n1\n4\n2\n1\n1\n2\n2
-                            - 2\n1\n4\n2\n1\n2\n1\n1
-                            - 2\n1\n4\n2\n1\n2\n1\n2
-                            - 2\n1\n4\n2\n1\n2\n2\n1
-                            - 2\n1\n4\n2\n1\n2\n2\n2
-                            - 2\n1\n4\n2\n2\n1\n1\n1
-                            - 2\n1\n4\n2\n2\n1\n1\n2
-                            - 2\n1\n4\n2\n2\n1\n2\n1
-                            - 2\n1\n4\n2\n2\n1\n2\n2
-                            - 2\n1\n4\n2\n2\n2\n1\n1
-                            - 2\n1\n4\n2\n2\n2\n1\n2
-                            - 2\n1\n4\n2\n2\n2\n2\n1
-                            - 2\n1\n4\n2\n2\n2\n2\n2
+                            - 2\n1\n1\n2\n3\n1\n1
+                            - 2\n1\n1\n2\n3\n1\n2
+                            - 2\n1\n1\n2\n3\n2\n1\n1
+                            - 2\n1\n1\n2\n3\n2\n1\n2
+                            - 2\n1\n1\n2\n3\n2\n2\n1
+                            - 2\n1\n1\n2\n3\n2\n2\n2
+                            - 2\n1\n1\n2\n4\n1\n1
+                            - 2\n1\n1\n2\n4\n1\n2
+                            - 2\n1\n1\n2\n4\n2\n1\n1
+                            - 2\n1\n1\n2\n4\n2\n1\n2
+                            - 2\n1\n1\n2\n4\n2\n2\n1
+                            - 2\n1\n1\n2\n4\n2\n2\n2
+                            - 2\n1\n2\n1\n1\n1
+                            - 2\n1\n2\n1\n1\n2
+                            - 2\n1\n2\n1\n2\n1\n1
+                            - 2\n1\n2\n1\n2\n1\n2
+                            - 2\n1\n2\n1\n2\n2\n1
+                            - 2\n1\n2\n1\n2\n2\n2
+                            - 2\n1\n2\n2\n1\n1
+                            - 2\n1\n2\n2\n1\n2
+                            - 2\n1\n2\n2\n2\n1\n1
+                            - 2\n1\n2\n2\n2\n1\n2
+                            - 2\n1\n2\n2\n2\n2\n1
+                            - 2\n1\n2\n2\n2\n2\n2
+                            - 2\n1\n2\n3\n1\n1
+                            - 2\n1\n2\n3\n1\n2
+                            - 2\n1\n2\n3\n2\n1\n1
+                            - 2\n1\n2\n3\n2\n1\n2
+                            - 2\n1\n2\n3\n2\n2\n1
+                            - 2\n1\n2\n3\n2\n2\n2
+                            - 2\n1\n2\n4\n1\n1
+                            - 2\n1\n2\n4\n1\n2
+                            - 2\n1\n2\n4\n2\n1\n1
+                            - 2\n1\n2\n4\n2\n1\n2
+                            - 2\n1\n2\n4\n2\n2\n1
+                            - 2\n1\n2\n4\n2\n2\n2
                             - 2\n2
                         os:
                             - machine-ubuntu-no-caching

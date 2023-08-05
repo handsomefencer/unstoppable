@@ -190,9 +190,8 @@ vite:
   Gemfile:
     - /gem ["']vite_rails["']/
   vite.config.js:
-    - /import { defineConfig } from 'vite'/
-    - /import FullReload from "vite-plugin-full-reload"/
-    - /import FullReload from 'vite-plugin-full-reload'/
+    - /import { defineConfig } from ["']vite["']/
+    - /import FullReload from ["']vite-plugin-full-reload["']/
   docker-compose.yml:
     - services: 
         vite: 
