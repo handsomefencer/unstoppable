@@ -34,6 +34,7 @@ docker run \
 schown  
 
 dc build app 
-dc up app
-
+dc up -d app
+dc run --rm app bin/rails db:migrate
+dc exec app ./bin/dev
 # cd ${roro}
