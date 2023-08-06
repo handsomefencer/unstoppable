@@ -150,8 +150,9 @@ jobs:
         steps:
             - checkout
             - restore-and-save-cache
-            - run:
-                command: circleci tests glob "tests/*_test.rb"
+            - run: |
+                TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
+                DEBUGGERER='true' bundle exec rake test $TEST
     test-rubies:
         executor: docker-cimg-ruby
         parameters:
