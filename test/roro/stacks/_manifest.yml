@@ -13,7 +13,7 @@ devise:
   app/controllers/application_controller.rb:
     - /  before_action :authenticate_user!/ 
   app/views/layouts/application.html.erb:
-  app/views/shared/_messages.html.erb:
+  app/views/application/_messages.html.erb:
   app/models/user.rb:
     - /devise :confirmable, :trackable/
   config/initializers/devise.rb:

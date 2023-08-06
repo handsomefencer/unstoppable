@@ -3,8 +3,9 @@ parallelism: 5
 steps:
   - checkout
   - restore-and-save-cache
-  - run: |
-      TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
-      DEBUGGERER='true' bundle exec rake test $TEST
-  # - run: 
-  #     command: circleci tests glob "tests/*_test.rb" 
+  - run: 
+      name: run tests 
+      command: DEBUGGERER='true' bundle exec rake test:stories
+      when: always
+  - store_test_results:
+      path: test-results

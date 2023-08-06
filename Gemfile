@@ -10,5 +10,6 @@ group :development do
 end
 
 group :test do 
-  gem 'minitest-ci', '~> 3.4'
 end
+
+gem 'minitest-ci', '~> 3.4'
