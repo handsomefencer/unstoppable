@@ -6,7 +6,6 @@ describe '2 ruby -> 1 okonomi -> 2 other-auth -> 3 postgres -> 2 7_0 -> 2 vite -
   Given(:workbench) {}
 
   Given do
-    debuggerer
     rollon(__dir__)
   end
 
