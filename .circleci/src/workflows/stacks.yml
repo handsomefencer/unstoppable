@@ -6,7 +6,5 @@ jobs:
         only: development
     matrix:
       parameters:
-        selectors_one:
-        - 7_0
-        selectors_two:
+        database:
         - postgres

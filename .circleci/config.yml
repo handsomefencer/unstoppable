@@ -71,7 +71,7 @@ executors:
     machine-ubuntu:
         machine:
             docker_layer_caching: true
-            image: ubuntu-2204:2023.04.2
+            image: ubuntu-2204:2024.01.1
     machine-ubuntu-no-caching:
         machine:
             docker_layer_caching: false
@@ -110,6 +110,8 @@ jobs:
                     circleci tests run \
                     --command="xargs bundle exec rake test" \
                     --split-by=timings
+
+                                # circleci tests glob "foo/**/*" "bar/**/*" | xargs -n 1 echo
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
