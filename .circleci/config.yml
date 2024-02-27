@@ -128,7 +128,7 @@ jobs:
                 type: string
         steps:
             - checkout
-            - run: bundle &&
+            - run: bundle
             - run: bundle exec rake test TEST=test/roro/cli/*_test.rb
 version: 2.1
 workflows:
