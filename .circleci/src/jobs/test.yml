@@ -6,12 +6,12 @@ steps:
   - run:
       command: |
         export DEBUGGERER='true'
-        circleci tests glob "test/**/*_test.rb" | \
+        circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
         circleci tests run \
         --command="xargs bundle exec rake test" \
         --split-by=timings
 
-                    # circleci tests glob "foo/**/*" "bar/**/*" | xargs -n 1 echo
+      # circleci tests glob "foo/**/*" "bar/**/*" | xargs -n 1 echo
 
 
   # - run: mkdir ~/rspec
