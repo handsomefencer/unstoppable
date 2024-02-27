@@ -68,17 +68,6 @@ executors:
     docker-cimg-base:
         docker:
             - image: cimg/base:2023.06
-    docker-cimg-ruby:
-        docker:
-            - image: cimg/ruby:<<parameters.version>>
-        parameters:
-            version:
-                default: 3.2.2
-                description: version tag
-                type: string
-    machine-osx:
-        macos:
-            xcode: 14.2.0
     machine-ubuntu:
         machine:
             docker_layer_caching: true
@@ -101,16 +90,6 @@ jobs:
         steps:
             - checkout
             - restore-and-save-cache
-    release:
-        executor: docker-cimg-ruby
-        steps:
-            - checkout
-            - run: |
-                git config --global user.email "fred.schoeneman@gmail.com"
-                git config --global user.name "Fred Schoeneman"
-            - run: gem install gem-release
-            - run: gem bump
-            - run: gem release
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -140,7 +119,8 @@ jobs:
                     --command="xargs bundle exec rake test" \
                     --split-by=timings
     test-rubies:
-        executor: docker-cimg-ruby
+        docker:
+            - image: ruby:<<parameters.version>>-alpine
         parameters:
             version:
                 default: "3.0"
@@ -151,13 +131,6 @@ jobs:
             - run: bundle exec rake test TEST=test/roro/ci/*_test.rb
 version: 2.1
 workflows:
-    gem-release:
-        jobs:
-            - release:
-                filters:
-                    branches:
-                        only:
-                            - gem-release
     release-image:
         jobs:
             - roro-image-push:

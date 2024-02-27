@@ -3,7 +3,8 @@ parameters:
     description: "version tag"
     default: "3.0"
     type: string
-executor: docker-cimg-ruby
+docker:
+  - image: ruby:<<parameters.version>>-alpine
 steps:
   - checkout
   - run: |

@@ -1,9 +1,0 @@
-
-
----
-jobs:
-  - release:
-      filters:
-        branches:
-          only: 
-          - gem-release
