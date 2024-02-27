@@ -7,4 +7,8 @@ executor: docker-cimg-ruby
 steps:
   - checkout
   - run: docker-compose build test 
-  - run: docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
+  - run: |
+    docker-compose run --rm test sh -c "DEBUGGERER='true' rake test/roro/cli"
+    docker-compose run --rm test sh -c "DEBUGGERER='true' rake test/roro/common"
+    docker-compose run --rm test sh -c "DEBUGGERER='true' rake test/roro/configurators"
+    docker-compose run --rm test sh -c "DEBUGGERER='true' rake test/roro/crypto"
