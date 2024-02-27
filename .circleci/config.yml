@@ -140,7 +140,7 @@ jobs:
             - run:
                 command: |
                     export DEBUGGERER='true'
-                    circleci tests glob "test/roro/stacks/*/<<parameters.version>>/**/*_test.rb" | \
+                    circleci tests glob "test/roro/stacks/*/<<parameters.database>>/**/*_test.rb" | \
                     circleci tests run \
                     --command="xargs bundle exec rake test" \
                     --split-by=timings
