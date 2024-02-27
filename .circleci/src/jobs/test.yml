@@ -1,15 +1,16 @@
 executor: machine-ubuntu
 parallelism: 5
+
 steps:
   - checkout
   - restore-and-save-cache
   - run:
       command: |
         export DEBUGGERER='true'
-        circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
-        circleci tests run \
-        --command="xargs bundle exec rake test" \
-        --split-by=timings
+        # circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
+        # circleci tests run \
+        # --command="xargs bundle exec rake test" \
+        # --split-by=timings
 
       # circleci tests glob "foo/**/*" "bar/**/*" | xargs -n 1 echo
 

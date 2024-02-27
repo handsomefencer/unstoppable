@@ -7,5 +7,5 @@ jobs:
     filters:
       branches:
         only:
-        - development
+        - main
     

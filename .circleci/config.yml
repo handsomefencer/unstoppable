@@ -106,10 +106,10 @@ jobs:
             - run:
                 command: |
                     export DEBUGGERER='true'
-                    circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
-                    circleci tests run \
-                    --command="xargs bundle exec rake test" \
-                    --split-by=timings
+                    # circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
+                    # circleci tests run \
+                    # --command="xargs bundle exec rake test" \
+                    # --split-by=timings
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -128,6 +128,7 @@ jobs:
             - run: bundle exec rake test TEST=test/roro/<<parameters.folder>>/*_test.rb
     test-stacks:
         executor: machine-ubuntu
+        parallelism: 5
         parameters:
             database:
                 default: postgres
@@ -135,7 +136,14 @@ jobs:
                 type: string
         steps:
             - checkout
-            - run: bundle
+            - restore-and-save-cache
+            - run:
+                command: |
+                    export DEBUGGERER='true'
+                    circleci tests glob "test/roro/stacks/*/<<parameters.version>>/**/*_test.rb" | \
+                    circleci tests run \
+                    --command="xargs bundle exec rake test" \
+                    --split-by=timings
 version: 2.1
 workflows:
     release-image:
@@ -152,7 +160,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - development
+                            - main
                 requires:
                     - build
     rubies:
