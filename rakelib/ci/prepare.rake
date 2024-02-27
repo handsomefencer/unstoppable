@@ -5,7 +5,7 @@ namespace :ci do
     Rake::Task['ci:prepare:workflows:rollon-adventures'].execute
     Rake::Task['ci:prepare:workflows:rubies'].execute
     Rake::Task['ci:prepare:config:pack'].invoke
-    # Rake::Task['ci:prepare:config:process'].invoke
-    # Rake::Task['ci:prepare:config:validate'].invoke
+    Rake::Task['ci:prepare:config:process'].invoke
+    Rake::Task['ci:prepare:config:validate'].invoke
   end
 end
