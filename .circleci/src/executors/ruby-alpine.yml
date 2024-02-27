@@ -4,4 +4,4 @@ parameters:
     default: "3.2.2"
     type: string
 docker:
-  - image: ruby:<<parameters.version>>-alpine
+  - image: cimg/ruby:<<parameters.version>>

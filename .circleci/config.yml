@@ -78,7 +78,7 @@ executors:
             image: ubuntu-2204:2023.04.2
     ruby-alpine:
         docker:
-            - image: ruby:<<parameters.version>>-alpine
+            - image: cimg/ruby:<<parameters.version>>
         parameters:
             version:
                 default: 3.2.2
