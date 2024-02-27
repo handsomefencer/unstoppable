@@ -3,7 +3,7 @@ jobs:
 - test-stacks:
     filters:
       branches:
-        only: development
+        only: stacks
     matrix:
       parameters:
         database:
