@@ -151,11 +151,11 @@ jobs:
             - checkout
             - restore-and-save-cache
             - run:
-                command: DEBUGGERER='true' bundle exec rake test:stories
-                name: run tests
-                when: always
-            - store_test_results:
-                path: test-results
+                command: |
+                    circleci tests glob "test/**/*_test.rb" | \
+                    circleci tests run \
+                    --command="xargs bundle exec rake test" \
+                    --split-by=timings
     test-rubies:
         executor: docker-cimg-ruby
         parameters:
