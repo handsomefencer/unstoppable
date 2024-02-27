@@ -8,7 +8,7 @@ steps:
         export DEBUGGERER='true'
         circleci tests glob "test/**/*_test.rb" | \
         circleci tests run \
-        --command="xargs DEBUGGERER='true' bundle exec rake test" \
+        --command="xargs bundle exec rake test" \
         --split-by=timings
   # - run: mkdir ~/rspec
 
