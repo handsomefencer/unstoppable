@@ -7,6 +7,5 @@ docker:
   - image: cimg/ruby:<<parameters.version>>
 steps:
   - checkout
-  - run: |
-      bundle &&
-      bundle exec rake test TEST=test/roro/ci/*_test.rb
+  - run: bundle &&
+  - run: bundle exec rake test TEST=test/roro/cli/*_test.rb

@@ -128,9 +128,8 @@ jobs:
                 type: string
         steps:
             - checkout
-            - run: |-
-                bundle &&
-                bundle exec rake test TEST=test/roro/ci/*_test.rb
+            - run: bundle &&
+            - run: bundle exec rake test TEST=test/roro/cli/*_test.rb
 version: 2.1
 workflows:
     release-image:
