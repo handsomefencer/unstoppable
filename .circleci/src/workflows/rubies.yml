@@ -15,5 +15,3 @@ jobs:
         - common
         - configurators
         - crypto
-      folders:
-      - cli

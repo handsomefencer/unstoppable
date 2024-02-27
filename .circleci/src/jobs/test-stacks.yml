@@ -1,0 +1,9 @@
+parameters:
+  database:
+    description: "database"
+    default: "postgres"
+    type: string
+executor: machine-ubuntu
+steps:
+  - checkout
+  - run: bundle

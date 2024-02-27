@@ -10,6 +10,10 @@ steps:
         circleci tests run \
         --command="xargs bundle exec rake test" \
         --split-by=timings
+
+                    # circleci tests glob "foo/**/*" "bar/**/*" | xargs -n 1 echo
+
+
   # - run: mkdir ~/rspec
 
   # - run: 

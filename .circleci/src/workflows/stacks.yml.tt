@@ -1,12 +1,10 @@
 ---
 jobs:
-- test-rubies:
+- test-stacks:
     filters:
       branches:
         only: development
     matrix:
       parameters:
-        version:
-        - '3.3'
-        folder:
-        - 'cli'
+        database:
+        - 'postgres'
