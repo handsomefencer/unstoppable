@@ -158,7 +158,7 @@ workflows:
             - test-rubies:
                 filters:
                     branches:
-                        only: rubies
+                        only: development
                 matrix:
                     folders:
                         - cli

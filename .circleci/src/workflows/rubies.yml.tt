@@ -3,7 +3,7 @@ jobs:
 - test-rubies:
     filters:
       branches:
-        only: rubies
+        only: development
     matrix:
       parameters:
         version:
