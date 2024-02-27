@@ -4,7 +4,7 @@ parameters:
     default: "3.0"
     type: string
 docker:
-  - image: ruby:<<parameters.version>>-alpine
+  - image: cimg/ruby:<<parameters.version>>
 steps:
   - checkout
   - run: |
