@@ -16,9 +16,9 @@ docker system prune -af --volumes
 docker images
 dcd 
 
-dc build --no-cache --with-dependencies guard
-# dc build --no-cache ruby
-# dc build --no-cache builder
-# dc build --no-cache developer
-# dc build --no-cache guard
+dc build --no-cache ruby
+dc build --no-cache --with-dependencies builder
+dc build --no-cache --with-dependencies developer
+dc build --no-cache --with-dependencies test
+dc build guard
 dc run --rm guard
