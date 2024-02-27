@@ -122,6 +122,10 @@ jobs:
         docker:
             - image: cimg/ruby:<<parameters.version>>
         parameters:
+            folder:
+                default: cli
+                description: folder in test/roro/<folder>
+                type: string
             version:
                 default: "3.0"
                 description: version tag
@@ -129,7 +133,7 @@ jobs:
         steps:
             - checkout
             - run: bundle
-            - run: bundle exec rake test TEST=test/roro/cli/*_test.rb
+            - run: bundle exec rake test TEST=test/roro/<<parameters.folder>>/*_test.rb
 version: 2.1
 workflows:
     release-image:
@@ -156,7 +160,14 @@ workflows:
                     branches:
                         only: rubies
                 matrix:
+                    folders:
+                        - cli
                     parameters:
+                        folder:
+                            - cli
+                            - common
+                            - configurators
+                            - crypto
                         version:
                             - "2.7"
                             - "3.0"
