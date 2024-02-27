@@ -5,6 +5,7 @@ steps:
   - restore-and-save-cache
   - run:
       command: |
+        export DEBUGGERER='true'
         circleci tests glob "test/**/*_test.rb" | \
         circleci tests run \
         --command="xargs DEBUGGERER='true' bundle exec rake test" \
