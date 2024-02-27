@@ -152,9 +152,10 @@ jobs:
             - restore-and-save-cache
             - run:
                 command: |
+                    export DEBUGGERER='true'
                     circleci tests glob "test/**/*_test.rb" | \
                     circleci tests run \
-                    --command="xargs bundle exec rake test" \
+                    --command="xargs DEBUGGERER='true' bundle exec rake test" \
                     --split-by=timings
     test-rubies:
         executor: docker-cimg-ruby
