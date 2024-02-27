@@ -106,10 +106,10 @@ jobs:
             - run:
                 command: |
                     export DEBUGGERER='true'
-                    # circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
-                    # circleci tests run \
-                    # --command="xargs bundle exec rake test" \
-                    # --split-by=timings
+                    circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
+                    circleci tests run \
+                    --command="xargs bundle exec rake test" \
+                    --split-by=timings
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -142,7 +142,7 @@ jobs:
                     export DEBUGGERER='true'
                     circleci tests glob "test/roro/stacks/*/<<parameters.database>>/**/*_test.rb" | \
                     circleci tests run \
-                    --command="xargs bundle exec rake test" \
+                    --command="xargs docker compose run --rm test bundle exec rake test" \
                     --split-by=timings
 version: 2.1
 workflows:
