@@ -7,7 +7,7 @@ jobs:
     filters:
       branches:
         only:
-        - main
+        - rollon-tests
     matrix:
       parameters:
           database:
