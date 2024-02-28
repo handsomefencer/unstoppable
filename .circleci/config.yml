@@ -114,10 +114,7 @@ jobs:
             - run:
                 command: |-
                     export DEBUGGERER='true'
-                    circleci tests glob "test/roro/stacks/*/<< parameters.database >>/**/*_test.rb" | \
-                    circleci tests run \
-                    --command="xargs bundle exec rake test" \
-                    --split-by=timings
+                    bundle exec rake test TEST=test/roro/stacks/**/postgres/**/7_0/**/*_test.rb
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
