@@ -9,3 +9,5 @@ jobs:
       parameters:
         database:
         - 'postgres'
+    requires: 
+      - build

@@ -193,4 +193,6 @@ workflows:
                         database:
                             - postgres
                             - mysql
+                requires:
+                    - build
 
