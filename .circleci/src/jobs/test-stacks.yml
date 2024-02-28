@@ -10,9 +10,7 @@ steps:
   - restore-and-save-cache
   - run:
       command: |
-        export DEBUGGERER='true'
-        circleci tests glob \
-        "test/roro/stacks/**<<parameters.database>>**_test.rb" \
-        | circleci tests run \
-        --command="xargs bundle exec rake test" \
-        --split-by=timings
+        export DEBUGGERER='true' 
+        circleci tests glob "test/roro/stacks/**/*_test.rb" | \
+        circleci tests split > /tmp/stack_tests \
+        bundle exec rake test $(cat /tmp/stack-tests)

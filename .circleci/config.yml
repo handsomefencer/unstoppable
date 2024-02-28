@@ -104,7 +104,7 @@ jobs:
             - checkout
             - restore-and-save-cache
             - run:
-                command: |
+                command: |-
                     export DEBUGGERER='true'
                     circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
                     circleci tests run \
@@ -138,13 +138,7 @@ jobs:
             - checkout
             - restore-and-save-cache
             - run:
-                command: |
-                    export DEBUGGERER='true'
-                    circleci tests glob \
-                    "test/roro/stacks/**<<parameters.database>>**_test.rb" \
-                    | circleci tests run \
-                    --command="xargs bundle exec rake test" \
-                    --split-by=timings
+                command: "export DEBUGGERER='true' \ncircleci tests glob \"test/roro/stacks/**/*_test.rb\" | \\\ncircleci tests split > /tmp/stack_tests \\\nbundle exec rake test $(cat /tmp/stack-tests)"
 version: 2.1
 workflows:
     release-image:
