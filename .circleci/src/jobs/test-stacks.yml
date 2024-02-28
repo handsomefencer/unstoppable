@@ -12,7 +12,7 @@ steps:
       command: |
         export DEBUGGERER='true'
         circleci tests glob \
-        test/roro/stacks/**/*_test.rb \
+        test/roro/stacks/**<<parameters.database>>**_test.rb \
         | circleci tests run \
         --command="xargs bundle exec rake test" \
         --split-by=timings
