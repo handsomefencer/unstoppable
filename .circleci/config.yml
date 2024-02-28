@@ -78,7 +78,7 @@ executors:
     machine-ubuntu-no-caching:
         machine:
             docker_layer_caching: false
-            image: ubuntu-2204:2023.04.2
+            image: ubuntu-2204:2024.01.1
 jobs:
     build:
         executor: machine-ubuntu
@@ -115,6 +115,8 @@ jobs:
                 command: |
                     export DEBUGGERER='true'
                     bundle exec rake test TEST="test/roro/stacks/<< parameters.regex >>_test.rb"
+            - store_test_results:
+                path: test/reports
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -131,23 +133,6 @@ jobs:
             - checkout
             - run: bundle
             - run: bundle exec rake test TEST=test/roro/<<parameters.folder>>/*_test.rb
-    test-stacks:
-        executor: docker-cimg-ruby
-        parallelism: 5
-        parameters:
-            database:
-                default: postgres
-                description: database
-                type: string
-        steps:
-            - setup_remote_docker
-            - checkout
-            - restore-and-save-cache
-            - run:
-                command: |
-                    export DEBUGGERER='true'
-                    sudo docker compose build
-                    sudo docker-compose run --rm guard
 version: 2.1
 workflows:
     release-image:
@@ -172,6 +157,7 @@ workflows:
                             - '**/postgres/**/6_1/**/*'
                             - '**/mysql/**/7_0/**/*'
                             - '**/mariadb/**/7_0/**/*'
+                            - omakase/
                 requires:
                     - build
     rubies:
@@ -191,17 +177,4 @@ workflows:
                             - "3.1"
                             - "3.2"
                             - "3.3"
-    stacks:
-        jobs:
-            - build
-            - test-stacks:
-                filters:
-                    branches:
-                        only: stacks
-                matrix:
-                    parameters:
-                        database:
-                            - postgres
-                requires:
-                    - build
 
