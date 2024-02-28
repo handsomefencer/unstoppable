@@ -8,4 +8,7 @@ jobs:
       branches:
         only:
         - main
-    
+    matrix:
+      parameters:
+          database:
+              - postgres

@@ -1,4 +1,4 @@
-executor: machine-ubuntu
+executor: docker-cimg-ruby
 parallelism: 5
 parameters:
   database:
@@ -6,11 +6,17 @@ parameters:
     default: "postgres"
     type: string
 steps:
+  - setup_remote_docker
   - checkout
   - restore-and-save-cache
   - run:
+      # command: |
+      #   export DEBUGGERER='true'
+      #   circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | circleci tests run --command="xargs bundle exec rake test" --split-by=timings
+      #       command: |
       command: |
-        export DEBUGGERER='true' 
-        circleci tests glob "test/roro/stacks/**/*_test.rb" | \
-        circleci tests split > /tmp/stack-tests \
-        bundle exec rake test $(cat /tmp/stack-tests)
+        export DEBUGGERER='true'
+        sudo docker compose build
+        sudo docker-compose run --rm guard
+        
+      # bundle exec rake test TEST=test/roro/stacks/ruby/omakase/**/*_test.rb

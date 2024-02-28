@@ -68,6 +68,9 @@ executors:
     docker-cimg-base:
         docker:
             - image: cimg/base:2023.06
+    docker-cimg-ruby:
+        docker:
+            - image: cimg/ruby:3.3
     machine-ubuntu:
         machine:
             docker_layer_caching: true
@@ -100,13 +103,18 @@ jobs:
     test:
         executor: machine-ubuntu
         parallelism: 5
+        parameters:
+            database:
+                default: postgres
+                description: database
+                type: string
         steps:
             - checkout
             - restore-and-save-cache
             - run:
                 command: |-
                     export DEBUGGERER='true'
-                    circleci tests glob "test/roro/stacks/*/postgres/**/*_test.rb" | \
+                    circleci tests glob "test/roro/stacks/*/<< parameters.database >>/**/*_test.rb" | \
                     circleci tests run \
                     --command="xargs bundle exec rake test" \
                     --split-by=timings
@@ -127,7 +135,7 @@ jobs:
             - run: bundle
             - run: bundle exec rake test TEST=test/roro/<<parameters.folder>>/*_test.rb
     test-stacks:
-        executor: machine-ubuntu
+        executor: docker-cimg-ruby
         parallelism: 5
         parameters:
             database:
@@ -135,10 +143,14 @@ jobs:
                 description: database
                 type: string
         steps:
+            - setup_remote_docker
             - checkout
             - restore-and-save-cache
             - run:
-                command: "export DEBUGGERER='true' \ncircleci tests glob \"test/roro/stacks/**/*_test.rb\" | \\\ncircleci tests split > /tmp/stack-tests \\\nbundle exec rake test $(cat /tmp/stack-tests)"
+                command: |
+                    export DEBUGGERER='true'
+                    sudo docker compose build
+                    sudo docker-compose run --rm guard
 version: 2.1
 workflows:
     release-image:
@@ -156,6 +168,10 @@ workflows:
                     branches:
                         only:
                             - main
+                matrix:
+                    parameters:
+                        database:
+                            - postgres
                 requires:
                     - build
     rubies:

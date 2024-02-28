@@ -42,11 +42,14 @@ services:
     <<: *development
     working_dir: /artifact
 
-  test:
+  test: &test
     <<: *development
+    volumes:
+      - .:/usr/src
+      - gem_cache:/usr/local/bundle/gems
 
   guard:
-    <<: *development
+    <<: *test
     command: bundle exec guard
 
 
