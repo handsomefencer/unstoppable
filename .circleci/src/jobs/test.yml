@@ -1,6 +1,6 @@
 parameters:
-  database:
-    regex: regex for test file subsection
+  regex:
+    description: regex for test file subsection
     default: '**/*'
     type: string
 executor: machine-ubuntu
@@ -11,4 +11,4 @@ steps:
   - run:
       command: |
         export DEBUGGERER='true'
-        bundle exec rake test TEST=test/roro/stacks/<< parameters.regex >>_test.rb
+        bundle exec rake test TEST="test/roro/stacks/<< parameters.regex >>_test.rb"
