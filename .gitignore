@@ -13,9 +13,14 @@ process.yml
 
 ## roro
 roro/**/*.env
-roro/**/*.key
+roro/**/*.key 
 *.key
 *.env
+
+**dummy
+!/**dummy_env
+!/**dummy/.keep
+
 !/lib/roro/stacks/**/*.key
 !/lib/roro/stacks/**/*.env
 !test/**/*.key

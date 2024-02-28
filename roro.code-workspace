@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../story_store"
+		},
+		{
+			"path": "../../../../sandbox/vite_foobar"
+		}
+	],
+	"settings": {}
+}

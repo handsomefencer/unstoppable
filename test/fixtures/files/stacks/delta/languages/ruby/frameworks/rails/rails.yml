@@ -1,0 +1,62 @@
+preface: A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant
+  syntax that is natural to read and easy to write.
+
+env:
+  base:
+    css:
+      name: Choose your css approach from tailwind, bootstrap, bulma, postcss, and sass.
+      value: tailwind
+    javascript:
+      name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
+      value: importmap
+    rails_version:
+      name: Ruby on Rails minor version
+      value: '7.0.6'
+    app_name:
+      name: Name for your app
+      value: unstoppable
+    chrome_server_image:
+      name: Selenium based image for system tests
+      value: selenium/standalone-chrome
+    chrome_server_image_version:
+      name: Chrome server imag version
+      value: '96.0'
+    app: 
+      RAILS_MAX_THREADS:
+        name: Maximum number of threads for the database. Important for redis.
+        value: '5'
+  development:
+    db_pkg:
+      name: Name of alpine db pkgs in development
+      value: sqlite-dev
+    app: 
+      RAILS_ENV:
+        name: Development Rails environment
+        value: development
+  production:
+    db_pkg:
+      name: Name of alpine db pkgs in production
+      value: sqlite-dev      
+    app: 
+      RAILS_ENV:
+        name: Production Rails environment
+        value: production
+      MALLOC_ARENA_MAX:
+        name: Reduce glibc memory count
+        value: '2'
+      RAILS_LOG_TO_STDOUT:
+        name: Makes it possiblt to send logs to logs/[environment].rb
+        value: 'true'
+      RAILS_SERVE_STATIC_FILES:
+        name: Serve static files from rails
+        value: 'true'
+  
+actions:  
+  - copy_layer('manifest')
+  - chmod 'entrypoints/docker-entrypoint.sh', 0755
+  - comment_lines 'Gemfile', /webdrivers/
+  - append_to_file( 
+    'test/test_helper.rb', 
+    "\nDir[\"\#{Dir.pwd}\/test\/support\/**\/*.rb\"]
+      .each { |f| require f }"
+    )

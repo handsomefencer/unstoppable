@@ -1,0 +1,12 @@
+preface: Flutter is a cross-platform UI toolkit created by Google. It allows developers to build native mobile applications with a single codebase and programming language.
+
+env: 
+  base: 
+    flutter_app_name:
+      name: Name of your flutter app
+      value: unstoppable
+
+actions:
+  - generate_mise
+  - copy_layer('manifest')
+  - run 'docker-compose up --build flutter-stable'

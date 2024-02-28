@@ -1,0 +1,6 @@
+preface: Roll your own authentication
+
+# env:
+
+actions:
+  - puts 'blah'

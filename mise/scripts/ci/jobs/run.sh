@@ -1,9 +1,7 @@
 #!/bin/bash
 
-set -e
-
+set -a
+job=$1
+bundle exec rake ci:prepare
 echo "Running job ${job}"
-circleci local execute -c process.yml --job ${job}
-
-# circleci project dlc purge github schadenfred roro
-# 
+circleci local execute ${job}

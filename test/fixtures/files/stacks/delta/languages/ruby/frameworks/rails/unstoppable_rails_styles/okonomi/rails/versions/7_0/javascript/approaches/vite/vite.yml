@@ -1,0 +1,16 @@
+preface: some string
+
+env:
+  base:
+    DEBUG: 
+      name: Debug variable for vite
+      value: '*vite*'
+    VITE_RUBY_HOST:
+      name: Vite ruby host 
+      value: '0.0.0.0'
+
+# actions:
+#   - run 'docker compose build app'
+#   - run 'docker compose up -d --no-deps app'
+#   - run 'docker compose exec app bundle add vite_rails' 
+#   - run 'docker compose exec app bundle exec vite install' 

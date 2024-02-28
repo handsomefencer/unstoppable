@@ -3,9 +3,15 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 env:
   base:
+    css:
+      name: Choose your css approach from tailwind, bootstrap, bulma, postcss, and sass.
+      value: tailwind
+    javascript:
+      name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
+      value: importmap
     rails_version:
       name: Ruby on Rails minor version
-      value: '7.0.6'
+      value: '7.0.8'
     app_name:
       name: Name for your app
       value: unstoppable
@@ -47,9 +53,7 @@ env:
   
 actions:  
   - copy_layer('manifest')
-  - generate_mise
   - chmod 'entrypoints/docker-entrypoint.sh', 0755
-  - comment_lines 'Gemfile', /webdrivers/
   - append_to_file( 
     'test/test_helper.rb', 
     "\nDir[\"\#{Dir.pwd}\/test\/support\/**\/*.rb\"]

@@ -30,11 +30,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'gem-release', '~> 2.1'
   spec.add_dependency 'deep_merge', '~> 1.2', '>= 1.2.2'
 
+  spec.add_dependency 'base64', '~> 0.2.0'
   spec.add_dependency 'os', '~> 1.1'
   spec.add_dependency 'rake', '~> 13.0', '>= 13.0.1'
   spec.add_dependency 'sshkit', '~> 1.21'
   spec.add_dependency 'thor', '~> 1.1'
-  spec.add_dependency 'activesupport', '~> 7.0'
+  spec.add_dependency 'activesupport', '~> 7.1', '>= 7.1.3.2'
   spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.4'
   spec.add_development_dependency 'climate_control'
   spec.add_development_dependency 'guard'

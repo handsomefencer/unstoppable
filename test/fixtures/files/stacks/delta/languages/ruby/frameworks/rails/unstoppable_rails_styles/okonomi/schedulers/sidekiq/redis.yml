@@ -1,0 +1,6 @@
+env:
+  base:
+    app: 
+      REDIS_URL:
+        name: Redis url
+        value: redis://redis:6379/0

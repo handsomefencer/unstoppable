@@ -5,10 +5,10 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in roro.gemspec
 gemspec
 
-group :development do 
-  gem 'solargraph' 
+group :development do
 end
 
-group :test do 
-  gem 'minitest-ci', '~> 3.4'
+group :test do
 end
+
+gem 'minitest-ci', '~> 3.4'

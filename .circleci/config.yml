@@ -70,65 +70,21 @@ executors:
             - image: cimg/base:2023.06
     docker-cimg-ruby:
         docker:
-            - image: cimg/ruby:<<parameters.version>>
-        parameters:
-            version:
-                default: 3.2.2
-                description: version tag
-                type: string
-    machine-osx:
-        macos:
-            xcode: 14.2.0
+            - image: cimg/ruby:3.3
     machine-ubuntu:
         machine:
             docker_layer_caching: true
-            image: ubuntu-2204:2023.04.2
+            image: ubuntu-2204:2024.01.1
     machine-ubuntu-no-caching:
         machine:
             docker_layer_caching: false
-            image: ubuntu-2204:2023.04.2
-    ruby-alpine:
-        docker:
-            - image: ruby:<<parameters.version>>-alpine
-        parameters:
-            version:
-                default: 3.2.2
-                description: version tag
-                type: string
+            image: ubuntu-2204:2024.01.1
 jobs:
     build:
         executor: machine-ubuntu
         steps:
             - checkout
             - restore-and-save-cache
-    release:
-        executor: docker-cimg-ruby
-        steps:
-            - checkout
-            - run: |
-                git config --global user.email "fred.schoeneman@gmail.com"
-                git config --global user.name "Fred Schoeneman"
-            - run: gem install gem-release
-            - run: gem bump
-            - run: gem release
-    rollon-adventure:
-        environment:
-            - ANSWERS: << parameters.answers >>
-        executor: << parameters.os >>
-        parameters:
-            answers:
-                default: "2"
-                type: string
-            os:
-                default: docker-cimg-base
-                type: executor
-        steps:
-            - checkout
-            - set-variables
-            - roro-image-build
-            - artifact-generate
-            - artifact-copy
-            - artifact-up
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -147,32 +103,38 @@ jobs:
     test:
         executor: machine-ubuntu
         parallelism: 5
+        parameters:
+            regex:
+                default: '**/*'
+                description: regex for test file subsection
+                type: string
         steps:
             - checkout
             - restore-and-save-cache
-            - run: |-
-                TEST=$(circleci tests glob "test/**/*/_test.rb" | circleci tests split)
-                DEBUGGERER='true' bundle exec rake test $TEST
+            - run:
+                command: |
+                    export DEBUGGERER='true'
+                    bundle exec rake test TEST="test/roro/stacks/<< parameters.regex >>_test.rb"
+            - store_test_results:
+                path: test/reports
     test-rubies:
-        executor: docker-cimg-ruby
+        docker:
+            - image: cimg/ruby:<<parameters.version>>
         parameters:
+            folder:
+                default: cli
+                description: folder in test/roro/<folder>
+                type: string
             version:
                 default: "3.0"
                 description: version tag
                 type: string
         steps:
             - checkout
-            - run: docker-compose build test
-            - run: docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
+            - run: bundle
+            - run: bundle exec rake test TEST=test/roro/<<parameters.folder>>/*_test.rb
 version: 2.1
 workflows:
-    gem-release:
-        jobs:
-            - release:
-                filters:
-                    branches:
-                        only:
-                            - gem-release
     release-image:
         jobs:
             - roro-image-push:
@@ -180,47 +142,6 @@ workflows:
                     branches:
                         only:
                             - main
-    rollon-adventures:
-        jobs:
-            - roro-image-build
-            - rollon-adventure:
-                filters:
-                    branches:
-                        only:
-                            - development
-                matrix:
-                    parameters:
-                        answers:
-                            - "1"
-                            - 2\n1\n1\n1\n1
-                            - 2\n1\n1\n1\n2
-                            - 2\n1\n1\n2\n1\n1
-                            - 2\n1\n1\n2\n1\n2
-                            - 2\n1\n1\n2\n2\n1
-                            - 2\n1\n1\n2\n2\n2
-                            - 2\n1\n2\n1\n1
-                            - 2\n1\n2\n1\n2
-                            - 2\n1\n2\n2\n1\n1
-                            - 2\n1\n2\n2\n1\n2
-                            - 2\n1\n2\n2\n2\n1
-                            - 2\n1\n2\n2\n2\n2
-                            - 2\n1\n3\n1\n1
-                            - 2\n1\n3\n1\n2
-                            - 2\n1\n3\n2\n1\n1
-                            - 2\n1\n3\n2\n1\n2
-                            - 2\n1\n3\n2\n2\n1
-                            - 2\n1\n3\n2\n2\n2
-                            - 2\n1\n4\n1\n1
-                            - 2\n1\n4\n1\n2
-                            - 2\n1\n4\n2\n1\n1
-                            - 2\n1\n4\n2\n1\n2
-                            - 2\n1\n4\n2\n2\n1
-                            - 2\n1\n4\n2\n2\n2
-                            - 2\n2
-                        os:
-                            - machine-ubuntu-no-caching
-                requires:
-                    - roro-image-build
     rollon-tests:
         jobs:
             - build
@@ -229,6 +150,14 @@ workflows:
                     branches:
                         only:
                             - development
+                matrix:
+                    parameters:
+                        regex:
+                            - '**/postgres/**/7_0/**/*'
+                            - '**/postgres/**/6_1/**/*'
+                            - '**/mysql/**/7_0/**/*'
+                            - '**/mariadb/**/7_0/**/*'
+                            - ruby/omakase/
                 requires:
                     - build
     rubies:
@@ -236,12 +165,16 @@ workflows:
             - test-rubies:
                 filters:
                     branches:
-                        only: rubies
+                        only: development
                 matrix:
                     parameters:
+                        folder:
+                            - cli
+                            - common
+                            - configurators
+                            - crypto
                         version:
-                            - "3.0"
-                            - "2.7"
-                            - "2.6"
-                            - "2.5"
+                            - "3.1"
+                            - "3.2"
+                            - "3.3"
 

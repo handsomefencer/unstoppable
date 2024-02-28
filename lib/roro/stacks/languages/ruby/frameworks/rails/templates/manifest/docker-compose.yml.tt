@@ -1,9 +1,0 @@
-version: '<%= @env[:base][:docker_compose_version][:value] %>'
-
-<%= section('docker_compose_anchors') %>
-
-services:
-<%= section('services') %>
-
-volumes:
-<%= section('volumes') %>

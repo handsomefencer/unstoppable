@@ -3,8 +3,13 @@ parameters:
     description: "version tag"
     default: "3.0"
     type: string
-executor: docker-cimg-ruby
+  folder:
+    description: "folder in test/roro/<folder>"
+    default: "cli"
+    type: string
+docker:
+  - image: cimg/ruby:<<parameters.version>>
 steps:
   - checkout
-  - run: docker-compose build test 
-  - run: docker-compose run --rm test sh -c "DEBUGGERER='true' rake test"
+  - run: bundle
+  - run: bundle exec rake test TEST=test/roro/<<parameters.folder>>/*_test.rb

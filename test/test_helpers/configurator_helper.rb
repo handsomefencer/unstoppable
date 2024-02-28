@@ -2,7 +2,7 @@
 
 module Roro::TestHelpers::ConfiguratorHelper
   def glob_dir(regex = '**/*')
-    Dir.glob("#{Dir.pwd}/#{regex}")
+    Dir.glob("#{Dir.pwd}/#{regex}/**/*")
   end
 
   def use_fixture_stack(stack = nil)
@@ -34,6 +34,14 @@ module Roro::TestHelpers::ConfiguratorHelper
     dummy_dir = "#{dir}/dummy"
     FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir)
     FileUtils.mkdir_p(dummy_dir)
+    @dummyfiles.each do |df|
+      next unless File.directory?(df)
+
+      @dummyfiles += glob_dir(df).map do |mig|
+        mig = mig.split("#{Dir.pwd}/").last
+      end
+      @dummyfiles.delete(df)
+    end
     @dummyfiles.each do |dummy|
       dummyfile = dummy.split(dummy_dir).last
       artifact = "#{Dir.pwd}/#{dummyfile}"
