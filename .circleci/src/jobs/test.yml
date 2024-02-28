@@ -1,7 +1,7 @@
 parameters:
   database:
-    description: database
-    default: postgres
+    regex: regex for test file subsection
+    default: '**/*'
     type: string
 executor: machine-ubuntu
 parallelism: 5

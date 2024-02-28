@@ -10,5 +10,5 @@ jobs:
         - rollon-tests
     matrix:
       parameters:
-          database:
+          regex:
               - '**/postgres/**/7_0/**/*'

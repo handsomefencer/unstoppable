@@ -105,8 +105,8 @@ jobs:
         parallelism: 5
         parameters:
             database:
-                default: postgres
-                description: database
+                default: '**/*'
+                regex: regex for test file subsection
                 type: string
         steps:
             - checkout
@@ -167,7 +167,7 @@ workflows:
                             - rollon-tests
                 matrix:
                     parameters:
-                        database:
+                        regex:
                             - '**/postgres/**/7_0/**/*'
                 requires:
                     - build
