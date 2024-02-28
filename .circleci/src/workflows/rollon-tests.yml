@@ -11,4 +11,4 @@ jobs:
     matrix:
       parameters:
           database:
-              - postgres
+              - '**/postgres/**/7_0/**/*'

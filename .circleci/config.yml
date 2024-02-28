@@ -112,9 +112,9 @@ jobs:
             - checkout
             - restore-and-save-cache
             - run:
-                command: |-
+                command: |
                     export DEBUGGERER='true'
-                    bundle exec rake test TEST=test/roro/stacks/**/<< parameters.database >>/**/7_0/**/*_test.rb
+                    bundle exec rake test TEST=test/roro/stacks/<< parameters.regex >>_test.rb
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -168,7 +168,7 @@ workflows:
                 matrix:
                     parameters:
                         database:
-                            - postgres
+                            - '**/postgres/**/7_0/**/*'
                 requires:
                     - build
     rubies:

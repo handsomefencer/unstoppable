@@ -11,4 +11,4 @@ steps:
   - run:
       command: |
         export DEBUGGERER='true'
-        bundle exec rake test TEST=test/roro/stacks/**/<< parameters.database >>/**/7_0/**/*_test.rb
+        bundle exec rake test TEST=test/roro/stacks/<< parameters.regex >>_test.rb
