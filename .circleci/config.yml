@@ -138,7 +138,7 @@ jobs:
             - checkout
             - restore-and-save-cache
             - run:
-                command: "export DEBUGGERER='true' \ncircleci tests glob \"test/roro/stacks/**/*_test.rb\" | \\\ncircleci tests split > /tmp/stack_tests \\\nbundle exec rake test $(cat /tmp/stack-tests)"
+                command: "export DEBUGGERER='true' \ncircleci tests glob \"test/roro/stacks/**/*_test.rb\" | \\\ncircleci tests split > /tmp/stack-tests \\\nbundle exec rake test $(cat /tmp/stack-tests)"
 version: 2.1
 workflows:
     release-image:

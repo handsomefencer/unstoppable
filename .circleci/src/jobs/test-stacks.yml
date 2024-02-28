@@ -12,5 +12,5 @@ steps:
       command: |
         export DEBUGGERER='true' 
         circleci tests glob "test/roro/stacks/**/*_test.rb" | \
-        circleci tests split > /tmp/stack_tests \
+        circleci tests split > /tmp/stack-tests \
         bundle exec rake test $(cat /tmp/stack-tests)
