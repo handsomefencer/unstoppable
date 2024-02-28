@@ -149,7 +149,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - rollon-tests
+                            - development
                 matrix:
                     parameters:
                         regex:
@@ -157,7 +157,7 @@ workflows:
                             - '**/postgres/**/6_1/**/*'
                             - '**/mysql/**/7_0/**/*'
                             - '**/mariadb/**/7_0/**/*'
-                            - omakase/
+                            - ruby/omakase/
                 requires:
                     - build
     rubies:
