@@ -140,9 +140,10 @@ jobs:
             - run:
                 command: |
                     export DEBUGGERER='true'
-                    circleci tests glob "test/roro/stacks/*/<<parameters.database>>/**/*_test.rb" | \
-                    circleci tests run \
-                    --command="xargs docker compose run --rm test bundle exec rake test" \
+                    circleci tests glob \
+                    "test/roro/stacks/*/<<parameters.database>>/**/*_test.rb" \
+                    | circleci tests run \
+                    --command="xargs bundle exec rake test" \
                     --split-by=timings
 version: 2.1
 workflows:
@@ -182,6 +183,7 @@ workflows:
                             - "3.3"
     stacks:
         jobs:
+            - build
             - test-stacks:
                 filters:
                     branches:
@@ -190,4 +192,5 @@ workflows:
                     parameters:
                         database:
                             - postgres
+                            - mysql
 

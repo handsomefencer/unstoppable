@@ -4,8 +4,8 @@ namespace :ci do
 
       task 'stacks' do |task|
         set_content(task)
-        matrix = @content['jobs'][0]['test-stacks']['matrix']
-        matrix['parameters']['database'] = %w[postgres]
+        matrix = @content['jobs'][1]['test-stacks']['matrix']
+        matrix['parameters']['database'] = %w[postgres mysql]
         overwrite
         notify 'version'
       end

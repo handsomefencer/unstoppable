@@ -11,7 +11,8 @@ steps:
   - run:
       command: |
         export DEBUGGERER='true'
-        circleci tests glob "test/roro/stacks/*/<<parameters.database>>/**/*_test.rb" | \
-        circleci tests run \
-        --command="xargs docker compose run --rm test bundle exec rake test" \
+        circleci tests glob \
+        "test/roro/stacks/*/<<parameters.database>>/**/*_test.rb" \
+        | circleci tests run \
+        --command="xargs bundle exec rake test" \
         --split-by=timings
