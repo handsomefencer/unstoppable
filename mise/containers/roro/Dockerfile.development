@@ -9,3 +9,5 @@ COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY . .
 
 RUN bundle
+
+RUN rake install

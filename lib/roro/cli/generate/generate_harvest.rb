@@ -8,6 +8,7 @@ module Roro
     def generate_harvest
       reflector = Roro::StackReflector.new
       content = {
+        adventures: reflector.adventures,
         cases: reflector.cases,
         structure_human: reflector.adventure_structure_human,
         structure_choices: reflector.adventure_structure_choices
@@ -15,6 +16,8 @@ module Roro
       content.each do |key, value|
         create_file ".harvest/#{key}.yml", value.to_yaml
       end
+      create_file ".harvest/all.yml", reflector.to_yaml
+
     end
 
     no_commands do
