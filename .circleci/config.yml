@@ -111,6 +111,7 @@ jobs:
         steps:
             - checkout
             - restore-and-save-cache
+            - run: mkdir -p test/reports
             - run:
                 command: |
                     export DEBUGGERER='true'
