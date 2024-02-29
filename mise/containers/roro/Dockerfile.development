@@ -3,14 +3,12 @@ FROM handsomefencer/roro/builder AS builder
 
 FROM builder
 
-COPY . .
-
 COPY --from=builder /usr/local/bundle /usr/local/bundle
+
+COPY . .
 
 RUN bundle
 
-# RUN gem build roro.gemspec
-
-# RUN rake install
+RUN rake install
 
 

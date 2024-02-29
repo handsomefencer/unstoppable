@@ -14,6 +14,9 @@ RUN apk add --no-cache \
     build-base \  
     git 
 
+RUN apk add --no-cache \
+    ncurses
+
 RUN git config --global --add safe.directory /usr/src
 
 WORKDIR /usr/src

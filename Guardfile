@@ -11,11 +11,13 @@ minitest_options = {
   all_after_pass:
     false,
     # true,
-  # all_on_start: true,
+  all_on_start:
+    # true,
+    false,
   all_env: {
     'DEBUGGERER' =>
-      # 'false'
-      'true'
+      'false'
+      # 'true'
   }
 }
 
