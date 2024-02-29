@@ -1,38 +1,13 @@
-version: '3.9'
-
-x-base:
-  # &base
-  # build:
-  #   context: .
-  #   dockerfile: mise/containers/roro/Dockerfile
-  #   target: development
-  #   args:
-  #     - "UID=${UID:-1000}"
-  #     - "GID=${GID:-1000}"
-  # image: handsomefencer/roro
-  # stdin_open: true
-  # tty: true
-  # user: "${UID}:${GID}"
-  # volumes:
-  #   - .:/usr/src
-  #   - /var/run/docker.sock:/var/run/docker.sock
-  #   - gem_cache:/usr/local/bundle/gems
-  # working_dir: /usr/src
-
 services:
   development: &development 
     build:
       context: .
       dockerfile: mise/containers/roro/Dockerfile.development
-      args:
-        - "UID=${UID:-1000}"
-        - "GID=${GID:-1000}"
     depends_on: 
       - builder
     image: handsomefencer/roro/development
     stdin_open: true
     tty: true
-    user: "${UID}:${GID}"
     volumes:
       - .:/usr/src
       - /var/run/docker.sock:/var/run/docker.sock
@@ -40,7 +15,6 @@ services:
 
   dev:
     <<: *development
-    working_dir: /artifact
 
   test: &test
     <<: *development
@@ -48,16 +22,3 @@ services:
   guard:
     <<: *test
     command: bundle exec guard
-
-
-  # roro:
-  #   <<: *base
-  #   build:
-  #     context: .
-  #     dockerfile: mise/containers/ruby_gem/Dockerfile
-  #     target: production
-  #   volumes:
-  #     - gem_cache:/usr/local/bundle/gems
-
-volumes:
-  gem_cache:
