@@ -44,9 +44,6 @@ services:
 
   test: &test
     <<: *development
-    volumes:
-      - .:/usr/src
-      - gem_cache:/usr/local/bundle/gems
 
   guard:
     <<: *test

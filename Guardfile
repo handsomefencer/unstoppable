@@ -8,8 +8,10 @@ Pry.config.output = STDOUT
 
 minitest_options = {
   test_folders: ['test'],
-  all_after_pass: false,
-  all_on_start: true,
+  all_after_pass:
+    false,
+    # true,
+  # all_on_start: true,
   all_env: {
     'DEBUGGERER' =>
       # 'false'
