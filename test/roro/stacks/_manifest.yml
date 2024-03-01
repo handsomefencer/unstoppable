@@ -77,7 +77,7 @@ redis:
         node_modules:
         redis:
 
-ruby: 
+ruby: &ruby
   test/test_helper.rb:
   config/database.yml:  
   docker-compose.yml:
@@ -130,6 +130,12 @@ ruby:
     - /FROM ruby:3.2.2-alpine/
 
   test/application_system_test_case.rb: 
+
+omakase: 
+  <<: *ruby
+
+okonomi: 
+  <<: *ruby
 
 sidekiq: 
   Gemfile: 
