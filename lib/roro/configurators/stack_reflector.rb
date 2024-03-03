@@ -94,7 +94,7 @@ module Roro
         chapters
           .map { |c| c.split('/').last.split('.').first }
           .reject { |c| stack_name(c).chars.first.match?('_') }
-          .reject { |c| stack_name(c).chars.first.match(/[0-9]/) }
+          .reject { |c| stack_name(c).chars.first.match(/\d/) }
           .select { |c| c.chars.first.eql? c.chars.first.capitalize }.uniq
       end
 

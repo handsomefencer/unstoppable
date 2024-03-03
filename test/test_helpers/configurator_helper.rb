@@ -161,7 +161,7 @@ module Roro::TestHelpers::ConfiguratorHelper
     array = path.split("#{test_stack_root}/").last.split('/')
     reflector = Roro::Configurator::StackReflector.new
     reflector.adventures
-             .select { |_k, v| v[:choices].eql?(array) }
+             .select { |_k, v| v[:choices].map(&:downcase).eql?(array) }
              .values.first[:picks]
   end
 
