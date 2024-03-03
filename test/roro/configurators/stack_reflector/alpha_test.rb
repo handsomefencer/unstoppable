@@ -20,6 +20,7 @@ describe Roro::Configurators::StackReflector do
           ],
           env: { base: { db_vendor: { value: 'postgres' } } },
           picks: [1, 1, 1],
+          pretty_tags: %w[alpine databases docker git redis okonomi php laravel],
           tags: %w[alpine databases docker git redis okonomi php laravel],
           title: [
             'unstoppable_developer_style: okonomi, language: php',

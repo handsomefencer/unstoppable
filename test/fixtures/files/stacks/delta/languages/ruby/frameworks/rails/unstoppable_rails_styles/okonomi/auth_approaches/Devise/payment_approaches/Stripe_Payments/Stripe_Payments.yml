@@ -1,0 +1,33 @@
+preface: some string
+
+env:
+  development:
+    app:
+      STRIPE_PRIVATE_KEY:
+        name: Stripe development private key
+        value: Replace me
+      STRIPE_PUBLIC_KEY:
+        name: Stripe development public key
+        value: Replace me
+      STRIPE_SIGNING_SECRET:
+        name: Stripe development signing secret
+        value: Replace me
+
+  production:
+    app: 
+      STRIPE_PRIVATE_KEY:
+        name: Stripe development private key
+        value: Replace me
+      STRIPE_PUBLIC_KEY:
+        name: Stripe development public key
+        value: Replace me
+      STRIPE_SIGNING_SECRET:
+        name: Stripe production signing secret
+        value: Replace me
+
+
+actions:
+  - insert_into_file(
+    'app/models/user.rb', 
+    partial('stripe_user_model_config'),
+    :after => 'validatable')  

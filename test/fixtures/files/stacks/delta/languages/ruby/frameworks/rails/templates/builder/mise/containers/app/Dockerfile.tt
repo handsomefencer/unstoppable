@@ -18,9 +18,12 @@ COPY  Gemfile* ./
 
 RUN bundle install -j4 --retry 3
 
-COPY . .
+COPY package.json  .
+COPY yarn.lock .
 
 RUN yarn install
+
+COPY . .
 
 RUN chmod -R 755 entrypoints/docker-entrypoint.sh
 

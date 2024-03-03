@@ -94,7 +94,8 @@ module Roro
         chapters
           .map { |c| c.split('/').last.split('.').first }
           .reject { |c| stack_name(c).chars.first.match?('_') }
-          .reject { |c| c.match?('_') }.uniq
+          .reject { |c| stack_name(c).chars.first.match(/[0-9]/) }
+          .select { |c| c.chars.first.eql? c.chars.first.capitalize }.uniq
       end
 
       def title_from(adventure)

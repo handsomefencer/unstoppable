@@ -1,16 +1,34 @@
 preface: some string
 
-env:
-  base:
-    DEBUG: 
-      name: Debug variable for vite
-      value: '*vite*'
-    VITE_RUBY_HOST:
-      name: Vite ruby host 
-      value: '0.0.0.0'
+env: 
+  base: 
+    javascript:
+      name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
+      value: esbuild
 
-# actions:
-#   - run 'docker compose build app'
-#   - run 'docker compose up -d --no-deps app'
-#   - run 'docker compose exec app bundle add vite_rails' 
-#   - run 'docker compose exec app bundle exec vite install' 
+  development:
+    app: 
+      VITE_RUBY_HOST:
+        name: Vite ruby host. Vite service environment declartion in docker-compose.yml overrides this to 0.0.0.0.
+        value: vite
+
+actions:
+  - > 
+    gsub_file(
+      'package.json',
+      /^*."build\a*.*$/,
+      '')
+  - insert_into_file(
+    'app/views/layouts/application.html.erb', 
+    "\n\s\s\s\s<%= vite_stylesheet_tag 'application.scss', :media => :all %>",
+    :after => "stylesheet_link_tag \"application\" %>")
+  # - insert_into_file(
+  #   'vite.config.js', 
+  #   "import FullReload from 'vite-plugin-full-reload'",
+  #   :after => "import RubyPlugin from 'vite-plugin-ruby'\n")
+  # - > 
+  #   insert_into_file(
+  #     'vite.config.js', 
+  #     "FullReload(['app/views/**/*'], {delay: 0}),",
+  #     :after => "RubyPlugin(),")
+  
