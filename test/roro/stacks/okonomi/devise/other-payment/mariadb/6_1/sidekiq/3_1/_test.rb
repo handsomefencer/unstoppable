@@ -2,10 +2,11 @@
 
 require 'test_helper'
 
-describe '2 ruby -> 1 okonomi -> 2 other-auth -> 3 postgres -> 2 7_0 -> 2 vite -> 2 sidekiq' do
+describe '2 ruby -> 1 okonomi -> 2 other-auth -> 3 postgres -> 1 6_1 -> 1 other-scheduler' do
   Given(:workbench) {}
 
   Given do
+    debuggerer
     rollon(__dir__)
   end
 

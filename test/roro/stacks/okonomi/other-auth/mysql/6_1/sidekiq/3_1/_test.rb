@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe '2 ruby -> 1 okonomi -> 2 other-auth -> 2 mysql -> 1 6_1 -> 2 sidekiq' do
   Given(:workbench) {}
-  
+
   Given do
     rollon(__dir__)
   end
