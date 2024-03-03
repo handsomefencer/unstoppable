@@ -10,4 +10,6 @@ COPY . .
 
 RUN bundle
 
+RUN gem build roro.gemspec
+
 RUN rake install
