@@ -16,6 +16,7 @@ roro/**/*.env
 roro/**/*.key 
 *.key
 *.env
+.harvest/*
 
 **dummy
 !/**dummy_env

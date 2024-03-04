@@ -77,7 +77,7 @@ redis:
         node_modules:
         redis:
 
-ruby: 
+ruby: &ruby
   test/test_helper.rb:
   config/database.yml:  
   docker-compose.yml:
@@ -106,12 +106,10 @@ ruby:
             - ./mise/env/development.env
             - ./mise/containers/app/env/base.env
             - ./mise/containers/app/env/development.env
-  Gemfile:
-    - /ruby ["']3.2.2["']/
+
   mise/env/base.env: 
     - /app_name=unstoppable/
     - /docker_compose_version=3.9/
-    - /ruby_version=3.2.2/
     - /bundler_version=2.4.13/
   mise/env/development.env: 
   mise/env/production.env: 
@@ -123,13 +121,15 @@ ruby:
     - /MALLOC_ARENA_MAX=2/
     - /RAILS_LOG_TO_STDOUT=true/
     - /RAILS_SERVE_STATIC_FILES=true/
-  mise/containers/app/Dockerfile: 
-    - /FROM ruby:3.2.2-alpine/
-    - /bundler:2.4.13/
-  mise/containers/builder/Dockerfile: 
-    - /FROM ruby:3.2.2-alpine/
+
 
   test/application_system_test_case.rb: 
+
+omakase: 
+  <<: *ruby
+
+okonomi: 
+  <<: *ruby
 
 sidekiq: 
   Gemfile: 
@@ -190,3 +190,13 @@ vite:
   Gemfile:
     - /gem ["']rails["'], ["']~> 6.1.7/
 
+    # - /ruby_version=3.2.2/
+  # Gemfile:
+    # - /ruby ["']3.2.2["']/
+    #   mise/containers/app/Dockerfile: 
+    # - /FROM ruby:3.2.2-alpine/
+    # - /bundler:2.4.13/
+
+
+  # mise/containers/builder/Dockerfile: 
+  #   - /FROM ruby:3.2.2-alpine/

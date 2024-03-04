@@ -66,6 +66,7 @@ module Roro
 
       def add_metadata(adventure)
         adventure[:tags] = tags_from(adventure[:chapters])
+        adventure[:pretty_tags] = pretty_tags_from(adventure[:chapters])
         adventure[:versions] = versions_from(adventure[:chapters])
         adventure[:title] = title_from(adventure)
         adventure[:env] = env_vars_from(adventure)
@@ -87,6 +88,14 @@ module Roro
           .map { |c| c.split('/').last.split('.').first }
           .reject { |c| stack_name(c).chars.first.match?('_') }
           .reject { |c| c.match?('_') }.uniq
+      end
+
+      def pretty_tags_from(chapters)
+        chapters
+          .map { |c| c.split('/').last.split('.').first }
+          .reject { |c| stack_name(c).chars.first.match?('_') }
+          .reject { |c| stack_name(c).chars.first.match(/\d/) }
+          .select { |c| c.chars.first.eql? c.chars.first.capitalize }.uniq
       end
 
       def title_from(adventure)

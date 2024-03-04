@@ -8,12 +8,16 @@ Pry.config.output = STDOUT
 
 minitest_options = {
   test_folders: ['test'],
-  all_after_pass: false,
-  all_on_start: true,
+  all_after_pass:
+    false,
+    # true,
+  all_on_start:
+    # true,
+    false,
   all_env: {
     'DEBUGGERER' =>
-      # 'false'
-      'true'
+      'false'
+      # 'true'
   }
 }
 
@@ -28,4 +32,5 @@ guard :minitest, minitest_options do
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }
+  watch(%r{^test/test_helpers/reflection_helper\.rb$}) { |m| 'test/roro/configurators/stack_reflector' }
 end
