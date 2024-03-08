@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM handsomefencer/ruby
+FROM handsomefencer/ruby:3.3.0-alpine
 
 RUN apk add --update --no-cache \
     build-base \  

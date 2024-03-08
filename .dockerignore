@@ -3,6 +3,9 @@
 # $ git config --global mergetool.keepBackup false
 *.orig
 
+## This may cause issues but needed to make it ignore submodules and ../
+**/.git
+
 # Created by git when using merge tools for conflicts
 *.BACKUP.*
 *.BASE.*
