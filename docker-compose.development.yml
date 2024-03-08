@@ -18,6 +18,14 @@ services:
 
   test: &test
     <<: *development
+    environment: 
+      DEBUGGERER: true
+
+  test-all: 
+    <<: *test
+    command: bundle exec rake test
+    environment: 
+      DEBUGGERER: true
 
   guard:
     <<: *test
