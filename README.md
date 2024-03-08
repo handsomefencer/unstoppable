@@ -44,12 +44,16 @@ $ cd greenfield
 
 2. Use the RoRo CLI to generate a greenfield app inside the RoRo container and then copy it onto your development machine: 
 
+```
+function test() {
+  console.log("This code will have a copy button to the right of it");
+}
+```
 ```shell
 docker run \
   --name artifact \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -u 0 \
   -it handsomefencer/roro:latest roro rollon
 ```
 
