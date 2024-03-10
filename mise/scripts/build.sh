@@ -1,6 +1,7 @@
 #!/bin/sh
 
-set -a 
+dc build --no-cache --with-dependencies development 
 
-dc build --no-cache --with-dependencies guard
+dc up -d --build dev 
 
+dc run --rm dev roro rollon

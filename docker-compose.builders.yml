@@ -4,14 +4,12 @@ services:
       dockerfile: ./mise/containers/roro/Dockerfile.ruby
       tags: 
         - handsomefencer/ruby:3.3.0-alpine
-    image: handsomefencer/ruby 
   
   builder:
     build:
       dockerfile: ./mise/containers/roro/Dockerfile.builder
       tags: 
-        - handsomefencer/roro/builder
+        - handsomefencer/roro:builder
     depends_on: 
       - ruby
-    image: handsomefencer/roro/builder
 

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -a 
-
 docker compose down
 docker image rm -f $(docker images handsomefencer/roro)
 docker image rm -f $(docker images handsomefencer/roro/builder)

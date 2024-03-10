@@ -9,13 +9,6 @@ describe Roro::Configurators::StackReflector do
   describe '#adventure_for(picks)' do
     Given(:adventure) { subject.adventure_for(*picks) }
 
-    describe '#getsome' do
-      Given { use_fixture_stack('charlie') }
-      # Then { assert_equal 'blah', adventure }
-      Given(:picks) { '1 2 1' }
-      # Then { assert_equal 'blah', adventure.dig(:templates_paths) }
-    end
-
     describe 'when adventure is okonomi php laravel' do
       Given(:expected) do
         {
