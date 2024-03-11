@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
 module Roro
   module Configurators
     class AdventurePicker < Thor

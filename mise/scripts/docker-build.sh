@@ -6,4 +6,3 @@ dc build development
 dc build test 
 dc build production 
 
-dc run --rm dev roro rollon

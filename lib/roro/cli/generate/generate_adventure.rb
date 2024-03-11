@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
 module Roro
   class CLI < Thor
     desc 'generate:adventure', 'Generate adventure for adventure tests.'

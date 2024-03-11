@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-require 'byebug'
-
-Pry.config.input = STDIN
-Pry.config.output = STDOUT
-
 minitest_options = {
   test_folders: ['test'],
   all_after_pass: false,
