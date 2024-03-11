@@ -14,12 +14,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - gem_cache:/usr/local/bundle/gems
 
-  dev:
-    <<: *development
-    volumes:
-      - .:/usr/src
-      - gem_cache:/usr/local/bundle/gems
-
   test: &test
     <<: *development
 
@@ -36,14 +30,12 @@ services:
   roro:
     command: ['sh']
     build:
-      dockerfile: mise/containers/roro/Dockerfile.development
+      dockerfile: mise/containers/roro/Dockerfile.production
       tags: 
         - handsomefencer/roro:production
     image: handsomefencer/roro
     depends_on: 
       - builder
-    stdin_open: true
-    tty: true
     volumes:
       - .:/usr/src
       - /var/run/docker.sock:/var/run/docker.sock
