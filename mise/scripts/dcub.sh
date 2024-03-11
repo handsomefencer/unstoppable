@@ -7,4 +7,5 @@ dcd
 . mise/scripts/docker-info.sh 
 . mise/scripts/docker-build.sh 
 
-# dc run --rm dev roro rollon
+dc build test
+dc run --rm guard
