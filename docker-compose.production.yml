@@ -1,10 +1,17 @@
 services:
-  production:
+  production: &production
     build:
       dockerfile: mise/containers/roro/Dockerfile.production
       tags: 
         - handsomefencer/roro:production
+    depends_on: 
+      - builder
     image: handsomefencer/roro
     volumes:
       - .:/usr/src
       - gem_cache:/usr/local/bundle/gems
+
+  roro:
+    <<: *production
+    command: ['sh']
+

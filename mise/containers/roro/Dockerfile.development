@@ -9,4 +9,5 @@ COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY . .
 
 RUN bundle
-RUN rake install
+RUN gem build roro.gemspec
+RUN bundle exec rake install

@@ -17,4 +17,6 @@ WORKDIR /usr/src
 
 COPY . .
 
-RUN bundle update --bundler
+RUN bundle
+RUN gem build roro.gemspec
+RUN bundle exec rake install
