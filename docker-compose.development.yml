@@ -18,11 +18,11 @@ services:
     <<: *development
 
   test: &test
+    command: bundle exec rake test
     <<: *development
 
   test-all: 
     <<: *test
-    command: bundle exec rake test
     environment: 
       DEBUGGERER: true
 
