@@ -8,4 +8,4 @@ dcd
 . mise/scripts/docker-build.sh 
 
 dc build test
-dc run --rm guard
+dc run --rm test

@@ -1,8 +1,7 @@
 #!/bin/sh
 
-dc build ruby 
-dc build builder 
-dc build development 
-dc build test 
-dc build production 
+dc build --no-cache ruby 
+dc build --no-cache builder 
+dc build --no-cache development 
+dc build --no-cache test 
 
