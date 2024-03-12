@@ -14,6 +14,12 @@ module Roro::TestHelpers::ConfiguratorHelper
       .returns("#{Roro::CLI.test_root}/#{fixture_stacks}/#{stack}")
   end
 
+  def use_active_stack(stack = nil)
+    # Roro::CLI
+    #   .stubs(:stacks)
+    #   .returns(Roro::CLI.stacks)
+  end
+
   def fixture_file_content(filename)
     File.read("#{@roro_dir}/test/fixtures/files/#{filename}")
   end

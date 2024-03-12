@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rb-readline', '~> 0.5.5'
   spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.4'
   spec.add_development_dependency 'climate_control'
+  spec.add_development_dependency 'debug', '~> 1.9', '>= 1.9.1'
   spec.add_development_dependency 'guard'
   spec.add_development_dependency 'guard-minitest'
   spec.add_development_dependency 'minitest-focus'

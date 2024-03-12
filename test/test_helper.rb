@@ -3,6 +3,7 @@
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 ENV['RORO_ENV'] ||= 'test'
 
+require 'debug'
 require 'fileutils'
 require 'minitest/autorun'
 require 'minitest/given'
