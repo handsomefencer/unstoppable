@@ -7,3 +7,5 @@ dcd
 . mise/scripts/docker-info.sh 
 . mise/scripts/docker-build.sh 
 
+# dc up --build -d dev
+dc run --rm dev roro rollon
