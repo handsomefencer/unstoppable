@@ -8,4 +8,4 @@ dcd
 . mise/scripts/docker-build.sh 
 
 # dc up --build -d dev
-dc run --rm dev roro rollon
+dc run --rm dev roro generate:harvest
