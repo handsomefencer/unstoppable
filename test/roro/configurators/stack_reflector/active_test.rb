@@ -10,7 +10,7 @@ describe Roro::Configurators::StackReflector do
     Given(:picks) { %i[1 1 1 1 3 1 1 1] }
     Given(:expected) { %w[
       Docker_Compose Ruby_on_Rails Alpine_Linux
-      Git Devise Stripe Mariadb Vite Redis Sidekiq
+      Git RoRo Devise Stripe Mariadb Vite Redis Sidekiq
     ] }
     Then { assert_equal(expected, adventure.dig(:pretty_tags))}
     And { assert_equal('7.1', adventure.dig(:versions, 'rails'))}
