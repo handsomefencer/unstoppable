@@ -1,29 +1,15 @@
 # syntax=docker/dockerfile:1
 
-FROM handsomefencer/ruby:3.3.0-alpine as ruby
 FROM handsomefencer/roro:builder AS builder
-FROM builder AS stripper
+
+FROM builder
 
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 
-COPY . .
+COPY . .    
 
 RUN bundle
-
-RUN gem build roro.gemspec
-
 RUN rake install
-
-RUN gem cleanup \
-    && find /usr/local/bundle/gems/ -name "*.c" -delete \
-    && rm -rf /usr/local/bundle/cache \
-    && find /usr/local/bundle/gems/ -name "*.o" -delete
-
-FROM ruby AS production
-
-RUN addgroup -g 1000 -S app && \
-    adduser -u 1000 -S app -G app
-
-COPY --from=stripper --chown=app:app /usr/local/bundle /usr/local/bundle
+RUN gem build roro.gemspec
 
 WORKDIR /artifact
