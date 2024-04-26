@@ -4,8 +4,6 @@ services:
       dockerfile: mise/containers/roro/Dockerfile.production
       tags: 
         - handsomefencer/roro:production
-    depends_on: 
-      - builder
     image: handsomefencer/roro
     volumes:
       - .:/usr/src
