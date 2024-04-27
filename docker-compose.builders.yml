@@ -11,7 +11,7 @@ x-base: &base
 services:
   builder-ruby:
     <<: *base
-    image: builder/ruby
+    image: roro/ruby
 
   builder-base:
     <<: *base
@@ -19,7 +19,7 @@ services:
       dockerfile: ./mise/containers/roro/Dockerfile.builder.base
     depends_on: 
       - builder-ruby
-    image: builder/base
+    image: roro/base
 
   builder-development: 
     <<: *base
@@ -27,7 +27,7 @@ services:
       dockerfile: ./mise/containers/roro/Dockerfile.development
     depends_on: 
       - builder-base
-    image: builder/development
+    image: roro/development
 
   builder-test: 
     <<: *base
@@ -35,12 +35,12 @@ services:
       dockerfile: ./mise/containers/roro/Dockerfile.test
     depends_on: 
       - builder-cache
-    image: builder/test
+    image: roro/test
 
   builder-production:
     build:
       dockerfile: ./mise/containers/roro/Dockerfile.production
-    image: builder/production
+    image: roro/production
     depends_on: 
       - builder-base
     profiles: 

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+mkdir -p ${sandbox_dir} 
+cd ${sandbox_dir} 
+
+docker rm artifact
+docker run \
+  --name artifact \
+  -v $PWD:/artifact \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -u 0 \
+  -it handsomefencer/roro:latest sh -c "printf '1\n2\n3\n3\n1\n2\n3\na\n' | roro rollon"
+  # -it handsomefencer/roro:latest sh 
+  # 1 2 3 3 1 2 3
+  # -it handsomefencer/roro:latest sh -c "printf '2\n3\n2\n3\n3\n1\n2\n3\na\n' | roro rollon"
+
+  # -it handsomefencer/roro:latest sh -c "printf '1\n2\n3\n3\n1\n1\n3\na\n' | roro rollon"
+  # -it handsomefencer/roro:latest sh -c "printf '2\n1\n2\n3\n2\n2\n1\na\n' | roro rollon"
+  # -it handsomefencer/roro:latest sh -c "printf '1\n1\n1\n3\n3\n2\n1\na\n' | roro rollon"
+
+
+cd ${roro}

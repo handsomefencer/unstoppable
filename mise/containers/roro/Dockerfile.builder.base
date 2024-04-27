@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM builder/ruby AS base
+FROM roro/ruby AS base
 
 RUN apk add --update --no-cache \
     build-base \  
