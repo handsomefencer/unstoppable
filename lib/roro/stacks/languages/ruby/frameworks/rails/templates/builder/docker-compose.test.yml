@@ -1,0 +1,38 @@
+x-test: &test 
+  build:
+    dockerfile: ./mise/containers/app/Dockerfile.test
+  depends_on: 
+    - chrome
+    - db
+  env_file: 
+    - ./mise/containers/app/env/base.env
+    - ./mise/containers/app/env/test.env
+  image: club/test
+  environment:
+    CHROME_URL: http://chrome:3333
+  shm_size: '256mb' 
+  stdin_open: true
+  tmpfs:
+    - /tmp
+  tty: true
+  user: root
+  volumes:
+    - .:/app:cached
+    - gem_cache:/usr/local/bundle/gems
+    - node_modules:/app/node_modules
+    
+services:
+  test:
+    <<: *test
+    command: ["bin/rails", "db:create"]
+    
+  test-all:
+    <<: *test
+    command: ["bin/rails", "test:all"]
+    profiles: 
+      - test
+
+  guard:
+    <<: *test
+    command: ["bundle", "exec", "guard"]
+    container_name: guard

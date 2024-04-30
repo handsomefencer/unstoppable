@@ -5,7 +5,7 @@ cd ${sandbox_dir}
 
 dcd 
 
-dc build 
-dc run --rm app bin/rails db:create
-
+# dc build builder-development
+dc build --with-dependencies builder-development
+schown 
 cd ${roro}

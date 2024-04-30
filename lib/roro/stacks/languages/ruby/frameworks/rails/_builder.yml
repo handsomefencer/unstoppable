@@ -1,4 +1,5 @@
 actions:
   - copy_layer('builder')
-  - generate_mise
-  - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/builder/Dockerfile --output . .'
+  # - generate_mise
+  - run 'docker compose build --with-dependencies builder-dependencies'
+  - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/builder/Dockerfile -t builder/cache --output . .'

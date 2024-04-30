@@ -9,14 +9,8 @@ docker run \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
-  -it handsomefencer/roro:latest sh -c "printf '1\n2\n3\n3\n1\n2\n3\na\n' | roro rollon"
-  # -it handsomefencer/roro:latest sh 
-  # 1 2 3 3 1 2 3
-  # -it handsomefencer/roro:latest sh -c "printf '2\n3\n2\n3\n3\n1\n2\n3\na\n' | roro rollon"
-
-  # -it handsomefencer/roro:latest sh -c "printf '1\n2\n3\n3\n1\n1\n3\na\n' | roro rollon"
-  # -it handsomefencer/roro:latest sh -c "printf '2\n1\n2\n3\n2\n2\n1\na\n' | roro rollon"
-  # -it handsomefencer/roro:latest sh -c "printf '1\n1\n1\n3\n3\n2\n1\na\n' | roro rollon"
+  -it handsomefencer/roro:latest sh -c "printf '3\n1\n2\na\n' | roro rollon"
+  # -it handsomefencer/roro:latest roro rollon
 
 
 cd ${roro}

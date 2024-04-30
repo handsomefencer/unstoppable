@@ -1,0 +1,66 @@
+
+x-base: &base
+  build:
+    args: 
+      RUBY_VERSION: 3.3
+    dockerfile: ./mise/containers/app/Dockerfile.builder.ruby
+  profiles: 
+    - builder
+  volumes:
+    - gem_cache:/usr/local/bundle/gems
+    - node_modules:/app/node_modules
+
+services:
+  builder-ruby:
+    <<: *base
+    image: builder/ruby
+
+  builder-base:
+    <<: *base
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.builder.base
+    depends_on: 
+      - builder-ruby
+    image: builder/base
+
+  builder-dependencies:
+    <<: *base
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.builder.dependencies
+    depends_on: 
+      - builder-base
+    image: builder/dependencies
+
+  builder-cache:
+    <<: *base
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.builder.cache
+    depends_on: 
+      - builder-dependencies
+    image: builder/cache
+
+  builder-development: 
+    <<: *base
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.development
+    depends_on: 
+      - builder-cache
+    image: builder/development
+
+  builder-test: 
+    <<: *base
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.test
+    depends_on: 
+      - builder-cache
+    image: builder/test
+
+  builder-production:
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.production
+    image: builder/production
+    depends_on: 
+      - builder-cache
+    profiles: 
+      - builder  
+

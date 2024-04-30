@@ -1,0 +1,16 @@
+services:
+  production: 
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.production.do
+      tags: 
+        - handsomefencer/club:${CIRCLE_SHA1:-latest}
+        - handsomefencer/club:latest
+    container_name: production
+    entrypoint: ./mise/containers/app/entrypoints/production.do.sh
+    environment: 
+      PRODUCTION_KEY: ${PRODUCTION_KEY:-default}
+    image: handsomefencer/club:${CIRCLE_SHA1:-latest}
+    profiles: 
+      - do
+    ports:
+      - 3000:3000
