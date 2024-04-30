@@ -29,14 +29,6 @@ services:
       - builder-base
     image: roro/development
 
-  builder-test: 
-    <<: *base
-    build:
-      dockerfile: ./mise/containers/roro/Dockerfile.test
-    depends_on: 
-      - builder-cache
-    image: roro/test
-
   builder-production:
     build:
       dockerfile: ./mise/containers/roro/Dockerfile.production

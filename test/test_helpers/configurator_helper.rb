@@ -160,6 +160,7 @@ module Roro::TestHelpers::ConfiguratorHelper
     test_stack_root = "#{Roro::CLI.test_root}/roro/stacks"
     array = path.split("#{test_stack_root}/").last.split('/')
     reflector = Roro::Configurator::StackReflector.new
+    byebug
     reflector.adventures
              .select { |_k, v| v[:choices].map(&:downcase).eql?(array) }
              .values.first[:picks]

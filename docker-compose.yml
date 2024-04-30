@@ -1,8 +1,43 @@
-
 include:
   - docker-compose.builders.yml  
-  # - docker-compose.development.yml  
-  - docker-compose.production.yml
+
+services:
+  development: &development 
+    build:
+      dockerfile: mise/containers/roro/Dockerfile.development
+    image: roro/dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/usr/src
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gem_cache:/usr/local/bundle/gems
+
+  dev: 
+    <<: *development
+
+  test: &test
+    <<: *development
+
+  guard:
+    <<: *test
+    command: bundle exec guard
+
+  production: &production
+    build:
+      dockerfile: mise/containers/roro/Dockerfile.production
+      tags: 
+        - handsomefencer/roro:production
+    image: handsomefencer/roro
+    volumes:
+      - .:/usr/src
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gem_cache:/usr/local/bundle/gems
+
+  roro:
+    <<: *production
+    command: ['sh']
+
 
 volumes:
   gem_cache:  
