@@ -1,202 +1,247 @@
-x-database:
-  &database 
+x-base: 
+  &base 
+  mise/containers/builder/Dockerfile:
+  docker-compose.builders.yml:  
+  docker-compose.development.yml:  
+  docker-compose.vendor.yml:
+  docker-compose.production.yml:
+  docker-compose.test.yml:  
+  docker-compose.vendor.yml:
   docker-compose.yml:
-    - services: 
-        app:
-          image: unstoppable 
   mise/containers/db/env/base.env:
-  mise/containers/db/env/development.env:
-  mise/containers/db/env/production.env:
 
-devise: 
-  db/migrate:
-  app/controllers/application_controller.rb:
-    - /  before_action :authenticate_user!/ 
-  app/views/layouts/application.html.erb:
-  app/views/application/_messages.html.erb:
-  app/models/user.rb:
-    - /devise :confirmable, :trackable/
-  config/initializers/devise.rb:
-    - /config.navigational_formats/
-    - /config.sign_out_via \= :get/
-  config/environments/development.rb:
-    - /config.action_mailer.default_url_options = { host/
-    - /config.action_mailer.delivery_method = :letter_opener/
-    - /config.action_mailer.perform_deliveries = true/
-  Gemfile:
-    - /gem ["']devise["'], ["']~> 4.9/
-    - /gem ["']letter_opener["'], ["']~> 1.9/
+x-database: 
+  &database 
+  <<: *base
+  config/database.yml:
+
+    #     app:
+    #       image: unstoppable 
+  # mise/containers/db/env/base.env:
+  # mise/containers/db/env/development.env:
+  # mise/containers/db/env/production.env:
+
+# devise: 
+#   db/migrate:
+#   app/controllers/application_controller.rb:
+#     - /  before_action :authenticate_user!/ 
+#   app/views/layouts/application.html.erb:
+#   app/views/application/_messages.html.erb:
+#   app/models/user.rb:
+#     - /devise :confirmable, :trackable/
+#   config/initializers/devise.rb:
+#     - /config.navigational_formats/
+#     - /config.sign_out_via \= :get/
+#   config/environments/development.rb:
+#     - /config.action_mailer.default_url_options = { host/
+#     - /config.action_mailer.delivery_method = :letter_opener/
+#     - /config.action_mailer.perform_deliveries = true/
+#   Gemfile:
+#     - /gem ["']devise["'], ["']~> 4.9/
+#     - /gem ["']letter_opener["'], ["']~> 1.9/
   
-mysql: 
+# mysql: 
+#   <<: *database
+#   config/database.yml: 
+#     - '/adapter: mysql/'
+#   docker-compose.yml: 
+#     - services: 
+#         db:
+#           image: mysql:8.0.21
+#           volumes: 
+#             - db_data:/var/lib/mysql
+#   Gemfile: 
+#     - /gem ["']mysql2["'], ["']~> 0.5/
+#   mise/env/base.env:
+#     - /chrome_server_image=selenium\/standalone-chrome/
+#     - /chrome_server_image_version=96.0/
+#     - /db_vendor=mysql/
+#     - /db_image=mysql/
+#     - /db_image_version=8.0.21/
+#     - /db_volume=\/var\/lib\/mysql/
+#   mise/env/development.env:
+#     - /DATABASE_HOST=db/
+#     - /DATABASE_NAME=development/
+#     - /MYSQL_DATABASE=development/
+#     - /MYSQL_HOST=db/
+#     - /MYSQL_USER=root/
+#     - /MYSQL_PASSWORD=root/
+#     - /MYSQL_ROOT_PASSWORD=root/
+#   mise/containers/app/Dockerfile:
+#     - /mysql-dev/
+#     - /mysql-client/
+
+postgres: 
   <<: *database
-  config/database.yml: 
-    - '/adapter: mysql/'
-  docker-compose.yml: 
-    - services: 
-        db:
-          image: mysql:8.0.21
-          volumes: 
-            - db_data:/var/lib/mysql
-  Gemfile: 
-    - /gem ["']mysql2["'], ["']~> 0.5/
-  mise/env/base.env:
-    - /chrome_server_image=selenium\/standalone-chrome/
-    - /chrome_server_image_version=96.0/
-    - /db_vendor=mysql/
-    - /db_image=mysql/
-    - /db_image_version=8.0.21/
-    - /db_volume=\/var\/lib\/mysql/
-  mise/env/development.env:
-    - /DATABASE_HOST=db/
-    - /DATABASE_NAME=development/
-    - /MYSQL_DATABASE=development/
-    - /MYSQL_HOST=db/
-    - /MYSQL_USER=root/
-    - /MYSQL_PASSWORD=root/
-    - /MYSQL_ROOT_PASSWORD=root/
-  mise/containers/app/Dockerfile:
-    - /mysql-dev/
-    - /mysql-client/
 
-okonomi: 
-  .dockerignore:
-    - /### Git/
-    - /### Rails/
-    - /### Roro/
-    - /### Ruby/
-  .gitignore:
-    - /### Rails/
-    - /### Roro/
-    - /### Ruby/
+  # config/database.yml: 
+  #   - '/adapter: postgresql/'
+  # docker-compose.yml: 
+  #   - services: 
+  #       db:
+  #         image: mysql:8.0.21
+  #         volumes: 
+  #           - db_data:/var/lib/mysql
+  # Gemfile: 
+  #   - /gem ["']mysql2["'], ["']~> 0.5/
+  # mise/env/base.env:
+  #   - /chrome_server_image=selenium\/standalone-chrome/
+  #   - /chrome_server_image_version=96.0/
+  #   - /db_vendor=mysql/
+  #   - /db_image=mysql/
+  #   - /db_image_version=8.0.21/
+  #   - /db_volume=\/var\/lib\/mysql/
+  # mise/env/development.env:
+  #   - /DATABASE_HOST=db/
+  #   - /DATABASE_NAME=development/
+  #   - /MYSQL_DATABASE=development/
+  #   - /MYSQL_HOST=db/
+  #   - /MYSQL_USER=root/
+  #   - /MYSQL_PASSWORD=root/
+  #   - /MYSQL_ROOT_PASSWORD=root/
+  # mise/containers/app/Dockerfile:
+  #   - /mysql-dev/
+  #   - /mysql-client/
 
-redis: 
-  docker-compose.yml: 
-    - volumes: 
-        db_data:
-        gem_cache:
-        node_modules:
-        redis:
+# okonomi: 
+#   .dockerignore:
+#     - /### Git/
+#     - /### Rails/
+#     - /### Roro/
+#     - /### Ruby/
+#   .gitignore:
+#     - /### Rails/
+#     - /### Roro/
+#     - /### Ruby/
 
-ruby: &ruby
-  test/test_helper.rb:
-  config/database.yml:  
-  docker-compose.yml:
-    - volumes: 
-        db_data:
-        gem_cache:
-        node_modules:
-    - services:
-        app-prod:
-          build: 
-            target: production
-          profiles: 
-            - production
-          ports: 
-            - '3001:3000'
-        app:
-          image: unstoppable 
-          ports:
-            - '3000:3000'
-          build: 
-            context: .
-            dockerfile: ./mise/containers/app/Dockerfile
-            target: development
-          env_file: 
-            - ./mise/env/base.env
-            - ./mise/env/development.env
-            - ./mise/containers/app/env/base.env
-            - ./mise/containers/app/env/development.env
+# redis: 
+#   docker-compose.yml: 
+#     - volumes: 
+#         db_data:
+#         gem_cache:
+#         node_modules:
+#         redis:
 
-  mise/env/base.env: 
-    - /app_name=unstoppable/
-    - /docker_compose_version=3.9/
-    - /bundler_version=2.4.13/
-  mise/env/development.env: 
-  mise/env/production.env: 
-  mise/containers/app/env/base.env: 
-    - /RAILS_MAX_THREADS/
-  mise/containers/app/env/development.env: 
-  mise/containers/app/env/production.env: 
-    - /RAILS_ENV=production/
-    - /MALLOC_ARENA_MAX=2/
-    - /RAILS_LOG_TO_STDOUT=true/
-    - /RAILS_SERVE_STATIC_FILES=true/
+# ruby: &ruby
+#   test/test_helper.rb:
+#   config/database.yml:  
+#   docker-compose.yml:
+#     - volumes: 
+#         db_data:
+#         gem_cache:
+#         node_modules:
+#     - services:
+#         app-prod:
+#           build: 
+#             target: production
+#           profiles: 
+#             - production
+#           ports: 
+#             - '3001:3000'
+#         app:
+#           image: unstoppable 
+#           ports:
+#             - '3000:3000'
+#           build: 
+#             context: .
+#             dockerfile: ./mise/containers/app/Dockerfile
+#             target: development
+#           env_file: 
+#             - ./mise/env/base.env
+#             - ./mise/env/development.env
+#             - ./mise/containers/app/env/base.env
+#             - ./mise/containers/app/env/development.env
 
-
-  test/application_system_test_case.rb: 
-
-omakase: 
-  <<: *ruby
-
-okonomi: 
-  <<: *ruby
-
-sidekiq: 
-  Gemfile: 
-    - /gem ["']sidekiq["']/
-  mise/env/base.env:
-  mise/containers/app/env/base.env:
-    - /REDIS_URL=redis:\/\/redis:6379\/0/
-  config/environments/development.rb:
-    - /config.active_job.queue_adapter = :sidekiq/
-
-stripe:
-  config/initializers/stripe.rb:
-    - /Stripe.api_key = ENV\['STRIPE_PRIVATE_KEY'\]/
-  docker-compose.yml:
-    - services:
-        stripe:
-          image: 'stripe/stripe-cli:latest'
-  Gemfile:
-    - /gem ["']pay["']/
-    - /gem ["']stripe["']/
-  mise/containers/app/env/development.env:
-    - /STRIPE_PRIVATE_KEY=Replace me/
-    - /STRIPE_PUBLIC_KEY=Replace me/
-    - /STRIPE_SIGNING_SECRET=Replace me/
-  mise/containers/app/env/production.env:
-    - /STRIPE_PRIVATE_KEY=Replace me/
-    - /STRIPE_PUBLIC_KEY=Replace me/
-    - /STRIPE_SIGNING_SECRET=Replace me/
-
-vite: 
-  config/routes.rb:
-  app/views/home/index.html.erb:
-  app/assets/stylesheets/application.css:
-  app/javascript/entrypoints/application.css:
-  app/views/layouts/application.html.erb:
-    - /vite_client_tag/
-    - /vite_javascript_tag/
-  bin/vite:
-  config/vite.json:
-  postcss.config.js: 
-  Gemfile:
-    - /gem ["']vite_rails["']/
-  vite.config.js:
-    - /import { defineConfig } from ["']vite["']/
-    - /import FullReload from ["']vite-plugin-full-reload["']/
-  docker-compose.yml:
-    - services: 
-        vite: 
-          ports:
-            - '3036:3036'
-  package.json:
-
-'7_0':
-  Gemfile:
-    - /gem ["']rails["'], ["']~> 7.0.8/
-
-'6_1':
-  Gemfile:
-    - /gem ["']rails["'], ["']~> 6.1.7/
-
-    # - /ruby_version=3.2.2/
-  # Gemfile:
-    # - /ruby ["']3.2.2["']/
-    #   mise/containers/app/Dockerfile: 
-    # - /FROM ruby:3.2.2-alpine/
-    # - /bundler:2.4.13/
+#   mise/env/base.env: 
+#     - /app_name=unstoppable/
+#     - /docker_compose_version=3.9/
+#     - /bundler_version=2.4.13/
+#   mise/env/development.env: 
+#   mise/env/production.env: 
+#   mise/containers/app/env/base.env: 
+#     - /RAILS_MAX_THREADS/
+#   mise/containers/app/env/development.env: 
+#   mise/containers/app/env/production.env: 
+#     - /RAILS_ENV=production/
+#     - /MALLOC_ARENA_MAX=2/
+#     - /RAILS_LOG_TO_STDOUT=true/
+#     - /RAILS_SERVE_STATIC_FILES=true/
 
 
-  # mise/containers/builder/Dockerfile: 
-  #   - /FROM ruby:3.2.2-alpine/
+#   test/application_system_test_case.rb: 
+
+# omakase: 
+#   <<: *ruby
+
+# okonomi: 
+#   <<: *ruby
+
+# sidekiq: 
+#   Gemfile: 
+#     - /gem ["']sidekiq["']/
+#   mise/env/base.env:
+#   mise/containers/app/env/base.env:
+#     - /REDIS_URL=redis:\/\/redis:6379\/0/
+#   config/environments/development.rb:
+#     - /config.active_job.queue_adapter = :sidekiq/
+
+# stripe:
+#   config/initializers/stripe.rb:
+#     - /Stripe.api_key = ENV\['STRIPE_PRIVATE_KEY'\]/
+#   docker-compose.yml:
+#     - services:
+#         stripe:
+#           image: 'stripe/stripe-cli:latest'
+#   Gemfile:
+#     - /gem ["']pay["']/
+#     - /gem ["']stripe["']/
+#   mise/containers/app/env/development.env:
+#     - /STRIPE_PRIVATE_KEY=Replace me/
+#     - /STRIPE_PUBLIC_KEY=Replace me/
+#     - /STRIPE_SIGNING_SECRET=Replace me/
+#   mise/containers/app/env/production.env:
+#     - /STRIPE_PRIVATE_KEY=Replace me/
+#     - /STRIPE_PUBLIC_KEY=Replace me/
+#     - /STRIPE_SIGNING_SECRET=Replace me/
+
+# vite: 
+#   config/routes.rb:
+#   app/views/home/index.html.erb:
+#   app/assets/stylesheets/application.css:
+#   app/javascript/entrypoints/application.css:
+#   app/views/layouts/application.html.erb:
+#     - /vite_client_tag/
+#     - /vite_javascript_tag/
+#   bin/vite:
+#   config/vite.json:
+#   postcss.config.js: 
+#   Gemfile:
+#     - /gem ["']vite_rails["']/
+#   vite.config.js:
+#     - /import { defineConfig } from ["']vite["']/
+#     - /import FullReload from ["']vite-plugin-full-reload["']/
+#   docker-compose.yml:
+#     - services: 
+#         vite: 
+#           ports:
+#             - '3036:3036'
+#   package.json:
+
+# '7_0':
+#   Gemfile:
+#     - /gem ["']rails["'], ["']~> 7.0.8/
+
+# '6_1':
+#   Gemfile:
+#     - /gem ["']rails["'], ["']~> 6.1.7/
+
+#     # - /ruby_version=3.2.2/
+#   # Gemfile:
+#     # - /ruby ["']3.2.2["']/
+#     #   mise/containers/app/Dockerfile: 
+#     # - /FROM ruby:3.2.2-alpine/
+#     # - /bundler:2.4.13/
+
+
+#   # mise/containers/builder/Dockerfile: 
+#   #   - /FROM ruby:3.2.2-alpine/

@@ -1,0 +1,9 @@
+# syntax=docker/dockerfile:1
+
+FROM builder/ruby AS Base
+
+RUN apk add --update --no-cache \ 
+  tzdata \
+  && apk cache -v sync
+
+WORKDIR /app

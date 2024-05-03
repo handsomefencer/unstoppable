@@ -29,9 +29,9 @@ module Roro
         hash[:choices].each do |c|
           if c.eql?(hash[:choices][-1])
             src = 'stack/tests/tests'
-            directory(src, "#{dest}/#{c}", @env)
+            directory(src, "#{dest}/#{c.downcase}", @env)
           end
-          dest = "#{dest}/#{c}"
+          dest = "#{dest}/#{c.downcase}"
         end
       end
     end
