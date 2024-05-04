@@ -6,7 +6,7 @@ x-dev: &dev
     - ./mise/containers/app/env/development.env
   depends_on: 
     - db 
-  image: club/development
+  image: <%= @env[:base][:app_name][:value] %>/development
   shm_size: '256mb' 
   stdin_open: true
   tmpfs:

@@ -3,8 +3,8 @@ services:
     build:
       dockerfile: ./mise/containers/app/Dockerfile.production.do
       tags: 
-        - handsomefencer/club:${CIRCLE_SHA1:-latest}
-        - handsomefencer/club:latest
+        - handsomefencer/<%= @env[:base][:app_name][:value] %>:${CIRCLE_SHA1:-latest}
+        - handsomefencer/<%= @env[:base][:app_name][:value] %>:latest
     container_name: production
     entrypoint: ./mise/containers/app/entrypoints/production.do.sh
     environment: 

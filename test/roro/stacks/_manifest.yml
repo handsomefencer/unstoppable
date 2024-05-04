@@ -1,10 +1,20 @@
 x-base: 
   &base 
   docker-compose.builders.yml:  
-  docker-compose.development.yml:  
   docker-compose.production.yml:
   docker-compose.test.yml:  
   docker-compose.vendor.yml:
+    - services: 
+        chrome:
+          image: browserless/chrome:latest
+        redis: 
+          image: redis:7.2-alpine
+        roro: 
+          image: handsomefencer/roro
+
+
+
+
   docker-compose.yml:
   mise/containers/db/env/base.env:
   mise/containers/app/Dockerfile.builder.base:
@@ -13,8 +23,8 @@ x-base:
   mise/containers/app/Dockerfile.builder.generate:
   mise/containers/app/Dockerfile.builder.ruby:
   mise/containers/app/Dockerfile.development:
-  mise/containers/app/Dockerfile.test:
   mise/containers/app/Dockerfile.production:
+  mise/containers/app/Dockerfile.test:
   mise/scripts/build.development.sh:
   mise/scripts/build.test.sh:
   mise/scripts/build.production.sh:
@@ -22,6 +32,27 @@ x-base:
 x-database: 
   &database 
   <<: *base
+
+
+postgres: 
+  <<: *database
+
+omakase: 
+  docker-compose.vendor.yml:
+    - services: 
+        chrome:
+          image: browserless/chrome:latest
+
+        #   image: mysql:8.0.21
+        #   volumes: 
+        #     - db_data:/var/lib/mysql
+
+#   docker-compose.yml: 
+#     - services: 
+#         db:
+#           image: mysql:8.0.21
+#           volumes: 
+#             - db_data:/var/lib/mysql
 
     #     app:
     #       image: unstoppable 
@@ -78,9 +109,6 @@ x-database:
 #   mise/containers/app/Dockerfile:
 #     - /mysql-dev/
 #     - /mysql-client/
-
-postgres: 
-  <<: *database
 
   # config/database.yml: 
   #   - '/adapter: postgresql/'

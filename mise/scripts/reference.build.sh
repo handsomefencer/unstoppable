@@ -9,6 +9,7 @@ docker run \
   -v $PWD:/artifact \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
+  -e APP_NAME=${PWD} \
   -it handsomefencer/roro:latest sh -c "printf '4\n2\n2\na\n' | roro rollon"
   # -it handsomefencer/roro:latest roro rollon
 

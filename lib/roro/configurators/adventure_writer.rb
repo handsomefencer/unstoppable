@@ -12,8 +12,10 @@ module Roro
         def write(buildenv, storyfile)
           @adventure = buildenv
           @env = @adventure[:env]
+
           @env[:force] = true
           @env[:exit_on_failure] = true
+          set_app_name
           actions = read_yaml(storyfile)[:actions]
           return if actions.nil?
 
@@ -61,6 +63,13 @@ module Roro
             array << read_partial(p)
           end
           array.empty? ? (raise Roro::Error) : array.join("\n")
+        end
+
+        def set_app_name
+          if ENV['APP_NAME']
+            app_name = ENV['APP_NAME'].split('/').last
+            @env[:base][:app_name][:value] = app_name
+          end
         end
 
         def section_partials(name)

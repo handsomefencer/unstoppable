@@ -53,10 +53,10 @@ env:
   
 actions:  
   - copy_layer('manifest')
-  - run 'docker-compose build builder-cache'
-  - run 'docker-compose build builder-development'
-  - run 'docker-compose build dev'
-  - run 'docker-compose up dev'
+  # - run 'docker-compose build builder-cache'
+  # - run 'docker-compose build builder-development'
+  # - run 'docker-compose build dev'
+  # - run 'docker-compose up dev'
 
 
   # - run 'docker compose build --with-dependencies builder-cache'

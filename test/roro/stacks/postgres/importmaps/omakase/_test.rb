@@ -2,9 +2,9 @@
 
 require 'test_helper'
 
-describe '4 SQLite -> 3 importmap -> 2 omakase' do
+describe '3 Postgres -> 3 importmap -> 2 omakase' do
   Given(:workbench) {}
-  
+
   Given do
     rollon(__dir__)
   end
