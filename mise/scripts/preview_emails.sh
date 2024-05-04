@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dc run --rm maizzle npm run build
+docker compose run --rm maizzle npm run build
 
 # source="vendor/maizzle/build_production/mailer/*"
 # destination="app/views/devise/mailer/"

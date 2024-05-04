@@ -9,11 +9,11 @@ RUN bundle config set without "development test" && \
   bundle config frozen true && \
   bundle
 
-COPY package.json yarn.lock ./
+# COPY package.json yarn.lock ./
 
-RUN yarn install \
-  --frozen-lockfile \
-  --production 
+# RUN yarn install \
+#   --frozen-lockfile \
+#   --production 
 
 RUN \
   bin/rails assets:clobber \

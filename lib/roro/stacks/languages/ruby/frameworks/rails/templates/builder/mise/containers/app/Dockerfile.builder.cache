@@ -2,9 +2,9 @@
 
 FROM builder/dependencies AS Cache
 
-COPY package.json yarn.lock ./
+# COPY package.json yarn.lock ./
 
-RUN yarn install
+# RUN yarn install
 
 COPY Gemfile Gemfile.lock ./
 

@@ -1,19 +1,27 @@
 x-base: 
   &base 
-  mise/containers/builder/Dockerfile:
   docker-compose.builders.yml:  
   docker-compose.development.yml:  
-  docker-compose.vendor.yml:
   docker-compose.production.yml:
   docker-compose.test.yml:  
   docker-compose.vendor.yml:
   docker-compose.yml:
   mise/containers/db/env/base.env:
+  mise/containers/app/Dockerfile.builder.base:
+  mise/containers/app/Dockerfile.builder.cache:
+  mise/containers/app/Dockerfile.builder.dependencies:
+  mise/containers/app/Dockerfile.builder.generate:
+  mise/containers/app/Dockerfile.builder.ruby:
+  mise/containers/app/Dockerfile.development:
+  mise/containers/app/Dockerfile.test:
+  mise/containers/app/Dockerfile.production:
+  mise/scripts/build.development.sh:
+  mise/scripts/build.test.sh:
+  mise/scripts/build.production.sh:
 
 x-database: 
   &database 
   <<: *base
-  config/database.yml:
 
     #     app:
     #       image: unstoppable 

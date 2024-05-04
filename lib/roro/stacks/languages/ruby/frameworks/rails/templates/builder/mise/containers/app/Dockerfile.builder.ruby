@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG RUBY_VERSION
 
-FROM ruby:${RUBY_VERSION}-alpine AS Ruby
+FROM ruby:${RUBY_VERSION}-alpine
 
 RUN gem update --system \
   && gem cleanup \

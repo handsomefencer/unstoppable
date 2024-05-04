@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM builder/base AS Dependencies
+FROM builder/base
 
 RUN apk add --update --no-cache \
   build-base \

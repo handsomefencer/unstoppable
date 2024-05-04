@@ -3,9 +3,9 @@
 
 cd ${sandbox_dir} 
 
-dcd 
+docker compose down 
 
-# dc build builder-development
-dc build --with-dependencies builder-development
+# docker compose build builder-development
+docker compose build --with-dependencies builder-development
 schown 
 cd ${roro}
