@@ -13,4 +13,5 @@ docker run \
   -it handsomefencer/roro:latest sh -c "printf '4\n2\n2\na\n' | roro rollon"
   # -it handsomefencer/roro:latest roro rollon
 
+schown .
 cd ${roro}

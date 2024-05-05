@@ -11,14 +11,11 @@ services:
     restart: on-failure
 
   db:
-    container_name: db
-    image: postgres:16.2-alpine
-    env_file:
-      - ./mise/containers/db/env/base.env
+    image: nouchka/sqlite3:latest
     volumes:
-      - db_data:/var/lib/postgresql/data
-    ports:
-      - "5432"
+      - db_data:/root/db
+    stdin_open: true
+    tty: true
       
   redis:
     command: redis-server

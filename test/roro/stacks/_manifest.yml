@@ -11,10 +11,6 @@ x-base:
           image: redis:7.2-alpine
         roro: 
           image: handsomefencer/roro
-
-
-
-
   docker-compose.yml:
   mise/containers/db/env/base.env:
   mise/containers/app/Dockerfile.builder.base:
@@ -37,11 +33,24 @@ x-database:
 postgres: 
   <<: *database
 
-omakase: 
+sqlite: 
+  <<: *database
+  config/database.yml: 
+    - development:
+        database: db/development.sqlite3
   docker-compose.vendor.yml:
     - services: 
-        chrome:
-          image: browserless/chrome:latest
+        db:
+          image: nouchka/sqlite3:latest
+  Gemfile:
+    - /gem ["']sqlite3["'], ["']~> 1.4/
+
+
+# omakase: 
+#   docker-compose.vendor.yml:
+#     - services: 
+#         chrome:
+#           image: browserless/chrome:latest
 
         #   image: mysql:8.0.21
         #   volumes: 

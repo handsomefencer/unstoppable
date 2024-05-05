@@ -11,7 +11,7 @@ env:
       value: importmap
     rails_version:
       name: Ruby on Rails minor version
-      value: '7.0.8'
+      value: '7.1'
     app_name:
       name: Name for your app
       value: unstoppable

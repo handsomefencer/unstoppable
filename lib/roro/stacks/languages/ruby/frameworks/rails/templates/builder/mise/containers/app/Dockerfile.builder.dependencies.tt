@@ -4,7 +4,13 @@ FROM builder/base
 
 RUN apk add --update --no-cache \
   build-base \
-  nodejs \
-  postgresql-dev \
-  yarn \ 
+  pkgconf  sqlite sqlite-libs sqlite-dev \
+  # nodejs \
+  # postgresql-dev \
+  # yarn \ 
   && apk cache -v sync
+
+# RUN apk add --update --no-cache \
+#   && apk cache -v sync
+
+  
