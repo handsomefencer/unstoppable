@@ -35,9 +35,11 @@ postgres:
 
 sqlite: 
   <<: *database
-  config/database.yml: 
-    - development:
-        database: db/development.sqlite3
+  # config/database.yml: 
+  #   - development:
+  #       database: db/development.sqlite3
+  mise/containers/app/Dockerfile.builder.ruby:
+  
   docker-compose.vendor.yml:
     - services: 
         db:

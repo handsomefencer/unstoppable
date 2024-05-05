@@ -4,8 +4,6 @@ x-dev: &dev
   env_file: 
     - ./mise/containers/app/env/base.env
     - ./mise/containers/app/env/development.env
-  depends_on: 
-    - db 
   image: <%= @env[:base][:app_name][:value] %>/development
   shm_size: '256mb' 
   stdin_open: true

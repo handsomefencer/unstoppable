@@ -8,6 +8,6 @@ describe '3 Postgres -> 3 importmap -> 2 omakase' do
   Given do
     rollon(__dir__)
   end
-
+focus
   Then { assert_correct_manifest(__dir__) }
 end

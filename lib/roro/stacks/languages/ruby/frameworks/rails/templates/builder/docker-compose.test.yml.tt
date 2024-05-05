@@ -1,9 +1,6 @@
 x-test: &test 
   build:
     dockerfile: ./mise/containers/app/Dockerfile.test
-  depends_on: 
-    - chrome
-    - db
   env_file: 
     - ./mise/containers/app/env/base.env
     - ./mise/containers/app/env/test.env
@@ -24,15 +21,5 @@ x-test: &test
 services:
   test:
     <<: *test
-    command: ["bin/rails", "db:create"]
-    
-  test-all:
-    <<: *test
     command: ["bin/rails", "test:all"]
-    profiles: 
-      - test
-
-  guard:
-    <<: *test
-    command: ["bundle", "exec", "guard"]
-    container_name: guard
+    
