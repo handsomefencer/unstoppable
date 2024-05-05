@@ -9,6 +9,6 @@ describe '3 Postgres -> 3 importmap -> 2 omakase' do
     # debuggerer
     rollon(__dir__)
   end
-# focus
+  # focus
   Then { assert_correct_manifest(__dir__) }
 end

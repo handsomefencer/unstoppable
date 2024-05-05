@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
+
 ARG RUBY_VERSION
     
-FROM ruby:${RUBY_VERSION}-alpine<%= @env[:development][:alpine_version][:value] %>
+FROM ruby:${RUBY_VERSION}-alpine 
 
 RUN gem update --system \
   && gem cleanup \

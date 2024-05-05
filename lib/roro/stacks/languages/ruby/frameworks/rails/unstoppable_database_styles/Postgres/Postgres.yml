@@ -29,6 +29,10 @@ env:
       name: Database username
       value: postgres
   development:
+    app: 
+      DATABASE_URL:
+        name: database url overrides variables in database.yml
+        value: "postgresql://postgres:password@db/db_development"
     db_pkg:
       name: Name of alpine db pkgs in development
       value: postgresql-dev
@@ -36,3 +40,8 @@ env:
     db_pkg:
       name: Name of alpine db pkgs in production
       value: postgresql-client
+
+  test: 
+    app: 
+      DATABASE_URL:
+        value: "postgresql://postgres:password@db/db_test"
