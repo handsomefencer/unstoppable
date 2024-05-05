@@ -12,9 +12,7 @@ x-dev: &dev
   tty: true
   user: root
   volumes:
-    - .:/app
-    - gem_cache:/usr/local/bundle/gems
-    - node_modules:/app/node_modules
+<%= section('app_volume_mappings') %>
 
 services:
   dev: 
@@ -24,12 +22,3 @@ services:
     ports:
       - 3000:3000
 
-  vite:
-    <<: *dev
-    command: ["bin/vite", "dev"]
-    container_name: vite
-    environment:
-      DEBUG: '*vite*'
-      VITE_RUBY_HOST: 0.0.0.0
-    ports:
-      - 3036:3036

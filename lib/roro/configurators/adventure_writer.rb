@@ -38,7 +38,7 @@ module Roro
         def generate_mise
           generator = Roro::CLI.new
           generator.generate_mise
-          generator.generate_containers 'app', 'db'
+          # generator.generate_containers 'app', 'db'
           generator.generate_environments @env
           generator.generate_environment_files @env
           generator.generate_keys
@@ -62,7 +62,7 @@ module Roro
           section_partials(name).each do |p|
             array << read_partial(p)
           end
-          array.empty? ? (raise Roro::Error) : array.join("\n")
+          array.empty? ? (raise Roro::Error) : array.join("")
         end
 
         def set_app_name

@@ -3,29 +3,32 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 env:
   base:
-    css:
-      name: Choose your css approach from tailwind, bootstrap, bulma, postcss, and sass.
-      value: tailwind
-    javascript:
-      name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
-      value: importmap
+    # css:
+    #   name: Choose your css approach from tailwind, bootstrap, bulma, postcss, and sass.
+    #   value: tailwind
+    # javascript:
+    #   name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
+    #   value: importmap
     rails_version:
       name: Ruby on Rails minor version
       value: '7.1'
     app_name:
       name: Name for your app
       value: unstoppable
-    chrome_server_image:
-      name: Selenium based image for system tests
-      value: selenium/standalone-chrome
-    chrome_server_image_version:
-      name: Chrome server imag version
-      value: '96.0'
+    # chrome_server_image:
+    #   name: Selenium based image for system tests
+    #   value: selenium/standalone-chrome
+    # chrome_server_image_version:
+    #   name: Chrome server imag version
+    #   value: '96.0'
     app: 
       RAILS_MAX_THREADS:
         name: Maximum number of threads for the database. Important for redis.
         value: '5'
   development:
+    alpine_version: 
+      name: alpine development version
+      value: 
     db_pkg:
       name: Name of alpine db pkgs in development
       value: sqlite-dev

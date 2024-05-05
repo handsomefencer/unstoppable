@@ -2,13 +2,13 @@
 
 require 'test_helper'
 
-describe '4 SQLite -> 3 importmap -> 2 omakase' do
+describe '4 SQLite -> 3 Importmaps -> 2 omakase' do
   Given(:workbench) {}
 
   Given do
     debuggerer
     rollon(__dir__)
   end
-focus
+  focus
   Then { assert_correct_manifest(__dir__) }
 end

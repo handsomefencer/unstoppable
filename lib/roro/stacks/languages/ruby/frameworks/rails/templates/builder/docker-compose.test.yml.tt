@@ -5,8 +5,6 @@ x-test: &test
     - ./mise/containers/app/env/base.env
     - ./mise/containers/app/env/test.env
   image: <%= @env[:base][:app_name][:value] %>/test
-  environment:
-    CHROME_URL: http://chrome:3333
   shm_size: '256mb' 
   stdin_open: true
   tmpfs:
@@ -14,10 +12,8 @@ x-test: &test
   tty: true
   user: root
   volumes:
-    - .:/app:cached
-    - gem_cache:/usr/local/bundle/gems
-    - node_modules:/app/node_modules
-    
+<%= section('app_volume_mappings') %>
+
 services:
   test:
     <<: *test

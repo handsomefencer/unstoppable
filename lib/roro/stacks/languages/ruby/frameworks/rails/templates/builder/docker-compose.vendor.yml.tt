@@ -1,20 +1,4 @@
-services:
-  chrome:
-    image: browserless/chrome:latest
-    ports:
-      - 3333:3333
-    volumes:
-      - .:/app:cached
-    environment:
-      PORT: 3333
-      CONNECTION_TIMEOUT: 600000
-    restart: on-failure
 
-  roro:  
-    image: handsomefencer/roro
-    stdin_open: true
-    tty: true
-    volumes:
-      - .:/artifact
-    profiles: 
-      - vendor
+services:
+<%= section('vendor_services') %>
+

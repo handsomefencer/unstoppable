@@ -3,14 +3,6 @@
 FROM builder/base
 
 RUN apk add --update --no-cache \
-  build-base \
-  sqlite-dev \
-  # nodejs \
-  # postgresql-dev \
-  # yarn \ 
-  && apk cache -v sync
+  build-base
 
-# RUN apk add --update --no-cache \
-#   && apk cache -v sync
-
-  
+<%= section('packages_development') %>
