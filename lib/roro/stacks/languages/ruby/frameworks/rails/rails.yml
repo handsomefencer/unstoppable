@@ -10,6 +10,9 @@ env:
       name: Name for your app
       value: unstoppable
     app: 
+      alpine_version:
+        name: alpine development version
+        value: '3.19'
       RAILS_MAX_THREADS:
         name: Maximum number of threads for the database. Important for redis.
         value: '5'
@@ -26,9 +29,6 @@ env:
         name: Development Rails environment
         value: development
     
-    alpine_version:
-      name: alpine development version
-      value: '3.19'
   
   production:
     app: 
@@ -50,8 +50,8 @@ env:
         name: Test Rails environment
         value: test
 
-actions:  
-  - copy_layer('manifest')
+# actions:  
+  # - copy_layer('manifest')
   # - run 'docker-compose build builder-cache'
   # - run 'docker-compose build builder-development'
   # - run 'docker-compose build dev'

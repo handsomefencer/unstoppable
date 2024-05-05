@@ -2,7 +2,7 @@
 
 ARG RUBY_VERSION
     
-FROM ruby:${RUBY_VERSION}-alpine 
+FROM ruby:${RUBY_VERSION}-alpine<%= @env.dig(:base, :alpine_version, :value) %> 
 
 RUN gem update --system \
   && gem cleanup \
