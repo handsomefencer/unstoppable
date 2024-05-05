@@ -1,6 +1,5 @@
 actions:
   - copy_layer('builder')
-  - run 'docker -v'
   - run 'docker-compose build builder-ruby'
   - run 'docker-compose build builder-base'
   - run 'docker-compose build builder-dependencies'
