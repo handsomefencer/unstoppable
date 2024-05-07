@@ -1,0 +1,22 @@
+# syntax=docker/dockerfile:1
+
+FROM builder/dependencies
+
+RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> <%= @env[:base][:rails_version][:value] %>'" > Gemfile
+
+RUN bundle
+
+RUN bundle exec rails new <%= @env[:base][:app_name][:value] %> \
+<%= section('rails_new_sections') %>
+
+<%= section('dockerfile_sections/generators') %>
+
+RUN rm config/master.key
+
+FROM scratch AS export-stage
+
+## Copy the generated files onto the host.
+COPY --from=generator ./app/ .
+
+
+  

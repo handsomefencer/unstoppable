@@ -7,7 +7,7 @@ x-base: &base
   profiles: 
     - builder
   volumes:
-    - gem_cache:/usr/local/bundle/gems
+<%= section('app_volume_mappings') %>
 
 services:
   builder-ruby:
@@ -34,6 +34,14 @@ services:
     <<: *base
     build:
       dockerfile: ./mise/containers/app/Dockerfile.builder.cache
+    depends_on: 
+      - builder-dependencies
+    image: builder/cache
+
+  builder-railsnew:
+    <<: *base
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.builder.railsnew
     depends_on: 
       - builder-dependencies
     image: builder/cache

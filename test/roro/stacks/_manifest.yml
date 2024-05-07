@@ -45,15 +45,13 @@ sqlite:
   mise/containers/app/Dockerfile.builder.base:
   mise/containers/app/Dockerfile.builder.cache:
   mise/containers/app/Dockerfile.builder.dependencies:
-  mise/containers/app/Dockerfile.builder.generate:
-  mise/containers/app/Dockerfile.builder.new_app:
+  mise/containers/app/Dockerfile.builder.railsnew:
   mise/containers/app/Dockerfile.builder.ruby:
-  #   - /\}-alpine3.18/
-
-  # mise/containers/app/Dockerfile.builder.dependencies:
-  #   - /sqlite-dev/
-  # Gemfile:
-  #   - /gem ["']sqlite3["'], ["']~> 1.4/
+    - /\}-alpine3.18/
+  mise/containers/app/Dockerfile.builder.dependencies:
+    - /sqlite-dev/
+  Gemfile:
+    - /gem ["']sqlite3["'], ["']~> 1.4/
 
 
 #   mise/containers/app/Dockerfile:

@@ -5,7 +5,7 @@ env:
   base:
     rails_version:
       name: Ruby on Rails minor version
-      value: '7.1'
+      value: '7.1.3'
     app_name:
       name: Name for your app
       value: unstoppable
@@ -50,12 +50,11 @@ env:
         name: Test Rails environment
         value: test
 
-# actions:  
-  # - copy_layer('manifest')
-  # - run 'docker-compose build builder-cache'
-  # - run 'docker-compose build builder-development'
-  # - run 'docker-compose build dev'
-  # - run 'docker-compose up dev'
+actions:  
+  - copy_layer('manifest')
+  - run 'docker-compose build --with-dependencies builder-development'
+  - run 'docker-compose build dev'
+  - run 'docker-compose up dev'
 
 
   # - run 'docker compose build --with-dependencies builder-cache'
