@@ -1,10 +1,10 @@
 actions:
   - generate_mise
   - copy_layer('builder')
-  # - run 'docker-compose build builder-ruby'
-  # - run 'docker-compose build builder-base'
-  # - run 'docker-compose build builder-dependencies'
-  - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/Dockerfile.builder.railsnew --output . .'
+  - run 'docker-compose build builder-ruby'
+  - run 'docker-compose build builder-base'
+  - run 'docker-compose build builder-dependencies'
+  - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/app/Dockerfile.builder.railsnew --output . .'
   # - run 'dockdr compose build '
   # - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/app/Dockerfile.builder.railsnew -t builder/cache --output . .'
 
