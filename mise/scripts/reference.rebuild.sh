@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export app='greenfield'
+export app='meangirl'
 export sandbox_dir=~/sandbox/${app}
 export roro=~/work/handsomefencer/club/roro-stories-2204
 
