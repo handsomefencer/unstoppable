@@ -2,10 +2,11 @@ include:
   - docker-compose.builders.yml  
 
 services:
+
   development: &development 
-    build:
-      dockerfile: mise/containers/roro/Dockerfile.development
-    image: roro/dev
+    extends:
+      file: docker-compose.builders.yml
+      service: builder-development
     stdin_open: true
     tty: true
     volumes:
@@ -24,10 +25,9 @@ services:
     command: bundle exec guard
 
   production: &production
-    build:
-      dockerfile: mise/containers/roro/Dockerfile.production
-      tags: 
-        - handsomefencer/roro:production
+    extends:
+      file: docker-compose.builders.yml
+      service: builder-production
     image: handsomefencer/roro
     volumes:
       - .:/usr/src
@@ -37,7 +37,6 @@ services:
   roro:
     <<: *production
     command: ['sh']
-
 
 volumes:
   gem_cache:  

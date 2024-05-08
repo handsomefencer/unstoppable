@@ -1,0 +1,7 @@
+# syntax=docker/dockerfile:1
+
+COPY  \
+  --from=cache \
+  /usr/local/bundle /usr/local/bundle
+
+COPY Gemfile* ./

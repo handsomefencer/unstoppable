@@ -8,7 +8,6 @@ RUN bundle
 
 RUN bundle exec rails new . \
 <%= section('rails_new_sections') %>
-
 RUN rm config/master.key
 
 FROM scratch AS export-stage

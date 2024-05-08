@@ -5,8 +5,8 @@ cd ${sandbox_dir}
 
 docker compose down 
 
-docker compose build builder-development
-# docker compose build --with-dependencies builder-development
+# docker compose build builder-development
+docker compose build --with-dependencies builder-development
 schown 
 dc up --build -d dev
 dc exec dev bin/rails g scaffold post title content

@@ -2,11 +2,4 @@
 
 FROM builder/dependencies AS Cache
 
-# COPY package.json yarn.lock ./
-
-# RUN yarn install
-
-COPY Gemfile Gemfile.lock ./
-
-RUN bundle update --bundler \
-  && bundle
+<%= section('dockerfile/steps/cache/build') %>

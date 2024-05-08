@@ -48,6 +48,7 @@ sqlite:
   mise/containers/app/Dockerfile.builder.railsnew:
   mise/containers/app/Dockerfile.builder.ruby:
     - /\}-alpine3.18/
+  mise/containers/app/Dockerfile.development:
   mise/containers/app/Dockerfile.builder.dependencies:
     - /sqlite-dev/
   Gemfile:
