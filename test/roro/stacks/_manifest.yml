@@ -1,5 +1,20 @@
 x-base: 
-  &base 
+  &base  
+  mise/containers/app/env/base.env:
+  mise/containers/app/env/development.env:
+  mise/containers/app/env/production.env:
+  mise/env/base.env:
+  mise/env/development.env:
+  mise/env/production.env:
+  mise/keys/.keep:
+  mise/keys/base.key:
+  mise/keys/development.key:
+  mise/keys/production.key:
+  mise/scripts/build.development.sh:
+  mise/scripts/build.production.sh:
+  mise/scripts/build.test.sh:
+  mise/scripts/docker.info.sh:
+  mise/scripts/docker.prune.sh:
   docker-compose.builders.yml:  
   docker-compose.development.yml:  
   docker-compose.production.yml:
@@ -20,22 +35,9 @@ x-database:
   &database 
   <<: *base
 
-postgres: 
-  <<: *database
-  # mise/containers/app/Dockerfile.builder.ruby:
-  #   - /\}-alpine/
-  # mise/containers/app/Dockerfile.builder.dependencies:
-  #   - /postgresql-dev/
-  mise/containers/app/env/development.env:
-    - /RAILS_ENV=development/
-    - /DATABASE_URL/
-  mise/containers/app/env/test.env:
-    - /RAILS_ENV=test/
-    - /DATABASE_URL/
 
 sqlite: 
   <<: *database
-  docker-compose.development.yml:  
   mise/containers/app/env/base.env:
     - /PARALLEL_WORKERS=4/
   mise/containers/app/env/development.env:
@@ -53,6 +55,7 @@ sqlite:
     - /sqlite-dev/
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
+
 
 
 #   mise/containers/app/Dockerfile:

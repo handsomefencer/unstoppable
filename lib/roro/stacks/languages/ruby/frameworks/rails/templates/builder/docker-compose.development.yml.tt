@@ -1,22 +1,21 @@
-x-dev: &dev
-  build:
-    dockerfile: ./mise/containers/app/Dockerfile.development
-  env_file: 
-    - ./mise/containers/app/env/base.env
-    - ./mise/containers/app/env/development.env
-  image: <%= @env[:base][:app_name][:value] %>/development
-  shm_size: '256mb' 
-  stdin_open: true
-  tmpfs:
-    - /tmp
-  tty: true
-  user: root
-  volumes:
-<%= section('app_volume_mappings') %>
-
 services:
+  development: &development
+    extends: 
+      file: docker-compose.builders.yml
+      service: builder-development
+    env_file: 
+      - ./mise/containers/app/env/base.env
+      - ./mise/containers/app/env/development.env
+    shm_size: '256mb' 
+    stdin_open: true
+    tmpfs:
+      - /tmp
+    tty: true
+    user: root
+    volumes:
+<%= section('app_volume_mappings') %>
   dev: 
-    <<: *dev
+    <<: *development
     command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
     container_name: dev
     ports:
