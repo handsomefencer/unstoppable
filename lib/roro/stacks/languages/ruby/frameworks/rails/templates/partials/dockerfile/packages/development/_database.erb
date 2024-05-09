@@ -1,2 +1,2 @@
 RUN apk add --update --no-cache \
-  sqlite-dev
+  <%= @env[:base][:db_pkg_development][:value] %>

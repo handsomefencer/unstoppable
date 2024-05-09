@@ -3,7 +3,10 @@
 FROM builder/cache AS Cache
 FROM builder/dependencies AS Test
 
-<%= section('packages/test') %>
+RUN apk add --update --no-cache \
+  chromium-chromedriver \
+  && apk cache -v sync
+
 <%= section('dockerfile/steps/cache/from') %>
 
 COPY . .
