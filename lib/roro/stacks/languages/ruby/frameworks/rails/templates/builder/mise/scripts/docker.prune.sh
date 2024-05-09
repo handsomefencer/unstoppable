@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker system prune -af --volumes
+docker image rm -f $(docker images foobar/*)
 docker volume rm $(docker volume ls)
 
 

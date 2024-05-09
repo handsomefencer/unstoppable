@@ -2,8 +2,6 @@
 
 dcd
 
-# . mise/scripts/docker.prune.sh 
-. mise/scripts/docker.info.sh 
+. mise/scripts/docker.prune.sh 
 
-# dc build --with-dependencies builder-development
-dc build  builder-development
+dc build --with-dependencies --no-cache development

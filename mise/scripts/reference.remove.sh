@@ -2,6 +2,7 @@
 
 cd ${sandbox_dir} 
 
+docker compose stop dev
 docker compose down
 
 cd ${roro}

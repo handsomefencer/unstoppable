@@ -1,21 +1,13 @@
 #!/bin/bash
 
-
 cd ${sandbox_dir} 
 
-docker compose down 
+schown .
 
-# docker compose build builder-development
-schown 
-docker compose build --with-dependencies --no-cache development
-dc up -d dev
-# dc exec dev bin/rails g scaffold post title content
-# dc exec dev bin/rails db:migrate
-# dc exec dev bin/rails db:migrate
-# dc exec dev bin/setup
+docker compose build --with-dependencies test
 
-# dc build --with-dependencies test
-# dc run --rm test bin/rails db:migrate
-# dc up test
+dc run --rm test bin/rails g scaffold post title content
+dc run --rm test bin/rails db:migrate
+dc run --rm test
 
-# cd ${roro}
+cd ${roro}

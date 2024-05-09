@@ -10,9 +10,6 @@ env:
       name: Name for your app
       value: unstoppable
     app: 
-      alpine_version:
-        name: alpine development version
-        value: '3.19'
       RAILS_MAX_THREADS:
         name: Maximum number of threads for the database. Important for redis.
         value: '5'

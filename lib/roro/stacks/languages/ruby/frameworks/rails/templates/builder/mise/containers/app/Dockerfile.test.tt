@@ -3,22 +3,7 @@
 FROM builder/cache AS Cache
 FROM builder/dependencies AS Test
 
-RUN apk add --update --no-cache \
-  chromium-chromedriver \ 
-  && apk cache -v sync
-
-# COPY --from=Cache \
-#   /app/node_modules ./
-
-COPY --from=Cache \
-  /usr/local/bundle/gems /usr/local/bundle/gems
-
-# COPY package.json yarn.lock ./
-
-# RUN yarn install 
-
-COPY Gemfile* ./
-
-RUN bundle
+<%= section('packages/test') %>
+<%= section('dockerfile/steps/cache/from') %>
 
 COPY . .

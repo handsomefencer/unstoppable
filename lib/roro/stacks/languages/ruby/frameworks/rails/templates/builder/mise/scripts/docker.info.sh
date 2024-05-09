@@ -3,8 +3,6 @@
 docker images
 docker volume ls
 
-docker images handsomefencer/*
-docker images builder/*
-docker images club/*
+docker images <%= @env[:base][:app_name][:value] %>/*
 
 

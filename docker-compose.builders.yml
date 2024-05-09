@@ -6,35 +6,36 @@ x-base: &base
   profiles: 
     - builder
   volumes:
+    - .:/usr/src
     - gem_cache:/usr/local/bundle/gems
 
 services:
-  builder-ruby:
+  roro-ruby:
     <<: *base
     image: roro/ruby
 
-  builder-base:
+  roro-base:
     <<: *base
     build:
       dockerfile: ./mise/containers/roro/Dockerfile.builder.base
     depends_on: 
-      - builder-ruby
+      - roro-ruby
     image: roro/base
 
-  builder-development: 
+  roro-development: 
     <<: *base
     build:
       dockerfile: ./mise/containers/roro/Dockerfile.development
     depends_on: 
-      - builder-base
+      - roro-base
     image: roro/development
 
-  builder-production:
+  roro-production:
     build:
       dockerfile: ./mise/containers/roro/Dockerfile.production
     image: roro/production
     depends_on: 
-      - builder-base
+      - roro-base
     profiles: 
       - builder  
 

@@ -1,5 +1,13 @@
 x-base: 
   &base  
+  mise/containers/app/Dockerfile.builder.base:
+  mise/containers/app/Dockerfile.builder.cache:
+  mise/containers/app/Dockerfile.builder.dependencies:
+  mise/containers/app/Dockerfile.builder.railsnew:
+  mise/containers/app/Dockerfile.builder.ruby:
+  mise/containers/app/Dockerfile.development:
+  mise/containers/app/Dockerfile.production:
+  mise/containers/app/Dockerfile.test:
   mise/containers/app/env/base.env:
   mise/containers/app/env/development.env:
   mise/containers/app/env/production.env:
@@ -35,7 +43,6 @@ x-database:
   &database 
   <<: *base
 
-
 sqlite: 
   <<: *database
   mise/containers/app/env/base.env:
@@ -44,17 +51,17 @@ sqlite:
     - /RAILS_ENV=development/
   mise/containers/app/env/test.env:
     - /RAILS_ENV=test/
-  mise/containers/app/Dockerfile.builder.base:
   mise/containers/app/Dockerfile.builder.cache:
   mise/containers/app/Dockerfile.builder.dependencies:
+    - /sqlite-dev/
   mise/containers/app/Dockerfile.builder.railsnew:
   mise/containers/app/Dockerfile.builder.ruby:
     - /\}-alpine3.18/
   mise/containers/app/Dockerfile.development:
-  mise/containers/app/Dockerfile.builder.dependencies:
-    - /sqlite-dev/
+  mise/containers/app/Dockerfile.test:
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
+    - /gem ["']rails["'], ["']~> 7.1.3/
 
 
 

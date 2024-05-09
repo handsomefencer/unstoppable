@@ -7,9 +7,11 @@ FROM builder
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY --from=builder /usr/src/Gemfile* ./
 
-RUN bundle
-
 COPY . .
+
+RUN bundle update --bundler \   
+  && bundle
+
 
 RUN gem build roro.gemspec
 RUN rake install

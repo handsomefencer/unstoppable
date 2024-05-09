@@ -1,0 +1,4 @@
+COPY Gemfile Gemfile.lock ./
+
+RUN bundle update --bundler \
+  && bundle

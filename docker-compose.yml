@@ -6,7 +6,7 @@ services:
   development: &development 
     extends:
       file: docker-compose.builders.yml
-      service: builder-development
+      service: roro-development
     stdin_open: true
     tty: true
     volumes:
@@ -27,7 +27,7 @@ services:
   production: &production
     extends:
       file: docker-compose.builders.yml
-      service: builder-production
+      service: roro-production
     volumes:
       - .:/usr/src
       - /var/run/docker.sock:/var/run/docker.sock
