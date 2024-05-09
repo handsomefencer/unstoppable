@@ -5,4 +5,4 @@ FROM builder/base
 RUN apk add --update --no-cache \
   build-base
 
-<%= section('packages/development') %>
+<%= section('dockerfile/packages/development') %>

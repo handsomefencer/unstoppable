@@ -3,6 +3,9 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 env:
   base:
+    alpine_version: 
+      name: alpine development version
+      value: 3.19
     rails_version:
       name: Ruby on Rails minor version
       value: '7.1.3'
@@ -16,9 +19,6 @@ env:
       PARALLEL_WORKERS:
         name: Maximum number of workers.
         value: 4
-      REDIS_URL:
-        name: Connect to Redis
-        value: 'redis://redis:6379/0'
   
   development:
     app: 

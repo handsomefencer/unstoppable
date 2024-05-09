@@ -7,7 +7,7 @@ x-base: &base
   profiles: 
     - builder
   volumes:
-<%= section('app_volume_mappings') %>
+<%= section('docker_compose/app_volume_mappings') %>
 
 services:
   builder-ruby:

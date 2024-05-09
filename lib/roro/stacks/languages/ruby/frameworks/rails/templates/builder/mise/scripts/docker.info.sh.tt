@@ -1,8 +1,4 @@
 #!/bin/sh
 
-docker images
-docker volume ls
-
 docker images <%= @env[:base][:app_name][:value] %>/*
-
-
+docker volume ls -f name=<%= @env[:base][:app_name][:value] %>*

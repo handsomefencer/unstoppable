@@ -1,16 +1,15 @@
 services:
   production: 
     build:
-      dockerfile: ./mise/containers/app/Dockerfile.production.do
+      dockerfile: ./mise/containers/app/Dockerfile.production
       tags: 
-        - handsomefencer/<%= @env[:base][:app_name][:value] %>:${CIRCLE_SHA1:-latest}
-        - handsomefencer/<%= @env[:base][:app_name][:value] %>:latest
+        - <%= @env[:base][:app_name][:value] %>/<%= @env[:base][:app_name][:value] %>:${CIRCLE_SHA1:-latest}
+        - <%= @env[:base][:app_name][:value] %>/<%= @env[:base][:app_name][:value] %>:latest
     container_name: production
-    entrypoint: ./mise/containers/app/entrypoints/production.do.sh
     environment: 
       PRODUCTION_KEY: ${PRODUCTION_KEY:-default}
-    image: handsomefencer/club:${CIRCLE_SHA1:-latest}
+    image: <%= @env[:base][:app_name][:value] %>/<%= @env[:base][:app_name][:value] %>:${CIRCLE_SHA1:-latest}
     profiles: 
-      - do
+      - production
     ports:
       - 3000:3000

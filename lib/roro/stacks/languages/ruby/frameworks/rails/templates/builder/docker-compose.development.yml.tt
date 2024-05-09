@@ -13,7 +13,7 @@ services:
     tty: true
     user: root
     volumes:
-<%= section('app_volume_mappings') %>
+<%= section('docker_compose/app_volume_mappings') %>
   dev: 
     <<: *development
     command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
