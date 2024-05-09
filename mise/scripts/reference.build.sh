@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p ${sandbox_dir} 
-cd ${sandbox_dir} 
+cd ${sandbox_dir}  
 
 docker rm artifact
 docker run \

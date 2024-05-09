@@ -6,3 +6,4 @@ actions:
   - run 'docker-compose build builder-dependencies'
   - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/app/Dockerfile.builder.railsnew --output . .'
   - run 'rm .ruby-version'
+
