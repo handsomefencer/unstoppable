@@ -1,4 +1,4 @@
 
 services:
-<%= section('vendor_services') %>
 
+<%= section('docker_compose/vendor/services') %>

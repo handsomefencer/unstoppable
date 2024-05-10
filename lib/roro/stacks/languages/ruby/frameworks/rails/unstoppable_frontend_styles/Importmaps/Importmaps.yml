@@ -1,2 +1,7 @@
 preface: some string
 
+env:
+  base:
+    js_flag:
+      name: Rails new --javascript flag
+      value: importmap

@@ -1,14 +1,14 @@
-x-base: &base
-  build:
-    args: 
-      RUBY_VERSION: 3.3
-    dockerfile: ./mise/containers/app/Dockerfile.builder.ruby
-  profiles: 
-    - builder
-  volumes:
-<%= section('docker_compose/app_volume_mappings') %>
-
 services:
+  base: &base
+    build:
+      args: 
+        RUBY_VERSION: 3.3
+      dockerfile: ./mise/containers/app/Dockerfile.builder.ruby
+    profiles: 
+      - builder
+    volumes:
+<%= section('docker_compose/app_volume_mappings') %>
+  
   builder-ruby:
     <<: *base
     image: builder/ruby

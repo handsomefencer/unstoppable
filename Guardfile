@@ -12,7 +12,7 @@ minitest_options = {
 guard :minitest, minitest_options do
   stack_tests = 'test/roro/stacks'
   watch(%r{^#{stack_tests}/(.*)/?(.*)_test\.rb$})
-  watch(%r{^#{stack_tests}/_manifest\.yml$}) { 'test' }
+  watch(%r{^#{stack_tests}/_(.*)\.yml$}) { 'test' }
   watch(%r{^lib/roro/stacks/languages/(.*)$}) { 'test' }
   #{stack_tests}/_manifest\.yml$}) { 'test' }
 

@@ -60,7 +60,12 @@ module Roro
         def section(name)
           array = []
           section_partials(name).each do |p|
-            array << read_partial(p)
+            text = read_partial(p)
+            # debugger if text.size.eql?(0)
+
+            unless text.size.eql?(0)
+              array << text
+            end
           end
           array.empty? ? (raise Roro::Error) : array.join("")
         end

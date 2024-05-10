@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Roro::TestHelpers::ConfiguratorHelper
+
   def glob_dir(regex = '**/*')
     Dir.glob("#{Dir.pwd}/#{regex}/**/*")
   end
@@ -20,7 +21,6 @@ module Roro::TestHelpers::ConfiguratorHelper
 
   def copy_stage_dummy(path)
     dummy_dir = "#{path}/dummy/."
-
     FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
   end
 
@@ -83,28 +83,26 @@ module Roro::TestHelpers::ConfiguratorHelper
   def rollon(dir)
     set_manifest_for_rollon(dir)
     debuggerer if ENV['DEBUGGERER'].eql?('true')
-    workbench
+    # workbench
     stubs_adventure(dir)
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
     if @rollon_dummies.eql?(true)
-      ENV['RORO_DOCUMENT_LAYERS'] = 'true'
+      # ENV['RORO_DOCUMENT_LAYERS'] = 'true'
+      cli = Roro::CLI.new
+      # system 'docker-compose down' if @rollon_dummies.eql?(true)
+      @rollon_loud ? cli.rollon : quiet { cli.rollon }
+      capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
+      # system 'docker-compose down' if @rollon_dummies.eql?(true)
     else
       copy_stage_dummy(dir)
       stub_run_actions
     end
-
-    cli = Roro::CLI.new
-    system 'docker-compose down' if @rollon_dummies.eql?(true)
-    @rollon_loud ? cli.rollon : quiet { cli.rollon }
-    capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
-    # assert_correct_manifest(dir)
-    system 'docker-compose down' if @rollon_dummies.eql?(true)
   end
 
-  def assert_correct_manifest(dir = nil, hash = nil)
-    hash ||= read_yaml("#{Roro::CLI.test_root}/roro/stacks/_manifest.yml")
+  def verify_manifest(dir = nil, file = nil)
+    hash ||= read_yaml("#{Roro::CLI.test_root}/roro/stacks/#{file}")
     @filematchers.reverse.each do |fm|
       hash.dig(fm.to_sym)&.each do |filename, matchers|
         if matchers.nil?
@@ -126,6 +124,13 @@ module Roro::TestHelpers::ConfiguratorHelper
           end
         end
       end
+    end
+  end
+
+  def assert_correct_manifest(dir = nil, hash = nil)
+    manifests = Dir.glob("#{Roro::CLI.test_root}/roro/stacks/_*.yml")
+    manifests.each do |manifest|
+      verify_manifest(dir, manifest.split('/').last)
     end
   end
 

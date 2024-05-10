@@ -14,4 +14,5 @@ services:
     user: root
     volumes:
 <%= section('docker_compose/app_volume_mappings') %>
+
 <%= section('docker_compose/development/services') %>
