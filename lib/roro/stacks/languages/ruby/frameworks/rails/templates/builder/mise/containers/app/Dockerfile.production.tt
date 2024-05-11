@@ -9,7 +9,7 @@ RUN bundle config set without "development test" && \
   bundle config frozen true && \
   bundle
 
-<%= section('dockerfile/steps/production/build') %>
+<%= partial('dockerfile/production/steps/yarn_install') %>
 
 RUN \
   bin/rails assets:clobber \
@@ -35,7 +35,7 @@ FROM base AS production
 
 RUN apk update && \
   apk add --update \
-  postgresql-client \
+  <%= @env[:base][:db_pkg_production][:value] %> \
   && apk cache -v sync
 
 RUN adduser -D app

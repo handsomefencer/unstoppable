@@ -1,40 +1,29 @@
 services:
-  base: &base
+  builder-base: &base
     build:
+      dockerfile: ./mise/containers/app/Dockerfile.builder.base
       args: 
         RUBY_VERSION: 3.3
-      dockerfile: ./mise/containers/app/Dockerfile.builder.ruby
+    image: builder/base
     profiles: 
       - builder
     volumes:
 <%= section('docker_compose/app_volume_mappings') %>
   
-  builder-ruby:
-    <<: *base
-    image: builder/ruby
-
-  builder-base:
+  builder-deps-dev:
     <<: *base
     build:
-      dockerfile: ./mise/containers/app/Dockerfile.builder.base
-    depends_on: 
-      - builder-ruby
-    image: builder/base
-
-  builder-dependencies:
-    <<: *base
-    build:
-      dockerfile: ./mise/containers/app/Dockerfile.builder.dependencies
+      dockerfile: ./mise/containers/app/Dockerfile.builder.deps.dev
     depends_on: 
       - builder-base
-    image: builder/dependencies
+    image: builder/deps-dev
 
   builder-cache:
     <<: *base
     build:
       dockerfile: ./mise/containers/app/Dockerfile.builder.cache
     depends_on: 
-      - builder-dependencies
+      - builder-deps-dev
     image: builder/cache
 
   builder-railsnew:
@@ -42,7 +31,7 @@ services:
     build:
       dockerfile: ./mise/containers/app/Dockerfile.builder.railsnew
     depends_on: 
-      - builder-dependencies
+      - builder-deps-dev
     image: builder/cache
 
   builder-development: 

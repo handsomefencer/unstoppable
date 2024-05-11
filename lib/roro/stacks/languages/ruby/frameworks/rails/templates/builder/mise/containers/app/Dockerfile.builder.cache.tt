@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
 
-FROM builder/dependencies AS Cache
+FROM builder/deps-dev AS Cache
 
-<%= section('dockerfile/steps/cache/build') %>
+<%= section('dockerfile/development/cache/build') %>

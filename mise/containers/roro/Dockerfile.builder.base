@@ -5,7 +5,7 @@ FROM roro/ruby AS base
 RUN apk add --update --no-cache \
     build-base \  
     docker \
-    docker-compose \
+    docker-cli-compose \
     file \
     git \
     ncurses \

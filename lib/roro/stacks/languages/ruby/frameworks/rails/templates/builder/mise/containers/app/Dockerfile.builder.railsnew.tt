@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
 
-FROM builder/dependencies AS generator
+FROM builder/deps-dev AS generator
 
 RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> <%= @env[:base][:rails_version][:value] %>'" > Gemfile
 
 RUN bundle
 
 RUN bundle exec rails new . \
-<%= section('dockerfile/rails_new_flags') %>
+<%= section('dockerfile/railsnew') %>
 RUN rm config/master.key
 
 FROM scratch AS export-stage

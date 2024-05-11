@@ -5,4 +5,6 @@ FROM builder/base
 RUN apk add --update --no-cache \
   build-base
 
-<%= section('dockerfile/packages/development') %>
+RUN apk add --update --no-cache
+
+<%= partial('dockerfile/devdeps/packages') %>
