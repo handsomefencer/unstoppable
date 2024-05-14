@@ -2,7 +2,7 @@ preface: some string
 
 env: 
   base: 
-    javascript:
+    js_flag:
       name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
       value: esbuild
 

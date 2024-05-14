@@ -8,26 +8,39 @@ sqlite:
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
 
-postgres: 
+node: &node 
   mise/containers/app/Dockerfile.builder.cache:
+    - /COPY package.json yarn.lock ./
+  mise/containers/app/Dockerfile.builder.deps.dev:
+    - /nodejs/
+    - /yarn/
+  mise/containers/app/Dockerfile.development:
+    - / \/app\/node_modules \/app\/node_modules/
+    - /COPY package.json yarn.lock ./
+    - /RUN yarn install/
+
+esbuild: 
+  <<: *node
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - / --javascript=esbuild /
+
+postgres: 
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /postgresql-dev/
-    - /\}-alpine3.19/
-  mise/containers/app/Dockerfile.builder.railsnew:
-  mise/containers/app/Dockerfile.development:
-  mise/containers/app/Dockerfile.test:
-  mise/containers/db/env/base.env:
-  Gemfile:
-    - /gem ["']pg["'], ["']~> 1.1/
-
 
 stacks: 
   mise/containers/app/Dockerfile.builder.base:
   mise/containers/app/Dockerfile.builder.cache:
+    - /COPY Gemfile\* ./
   mise/containers/app/Dockerfile.builder.deps.dev:
   mise/containers/app/Dockerfile.development:
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
   mise/containers/app/Dockerfile.production:
   mise/containers/app/Dockerfile.test:
+    - /chromium-chromedriver/
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
   mise/containers/app/env/base.env:
     - /PARALLEL_WORKERS=4/
     - /RAILS_MAX_THREADS=5/

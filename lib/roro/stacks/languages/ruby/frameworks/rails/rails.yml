@@ -5,7 +5,6 @@ env:
   base:
     js_flag:
       name: Rails new --database flag
-      value: 
     alpine_version: 
       name: alpine development version
       value: 3.19
