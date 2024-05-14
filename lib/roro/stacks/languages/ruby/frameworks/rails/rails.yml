@@ -3,8 +3,6 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 env:
   base:
-    db_pkg_development: 
-      name: Alpine db pkg for development
     js_flag:
       name: Rails new --database flag
       value: 
