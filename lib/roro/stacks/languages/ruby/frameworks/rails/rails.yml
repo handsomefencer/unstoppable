@@ -3,17 +3,18 @@ preface: A dynamic, open source programming language with a focus on simplicity 
 
 env:
   base:
-    js_flag:
-      name: Rails new --database flag
-    alpine_version: 
-      name: alpine development version
-      value: 3.19
-    rails_version:
-      name: Ruby on Rails minor version
-      value: '7.1.3'
     app_name:
       name: Name for your app
       value: unstoppable
+    alpine_version: 
+      name: alpine development version
+      value: 3.19
+    js_flag:
+      name: Rails new --database flag
+      value: esbuild
+    rails_version:
+      name: Ruby on Rails minor version
+      value: '7.1.3'
     app: 
       RAILS_MAX_THREADS:
         name: Maximum number of threads for the database. Important for redis.

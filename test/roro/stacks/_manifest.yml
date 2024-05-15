@@ -5,6 +5,8 @@ sqlite:
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /sqlite-dev/
   mise/containers/app/Dockerfile.builder.railsnew:
+  mise/containers/app/Dockerfile.production:
+    - /sqlite-dev/
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
 
@@ -18,8 +20,21 @@ node: &node
     - / \/app\/node_modules \/app\/node_modules/
     - /COPY package.json yarn.lock ./
     - /RUN yarn install/
+  docker-compose.development.yml:  
+    - services: 
+        dev:
+          container_name: dev
+        dev-css:
+          container_name: dev-css
+        dev-js:
+          container_name: dev-js
 
 esbuild: 
+  <<: *node
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - / --javascript=esbuild /
+
+vite: 
   <<: *node
   mise/containers/app/Dockerfile.builder.railsnew:
     - / --javascript=esbuild /
@@ -65,8 +80,11 @@ stacks:
   mise/scripts/build.test.sh:
   mise/scripts/docker.info.sh:
   mise/scripts/docker.prune.sh:
-  docker-compose.builders.yml:  
+  docker-compose.builders.yml:
   docker-compose.development.yml:  
+    - services: 
+        dev:
+          container_name: dev  
   docker-compose.production.yml:
   docker-compose.test.yml:  
   docker-compose.vendor.yml:

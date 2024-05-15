@@ -1,12 +1,9 @@
 # syntax=docker/dockerfile:1
 
-FROM builder/cache AS Cache
+FROM builder/cache AS cache
 FROM builder/deps-dev AS Test
 
-RUN apk add --update --no-cache \
-  chromium-chromedriver \
-  && apk cache -v sync
-
+<%= section('dockerfile/test/packages') %>
 <%= section('dockerfile/development/cache/from') %>
 
 COPY . .

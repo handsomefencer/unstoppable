@@ -13,4 +13,4 @@ env:
       value: sqlite-dev
     db_pkg_production: 
       name: Alpine db pkg for production
-      value: postgresql-client      
+      value: sqlite-dev

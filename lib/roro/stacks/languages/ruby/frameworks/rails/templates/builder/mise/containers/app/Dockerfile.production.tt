@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 FROM builder/base AS base
-FROM builder/dependencies AS slimmer
+FROM builder/deps-dev AS slimmer
 
 COPY . .
 
@@ -24,13 +24,7 @@ RUN rm -rf /usr/local/bundle/cache && \
   find /usr/local/bundle/gems/ -name "*.c" -delete && \
   find /usr/local/bundle/gems/ -name "*.o" -delete
 
-RUN rm -rf \
-  node_modules \
-  public/assets \
-  public/vite-dev \
-  public/vite-test \
-  test   
-
+<%= section('dockerfile/production/remove') %>
 FROM base AS production
 
 RUN apk update && \
