@@ -9,6 +9,7 @@ describe '4 SQLite -> 2 Vite -> 2 omakase' do
     debuggerer
     rollon(__dir__)
   end
-focus
+  focus
+
   Then { assert_correct_manifest(__dir__) }
 end

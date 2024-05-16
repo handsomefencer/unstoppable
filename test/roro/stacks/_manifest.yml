@@ -24,20 +24,51 @@ node: &node
     - services: 
         dev:
           container_name: dev
-        dev-css:
-          container_name: dev-css
         dev-js:
           container_name: dev-js
 
 esbuild: 
   <<: *node
+  Procfile.dev:
+    - /web:/
   mise/containers/app/Dockerfile.builder.railsnew:
     - / --javascript=esbuild /
+  docker-compose.development.yml:  
+    - services: 
+        dev-js:
+          container_name: dev-js
 
 vite: 
   <<: *node
+  app/javascript/entrypoints/application.js:
+  app/views/layouts/application.html.erb:
+    - /vite_client_tag/
+    - /vite_javascript_tag/
   mise/containers/app/Dockerfile.builder.railsnew:
     - / --javascript=esbuild /
+  docker-compose.development.yml:  
+    - services: 
+        dev-js:
+          container_name: dev-js
+  bin/vite:
+  config/vite.json:
+  Gemfile:
+    - /gem ["']vite_rails["']/
+  vite.config.ts:
+    # - /import { defineConfig } from ["']vite["']/
+    # - /import FullReload from ["']vite-plugin-full-reload["']/
+
+# vite: 
+#   config/routes.rb:
+#   app/views/home/index.html.erb:
+#   docker-compose.yml:
+#     - services: 
+#         vite: 
+#           ports:
+#             - '3036:3036'
+#   package.json:
+
+
 
 postgres: 
   mise/containers/app/Dockerfile.builder.deps.dev:
@@ -85,6 +116,10 @@ stacks:
     - services: 
         dev:
           container_name: dev  
+  docker-compose.development.yml:  
+    - services: 
+        dev:
+          container_name: dev
   docker-compose.production.yml:
   docker-compose.test.yml:  
   docker-compose.vendor.yml:

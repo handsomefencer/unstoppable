@@ -12,10 +12,8 @@ module Roro
         def write(buildenv, storyfile)
           @adventure = buildenv
           @env = @adventure[:env]
-
           @env[:force] = true
           @env[:exit_on_failure] = true
-          set_app_name
           actions = read_yaml(storyfile)[:actions]
           return if actions.nil?
 
@@ -38,7 +36,7 @@ module Roro
         def generate_mise
           generator = Roro::CLI.new
           generator.generate_mise
-          # generator.generate_containers 'app', 'db'
+          generator.generate_containers 'app', 'db'
           generator.generate_environments @env
           generator.generate_environment_files @env
           generator.generate_keys
@@ -60,21 +58,9 @@ module Roro
         def section(name)
           array = []
           section_partials(name).each do |p|
-            text = read_partial(p)
-            # debugger if text.size.eql?(0)
-
-            unless text.size.eql?(0)
-              array << text
-            end
+            array << read_partial(p)
           end
           array.empty? ? (raise Roro::Error) : array.join("")
-        end
-
-        def set_app_name
-          if ENV['APP_NAME']
-            app_name = ENV['APP_NAME'].split('/').last
-            @env[:base][:app_name][:value] = app_name
-          end
         end
 
         def section_partials(name)
