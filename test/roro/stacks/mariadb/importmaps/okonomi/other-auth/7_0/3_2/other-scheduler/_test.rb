@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '1 MariaDB -> 3 importmap -> 1 okonomi -> 2 other-auth -> 2 7_0 -> 2 3_2 -> 2 other-scheduler' do
+describe '1 MariaDB -> 2 Importmaps -> 1 okonomi -> 2 other-auth -> 2 7_0 -> 2 3_2 -> 2 other-scheduler' do
   Given(:workbench) {}
   
   Given do

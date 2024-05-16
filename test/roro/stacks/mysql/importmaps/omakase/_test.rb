@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '2 MySQL -> 3 importmap -> 2 omakase' do
+describe '2 MySQL -> 2 Importmaps -> 2 omakase' do
   Given(:workbench) {}
   
   Given do

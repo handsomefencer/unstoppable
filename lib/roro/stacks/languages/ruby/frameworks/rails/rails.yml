@@ -12,6 +12,9 @@ env:
     js_flag:
       name: Rails new --database flag
       value: esbuild
+    js_runtime:
+      name: Javascript runtime
+      value: yarn
     rails_version:
       name: Ruby on Rails minor version
       value: '7.1.3'

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '3 Postgres -> 3 importmap -> 1 okonomi -> 2 other-auth -> 2 7_0 -> 1 3_1 -> 2 other-scheduler' do
+describe '3 Postgres -> 2 Importmaps -> 1 okonomi -> 2 other-auth -> 2 7_0 -> 1 3_1 -> 2 other-scheduler' do
   Given(:workbench) {}
   
   Given do

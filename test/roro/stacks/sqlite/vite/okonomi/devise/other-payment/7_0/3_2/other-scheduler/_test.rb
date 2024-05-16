@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '4 SQLite -> 2 Vite -> 1 okonomi -> 1 Devise -> 2 other-payment -> 2 7_0 -> 2 3_2 -> 2 other-scheduler' do
+describe '4 SQLite -> 3 Vite -> 1 okonomi -> 1 Devise -> 2 other-payment -> 2 7_0 -> 2 3_2 -> 2 other-scheduler' do
   Given(:workbench) {}
   
   Given do

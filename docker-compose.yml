@@ -10,7 +10,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - .:/usr/src
+      - .:/usr/src:default
       - /var/run/docker.sock:/var/run/docker.sock
       - gem_cache:/usr/local/bundle/gems
 
