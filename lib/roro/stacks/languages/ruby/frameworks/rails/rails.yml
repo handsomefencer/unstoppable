@@ -10,8 +10,11 @@ env:
       name: alpine development version
       value: 3.19
     js_flag:
-      name: Rails new --database flag
+      name: Rails new --javascript flag
       value: esbuild
+    js_lockfile:
+      name: Javascript runtime lockfile
+      value: yarn.lock      
     js_runtime:
       name: Javascript runtime
       value: yarn

@@ -26,6 +26,18 @@ node: &node
           container_name: dev
         dev-js:
           container_name: dev-js
+          
+bun: 
+  mise/containers/app/Dockerfile.builder.cache:
+    - /COPY package.json bun.lockb ./
+    - /RUN bun install/
+  mise/containers/app/Dockerfile.development:
+    - /COPY package.json bun.lockb ./
+    - /RUN bun install/
+  docker-compose.development.yml: 
+    - services: 
+        dev-js:
+          command: ["bun", "esbuild", "app/javascript/*.*", "--bundle", "--outdir=app/assets/builds", "--watch"]
 
 esbuild: 
   <<: *node
@@ -37,6 +49,7 @@ esbuild:
     - services: 
         dev-js:
           container_name: dev-js
+          command: ["yarn", "esbuild", "app/javascript/*.*", "--bundle", "--outdir=app/assets/builds", "--watch"]
 
 vite: 
   <<: *node

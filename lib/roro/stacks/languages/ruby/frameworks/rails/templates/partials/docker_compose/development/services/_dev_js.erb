@@ -2,6 +2,6 @@
   dev-js:
     <<: *development
     command: [
-      "yarn", "esbuild", "app/javascript/*.*", "--bundle",
+      "<%= @env.dig(:base, :js_runtime, :value) %>", "esbuild", "app/javascript/*.*", "--bundle",
       "--outdir=app/assets/builds", "--watch"]
     container_name: dev-js
