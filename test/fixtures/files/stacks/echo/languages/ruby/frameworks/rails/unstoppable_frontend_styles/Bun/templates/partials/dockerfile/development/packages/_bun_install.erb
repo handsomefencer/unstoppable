@@ -1,0 +1,8 @@
+
+RUN apk add --update --no-cache \
+  unzip \
+  curl \
+  bash \
+  && apk cache -v sync
+
+  RUN curl -fsSL https://bun.sh/install | bash

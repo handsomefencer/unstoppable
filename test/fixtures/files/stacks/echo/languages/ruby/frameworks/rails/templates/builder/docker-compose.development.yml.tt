@@ -1,0 +1,18 @@
+services:
+  development: &development
+    extends: 
+      file: docker-compose.builders.yml
+      service: builder-development
+    env_file: 
+      - ./mise/containers/app/env/base.env
+      - ./mise/containers/app/env/development.env
+    shm_size: '256mb' 
+    stdin_open: true
+    tmpfs:
+      - /tmp
+    tty: true
+    user: root
+    volumes:
+<%= section('docker_compose/app_volume_mappings') %>
+
+<%= section('docker_compose/development/services') %>

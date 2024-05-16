@@ -1,0 +1,8 @@
+preface: Adds Sidekiq 
+
+actions: 
+  - insert_into_file(
+    'config/environments/development.rb', 
+    "  config.active_job.queue_adapter = :sidekiq\n",
+    :after => "Rails.application.configure do\n"
+    )

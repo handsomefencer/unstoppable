@@ -9,7 +9,8 @@ module Roro
 
     def generate_adventure_tests(_kase = nil)
       reflector = Roro::Configurators::StackReflector.new
-      reflector.adventures.values.each { |a| generate_test_stack(a) }
+      reflector.adventures.values.each { |a|
+       generate_test_stack(a) }
     end
 
     no_commands do
@@ -26,8 +27,10 @@ module Roro
       def generate_test_stack(hash)
         @env = describe_block(hash)
         dest = 'test/roro/stacks'
+
         hash[:choices].each do |c|
           if c.eql?(hash[:choices][-1])
+            # debugger if hash.dig(:choices).eql?( %w[MariaDB Bun omakase])
             src = 'stack/tests/tests'
             directory(src, "#{dest}/#{c.downcase}", @env)
           end

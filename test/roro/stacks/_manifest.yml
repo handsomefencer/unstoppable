@@ -54,6 +54,8 @@ vite:
   config/vite.json:
   Gemfile:
     - /gem ["']vite_rails["']/
+  postcss.config.js: 
+    - /\/ tailwindcss/
   vite.config.ts:
     # - /import { defineConfig } from ["']vite["']/
     # - /import FullReload from ["']vite-plugin-full-reload["']/

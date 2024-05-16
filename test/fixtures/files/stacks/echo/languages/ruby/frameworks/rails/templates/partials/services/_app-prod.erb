@@ -1,0 +1,18 @@
+  app-prod:
+    <<: *app
+    build:
+      context: .
+      dockerfile: ./mise/containers/app/Dockerfile
+      target: production
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
+    env_file:
+      - ./mise/env/base.env
+      - ./mise/env/production.env
+      - ./mise/containers/app/env/base.env
+      - ./mise/containers/app/env/production.env
+    ports:
+      - "3001:3000"
+    profiles:
+      - production
