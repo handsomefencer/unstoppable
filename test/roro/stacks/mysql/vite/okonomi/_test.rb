@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '3 Postgres -> 4 Vite -> 2 omakase' do
+describe '2 MySQL -> 4 Vite -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do
