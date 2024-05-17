@@ -1,34 +1,33 @@
 ### Rails ###
+# Ignore bundler config.
+/.bundle
 
-## rcov
-/coverage/
+# Ignore all environment files (except templates).
+/.env*
+!/.env*.erb
 
-## logfiles and tempfiles.
+# Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
 !/log/.keep
 !/tmp/.keep
 
-## uploaded files
-/public/uploads
+# Ignore pidfiles, but keep the directory.
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
 
-## secrets
-config/initializers/secret_token.rb
-config/master.key
-config/secrets.yml
-
-## testing artifacts
-capybara-*.html
-rerun.txt
-/public/system
-
-## js
-/node_modules/
-/public/packs
-/public/packs-test
 /public/assets
-yarn-error.log
-yarn-debug.log*
-.yarn-integrity
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

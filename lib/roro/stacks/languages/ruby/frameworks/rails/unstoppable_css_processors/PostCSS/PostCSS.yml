@@ -1,5 +1,7 @@
 preface: some string
 
-# env:
-
-# actions:
+env:
+  base:
+    css_flag:
+      name: CSS processor flag for rails new
+      value: postcss
