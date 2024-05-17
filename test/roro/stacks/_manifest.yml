@@ -1,43 +1,28 @@
-sqlite: 
-  mise/containers/app/Dockerfile.builder.base:
-    - /\}-alpine3.18/
-  mise/containers/app/Dockerfile.builder.cache:
-  mise/containers/app/Dockerfile.builder.deps.dev:
-    - /sqlite-dev/
-  mise/containers/app/Dockerfile.builder.railsnew:
-  mise/containers/app/Dockerfile.production:
-    - /sqlite-dev/
-  Gemfile:
-    - /gem ["']sqlite3["'], ["']~> 1.4/
-
 node: &node 
-  mise/containers/app/Dockerfile.builder.cache:
-    - /COPY package.json yarn.lock ./
-  mise/containers/app/Dockerfile.builder.deps.dev:
-    - /nodejs/
-    - /yarn/
-  mise/containers/app/Dockerfile.development:
-    - / \/app\/node_modules \/app\/node_modules/
-    - /COPY package.json yarn.lock ./
-    - /RUN yarn install/
   docker-compose.development.yml:  
     - services: 
         dev:
           container_name: dev
         dev-js:
           container_name: dev-js
-          
+
+sqlite: 
+  mise/containers/app/Dockerfile.builder.base:
+    - /\}-alpine3.18/
+  mise/containers/app/Dockerfile.builder.deps.dev:
+    - /sqlite-dev/
+  mise/containers/app/Dockerfile.production:
+    - /sqlite-dev/
+  Gemfile:
+    - /gem ["']sqlite3["'], ["']~> 1.4/
+
 bun: 
-  mise/containers/app/Dockerfile.builder.cache:
-    - /COPY package.json bun.lockb ./
-    - /RUN bun install/
-  mise/containers/app/Dockerfile.development:
-    - /COPY package.json bun.lockb ./
-    - /RUN bun install/
-  docker-compose.development.yml: 
-    - services: 
-        dev-js:
-          command: ["bun", "esbuild", "app/javascript/*.*", "--bundle", "--outdir=app/assets/builds", "--watch"]
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--javascript=bun/
+
+importmaps: 
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--javascript=importmap/
 
 esbuild: 
   <<: *node
@@ -67,8 +52,6 @@ vite:
   config/vite.json:
   Gemfile:
     - /gem ["']vite_rails["']/
-  postcss.config.js: 
-    - /\/ tailwindcss/
   vite.config.ts:
     # - /import { defineConfig } from ["']vite["']/
     # - /import FullReload from ["']vite-plugin-full-reload["']/
@@ -90,18 +73,6 @@ postgres:
     - /postgresql-dev/
 
 stacks: 
-  mise/containers/app/Dockerfile.builder.base:
-  mise/containers/app/Dockerfile.builder.cache:
-    - /COPY Gemfile\* ./
-  mise/containers/app/Dockerfile.builder.deps.dev:
-  mise/containers/app/Dockerfile.development:
-    - /\/usr\/local\/bundle \/usr\/local\/bundle/
-    - /COPY Gemfile\* ./
-  mise/containers/app/Dockerfile.production:
-  mise/containers/app/Dockerfile.test:
-    - /chromium-chromedriver/
-    - /\/usr\/local\/bundle \/usr\/local\/bundle/
-    - /COPY Gemfile\* ./
   mise/containers/app/env/base.env:
     - /PARALLEL_WORKERS=4/
     - /RAILS_MAX_THREADS=5/
@@ -114,6 +85,19 @@ stacks:
     - /RAILS_SERVE_STATIC_FILES=true/
   mise/containers/app/env/test.env:
     - /RAILS_ENV=test/
+  mise/containers/app/Dockerfile.builder.base:
+  mise/containers/app/Dockerfile.builder.cache:
+    - /COPY Gemfile\* ./
+  mise/containers/app/Dockerfile.builder.deps.dev:
+  mise/containers/app/Dockerfile.builder.railsnew:
+  mise/containers/app/Dockerfile.development:
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
+  mise/containers/app/Dockerfile.production:
+  mise/containers/app/Dockerfile.test:
+    - /chromium-chromedriver/
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
   mise/env/base.env:
   mise/env/development.env:
   mise/env/production.env:
@@ -127,10 +111,6 @@ stacks:
   mise/scripts/docker.info.sh:
   mise/scripts/docker.prune.sh:
   docker-compose.builders.yml:
-  docker-compose.development.yml:  
-    - services: 
-        dev:
-          container_name: dev  
   docker-compose.development.yml:  
     - services: 
         dev:

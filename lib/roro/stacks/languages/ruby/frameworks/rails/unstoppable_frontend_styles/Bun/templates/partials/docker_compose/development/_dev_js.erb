@@ -1,0 +1,8 @@
+  dev-js:
+    image: oven/bun:alpine
+    volumes:
+      - .:/home/bun/app
+    container_name: dev-js
+    volumes:
+      - .:/home/bun/app
+      - node_modules:/home/bun/app/node_modules
