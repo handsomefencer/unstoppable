@@ -1,5 +1,0 @@
-# syntax=docker/dockerfile:1
-
-FROM ruby:<%= @env[:base][:ruby_version][:value] %>-alpine
-
-<%= section('packages') %>

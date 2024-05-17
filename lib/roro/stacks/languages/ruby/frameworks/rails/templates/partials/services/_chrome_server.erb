@@ -1,5 +1,0 @@
-
-  chrome-server:
-    image: <%= @env.dig(:base, :'chrome_server_image', :value) %>:<%= @env.dig(:base, :'chrome_server_image_version', :value) %> 
-    ports: 
-      - "7900:7900"

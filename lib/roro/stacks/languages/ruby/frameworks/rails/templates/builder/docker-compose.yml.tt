@@ -6,7 +6,7 @@ include:
   - docker-compose.test.yml  
 
 volumes:
-<%= section('volumes') %>
+<%= section('docker_compose/volumes') %>
 
 secrets:
   base_key: 
