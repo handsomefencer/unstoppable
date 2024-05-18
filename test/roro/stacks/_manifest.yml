@@ -11,8 +11,6 @@ tailwind:
   app/javascript/application.js:
     - /import "@hotwired\/turbo-rails"/
   app/assets/stylesheets/application.tailwind.css:
-  package.json:
-    - /tailwindcss/
 
 sqlite: 
   mise/containers/app/Dockerfile.builder.base:
