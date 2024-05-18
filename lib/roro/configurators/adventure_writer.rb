@@ -55,12 +55,16 @@ module Roro
           end
         end
 
-        def section(name)
+        def section(name, divider="\n")
           array = []
           section_partials(name).each do |p|
             array << read_partial(p)
           end
-          array.empty? ? (raise Roro::Error) : array.join("")
+          if array.empty?
+            (raise(Roro::Error, "cannot find partial #{name}"))
+          else
+            array.map(&:rstrip).join(divider)
+          end
         end
 
         def section_partials(name)

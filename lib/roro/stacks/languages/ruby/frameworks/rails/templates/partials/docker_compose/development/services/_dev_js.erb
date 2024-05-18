@@ -1,7 +1,0 @@
-
-  dev-js:
-    <<: *development
-    command: [
-      "<%= @env.dig(:base, :js_runtime, :value) %>", "esbuild", "app/javascript/*.*", "--bundle",
-      "--outdir=app/assets/builds", "--watch"]
-    container_name: dev-js

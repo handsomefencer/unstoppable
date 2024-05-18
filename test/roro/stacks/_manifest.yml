@@ -7,14 +7,13 @@ node: &node
           container_name: dev-js
 
 tailwind: 
-  .gitignore:
-  .ggitignore:
   bin/dev:
   app/javascript/application.js:
     - /import "@hotwired\/turbo-rails"/
   app/assets/stylesheets/application.tailwind.css:
+  package.json:
+    - /tailwindcss/
 
-  
 sqlite: 
   mise/containers/app/Dockerfile.builder.base:
     - /\}-alpine3.18/
@@ -43,7 +42,9 @@ esbuild:
     - services: 
         dev-js:
           container_name: dev-js
-          command: ["yarn", "esbuild", "app/javascript/*.*", "--bundle", "--outdir=app/assets/builds", "--watch"]
+          command: ["yarn", "build", "--watch"]
+  package.json:
+    - /esbuild/
 
 vite: 
   <<: *node

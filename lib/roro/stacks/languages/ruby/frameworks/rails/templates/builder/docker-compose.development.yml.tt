@@ -13,6 +13,6 @@ services:
     tty: true
     user: root
     volumes:
-<%= section('docker_compose/app_volume_mappings') %>
+<%= section('docker_compose/development/volume_mappings') %>
 
-<%= section('docker_compose/development/services') %>
+<%= section('docker_compose/development/services', "\n\n") %>

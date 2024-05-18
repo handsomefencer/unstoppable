@@ -58,4 +58,4 @@ env:
 
 actions:  
   - copy_layer('manifest')
-  - append_to_file('.gitignore', section('dot_gitignore'))
+  - append_to_file('.gitignore', section('dot_gitignore', "\n"))

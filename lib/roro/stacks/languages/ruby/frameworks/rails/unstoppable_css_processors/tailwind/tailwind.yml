@@ -7,4 +7,19 @@ env:
       value: tailwind
 
 
-# actions:
+    #     gems = ask "Which gems would you like to add?"
+    #     gems.split(" ").map{ |gem| "  config.gem :#{gem}" }.join("\n")
+    #   end
+
+  
+  
+  #   insert_into_file "config/environment.rb", :after => "Rails::Initializer.run do |config|\n" do
+    #     gems = ask "Which gems would you like to add?"
+    #     gems.split(" ").map{ |gem| "  config.gem :#{gem}" }.join("\n")
+    #   end
+
+#   - inject_to_file('.gitignore', section('dot_gitignore'))
+# "scripts": {
+#   "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
+#   "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
+# }
