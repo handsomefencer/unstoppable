@@ -58,7 +58,8 @@ module Roro
         def section(name, divider="\n")
           array = []
           section_partials(name).each do |p|
-            array << read_partial(p)
+            lines = read_partial(p)
+            array << lines unless lines.length.eql?(0)
           end
           if array.empty?
             (raise(Roro::Error, "cannot find partial #{name}"))

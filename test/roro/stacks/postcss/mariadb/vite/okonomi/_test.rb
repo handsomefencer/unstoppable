@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '3 postcss -> 1 MariaDB -> 4 Vite -> 1 okonomi' do
+describe '3 PostCSS -> 1 MariaDB -> 4 Vite -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do

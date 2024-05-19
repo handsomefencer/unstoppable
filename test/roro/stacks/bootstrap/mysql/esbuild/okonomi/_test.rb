@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '1 bootstrap -> 2 MySQL -> 2 ESBuild -> 1 okonomi' do
+describe '1 Bootstrap -> 2 MySQL -> 2 ESBuild -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do

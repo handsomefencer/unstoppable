@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '1 bootstrap -> 3 Postgres -> 4 Vite -> 2 omakase' do
+describe '1 Bootstrap -> 3 Postgres -> 4 Vite -> 2 omakase' do
   Given(:workbench) {}
   
   Given do

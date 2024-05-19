@@ -28,7 +28,6 @@ bun:
 
 importmaps: 
   mise/containers/app/Dockerfile.builder.railsnew:
-    - /--javascript=importmap/
 
 esbuild: 
   <<: *node
