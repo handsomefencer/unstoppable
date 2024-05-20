@@ -26,6 +26,10 @@ bun:
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--javascript=bun/
 
+bulma: 
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--css=bulma/
+
 importmaps: 
   mise/containers/app/Dockerfile.builder.railsnew:
 

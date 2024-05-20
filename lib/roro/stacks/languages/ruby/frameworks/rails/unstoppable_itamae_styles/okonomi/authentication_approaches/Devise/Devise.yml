@@ -1,41 +1,7 @@
 preface: Devise is a flexible authentication solution for Rails based on Warden.
 
-# actions:
-#   - insert_into_file(
-#     'config/environments/development.rb', 
-#     partial('config_devise_action_mailer'),
-#     :after => "Rails.application.configure do\n"
-#     )
-#   - insert_into_file(
-#     'app/models/user.rb', 
-#     ':confirmable, :trackable, ',
-#     :after => 'devise ')  
-#   - glob_dir(
-#     'db/migrate/**/*')
-#     .each do |m| 
-#       uncomment_lines(m, 'sign_in_count') ;
-#       uncomment_lines(m, 'current_sign_in_at') ;
-#       uncomment_lines(m, 'last_sign_in_at') ;
-#       uncomment_lines(m, 'current_sign_in_ip') ;
-#       uncomment_lines(m, 'last_sign_in_ip') ;
-#       uncomment_lines(m, 'confirmation_token') ;
-#       uncomment_lines(m, 'confirmed_at') ;
-#       uncomment_lines(m, 'unconfirmed_email') ;
-#       uncomment_lines(m, 'confirmation_sent_at') ;
-#     end 
-#   - uncomment_lines('config/initializers/devise.rb', 'turbo_stream')  
-#   - insert_into_file(
-#       'app/views/layouts/application.html.erb', 
-#       "\n\s\s\s\s\<\%= render 'messages' \%\>\n",
-#       :after => "\<body\>")
-#   - insert_into_file(
-#       'app/controllers/application_controller.rb', 
-#       "\n\s\sbefore_action :authenticate_user!\n",
-#       :after => "Base")
-#   - gsub_file(
-#       'config/initializers/devise.rb', 
-#       /config.sign_out_via = \:delete/,
-#       "config.sign_out_via = :get")
+actions:
+  - copy_layer('devise')
     
     
     
