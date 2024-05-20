@@ -27,6 +27,7 @@ bun:
     - /--javascript=bun/
 
 bulma: 
+  package.json:
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--css=bulma/
 
