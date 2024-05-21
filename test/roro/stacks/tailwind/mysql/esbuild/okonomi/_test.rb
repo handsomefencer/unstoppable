@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe '5 tailwind -> 2 MySQL -> 2 ESBuild -> 1 okonomi' do
+describe '6 tailwind -> 2 MySQL -> 2 ESBuild -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do

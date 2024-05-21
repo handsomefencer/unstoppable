@@ -1,3 +1,14 @@
+sqlite: 
+  mise/containers/app/Dockerfile.builder.base:
+    - /\}-alpine3.18/
+  mise/containers/app/Dockerfile.builder.deps.dev:
+    - /sqlite-dev/
+  mise/containers/app/Dockerfile.production:
+    - /sqlite-dev/
+  Gemfile:
+    - /gem ["']sqlite3["'], ["']~> 1.4/
+
+
 css-processors: &css-processors
   docker-compose.development.yml: 
     - services: 
@@ -8,7 +19,7 @@ css-processors: &css-processors
     - /scripts/
     - /build:css/
 
-node: &node 
+js-node: &js-node 
   docker-compose.development.yml:  
     - services: 
         dev:
@@ -16,15 +27,6 @@ node: &node
         dev-js:
           container_name: dev-js
 
-sqlite: 
-  mise/containers/app/Dockerfile.builder.base:
-    - /\}-alpine3.18/
-  mise/containers/app/Dockerfile.builder.deps.dev:
-    - /sqlite-dev/
-  mise/containers/app/Dockerfile.production:
-    - /sqlite-dev/
-  Gemfile:
-    - /gem ["']sqlite3["'], ["']~> 1.4/
 
 bun: 
   mise/containers/app/Dockerfile.builder.railsnew:
