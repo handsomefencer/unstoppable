@@ -89,18 +89,15 @@ module Roro::TestHelpers::ConfiguratorHelper
   def rollon(dir)
     set_manifest_for_rollon(dir)
     debuggerer if ENV['DEBUGGERER'].eql?('true')
-    # workbench
+    workbench
     stubs_adventure(dir)
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
     if @rollon_dummies.eql?(true)
-      # ENV['RORO_DOCUMENT_LAYERS'] = 'true'
       cli = Roro::CLI.new
-      # system 'docker-compose down' if @rollon_dummies.eql?(true)
       @rollon_loud ? cli.rollon : quiet { cli.rollon }
       capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
-      # system 'docker-compose down' if @rollon_dummies.eql?(true)
     else
       copy_stage_dummy(dir)
       stub_run_actions
