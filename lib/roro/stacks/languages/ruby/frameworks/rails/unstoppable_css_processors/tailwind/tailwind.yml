@@ -5,7 +5,15 @@ env:
     css_flag:
       name: CSS processor flag for rails new
       value: tailwind
-
+    vite_entrypoint_css:
+      name: Import this file into vite application.css entrypoint
+      value: application.tailwind.css
+    watch_css_command:
+      name: Default command to run whent starting watch-js service
+      value: 
+          - "bin/rails"
+          - "tailwindcss:watch"
+  
 
     #     gems = ask "Which gems would you like to add?"
     #     gems.split(" ").map{ |gem| "  config.gem :#{gem}" }.join("\n")

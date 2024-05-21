@@ -1,4 +1,4 @@
   watch-css:
     <<: *development
-    command: ["bin/rails", "tailwindcss:watch"]
+    command: <%= @env.dig(:base, :watch_css_command, :value) %>
     container_name: watch-css

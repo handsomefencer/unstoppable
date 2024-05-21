@@ -50,38 +50,37 @@ sass:
 
 tailwind: 
   app/assets/stylesheets/application.tailwind.css:
-  config/tailwind.config.js:
   docker-compose.development.yml: 
     - services: 
         watch-css:
           container_name: watch-css
-          command: ["bin/rails", "tailwindcss:watch"]
+          command: ["yarn", "build:css", "--watch"]
 
 js-node: &js-node 
   docker-compose.development.yml:  
     - services: 
         dev:
           container_name: dev
-        dev-js:
-          container_name: dev-js
+        watch-js:
+          container_name: watch-js
 
 bun: 
   docker-compose.development.yml:  
     - services: 
-        dev-js:
-          container_name: dev-js
+        watch-js:
+          container_name: watch-js
           image: oven/bun:alpine
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--javascript=bun/
 
 esbuild: 
-  <<: *js-node
+  # <<: *js-node
   mise/containers/app/Dockerfile.builder.railsnew:
     - / --javascript=esbuild /
-  docker-compose.development.yml:  
+  # docker-compose.development.yml:  
   #   - services: 
   #       watc-js:
-  #         container_name: dev-js
+  #         container_name: watch-js
   #         command: ["yarn", "build", "--watch"]
   package.json:
     - /esbuild/
@@ -92,21 +91,22 @@ importmaps:
 vite: 
   <<: *js-node
   app/javascript/entrypoints/application.js:
-  app/views/layouts/application.html.erb:
-    - /vite_client_tag/
-    - /vite_javascript_tag/
-  mise/containers/app/Dockerfile.builder.railsnew:
-    - / --javascript=esbuild /
-  docker-compose.development.yml:  
-    - services: 
-        dev-js:
-          container_name: dev-js
-          command: ["bin/vite", "dev"]
-  bin/vite:
-  config/vite.json:
-  Gemfile:
-    - /gem ["']vite_rails["']/
-  vite.config.ts:
+  # app/javascript/entrypoints/application.css:
+  # app/views/layouts/application.html.erb:
+  #   - /vite_client_tag/
+  #   - /vite_javascript_tag/
+  # mise/containers/app/Dockerfile.builder.railsnew:
+  #   - / --javascript=esbuild /
+  # docker-compose.development.yml:  
+  #   - services: 
+  #       watch-js:
+  #         container_name: watch-js
+  #         command: ["bin/vite", "dev"]
+  # bin/vite:
+  # config/vite.json:
+  # Gemfile:
+  #   - /gem ["']vite_rails["']/
+  # vite.config.ts:
 
 # vite: 
 #   config/routes.rb:

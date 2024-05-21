@@ -1,8 +1,7 @@
-
-  dev-js:
+  watch-js:
     <<: *development
     command: ["bin/vite", "dev"]
-    container_name: dev-js
+    container_name: watch-js
     environment:
       DEBUG: '*vite*'
       VITE_RUBY_HOST: 0.0.0.0

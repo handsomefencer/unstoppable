@@ -37,7 +37,7 @@ module Roro::TestHelpers::FilesHelper
     when Hash
       if expected.values.first.is_a?(Array)
       else
-        assert_equal(yaml, yaml.deep_merge(expected))
+        assert_equal(yaml, yaml.deep_merge(expected), msg: "#{expected} not found")
       end
     end
   end
