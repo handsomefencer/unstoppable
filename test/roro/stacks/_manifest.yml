@@ -8,7 +8,6 @@ sqlite:
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
 
-
 css-processors: &css-processors
   docker-compose.development.yml: 
     - services: 
@@ -18,19 +17,6 @@ css-processors: &css-processors
   package.json:
     - /scripts/
     - /build:css/
-
-js-node: &js-node 
-  docker-compose.development.yml:  
-    - services: 
-        dev:
-          container_name: dev
-        dev-js:
-          container_name: dev-js
-
-
-bun: 
-  mise/containers/app/Dockerfile.builder.railsnew:
-    - /--javascript=bun/
 
 bulma:
   <<: *css-processors
@@ -55,6 +41,13 @@ postcss:
     - /--css=postcss/
   postcss.config.js:
 
+sass:
+  docker-compose.development.yml: 
+    - services: 
+        watch-css:
+          container_name: watch-css
+          command: ["bin/rails", "dartsass:watch"]
+
 tailwind: 
   app/assets/stylesheets/application.tailwind.css:
   config/tailwind.config.js:
@@ -63,26 +56,41 @@ tailwind:
         watch-css:
           container_name: watch-css
           command: ["bin/rails", "tailwindcss:watch"]
-  
-importmaps: 
+
+js-node: &js-node 
+  docker-compose.development.yml:  
+    - services: 
+        dev:
+          container_name: dev
+        dev-js:
+          container_name: dev-js
+
+bun: 
+  docker-compose.development.yml:  
+    - services: 
+        dev-js:
+          container_name: dev-js
+          image: oven/bun:alpine
   mise/containers/app/Dockerfile.builder.railsnew:
+    - /--javascript=bun/
 
 esbuild: 
-  <<: *node
-  Procfile.dev:
-    - /web:/
+  <<: *js-node
   mise/containers/app/Dockerfile.builder.railsnew:
     - / --javascript=esbuild /
   docker-compose.development.yml:  
-    - services: 
-        watc-js:
-          container_name: dev-js
-          command: ["yarn", "build", "--watch"]
+  #   - services: 
+  #       watc-js:
+  #         container_name: dev-js
+  #         command: ["yarn", "build", "--watch"]
   package.json:
     - /esbuild/
 
+importmaps: 
+  mise/containers/app/Dockerfile.builder.railsnew:
+
 vite: 
-  <<: *node
+  <<: *js-node
   app/javascript/entrypoints/application.js:
   app/views/layouts/application.html.erb:
     - /vite_client_tag/
@@ -93,13 +101,12 @@ vite:
     - services: 
         dev-js:
           container_name: dev-js
+          command: ["bin/vite", "dev"]
   bin/vite:
   config/vite.json:
   Gemfile:
     - /gem ["']vite_rails["']/
   vite.config.ts:
-    # - /import { defineConfig } from ["']vite["']/
-    # - /import FullReload from ["']vite-plugin-full-reload["']/
 
 # vite: 
 #   config/routes.rb:

@@ -4,7 +4,7 @@ require 'test_helper'
 
 describe '4 Sass -> 4 SQLite -> 3 Importmaps -> 1 okonomi' do
   Given(:workbench) {}
-  
+
   Given do
     rollon(__dir__)
   end

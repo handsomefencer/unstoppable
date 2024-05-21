@@ -12,5 +12,3 @@ env:
         name: Vite ruby host. Vite service environment declartion in docker-compose.yml overrides this to 0.0.0.0.
         value: vite
 
-actions:
-  - insert_into_file("package.json", partial('package_json'), :before => "  \"name" )
