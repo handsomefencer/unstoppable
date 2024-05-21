@@ -9,6 +9,9 @@ env:
     alpine_version: 
       name: alpine development version
       value: 3.19
+    css_flag:
+      name: CSS processor flag for rails new
+      value: postcss
     js_flag:
       name: Rails new --javascript flag
       value: esbuild

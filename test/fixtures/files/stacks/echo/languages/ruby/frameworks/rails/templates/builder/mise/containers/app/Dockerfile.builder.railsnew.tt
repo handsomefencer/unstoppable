@@ -7,7 +7,8 @@ RUN echo -e "source 'https://rubygems.org'\ngem 'rails', '~> <%= @env[:base][:ra
 RUN bundle
 
 RUN bundle exec rails new . \
-<%= section('dockerfile/railsnew/flags') %>
+<%= section('dockerfile/railsnew/flags', ' \\\n') %>
+
 <%= section('dockerfile/railsnew/generators') %>
 RUN rm config/master.key
 

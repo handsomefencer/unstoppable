@@ -4,10 +4,11 @@ require 'test_helper'
 
 describe '3 PostCSS -> 4 SQLite -> 3 Importmaps -> 2 omakase' do
   Given(:workbench) {}
-  
+
   Given do
+    debuggerer
     rollon(__dir__)
   end
-
+  focus
   Then { assert_correct_manifest(__dir__) }
 end

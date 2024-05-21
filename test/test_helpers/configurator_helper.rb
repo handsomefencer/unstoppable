@@ -30,6 +30,11 @@ module Roro::TestHelpers::ConfiguratorHelper
                       .returns(answer)
   end
 
+  def add_dummy(file)
+    @dummyfiles ||= []
+    @dummyfiles << file
+  end
+
   def capture_stage_dummy(dir)
     dummy_dir = "#{dir}/dummy"
     FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir)
@@ -61,7 +66,8 @@ module Roro::TestHelpers::ConfiguratorHelper
   end
 
   def insert_dummy_files(*files)
-    @dummyfiles ||= []
+    expected_files ||= []
+    @dummyfiles ||= expected_files
     @dummyfiles += files
   end
 
