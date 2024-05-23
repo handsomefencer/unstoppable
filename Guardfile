@@ -23,4 +23,7 @@ guard :minitest, minitest_options do
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }
   watch(%r{^test/test_helpers/reflection_helper\.rb$}) { |m| 'test/roro/configurators/stack_reflector' }
+
+  watch(%r{^test/test_helpers/(.*)_helper\.rb$}) { |m| "test/test_helpers/test/#{m[1]}_helper_test.rb"}
+# test/test_helpers/test/configurator_helper_test.rb?
 end

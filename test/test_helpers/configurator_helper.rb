@@ -30,10 +30,6 @@ module Roro::TestHelpers::ConfiguratorHelper
                       .returns(answer)
   end
 
-  def add_dummy(file)
-    @dummyfiles ||= []
-    @dummyfiles << file
-  end
 
   def capture_stage_dummy(dir)
     dummy_dir = "#{dir}/dummy"
@@ -79,8 +75,9 @@ module Roro::TestHelpers::ConfiguratorHelper
     stack_test_root = "#{Roro::CLI.test_root}/roro/stacks"
     manifest = "#{stack_test_root}/_manifest.yml"
     files = read_yaml(manifest)[name.to_sym]&.keys&.map(&:to_s)
+    # foo = read_yaml(manifest)[:stacks]
+    # debugger
     insert_dummy_files(*files)
-    foo = read_yaml(manifest)[:stacks]
     return if dir.eql?(stack_test_root)
 
     set_manifest_for_rollon(array.join('/'))
@@ -89,53 +86,56 @@ module Roro::TestHelpers::ConfiguratorHelper
   def rollon(dir)
     set_manifest_for_rollon(dir)
     debuggerer if ENV['DEBUGGERER'].eql?('true')
-    workbench
+    # workbench
     stubs_adventure(dir)
     stubs_dependencies_met?
     stubs_yes?
     stub_overrides
     if @rollon_dummies.eql?(true)
+      # ENV['RORO_DOCUMENT_LAYERS'] = 'true'
       cli = Roro::CLI.new
+      # system 'docker-compose down' if @rollon_dummies.eql?(true)
       @rollon_loud ? cli.rollon : quiet { cli.rollon }
       capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
+      # system 'docker-compose down' if @rollon_dummies.eql?(true)
     else
       copy_stage_dummy(dir)
       stub_run_actions
     end
   end
 
-  def verify_manifest(dir = nil, file = nil)
-    hash ||= read_yaml("#{Roro::CLI.test_root}/roro/stacks/#{file}")
-    @filematchers.reverse.each do |fm|
-      hash.dig(fm.to_sym)&.each do |filename, matchers|
-        if matchers.nil?
-          assert_file filename.to_s
-        else
-          matchers.each do |matcher|
-            msg = "#{filename} in #{dir}/dummy/#{filename} does not contain #{matcher}"
-            if matcher.is_a?(Hash)
-              assert_yaml(filename.to_s, matcher)
-            elsif matcher.chars.first.match?('/')
-              regex = matcher.chars
-              regex.shift
-              regex.pop
-              regex.join
-              assert_file(filename.to_s, eval("#{matcher}"))
-            else
-              assert_file(filename.to_s, eval(matcher))
-            end
-          end
-        end
-      end
-    end
-  end
+  # def verify_manifest(dir = nil, file = nil)
+  #   hash ||= read_yaml("#{Roro::CLI.test_root}/roro/stacks/#{file}")
+  #   @filematchers.reverse.each do |fm|
+  #     hash.dig(fm.to_sym)&.each do |filename, matchers|
+  #       if matchers.nil?
+  #         assert_file filename.to_s
+  #       else
+  #         matchers.each do |matcher|
+  #           msg = "#{filename} in #{dir}/dummy/#{filename} does not contain #{matcher}"
+  #           if matcher.is_a?(Hash)
+  #             assert_yaml(filename.to_s, matcher)
+  #           elsif matcher.chars.first.match?('/')
+  #             regex = matcher.chars
+  #             regex.shift
+  #             regex.pop
+  #             regex.join
+  #             assert_file(filename.to_s, eval("#{matcher}"))
+  #           else
+  #             assert_file(filename.to_s, eval(matcher))
+  #           end
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
 
-  def assert_correct_manifest(dir = nil, hash = nil)
-    manifests = Dir.glob("#{Roro::CLI.test_root}/roro/stacks/_*.yml")
-    manifests.each do |manifest|
-      verify_manifest(dir, manifest.split('/').last)
-    end
-  end
+  # def assert_correct_manifest(dir = nil, hash = nil)
+  #   manifests = Dir.glob("#{Roro::CLI.test_root}/roro/stacks/_*.yml")
+  #   manifests.each do |manifest|
+  #     verify_manifest(dir, manifest.split('/').last)
+  #   end
+  # end
 
   def stubs_answer(answer)
     Thor::Shell::Basic.any_instance

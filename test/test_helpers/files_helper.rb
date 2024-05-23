@@ -8,7 +8,7 @@ module Roro::TestHelpers::FilesHelper
 
   def assert_file(file, *contents)
     actual = Dir.glob("#{Dir.pwd}/**/*")
-    assert File.exist?(file), "Expected #{file} to exist, but does not. actual: #{actual[0]}"
+    assert(File.exist?(file), "Expected #{file} to exist, but does not. actual: #{actual[0]}")
 
     read = File.read(file) if block_given? || !contents.empty?
     yield read if block_given?

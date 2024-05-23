@@ -9,6 +9,5 @@ describe '5 none -> 4 SQLite -> 1 Bun -> 1 okonomi' do
     debuggerer
     rollon(__dir__)
   end
-focus
   Then { assert_correct_manifest(__dir__) }
 end
