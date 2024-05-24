@@ -1,0 +1,7 @@
+tailwind: 
+  app/assets/stylesheets/application.tailwind.css:
+  docker-compose.development.yml: 
+    - services: 
+        watch-css:
+          container_name: watch-css
+          command: ["bin/rails", "tailwindcss:watch"]
