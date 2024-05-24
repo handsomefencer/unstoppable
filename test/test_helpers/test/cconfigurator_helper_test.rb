@@ -3,7 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::TestHelpers::ConfiguratorHelper' do
-  Given(:subject) { Rollon.getsome("#{Roro::CLI.test_root}/roro/stacks/#{stack}") }
+  Given(:subject) { Rollon.new("#{Roro::CLI.test_root}/roro/stacks/#{stack}") }
   Given(:stack) { "tailwind/sqlite/importmaps/okonomi" }
 
   describe '#initialize' do

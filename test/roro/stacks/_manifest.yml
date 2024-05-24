@@ -54,7 +54,7 @@ tailwind:
     - services: 
         watch-css:
           container_name: watch-css
-          # command: ["yarn", "build:css", "--watch"]
+          command: ["yarn", "build:css", "--watch"]
 
 js-node: &js-node 
   docker-compose.development.yml:  
