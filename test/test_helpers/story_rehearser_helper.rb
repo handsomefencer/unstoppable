@@ -2,55 +2,52 @@
 
 module Roro::TestHelpers::ConfiguratorHelper
   class StoryRehearser
-    attr_reader :answers, :choices, :dir, :dummyfiles,
-      :filematchers, :roro_test_root, :stack_test_root,
-      :manifests, :reflector
+    attr_reader :answers, :base_dir, :choices, :dir, :dummyfiles,
+      :filematchers, :roro_test_root, :stack_test_root, :story_path,
+      :manifests, :manifest,
+      :reflector, :story_root
 
-    def initialize(directory)
+    def initialize(directory, options={})
       @dir = directory
-      @dummyfiles = []
-      @filematchers = []
-
-      @roro_test_root = "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot"
-      @stack_test_root = "#{roro_test_root}/stacks"
-      set_manifest_for_rollon(dir)
-      @choices = filematchers[0..-1].reverse
       @reflector = Roro::Configurator::StackReflector.new
-      @answers = infer_answers_from_testfile_location(directory)
+      @story_root = directory.split('/stacks').first
+      @story_path = directory.split("#{@story_root}/").last
+      @choices = @story_path.split('/')
+      @answers = infer_answers_from_testfile_location
+      @manifests = gather_manifests
+      @manifest = merge_manifests
+      @dummyfiles = collect_dummyfiles
     end
 
-    def infer_answers_from_testfile_location(path = nil)
+    def infer_answers_from_testfile_location
       reflector.adventures
-        .select { |_k, v| v[:choices].map(&:downcase).eql?(choices) }
+        .select { |_k, v| v[:choices].map(&:downcase).eql?(choices[1..-1]) }
         .values.first[:picks]
     end
 
-    def set_manifest_for_rollon(dir, array = [])
-      array = dir.split("#{roro_test_root}/").last.split('/')
-      name = array.pop
-
-      @filematchers << name
-      manifest = "#{stack_test_root}/_manifest.yml"
-      files = read_yaml(manifest)[name.to_sym]&.keys&.map(&:to_s)
-      @dummyfiles += files if files
-      set_manifest_for_rollon(array.join('/')) unless array.empty?
+    def gather_manifests
+      [].tap do |a|
+        path = story_root.dup
+        choices.each do |c|
+          a.concat(Dir.glob("#{path.concat("/#{c}")}/_manifest*.yml") )
+        end
+      end
     end
 
-    def gather_manifests(array=nil, path=roro_test_root, manifests=[])
-      array ||= filematchers
-      path ||= roro_test_root
-      path = "#{path}/#{array.pop}"
-      manifests += Dir.glob("#{path}/_manifest*.yml")
-      array.empty? ? manifests : gather_manifests(array, path, manifests)
+    def merge_manifests
+      {}.tap { |h| gather_manifests.each { |m| h.merge!(read_yaml(m)) }}
     end
 
-    def merge_manifests(array=gather_manifests, hash={})
-      hash.merge!(read_yaml(array.shift))
-      array.empty? ? hash : merge_manifests(array, hash)
+    def collect_dummyfiles
+      [].tap do |a|
+        choices.each do |choice|
+          files = manifest[choice.to_sym]&.keys&.map(&:to_s)
+          a.concat(files) if files
+        end
+      end
     end
 
     def rollon
-      set_manifest_for_rollon(dir)
       debuggerer if ENV['DEBUGGERER'].eql?('true')
       stubs_adventure(dir)
       if @rollon_dummies.eql?(true)
@@ -58,43 +55,50 @@ module Roro::TestHelpers::ConfiguratorHelper
         @rollon_loud ? cli.rollon : quiet { cli.rollon }
         capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
       else
-        copy_stage_dummy(dir)
-        stub_run_actions
+        if glob_dir.empty?
+          raise  'Need to run ya debuggerer, mate.'
+        else
+          copy_stage_dummy(dir)
+          stub_run_actions
+        end
       end
     end
 
+    def copy_stage_dummy(path)
+      debugger
+      dummy_dir = "#{path}/dummy/."
+      FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
+    end
 
+    def stubs_adventure(path = nil, _adventure = nil)
+      Roro::Configurators::AdventurePicker
+        .any_instance
+        .stubs(:ask)
+        .returns(*answers)
+    end
 
-  end
+    def capture_stage_dummy(dir)
+      dummy_dir = "#{dir}/dummy"
+      FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir)
+      FileUtils.mkdir_p(dummy_dir)
+      @dummyfiles.each do |df|
+        next unless File.directory?(df)
 
-  def assert_correct_manifest(dir = nil, hash = nil)
-    story = StoryRehearser.new(dir)
-    story.rollon
-    hash = story.merge_manifests
-    story.choices.each do |fm|
-      hash.dig(fm.to_sym)&.each do |filename, matchers|
-        if matchers.nil?
-          assert_file filename.to_s
-        else
-          matchers.each do |matcher|
-            msg = "#{filename} in #{dir}/dummy/#{filename} does not contain #{matcher}"
-            if matcher.is_a?(Hash)
-              assert_yaml(filename.to_s, matcher)
-            elsif matcher.chars.first.match?('/')
-              regex = matcher.chars
-              regex.shift
-              regex.pop
-              regex.join
-              begin
-                assert_file(filename.to_s, eval("#{matcher}"))
-              rescue
-                debugger
-              end
-            else
-              assert_file(filename.to_s, eval(matcher))
-            end
-          end
+        @dummyfiles += glob_dir(df).map do |mig|
+          mig = mig.split("#{Dir.pwd}/").last
         end
+        @dummyfiles.delete(df)
+      end
+      @dummyfiles.each do |dummy|
+        dummyfile = dummy.split(dummy_dir).last
+        artifact = "#{Dir.pwd}/#{dummyfile}"
+        next unless File.file?("#{Dir.pwd}/#{dummyfile}") && File.file?(dummyfile)
+
+        array = dummyfile.split('/')
+        array.pop
+        target = array.join('/')
+        FileUtils.mkdir_p("#{dummy_dir}/#{target}")
+        FileUtils.cp_r(artifact, "#{dummy_dir}/#{dummy}")
       end
     end
   end

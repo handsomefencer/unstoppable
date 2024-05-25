@@ -3,25 +3,42 @@
 require 'test_helper'
 
 describe 'Roro::TestHelpers::ConfiguratorHelper' do
-  Given(:fixture_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks" }
-  Given(:fixture_path) { "foxtrot/tailwind/sqlite/importmaps/okonomi" }
-  Given(:subject) { StoryRehearser.new("#{fixture_root}/#{fixture_path}") }
+
+  Given(:story_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot" }
+  Given(:story_path) { 'stacks/tailwind/sqlite/importmaps/okonomi' }
+  Given(:subject) { StoryRehearser.new("#{story_root}/#{story_path}") }
 
   describe '#initialize' do
-    focus
-    Then do
-      assert_match /okonomi/, subject.dir
-      # assert_equal subject.roro_test_root, "/usr/src/test/roro"
-      # assert_equal subject.stack_test_root, "/usr/src/test/roro/stacks"
-      # assert_equal subject.filematchers, %w[okonomi importmaps sqlite tailwind stacks]
-      # assert_equal subject.choices, %w[tailwind sqlite importmaps okonomi]
-      # assert_includes subject.dummyfiles, '.gitignore'
-      # assert_equal subject.answers, [6,4,3,1]
+    Given(:assert_correct_variables) do
+      assert_equal story_root, subject.story_root
+      assert_equal story_path, subject.story_path
+      assert_equal "#{story_root}/#{story_path}", subject.dir
+    end
+
+    describe 'when stack is the active stack' do
+      Given(:story_root) { "#{Roro::CLI.test_root}/roro" }
+      Then { assert_correct_variables }
+    end
+
+    describe 'when stack is a fixture stack' do
+      Given(:story_root) { "#{Roro::CLI.test_root}/roro" }
+      Then { assert_correct_variables }
     end
   end
 
-  describe '#gather_manifests' do
-    Then { assert_equal subject.gather_manifests.size, 2 }
+  describe '#choices' do
+    Given(:expected) { %w[stacks tailwind sqlite importmaps okonomi] }
+    Then { assert_equal expected, subject.choices }
+  end
+
+  describe '#answers' do
+    Then { assert_equal [6, 4, 3, 1], subject.answers }
+  end
+
+  describe '#manifests' do
+    Then { assert_equal 2, subject.manifests.size }
+    And { assert_match /stacks\/_manifest.yml/, subject.manifests.first }
+    And { assert_match /okonomi\/_manifest.yml/, subject.manifests.last }
   end
 
   describe '#merge_manifests' do
@@ -32,14 +49,19 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
     end
 
     describe 'when not overriden in child file' do
-      Given(:stack) { "tailwind/sqlite/vite/okonomi" }
+      When(:story_path) { 'stacks/tailwind/sqlite/importmaps/omakase' }
       Then { assert_equal "watch-css", result  }
-
     end
 
     describe 'when overriden in child file' do
-      Then { assert_equal "watch-oops", result  }
+      Then { assert_equal "watch-child-override", result  }
     end
+  end
+
+  describe '#collect_dummyfiles' do
+    Given(:result) { subject.collect_dummyfiles }
+    Then { assert_includes subject.dummyfiles, '.gitignore' }
+    And { assert_includes result, 'Gemfile' }
   end
 
   describe '#glob_dir(regex)' do
