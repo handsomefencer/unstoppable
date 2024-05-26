@@ -6,7 +6,8 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
 
   Given(:story_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot" }
   Given(:story_path) { 'stacks/tailwind/sqlite/importmaps/okonomi' }
-  Given(:subject) { StoryRehearser.new("#{story_root}/#{story_path}") }
+  Given(:options) { nil}
+  Given(:subject) { StoryRehearser.new("#{story_root}/#{story_path}", options) }
 
   describe '#initialize' do
     Given(:assert_correct_variables) do
@@ -16,6 +17,7 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
     end
 
     describe 'when stack is the active stack' do
+      Given { debuggerer }
       Given(:story_root) { "#{Roro::CLI.test_root}/roro" }
       Then { assert_correct_variables }
     end
@@ -23,6 +25,23 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
     describe 'when stack is a fixture stack' do
       Given(:story_root) { "#{Roro::CLI.test_root}/roro" }
       Then { assert_correct_variables }
+    end
+
+    describe 'when debugger not specified' do
+      Then { refute subject.rollon_dummies }
+      And { refute subject.rollon_loud }
+    end
+
+    describe 'when debugger false' do
+      Given(:options) { { debuggerer: false } }
+      Then { refute subject.rollon_dummies }
+      And { refute subject.rollon_loud }
+    end
+
+    describe 'when debugger true' do
+      Given(:options) { { debuggerer: true } }
+      Then { assert subject.rollon_dummies }
+      And { assert subject.rollon_loud }
     end
   end
 
@@ -48,12 +67,12 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
         :services, :"watch-css", :container_name)
     end
 
-    describe 'when not overriden in child file' do
+    describe 'when not overriden' do
       When(:story_path) { 'stacks/tailwind/sqlite/importmaps/omakase' }
       Then { assert_equal "watch-css", result  }
     end
 
-    describe 'when overriden in child file' do
+    describe 'when overriden' do
       Then { assert_equal "watch-child-override", result  }
     end
   end
@@ -64,31 +83,12 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
     And { assert_includes result, 'Gemfile' }
   end
 
-  describe '#glob_dir(regex)' do
-    # Given { set_workbench('echo') }
-    # Then { assert_match /ruby/, glob_dir('**/*ruby.yml').first }
-  end
+  describe '#rollon' do
+    Given(:result) { subject.rollon }
+    Given { result }
 
-  describe '#set_workench(dir)' do
-    # Given { set_workbench('echo') }
-    # Then { assert_match /echo/, Dir.pwd }
-  end
+    Then { assert_equal 'blah', glob_dir}
 
-  describe '#use_fixture_stack(stack)' do
-    # Given { use_fixture_stack('echo') }
-    # Then { assert_match /echo/, Roro::CLI.stacks }
-  end
-
-  describe '#debuggerer' do
-    # Given { debuggerer }
-    # Then { assert @rollon_dummies }
-  end
-  describe '#copy_stage_dummy' do
-# path
-#   "/usr/src/test/roro/stacks/tailwind/sqlite/importmaps/okonomi"
-
-#  Dir.pwd
-# "/tmp/d20240522-630-czvdnp/workbench"
 
   end
 end

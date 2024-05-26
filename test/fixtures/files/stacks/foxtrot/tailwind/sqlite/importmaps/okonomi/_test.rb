@@ -12,7 +12,6 @@ describe '6 tailwind -> 4 SQLite -> 3 Importmaps -> 1 okonomi' do
     # Rollon.new(__dir__)
     # rollon(__dir__)
   end
-  focus
   Then { assert_correct_manifest(__dir__) }
   # And { assert_file 'config/tailwind.config.js' }
 end

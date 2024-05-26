@@ -2,8 +2,9 @@
 
 module Roro::TestHelpers::ConfiguratorHelper
 
-  def glob_dir(regex = '**/*')
-    Dir.glob("#{Dir.pwd}/#{regex}/**/*")
+  def glob_dir(regex = '**/*', path=nil)
+    string = path ? "#{path}/#{regex}" : regex
+    Dir.glob("#{Dir.pwd}/#{string}")
   end
 
   def use_fixture_stack(stack = nil)
@@ -19,19 +20,14 @@ module Roro::TestHelpers::ConfiguratorHelper
     File.read("#{@roro_dir}/test/fixtures/files/#{filename}")
   end
 
-  # def copy_stage_dummy(path)
-  #   dummy_dir = "#{path}/dummy/."
-  #   FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
-  # end
-
-  def stubs_yes?(answer = 'yes')
-    Thor::Shell::Basic.any_instance
-                      .stubs(:yes?)
-                      .returns(answer)
+  def debuggerer
+    @rollon_dummies = true
+    @rollon_loud = true
   end
 
-
   def assert_correct_manifest(story)
+    debuggerer if ENV['DEBUGGERER'].eql?('true')
+
     story = StoryRehearser.new(dir)
     story.rollon
     hash = story.merge_manifests
@@ -62,6 +58,18 @@ module Roro::TestHelpers::ConfiguratorHelper
       end
     end
   end
+
+    #   def insert_dummy_files(*files)
+    #   expected_files ||= []
+    #   @dummyfiles ||= expected_files
+    #   @dummyfiles += files
+    # end
+
+# def copy_stage_dummy(path)
+  #   dummy_dir = "#{path}/dummy/."
+  #   FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
+  # end
+
   # def capture_stage_dummy(dir)
   #   dummy_dir = "#{dir}/dummy"
   #   FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir)
@@ -87,16 +95,7 @@ module Roro::TestHelpers::ConfiguratorHelper
   #   end
   # end
 
-  def debuggerer
-    @rollon_dummies = true
-    @rollon_loud = true
-  end
 
-  def insert_dummy_files(*files)
-    expected_files ||= []
-    @dummyfiles ||= expected_files
-    @dummyfiles += files
-  end
 
   # def set_manifest_for_rollon(dir, array = [])
   #   @filematchers ||= []
@@ -168,24 +167,6 @@ module Roro::TestHelpers::ConfiguratorHelper
   #   end
   # end
 
-  def stubs_answer(answer)
-    Thor::Shell::Basic.any_instance
-                      .stubs(:ask)
-                      .returns(answer)
-  end
-
-  def stubs_dependencies_met?(value = false)
-    Roro::Configurators::Configurator
-      .any_instance
-      .stubs(:dependency_met?)
-      .returns(value)
-  end
-
-  def stub_run_actions
-    Roro::Configurators::AdventureWriter
-      .any_instance
-      .stubs(:run)
-  end
 
   # def stubs_adventure(path = nil, _adventure = nil)
   #   answers = infer_answers_from_testfile_location
@@ -207,20 +188,6 @@ module Roro::TestHelpers::ConfiguratorHelper
   #   end
   # end
 
-  def stub_journey(answers)
-    Thor::Shell::Basic
-      .any_instance
-      .stubs(:ask)
-      .returns(*answers)
-  end
-
-  def stub_overrides(answer = '')
-    overrides = @overrides || []
-    Roro::Configurators::QuestionAsker
-      .any_instance
-      .stubs(:confirm_default)
-      .returns(*overrides).then.returns(answer)
-  end
 
   def stack_path(args = nil)
     append = defined?(stack) ? "/#{stack}" : nil

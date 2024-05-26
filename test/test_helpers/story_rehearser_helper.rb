@@ -4,10 +4,12 @@ module Roro::TestHelpers::ConfiguratorHelper
   class StoryRehearser
     attr_reader :answers, :base_dir, :choices, :dir, :dummyfiles,
       :filematchers, :roro_test_root, :stack_test_root, :story_path,
-      :manifests, :manifest,
+      :manifests, :manifest, :rollon_dummies, :rollon_loud,
       :reflector, :story_root
 
     def initialize(directory, options={})
+      debuggerer = options&.dig(:debuggerer) || false
+      @rollon_dummies, @rollon_loud = debuggerer, debuggerer
       @dir = directory
       @reflector = Roro::Configurator::StackReflector.new
       @story_root = directory.split('/stacks').first
@@ -48,7 +50,6 @@ module Roro::TestHelpers::ConfiguratorHelper
     end
 
     def rollon
-      debuggerer if ENV['DEBUGGERER'].eql?('true')
       stubs_adventure(dir)
       if @rollon_dummies.eql?(true)
         cli = Roro::CLI.new
@@ -56,25 +57,12 @@ module Roro::TestHelpers::ConfiguratorHelper
         capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
       else
         if glob_dir.empty?
-          raise  'Need to run ya debuggerer, mate.'
+          raise 'Need to run your debuggerer, mate.'
         else
           copy_stage_dummy(dir)
           stub_run_actions
         end
       end
-    end
-
-    def copy_stage_dummy(path)
-      debugger
-      dummy_dir = "#{path}/dummy/."
-      FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
-    end
-
-    def stubs_adventure(path = nil, _adventure = nil)
-      Roro::Configurators::AdventurePicker
-        .any_instance
-        .stubs(:ask)
-        .returns(*answers)
     end
 
     def capture_stage_dummy(dir)
@@ -100,6 +88,62 @@ module Roro::TestHelpers::ConfiguratorHelper
         FileUtils.mkdir_p("#{dummy_dir}/#{target}")
         FileUtils.cp_r(artifact, "#{dummy_dir}/#{dummy}")
       end
+    end
+
+    def copy_stage_dummy(path)
+      dummy_dir = "#{path}/dummy/."
+      FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
+    end
+
+
+
+    private
+
+    def stubs_adventure(path = nil, _adventure = nil)
+      Roro::Configurators::AdventurePicker
+        .any_instance
+        .stubs(:ask)
+        .returns(*answers)
+    end
+
+    def stubs_answer(answer)
+      Thor::Shell::Basic.any_instance
+                        .stubs(:ask)
+                        .returns(answer)
+    end
+
+    def stubs_dependencies_met?(value = false)
+      Roro::Configurators::Configurator
+        .any_instance
+        .stubs(:dependency_met?)
+        .returns(value)
+    end
+
+    def stub_journey(answers)
+      Thor::Shell::Basic
+        .any_instance
+        .stubs(:ask)
+        .returns(*answers)
+    end
+
+    def stub_run_actions
+      Roro::Configurators::AdventureWriter
+        .any_instance
+        .stubs(:run)
+    end
+
+    def stub_overrides(answer = '')
+      overrides = @overrides || []
+      Roro::Configurators::QuestionAsker
+        .any_instance
+        .stubs(:confirm_default)
+        .returns(*overrides).then.returns(answer)
+    end
+
+    def stubs_yes?(answer = 'yes')
+      Thor::Shell::Basic.any_instance
+                        .stubs(:yes?)
+                        .returns(answer)
     end
   end
 end
