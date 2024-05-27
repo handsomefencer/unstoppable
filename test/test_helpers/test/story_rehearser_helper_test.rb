@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe 'Roro::TestHelpers::ConfiguratorHelper' do
-
   Given(:story_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot" }
   Given(:story_path) { 'stacks/tailwind/sqlite/importmaps/okonomi' }
   Given(:options) { nil}
