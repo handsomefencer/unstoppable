@@ -2,10 +2,6 @@
 
 module Roro::TestHelpers::ConfiguratorHelper
 
-  def glob_dir(regex = '**/*', path=nil)
-    string = path ? "#{path}/#{regex}" : regex
-    Dir.glob("#{Dir.pwd}/#{string}")
-  end
 
   def use_fixture_stack(stack = nil)
     return unless stack
@@ -26,6 +22,7 @@ module Roro::TestHelpers::ConfiguratorHelper
   end
 
   def assert_correct_manifest(story)
+    debuger
     debuggerer if ENV['DEBUGGERER'].eql?('true')
 
     story = StoryRehearser.new(dir)
@@ -187,6 +184,19 @@ module Roro::TestHelpers::ConfiguratorHelper
   #   rescue
   #   end
   # end
+
+  def stub_journey(answers)
+    Thor::Shell::Basic
+      .any_instance
+      .stubs(:ask)
+      .returns(*answers)
+  end
+
+  def stubs_yes?(answer = 'yes')
+    Thor::Shell::Basic.any_instance
+                      .stubs(:yes?)
+                      .returns(answer)
+  end
 
 
   def stack_path(args = nil)

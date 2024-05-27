@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
-module Roro::TestHelpers::FilesHelper
+module Roro::TestHelpers::FilesTestHelper
+
+  def glob_dir(regex = nil, path=nil)
+    regex ||= '**/*'
+    string = path ? "#{path}/#{regex}" : regex
+    Dir.glob("#{Dir.pwd}/#{string}")
+  end
+
+  def copy_with_path(src, dst)
+    FileUtils.mkdir_p(File.dirname(dst))
+    FileUtils.cp(src, dst)
+  end
+
   def assert_file_match_in(file_matcher, files)
     msg = "'...#{file_matcher}' doesn't match any files in: #{files}"
     assert(files.any? { |file| file.match file_matcher }, msg)

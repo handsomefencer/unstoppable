@@ -2,16 +2,16 @@
 
 require 'test_helper'
 
-describe 'Roro::TestHelpers::WorkbencHelper' do
+describe 'Roro::TestHelpers::WorkbenchHelper' do
   Given(:files) { Dir.glob("#{Dir.pwd}/**/*") }
 
   describe '#prepare_destination when workbench is' do
-    describe 'unspecified must not run' do
+    describe 'not given must not run' do
       Then { assert_equal ENV['PWD'], Dir.pwd }
       And { refute_empty files }
     end
 
-    describe 'specified but nil must move to empty tmp folder' do
+    describe 'given but unspecified must move to tmpf without contents' do
       Given(:workbench) { }
       Then do
         refute_equal ENV['PWD'], Dir.pwd
@@ -20,7 +20,7 @@ describe 'Roro::TestHelpers::WorkbencHelper' do
       end
     end
 
-    describe 'specified with dummy folder moves to tmp folder with dummies' do
+    describe 'given and specified must move to tmpf with specified contents' do
       Given(:workbench) { 'crypto' }
       Then do
         refute_equal ENV['PWD'], Dir.pwd

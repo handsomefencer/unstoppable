@@ -2,11 +2,11 @@
 
 require 'test_helper'
 
-describe 'Roro::TestHelpers::ConfiguratorHelper' do
+describe 'Roro::TestHelpers::StoryRehearserHelper' do
   Given(:story_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot" }
   Given(:story_path) { 'stacks/tailwind/sqlite/importmaps/okonomi' }
   Given(:options) { nil}
-  Given(:subject) { StoryRehearser.new("#{story_root}/#{story_path}", options) }
+  Given(:subject) { StoryRehearserHelper.new("#{story_root}/#{story_path}", options) }
 
   describe '#initialize' do
     Given(:assert_correct_variables) do
@@ -76,18 +76,34 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
     end
   end
 
-  describe '#collect_dummyfiles' do
-    Given(:result) { subject.collect_dummyfiles }
-    Then { assert_includes subject.dummyfiles, '.gitignore' }
-    And { assert_includes result, 'Gemfile' }
+  describe '#collect_dummies' do
+    Then { assert_includes subject.dummies, '.gitignore' }
+    And { assert_includes subject.dummies, 'Gemfile' }
   end
 
   describe '#rollon' do
-    Given(:result) { subject.rollon }
-    Given { result }
+    Given(:workbench) {}
+    Given(:options) { { rollon_dummies: true, rollon_loud: true } }
+    Given(:execute) { subject.rollon }
 
-    Then { assert_equal 'blah', glob_dir}
+    describe 'when rollon_dummies: false must raise error' do
+      Given(:options) { { rollon_dummies: false} }
+      Then { assert_raises(RuntimeError) { execute } }
+    end
 
+    describe 'when rollon_dummies: true' do
+      describe 'must capture dummy files' do
+        Given { execute }
+        Then { refute_match /usr\/src/, Dir.pwd }
+        And { assert_match 'workbench', Dir.pwd }
+        And { assert glob_dir('/**/*Gemfile').first }
 
+        describe 'when dummies captured and rollon_dummies: false' do
+          Given(:options) { { rollon_dummies: true } }
+          Given { execute }
+          Then { assert glob_dir('/**/*Gemfile').first }
+        end
+      end
+    end
   end
 end
