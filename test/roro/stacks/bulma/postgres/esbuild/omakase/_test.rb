@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe '2 Bulma -> 3 Postgres -> 2 ESBuild -> 2 omakase' do
   Given(:workbench) {}

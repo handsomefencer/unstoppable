@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe '2 Bulma -> 2 MySQL -> 1 Bun -> 2 omakase' do
   Given(:workbench) {}

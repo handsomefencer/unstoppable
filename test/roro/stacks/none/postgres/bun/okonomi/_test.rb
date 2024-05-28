@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe '5 none -> 3 Postgres -> 1 Bun -> 1 okonomi' do
   Given(:workbench) {}

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe '1 Bootstrap -> 2 MySQL -> 3 Importmaps -> 1 okonomi' do
   Given(:workbench) {}

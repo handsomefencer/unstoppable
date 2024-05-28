@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe '5 none -> 2 MySQL -> 1 Bun -> 1 okonomi' do
   Given(:workbench) {}
-
+  
   Given do
-    debuggerer
     rollon(__dir__)
   end
 
