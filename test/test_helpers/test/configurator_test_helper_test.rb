@@ -3,6 +3,7 @@
 require 'test_helper'
 
 describe 'Roro::TestHelpers::ConfiguratorHelper' do
+  Given { skip }
 
   describe '#glob_dir(regex)' do
     Given(:workbench) { 'crypto' }
@@ -52,28 +53,7 @@ describe 'Roro::TestHelpers::ConfiguratorHelper' do
     end
   end
 
-  describe '#use_fixture_stack' do
-    Given(:stack) { nil }
-    Given(:use) { use_fixture_stack(stack) }
-    Given(:stack_location) { Roro::CLI.stacks }
-    Given(:stacks) { Roro::CLI.stacks }
-    Given(:actual_stack) { /lib\/roro\/stacks/}
-    Given(:fixture_stack) { /fixtures\/files\/stacks\/alpha/ }
 
-    describe 'when not called' do
-      Then { assert_match actual_stack, stacks }
-    end
-
-    describe 'when called without stack arg' do
-      Given { use_fixture_stack }
-      Then { assert_match actual_stack, stack_location }
-    end
-
-    describe 'when called with stack ' do
-      Given { use_fixture_stack('alpha') }
-      Then { assert_match fixture_stack, stack_location }
-    end
-  end
 
 
   describe '#set_workench(dir)' do

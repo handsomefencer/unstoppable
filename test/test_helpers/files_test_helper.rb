@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Roro::TestHelpers::FilesTestHelper
-
-  def glob_dir(regex = nil, path=nil)
+  def globdir(regex = nil, path=nil)
     regex ||= '**/*'
     string = path ? "#{path}/#{regex}" : regex
     Dir.glob("#{Dir.pwd}/#{string}")

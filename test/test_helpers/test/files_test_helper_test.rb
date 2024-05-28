@@ -7,66 +7,80 @@ describe 'Roro::TestHelpers::FilesTestHelper' do
     Given(:workbench) { 'crypto' }
     Given(:expected) { /entrypoint.sh/ }
     Given(:regex) { "**/*.sh" }
-    Given(:path) { 'crypto/roro'}
-    Given(:result) { glob_dir(regex, path).first }
+    Given(:path) { "crypto/roro/scripts" }
+    Given(:result) { globdir(regex, path) }
 
-    describe 'when directory is empty' do
-      Given(:workbench) {  }
-      Then { assert_empty glob_dir }
+    describe 'when default' do
+      Given(:regex) { nil }
+      Given(:path) { nil }
+
+      describe 'when workbench has files' do
+        Then { refute_empty result }
+      end
+
+      describe 'when workbench has no files' do
+        Given(:workbench) { }
+        Then { assert_empty result}
+      end
     end
 
-    describe 'when directory is not empty' do
-      Then { refute_empty glob_dir }
+    describe 'when file matches regex and path' do
+      Then { assert_match expected, result.first }
     end
 
-    describe 'when regex is custom and no path specified' do
-      Then { assert_match expected, glob_dir(regex).first }
+    describe 'when file matches regex but not in path' do
+      Given(:path) { "crypto/roro/env" }
+      Then { assert_empty result}
     end
 
-    describe 'when regex is custom and file is in specified path' do
-      Given(:path) { 'crypto/roro'}
-      Then { assert_match expected, result }
+    describe 'when file does not match regex but matches path' do
+      Given(:regex) { "**/*.pdf" }
+      Then { assert_empty result }
     end
 
-    describe 'when regex is custom but file is not in specified path' do
-      Given(:path) { 'crypto/roro/scripts'}
-      Then { assert_nil result }
+    describe 'when regex is nil and file in path' do
+      Given(:regex) { nil }
+      Then { assert_match expected, result.first }
     end
+
+    describe 'when path does not exist' do
+      Given(:path) { 'crypto/nomicon'}
+      Then { assert_empty result }
+    end
+
+    describe 'when regex nil and no matching path' do
+      Then { refute globdir(nil, 'crypto/nomicon').first }
+    end
+
+    # Given(:args) { nil }
+    # Given(:result) { globdir(*args).first }
+
+    # describe 'when default and workbench is empty' do
+    #   focus
+    #   Then { assert_empty result}
+    # end
+
+    # describe 'when default must find all files' do
+    #   Given(:workbench) { 'crypto' }
+    #   # focus
+    #   Then { refute_empty globdir }
+    # end
+
+    # describe 'when regex specified' do
+    #   Given(:args) { ["**/*.sh"] }
+# focus
+      # Then { assert_match expected, result }
+    # end
+
+    # describe 'when regex and path specified' do
+    #   Given(:path) { 'crypto/roro'}
+    #   Then { assert_match expected, result }
+
+    #   describe 'when file is not in path' do
+    #     Given(:path) { 'crypto/roro/scripts'}
+    #     Then { assert_nil result }
+    #   end
+    # end
 
   end
-  describe '#use_fixture_stack' do
-    Given(:stack) { nil }
-    Given(:use) { use_fixture_stack(stack) }
-    Given(:stack_location) { Roro::CLI.stacks }
-    Given(:stacks) { Roro::CLI.stacks }
-    Given(:actual_stack) { /lib\/roro\/stacks/}
-    Given(:fixture_stack) { /fixtures\/files\/stacks\/alpha/ }
-
-    describe 'when not called' do
-      focus
-      Then { assert_match actual_stack, stacks }
-    end
-
-    describe 'when called without stack arg' do
-      Given { use_fixture_stack }
-      Then { assert_match actual_stack, stack_location }
-    end
-
-    describe 'when called with stack ' do
-      Given { use_fixture_stack('alpha') }
-      Then { assert_match fixture_stack, stack_location }
-    end
-  end
-
-
-  describe '#set_workench(dir)' do
-    # Given { set_workbench('echo') }
-    # Then { assert_match /echo/, Dir.pwd }
-  end
-
-  describe '#use_fixture_stack(stack)' do
-    # Given { use_fixture_stack('echo') }
-    # Then { assert_match /echo/, Roro::CLI.stacks }
-  end
-
 end

@@ -20,8 +20,20 @@ include Roro::Crypto
 
 Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
 
-include Roro::TestHelpers::FilesHelper
-include Roro::TestHelpers::RakeTaskHelper
-include Roro::TestHelpers::ReflectionHelper
-include Roro::TestHelpers::AdventureHelper
-include Roro::TestHelpers::ConfiguratorHelper
+include Roro::TestHelpers::FilesTestHelper
+include Roro::TestHelpers
+# include Roro::TestHelpers::RakeTaskHelper
+# include Roro::TestHelpers::ReflectionHelper
+# include Roro::TestHelpers::AdventureHelper
+# include Roro::TestHelpers::ConfiguratorHelper
+
+
+# # frozen_string_literal: true
+
+module Roro
+  module TestHelpers
+    include FilesTestHelper
+    include StackReflectorTestHelper
+    include ConfiguratorHelper
+  end
+end

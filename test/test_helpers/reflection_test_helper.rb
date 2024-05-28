@@ -1,4 +1,4 @@
-module Roro::TestHelpers::ReflectionHelper
+module Roro::TestHelpers::StackReflectorTestHelper
   def assert_expected_chapters
     assert_equal(
       %w[alpine databases docker git redis] + expected[:chapters],
@@ -43,11 +43,34 @@ module Roro::TestHelpers::ReflectionHelper
     assert_equal(expected.dig(:templates_paths), actual, msg: 'missing templates_paths')
   end
 
+  def generate_adventure_fixture_file
+    fixture_file = "#{Roro::CLI.test_root}/fixtures/files/adventure.yml"
+    return if File.exist? fixture_file
+    subject = Roro::Configurators::StackReflector.new
+    picks = '1 1 1'
+    adventure = subject.adventure_for(*picks)
+    File.open(file, 'w') { |f| f.write(adventure.to_yaml) }
+  end
+
+  def adventure_fixture
+    generate_adventure_fixture_file
+    file = "#{Roro::CLI.test_root}/fixtures/files/adventure.yml"
+    yaml = read_yaml(file)
+  end
+
   def assert_expected_adventure
-    %i[itinerary choices picks tags title versions].each do |key|
+
+    %i[
+      itinerary
+      picks
+      tags
+      title
+      versions
+    ].each do |key|
       assert_equal(expected[key], adventure[key], msg: "missing #{key}") if expected[key]
     end
     assert_expected_chapters
+    assert_expected_choices
     assert_expected_env
     assert_expected_keys
     assert_expected_templates_partials_paths

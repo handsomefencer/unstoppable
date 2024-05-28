@@ -1,28 +1,12 @@
 # frozen_string_literal: true
 
 module Roro::TestHelpers::ConfiguratorHelper
-
-
-  def use_fixture_stack(stack = nil)
-    return unless stack
-
-    fixture_stacks = 'fixtures/files/stacks'
-    Roro::CLI
-      .stubs(:stacks)
-      .returns("#{Roro::CLI.test_root}/#{fixture_stacks}/#{stack}")
-  end
-
-  def fixture_file_content(filename)
-    File.read("#{@roro_dir}/test/fixtures/files/#{filename}")
-  end
-
   def debuggerer
     @rollon_dummies = true
     @rollon_loud = true
   end
 
   def assert_correct_manifest(story)
-    debuger
     debuggerer if ENV['DEBUGGERER'].eql?('true')
 
     story = StoryRehearser.new(dir)
@@ -56,11 +40,6 @@ module Roro::TestHelpers::ConfiguratorHelper
     end
   end
 
-    #   def insert_dummy_files(*files)
-    #   expected_files ||= []
-    #   @dummyfiles ||= expected_files
-    #   @dummyfiles += files
-    # end
 
 # def copy_stage_dummy(path)
   #   dummy_dir = "#{path}/dummy/."
@@ -198,7 +177,6 @@ module Roro::TestHelpers::ConfiguratorHelper
                       .returns(answer)
   end
 
-
   def stack_path(args = nil)
     append = defined?(stack) ? "/#{stack}" : nil
     prepend_valid = args.eql?(:invalid) ? 'invalid' : 'valid'
@@ -209,10 +187,6 @@ module Roro::TestHelpers::ConfiguratorHelper
   def assert_valid_stack
     assert_nil validator.validate(stack_path)
   end
-  # def copy_stage_dummy(path)
-  #   dummy_dir = "#{path}/dummy/."
-  #   FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
-  # end
 
   def quiet
     original_stderr = $stderr.clone

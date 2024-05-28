@@ -1,0 +1,38 @@
+---
+:chapters:
+- "/usr/src/test/fixtures/files/stacks/alpha/alpine.yml"
+- "/usr/src/test/fixtures/files/stacks/alpha/databases.yml"
+- "/usr/src/test/fixtures/files/stacks/alpha/docker.yml"
+- "/usr/src/test/fixtures/files/stacks/alpha/git.yml"
+- "/usr/src/test/fixtures/files/stacks/alpha/redis.yml"
+- "/usr/src/test/fixtures/files/stacks/alpha/unstoppable_developer_styles/okonomi/okonomi.yml"
+:choices:
+- okonomi
+- rails
+- sqlite
+:env:
+  :base:
+    :db_vendor:
+      :value: sqlite
+:itinerary:
+- 'unstoppable_developer_style: okonomi'
+:picks:
+- 1
+- 1
+- 1
+:templates_paths:
+- "/usr/src/test/fixtures/files/stacks/alpha/unstoppable_developer_styles/okonomi/templates"
+- "/usr/src/test/fixtures/files/stacks/alpha/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/templates"
+- "/usr/src/test/fixtures/files/stacks/alpha/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/databases/sqlite/templates"
+:templates_partials_paths:
+- "/usr/src/test/fixtures/files/stacks/alpha/unstoppable_developer_styles/okonomi/languages/ruby/frameworks/rails/templates/partials"
+:tags:
+- alpine
+- okonomi
+- rails
+- sqlite
+:pretty_tags: []
+:versions:
+  :rails: '6.1'
+  :ruby: '2.7'
+:title: 'unstoppable_developer_style: okonomi, database: sqlite'
