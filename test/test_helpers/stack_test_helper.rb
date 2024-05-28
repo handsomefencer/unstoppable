@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module Roro::TestHelpers::StackTestHelper
+  def debuggerer
+    @rollon_dummies = true
+    @rollon_loud = true
+  end
 
   def use_fixture_stack(stack = nil)
     return unless stack

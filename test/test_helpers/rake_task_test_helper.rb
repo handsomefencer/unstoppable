@@ -4,7 +4,7 @@ require 'rake'
 
 module Roro
   module TestHelpers
-    module RakeTaskHelper
+    module RakeTaskTestHelper
       def run_task(task_name)
         loc = 'test/fixtures/matrixes'
         FileUtils.mkdir_p("#{Dir.pwd}/#{loc}")

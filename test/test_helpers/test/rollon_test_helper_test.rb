@@ -2,12 +2,11 @@
 
 require 'test_helper'
 
-describe 'Roro::TestHelpers::StoryRehearserHelper' do
-  Given { skip }
+describe Roro::TestHelpers::RollonTestHelper do
   Given(:story_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot" }
   Given(:story_path) { 'stacks/tailwind/sqlite/importmaps/okonomi' }
-  Given(:options) { nil}
-  Given(:subject) { StoryRehearserHelper.new("#{story_root}/#{story_path}", options) }
+  Given(:options) { nil }
+  Given(:subject) { RollonTestHelper.new("#{story_root}/#{story_path}", options) }
 
   describe '#initialize' do
     Given(:assert_correct_variables) do
@@ -94,6 +93,7 @@ describe 'Roro::TestHelpers::StoryRehearserHelper' do
 
     describe 'when rollon_dummies: true' do
       describe 'must capture dummy files' do
+        Given { skip }
         Given { execute }
         Then { refute_match /usr\/src/, Dir.pwd }
         And { assert_match 'workbench', Dir.pwd }

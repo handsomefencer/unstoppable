@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Roro::TestHelpers
-  class StoryRehearserHelper
+  class RollonTestHelper
     include Roro::TestHelpers::FilesTestHelper
-    include Roro::TestHelpers::ConfiguratorHelper
+    include Roro::TestHelpers::ConfiguratorTestHelper
 
 
     attr_reader :answers, :base_dir, :choices, :dir, :dummies,

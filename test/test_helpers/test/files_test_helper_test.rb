@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Roro::TestHelpers::FilesTestHelper' do
+describe Roro::TestHelpers::FilesTestHelper do
   describe '#glob_dir(regex)' do
     Given(:workbench) { 'crypto' }
     Given(:expected) { /entrypoint.sh/ }

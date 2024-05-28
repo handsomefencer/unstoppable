@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class Minitest::Spec
-  include Roro::TestHelpers::StackTestHelper
 
   before do
     check_into_workbench

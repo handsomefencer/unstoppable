@@ -2,11 +2,10 @@
 
 require 'stack_test_helper'
 
-describe 'Roro::TestHelpers::StackReflectorTestHelper' do
-  # include Roro::TestHelpers::StackReflectorTestHelper
+describe Roro::TestHelpers::StackReflectorTestHelper do
 
   Given(:adventure) { adventure_fixture }
-  Given(:expected) {
+  Given(:expected) do
     {
       chapters: %w[okonomi],
       choices: %w[okonomi rails sqlite],
@@ -22,16 +21,16 @@ describe 'Roro::TestHelpers::StackReflectorTestHelper' do
       templates_paths: ['okonomi/templates', 'rails/templates', 'sqlite/templates'],
       versions: { rails: '6.1', ruby: '2.7' }
     }
-  }
+  end
 
-  Then {
+  Then do
     assert_expected_chapters
     assert_expected_choices
     assert_expected_env
     assert_expected_keys
     assert_expected_templates_partials_paths
     assert_expected_templates_paths
-  }
+  end
 
   And { assert_expected_adventure }
 end
