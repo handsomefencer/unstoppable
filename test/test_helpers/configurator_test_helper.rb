@@ -13,7 +13,7 @@ module Roro
       end
 
       def assert_correct_manifest(dir)
-        debuggerer
+        debugger
         story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
         story.choices.each do |fm|

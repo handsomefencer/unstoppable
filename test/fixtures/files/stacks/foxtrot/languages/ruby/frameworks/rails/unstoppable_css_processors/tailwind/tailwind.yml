@@ -1,0 +1,33 @@
+preface: some string
+
+env:
+  base:
+    css_flag:
+      name: CSS processor flag for rails new
+      value: tailwind
+    vite_entrypoint_css:
+      name: Import this file into vite application.css entrypoint
+      value: application.tailwind.css
+    watch_css_command:
+      name: Default command to run whent starting watch-js service
+      value: 
+          - "bin/rails"
+          - "tailwindcss:watch"
+  
+
+    #     gems = ask "Which gems would you like to add?"
+    #     gems.split(" ").map{ |gem| "  config.gem :#{gem}" }.join("\n")
+    #   end
+
+  
+  
+  #   insert_into_file "config/environment.rb", :after => "Rails::Initializer.run do |config|\n" do
+    #     gems = ask "Which gems would you like to add?"
+    #     gems.split(" ").map{ |gem| "  config.gem :#{gem}" }.join("\n")
+    #   end
+
+#   - inject_to_file('.gitignore', section('dot_gitignore'))
+# "scripts": {
+#   "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds",
+#   "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
+# }

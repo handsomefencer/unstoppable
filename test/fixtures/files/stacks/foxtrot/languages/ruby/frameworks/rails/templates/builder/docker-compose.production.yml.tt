@@ -1,0 +1,15 @@
+services:
+  production: 
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.production
+      tags: 
+        - <%= @env[:base][:app_name][:value] %>/<%= @env[:base][:app_name][:value] %>:${CIRCLE_SHA1:-latest}
+        - <%= @env[:base][:app_name][:value] %>/<%= @env[:base][:app_name][:value] %>:latest
+    container_name: production
+    environment: 
+      PRODUCTION_KEY: ${PRODUCTION_KEY:-default}
+    image: <%= @env[:base][:app_name][:value] %>/<%= @env[:base][:app_name][:value] %>:${CIRCLE_SHA1:-latest}
+    profiles: 
+      - production
+    ports:
+      - 3000:3000

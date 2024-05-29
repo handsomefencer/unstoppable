@@ -1,0 +1,7 @@
+env:
+  base:
+    db_vendor:
+      name: Database vendor name
+      value: sqlite3
+
+
