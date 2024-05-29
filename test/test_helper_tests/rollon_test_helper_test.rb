@@ -3,7 +3,6 @@
 require 'test_helper'
 
 describe Roro::TestHelpers::RollonTestHelper do
-  Given { skip }
   Given(:story_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot" }
   Given(:story_path) { 'stacks/tailwind/sqlite/importmaps/okonomi' }
   Given(:options) { nil }
@@ -17,7 +16,6 @@ describe Roro::TestHelpers::RollonTestHelper do
     end
 
     describe 'when stack is the active stack' do
-      Given { debuggerer }
       Given(:story_root) { "#{Roro::CLI.test_root}/roro" }
       Then { assert_correct_variables }
     end

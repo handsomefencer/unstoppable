@@ -61,7 +61,6 @@ module Roro::TestHelpers
         @rollon_loud ? cli.rollon : quiet { cli.rollon }
         capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
       else
-        debugger
         if Dir.glob("#{dir}/dummy/**/*").empty? && !dummies.empty?
           raise 'Need to run your debuggerer, mate.'
         else

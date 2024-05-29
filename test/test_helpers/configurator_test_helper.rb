@@ -13,6 +13,7 @@ module Roro
       end
 
       def assert_correct_manifest(dir)
+        debuggerer
         story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
         story.choices.each do |fm|
@@ -32,7 +33,6 @@ module Roro
                   begin
                     assert_file(filename.to_s, eval("#{matcher}"))
                   rescue
-                    debugger
                   end
                 else
                   assert_file(filename.to_s, eval(matcher))
