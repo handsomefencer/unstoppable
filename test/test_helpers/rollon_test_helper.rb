@@ -5,7 +5,6 @@ module Roro::TestHelpers
     include Roro::TestHelpers::FilesTestHelper
     include Roro::TestHelpers::ConfiguratorTestHelper
 
-
     attr_reader :answers, :base_dir, :choices, :dir, :dummies,
       :filematchers, :roro_test_root, :stack_test_root, :story_path,
       :manifests, :manifest, :rollon_dummies, :rollon_loud,
@@ -62,7 +61,8 @@ module Roro::TestHelpers
         @rollon_loud ? cli.rollon : quiet { cli.rollon }
         capture_stage_dummy(dir) if @rollon_dummies.eql?(true)
       else
-        if glob_dir.empty? && !dummies.empty?
+        debugger
+        if Dir.glob("#{dir}/dummy/**/*").empty? && !dummies.empty?
           raise 'Need to run your debuggerer, mate.'
         else
           copy_stage_dummy(dir)
@@ -79,11 +79,11 @@ module Roro::TestHelpers
 
     def capture_stage_dummy(dir)
       FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir)
-      @dummies.each { |dummy| copy_with_path(dummy, "#{dummy_dir}/#{dummy}") }
+      dummies.each { |dummy| copy_with_path(dummy, "#{dummy_dir}/#{dummy}") }
     end
 
     def copy_stage_dummy(path)
-      FileUtils.cp_r(dummy_dir, Dir.pwd) if File.exist?(dummy_dir)
+      FileUtils.cp_r("#{dummy_dir}/.", Dir.pwd) if File.exist?(dummy_dir)
     end
 
     def stubs_adventure(path = nil, _adventure = nil)

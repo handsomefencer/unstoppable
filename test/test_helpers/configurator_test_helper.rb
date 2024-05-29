@@ -4,14 +4,19 @@ module Roro
   module TestHelpers
     module ConfiguratorTestHelper
 
-      def assert_correct_manifest(story)
-        debuggerer if ENV['DEBUGGERER'].eql?('true')
+      def rollon_options
+        {
+          debuggerer: ENV['DEBUGGERER'].eql?('true'),
+          rollon_dummies: @rollon_dummies || false,
+          rollon_loud: @rollon_loud || false
+        }
+      end
 
-        story = RollonTestHelper.new(dir)
+      def assert_correct_manifest(dir)
+        story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
-        hash = story.merge_manifests
         story.choices.each do |fm|
-          hash.dig(fm.to_sym)&.each do |filename, matchers|
+          story.merge_manifests.dig(fm.to_sym)&.each do |filename, matchers|
             if matchers.nil?
               assert_file filename.to_s
             else
