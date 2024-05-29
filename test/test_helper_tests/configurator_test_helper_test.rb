@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe Roro::TestHelpers::ConfiguratorTestHelper do
   describe "#rollon_options" do
@@ -31,12 +31,15 @@ describe Roro::TestHelpers::ConfiguratorTestHelper do
   end
 
   describe '#assert_correct_manifest(dir)' do
-    Given(:dir) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot/stacks/tailwind/sqlite/importmaps/okonomi"}
     Given(:workbench) { }
-    Given { use_fixture_stack('echo') }
-
+    Given(:dir) { [
+      Roro::CLI.test_root,
+      "fixtures/files/test_stacks/foxtrot",
+      "stacks/tailwind/sqlite/importmaps/okonomi"
+      ].join('/')}
+    Given { use_fixture_stack('foxtrot') }
+focus
     Then { assert_correct_manifest(dir)}
 
-    # "/usr/src/test/roro/stacks/tailwind/sqlite/importmaps/okonomi"
   end
 end
