@@ -24,7 +24,7 @@ module Roro::TestHelpers::StackReflectorTestHelper
   def assert_expected_keys
     assert_equal(
       %i[
-        chapters choices env itinerary picks pretty_tags tags
+        chapters choices env inflection_names itinerary picks pretty_tags tags
         templates_partials_paths templates_paths title versions
       ], adventure.keys.sort, msg: 'missing keys'
     )
@@ -61,6 +61,7 @@ module Roro::TestHelpers::StackReflectorTestHelper
   def assert_expected_adventure
 
     %i[
+      inflection_names
       itinerary
       picks
       tags

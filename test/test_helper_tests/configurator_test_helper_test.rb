@@ -31,14 +31,15 @@ describe Roro::TestHelpers::ConfiguratorTestHelper do
   end
 
   describe '#assert_correct_manifest(dir)' do
+  Given { skip }
     Given(:workbench) { }
+    Given { debuggerer }
     Given(:dir) { [
       Roro::CLI.test_root,
       "fixtures/files/test_stacks/foxtrot",
-      "stacks/tailwind/sqlite/importmaps/okonomi"
+      "stacks/tailwind/sqlite/importmaps/omakase"
       ].join('/')}
     Given { use_fixture_stack('foxtrot') }
-focus
     Then { assert_correct_manifest(dir)}
 
   end

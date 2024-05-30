@@ -1,21 +1,61 @@
-sqlite: 
-  mise/containers/app/Dockerfile.builder.base:
-    - /\}-alpine3.18/
-
-tailwind: 
-  app/assets/stylesheets/application.tailwind.css:
-  docker-compose.development.yml: 
-    - services: 
-        watch-css:
-          container_name: watch-css
-          # command: ["yarn", "build:css", "--watch"]
-
-
-importmaps: 
-  mise/containers/app/Dockerfile.builder.railsnew:
-
-
 stacks: 
   mise/containers/app/env/base.env:
     - /PARALLEL_WORKERS=4/
     - /RAILS_MAX_THREADS=5/
+  mise/containers/app/env/development.env:
+    - /RAILS_ENV=development/
+  mise/containers/app/env/production.env:
+    - /RAILS_ENV=production/
+    - /MALLOC_ARENA_MAX=2/
+    - /RAILS_LOG_TO_STDOUT=true/
+    - /RAILS_SERVE_STATIC_FILES=true/
+  mise/containers/app/env/test.env:
+    - /RAILS_ENV=test/
+  mise/containers/app/Dockerfile.builder.base:
+  mise/containers/app/Dockerfile.builder.cache:
+    - /COPY Gemfile\* ./
+  mise/containers/app/Dockerfile.builder.deps.dev:
+  mise/containers/app/Dockerfile.builder.railsnew:
+  mise/containers/app/Dockerfile.development:
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
+  mise/containers/app/Dockerfile.production:
+  mise/containers/app/Dockerfile.test:
+    - /chromium-chromedriver/
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
+  mise/env/base.env:
+  mise/env/development.env:
+  mise/env/production.env:
+  mise/keys/.keep:
+  mise/keys/base.key:
+  mise/keys/development.key:
+  mise/keys/production.key:
+  mise/scripts/build.development.sh:
+  mise/scripts/build.production.sh:
+  mise/scripts/build.test.sh:
+  mise/scripts/docker.info.sh:
+  mise/scripts/docker.prune.sh:
+  docker-compose.builders.yml:
+  docker-compose.development.yml:  
+    - services: 
+        dev:
+          container_name: dev
+  docker-compose.production.yml:
+  docker-compose.test.yml:  
+  docker-compose.vendor.yml:
+    - services: 
+        roro: 
+          image: handsomefencer/roro
+  docker-compose.yml:
+    - volumes:
+        db_data:
+        gem_cache:
+    - secrets: 
+        base_key: 
+          file: ./mise/keys/base.key
+  Gemfile:
+    - /gem ["']rails["'], ["']~> 7.1.3/
+  .dockerignore:
+  .gitignore:
+

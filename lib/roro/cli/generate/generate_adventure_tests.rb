@@ -9,8 +9,16 @@ module Roro
 
     def generate_adventure_tests(_kase = nil)
       reflector = Roro::Configurators::StackReflector.new
-      reflector.adventures.values.each { |a|
-       generate_test_stack(a) }
+      # debugger
+      reflector.adventures.values.each { |a| generate_test_stack(a) }
+        #       manifest_names = hash.dig(:inflection_names)
+        # manifest_names.each do |name|
+        #   src = 'stack/tests/tests/_manifest.yml'
+        #   copy_file(src, "#{dest}/_manifest_#{name}.yml", @env)
+        #   # debugger if manifest_names.first.eql?(name)
+        #   template(src, "#{dest}/_manifest.yml", @env) if manifest_names.first.eql?(name)
+        # end
+
     end
 
     no_commands do
@@ -27,10 +35,8 @@ module Roro
       def generate_test_stack(hash)
         @env = describe_block(hash)
         dest = 'test/roro/stacks'
-
         hash[:choices].each do |c|
           if c.eql?(hash[:choices][-1])
-            # debugger if hash.dig(:choices).eql?( %w[MariaDB Bun omakase])
             src = 'stack/tests/tests'
             directory(src, "#{dest}/#{c.downcase}", @env)
           end
