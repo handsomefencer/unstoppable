@@ -12,44 +12,29 @@ module Roro
         }
       end
 
-      def evaluate_manifest_file(filename)
-        file = filename.to_s
-        if file.chars.first.eql?('-')
-          file = file[1..-1]
-          refute(File.exist?(file), "Did not expect #{file} to exist")
-        else
-          refute_file(file)
-        end
+      def evaluate_file(f)
+        f[0].eql?('-') ? refute_file(f[1..-1]) : assert_file(f)
       end
 
+      def evaluate_contents(dir, file, matchers)
+        matchers.each do |matcher|
+          msg = "#{file} in #{dir}/dummy/#{file} does not contain #{matcher}"
+          if matcher.is_a?(Hash)
+            assert_yaml(file, matcher)
+          elsif matcher.chars.first.match?('/')
+            assert_content(file, eval("#{matcher}"))
+          else
+            assert_content(file, eval(matcher))
+          end
+        end
+      end
 
       def assert_correct_manifest(dir)
         story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
-        story.choices.each do |fm|
-          story.merge_manifests.dig(fm.to_sym)&.each do |filename, matchers|
-            if matchers.nil?
-              evaluate_manifest_file(filename)
-
-            else
-              matchers.each do |matcher|
-                msg = "#{filename} in #{dir}/dummy/#{filename} does not contain #{matcher}"
-                if matcher.is_a?(Hash)
-                  assert_yaml(filename.to_s, matcher)
-                elsif matcher.chars.first.match?('/')
-                  regex = matcher.chars
-                  regex.shift
-                  regex.pop
-                  regex.join
-                  begin
-                    assert_content(filename.to_s, eval("#{matcher}"))
-                  rescue
-                  end
-                else
-                  assert_content(filename.to_s, eval(matcher))
-                end
-              end
-            end
+        story.choices.each do |c|
+          story.merge_manifests.dig(c.to_sym)&.each do |f, m|
+            m.nil? ? evaluate_file(f.to_s) : evaluate_contents(dir, f.to_s, m)
           end
         end
       end

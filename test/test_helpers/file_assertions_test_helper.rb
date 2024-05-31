@@ -17,19 +17,29 @@ module Roro::TestHelpers::FileAssertionsTestHelper
     assert(files.any? { |file| file.match file_matcher }, msg)
   end
 
-  def assert_file(file, *contents)
-    evaluate_file(true, file, *contents)
+
+
+  def assert_file(file)
+    assert(File.exist?(file), "Expected #{file} in #{globdir}")
+  end
+
+  def assert_content(file, *contents)
+    assert_file(file)
+    evaluate_content(true, file, *contents)
   end
 
   def refute_file(file, *contents)
-    evaluate_file(false, file, *contents)
+    refute(File.exist?(file), "Did not expect #{file} to exist")
+
+    evaluate_content(false, file, *contents)
   end
 
-  def evaluate_file(*args)
-    boolean, file = args.shift, args.shift
-    actual = Dir.glob("#{Dir.pwd}/**/*")
-    assert(File.exist?(file), "Expected #{file} in #{actual[0..3]}")
+  def refute_content(file, *contents)
+    evaluate_content(false, file, *contents)
+  end
 
+  def evaluate_content(*args)
+    boolean, file = args.shift, args.shift
     read = File.read(file) if block_given? || !args.empty?
     yield read if block_given?
     args.each do |content|
@@ -74,7 +84,7 @@ module Roro::TestHelpers::FileAssertionsTestHelper
     end
   end
 
-  alias refute_content refute_file
+  # alias refute_content refute_file
 
 
 end

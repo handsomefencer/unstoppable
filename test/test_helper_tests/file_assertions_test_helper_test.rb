@@ -19,7 +19,7 @@ describe Roro::TestHelpers::FileAssertionsTestHelper do
     end
   end
 
-  describe '#assert_file(file, *contents); #refute_file(file, *contents)' do
+  describe '#assert_file(file, *contents); #refute_content(file, *contents)' do
     Given(:expected) { '.circleci/src/@config.yml' }
     Given(:unexpected) { '.circleci/src/unexpected.yml' }
 
@@ -37,13 +37,13 @@ describe Roro::TestHelpers::FileAssertionsTestHelper do
     describe 'when content passed as regex' do
       Then { assert_content expected, /version/ }
       And { assert_directory expected }
-      And { refute_file expected, /vershun/ }
+      And { refute_content expected, /vershun/ }
     end
 
     describe 'when content passed as string' do
       Then { assert_content expected, 'version: 2.1' }
       And { assert_directory expected }
-      And { refute_file expected, 'version: 1.2' }
+      And { refute_content expected, 'version: 1.2' }
       And { refute_content expected, 'version: 1.2' }
     end
   end

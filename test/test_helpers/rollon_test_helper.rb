@@ -47,7 +47,9 @@ module Roro::TestHelpers
     def collect_dummies
       [].tap do |a|
         choices.each do |choice|
-          files = manifest[choice.to_sym]&.keys&.map(&:to_s)
+          files = manifest[choice.to_sym]&.keys&.map(&:to_s)&.reject { |f|
+            f.chars.first.eql?('-')
+          }
           a.concat(files) if files
         end
       end
