@@ -42,11 +42,11 @@ module Roro
                   regex.pop
                   regex.join
                   begin
-                    assert_file(filename.to_s, eval("#{matcher}"))
+                    assert_content(filename.to_s, eval("#{matcher}"))
                   rescue
                   end
                 else
-                  assert_file(filename.to_s, eval(matcher))
+                  assert_content(filename.to_s, eval(matcher))
                 end
               end
             end

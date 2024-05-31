@@ -13,7 +13,7 @@ describe 'Roro::Crypto::Exposer.new' do
   describe '#expose_file(file, key)' do
     Given { insert_dummy_env_enc }
     Given { quiet { subject.expose_file('roro/env/dummy.env.enc', key) } }
-    Then  { assert_file 'roro/env/dummy.env', /DATABASE_HOST/ }
+    Then  { assert_content 'roro/env/dummy.env', /DATABASE_HOST/ }
   end
 
   describe '#expose(envs, dir, ext)' do

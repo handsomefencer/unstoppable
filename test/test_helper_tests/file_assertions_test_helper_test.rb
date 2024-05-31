@@ -35,13 +35,13 @@ describe Roro::TestHelpers::FileAssertionsTestHelper do
     end
 
     describe 'when content passed as regex' do
-      Then { assert_file expected, /version/ }
+      Then { assert_content expected, /version/ }
       And { assert_directory expected }
       And { refute_file expected, /vershun/ }
     end
 
     describe 'when content passed as string' do
-      Then { assert_file expected, 'version: 2.1' }
+      Then { assert_content expected, 'version: 2.1' }
       And { assert_directory expected }
       And { refute_file expected, 'version: 1.2' }
       And { refute_content expected, 'version: 1.2' }

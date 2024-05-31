@@ -21,9 +21,9 @@ describe 'Roro::CLI#generate_adventure' do
 
   describe 'must generate storyfile' do
     Given(:storyfile) { "#{stack}/starwars.yml" }
-    Then { assert_file storyfile, /preface:/ }
-    And  { assert_file storyfile, /# env/ }
-    And  { assert_file storyfile, /# actions/ }
+    Then { assert_content storyfile, /preface:/ }
+    And  { assert_content storyfile, /# env/ }
+    And  { assert_content storyfile, /# actions/ }
   end
 
   describe 'must generate templates directory' do
