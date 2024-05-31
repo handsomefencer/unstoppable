@@ -1,4 +1,6 @@
   watch-css:
     <<: *development
-    command: ["yarn", "build:css", "--watch"]
+    command: <%= @env.dig(:base, :watch_css_command, :value) %>
     container_name: watch-css
+    profiles:
+      - development

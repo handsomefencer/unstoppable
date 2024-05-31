@@ -28,10 +28,7 @@ describe Roro::Configurators::StackReflector do
           ].join(', '),
           templates_partials_paths: ['laravel/templates/partials'],
           templates_paths: ['okonomi/templates', 'laravel/templates'],
-          inflection_names: %w[
-            unstoppabledd
-
-          ],
+          inflection_names: %w[unstoppable_developer_styles languages adventures],
           versions: {}
         }
       end

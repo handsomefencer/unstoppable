@@ -12,13 +12,25 @@ module Roro
         }
       end
 
+      def evaluate_manifest_file(filename)
+        file = filename.to_s
+        if file.chars.first.eql?('-')
+          file = file[1..-1]
+          refute(File.exist?(file), "Did not expect #{file} to exist")
+        else
+          refute_file(file)
+        end
+      end
+
+
       def assert_correct_manifest(dir)
         story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
         story.choices.each do |fm|
           story.merge_manifests.dig(fm.to_sym)&.each do |filename, matchers|
             if matchers.nil?
-              assert_file filename.to_s
+              evaluate_manifest_file(filename)
+
             else
               matchers.each do |matcher|
                 msg = "#{filename} in #{dir}/dummy/#{filename} does not contain #{matcher}"

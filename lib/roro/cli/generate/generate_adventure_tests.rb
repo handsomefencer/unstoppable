@@ -9,16 +9,18 @@ module Roro
 
     def generate_adventure_tests(_kase = nil)
       reflector = Roro::Configurators::StackReflector.new
-      # debugger
+      @manifest_names =[]
       reflector.adventures.values.each { |a| generate_test_stack(a) }
-        #       manifest_names = hash.dig(:inflection_names)
-        # manifest_names.each do |name|
-        #   src = 'stack/tests/tests/_manifest.yml'
-        #   copy_file(src, "#{dest}/_manifest_#{name}.yml", @env)
-        #   # debugger if manifest_names.first.eql?(name)
-        #   template(src, "#{dest}/_manifest.yml", @env) if manifest_names.first.eql?(name)
-        # end
-
+      dest = 'test/roro/stacks'
+      @manifest_names.uniq.each do |name|
+          @env[:manifest_name] = name
+          src = 'stack/tests/tests/_manifest.yml'
+          if @manifest_names.first.eql?(name)
+            @env[:manifest_name] = 'stacks'
+            template(src, "#{dest}/_manifest.yml", @env)
+          end
+          template(src, "#{dest}/_manifest_#{name}.yml", @env)
+      end
     end
 
     no_commands do
@@ -35,6 +37,7 @@ module Roro
       def generate_test_stack(hash)
         @env = describe_block(hash)
         dest = 'test/roro/stacks'
+        @manifest_names += hash[:inflection_names]
         hash[:choices].each do |c|
           if c.eql?(hash[:choices][-1])
             src = 'stack/tests/tests'

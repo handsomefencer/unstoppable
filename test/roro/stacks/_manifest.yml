@@ -38,9 +38,11 @@ stacks:
   mise/scripts/docker.prune.sh:
   docker-compose.builders.yml:
   docker-compose.development.yml:  
-    - services: 
+    - services:
         dev:
           container_name: dev
+          profiles: 
+            - development
   docker-compose.production.yml:
   docker-compose.test.yml:  
   docker-compose.vendor.yml:
