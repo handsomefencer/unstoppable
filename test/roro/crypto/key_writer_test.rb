@@ -11,17 +11,17 @@ describe Roro::Crypto::KeyWriter do
 
     context 'when extension is impicit' do
       When(:args) { ['dummy'] }
-      Then { assert_file 'roro/keys/dummy.key', /=/ }
+      Then { assert_content 'roro/keys/dummy.key', /=/ }
     end
 
     context 'when extension is explicit' do
       When(:args) { %w[dummy .key] }
-      Then { assert_file 'roro/keys/dummy.key', /=/ }
+      Then { assert_content 'roro/keys/dummy.key', /=/ }
     end
 
     context 'when extension is .passkey' do
       When(:args) { %w[dummy .passkey] }
-      Then { assert_file 'roro/keys/dummy.passkey', /=/ }
+      Then { assert_content 'roro/keys/dummy.passkey', /=/ }
     end
   end
 

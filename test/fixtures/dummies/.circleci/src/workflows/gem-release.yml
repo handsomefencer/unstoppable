@@ -2,8 +2,5 @@
 
 ---
 jobs:
-  - build
-  - release:
-      filters:
-        branches:
-          only: main
+  release:
+    foobar

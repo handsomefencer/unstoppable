@@ -1,0 +1,3 @@
+
+services:
+<%= section('docker_compose/vendor/services', "\n\n") %>

@@ -8,6 +8,11 @@ describe Roro::Configurators::StackReflector do
 
   Given(:adventure) { subject.adventure_for(*picks) }
 
+  describe '#adventure_structure_human' do
+    Given(:result) { subject.adventure_structure_human }
+    Then { assert_equal 'blah', result }
+  end
+
   describe '#adventure_for()' do
     describe 'when adventure is okonomi php laravel' do
       Given(:expected) do

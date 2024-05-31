@@ -1,16 +1,17 @@
 # syntax=docker/dockerfile:1
-FROM handsomefencer/roro/builder AS builder
+
+FROM roro/base AS builder
 
 FROM builder
 
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+COPY --from=builder /usr/src/Gemfile* ./
+
 COPY . .
 
-COPY --from=builder /usr/local/bundle /usr/local/bundle
-
-RUN bundle
-
-# RUN gem build roro.gemspec
-
-# RUN rake install
+RUN bundle update --bundler \   
+  && bundle
 
 
+RUN gem build roro.gemspec
+RUN rake install

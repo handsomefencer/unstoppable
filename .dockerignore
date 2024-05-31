@@ -3,6 +3,9 @@
 # $ git config --global mergetool.keepBackup false
 *.orig
 
+## This may cause issues but needed to make it ignore submodules and ../
+**/.git
+
 # Created by git when using merge tools for conflicts
 *.BACKUP.*
 *.BASE.*
@@ -44,8 +47,8 @@ config/master.key
 
 # dotenv, dotenv-rails
 # TODO Comment out these rules if environment variables can be committed
-.env
-.env*.local
+# .env
+# .env*.local
 
 ## Environment normalization:
 /.bundle
@@ -108,7 +111,7 @@ yarn-debug.log*
 /test/version_tmp/
 
 # Used by dotenv library to load environment variables.
-.env
+# .env
 
 # Ignore Byebug command history file.
 .byebug_history

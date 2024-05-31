@@ -26,6 +26,7 @@ module Roro
         when :inflection_stub
           children(s).each { |c| reflect(c, sibs, adventure, a) }
         when :inflection
+          adventure[:inflection_names] << stack_name(s)
           children(s).each_with_index do |c, i|
             reflect(c, sibs.dup, fork_adventure(adventure, i, s, c), a)
           end
@@ -66,6 +67,7 @@ module Roro
 
       def add_metadata(adventure)
         adventure[:tags] = tags_from(adventure[:chapters])
+        adventure[:pretty_tags] = pretty_tags_from(adventure[:chapters])
         adventure[:versions] = versions_from(adventure[:chapters])
         adventure[:title] = title_from(adventure)
         adventure[:env] = env_vars_from(adventure)
@@ -87,6 +89,14 @@ module Roro
           .map { |c| c.split('/').last.split('.').first }
           .reject { |c| stack_name(c).chars.first.match?('_') }
           .reject { |c| c.match?('_') }.uniq
+      end
+
+      def pretty_tags_from(chapters)
+        chapters
+          .map { |c| c.split('/').last.split('.').first }
+          .reject { |c| stack_name(c).chars.first.match?('_') }
+          .reject { |c| stack_name(c).chars.first.match(/\d/) }
+          .select { |c| c.chars.first.eql? c.chars.first.capitalize }.uniq
       end
 
       def title_from(adventure)
@@ -116,13 +126,13 @@ module Roro
       def inflection_choice(stack, child)
         inflection_parent = stack_parent(stack)
         inflection = stack_name(stack).singularize
-        foo = if inflection.eql? 'version'
+        inflection_name = if inflection.eql? 'version'
                 "#{inflection_parent} #{inflection}"
               else
                 inflection
 
               end
-        "#{foo}: #{stack_name(child)}"
+        "#{inflection_name}: #{stack_name(child)}"
       end
 
       def fork_adventure(adventure, index, stack, child)
@@ -170,6 +180,7 @@ module Roro
           picks: [],
           templates_paths: [],
           templates_partials_paths: [],
+          inflection_names: [],
           tags: []
         }
       end

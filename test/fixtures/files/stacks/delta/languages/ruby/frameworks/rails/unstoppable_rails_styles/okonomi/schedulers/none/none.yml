@@ -1,4 +1,0 @@
-preface: No scheduler.
-
-actions: 
-  - puts 'blah from scheduler'

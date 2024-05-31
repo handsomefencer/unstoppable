@@ -5,7 +5,6 @@
 /doc/
 /pkg/
 /spec/reports/
-Gemfile.lock
 .byebug_history
 
 ## circleci
@@ -16,6 +15,7 @@ roro/**/*.env
 roro/**/*.key 
 *.key
 *.env
+.harvest/*
 
 **dummy
 !/**dummy_env

@@ -1,0 +1,5 @@
+# syntax=docker/dockerfile:1
+
+FROM builder/deps-dev AS cache-build
+
+<%= section('dockerfile/development/cache/build') %>

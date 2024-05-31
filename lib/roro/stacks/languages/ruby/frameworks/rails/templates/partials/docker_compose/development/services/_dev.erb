@@ -1,0 +1,8 @@
+  dev:
+    <<: *development
+    command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
+    container_name: dev
+    profiles:
+      - development
+    ports:
+      - 3000:3000

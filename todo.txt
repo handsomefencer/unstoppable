@@ -1,4 +1,0 @@
-1 Fix application.html.erb to close erb tag on application.scsss
-2 Rename app/views/shared to app/views/application so rails will look for it automatically
-3 Add 'depends_on: ' key to vite service with -app 
-4 Add profiles to docker-compose so builder won't come up automatically

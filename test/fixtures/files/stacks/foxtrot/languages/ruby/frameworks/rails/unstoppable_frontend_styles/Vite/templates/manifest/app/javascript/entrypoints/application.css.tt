@@ -1,0 +1,1 @@
+@import "../../assets/stylesheets/<%= @env.dig(:base, :vite_entrypoint_css, :value) %>";

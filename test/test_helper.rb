@@ -3,7 +3,7 @@
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 ENV['RORO_ENV'] ||= 'test'
 
-require 'byebug'
+require 'debug'
 require 'fileutils'
 require 'minitest/autorun'
 require 'minitest/given'
@@ -20,8 +20,22 @@ include Roro::Crypto
 
 Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
 
-include Roro::TestHelpers::FilesHelper
-include Roro::TestHelpers::RakeTaskHelper
-include Roro::TestHelpers::ReflectionHelper
-include Roro::TestHelpers::AdventureHelper
-include Roro::TestHelpers::ConfiguratorHelper
+# include Roro::TestHelpers::RakeTaskTestHelper
+# include Roro::TestHelpers::ReflectionHelper
+# include Roro::TestHelpers::AdventureHelper
+# include Roro::TestHelpers::ConfiguratorTestHelper
+
+
+# # frozen_string_literal: true
+
+module Roro
+  module TestHelpers
+    include FilesTestHelper
+    include FileAssertionsTestHelper
+    include StackReflectorTestHelper
+    include StackTestHelper
+    include ConfiguratorTestHelper
+  end
+end
+
+include Roro::TestHelpers

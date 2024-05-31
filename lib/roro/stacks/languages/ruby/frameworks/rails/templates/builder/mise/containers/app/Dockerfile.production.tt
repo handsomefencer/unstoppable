@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1
+
+FROM builder/base AS base
+FROM builder/deps-dev AS slimmer
+
+COPY . .
+
+RUN bundle config set without "development test" && \
+  bundle config frozen true && \
+  bundle
+
+<%= partial('dockerfile/production/steps/yarn_install') %>
+
+RUN \
+  bin/rails assets:clobber \
+  && SECRET_KEY_BASE=1 \
+  RAILS_ENV=production \
+  bin/rails assets:precompile
+
+RUN gem cleanup
+RUN bundle clean --force
+
+RUN rm -rf /usr/local/bundle/cache && \
+  find /usr/local/bundle/gems/ -name "*.c" -delete && \
+  find /usr/local/bundle/gems/ -name "*.o" -delete
+
+<%= section('dockerfile/production/remove') %>
+FROM base AS production
+
+RUN apk update && \
+  apk add --update \
+  <%= @env[:base][:db_pkg_production][:value] %> \
+  && apk cache -v sync
+
+RUN adduser -D app
+
+USER app
+
+COPY --chown=app --from=slimmer \ 
+  /app /app
+
+COPY --chown=app --from=slimmer \ 
+  /usr/local/bundle /usr/local/bundle

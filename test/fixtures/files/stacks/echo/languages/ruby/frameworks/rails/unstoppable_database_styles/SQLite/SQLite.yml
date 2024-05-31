@@ -1,0 +1,16 @@
+preface: SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine. SQLite is the most used database engine in the world. SQLite is built into all mobile phones and most computers and comes bundled inside countless other applications that people use every day.
+
+env: 
+  base:
+    alpine_version: 
+      name: alpine development version
+      value: 3.18
+    db_flag:
+      name: Rails new --database flag
+      value: sqlite3
+    db_pkg_development: 
+      name: Alpine db pkg for development
+      value: sqlite-dev
+    db_pkg_production: 
+      name: Alpine db pkg for production
+      value: sqlite-dev

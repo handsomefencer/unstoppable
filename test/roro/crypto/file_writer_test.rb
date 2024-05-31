@@ -9,6 +9,6 @@ describe Roro::Crypto::FileWriter do
 
   describe ':write_to_file(data, filename)' do
     Given { quiet { subject.write_to_file(destination, 'export FOO=bar') } }
-    Then  { assert_file destination, 'export FOO=bar' }
+    Then  { assert_content destination, 'export FOO=bar' }
   end
 end

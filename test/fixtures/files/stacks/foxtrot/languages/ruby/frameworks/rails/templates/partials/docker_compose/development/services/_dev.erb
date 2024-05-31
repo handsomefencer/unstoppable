@@ -1,0 +1,7 @@
+  dev:
+    <<: *development
+    command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
+<%= section('docker_compose/development/depends_on') %>
+    container_name: dev
+    ports:
+      - 3000:3000

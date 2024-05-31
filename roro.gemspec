@@ -1,5 +1,6 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'rake'
 require 'roro/version'
 
 Gem::Specification.new do |spec|
@@ -21,9 +22,13 @@ Gem::Specification.new do |spec|
       'public gem pushes.'
   end
 
-  spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  end
+  spec.files = FileList['lib/**/*',
+                          'bin/*',
+                          '[A-Z]*'].to_a
+
+  # spec.files = Dir.chdir(File.expand_path(__dir__)) do
+  #   `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  # end
 
   spec.executables << 'roro'
   spec.require_paths = ['lib']
@@ -31,13 +36,15 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'deep_merge', '~> 1.2', '>= 1.2.2'
 
   spec.add_dependency 'base64', '~> 0.2.0'
-  spec.add_dependency 'os', '~> 1.1'
-  spec.add_dependency 'rake', '~> 13.0', '>= 13.0.1'
-  spec.add_dependency 'sshkit', '~> 1.21'
-  spec.add_dependency 'thor', '~> 1.1'
+  spec.add_dependency 'os', '~> 1.1', '>= 1.1.4'
+  spec.add_dependency 'rake'
+  spec.add_dependency 'sshkit', '~> 1.22'
+  spec.add_dependency 'thor', '~> 1.3', '>= 1.3.1'
   spec.add_dependency 'activesupport', '~> 7.1', '>= 7.1.3.2'
+  spec.add_dependency 'rb-readline', '~> 0.5.5'
   spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.4'
   spec.add_development_dependency 'climate_control'
+  spec.add_development_dependency 'debug', '~> 1.9', '>= 1.9.1'
   spec.add_development_dependency 'guard'
   spec.add_development_dependency 'guard-minitest'
   spec.add_development_dependency 'minitest-focus'
@@ -45,7 +52,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest-hooks'
   spec.add_development_dependency 'minitest-profile'
   spec.add_development_dependency 'mocha', '~> 1.11', '>= 1.11.2'
-  spec.add_development_dependency 'rb-readline'
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'pry-byebug'
 end

@@ -1,17 +1,41 @@
+x-base: &base
+  build:
+    args: 
+      RUBY_VERSION: 3.3
+    dockerfile: ./mise/containers/roro/Dockerfile.builder.ruby
+  profiles: 
+    - builder
+  volumes:
+    - .:/usr/src
+    - gem_cache:/usr/local/bundle/gems
+
 services:
-  ruby:
+  roro-ruby:
+    <<: *base
+    image: roro/ruby
+
+  roro-base:
+    <<: *base
     build:
-      dockerfile: ./mise/containers/roro/Dockerfile.ruby
-      tags: 
-        - handsomefencer/ruby:3.3.0-alpine
-    image: handsomefencer/ruby 
-  
-  builder:
-    build:
-      dockerfile: ./mise/containers/roro/Dockerfile.builder
-      tags: 
-        - handsomefencer/roro/builder
+      dockerfile: ./mise/containers/roro/Dockerfile.builder.base
     depends_on: 
-      - ruby
-    image: handsomefencer/roro/builder
+      - roro-ruby
+    image: roro/base
+
+  roro-development: 
+    <<: *base
+    build:
+      dockerfile: ./mise/containers/roro/Dockerfile.development
+    depends_on: 
+      - roro-base
+    image: roro/development
+
+  roro-production:
+    build:
+      dockerfile: ./mise/containers/roro/Dockerfile.production
+    image: roro/production
+    depends_on: 
+      - roro-base
+    profiles: 
+      - builder  
 

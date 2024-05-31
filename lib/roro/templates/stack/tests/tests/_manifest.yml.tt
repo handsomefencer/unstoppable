@@ -1,0 +1,3 @@
+stacks:
+
+<%= "#{@env[:manifest_name]}\:" %>

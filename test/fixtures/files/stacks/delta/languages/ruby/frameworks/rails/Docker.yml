@@ -1,0 +1,13 @@
+env:
+  base:
+    docker_compose_version:
+      name: Docker Compose version
+      value: '3.9'
+
+    db_vendor:
+      name: Database vendor name
+      value: sqlite3
+    db_pkg:
+      name: Alpine db package
+      value: sqlite-dev
+
