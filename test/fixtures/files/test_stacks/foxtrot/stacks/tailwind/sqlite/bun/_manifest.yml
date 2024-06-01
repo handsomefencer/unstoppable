@@ -1,0 +1,4 @@
+
+tailwind: 
+  app/assets/stylesheets/application.tailwind.css!:
+

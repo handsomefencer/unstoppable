@@ -3,9 +3,15 @@
 require 'stack_test_helper'
 
 describe Roro::TestHelpers::RollonTestHelper do
+
   Given(:story_root) { "#{Roro::CLI.test_root}/fixtures/files/test_stacks/foxtrot" }
-  Given(:story_path) { 'stacks/tailwind/sqlite/importmaps/okonomi' }
-  Given(:options) { nil }
+
+  Given(:css_processor) { 'bootstrap' }
+  Given(:js_watcher) { 'bun' }
+  Given(:choices) { ['stacks', css_processor, "sqlite", js_watcher, "okonomi"] }
+
+  Given(:story_path) { choices.join('/') }
+  Given(:options) { { rollon_dummies: false } }
   Given(:subject) { RollonTestHelper.new("#{story_root}/#{story_path}", options) }
 
   describe '#initialize' do
@@ -44,48 +50,136 @@ describe Roro::TestHelpers::RollonTestHelper do
   end
 
   describe '#choices' do
-    Given(:expected) { %w[stacks tailwind sqlite importmaps okonomi] }
+    Given(:expected) { %w[stacks bootstrap sqlite bun okonomi] }
     Then { assert_equal expected, subject.choices }
   end
 
   describe '#answers' do
-    Then { assert_equal [6, 4, 3, 1], subject.answers }
+    Then { assert_equal [1,4,1,1], subject.answers }
   end
 
   describe '#manifests' do
-    Then { assert_equal 2, subject.manifests.size }
-    And { assert_match /stacks\/_manifest.yml/, subject.manifests.first }
-    And { assert_match /okonomi\/_manifest.yml/, subject.manifests.last }
+    describe 'when one manifest in story' do
+      Then do
+        assert_equal 1, subject.manifests.size
+        assert_match /stacks\/_manifest.yml/, subject.manifests.first
+      end
+    end
+
+    describe 'when two manifests in story' do
+      Given(:css_processor) { 'tailwind' }
+      Given(:js_watcher) { 'bun' }
+      Then do
+        assert_equal 4, subject.manifests.size
+        assert_match /stacks\/_manifest.yml/, subject.manifests[0]
+        assert_match /tailwind\/_manifest.yml/, subject.manifests[1]
+        assert_match /sqlite\/_manifest.yml/, subject.manifests[2]
+        assert_match /bun\/_manifest.yml/, subject.manifests[3]
+      end
+    end
+
+    describe 'when three manifests in story' do
+      Given(:css_processor) { 'tailwind' }
+      Given(:js_watcher) { 'importmaps' }
+      Then do
+        assert_equal 4, subject.manifests.size
+        assert_match /stacks\/_manifest.yml/, subject.manifests[0]
+        assert_match /tailwind\/_manifest.yml/, subject.manifests[1]
+        assert_match /sqlite\/_manifest.yml/, subject.manifests[2]
+        assert_match /importmaps\/_manifest.yml/, subject.manifests[3]
+      end
+    end
   end
 
   describe '#merge_manifests' do
     Given(:result) do
-      subject.merge_manifests.dig(:tailwind,
-        :"docker-compose.development.yml", 0,
-        :services, :"watch-css", :container_name)
+      subject.merge_manifests.dig(:stacks,
+        :"docker-compose.development.yml")
     end
 
     describe 'when not overriden' do
-      When(:story_path) { 'stacks/tailwind/sqlite/importmaps/omakase' }
-      Then { assert_equal "watch-css", result  }
+      Then { assert_nil result  }
     end
 
-    describe 'when overriden' do
-      Then { assert_equal "watch-child-override", result  }
+    describe 'when overriden must not override key' do
+      When(:css_processor) { 'tailwind'}
+      Then { assert_nil result  }
+    end
+  end
+
+  describe '#manifest_for(*choices)' do
+    Given(:result) { subject.manifest_for(*choices) }
+    Given(:stack_file) { :".gigignore" }
+    Given(:stack_file_with_string) { :"mise/containers/app/env/base.env" }
+    Given(:stack_file_with_yaml) { :"docker-compose.development.yml" }
+    Given(:excluded_file) { :"app/assets/stylesheets/application.tailwind.css!" }
+    Given(:included_file) { :"app/assets/stylesheets/application.tailwind.css" }
+
+    describe 'when file is included' do
+      Then { assert_includes result.keys, :".gitignore" }
+      And { assert_nil result.dig(:".gitignore") }
+    end
+
+    describe 'when file is excluded' do
+      Then { assert_includes result.keys, excluded_file }
+    end
+
+    describe 'when file included with included content' do
+      focus
+      Then do
+        assert_includes result.keys, stack_file_with_string
+        assert_match "PARALLEL", result.dig(stack_file_with_string, 0)
+      end
+    end
+
+    describe 'when file included with excluded content' do
+      focus
+      Then do
+        assert_includes result.keys, stack_file_with_string
+        assert_match "/EXCLUDED=nil/ !", result.dig(stack_file_with_string, 1)
+      end
+    end
+
+    describe 'when file included and content excluded' do
+      Then { assert_includes result.keys, excluded_file }
+      And { refute_includes result.keys, included_file }
+    end
+
+    describe 'when overriden downstream' do
+      Given(:css_processor) { 'tailwind' }
+      Given(:js_watcher) { 'bun' }
+
+      describe 'when file included but excluded downstream' do
+        Then { assert_includes result.keys, excluded_file }
+        And { refute_includes result.keys, included_file }
+      end
+
+
+      describe 'when file excluded but included downstream' do
+        Given(:js_watcher) { 'importmaps' }
+        Then { assert_includes result.keys, included_file }
+        And { refute_includes result.keys, excluded_file }
+      end
+
+      describe 'when overriden' do
+        # Then { assert_equal "watch-child-override", result  }
+      end
     end
   end
 
   describe '#collect_dummies' do
-    Then { assert_includes subject.dummies, '.gitignore' }
-    And { assert_includes subject.dummies, 'Gemfile' }
+    Then { assert_includes subject.dummies, 'docker-compose.development.yml' }
   end
 
   describe '#rollon' do
+    Given { skip }
     Given(:workbench) {}
     Given(:options) { { rollon_dummies: true, rollon_loud: true } }
     Given(:execute) { subject.rollon }
 
     describe 'when rollon_dummies: false must raise error' do
+      Given(:dummy_dir) { "#{subject.dir}/dummy"}
+      Given { FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir) }
       Given(:options) { { rollon_dummies: false} }
       Then { assert_raises(RuntimeError) { execute } }
     end

@@ -1,4 +1,5 @@
 stacks: 
+  mise/containers/app/Dockerfile.builder.base:
   mise/containers/app/env/base.env:
     - /PARALLEL_WORKERS=4/
     - /RAILS_MAX_THREADS=5/

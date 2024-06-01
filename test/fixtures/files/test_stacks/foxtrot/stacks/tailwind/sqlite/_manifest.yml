@@ -1,6 +1,6 @@
-sqlite: 
-  mise/containers/app/Dockerfile.builder.base:
-    - /\}-alpine3.18/
+tailwind: 
+  app/assets/stylesheets/application.tailwind.css:
 
-importmaps: 
-  mise/containers/app/Dockerfile.builder.railsnew:
+stacks: 
+  mise/containers/app/env/base.env:
+    - /PARALLEL_WORKERS=4/ !

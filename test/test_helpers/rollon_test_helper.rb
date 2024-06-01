@@ -44,6 +44,27 @@ module Roro::TestHelpers
       {}.tap { |h| gather_manifests.each { |m| h.merge!(read_yaml(m)) }}
     end
 
+    def manifest_for(*choices)
+      foo = {}
+      choices.each do |choice|
+        next unless manifest.keys.include? choice.to_sym
+        if manifest.is_a?(Hash)
+          bar = manifest.dig(choice.to_sym)
+          bar.keys.each do |key|
+            foo.reject! do |fk, _value|
+              (fk.to_s.match?(key.to_s) || key.to_s.match?(fk.to_s))
+            end
+          end
+          foo.merge!(bar)
+        end
+      end
+      foo.each do |key, value|
+        # debugger if key.eql?( :"docker-compose.development.yml")
+      end
+
+      foo
+    end
+
     def collect_dummies
       [].tap do |a|
         choices.each do |choice|

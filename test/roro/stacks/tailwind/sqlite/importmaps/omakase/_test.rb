@@ -4,9 +4,9 @@ require 'stack_test_helper'
 
 describe '6 tailwind -> 4 SQLite -> 3 Importmaps -> 2 omakase' do
   Given(:workbench) {}
-  
+
   Given do
-    rollon(__dir__)
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }
