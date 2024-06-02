@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'deep_merge/rails_compat'
 
 module Roro::TestHelpers
   class RollonTestHelper
@@ -41,7 +42,29 @@ module Roro::TestHelpers
     end
 
     def merge_manifests
-      {}.tap { |h| gather_manifests.each { |m| h.merge!(read_yaml(m)) }}
+      {}.tap do |hash|
+        gather_manifests.each do |file|
+          hash2 = read_yaml(file)
+          hash.deeper_merge!(hash2, {:merge_hash_arrays => true})
+       end
+      end
+    end
+
+    def manifest_for_story(*choices)
+      {}.tap do |h|
+        gather_manifests.each do |file|
+          choices.each do |choice|
+            yaml = read_yaml(file)[choice.to_sym]
+            yaml&.keys&.each do |k|
+              i = (k[-1] == '!') ? :"#{k[0..-2]}" : :"#{k}!"
+              h[k] = h[i] if h.keys.include?(i)
+              h.delete(i) if h.keys.include?(i)
+            end
+            options = { merge_hash_arrays: true, keep_array_duplicates: true }
+            h.deeper_merge!(yaml, options)
+          end
+        end
+      end
     end
 
     def manifest_for(*choices)
@@ -58,10 +81,6 @@ module Roro::TestHelpers
           foo.merge!(bar)
         end
       end
-      foo.each do |key, value|
-        # debugger if key.eql?( :"docker-compose.development.yml")
-      end
-
       foo
     end
 

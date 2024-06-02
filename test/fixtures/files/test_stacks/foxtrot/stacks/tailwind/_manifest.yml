@@ -1,11 +1,4 @@
 stacks: 
-  .gitignore:
+  app/assets/stylesheets/application.tailwind.css!:
   mise/containers/app/env/base.env:
-    - /PARALLEL_WORKERS=4/
-
-tailwind: 
-  app/assets/stylesheets/application.tailwind.css:
-  docker-compose.development.yml: 
-    - services: 
-        watch-css:
-          container_name: watch-css
+    - /PERPENDICULAR_WORKERS=4/

@@ -1,8 +1,6 @@
 stacks: 
   .gitignore:
+  app/assets/stylesheets/application.tailwind.css:
   mise/containers/app/env/base.env:
     - /PARALLEL_WORKERS=4/
-    - /EXCLUDED=nil/ !
-  docker-compose.development.yml: 
-  app/assets/stylesheets/application.tailwind.css!:
-
+  

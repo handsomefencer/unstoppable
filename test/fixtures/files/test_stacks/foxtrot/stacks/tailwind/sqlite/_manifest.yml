@@ -1,6 +1,2 @@
 tailwind: 
   app/assets/stylesheets/application.tailwind.css:
-
-stacks: 
-  mise/containers/app/env/base.env:
-    - /PARALLEL_WORKERS=4/ !

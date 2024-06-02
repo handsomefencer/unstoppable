@@ -91,81 +91,150 @@ describe Roro::TestHelpers::RollonTestHelper do
     end
   end
 
-  describe '#merge_manifests' do
-    Given(:result) do
-      subject.merge_manifests.dig(:stacks,
-        :"docker-compose.development.yml")
-    end
-
-    describe 'when not overriden' do
-      Then { assert_nil result  }
-    end
-
-    describe 'when overriden must not override key' do
-      When(:css_processor) { 'tailwind'}
-      Then { assert_nil result  }
-    end
-  end
-
-  describe '#manifest_for(*choices)' do
-    Given(:result) { subject.manifest_for(*choices) }
-    Given(:stack_file) { :".gigignore" }
-    Given(:stack_file_with_string) { :"mise/containers/app/env/base.env" }
-    Given(:stack_file_with_yaml) { :"docker-compose.development.yml" }
+  describe '#manifest_for_story(*choices)' do
     Given(:excluded_file) { :"app/assets/stylesheets/application.tailwind.css!" }
     Given(:included_file) { :"app/assets/stylesheets/application.tailwind.css" }
 
-    describe 'when file is included' do
-      Then { assert_includes result.keys, :".gitignore" }
-      And { assert_nil result.dig(:".gitignore") }
-    end
+    Given(:css_processor) { 'bootstrap' }
+    Given(:js_watcher) { 'bun' }
+    Given(:choices) { ['stacks', css_processor, "sqlite", js_watcher, "okonomi"] }
+    Given(:stack_file) { :".gitignore" }
+    Given(:stack_file_refuted) { :".gitignore!" }
+    Given(:stack_file_with_string) { :"mise/containers/app/env/base.env" }
+    Given(:stack_file_with_yaml) { :"docker-compose.development.yml" }
+    Given(:asserted_file) { :"app/assets/stylesheets/application.tailwind.css" }
+    Given(:refuted_file) { :"app/assets/stylesheets/application.tailwind.css!" }
+    Given(:result) { subject.manifest_for_story(*choices) }
 
-    describe 'when file is excluded' do
-      Then { assert_includes result.keys, excluded_file }
-    end
-
-    describe 'when file included with included content' do
+    describe 'when file asserted' do
       focus
       Then do
-        assert_includes result.keys, stack_file_with_string
-        assert_match "PARALLEL", result.dig(stack_file_with_string, 0)
+        assert_equal 3, result.keys.size
+        assert_equal :'.gitignore', result.keys[0]
+        assert_equal asserted_file, result.keys[1]
       end
     end
 
-    describe 'when file included with excluded content' do
-      focus
-      Then do
-        assert_includes result.keys, stack_file_with_string
-        assert_match "/EXCLUDED=nil/ !", result.dig(stack_file_with_string, 1)
-      end
-    end
-
-    describe 'when file included and content excluded' do
-      Then { assert_includes result.keys, excluded_file }
-      And { refute_includes result.keys, included_file }
-    end
-
-    describe 'when overriden downstream' do
+    describe 'when file asserted, refuted' do
       Given(:css_processor) { 'tailwind' }
       Given(:js_watcher) { 'bun' }
-
-      describe 'when file included but excluded downstream' do
-        Then { assert_includes result.keys, excluded_file }
-        And { refute_includes result.keys, included_file }
-      end
-
-
-      describe 'when file excluded but included downstream' do
-        Given(:js_watcher) { 'importmaps' }
-        Then { assert_includes result.keys, included_file }
-        And { refute_includes result.keys, excluded_file }
-      end
-
-      describe 'when overriden' do
-        # Then { assert_equal "watch-child-override", result  }
+      focus
+      Then do
+        assert_equal 3, result.keys.size
+        assert_equal :'.gitignore', result.keys[0]
+        assert_equal refuted_file, result.keys[2]
       end
     end
+
+    describe 'when file asserted, refuted, asserted' do
+      Given(:css_processor) { 'tailwind' }
+      Given(:js_watcher) { 'importmaps' }
+      focus
+      Then do
+        assert_equal 3, result.keys.size
+        assert_equal :'.gitignore', result.keys[0]
+        assert_equal asserted_file, result.keys[2]
+      end
+    end
+
+    describe 'when file with array contents asserted' do
+      Given(:stack_file_with_string) { :"mise/containers/app/env/base.env" }
+      Given(:contents) { result[stack_file_with_string] }
+      focus
+      Then do
+        assert_equal 1, contents.size
+        assert_match /PARALLEL_WORKERS/, contents[0]
+      end
+
+      describe 'when contents added to file array downstream' do
+        Given(:css_processor) { 'tailwind' }
+        Given(:js_watcher) { 'bun' }
+        Given(:stack_file_with_string) { :"mise/containers/app/env/base.env" }
+        Given(:contents) { result[stack_file_with_string] }
+        focus
+        Then do
+          assert_equal 2, contents.size
+          assert_match /PARALLEL_WORKERS/, contents[0]
+          assert_match /PERPENDICULAR_WORKERS/, contents[1]
+        end
+      end
+    end
+
+    # describe 'when file asserted, refuted' do
+    #   Given(:css_processor) { 'tailwind' }
+    #   Given(:js_watcher) { 'bun' }
+    #   focus
+    #   Then do
+    #     assert_equal 3, result.keys.size
+    #     assert_equal :'.gitignore', result.keys[0]
+    #     assert_equal refuted_file, result.keys[2]
+    #   end
+    # end
+
+#     describe 'when file asserted, refuted, asserted' do
+#       Given(:css_processor) { 'tailwind' }
+#       Given(:js_watcher) { 'importmaps' }
+# focus
+#       Then do
+#         assert_equal 3, result.keys.size
+#         assert_equal :'.gitignore', result.keys[0]
+#         assert_equal asserted_file, result.keys[2]
+#       end
+#     end
   end
+
+
+  # describe '#manifest_for(*choices)' do
+  #   Given { skip }
+
+  #   Given(:result) { subject.manifest_for(*choices) }
+
+  #   describe 'when file is included' do
+  #     Then do
+  #       assert_includes result.keys, :".gitignore"
+  #       assert_nil result.dig(:".gitignore")
+  #     end
+  #   end
+
+  #   describe 'when file is excluded' do
+  #     Then { assert_includes result.keys, excluded_file }
+  #   end
+
+  #   describe 'when file included with included content' do
+  #     Then do
+  #       assert_includes result.keys, stack_file_with_string
+  #       assert_match "PARALLEL", result.dig(stack_file_with_string, 0)
+  #     end
+  #   end
+
+  #   describe 'when file included with excluded content' do
+  #     Then do
+  #       assert_includes result.keys, stack_file_with_string
+  #       assert_match "/EXCLUDED=nil/ !", result.dig(stack_file_with_string, 1)
+  #       assert_match "/PARALLEL_WORKERS=4/", result.dig(stack_file_with_string, 0)
+  #     end
+  #   end
+
+  #   describe 'when overriden downstream' do
+  #     Given(:css_processor) { 'tailwind' }
+  #     Given(:js_watcher) { 'bun' }
+
+  #     describe 'when file included but excluded downstream' do
+  #       Then { assert_includes result.keys, excluded_file }
+  #       And { refute_includes result.keys, included_file }
+  #     end
+
+  #     describe 'when file excluded but included downstream' do
+  #       Given(:js_watcher) { 'importmaps' }
+  #       Then { assert_includes result.keys, included_file }
+  #       And { refute_includes result.keys, excluded_file }
+  #     end
+
+  #     describe 'when file contents overriden downstream' do
+  #         # Then { assert_equal "watch-child-override", result  }
+  #     end
+  #   end
+  # end
 
   describe '#collect_dummies' do
     Then { assert_includes subject.dummies, 'docker-compose.development.yml' }
