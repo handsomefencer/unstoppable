@@ -1,4 +1,7 @@
 stacks: 
   app/assets/stylesheets/application.tailwind.css!:
   mise/containers/app/env/base.env:
-    - /PERPENDICULAR_WORKERS=4/
+    - /FOO=foo/
+    - /BAR=bar/ !  
+    - /BAZ=baz/  
+  mise/containers/app/env/development.env:

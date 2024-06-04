@@ -1,6 +1,11 @@
 stacks: 
-  .gitignore:
   app/assets/stylesheets/application.tailwind.css:
+  docker-compose.development.yml:  
+    - services!:
+        dev:
+          container_name: dev
   mise/containers/app/env/base.env:
-    - /PARALLEL_WORKERS=4/
+    - /FOO=foo/
+    - /BAR=bar/  
+    - /BAZ=baz/ !
   

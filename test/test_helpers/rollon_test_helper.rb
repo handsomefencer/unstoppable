@@ -50,17 +50,47 @@ module Roro::TestHelpers
       end
     end
 
-    def manifest_for_story(*choices)
+    def manifest_for_story(*c)
+      options = { merge_hash_arrays: true } #, keep_array_duplicates: true }
+
       {}.tap do |h|
-        gather_manifests.each do |file|
-          choices.each do |choice|
-            yaml = read_yaml(file)[choice.to_sym]
+        manifests.each do |d|
+          next unless read_yaml(d)
+          c.each do |c|
+            yaml = read_yaml(d)[c.to_sym]
+            next unless yaml
             yaml&.keys&.each do |k|
               i = (k[-1] == '!') ? :"#{k[0..-2]}" : :"#{k}!"
               h[k] = h[i] if h.keys.include?(i)
               h.delete(i) if h.keys.include?(i)
             end
-            options = { merge_hash_arrays: true, keep_array_duplicates: true }
+            manifest = d
+            hash = h
+            # bar = d
+            baz = c
+            qux = yaml
+            yaml&.each do |key, arr|
+              # arr&.map! { |item| item.gsub(/\/\s!/, '/!') }
+              arr&.each do |foo|
+                if foo.is_a? String
+                  foo.gsub!(/\/\s!/, '/!')
+                  # debugger
+                  # hash[key]&.delete(value)
+                  bar = (foo[-1] == '!') ? "#{foo[0..-2]}" : "#{foo}!"
+                  # i = (k[-1] == '!') ? :"#{k[0..-2]}" : :"#{k}!"
+                  arr
+                  # debugger if ( !hash&.empty? && \
+                  #   yaml && \
+                  #   manifest.match?(/sqlite\/_manifest/) &&
+                  #   # bar.eql?("/BAR=bar/ !") && \bfoo
+                  #   key.eql?(:"mise/containers/app/env/base.env")
+                  # )
+                  h[key]&.delete(bar)
+                else
+
+                end
+              end
+            end
             h.deeper_merge!(yaml, options)
           end
         end
