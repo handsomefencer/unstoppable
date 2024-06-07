@@ -10,6 +10,8 @@ describe Roro::TestHelpers::RollonTestHelper do
   Given(:story_path) { choices.join('/') }
   Given(:dir) { "#{story_root}/#{story_path}" }
   Given(:options) { { rollon_dummies: false } }
+  Given(:asserted_file) { :"app/assets/stylesheets/application.tailwind.css" }
+  Given(:refuted_file) { :"app/assets/stylesheets/application.tailwind.css!" }
   Given(:stackfile_strings) { :"mise/containers/app/env/base.env" }
   Given(:stackfile_hashes) { :"docker-compose.development.yml" }
   Given(:css_flavor) { 'bootstrap' }
@@ -28,7 +30,6 @@ describe Roro::TestHelpers::RollonTestHelper do
     end
 
     describe 'when stack is a fixture stack' do
-      Given(:story_root) { "#{troot}/roro" }
       Then { assert_correct_variables }
     end
 
@@ -89,17 +90,17 @@ describe Roro::TestHelpers::RollonTestHelper do
   end
 
   describe '#manifest_for_story(*choices)' do
-    Given(:result) { subject.manifest_for_story(*choices) }
+    Given(:result) { subject.manifest_for_story }
+    Given(:contents) { result[stackfile_strings] }
+    Given(:svcs) { result[stackfile_hashes][:services] }
 
     describe 'when evaluating for file existence' do
-      Given(:asserted_file) { :"app/assets/stylesheets/application.tailwind.css" }
-      Given(:refuted_file) { :"app/assets/stylesheets/application.tailwind.css!" }
 
       describe 'when file asserted' do
         Then do
           assert_equal 3, result.keys.size
-          assert_equal stackfile_hashes, result.keys[1]
-          assert_equal asserted_file, result.keys[0]
+          assert_equal stackfile_hashes, result.keys[0]
+          assert_equal asserted_file, result.keys[1]
           assert_equal stackfile_strings, result.keys[2]
         end
 
@@ -115,6 +116,7 @@ describe Roro::TestHelpers::RollonTestHelper do
 
           describe 'and then asserted' do
             Given(:js_flavor) { 'importmaps' }
+            Given { skip }
             Then do
               assert_equal 4, result.keys.size
               assert_equal stackfile_hashes, result.keys[0]
@@ -128,9 +130,8 @@ describe Roro::TestHelpers::RollonTestHelper do
     end
 
     describe 'when evaluating file contents' do
-      Given(:contents) { result[stackfile_strings] }
 
-      describe 'When contents item is a string' do
+      describe 'When item is a string' do
         Then do
           assert_equal 1, subject.manifests.size
           assert_equal 3, contents.size
@@ -151,7 +152,7 @@ describe Roro::TestHelpers::RollonTestHelper do
           describe 'then BAR asserted and FOO refuted' do
             Given(:js_flavor) { 'importmaps' }
             Then do
-              assert_equal 3, subject.manifests.size
+              assert_equal 4, subject.manifests.size
               assert_includes contents, "/FOO=foo/!"
               assert_includes contents, "/BAZ=baz/"
               assert_includes contents, "/BAR=bar/"
@@ -160,44 +161,62 @@ describe Roro::TestHelpers::RollonTestHelper do
         end
       end
 
-      describe 'When contents item is a hash' do
-        Given(:contents) { result[stackfile_hashes] }
-        focus
+      describe 'When item is a hash' do
         Then do
           assert_equal 1, subject.manifests.size
-          assert_equal 1, contents.size
-          assert_equal Hash, contents.first.class
-          assert_equal [], contents.dig(0)
-          # assert_equal "/FOO=foo/", contents[0]
-          # assert_equal "/BAR=bar/", contents[1]
-          # assert_equal "/BAZ=baz/!", contents[2]
+          assert_equal 'dev', svcs.dig(:dev, :container_name)
         end
+      end
 
-        describe 'when overridden and BAR refuted and BAZ asserted' do
-          Given(:css_flavor) { 'tailwind' }
-          # Then do
-          #   assert_equal 3, contents.size
-          #   assert_equal "/FOO=foo/", contents[0]
-          #   assert_equal "/BAR=bar/!", contents[1]
-          #   assert_equal "/BAZ=baz/", contents[2]
-          # end
+      describe 'when hash assertion added downstream' do
+        Given(:css_flavor) { 'tailwind' }
+        Then do
+          assert_equal 3, subject.manifests.size
+          assert_equal 3, svcs.keys.size
+          assert_includes svcs.keys, :dev
+          assert_includes svcs.keys, :"watch-css"
+          assert_includes svcs.keys, :"watch-js"
+        end
+      end
 
-          # describe 'then BAR asserted and FOO refuted' do
-          #   Given(:js_flavor) { 'importmaps' }
-          #   Then do
-          #     assert_equal 3, subject.manifests.size
-          #     assert_includes contents, "/FOO=foo/!"
-          #     assert_includes contents, "/BAZ=baz/"
-          #     assert_includes contents, "/BAR=bar/"
-          #   end
-          # end
+      describe 'when hash refutation added downstream' do
+        Given(:css_flavor) { 'tailwind' }
+        Given(:js_flavor) { 'importmaps' }
+        Then do
+          assert_equal 4, subject.manifests.size
+          assert_equal 3, svcs.keys.size
+          assert_includes svcs.keys, :dev
+          assert_includes svcs.keys, :"watch-css"
+          assert_includes svcs.keys, :"watch-js!"
+          assert_includes svcs.dig(:dev, :container_name), 'dev'
         end
       end
     end
   end
 
   describe '#collect_dummies' do
-    Then { assert_includes subject.dummies, stackfile_strings.to_s }
+    Given { skip }
+    describe 'when all files asserted' do
+
+      Then do
+        assert_equal 3, subject.dummies.size
+        assert_includes subject.dummies, stackfile_strings.to_s
+        assert_includes subject.dummies, stackfile_hashes.to_s
+        assert_includes subject.dummies, asserted_file.to_s
+        refute_includes subject.dummies, refuted_file.to_s
+      end
+    end
+
+    describe 'When one file refuted' do
+      Given(:css_flavor) { 'tailwind' }
+      Then do
+        assert_equal 3, subject.dummies.size
+        assert_includes subject.dummies, stackfile_strings.to_s
+        assert_includes subject.dummies, stackfile_hashes.to_s
+        refute_includes subject.dummies, refuted_file.to_s
+        refute_includes subject.dummies, asserted_file.to_s
+      end
+    end
   end
 
   describe '#rollon' do

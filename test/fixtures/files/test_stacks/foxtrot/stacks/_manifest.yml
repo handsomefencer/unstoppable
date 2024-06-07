@@ -1,9 +1,9 @@
 stacks: 
   app/assets/stylesheets/application.tailwind.css:
   docker-compose.development.yml:  
-    - services!:
-        dev:
-          container_name: dev
+    services:
+      dev:
+        container_name: dev
   mise/containers/app/env/base.env:
     - /FOO=foo/
     - /BAR=bar/  

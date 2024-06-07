@@ -50,51 +50,80 @@ module Roro::TestHelpers
       end
     end
 
-    def manifest_for_story(*c)
-      options = { merge_hash_arrays: true } #, keep_array_duplicates: true }
-
+    def manifest_for_story
       {}.tap do |h|
         manifests.each do |d|
           next unless read_yaml(d)
-          c.each do |c|
-            yaml = read_yaml(d)[c.to_sym]
-            next unless yaml
-            yaml&.keys&.each do |k|
-              i = (k[-1] == '!') ? :"#{k[0..-2]}" : :"#{k}!"
-              h[k] = h[i] if h.keys.include?(i)
-              h.delete(i) if h.keys.include?(i)
+          choices.each do |c|
+            override_manifest_choice(h, read_yaml(d)[c.to_sym])
+            begin
+            rescue
+  # debugger
+  # raise RuntimeError, msg: "#{dir}: #{d}: #{c}"
             end
-            manifest = d
-            hash = h
-            # bar = d
-            baz = c
-            qux = yaml
-            yaml&.each do |key, arr|
-              # arr&.map! { |item| item.gsub(/\/\s!/, '/!') }
-              arr&.each do |foo|
-                if foo.is_a? String
-                  foo.gsub!(/\/\s!/, '/!')
-                  # debugger
-                  # hash[key]&.delete(value)
-                  bar = (foo[-1] == '!') ? "#{foo[0..-2]}" : "#{foo}!"
-                  # i = (k[-1] == '!') ? :"#{k[0..-2]}" : :"#{k}!"
-                  arr
-                  # debugger if ( !hash&.empty? && \
-                  #   yaml && \
-                  #   manifest.match?(/sqlite\/_manifest/) &&
-                  #   # bar.eql?("/BAR=bar/ !") && \bfoo
-                  #   key.eql?(:"mise/containers/app/env/base.env")
-                  # )
-                  h[key]&.delete(bar)
-                else
-
-                end
-              end
-            end
-            h.deeper_merge!(yaml, options)
           end
         end
       end
+    end
+
+    def override_manifest_choice(h, override)
+      override&.each do |k, v|
+        override_file_expectation(h, k)
+
+        case v
+        when Hash
+          h[k] = override_hash_nodes(h[k] ||= {}, v)
+        when Array
+          override_array_nodes(v, h[k])
+        end
+      end
+      h.deeper_merge!(override, merge_hash_arrays: true )
+    end
+
+    def override_file_expectation(h, file)
+      i = (file[-1] == '!') ? :"#{file[0..-2]}" : :"#{file}!"
+      h[file] = h.delete(i) if h.keys.include?(i)
+    end
+
+    def override_array_nodes(array, h)
+      array&.each do |v|
+        strip_whitespace_from_evaluator(v)
+
+        h&.delete((v[-1] == '!') ? v[0..-2] : "#{v}!")
+      end
+    end
+
+    def override_hash_nodes(hash, override)
+      case override
+      when Array
+        override_array_nodes(override, hash)
+      when String
+        # bar = (override[-1] == '!') ? "#{override[0..-2]}" : "#{override}!"
+
+        # debugger
+      when Hash
+        # debugger
+        return hash if override.is_a?(String)
+        override&.each do |key, value|
+          # debugger if value.is_a?(Hash)
+          bar = (key[-1] == '!') ? "#{key[0..-2]}" : "#{key}!"
+          bar = bar.to_sym
+          if hash.keys.include?(bar)
+            hash[key] = hash.delete(bar)
+          else
+            begin
+              hash[key] = override_hash_nodes((hash[key] || {}), override[key])
+            rescue
+              debugger
+            end
+          end
+        end
+      end
+      hash
+    end
+
+    def strip_whitespace_from_evaluator(string)
+      string.gsub!(/\/\s!/, '/!')
     end
 
     def manifest_for(*choices)
@@ -115,15 +144,23 @@ module Roro::TestHelpers
     end
 
     def collect_dummies
-      [].tap do |a|
-        choices.each do |choice|
-          files = manifest[choice.to_sym]&.keys&.map(&:to_s)&.reject { |f|
-            f.chars.first.eql?('-')
+      files = manifest_for_story&.keys&.map(&:to_s)
+      # debugger
+      files&.reject { |f|
+            f[-1] == '!'
           }
-          a.concat(files) if files
-        end
-      end
     end
+
+    # def collect_dummies
+    #   [].tap do |a|
+    #     choices.each do |choice|
+    #       files = manifest[choice.to_sym]&.keys&.map(&:to_s)&.reject { |f|
+    #         f.chars.first.eql?('-')
+    #       }
+    #       a.concat(files) if files
+    #     end
+    #   end
+    # end
 
     def rollon
       stubs_adventure(dir)

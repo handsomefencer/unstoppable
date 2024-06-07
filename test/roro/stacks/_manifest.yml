@@ -39,24 +39,24 @@ stacks:
   mise/scripts/docker.prune.sh:
   docker-compose.builders.yml:
   docker-compose.development.yml:  
-    - services:
-        dev:
-          container_name: dev
-          profiles: 
-            - development
+    services:
+      dev:
+        container_name: dev
+        profiles: 
+          - development
   docker-compose.production.yml:
   docker-compose.test.yml:  
   docker-compose.vendor.yml:
-    - services: 
-        roro: 
-          image: handsomefencer/roro
+    services: 
+      roro: 
+        image: handsomefencer/roro
   docker-compose.yml:
-    - volumes:
-        db_data:
-        gem_cache:
-    - secrets: 
-        base_key: 
-          file: ./mise/keys/base.key
+    volumes:
+      db_data:
+      gem_cache:
+    secrets: 
+      base_key: 
+        file: ./mise/keys/base.key
   Gemfile:
     - /gem ["']rails["'], ["']~> 7.1.3/
   .dockerignore:

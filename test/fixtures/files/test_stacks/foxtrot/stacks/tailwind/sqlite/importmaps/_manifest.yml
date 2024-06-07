@@ -1,6 +1,10 @@
 tailwind: 
-  app/assets/stylesheets/application.tailwind.css:
+  app/assets/stylesheets/application.tailwind.css!:
   mise/containers/app/env/base.env:
     - /BAR=bar/ 
     - /FOO=foo/!
-    
+  docker-compose.development.yml:  
+    services:
+      watch-js!:
+      dev:
+        container_name: dev!

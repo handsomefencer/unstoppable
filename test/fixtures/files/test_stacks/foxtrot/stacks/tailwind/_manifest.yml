@@ -1,5 +1,11 @@
 stacks: 
   app/assets/stylesheets/application.tailwind.css!:
+  docker-compose.development.yml:  
+    services:
+      watch-css:
+        container_name: watch-css
+      watch-js:
+        container_name: watch-js      
   mise/containers/app/env/base.env:
     - /FOO=foo/
     - /BAR=bar/ !  

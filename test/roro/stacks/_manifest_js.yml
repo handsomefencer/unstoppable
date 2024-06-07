@@ -1,17 +1,17 @@
 js-node: &js-node 
   docker-compose.development.yml:  
-    - services: 
-        dev:
-          container_name: dev
-        watch-js:
-          container_name: watch-js
+    services: 
+      dev:
+        container_name: dev
+      watch-js:
+        container_name: watch-js
 
 bun: 
   docker-compose.development.yml:  
-    - services: 
-        watch-js:
-          container_name: watch-js
-          image: oven/bun:alpine
+    services: 
+      watch-js:
+        container_name: watch-js
+        image: oven/bun:alpine
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--javascript=bun/
 
