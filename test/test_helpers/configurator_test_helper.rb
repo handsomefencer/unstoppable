@@ -34,20 +34,22 @@ module Roro
       def assert_correct_manifest(dir)
         story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
-        manifest = {}
-        story.choices.each do |c|
-          manifest.merge(story.merge_manifests.dig(c.to_sym))
-        end
+        # manifest = {}
+        # story.choices.each do |c|
+        #   manifest.merge(story.merge_manifests.dig(c.to_sym))
+        # end
+        story.manifest_for_story.each do |key, value|
         debugger
-        story.choices.each do |c|
-          debugger
-          story.merge_manifests.dig(c.to_sym)&.each do |f, m|
-            if m.nil?
-              evaluate_manifest_file_existence(f.to_s)
-            else
-              evaluate_manifest_file_contents(dir, f.to_s, m)
-            end
-          end
+
+          # .choices.each do |c|
+          # debugger
+          # story.merge_manifests.dig(c.to_sym)&.each do |f, m|
+          #   if m.nil?
+          #     evaluate_manifest_file_existence(f.to_s)
+          #   else
+          #     evaluate_manifest_file_contents(dir, f.to_s, m)
+          #   end
+          # end
         end
       end
 
