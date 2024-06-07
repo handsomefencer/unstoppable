@@ -39,7 +39,7 @@ module Roro
         #   manifest.merge(story.merge_manifests.dig(c.to_sym))
         # end
         story.manifest_for_story.each do |key, value|
-        debugger
+        # debugger
 
           # .choices.each do |c|
           # debugger

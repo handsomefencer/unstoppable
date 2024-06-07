@@ -23,6 +23,12 @@ module Roro::TestHelpers::FileAssertionsTestHelper
     assert(File.exist?(file), "Expected #{file} in #{globdir}")
   end
 
+  def refute_file(file, *contents)
+    refute(File.exist?(file), "Did not expect #{file} to exist")
+
+    evaluate_content(false, file, *contents)
+  end
+
   def assert_content(file, *contents)
     assert_file(file)
     evaluate_content(true, file, *contents)
@@ -54,6 +60,7 @@ module Roro::TestHelpers::FileAssertionsTestHelper
   end
 
   alias assert_directory assert_file
+  alias refute_directory refute_file
 
   def assert_yaml(*args)
     evaluate_yaml(true, *args)
