@@ -6,7 +6,7 @@ describe '2 Bulma -> 4 SQLite -> 1 Bun -> 2 omakase' do
   Given(:workbench) {}
   
   Given do
-    rollon(__dir__)
+    # debugger
   end
 
   Then { assert_correct_manifest(__dir__) }

@@ -1,46 +1,46 @@
-css-processors: &css-processors
-  docker-compose.development.yml: 
-    services: 
-      watch-css:
-        container_name: watch-css
-        command: ["yarn", "build:css", "--watch"]
-  package.json:
-    - /scripts/
-    - /build:css/
+# css-processors: &css-processors
+#   docker-compose.development.yml: 
+#     services: 
+#       watch-css:
+#         container_name: watch-css
+#         command: ["yarn", "build:css", "--watch"]
+#   package.json:
+#     - /scripts/
+#     - /build:css/
 
-bootstrap: 
-  <<: *css-processors
-  app/assets/stylesheets/application.bootstrap.scss:
-  app/javascript/application.js:
-    - /bootstrap/
-  mise/containers/app/Dockerfile.builder.railsnew:
-    - /--css=bootstrap/
-  config/importmap.rb: 
-    - /bootstrap/
+# bootstrap: 
+#   <<: *css-processors
+#   app/assets/stylesheets/application.bootstrap.scss:
+#   app/javascript/application.js:
+#     - /bootstrap/
+#   mise/containers/app/Dockerfile.builder.railsnew:
+#     - /--css=bootstrap/
+#   config/importmap.rb: 
+#     - /bootstrap/
 
-bulma:
-  <<: *css-processors
-  app/assets/stylesheets/application.bulma.scss:
-  mise/containers/app/Dockerfile.builder.railsnew:
-    - /--css=bulma/
+# bulma:
+#   <<: *css-processors
+#   app/assets/stylesheets/application.bulma.scss:
+#   mise/containers/app/Dockerfile.builder.railsnew:
+#     - /--css=bulma/
 
-postcss: 
-  <<: *css-processors
-  app/assets/stylesheets/application.postcss.css:
-  mise/containers/app/Dockerfile.builder.railsnew:
-    - /--css=postcss/
-  postcss.config.js:
+# postcss: 
+#   <<: *css-processors
+#   app/assets/stylesheets/application.postcss.css:
+#   mise/containers/app/Dockerfile.builder.railsnew:
+#     - /--css=postcss/
+#   postcss.config.js:
 
-sass:
-  docker-compose.development.yml: 
-    services: 
-      watch-css:
-        container_name: watch-css
-        command: ["bin/rails", "dartsass:watch"]
+# sass:
+#   docker-compose.development.yml: 
+#     services: 
+#       watch-css:
+#         container_name: watch-css
+#         command: ["bin/rails", "dartsass:watch"]
 
-tailwind: 
-  docker-compose.development.yml: 
-    services: 
-      watch-css:
-        container_name: watch-css
-        command: ["yarn", "build:css", "--watch"]
+# tailwind: 
+#   docker-compose.development.yml: 
+#     services: 
+#       watch-css:
+#         container_name: watch-css
+#         command: ["yarn", "build:css", "--watch"]

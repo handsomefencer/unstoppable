@@ -98,14 +98,9 @@ module Roro::TestHelpers
       when Array
         override_array_nodes(override, hash)
       when String
-        # bar = (override[-1] == '!') ? "#{override[0..-2]}" : "#{override}!"
-
-        # debugger
       when Hash
-        # debugger
         return hash if override.is_a?(String)
         override&.each do |key, value|
-          # debugger if value.is_a?(Hash)
           bar = (key[-1] == '!') ? "#{key[0..-2]}" : "#{key}!"
           bar = bar.to_sym
           if hash.keys.include?(bar)

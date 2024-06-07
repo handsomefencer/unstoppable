@@ -6,7 +6,7 @@ describe '3 PostCSS -> 1 MariaDB -> 4 Vite -> 2 omakase' do
   Given(:workbench) {}
   
   Given do
-    rollon(__dir__)
+    # debugger
   end
 
   Then { assert_correct_manifest(__dir__) }

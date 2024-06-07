@@ -210,7 +210,7 @@ module Roro
         json = YAML.load_file(yaml_file, aliases: true).to_json
         JSON.parse(json, symbolize_names: true)
       rescue
-        raise RuntimeError
+        raise RuntimeError, msg: "Trouble reading #{yaml_file}"
       end
     end
 

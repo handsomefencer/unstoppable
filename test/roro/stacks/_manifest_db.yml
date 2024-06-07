@@ -1,14 +1,14 @@
-sqlite: 
-  mise/containers/app/Dockerfile.builder.nomicon:
-  mise/containers/app/Dockerfile.builder.base:
-    - /\}-alpine3.18/
-  mise/containers/app/Dockerfile.builder.deps.dev:
-    - /sqlite-dev/
-  mise/containers/app/Dockerfile.production:
-    - /sqlite-dev/
-  Gemfile:
-    - /gem ["']sqlite3["'], ["']~> 1.4/
+# sqlite: 
+#   mise/containers/app/Dockerfile.builder.nomicon:
+#   mise/containers/app/Dockerfile.builder.base:
+#     - /\}-alpine3.18/
+#   mise/containers/app/Dockerfile.builder.deps.dev:
+#     - /sqlite-dev/
+#   mise/containers/app/Dockerfile.production:
+#     - /sqlite-dev/
+#   Gemfile:
+#     - /gem ["']sqlite3["'], ["']~> 1.4/
 
-postgres: 
-  mise/containers/app/Dockerfile.builder.deps.dev:
-    - /postgresql-dev/
+# postgres: 
+#   mise/containers/app/Dockerfile.builder.deps.dev:
+#     - /postgresql-dev/

@@ -1,7 +1,7 @@
-#!/bin/sh
+  #!/bin/sh
 
 docker compose down
 
-# . mise/scripts/docker.prune.roro.sh
+. mise/scripts/docker.prune.sh
 
 docker compose build --with-dependencies development
