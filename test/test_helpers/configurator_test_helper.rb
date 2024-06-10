@@ -16,7 +16,7 @@ module Roro
         f[0].eql?('-') ? refute_file(f[1..-1]) : assert_file(f)
       end
 
-      def evaluate_manifest_file_contents(dir, file, matchers)
+      def evaluate_contents_array(dir, file, matchers)
         matchers.each do |matcher|
           msg = "#{file} in #{dir}/dummy/#{file} does not contain #{matcher}"
           if matcher.is_a?(Hash)
@@ -31,16 +31,50 @@ module Roro
         end
       end
 
+      def evaluate_contents_hash(dir, file, expected, actual=nil, builder=nil)
+        actual ||= read_yaml(file.to_s)
+        expected.dup.each do |key, value|
+          if key.to_s[-1] == '!'
+            refute_includes actual.keys, key[0..-2].to_sym
+            expected.delete(key)
+          end
+          case value
+          when Hash
+            if key.to_s[-1] == '!'
+              refute_includes actual.keys, key[0..-2]
+              expected.delete(key)
+            else
+              assert_includes actual.keys, key
+              evaluate_contents_hash(dir, file, value, actual.dup[key])
+            end
+          when String
+            if value.to_s[-1] == '!'
+              refute_equal actual[key], value[0..-2]
+            end
+          when Array
+            value.each do |item|
+              if item.to_s[-1] == '!'
+                refute_includes actual[key], item[0..-2]
+              else
+                assert_includes actual[key], item
+
+              end
+            end
+          end
+        end
+      end
+
       def assert_correct_manifest(dir)
         story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
-        # manifest = {}
-        # story.choices.each do |c|
-        #   manifest.merge(story.merge_manifests.dig(c.to_sym))
-        # end
-        story.manifest_for_story.each do |key, value|
-        # debugger
-
+        story.manifest_for_story.each do |file, content|
+          evaluate_manifest_file_existence(file)
+          case content
+          when Array
+            evaluate_contents_array(dir, file, content)
+          when Hash
+            evaluate_contents_hash(dir, file, content)
+          end
           # .choices.each do |c|
           # debugger
           # story.merge_manifests.dig(c.to_sym)&.each do |f, m|
