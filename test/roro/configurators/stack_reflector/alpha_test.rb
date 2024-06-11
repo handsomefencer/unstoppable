@@ -35,7 +35,6 @@ describe Roro::Configurators::StackReflector do
 
       describe 'when picks is a string' do
         When(:picks) { '1 1 1' }
-        focus
         Then {
           assert_expected_adventure }
       end

@@ -54,7 +54,6 @@ describe Roro::TestHelpers::ConfiguratorTestHelper do
             :profiles=>["development"]
     }}}}
     Given(:result) { evaluate_contents_hash('bar', file, expected) }
-focus
     Then { assert_equal 'blah', result }
   end
 end

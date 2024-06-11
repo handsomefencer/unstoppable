@@ -3,17 +3,12 @@
 module Roro
   module TestHelpers
     module ConfiguratorTestHelper
-
       def rollon_options
         {
           debuggerer: ENV['DEBUGGERER'].eql?('true'),
           rollon_dummies: @rollon_dummies || false,
           rollon_loud: @rollon_loud || false
         }
-      end
-
-      def evaluate_manifest_file_existence(f)
-        f[0].eql?('-') ? refute_file(f[1..-1]) : assert_file(f)
       end
 
       def evaluate_contents_array(dir, file, matchers)
@@ -57,7 +52,6 @@ module Roro
                 refute_includes actual[key], item[0..-2]
               else
                 assert_includes actual[key], item
-
               end
             end
           end
@@ -67,24 +61,32 @@ module Roro
       def assert_correct_manifest(dir)
         story = RollonTestHelper.new(dir, rollon_options)
         story.rollon
-        story.manifest_for_story.each do |file, content|
-          evaluate_manifest_file_existence(file)
+        foo = story.manifest_for_story
+        foo.each do |key, content|
+          file = key.to_s
+          # evaluate_manifest_file_existence(file.to_s)
+          # debugger if file.eql?(:"package.json")
+          if file[-1].eql?('!')
+            refute_file(file[1..-2])
+            # foo.delete(file[1..-2])
+            next
+          else
+            # debugger
+            assert_file(file)
+          end
           case content
           when Array
             evaluate_contents_array(dir, file, content)
           when Hash
             evaluate_contents_hash(dir, file, content)
           end
-          # .choices.each do |c|
-          # debugger
-          # story.merge_manifests.dig(c.to_sym)&.each do |f, m|
-          #   if m.nil?
-          #     evaluate_manifest_file_existence(f.to_s)
-          #   else
-          #     evaluate_manifest_file_contents(dir, f.to_s, m)
-          #   end
-          # end
         end
+      end
+
+      def evaluate_manifest_file_existence(f)
+        file = f
+        debugger if f == "package.json!"
+        f[-1].eql?('!') ? refute_file(f[0..-2]) : assert_file(f)
       end
 
       def stub_journey(answers)

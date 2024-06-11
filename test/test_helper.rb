@@ -27,6 +27,7 @@ Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
 
 
 # # frozen_string_literal: true
+      include Roro::TestHelpers::FileAssertionsTestHelper
 
 module Roro
   module TestHelpers
