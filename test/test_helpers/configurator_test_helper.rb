@@ -49,6 +49,7 @@ module Roro
           when Array
             value.each do |item|
               if item.to_s[-1] == '!'
+                # debugger if build:css
                 refute_includes actual[key], item[0..-2]
               else
                 assert_includes actual[key], item

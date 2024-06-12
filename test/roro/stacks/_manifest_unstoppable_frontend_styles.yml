@@ -1,1 +1,60 @@
 stacks:
+
+js-approaches: &js-approaches 
+  docker-compose.development.yml:  
+    services: 
+      watch-js:
+        container_name: watch-js
+        command: ["yarn", "build", "--watch"]
+
+
+bun: 
+  bun.config.js:
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - / --javascript=bun /
+  docker-compose.development.yml:  
+    services: 
+      watch-js:
+        command: ["bun", "bun.config.js", "--watch"]
+        container_name: watch-js
+        image: oven/bun:alpine
+
+esbuild: 
+  <<: *js-approaches
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - / --javascript=esbuild /
+  docker-compose.development.yml:  
+    services: 
+      watch-js:
+        command: ["yarn", "build", "--watch"]
+  package.json:
+    - /esbuild/
+
+importmaps: 
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--js/ !
+
+vite: 
+  <<: *js-approaches 
+  app/javascript/entrypoints/application.css:
+  app/javascript/entrypoints/application.js:
+  app/views/layouts/application.html.erb:
+    - /vite_client_tag/
+    - /vite_javascript_tag/
+  bin/vite:
+  config/vite.json:
+  docker-compose.development.yml:  
+    services:
+      watch-js:
+        command: ["bin/vite", "dev"]
+        environment:
+          DEBUG: '*vite*'
+          VITE_RUBY_HOST: 0.0.0.0
+        ports:
+          - 3036:3036
+  Gemfile:
+    - /gem ["']vite_rails["']/
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - / --javascript=esbuild /
+  vite.config.ts:
+

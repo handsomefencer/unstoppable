@@ -4,6 +4,5 @@ tailwind:
   docker-compose.development.yml: 
     services: 
       watch-css:
-        command: ["yarn!", "build:css!", "--watch!", "bin/rails", "tailwindcss:watch"]
-        container_name: watch-css
+        command: ["bin/rails", "tailwindcss:watch"]
   package.json!:

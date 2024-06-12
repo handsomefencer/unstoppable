@@ -4,10 +4,8 @@ require 'stack_test_helper'
 
 describe '6 tailwind -> 4 SQLite -> 2 ESBuild -> 1 okonomi' do
   Given(:workbench) {}
-  
-  Given do
-    # debugger
-  end
 
+  Given do
+  end
   Then { assert_correct_manifest(__dir__) }
 end

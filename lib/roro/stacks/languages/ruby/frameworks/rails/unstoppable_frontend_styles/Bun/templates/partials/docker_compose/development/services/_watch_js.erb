@@ -1,5 +1,6 @@
   watch-js:
     image: oven/bun:alpine
+    command: ["bun", "bun.config.js", "--watch"]
     container_name: watch-js
     volumes:
       - .:/home/bun/app

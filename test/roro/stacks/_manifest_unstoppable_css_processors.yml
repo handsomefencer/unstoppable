@@ -8,7 +8,7 @@ css-processors: &css-processors
         command: ["yarn", "build:css", "--watch"]
   package.json:
     - /scripts/
-    - /build:css/
+    - /build/
 
 # bootstrap: 
 #   <<: *css-processors
@@ -42,3 +42,5 @@ css-processors: &css-processors
 
 tailwind: 
   <<: *css-processors
+  app/assets/stylesheets/application.tailwind.css!:
+

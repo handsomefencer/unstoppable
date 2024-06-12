@@ -1,8 +1,7 @@
 services:
   test: &test
-    extends: 
-      file: docker-compose.builders.yml
-      service: builder-development
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.test
     env_file: 
       - ./mise/containers/app/env/base.env
       - ./mise/containers/app/env/test.env

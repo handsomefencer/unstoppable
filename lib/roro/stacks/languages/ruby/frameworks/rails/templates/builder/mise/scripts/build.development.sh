@@ -1,7 +1,6 @@
 #!/bin/sh
 
-dcd
+. mise/scripts/build.builder.sh 
 
-. mise/scripts/docker.prune.sh 
-
-dc build --with-dependencies --no-cache development
+docker compose build builder-development
+docker compose build dev

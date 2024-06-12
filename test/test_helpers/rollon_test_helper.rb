@@ -95,7 +95,11 @@ module Roro::TestHelpers
           override_array_nodes(v, h[k])
         end
       end
-      h.deeper_merge!(override, merge_hash_arrays: true )
+      options = {
+        overwrite_arrays: true,
+        merge_hash_arrays: true
+      }
+      h.deeper_merge!(override, options )
     end
 
     def override_file_expectation(h, file)

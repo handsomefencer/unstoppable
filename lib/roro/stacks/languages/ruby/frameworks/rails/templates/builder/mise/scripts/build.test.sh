@@ -1,3 +1,6 @@
 #!/bin/sh
 
-docker compose build --with-dependencies test
+. mise/scripts/build.builder.sh 
+
+docker compose build builder-test
+docker compose build test

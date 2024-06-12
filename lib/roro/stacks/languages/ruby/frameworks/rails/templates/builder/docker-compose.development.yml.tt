@@ -1,8 +1,7 @@
 services:
   development: &development
-    extends: 
-      file: docker-compose.builders.yml
-      service: builder-development
+    build:
+      dockerfile: ./mise/containers/app/Dockerfile.development
     env_file: 
       - ./mise/containers/app/env/base.env
       - ./mise/containers/app/env/development.env

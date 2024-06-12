@@ -2,8 +2,7 @@
 
 cd ${sandbox_dir} 
 
-docker compose stop dev
-docker compose down
+docker compose --profile development down
 
 cd ${roro}
 

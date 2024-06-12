@@ -5,6 +5,7 @@ docker rm $(docker ps -aq -f name=<%= @env[:base][:app_name][:value] %>*)
 
 docker image rm -f $(docker images <%= @env[:base][:app_name][:value] %>/*)
 docker volume rm $(docker volume ls -f name=<%= @env[:base][:app_name][:value] %>*)
+docker network rm $(docker volume ls -f name=<%= @env[:base][:app_name][:value] %>*)
 
 . mise/scripts/docker.info.sh
 

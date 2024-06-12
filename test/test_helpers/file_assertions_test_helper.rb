@@ -46,7 +46,9 @@ module Roro::TestHelpers::FileAssertionsTestHelper
     yield read if block_given?
 
     args.each do |content|
-      args = [content, read]
+      msg = [ "#{boolean ? 'Did not expect' : 'Expected'}",
+              "#{content.inspect} in #{file}"].join(' ')
+      args = [content, read, msg]
       case content
       when String
         boolean ? assert_equal(*args) : refute_equal(*args)
