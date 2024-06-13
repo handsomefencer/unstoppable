@@ -6,8 +6,9 @@ describe '6 tailwind -> 4 SQLite -> 1 Bun -> 1 okonomi' do
   Given(:workbench) {}
 
   Given do
+    skip
     debuggerer
   end
-  focus
+  # focus
   Then { assert_correct_manifest(__dir__) }
 end

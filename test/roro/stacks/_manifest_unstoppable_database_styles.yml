@@ -15,6 +15,16 @@ sqlite:
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
 
-# postgres: 
-#   mise/containers/app/Dockerfile.builder.deps.dev:
-#     - /postgresql-dev/
+postgres: 
+  mise/env/base.env:
+    - /DATABASE_NAME=postgres/
+    - /DATABASE_HOST=db/
+    - /DATABASE_PASSWORD=password/
+    - /POSTGRES_NAME=postgres/
+    - /POSTGRES_PASSWORD=password/
+    - /POSTGRES_USERNAME=postgres/
+  mise/containers/app/env/development.env:
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db\/db_development/
+  mise/containers/db/env/base.env:
+  mise/containers/app/Dockerfile.builder.deps.dev:
+    - /postgresql-dev/

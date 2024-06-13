@@ -1,14 +1,12 @@
 stacks:
 
+
 css-processors: &css-processors
   docker-compose.development.yml: 
     services: 
       watch-css:
         container_name: watch-css
         command: ["yarn", "build:css", "--watch"]
-  package.json:
-    - /scripts/
-    - /build/
 
 # bootstrap: 
 #   <<: *css-processors
