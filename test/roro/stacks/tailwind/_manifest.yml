@@ -1,6 +1,6 @@
 stacks:
 
-tailwind: 
+importmaps: 
   docker-compose.development.yml: 
     services: 
       watch-css:

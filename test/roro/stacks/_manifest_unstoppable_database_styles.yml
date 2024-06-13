@@ -14,6 +14,9 @@ sqlite:
   mise/containers/db/env/base.env!:
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
+  docker-compose.vendor.yml:
+    services:
+      db!:
 
 postgres: 
   mise/env/base.env:
@@ -28,3 +31,11 @@ postgres:
   mise/containers/db/env/base.env:
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /postgresql-dev/
+  docker-compose.vendor.yml:
+    services: 
+      db:
+        image: postgres:16.2-alpine
+        volumes:
+          - db_data:/var/lib/postgresql/data
+        ports:
+          - "5432"

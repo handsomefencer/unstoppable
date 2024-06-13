@@ -19,6 +19,11 @@ stacks:
     services: 
       roro: 
         image: handsomefencer/roro
+      db:
+        container_name: db
+        env_file:
+          - ./mise/containers/db/env/base.env
+  
   docker-compose.yml:
     volumes:
       db_data:
