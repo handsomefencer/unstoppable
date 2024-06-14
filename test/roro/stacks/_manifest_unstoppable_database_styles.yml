@@ -39,3 +39,6 @@ postgres:
           - db_data:/var/lib/postgresql/data
         ports:
           - "5432"
+
+mysql:
+  Gemfile!:

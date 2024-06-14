@@ -8,5 +8,6 @@ describe '6 tailwind -> 4 SQLite -> 1 Bun -> 1 okonomi' do
   Given do
     debuggerer
   end
+  focus
   Then { assert_correct_manifest(__dir__) }
 end
