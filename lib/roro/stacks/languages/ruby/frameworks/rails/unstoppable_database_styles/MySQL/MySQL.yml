@@ -2,10 +2,15 @@ preface: Similar to mariadb
 
 env:
   base:
+    db_flag:
+      value: mysql
     db_image:
       value: mysql
     db_image_version:
       value: '8.0.21'
+    db_pkg_development:
+      value: mysql-dev
+    
     db_vendor:
       value: mysql
     db_volume:

@@ -3,7 +3,7 @@ services:
     build:
       dockerfile: ./mise/containers/app/Dockerfile.builder.base
       args: 
-        RUBY_VERSION: 3.3
+        RUBY_VERSION: 3.3.3
     image: builder/base
     profiles: 
       - builder
