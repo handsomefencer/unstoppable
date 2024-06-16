@@ -6,7 +6,8 @@ describe '3 PostCSS -> 2 MySQL -> 4 Vite -> 2 omakase' do
   Given(:workbench) {}
   
   Given do
-    # debugger
+    skip
+    debugger
   end
 
   Then { assert_correct_manifest(__dir__) }

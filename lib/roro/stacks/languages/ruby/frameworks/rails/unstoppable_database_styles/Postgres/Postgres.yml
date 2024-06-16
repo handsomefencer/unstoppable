@@ -14,7 +14,7 @@ env:
     db_image:
       value: postgres
     db_image_version:
-      value: '14.1'
+      value: '16.2-alpine'
     db_vendor:
       value: postgresql
     db_volume:

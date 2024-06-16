@@ -10,11 +10,15 @@ env:
       value: '8.0.21'
     db_pkg_development:
       value: mysql-dev
-    
+    db_pkg_production: 
+      name: Alpine db pkg for production
+      value: mysql
     db_vendor:
       value: mysql
     db_volume:
       value: /var/lib/mysql
+
+
   development: 
     db_pkg:
       value: mysql-dev
@@ -32,6 +36,7 @@ env:
       value: root
     MYSQL_ROOT_PASSWORD:
       value: root
+    
   production: 
     db_pkg:
       value: mysql-client

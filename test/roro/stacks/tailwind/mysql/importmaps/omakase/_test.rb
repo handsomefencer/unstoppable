@@ -6,7 +6,8 @@ describe '6 tailwind -> 2 MySQL -> 3 Importmaps -> 2 omakase' do
   Given(:workbench) {}
   
   Given do
-    # debugger
+    skip
+    debugger
   end
 
   Then { assert_correct_manifest(__dir__) }

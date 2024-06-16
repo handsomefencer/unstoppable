@@ -34,6 +34,8 @@ module Roro
             expected.delete(key)
           end
           case value
+          when nil
+            debugger
           when Hash
             if key.to_s[-1] == '!'
               refute_includes actual.keys, key[0..-2]
@@ -49,9 +51,9 @@ module Roro
           when Array
             value.each do |item|
               if item.to_s[-1] == '!'
-                # debugger if build:css
                 refute_includes actual[key], item[0..-2], 'blah'
               else
+                raise "#{file} #{dir} #{key} #{item}" unless actual[key]
                 assert_includes actual[key], item
               end
             end

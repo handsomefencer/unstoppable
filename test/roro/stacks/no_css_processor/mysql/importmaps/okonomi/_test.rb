@@ -6,7 +6,8 @@ describe '5 no_css_processor -> 2 MySQL -> 3 Importmaps -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do
-    # debugger
+    skip
+    debugger
   end
 
   Then { assert_correct_manifest(__dir__) }

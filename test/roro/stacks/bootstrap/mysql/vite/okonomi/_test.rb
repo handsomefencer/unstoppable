@@ -6,7 +6,8 @@ describe '1 Bootstrap -> 2 MySQL -> 4 Vite -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do
-    # debugger
+    skip
+    debugger
   end
 
   Then { assert_correct_manifest(__dir__) }

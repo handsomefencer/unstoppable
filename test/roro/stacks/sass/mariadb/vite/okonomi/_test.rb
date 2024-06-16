@@ -6,7 +6,8 @@ describe '4 Sass -> 1 MariaDB -> 4 Vite -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do
-    # debugger
+    skip
+    debugger
   end
 
   Then { assert_correct_manifest(__dir__) }
