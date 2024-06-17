@@ -1,4 +1,5 @@
 stacks: 
+  config/database.yml:
   docker-compose.builders.yml:
     services: 
       builder-base:

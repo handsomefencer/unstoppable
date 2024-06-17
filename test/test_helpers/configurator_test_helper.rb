@@ -53,8 +53,10 @@ module Roro
               if item.to_s[-1] == '!'
                 refute_includes actual[key], item[0..-2], 'blah'
               else
+                msg = "Missing item #{item} under :#{key} in file: #{file}"
+                # debugger if item.eql?("./mise/containers/db/env/base.env")
                 raise "#{file} #{dir} #{key} #{item}" unless actual[key]
-                assert_includes actual[key], item
+                assert_includes actual[key], item, msg
               end
             end
           end
