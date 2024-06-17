@@ -7,7 +7,7 @@ describe '6 tailwind -> 4 SQLite -> 4 Vite -> 2 omakase' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

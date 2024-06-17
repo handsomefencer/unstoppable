@@ -7,7 +7,7 @@ describe '3 PostCSS -> 2 MySQL -> 1 Bun -> 2 omakase' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

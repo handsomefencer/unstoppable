@@ -7,7 +7,7 @@ describe '5 no_css_processor -> 2 MySQL -> 2 ESBuild -> 2 omakase' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

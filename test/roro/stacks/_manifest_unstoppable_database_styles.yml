@@ -5,8 +5,8 @@ sqlite:
     services: 
       db!: 
   mise/containers/app/Dockerfile.builder.base:
-    - /\}-alpine3.18/
-    - /\}-alpine3.19/ !
+    - /ruby:3.3-alpine3.18/
+    - /ruby:3.3-alpine3.19/ !
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /sqlite-dev/
   mise/containers/app/Dockerfile.production:
@@ -23,9 +23,12 @@ postgres:
     - /DATABASE_NAME=postgres/
     - /DATABASE_HOST=db/
     - /DATABASE_PASSWORD=password/
+  mise/containers/db/env/development.env:
+  mise/containers/db/env/base.env:
     - /POSTGRES_NAME=postgres/
     - /POSTGRES_PASSWORD=password/
     - /POSTGRES_USERNAME=postgres/
+  
   mise/containers/app/env/development.env:
     - /DATABASE_URL=postgresql:\/\/postgres:password@db\/db_development/
   mise/containers/db/env/base.env:

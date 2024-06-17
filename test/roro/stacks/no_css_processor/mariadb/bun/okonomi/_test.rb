@@ -7,7 +7,7 @@ describe '5 no_css_processor -> 1 MariaDB -> 1 Bun -> 1 okonomi' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

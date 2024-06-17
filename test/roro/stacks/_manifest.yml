@@ -23,7 +23,7 @@ stacks:
       db:
         container_name: db
         env_file:
-          - ./mise/containers/db/env/base.env
+          - ./mise/containers/db/env/development.env
   
   docker-compose.yml:
     volumes:
@@ -35,7 +35,7 @@ stacks:
   Gemfile:
     - /gem ["']rails["'], ["']~> 7.1.3/
   mise/containers/app/Dockerfile.builder.base:
-    - /\}-alpine3.19/
+    - /ruby:3.3-alpine3.19/
   mise/containers/app/Dockerfile.builder.cache:
     - /COPY Gemfile\* ./
   mise/containers/app/Dockerfile.builder.deps.dev:

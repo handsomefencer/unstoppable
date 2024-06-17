@@ -7,7 +7,7 @@ describe '6 tailwind -> 3 Postgres -> 3 Importmaps -> 2 omakase' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

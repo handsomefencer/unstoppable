@@ -17,6 +17,12 @@ env:
       value: mysql
     db_volume:
       value: /var/lib/mysql
+    database_url:
+      name: Rails database_url
+      value: mysql2://root:@127.0.0.1/rails_event_store_active_record?pool=5
+
+
+
 
 
   development: 

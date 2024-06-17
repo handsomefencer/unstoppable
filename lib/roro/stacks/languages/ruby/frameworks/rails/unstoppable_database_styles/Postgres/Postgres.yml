@@ -13,8 +13,10 @@ env:
       value: postgresql-client
     db_image:
       value: postgres
-    db_image_version:
-      value: '16.2-alpine'
+    db_image_tag:
+      value: 16.3-alpine
+    db_service_port:
+      value: 5432
     db_vendor:
       value: postgresql
     db_volume:
@@ -28,16 +30,19 @@ env:
     DATABASE_PASSWORD:
       name: 
       value: password
-    POSTGRES_NAME:
-      name: Database name
-      value: postgres
-    POSTGRES_PASSWORD:
-      name: Database password
-      value: password
-    POSTGRES_USERNAME:
-      name: Database username
-      value: postgres
+
   development:
+    db: 
+      POSTGRES_NAME:
+        name: Database name
+        value: postgres
+      POSTGRES_PASSWORD:
+        name: Database password
+        value: password
+      POSTGRES_USERNAME:
+        name: Database username
+        value: postgres
+
     app: 
       DATABASE_URL:
         name: database url overrides variables in database.yml

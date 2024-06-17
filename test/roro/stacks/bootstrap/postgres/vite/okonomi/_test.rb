@@ -7,7 +7,7 @@ describe '1 Bootstrap -> 3 Postgres -> 4 Vite -> 1 okonomi' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

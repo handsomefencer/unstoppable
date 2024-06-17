@@ -7,7 +7,7 @@ describe '2 Bulma -> 1 MariaDB -> 3 Importmaps -> 1 okonomi' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

@@ -7,7 +7,7 @@ describe '<%= @env[:adventure_title] %>' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }

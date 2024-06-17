@@ -7,7 +7,7 @@ describe '4 Sass -> 2 MySQL -> 4 Vite -> 1 okonomi' do
   
   Given do
     skip
-    debugger
+    debuggerer
   end
 
   Then { assert_correct_manifest(__dir__) }
