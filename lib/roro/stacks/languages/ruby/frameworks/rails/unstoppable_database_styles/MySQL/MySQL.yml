@@ -4,44 +4,47 @@ env:
   base:
     db_flag:
       value: mysql
-    db_image:
-      value: mysql
-    db_image_version:
-      value: '8.0.21'
     db_pkg_development:
       value: mysql-dev
     db_pkg_production: 
       name: Alpine db pkg for production
       value: mysql
+    db_image:
+      value: mysql
+    db_image_tag:
+      value: '8.4'
+    db_service_port:
+      value: 3306
     db_vendor:
       value: mysql
     db_volume:
       value: /var/lib/mysql
-    database_url:
-      name: Rails database_url
-      value: mysql2://root:@127.0.0.1/rails_event_store_active_record?pool=5
-
-
-
-
 
   development: 
     db_pkg:
       value: mysql-dev
     DATABASE_HOST:
-      value: db
+      value: localhost
     DATABASE_NAME:
-      value: development
+      value: db_development
     MYSQL_DATABASE:
-      value: development
+      value: db_development
     MYSQL_HOST:
-      value: db
+      value: localhost
     MYSQL_USER:
       value: root
     MYSQL_PASSWORD:
       value: root
     MYSQL_ROOT_PASSWORD:
       value: root
+
+    app: 
+      DATABASE_URL:
+        name: Rails database_url
+        value: mysql2://root:rootd@localhost/db_development
+
+
+
     
   production: 
     db_pkg:

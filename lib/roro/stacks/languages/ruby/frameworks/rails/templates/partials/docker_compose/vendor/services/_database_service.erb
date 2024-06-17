@@ -1,9 +1,9 @@
   db:
     container_name: db
-    image: postgres:16.2-alpine
+    image: <%= @env.dig(:base, :db_image, :value) %>:<%= @env.dig(:base, :db_image_tag, :value) %>
     env_file:
-      - ./mise/containers/db/env/base.env
+      - ./mise/containers/db/env/development.env
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:<%= @env.dig(:base, :db_volume, :value) %>
     ports:
-      - "5432"
+      - "<%= @env[:base][:db_service_port][:value] %>"

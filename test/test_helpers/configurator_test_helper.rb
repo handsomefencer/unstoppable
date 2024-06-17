@@ -45,16 +45,20 @@ module Roro
               evaluate_contents_hash(dir, file, value, actual.dup[key])
             end
           when String
+
             if value.to_s[-1] == '!'
               refute_equal actual[key], value[0..-2]
+            else
+              msg = "Missing value #{value} for :#{key} in file: #{file}"
+              assert_equal actual[key], value, msg
             end
+
           when Array
             value.each do |item|
               if item.to_s[-1] == '!'
                 refute_includes actual[key], item[0..-2], 'blah'
               else
                 msg = "Missing item #{item} under :#{key} in file: #{file}"
-                # debugger if item.eql?("./mise/containers/db/env/base.env")
                 raise "#{file} #{dir} #{key} #{item}" unless actual[key]
                 assert_includes actual[key], item, msg
               end

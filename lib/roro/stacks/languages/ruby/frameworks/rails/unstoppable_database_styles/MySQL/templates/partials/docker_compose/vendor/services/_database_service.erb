@@ -1,9 +1,0 @@
-
-  db:
-    container_name: db
-    env_file:
-      - ./mise/env/base.env
-      - ./mise/env/development.env
-    image: <%= @env[:base][:db_image][:value] %><%= ":#{@env[:base][:db_image_version][:value]}" %>
-    volumes:
-      - db_data:<%= @env[:base][:db_volume][:value] %>

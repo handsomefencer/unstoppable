@@ -14,9 +14,6 @@ sqlite:
   mise/containers/db/env/base.env!:
   Gemfile:
     - /gem ["']sqlite3["'], ["']~> 1.4/
-  docker-compose.vendor.yml:
-    services:
-      db!:
 
 postgres: 
   mise/env/base.env:
@@ -28,7 +25,6 @@ postgres:
     - /POSTGRES_NAME=postgres/
     - /POSTGRES_PASSWORD=password/
     - /POSTGRES_USERNAME=postgres/
-  
   mise/containers/app/env/development.env:
     - /DATABASE_URL=postgresql:\/\/postgres:password@db\/db_development/
   mise/containers/db/env/base.env:
@@ -37,11 +33,13 @@ postgres:
   docker-compose.vendor.yml:
     services: 
       db:
-        image: postgres:16.2-alpine
         volumes:
           - db_data:/var/lib/postgresql/data
         ports:
           - "5432"
+        image: postgres:16.3-alpine
 
 mysql:
   Gemfile!:
+  mise/containers/app/env/development.env:
+    - /DATABASE_URL=mysql2/

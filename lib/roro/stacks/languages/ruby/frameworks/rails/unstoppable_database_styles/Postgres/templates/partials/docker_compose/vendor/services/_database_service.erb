@@ -1,9 +1,0 @@
-  db:
-    container_name: db
-    image: <%= @env.dig(:base, :db_image, :value) %>:<%= @env.dig(:base, :db_image_tag, :value) %>
-    env_file:
-      - ./mise/containers/db/env/development.env
-    volumes:
-      - db_data:<%= @env.dig(:base, :db_volume, :value) %>
-    ports:
-      - "<%= @env[:base][:db_service_port][:value] %>"

@@ -24,7 +24,6 @@ stacks:
         container_name: db
         env_file:
           - ./mise/containers/db/env/development.env
-  
   docker-compose.yml:
     volumes:
       db_data:
@@ -61,6 +60,7 @@ stacks:
     - /RAILS_SERVE_STATIC_FILES=true/
   mise/containers/app/env/test.env:
     - /RAILS_ENV=test/
+  mise/containers/db/env/development.env:
   mise/env/base.env:
   mise/env/development.env:
   mise/env/production.env:
