@@ -5,6 +5,7 @@ services:
     env_file: 
       - ./mise/containers/app/env/base.env
       - ./mise/containers/app/env/development.env
+      - ./mise/containers/db/env/development.env
     shm_size: '256mb' 
     stdin_open: true
     tmpfs:

@@ -5,7 +5,7 @@ env:
     db_flag:
       value: mysql
     db_pkg_development:
-      value: mysql-dev
+      value: mariadb-dev
     db_pkg_production: 
       name: Alpine db pkg for production
       value: mysql
@@ -21,27 +21,25 @@ env:
       value: /var/lib/mysql
 
   development: 
-    db_pkg:
-      value: mysql-dev
-    DATABASE_HOST:
-      value: localhost
-    DATABASE_NAME:
-      value: db_development
     MYSQL_DATABASE:
       value: db_development
     MYSQL_HOST:
-      value: localhost
-    MYSQL_USER:
-      value: root
+      value: db
     MYSQL_PASSWORD:
       value: root
     MYSQL_ROOT_PASSWORD:
       value: root
+    MYSQL_USER:
+      value: user
 
     app: 
+      DATABASE_HOST:
+        value: db
+      DATABASE_NAME:
+        value: db_development
       DATABASE_URL:
         name: Rails database_url
-        value: mysql2://root:rootd@localhost/db_development
+        value: mysql2://user:root@db/db_development
 
 
 
