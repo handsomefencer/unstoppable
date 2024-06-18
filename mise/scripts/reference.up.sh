@@ -4,14 +4,15 @@ cd ${sandbox_dir}
 
 schown .
 
-. mise/scripts/build.builder.sh
 . mise/scripts/build.development.sh
+. mise/scripts/build.test.sh
 
-docker compose --profile development up -d
-docker compose exec dev bin/rails g scaffold post title content
-docker compose exec dev bin/setup
+# docker compose --profile development up -d --build dev db
+# docker compose --profile development up -d --build dev db
+docker compose run --rm dev bin/rails g scaffold post title content
+# docker compose run --rm dev bin/setup
+# docker compose exec dev bin/setup
 
-# . mise/scripts/build.test.sh
 # dc run --rm rake-test
 
 schown .

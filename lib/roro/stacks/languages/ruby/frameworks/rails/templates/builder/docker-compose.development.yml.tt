@@ -1,17 +1,17 @@
-services:
-  development: &development
-    build:
-      dockerfile: ./mise/containers/app/Dockerfile.development
-    env_file: 
-      - ./mise/containers/app/env/base.env
-      - ./mise/containers/app/env/development.env
-    shm_size: '256mb' 
-    stdin_open: true
-    tmpfs:
-      - /tmp
-    tty: true
-    user: root
-    volumes:
+x-development: &development
+  build:
+    dockerfile: ./mise/containers/app/Dockerfile.development
+  env_file: 
+    - ./mise/containers/app/env/base.env
+    - ./mise/containers/app/env/development.env
+  shm_size: '256mb' 
+  stdin_open: true
+  tmpfs:
+    - /tmp
+  tty: true
+  user: root
+  volumes:
 <%= section('docker_compose/development/volume_mappings') %>
 
+services:
 <%= section('docker_compose/development/services', "\n\n") %>

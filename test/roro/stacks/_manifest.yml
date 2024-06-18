@@ -5,10 +5,13 @@ stacks:
       builder-base:
       builder-development:
   docker-compose.development.yml:  
+    x-development:
+      build:
+        dockerfile: ./mise/containers/app/Dockerfile.development
     services:
-      development:
-        build:
-          dockerfile: ./mise/containers/app/Dockerfile.development
+      # development:
+      #   build:
+      #     dockerfile: ./mise/containers/app/Dockerfile.development
       dev:
         container_name: dev
         profiles: 

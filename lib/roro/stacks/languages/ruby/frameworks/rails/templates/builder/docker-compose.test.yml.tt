@@ -1,19 +1,21 @@
-services:
-  test: &test
-    build:
-      dockerfile: ./mise/containers/app/Dockerfile.test
-    env_file: 
-      - ./mise/containers/app/env/base.env
-      - ./mise/containers/app/env/test.env
-    shm_size: '256mb' 
-    stdin_open: true
-    tmpfs:
-      - /tmp
-    tty: true
-    user: root
-    volumes:
-<%= section('docker_compose/app_volume_mappings') %>
+x-test: &test
+  build:
+    dockerfile: ./mise/containers/app/Dockerfile.test
+  env_file: 
+    - ./mise/containers/app/env/base.env
+    - ./mise/containers/app/env/test.env
+  shm_size: '256mb' 
+  profiles: 
+    - test
+  stdin_open: true
+  tmpfs:
+    - /tmp
+  tty: true
+  user: root
+  volumes:
+<%= section('docker_compose/development/volume_mappings') %>
 
+services:
 <%= section('docker_compose/test/services') %>
 
     

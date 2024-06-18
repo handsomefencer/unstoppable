@@ -1,2 +1,3 @@
-  test-runner: &runner
+  test:
     <<: *test
+    command: ["bin/rails", "db:create"]
