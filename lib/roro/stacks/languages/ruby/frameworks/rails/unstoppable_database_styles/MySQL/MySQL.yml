@@ -21,29 +21,30 @@ env:
       value: /var/lib/mysql
 
   development: 
-    MYSQL_DATABASE:
-      value: db_development
-    MYSQL_HOST:
-      value: db
-    MYSQL_PASSWORD:
-      value: root
-    MYSQL_ROOT_PASSWORD:
-      value: root
-    MYSQL_USER:
-      value: user
+    db:
+      MYSQL_DATABASE:
+        value: unstoppable_development
+      MYSQL_HOST:
+        value: db
+      MYSQL_PASSWORD:
+        value: root
+      MYSQL_ROOT_PASSWORD:
+        value: root
+      MYSQL_USER:
+        value: user
 
     app: 
       DATABASE_HOST:
         value: db
       DATABASE_NAME:
-        value: db_development
+        value: unstoppable_development
       DATABASE_URL:
         name: Rails database_url
-        value: mysql2://user:root@db/db_development
+        value: mysql2://user:root@db/unstoppable_development
   
   test: 
     MYSQL_DATABASE:
-      value: db_development
+      value: unstoppable_development
     MYSQL_HOST:
       value: db
     MYSQL_PASSWORD:
@@ -57,13 +58,10 @@ env:
       DATABASE_HOST:
         value: db
       DATABASE_NAME:
-        value: db_development
+        value: unstoppable_development
       DATABASE_URL:
         name: Rails database_url
-        value: mysql2://user:root@db/db_development
-
-
-
+        value: mysql2://user:root@db/unstoppable_development
     
   production: 
     db_pkg:

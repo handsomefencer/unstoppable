@@ -36,8 +36,7 @@ env:
     app: 
       RAILS_ENV:
         name: Development Rails environment
-        value: development
-    
+        value: developmentdd
   
   production:
     app: 
