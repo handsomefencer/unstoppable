@@ -22,8 +22,6 @@ env:
 
   development: 
     db:
-      MYSQL_DATABASE:
-        value: unstoppable_development
       MYSQL_HOST:
         value: db
       MYSQL_PASSWORD:
@@ -43,22 +41,7 @@ env:
         value: mysql2://user:root@db/unstoppable_development
   
   test: 
-    MYSQL_DATABASE:
-      value: unstoppable_development
-    MYSQL_HOST:
-      value: db
-    MYSQL_PASSWORD:
-      value: root
-    MYSQL_ROOT_PASSWORD:
-      value: root
-    MYSQL_USER:
-      value: user
-
     app: 
-      DATABASE_HOST:
-        value: db
-      DATABASE_NAME:
-        value: unstoppable_development
       DATABASE_URL:
         name: Rails database_url
         value: mysql2://user:root@db/unstoppable_development

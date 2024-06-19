@@ -9,7 +9,7 @@
       test: ["CMD", "mysqladmin", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD",  "ping", "-h", "db"]
       # test: ["CMD-SHELL", "mysql -h ${MYSQL_HOST} -u  ${MYSQL_ROOT_USER} -p$$MYSQL_ROOT_PASSWORD" ]
       interval: 5s
-      timeout: 5s
+      timeout: 2s
       retries: 5
     ports:
       - "<%= @env[:base][:db_service_port][:value] %>"

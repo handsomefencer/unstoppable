@@ -14,8 +14,8 @@ docker compose up -d --build
 # docker compose exec dev bin/setup
 # docker compose exec dev bin/rails db:migrate
 
-# docker compose run --rm test
-# docker compose run --rm rake-test
+docker compose run --rm test 
+docker compose run --rm rake-test
 # docker compose up -d
 
 # docker compose
