@@ -2,5 +2,3 @@
     <<: *development
     command: <%= @env.dig(:base, :tailwind_watch_css_command, :value) %>
     container_name: watch-css
-    profiles:
-      - development

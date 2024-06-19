@@ -2,8 +2,5 @@
     <<: *development
     command: sh -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     container_name: dev
-<%= section('docker_compose/development/depends_on') %>
     ports:
       - 3000:3000
-    profiles:
-      - development

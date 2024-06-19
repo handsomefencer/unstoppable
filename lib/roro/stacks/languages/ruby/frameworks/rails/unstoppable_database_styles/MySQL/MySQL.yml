@@ -40,6 +40,27 @@ env:
       DATABASE_URL:
         name: Rails database_url
         value: mysql2://user:root@db/db_development
+  
+  test: 
+    MYSQL_DATABASE:
+      value: db_development
+    MYSQL_HOST:
+      value: db
+    MYSQL_PASSWORD:
+      value: root
+    MYSQL_ROOT_PASSWORD:
+      value: root
+    MYSQL_USER:
+      value: user
+
+    app: 
+      DATABASE_HOST:
+        value: db
+      DATABASE_NAME:
+        value: db_development
+      DATABASE_URL:
+        name: Rails database_url
+        value: mysql2://user:root@db/db_development
 
 
 

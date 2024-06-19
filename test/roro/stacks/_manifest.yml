@@ -9,9 +9,6 @@ stacks:
       build:
         dockerfile: ./mise/containers/app/Dockerfile.development
     services:
-      # development:
-      #   build:
-      #     dockerfile: ./mise/containers/app/Dockerfile.development
       dev:
         container_name: dev
         profiles: 

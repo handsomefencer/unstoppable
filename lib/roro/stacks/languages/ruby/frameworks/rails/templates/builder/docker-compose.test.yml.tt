@@ -16,6 +16,6 @@ x-test: &test
 <%= section('docker_compose/development/volume_mappings') %>
 
 services:
-<%= section('docker_compose/test/services') %>
+<%= section('docker_compose/test/services', "\n\n") %>
 
     

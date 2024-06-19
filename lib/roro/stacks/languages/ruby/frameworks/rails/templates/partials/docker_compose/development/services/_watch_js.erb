@@ -1,8 +1,6 @@
   watch-js:
     image: oven/bun:alpine
     container_name: watch-js
-    profiles:
-      - development
     volumes:
       - .:/home/bun/app
       - node_modules:/home/bun/app/node_modules

@@ -5,6 +5,12 @@
       - ./mise/containers/db/env/development.env
     volumes:
       - db_data:<%= @env.dig(:base, :db_volume, :value) %>
+    healthcheck:
+      test: ["CMD", "mysqladmin", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD",  "ping", "-h", "db"]
+      # test: ["CMD-SHELL", "mysql -h ${MYSQL_HOST} -u  ${MYSQL_ROOT_USER} -p$$MYSQL_ROOT_PASSWORD" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
     ports:
       - "<%= @env[:base][:db_service_port][:value] %>"
     profiles:

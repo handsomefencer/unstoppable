@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cd ${sandbox_dir} 
+export COMPOSE_PROFILES=development
 
-docker compose --profile development down
 docker compose down
 docker image rm -f $(docker images greenfield/*)
 docker image rm -f $(docker images greenfield*)

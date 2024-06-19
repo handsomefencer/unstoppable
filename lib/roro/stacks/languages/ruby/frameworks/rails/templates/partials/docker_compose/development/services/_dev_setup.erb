@@ -1,0 +1,7 @@
+  dev-setup:
+    <<: *development
+    command: ["bin/setup"]
+    container_name: dev-setup
+    depends_on:
+      db:
+        condition: service_healthy

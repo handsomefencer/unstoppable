@@ -1,9 +1,14 @@
 x-development: &development
   build:
     dockerfile: ./mise/containers/app/Dockerfile.development
+  depends_on: 
+    dev-setup:
+      condition: service_completed_successfully
   env_file: 
     - ./mise/containers/app/env/base.env
     - ./mise/containers/app/env/development.env
+  profiles: 
+    - development
   shm_size: '256mb' 
   stdin_open: true
   tmpfs:
