@@ -1,9 +1,23 @@
 stacks:
 
 sqlite: 
+  docker-compose.development.yml:
+    services:
+      dev: 
+        depends_on!:
+  docker-compose.test.yml:
+    services:
+      test: 
+        depends_on!:
+      test-all: 
+        depends_on!:
+      test-setup: 
+        depends_on!:
   docker-compose.vendor.yml:
     services: 
-      db!: 
+      db-dev!: 
+      db-test!: 
+  mise/containers/db/env/development.env!:    
   mise/containers/app/Dockerfile.builder.base:
     - /ruby:3.3-alpine3.18/
     - /ruby:3.3-alpine3.19/ !
@@ -16,30 +30,57 @@ sqlite:
     - /gem ["']sqlite3["'], ["']~> 1.4/
 
 postgres: 
-  mise/env/base.env:
-    - /DATABASE_NAME=postgres/
-    - /DATABASE_HOST=db/
-    - /DATABASE_PASSWORD=password/
-  mise/containers/db/env/development.env:
+  mise/containers/app/env/base.env:
+  mise/containers/app/env/development.env:
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-dev\/db_development/
+  mise/containers/app/env/test.env:
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-test\/db_test/
   mise/containers/db/env/base.env:
     - /POSTGRES_NAME=postgres/
     - /POSTGRES_PASSWORD=password/
     - /POSTGRES_USERNAME=postgres/
-  mise/containers/app/env/development.env:
-    - /DATABASE_URL=postgresql:\/\/postgres:password@db\/db_development/
-  mise/containers/db/env/base.env:
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /postgresql-dev/
   docker-compose.vendor.yml:
     services: 
-      db:
-        volumes:
-          - db_data:/var/lib/postgresql/data
+      db-dev:
+        image: postgres:16.3-alpine
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"] 
         ports:
           - "5432"
-        image: postgres:16.3-alpine
-
+        volumes:
+          - db_data:/var/lib/postgresql/data
+      db-test:
+        ports:
+          - "5433"
+        volumes:
+          - db_data_test:/var/lib/postgresql/data
 mysql:
-  Gemfile!:
   mise/containers/app/env/development.env:
-    - /DATABASE_URL=mysql2/
+    - /DATABASE_URL=mysql2:\/\/user:root@db-dev\/unstoppable_development/
+  mise/containers/app/env/test.env:
+    - /DATABASE_URL=mysql2:\/\/user:root@db-test\/unstoppable_test/
+  mise/containers/db/env/base.env:
+    - /MYSQL_PASSWORD=root/
+    - /MYSQL_ROOT_PASSWORD=root/
+    - /MYSQL_USER=user/
+  mise/containers/db/env/development.env:
+    - /MYSQL_DATABASE=unstoppable_development/
+    - /MYSQL_HOST=db-dev/
+  mise/containers/db/env/test.env:
+    - /MYSQL_DATABASE=unstoppable_test/
+    - /MYSQL_HOST=db-test/
+  docker-compose.vendor.yml:
+    services: 
+      db-dev:
+        image: mysql:8.4
+        healthcheck:
+          test: ["CMD", "mysqladmin", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD", "ping", "-h", "$MYSQL_HOST"] 
+        ports:
+          - "3306"
+        volumes:
+          - db_data:/var/lib/mysql
+      db-test:
+        ports:
+          - "3307"

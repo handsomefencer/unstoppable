@@ -32,8 +32,7 @@ env:
       PARALLEL_WORKERS:
         name: Maximum number of workers.
         value: 4
-    
-  
+
   development:
     app: 
       RAILS_ENV:

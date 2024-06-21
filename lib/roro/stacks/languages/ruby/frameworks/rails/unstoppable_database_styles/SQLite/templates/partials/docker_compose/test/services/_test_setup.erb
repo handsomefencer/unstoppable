@@ -1,0 +1,4 @@
+  test-setup:
+    <<: *test
+    command: ["bin/rails", "db:create"]
+    container_name: test-setup

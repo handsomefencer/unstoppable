@@ -74,20 +74,12 @@ module Roro::TestHelpers
         value = v
         if k[-1] == '!'
           previous = :"#{key[0..-2]}"
-          # bar = :"#{file[0..-2]}"
           h[k] = h.delete(previous) if h.keys.include?(previous)
-          # debugger if key == :"package.json!"
-
         else
           previous = :"#{k}!"
           h[k] = h.delete(previous) if h.keys.include?(previous)
 
-          # debugger if key == :"package.json!"
-          # de
-          # previous = :"#{key[0..-2]}"
-          # i = (file[-1] == '!') ? :"#{file[0..-2]}" : :"#{file}!"
         end
-        # h[file] = h.delete(previous) if h.keys.include?(previous)
         case v
         when Hash
           h[k] = override_hash_nodes(h[k] ||= {}, v)

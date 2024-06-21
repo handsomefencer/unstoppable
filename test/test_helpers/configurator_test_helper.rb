@@ -29,8 +29,14 @@ module Roro
       def evaluate_contents_hash(dir, file, expected, actual=nil, builder=nil)
         actual ||= read_yaml(file.to_s)
         expected.dup.each do |key, value|
+          msg = [
+            "debug -- dir: #{dir}",
+            "file: #{file}",
+            "key: #{key}",
+            "value: #{value}"
+          ]
           if key.to_s[-1] == '!'
-            refute_includes actual.keys, key[0..-2].to_sym
+            refute_includes actual.keys, key[0..-2].to_sym, msg
             expected.delete(key)
           end
           case value
@@ -38,16 +44,16 @@ module Roro
             debugger
           when Hash
             if key.to_s[-1] == '!'
-              refute_includes actual.keys, key[0..-2]
+              refute_includes actual.keys, key[0..-2], msg
               expected.delete(key)
             else
-              assert_includes actual.keys, key
+              assert_includes actual.keys, key, msg
               evaluate_contents_hash(dir, file, value, actual.dup[key])
             end
           when String
 
             if value.to_s[-1] == '!'
-              refute_equal actual[key], value[0..-2]
+              refute_equal actual[key], value[0..-2], msg
             else
               msg = "Missing value #{value} for :#{key} in file: #{file}"
               assert_equal actual[key], value, msg
@@ -56,7 +62,7 @@ module Roro
           when Array
             value.each do |item|
               if item.to_s[-1] == '!'
-                refute_includes actual[key], item[0..-2], 'blah'
+                refute_includes actual[key], item[0..-2], msg
               else
                 msg = "Missing item #{item} under :#{key} in file: #{file}"
                 raise "#{file} #{dir} #{key} #{item}" unless actual[key]
@@ -73,14 +79,10 @@ module Roro
         foo = story.manifest_for_story
         foo.each do |key, content|
           file = key.to_s
-          # evaluate_manifest_file_existence(file.to_s)
-          # debugger if file.eql?(:"package.json")
           if file[-1].eql?('!')
             refute_file(file[1..-2])
-            # foo.delete(file[1..-2])
             next
           else
-            # debugger
             assert_file(file)
           end
           case content
@@ -94,7 +96,6 @@ module Roro
 
       def evaluate_manifest_file_existence(f)
         file = f
-        debugger if f == "package.json!"
         f[-1].eql?('!') ? refute_file(f[0..-2]) : assert_file(f)
       end
 

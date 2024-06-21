@@ -13,17 +13,19 @@ env:
       value: mysql
     db_image_tag:
       value: '8.4'
-    db_service_port:
+    db_healthcheck_test_command: 
+      name: Docker compose Database service healthcheck test command
+      value: ["CMD", "mysqladmin", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD",  "ping", "-h", "$MYSQL_HOST"]   
+    db_dev_service_port:
       value: 3306
+    db_test_service_port:
+      value: 3307
     db_vendor:
       value: mysql
     db_volume:
       value: /var/lib/mysql
 
-  development: 
     db:
-      MYSQL_HOST:
-        value: db
       MYSQL_PASSWORD:
         value: root
       MYSQL_ROOT_PASSWORD:
@@ -31,21 +33,32 @@ env:
       MYSQL_USER:
         value: user
 
-    app: 
-      DATABASE_HOST:
-        value: db
-      DATABASE_NAME:
+  development: 
+    db:
+      MYSQL_DATABASE:
+        name: Rails database_url
         value: unstoppable_development
+      MYSQL_HOST:
+        value: db-dev
+  
+    app: 
       DATABASE_URL:
         name: Rails database_url
-        value: mysql2://user:root@db/unstoppable_development
+        value: mysql2://user:root@db-dev/unstoppable_development
   
   test: 
     app: 
       DATABASE_URL:
         name: Rails database_url
-        value: mysql2://user:root@db/unstoppable_development
-    
+        value: mysql2://user:root@db-test/unstoppable_test
+  
+    db:
+      MYSQL_DATABASE:
+        name: Rails database_url
+        value: unstoppable_test
+      MYSQL_HOST:
+        value: db-test
+
   production: 
     db_pkg:
       value: mysql-client

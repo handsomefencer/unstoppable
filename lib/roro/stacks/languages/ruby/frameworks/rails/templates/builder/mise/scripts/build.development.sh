@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. mise/scripts/docker.prune.sh 
+# . mise/scripts/docker.prune.sh 
 . mise/scripts/build.builder.sh 
 
 docker compose build builder-development

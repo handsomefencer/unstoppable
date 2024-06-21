@@ -1,2 +1,0 @@
-actions:
-  - run 'rm -rf mise/containers/db'

@@ -1,9 +1,7 @@
 x-development: &development
   build:
     dockerfile: ./mise/containers/app/Dockerfile.development
-  depends_on: 
-    dev-setup:
-      condition: service_completed_successfully
+<%= partial('docker_compose/development/depends_on/base') %>
   env_file: 
     - ./mise/containers/app/env/base.env
     - ./mise/containers/app/env/development.env

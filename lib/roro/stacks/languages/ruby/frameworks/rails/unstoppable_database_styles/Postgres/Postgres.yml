@@ -15,23 +15,17 @@ env:
       value: postgres
     db_image_tag:
       value: 16.3-alpine
-    db_service_port:
+    db_healthcheck_test_command: 
+      name: Docker compose Database service healthcheck test command
+      value: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+    db_dev_service_port:
       value: 5432
+    db_test_service_port:
+      value: 5433
     db_vendor:
       value: postgresql
     db_volume:
       value: /var/lib/postgresql/data
-    DATABASE_NAME:
-      name: Database name
-      value: postgres
-    DATABASE_HOST:
-      name: Database host
-      value: db
-    DATABASE_PASSWORD:
-      name: 
-      value: password
-
-  development:
     db: 
       POSTGRES_NAME:
         name: Database name
@@ -43,10 +37,11 @@ env:
         name: Database username
         value: postgres
 
+  development:
     app: 
       DATABASE_URL:
         name: database url overrides variables in database.yml
-        value: "postgresql://postgres:password@db/db_development"
+        value: "postgresql://postgres:password@db-dev/db_development"
     db_pkg:
       name: Name of alpine db pkgs in development
       value: postgresql-dev
@@ -58,4 +53,4 @@ env:
   test: 
     app: 
       DATABASE_URL:
-        value: "postgresql://postgres:password@db/db_test"
+        value: "postgresql://postgres:password@db-test/db_test"

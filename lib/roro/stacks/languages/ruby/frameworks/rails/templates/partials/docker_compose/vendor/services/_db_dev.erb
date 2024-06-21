@@ -1,0 +1,18 @@
+  db-dev: &db-dev
+    container_name: db-dev
+    env_file:
+      - ./mise/containers/db/env/base.env
+      - ./mise/containers/db/env/development.env
+    healthcheck:
+      test: <%= @env.dig(:base, :db_healthcheck_test_command, :value) %>
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    image: <%= @env.dig(:base, :db_image, :value) %>:<%= @env.dig(:base, :db_image_tag, :value) %>
+    ports:
+      - "<%= @env[:base][:db_dev_service_port][:value] %>"
+    profiles:
+      - development
+    restart: always
+    volumes:
+      - db_data:<%= @env.dig(:base, :db_volume, :value) %>

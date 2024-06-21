@@ -35,11 +35,62 @@ module Roro
 
         def generate_mise
           generator = Roro::CLI.new
-          generator.generate_mise
           generator.generate_containers 'app', 'db'
           generator.generate_environments @env
           generator.generate_environment_files @env
           generator.generate_keys
+        end
+
+        def generate_mise_from_env
+          generator = Roro::CLI.new
+          generator.generate_mise
+          h = @env.dup.reject {|k,_v| [:force, :exit_on_failure].include?(k) }
+          environments = h.keys
+          containers = [].tap do |a|
+            h.each do |key, value|
+              value.each do |key, value|
+                a << key.to_s unless value.keys.include?(:value)
+              end
+            end
+          end
+          containers.uniq!.sort!
+          generator.generate_containers(*containers.uniq.sort)
+          generator.generate_environments *environments
+          populate_env_files(h)
+          generator.generate_keys
+
+        end
+
+        def populate_env_files(hash, location='mise')
+          hash.each do |env, envhash|
+            array = []
+            envhash.each do |key, value|
+              if value[:value]
+                array << "#{key}=#{value[:value]}"
+              else
+                populate_env_files({env => value}, "#{location}/containers/#{key.to_s}")
+              end
+            end
+            create_file("#{location}/env/#{env.to_s}.env", array.join("\n"), force: true) unless array.empty?
+          end
+        end
+
+        def gather_environments
+          foo = @env.dup
+          foo.keys.reject {|k| [:force, :exit_on_failure].include?(k)}
+        end
+
+        def gather_containers
+          array = []
+          environments = gather_environments
+          env = @env.dup
+          env.select! {|k, v| environments.include?(k) }
+          env.each do |key, value|
+            value.each do |foo, bar|
+              array << foo unless bar.keys.include?(:value)
+            end
+          end
+          array.uniq.sort
         end
 
         def copy_layer(dir)
@@ -84,7 +135,10 @@ module Roro
         end
 
         def partial(name)
-          read_partial(partials.select { |p| p.match?(/_#{name}.*.erb/) }.last)
+          array = name.split('/')
+          array[-1] = "_#{array[-1]}.erb"
+          partial = partials.select { |p| p.match?(array.join('/')) }.last
+          read_partial(partial).rstrip
         end
 
         def read_partial(partial)

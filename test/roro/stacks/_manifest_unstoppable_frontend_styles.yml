@@ -1,12 +1,5 @@
 stacks:
 
-js-approaches: &js-approaches 
-  docker-compose.development.yml:  
-    services: 
-      watch-js:
-        container_name: watch-js
-        command: ["yarn", "build", "--watch"]
-
 bun: 
   bun.config.js:
   mise/containers/app/Dockerfile.builder.cache:
@@ -24,10 +17,8 @@ bun:
       watch-js:
         command: ["bun", "bun.config.js", "--watch"]
         container_name: watch-js
-        image: oven/bun:alpine
 
 esbuild: 
-  <<: *js-approaches
   mise/containers/app/Dockerfile.builder.cache:
     - /COPY package.json yarn.lock/
     - /yarn install/
@@ -36,19 +27,17 @@ esbuild:
   mise/containers/app/Dockerfile.development:
     - /COPY package.json yarn.lock/
     - /yarn install/
-  docker-compose.development.yml:  
-    services: 
-      watch-js:
-        command: ["yarn", "build", "--watch"]
   package.json:
     - /esbuild/
 
 importmaps: 
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--js/ !
+  docker-compose.development.yml:
+    services: 
+      watch-js!:
 
 vite: 
-  <<: *js-approaches 
   app/javascript/entrypoints/application.css:
   app/javascript/entrypoints/application.js:
   app/views/layouts/application.html.erb:
@@ -70,4 +59,3 @@ vite:
   mise/containers/app/Dockerfile.builder.railsnew:
     - / --javascript=esbuild /
   vite.config.ts:
-

@@ -1,0 +1,12 @@
+  db-test:
+    <<: *db-dev
+    container_name: db-test
+    env_file:
+      - ./mise/containers/db/env/base.env
+      - ./mise/containers/db/env/test.env
+    ports:
+      - "<%= @env[:base][:db_test_service_port][:value] %>"
+    profiles:
+      - test
+    volumes:
+      - db_data_test:<%= @env.dig(:base, :db_volume, :value) %>

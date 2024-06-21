@@ -5,28 +5,91 @@ stacks:
       builder-base:
       builder-development:
   docker-compose.development.yml:  
-    x-development:
-      build:
-        dockerfile: ./mise/containers/app/Dockerfile.development
     services:
       dev:
+        build:
+          dockerfile: ./mise/containers/app/Dockerfile.development
+        command: sh -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
         container_name: dev
+        depends_on: 
+          dev-setup:
+            condition: service_completed_successfully
+        env_file: 
+          - ./mise/containers/app/env/base.env
+          - ./mise/containers/app/env/development.env
         profiles: 
           - development
-      extends!:
+        shm_size: '256mb' 
+        stdin_open: true
+        tmpfs:
+          - /tmp
+        tty: true
+        user: root
+        volumes:
+          - .:/app
+          - gem_cache:/usr/local/bundle/gems
+          - node_modules:/app/node_modules
+      watch-js:
+        container_name: watch-js
+        command: ["yarn", "build", "--watch"]
   docker-compose.production.yml:
   docker-compose.test.yml:  
+    services: 
+      test-all:
+        build:
+          dockerfile: ./mise/containers/app/Dockerfile.test
+        command: ["bin/rails", "test:all"]
+        depends_on:
+          test-setup:
+            condition: service_completed_successfully
+        container_name: test-all
+        env_file: 
+          - ./mise/containers/app/env/base.env
+          - ./mise/containers/app/env/test.env
+        profiles: 
+          - test
+        shm_size: '256mb' 
+        stdin_open: true
+        tmpfs:
+          - /tmp
+        tty: true
+        user: root
+        volumes:
+          - .:/app
+          - gem_cache:/usr/local/bundle/gems
+          - node_modules:/app/node_modules
+      test-setup:
+        command: ["bin/rails", "db:create"]
+        container_name: test-setup
+        depends_on:
+          db-test:
+            condition: service_healthy
+      test:
+        command: ["bin/rails", "test"]
+        container_name: test
+
   docker-compose.vendor.yml:
     services: 
       roro: 
         image: handsomefencer/roro
-      db:
-        container_name: db
+      db-dev:
+        container_name: db-dev
         env_file:
+          - ./mise/containers/db/env/base.env
           - ./mise/containers/db/env/development.env
+        profiles:
+          - development
+      db-test:
+        container_name: db-test
+        env_file:
+          - ./mise/containers/db/env/base.env
+          - ./mise/containers/db/env/test.env
+        profiles:
+          - test
   docker-compose.yml:
     volumes:
       db_data:
+      db_data_test:
       gem_cache:
     secrets: 
       base_key: 
