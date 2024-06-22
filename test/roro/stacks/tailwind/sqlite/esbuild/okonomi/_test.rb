@@ -6,7 +6,6 @@ describe '6 tailwind -> 4 SQLite -> 2 ESBuild -> 1 okonomi' do
   Given(:workbench) {}
 
   Given do
-    skip
     debuggerer
   end
 

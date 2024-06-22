@@ -56,11 +56,19 @@ postgres:
           - "5433"
         volumes:
           - db_data_test:/var/lib/postgresql/data
-mysql:
+
+x-mysql: &mysql
+  config/database.yml:
+    default: 
+      host: localhost
   mise/containers/app/env/development.env:
     - /DATABASE_URL=mysql2:\/\/user:root@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:
     - /DATABASE_URL=mysql2:\/\/user:root@db-test\/unstoppable_test/
+  
+  
+mysql:
+  <<: *mysql
   mise/containers/db/env/base.env:
     - /MYSQL_PASSWORD=root/
     - /MYSQL_ROOT_PASSWORD=root/
@@ -84,3 +92,31 @@ mysql:
       db-test:
         ports:
           - "3307"
+
+mariadb:
+  <<: *mysql
+  mise/containers/db/env/base.env:
+    # - /MYSQL_PASSWORD=root/
+    # - /MYSQL_ROOT_PASSWORD=root/
+    # - /MYSQL_USER=user/
+  mise/containers/db/env/development.env:
+    # - /MYSQL_DATABASE=unstoppable_development/
+    # - /MYSQL_HOST=db-dev/
+  mise/containers/db/env/test.env:
+    # - /MYSQL_DATABASE=unstoppable_test/
+    # - /MYSQL_HOST=db-test/
+
+  docker-compose.vendor.yml:
+    services: 
+      db-dev:
+        image: mariadb:11.4
+        healthcheck:
+          test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"] 
+        ports:
+          - "3306"
+        volumes:
+          - db_data:/var/lib/mysql
+      db-test:
+        ports:
+          - "3307"
+  
