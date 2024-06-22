@@ -25,15 +25,6 @@ env:
     db_volume:
       value: /var/lib/mysql
 
-    # db:
-    #   MYSQL_PASSWORD:
-    #     value: root
-    #   MYSQL_ROOT_PASSWORD:
-    #     value: root
-    #   MYSQL_USER:
-    #     value: root
-
-  development: 
     db:
       MYSQL_PASSWORD:
         value: root
@@ -41,6 +32,9 @@ env:
         value: root
       MYSQL_USER:
         value: user
+
+  development: 
+    db:
       MYSQL_DATABASE:
         name: Rails database_url
         value: unstoppable_development
@@ -54,12 +48,6 @@ env:
   
   test: 
     db:
-      MYSQL_PASSWORD:
-        value: root
-      MYSQL_ROOT_PASSWORD:
-        value: root
-      MYSQL_USER:
-        value: user
       MYSQL_DATABASE:
         name: Rails database_url
         value: unstoppable_test

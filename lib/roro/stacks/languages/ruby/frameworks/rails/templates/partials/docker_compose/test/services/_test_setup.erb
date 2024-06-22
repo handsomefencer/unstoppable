@@ -1,6 +1,6 @@
   test-setup:
     <<: *test
-    command: ["bin/setup"]
+    command: ["bin/rails", "db:create"]
     container_name: test-setup
     depends_on:
       db-test:

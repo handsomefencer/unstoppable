@@ -12,8 +12,8 @@ stacks:
         command: sh -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
         container_name: dev
         depends_on: 
-          dev-setup:
-            condition: service_completed_successfully
+          db-dev:
+            condition: service_healthy
         env_file: 
           - ./mise/containers/app/env/base.env
           - ./mise/containers/app/env/development.env
@@ -40,8 +40,8 @@ stacks:
           dockerfile: ./mise/containers/app/Dockerfile.test
         command: ["bin/rails", "test:all"]
         depends_on:
-          test-setup:
-            condition: service_completed_successfully
+          db-test:
+            condition: service_healthy
         container_name: test-all
         env_file: 
           - ./mise/containers/app/env/base.env

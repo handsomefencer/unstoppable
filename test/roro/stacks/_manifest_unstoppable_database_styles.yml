@@ -64,7 +64,7 @@ x-mysql: &mysql
   mise/containers/app/env/development.env:
     - /DATABASE_URL=mysql2:\/\/user:root@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:
-    - /DATABASE_URL=mysql2:\/\/user:root@db-test\/unstoppable_test/
+    - /DATABASE_URL=mysql2:\/\/root:root@db-test\/unstoppable_test/
   
   
 mysql:

@@ -5,3 +5,7 @@
     depends_on:
       db-dev:
         condition: service_healthy
+      db-test:
+        condition: service_healthy
+    profiles:
+      - setup

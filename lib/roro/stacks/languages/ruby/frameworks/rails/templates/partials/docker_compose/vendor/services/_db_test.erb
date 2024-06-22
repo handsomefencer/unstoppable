@@ -8,5 +8,6 @@
       - "<%= @env[:base][:db_test_service_port][:value] %>"
     profiles:
       - test
+      - setup
     volumes:
       - db_data_test:<%= @env.dig(:base, :db_volume, :value) %>

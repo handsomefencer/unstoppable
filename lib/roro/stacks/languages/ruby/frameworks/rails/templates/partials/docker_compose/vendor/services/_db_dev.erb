@@ -13,6 +13,7 @@
       - "<%= @env[:base][:db_dev_service_port][:value] %>"
     profiles:
       - development
+      - setup
     restart: always
     volumes:
       - db_data:<%= @env.dig(:base, :db_volume, :value) %>

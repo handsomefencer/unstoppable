@@ -8,6 +8,6 @@ describe '6 tailwind -> 2 MySQL -> 3 Importmaps -> 1 okonomi' do
   Given do
     debuggerer
   end
-
+focus
   Then { assert_correct_manifest(__dir__) }
 end
