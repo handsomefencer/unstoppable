@@ -2,7 +2,7 @@
 
 cd ${sandbox_dir} 
 
-export COMPOSE_PROFILES=development,test
+export COMPOSE_PROFILES=development,test,setup
 
 
 docker compose down

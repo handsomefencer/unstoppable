@@ -144,5 +144,7 @@ stacks:
     - /docker compose build test/
   mise/scripts/docker.info.sh:
   mise/scripts/docker.prune.sh:
+  test/application_system_test_case.rb:
+
   .dockerignore:
   .gitignore:

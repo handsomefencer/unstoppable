@@ -1,5 +1,3 @@
-preface: Similar to mariadb
-
 env:
   base:
     db_flag:
@@ -9,28 +7,13 @@ env:
     db_pkg_production: 
       name: Alpine db pkg for production
       value: mysql
-    db_image:
-      value: mysql
-    db_image_tag:
-      value: '8.4'
     db_healthcheck_test_command: 
       name: Docker compose Database service healthcheck test command
       value: ["CMD", "mysqladmin", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD",  "ping", "-h", "$MYSQL_HOST"]   
-      # value: 
-      #   - "CMD"
-      #   - "mysql"
-      #   - "-h"
-      #   - "${MYSQL_HOST}"
-      #   - "-u"
-      #   - "${MYSQL_USER}"
-      #   - "-p$$MYSQL_PASSWORD"
-
     db_dev_service_port:
       value: 3306
     db_test_service_port:
       value: 3307
-    db_vendor:
-      value: mysql
     db_volume:
       value: /var/lib/mysql
 
@@ -67,8 +50,6 @@ env:
       DATABASE_URL:
         name: Rails database_url
         value: mysql2://root:root@db-test/unstoppable_test
-  
-
 
   production: 
     db_pkg:

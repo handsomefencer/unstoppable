@@ -5,8 +5,8 @@
       - ./mise/containers/db/env/development.env
     healthcheck:
       test: <%= @env.dig(:base, :db_healthcheck_test_command, :value) %>
-      interval: 5s
-      timeout: 2s
+      interval: 30s
+      timeout: 20s
       retries: 5
     image: <%= @env.dig(:base, :db_image, :value) %>:<%= @env.dig(:base, :db_image_tag, :value) %>
     ports:
