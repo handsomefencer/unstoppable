@@ -4,7 +4,10 @@ minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
     "roro/cli/**/*_test.rb",
-  #   "!roro/stacks/**/*_test.rb",
+    "roro/common/**/*_test.rb",
+    "roro/configurators/**/*_test.rb",
+    "roro/crypto/**/*_test.rb",
+    "roro/roro_test.rb",
     # "test_helper_tests/**/*_test.rb",
   ],
   all_after_pass: false,
