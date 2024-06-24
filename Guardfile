@@ -3,13 +3,15 @@ require 'debug'
 minitest_options = {
   test_folders: ['test'],
   # test_file_patterns: [
-  #   "roro/stacks/**/*_test.rb",
-  #   "test_helper_tests/**/*_test.rb",
+  #   "roro/**/*_test.rb",
+  #   "!roro/stacks/**/*_test.rb",
+    # "test_helper_tests/**/*_test.rb",
   # ],
   all_after_pass: false,
   all_on_start: false,
-  all_env: {
-    'DEBUGGERER' => 'true'
+  env: {
+    'DEBUGGERER' => 'true',
+    'ROLLON_LOUD' => 'true'
   }
 }
 

@@ -33,18 +33,18 @@ describe Roro::TestHelpers::RollonTestHelper do
       Then { assert_correct_variables }
     end
 
-    describe 'when debugger not specified' do
+    describe 'when debuggerer not specified' do
       Then { refute subject.rollon_dummies }
       And { refute subject.rollon_loud }
     end
 
-    describe 'when debugger false' do
+    describe 'when debuggerer false' do
       Given(:options) { { debuggerer: false } }
       Then { refute subject.rollon_dummies }
       And { refute subject.rollon_loud }
     end
 
-    describe 'when debugger true' do
+    describe 'when debuggerer true' do
       Given(:options) { { debuggerer: true } }
       Then { assert subject.rollon_dummies }
       And { assert subject.rollon_loud }

@@ -4,9 +4,9 @@ require 'stack_test_helper'
 
 describe '2 Bulma -> 2 MySQL -> 3 Importmaps -> 1 okonomi' do
   Given(:workbench) {}
-  
+
   Given do
-    skip
+    #skip
     debuggerer
   end
 

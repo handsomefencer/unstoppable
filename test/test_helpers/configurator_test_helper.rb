@@ -124,6 +124,7 @@ module Roro
       end
 
       def quiet
+        return if ENV['ROLLON_LOUD'] == 'true'
         original_stderr = $stderr.clone
         original_stdout = $stdout.clone
         $stderr.reopen(File.new('/dev/null', 'w'))
