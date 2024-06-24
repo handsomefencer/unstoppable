@@ -1,0 +1,5 @@
+
+RUN bundle add devise
+RUN bin/rails generate devise:install
+RUN bin/rails generate devise User
+RUN bin/rails generate devise:views

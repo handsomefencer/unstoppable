@@ -1,0 +1,6 @@
+  watch-js:
+    <<: *development
+    command: ["yarn", "build", "--watch"]
+    container_name: watch-js
+    profiles:
+      - development

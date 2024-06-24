@@ -1,0 +1,63 @@
+preface: A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant
+  syntax that is natural to read and easy to write.
+
+env:
+  base:
+    app_name:
+      name: Name for your app
+      value: unstoppable
+    alpine_version: 
+      name: alpine development version
+      value: 3.19
+    css_flag:
+      name: CSS processor flag for rails new
+      value: postcss
+    js_flag:
+      name: Rails new --javascript flag
+      value: esbuild
+    js_lockfile:
+      name: Javascript runtime lockfile
+      value: yarn.lock      
+    js_runtime:
+      name: Javascript runtime
+      value: yarn
+    rails_version:
+      name: Ruby on Rails minor version
+      value: '7.1.3'
+    app: 
+      RAILS_MAX_THREADS:
+        name: Maximum number of threads for the database. Important for redis.
+        value: '5'
+      PARALLEL_WORKERS:
+        name: Maximum number of workers.
+        value: 4
+  
+  development:
+    app: 
+      RAILS_ENV:
+        name: Development Rails environment
+        value: developmentdd
+  
+  production:
+    app: 
+      RAILS_ENV:
+        name: Production Rails environment
+        value: production
+      MALLOC_ARENA_MAX:
+        name: Reduce glibc memory count
+        value: '2'
+      RAILS_LOG_TO_STDOUT:
+        name: Makes it possiblt to send logs to logs/[environment].rb
+        value: 'true'
+      RAILS_SERVE_STATIC_FILES:
+        name: Serve static files from rails
+        value: 'true'
+  test: 
+    app: 
+      RAILS_ENV:
+        name: Test Rails environment
+        value: test
+
+actions:  
+  - copy_layer('manifest')
+  # - append_to_file('.gitignore', section('dot_gitignore', "\n"))

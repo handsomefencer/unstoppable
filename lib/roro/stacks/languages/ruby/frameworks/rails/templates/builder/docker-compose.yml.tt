@@ -1,9 +1,15 @@
-version: '<%= @env[:base][:docker_compose_version][:value] %>'
-
-<%= section('docker-compose/anchors') %>
-
-services:
-<%= section('services') %>
+include:
+  - docker-compose.builders.yml  
+  - docker-compose.development.yml  
+  - docker-compose.production.yml
+  - docker-compose.test.yml  
+  - docker-compose.vendor.yml
 
 volumes:
-<%= section('volumes') %>
+<%= section('docker_compose/volumes') %>
+
+secrets:
+  base_key: 
+    file: ./mise/keys/base.key
+  production_key: 
+    file: ./mise/keys/production.key

@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe 'Roro::CLI#generate_exposed' do
   Given(:workbench) { 'roro' }
   Given(:envs)      { ['dummy'] }
   Given(:var_from_ENV) { dummy_key }
-  Given(:generate) { Roro::CLI.new.generate_exposed(*envs) }
+  Given(:generate) do
+    quiet { Roro::CLI.new.generate_exposed(*envs) }
+  end
 
   Given { insert_dummy_env_enc }
   Given { insert_dummy_env_enc 'roro/env/smart.env.enc' }
@@ -15,7 +17,7 @@ describe 'Roro::CLI#generate_exposed' do
 
   context 'when one environment specified' do
     describe 'must only expose matching files' do
-      Given { quiet { generate } }
+      Given { generate  }
       Then  { assert_file 'roro/env/dummy.env' }
       And   { refute_file 'roro/env/smart.env' }
     end

@@ -1,0 +1,9 @@
+  test-setup:
+    <<: *test
+    command: ["bin/rails", "db:create"]
+    container_name: test-setup
+    depends_on:
+      db-test:
+        condition: service_healthy
+    profiles:
+      - setup

@@ -8,12 +8,17 @@ describe Roro::Configurators::StackReflector do
 
   Given(:adventure) { subject.adventure_for(*picks) }
 
+  describe '#adventure_structure_human' do
+    Given(:result) { subject.adventure_structure_human }
+    Then { assert_equal 'okonomi', result.dig('postgres').keys.first }
+  end
+
   describe '#adventure_for()' do
     describe 'when adventure is okonomi php laravel' do
       Given(:expected) do
         {
           chapters: %w[ruby _builder rails postgres okonomi 6_1 sidekiq],
-
+          choices: %w[postgres okonomi 6_1],
           env: { base: { db_vendor: { value: 'postgresql' } } },
           itinerary: [
             'database: postgres',

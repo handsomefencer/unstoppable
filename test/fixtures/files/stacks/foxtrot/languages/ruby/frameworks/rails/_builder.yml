@@ -1,0 +1,7 @@
+actions:
+  - generate_mise
+  - copy_layer('builder')
+  - run 'docker-compose build builder-base'
+  - run 'docker-compose build builder-deps-dev'
+  - run 'DOCKER_BUILDKIT=1 docker build --file mise/containers/app/Dockerfile.builder.railsnew --output . .'
+

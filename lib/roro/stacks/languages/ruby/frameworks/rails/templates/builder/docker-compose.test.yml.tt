@@ -1,0 +1,22 @@
+x-test: &test
+  build:
+    dockerfile: ./mise/containers/app/Dockerfile.test
+<%= partial('docker_compose/test/depends_on/base') %>
+  env_file: 
+    - ./mise/containers/app/env/base.env
+    - ./mise/containers/app/env/test.env
+  profiles: 
+    - test
+  shm_size: '256mb' 
+  stdin_open: true
+  tmpfs:
+    - /tmp
+  tty: true
+  user: root
+  volumes:
+<%= section('docker_compose/development/volume_mappings') %>
+
+services:
+<%= section('docker_compose/test/services', "\n\n") %>
+
+    

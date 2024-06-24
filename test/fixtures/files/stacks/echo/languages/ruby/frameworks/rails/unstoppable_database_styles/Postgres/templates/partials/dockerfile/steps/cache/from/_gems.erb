@@ -1,0 +1,7 @@
+COPY  \
+  --from=cache \
+  /usr/local/bundle /usr/local/bundle
+
+COPY Gemfile* ./
+
+RUN bundle

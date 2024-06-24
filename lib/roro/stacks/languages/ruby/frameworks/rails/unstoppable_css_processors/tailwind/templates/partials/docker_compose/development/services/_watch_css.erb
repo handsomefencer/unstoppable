@@ -1,0 +1,4 @@
+  watch-css:
+    <<: *development
+    command: <%= @env.dig(:base, :watch_css_command_tailwind, :value) %>
+    container_name: watch-css

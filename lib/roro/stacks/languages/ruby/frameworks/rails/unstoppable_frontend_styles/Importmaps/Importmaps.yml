@@ -1,0 +1,12 @@
+preface: some string
+
+env:
+  base:
+    js_flag:
+      name: Rails new --javascript flag
+      value: importmap
+    watch_css_command_tailwind:
+      name: Default command to run when watching tailwind
+      value: 
+          - "bin/rails"
+          - "tailwindcss:watch"

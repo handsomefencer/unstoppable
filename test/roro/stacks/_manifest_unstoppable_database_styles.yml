@@ -1,0 +1,128 @@
+stacks:
+
+sqlite: 
+  docker-compose.development.yml:
+    services:
+      dev: 
+        depends_on!:
+  docker-compose.test.yml:
+    services:
+      test: 
+        depends_on!:
+      test-all: 
+        depends_on!:
+      test-setup: 
+        depends_on!:
+  docker-compose.vendor.yml:
+    services: 
+      db-dev!: 
+      db-test!: 
+  mise/containers/db/env/development.env!:    
+  mise/containers/app/Dockerfile.builder.base:
+    - /ruby:3.3-alpine3.18/
+  mise/containers/app/Dockerfile.builder.deps.dev:
+    - /sqlite-dev/
+  mise/containers/app/Dockerfile.production:
+    - /sqlite-dev/
+  mise/containers/db/env/base.env!:
+  Gemfile:
+    - /gem ["']sqlite3["'], ["']~> 1.4/
+
+postgres: 
+  mise/containers/app/env/base.env:
+  mise/containers/app/env/development.env:
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-dev\/db_development/
+  mise/containers/app/env/test.env:
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-test\/db_test/
+  mise/containers/db/env/base.env:
+    - /POSTGRES_NAME=postgres/
+    - /POSTGRES_PASSWORD=password/
+    - /POSTGRES_USERNAME=postgres/
+  mise/containers/app/Dockerfile.builder.deps.dev:
+    - /postgresql-dev/
+  docker-compose.vendor.yml:
+    services: 
+      db-dev:
+        image: postgres:16.3-alpine
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"] 
+        ports:
+          - "5432"
+        volumes:
+          - db_data:/var/lib/postgresql/data
+      db-test:
+        ports:
+          - "5433"
+        volumes:
+          - db_data_test:/var/lib/postgresql/data
+
+x-mysql: &mysql
+  mise/env/base.env:
+    - /db_flag=mysql/
+    - /db_pkg_development=mariadb-dev/
+    - /db_pkg_production=mysql/
+  config/database.yml:
+    default: 
+      host: localhost
+  mise/containers/app/env/development.env:
+    - /DATABASE_URL=mysql2:\/\/root:root@db-dev\/unstoppable_development/
+  mise/containers/app/env/test.env:
+    - /DATABASE_URL=mysql2:\/\/root:root@db-test\/unstoppable_test/
+  
+mysql:
+  <<: *mysql
+  mise/env/base.env:
+    - /db_image=mysql/
+    - /db_image_tag=8.4/
+  mise/containers/db/env/base.env:
+    - /MYSQL_PASSWORD=root/
+    - /MYSQL_ROOT_PASSWORD=root/
+    - /MYSQL_USER=user/
+  mise/containers/db/env/development.env:
+    - /MYSQL_DATABASE=unstoppable_development/
+    - /MYSQL_HOST=db-dev/
+  mise/containers/db/env/test.env:
+    - /MYSQL_DATABASE=unstoppable_test/
+    - /MYSQL_HOST=db-test/
+  docker-compose.vendor.yml:
+    services: 
+      db-dev:
+        image: mysql:8.4
+        healthcheck:
+          test: ["CMD", "mysqladmin", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD", "ping", "-h", "$MYSQL_HOST"] 
+        ports:
+          - "3306"
+        volumes:
+          - db_data:/var/lib/mysql
+      db-test:
+        ports:
+          - "3307"
+
+mariadb:
+  <<: *mysql
+  mise/env/base.env:
+    - /db_image=mariadb/
+  mise/containers/db/env/base.env:
+    - /MARIADB_PASSWORD=root/
+    - /MARIADB_ROOT_PASSWORD=root/
+    - /MARIADB_USER=user/
+  mise/containers/db/env/development.env:
+    - /MARIADB_DATABASE=unstoppable_development/
+    - /MARIADB_HOST=db-dev/
+  mise/containers/db/env/test.env:
+    - /MARIADB_DATABASE=unstoppable_test/
+    - /MARIADB_HOST=db-test/
+  docker-compose.vendor.yml:
+    services: 
+      db-dev:
+        image: mariadb:11.4
+        healthcheck:
+          test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"] 
+        ports:
+          - "3306"
+        volumes:
+          - db_data:/var/lib/mysql
+      db-test:
+        ports:
+          - "3307"
+  

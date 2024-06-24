@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe Roro::Configurators::StackReflector do
   Given { use_fixture_stack('charlie') }

@@ -1,0 +1,5 @@
+  depends_on:
+    db-test:
+      condition: service_healthy
+    test-migrate:
+      condition: service_completed_successfully

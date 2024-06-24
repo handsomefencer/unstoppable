@@ -1,0 +1,33 @@
+preface: Similar to mariadb
+
+env:
+  base:
+    db_image:
+      value: mysql
+    db_image_version:
+      value: '8.0.21'
+    db_vendor:
+      value: mysql
+    db_volume:
+      value: /var/lib/mysql
+  development: 
+    db_pkg:
+      value: mysql-dev
+    DATABASE_HOST:
+      value: db
+    DATABASE_NAME:
+      value: development
+    MYSQL_DATABASE:
+      value: development
+    MYSQL_HOST:
+      value: db
+    MYSQL_USER:
+      value: root
+    MYSQL_PASSWORD:
+      value: root
+    MYSQL_ROOT_PASSWORD:
+      value: root
+  production: 
+    db_pkg:
+      value: mysql-client
+  

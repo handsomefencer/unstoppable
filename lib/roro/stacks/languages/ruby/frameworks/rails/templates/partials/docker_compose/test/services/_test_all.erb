@@ -1,0 +1,4 @@
+  test-all:
+    <<: *test
+    command: ["bin/rails", "test:all"]
+    container_name: test-all

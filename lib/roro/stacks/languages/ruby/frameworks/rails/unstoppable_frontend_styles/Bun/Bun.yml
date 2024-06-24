@@ -1,0 +1,22 @@
+preface: Bun is an all-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager.
+
+env:
+  base:
+    js_flag:
+      name: Rails new --javascript flag
+      value: bun
+    js_runtime:
+      name: Javascript runtime
+      value: bun
+    js_lockfile:
+      name: Javascript runtime lockfile
+      value: bun.lockb
+    BUN_INSTALL:
+      name: bun install path root
+      value: "$HOME/.bun"
+    PATH:
+      name: bun install path
+      value: "$BUN_INSTALL/bin:$PATH"
+
+
+actions:

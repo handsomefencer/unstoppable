@@ -1,0 +1,39 @@
+preface: SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine. SQLite is the most used database engine in the world. SQLite is built into all mobile phones and most computers and comes bundled inside countless other applications that people use every day.
+
+env: 
+  base:
+    db_flag:
+      value: sqlite
+    alpine_version: 
+      value: 3.18
+    db_flag:
+      value: sqlite3
+    db_pkg_development: 
+      value: sqlite-dev
+    db_pkg_production: 
+      value: sqlite-dev
+    db_image:
+      value: nouchka/sqlite3
+    db_image_tag:
+      value: latest
+    db_healthcheck_test_command: 
+      value: none   
+    db_dev_service_port:
+      value: none
+    db_test_service_port:
+      value: none
+    db_vendor:
+      value: sqlite3
+    db_volume:
+      value: none
+
+  development: 
+    app: 
+      DATABASE_URL:
+        value: "sqlite3::memory:"
+    
+  test: 
+    app: 
+      DATABASE_URL:
+        value: "sqlite3::memory:"
+  

@@ -1,0 +1,42 @@
+preface: Similar to mariadb
+
+env:
+  base:
+    db_healthcheck_test_command: 
+      name: Docker compose Database service healthcheck test command
+      value: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]   
+    db_image:
+      value: mariadb
+    db_image_tag:
+      value: '11.4'
+    db_vendor:
+      value: mysql
+    db_volume:
+      value: /var/lib/mysql
+
+    db:
+      MARIADB_PASSWORD:
+        value: root
+      MARIADB_ROOT_PASSWORD:
+        value: root
+      MARIADB_USER:
+        value: user
+
+  development: 
+    db:
+      MARIADB_DATABASE:
+        value: unstoppable_development
+      MARIADB_HOST:
+        value: db-dev
+  
+  test: 
+    db:
+      MARIADB_DATABASE:
+        value: unstoppable_test
+      MARIADB_HOST:
+        value: db-test
+
+  production: 
+    db_pkg:
+      value: mysql-client
+  

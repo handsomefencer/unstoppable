@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 require 'rake'
 
 describe 'rake ci:config:validate' do

@@ -1,0 +1,13 @@
+preface: some string
+
+env: 
+  base: 
+    js_flag:
+      name: Choose your javascript approach. Must be one of importmap (default), webpack, esbuild, rollup]
+      value: esbuild
+
+  development:
+    app: 
+      VITE_RUBY_HOST:
+        name: Vite ruby host. Vite service environment declartion in docker-compose.yml overrides this to 0.0.0.0.
+        value: vite

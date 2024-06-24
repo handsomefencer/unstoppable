@@ -1,0 +1,36 @@
+preface: Similar to mariadb
+
+env:
+  base:
+    db:
+      MYSQL_PASSWORD:
+        value: root
+      MYSQL_ROOT_PASSWORD:
+        value: root
+      MYSQL_USER:
+        value: user
+
+  development: 
+    db:
+      MYSQL_DATABASE:
+        name: Rails database_url
+        value: unstoppable_development
+      MYSQL_HOST:
+        value: db-dev
+  
+    app: 
+      DATABASE_URL:
+        name: Rails database_url
+        value: mysql2://root:root@db-dev/unstoppable_development
+  
+  test: 
+    db:
+      MYSQL_DATABASE:
+        name: Rails database_url
+        value: unstoppable_test
+      MYSQL_HOST:
+        value: db-test
+
+    app: 
+      DATABASE_URL:
+        value: mysql2://root:root@db-test/unstoppable_test

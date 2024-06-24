@@ -1,0 +1,7 @@
+preface: Devise is a flexible authentication solution for Rails based on Warden.
+
+actions:
+  - copy_layer('devise')
+    
+    
+    

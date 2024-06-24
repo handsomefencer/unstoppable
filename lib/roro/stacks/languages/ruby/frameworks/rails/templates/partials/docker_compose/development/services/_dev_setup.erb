@@ -1,0 +1,11 @@
+  dev-setup:
+    <<: *development
+    command: ["bin/setup"]
+    container_name: dev-setup
+    depends_on:
+      db-dev:
+        condition: service_healthy
+      db-test:
+        condition: service_healthy
+    profiles:
+      - setup

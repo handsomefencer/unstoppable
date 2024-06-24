@@ -28,13 +28,15 @@ describe Roro::Configurators::StackReflector do
           ].join(', '),
           templates_partials_paths: ['laravel/templates/partials'],
           templates_paths: ['okonomi/templates', 'laravel/templates'],
+          inflection_names: %w[unstoppable_developer_styles languages adventures],
           versions: {}
         }
       end
 
       describe 'when picks is a string' do
         When(:picks) { '1 1 1' }
-        Then { assert_expected_adventure }
+        Then {
+          assert_expected_adventure }
       end
 
       describe 'when picks arg is an array' do
