@@ -8,15 +8,13 @@ css-processors: &css-processors
         container_name: watch-css
         command: ["yarn", "build:css", "--watch"]
 
-# bootstrap: 
-#   <<: *css-processors
-#   app/assets/stylesheets/application.bootstrap.scss:
-#   app/javascript/application.js:
-#     - /bootstrap/
-#   mise/containers/app/Dockerfile.builder.railsnew:
-#     - /--css=bootstrap/
-#   config/importmap.rb: 
-#     - /bootstrap/
+bootstrap: 
+  <<: *css-processors
+  app/assets/stylesheets/application.bootstrap.scss:
+  app/javascript/application.js:
+    - /bootstrap/
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--css=bootstrap/
 
 # bulma:
 #   <<: *css-processors

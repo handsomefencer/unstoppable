@@ -2,5 +2,5 @@ preface: some string
 env:
   base:
     css_flag:
-      name: CSS processor flag for rails new
       value: bootstrap
+

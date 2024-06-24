@@ -2,5 +2,5 @@
 
 . mise/scripts/build.builder.sh 
 
-docker compose build --with-dependencies production
+docker compose build production
 

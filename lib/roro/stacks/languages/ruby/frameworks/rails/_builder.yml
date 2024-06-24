@@ -20,6 +20,12 @@ env:
       value: 3307
     db_volume:
       value: /var/lib/mysql
+    watch_css_command:
+      name: Default command to run whent starting watch-js service
+      value: 
+          - "yarn"
+          - "build:css"
+          - "--watch"
 
   development: 
     app: 

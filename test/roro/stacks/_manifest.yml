@@ -150,6 +150,5 @@ stacks:
     - /. mise\/scripts\/build.test.sh/
     - /export COMPOSE_PROFILES=development,test,setup/
   test/application_system_test_case.rb:
-
   .dockerignore:
   .gitignore:

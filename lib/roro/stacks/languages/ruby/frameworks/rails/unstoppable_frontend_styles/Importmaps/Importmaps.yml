@@ -5,10 +5,8 @@ env:
     js_flag:
       name: Rails new --javascript flag
       value: importmap
-
-    tailwind_watch_css_command:
-      name: Default command to run whent starting watch-js service
+    watch_css_command_tailwind:
+      name: Default command to run when watching tailwind
       value: 
           - "bin/rails"
           - "tailwindcss:watch"
-    

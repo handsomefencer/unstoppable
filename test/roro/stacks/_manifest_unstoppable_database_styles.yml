@@ -20,7 +20,6 @@ sqlite:
   mise/containers/db/env/development.env!:    
   mise/containers/app/Dockerfile.builder.base:
     - /ruby:3.3-alpine3.18/
-    - /ruby:3.3-alpine3.19/ !
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /sqlite-dev/
   mise/containers/app/Dockerfile.production:

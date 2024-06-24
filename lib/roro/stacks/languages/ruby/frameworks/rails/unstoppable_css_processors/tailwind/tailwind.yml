@@ -8,7 +8,7 @@ env:
     vite_entrypoint_css:
       name: Import this file into vite application.css entrypoint
       value: application.tailwind.css
-    tailwind_watch_css_command:
+    watch_css_command_tailwind:
       name: Default command to run when watching tailwind
       value: 
           - "yarn"
