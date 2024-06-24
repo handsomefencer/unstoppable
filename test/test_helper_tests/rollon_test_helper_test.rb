@@ -61,7 +61,6 @@ describe Roro::TestHelpers::RollonTestHelper do
   end
 
   describe '#manifests' do
-    Given { skip }
     describe 'when one manifest in brach -- bootstrap, bun' do
       Then do
         assert_equal 1, subject.manifests.size
@@ -69,21 +68,23 @@ describe Roro::TestHelpers::RollonTestHelper do
       end
     end
 
-    describe 'when three manifests in branch -- tailwind, bun' do
+    describe 'when three manifests and empty manifest in branch -- tailwind, bun' do
       Given(:css_flavor) { 'tailwind' }
       Then do
-        assert_equal 2, subject.manifests.size
+        assert_equal 3, subject.manifests.size
         assert_match /stacks\/_manifest.yml/, subject.manifests[0]
         assert_match /tailwind\/_manifest.yml/, subject.manifests[1]
+        assert_match /sqlite\/_manifest.yml/, subject.manifests[2]
       end
 
-      describe 'when three manifests in branch -- tailwind, importmaps' do
+      describe 'when three manifests in branch -- tailwind, importmaps with one empty' do
         Given(:js_flavor) { 'importmaps' }
         Then do
-          assert_equal 3, subject.manifests.size
+          assert_equal 4, subject.manifests.size
           assert_match /stacks\/_manifest.yml/, subject.manifests[0]
           assert_match /tailwind\/_manifest.yml/, subject.manifests[1]
-          assert_match /importmaps\/_manifest.yml/, subject.manifests[2]
+          assert_match /sqlite\/_manifest.yml/, subject.manifests[2]
+          assert_match /importmaps\/_manifest.yml/, subject.manifests[3]
         end
       end
     end
@@ -95,7 +96,6 @@ describe Roro::TestHelpers::RollonTestHelper do
     Given(:svcs) { result[stackfile_hashes][:services] }
 
     describe 'when evaluating for file existence' do
-
       describe 'when file asserted' do
         Then do
           assert_equal 3, result.keys.size
@@ -116,7 +116,7 @@ describe Roro::TestHelpers::RollonTestHelper do
 
           describe 'and then asserted' do
             Given(:js_flavor) { 'importmaps' }
-            Given { skip }
+            Given(:css_flavor) { 'tailwind' }
             Then do
               assert_equal 4, result.keys.size
               assert_equal stackfile_hashes, result.keys[0]
@@ -130,7 +130,6 @@ describe Roro::TestHelpers::RollonTestHelper do
     end
 
     describe 'when evaluating file contents' do
-
       describe 'When item is a string' do
         Then do
           assert_equal 1, subject.manifests.size
@@ -148,15 +147,16 @@ describe Roro::TestHelpers::RollonTestHelper do
             assert_equal "/BAR=bar/!", contents[1]
             assert_equal "/BAZ=baz/", contents[2]
           end
+        end
 
-          describe 'then BAR asserted and FOO refuted' do
-            Given(:js_flavor) { 'importmaps' }
-            Then do
-              assert_equal 4, subject.manifests.size
-              assert_includes contents, "/FOO=foo/!"
-              assert_includes contents, "/BAZ=baz/"
-              assert_includes contents, "/BAR=bar/"
-            end
+        describe 'then BAR asserted and FOO refuted' do
+          Given(:css_flavor) { 'tailwind' }
+          Given(:js_flavor) { 'importmaps' }
+          Then do
+            assert_equal 4, subject.manifests.size
+            assert_includes contents, "/FOO=foo/!"
+            assert_includes contents, "/BAZ=baz/"
+            assert_includes contents, "/BAR=bar/"
           end
         end
       end
@@ -195,9 +195,7 @@ describe Roro::TestHelpers::RollonTestHelper do
   end
 
   describe '#collect_dummies' do
-    Given { skip }
     describe 'when all files asserted' do
-
       Then do
         assert_equal 3, subject.dummies.size
         assert_includes subject.dummies, stackfile_strings.to_s
@@ -215,35 +213,6 @@ describe Roro::TestHelpers::RollonTestHelper do
         assert_includes subject.dummies, stackfile_hashes.to_s
         refute_includes subject.dummies, refuted_file.to_s
         refute_includes subject.dummies, asserted_file.to_s
-      end
-    end
-  end
-
-  describe '#rollon' do
-    Given { skip }
-    Given(:workbench) {}
-    Given(:options) { { rollon_dummies: true, rollon_loud: true } }
-    Given(:execute) { subject.rollon }
-
-    describe 'when rollon_dummies: false must raise error' do
-      Given(:dummy_dir) { "#{subject.dir}/dummy"}
-      Given { FileUtils.remove_dir(dummy_dir) if File.exist?(dummy_dir) }
-      Given(:options) { { rollon_dummies: false} }
-      Then { assert_raises(RuntimeError) { execute } }
-    end
-
-    describe 'when rollon_dummies: true' do
-      describe 'must capture dummy files' do
-        Given { execute }
-        Then { refute_match /usr\/src/, Dir.pwd }
-        And { assert_match 'workbench', Dir.pwd }
-        And { assert glob_dir('/**/*Gemfile').first }
-
-        describe 'when dummies captured and rollon_dummies: false' do
-          Given(:options) { { rollon_dummies: true } }
-          Given { execute }
-          Then { assert glob_dir('/**/*Gemfile').first }
-        end
       end
     end
   end

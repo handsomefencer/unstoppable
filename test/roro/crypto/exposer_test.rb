@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe 'Roro::Crypto::Exposer.new' do
   Given(:subject)   { Roro::Crypto::Exposer.new }

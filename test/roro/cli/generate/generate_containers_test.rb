@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe 'Roro::CLI#generate_containers' do
-Given { skip }
   Given(:workbench)    { 'workbench' }
   Given(:default_apps) { %w[backend database frontend] }
   Given(:containers)   { nil }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe Roro::Crypto::FileWriter do
   Given(:subject)   { Roro::Crypto::FileWriter.new }

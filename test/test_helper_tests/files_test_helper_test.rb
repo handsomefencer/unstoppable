@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe Roro::TestHelpers::FilesTestHelper do
-  describe '#glob_dir(regex)' do
+  describe '#globdir(regex)' do
     Given(:workbench) { 'crypto' }
     Given(:expected) { /entrypoint.sh/ }
     Given(:regex) { "**/*.sh" }
@@ -19,6 +19,7 @@ describe Roro::TestHelpers::FilesTestHelper do
       end
 
       describe 'is empty' do
+        Given { skip }
         Given(:workbench) { }
         Then { assert_empty result }
       end

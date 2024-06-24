@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe 'AdventurePicker' do
   Given(:subject) { AdventurePicker.new }
@@ -10,7 +10,6 @@ describe 'AdventurePicker' do
   end
 
   Given(:result) do
-    subject.choose_adventure(inflection)
     quiet { subject.choose_adventure(inflection) }
   end
 
@@ -28,13 +27,17 @@ describe 'AdventurePicker' do
   end
 
   describe '#inflection_prompt()' do
-    Given(:result) { subject.inflection_prompt(inflection) }
+    Given(:result) do
+      quiet { subject.inflection_prompt(inflection) }
+    end
     Then { assert_match('Please choose from these', result) }
     And { assert_match('alpha unstoppable developer styles:', result) }
   end
 
   describe '#inflection_options()' do
-    Given(:result) { subject.inflection_options(inflection) }
+    Given(:result) do
+      quiet { subject.inflection_options(inflection) }
+    end
 
     Then do
       assert_equal 3, result.size
@@ -44,12 +47,16 @@ describe 'AdventurePicker' do
   end
 
   describe '#which_adventure?()' do
-    Given(:result) { subject.which_adventure?(inflection) }
+    Given(:result) do
+      quiet { subject.which_adventure?(inflection) }
+    end
     Then { assert_match('Leave it to the chef', result) }
   end
 
   describe '#get_story_preface' do
-    Given(:result) { subject.get_story_preface("#{inflection}/okonomi") }
+    Given(:result) do
+      quiet { subject.get_story_preface("#{inflection}/okonomi") }
+    end
     Then { assert_equal('Choose what you like.', result) }
   end
 end

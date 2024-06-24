@@ -99,6 +99,12 @@ module Roro
         f[-1].eql?('!') ? refute_file(f[0..-2]) : assert_file(f)
       end
 
+      def stubs_answer(answer)
+        Thor::Shell::Basic.any_instance
+                          .stubs(:ask)
+                          .returns(answer)
+      end
+
       def stub_journey(answers)
         Thor::Shell::Basic
           .any_instance

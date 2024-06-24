@@ -31,7 +31,7 @@ module Roro::TestHelpers::StackTestHelper
   def check_into_workbench
     return unless defined? workbench
 
-    # Rake.application.load_rakefile
+    Rake.application.load_rakefile
     prepare_destination(*workbench)
     @roro_dir = Dir.pwd
     Dir.chdir("#{@tmpdir}/workbench")

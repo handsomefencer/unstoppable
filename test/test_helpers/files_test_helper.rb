@@ -19,6 +19,7 @@ module Roro::TestHelpers::FilesTestHelper
   end
 
   def insert_dummy_env(filename = 'roro/env/dummy.env')
+
     insert_dummy filename
   end
 

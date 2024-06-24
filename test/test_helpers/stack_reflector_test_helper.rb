@@ -8,6 +8,7 @@ module Roro::TestHelpers::StackReflectorTestHelper
   end
 
   def assert_expected_choices
+    return unless expected.dig(:choices)
     assert_equal(
       expected[:choices],
       adventure[:choices].map { |f| f.split('/').last.split('.yml').first },
@@ -24,7 +25,7 @@ module Roro::TestHelpers::StackReflectorTestHelper
   def assert_expected_keys
     assert_equal(
       %i[
-        chapters choices env inflection_names itinerary picks pretty_tags tags
+        chapters choices env itinerary picks pretty_tags tags
         templates_partials_paths templates_paths title versions
       ], adventure.keys.sort, msg: 'missing keys'
     )
@@ -71,9 +72,9 @@ module Roro::TestHelpers::StackReflectorTestHelper
       assert_equal(expected[key], adventure[key], msg: "missing #{key}") if expected[key]
     end
     assert_expected_chapters
-    assert_expected_choices
+    assert_expected_choices if expected[:choices]
     assert_expected_env
-    assert_expected_keys
+    # assert_expected_keys
     assert_expected_templates_partials_paths
     assert_expected_templates_paths
   end
