@@ -39,8 +39,12 @@ module Roro
     no_commands do
       def generate_environment_file(env, hash, mise, containers)
         content = hash&.dig(env.to_sym)&.sort&.each&.map do |key, value|
-                    "#{key}=#{value[:value]}" if value.is_a?(Hash)
-                  end&.join("\n") || 'SOME_KEY=some_value'
+          case value
+          when Hash
+            "#{key}=#{value[:value]}"
+          else
+          end
+        end&.join("\n") || '#SOME_KEY=some_value'
         create_file("./#{mise}/env/#{env}.env", content, force: true)
         containers.each do |container|
           create_file("#{container}/env/#{env}.env", content, force: true)

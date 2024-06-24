@@ -26,6 +26,7 @@ module Roro
         when :inflection_stub
           children(s).each { |c| reflect(c, sibs, adventure, a) }
         when :inflection
+          adventure[:inflection_names] << stack_name(s)
           children(s).each_with_index do |c, i|
             reflect(c, sibs.dup, fork_adventure(adventure, i, s, c), a)
           end
@@ -125,13 +126,13 @@ module Roro
       def inflection_choice(stack, child)
         inflection_parent = stack_parent(stack)
         inflection = stack_name(stack).singularize
-        foo = if inflection.eql? 'version'
+        inflection_name = if inflection.eql? 'version'
                 "#{inflection_parent} #{inflection}"
               else
                 inflection
 
               end
-        "#{foo}: #{stack_name(child)}"
+        "#{inflection_name}: #{stack_name(child)}"
       end
 
       def fork_adventure(adventure, index, stack, child)
@@ -179,6 +180,7 @@ module Roro
           picks: [],
           templates_paths: [],
           templates_partials_paths: [],
+          inflection_names: [],
           tags: []
         }
       end

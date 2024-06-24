@@ -19,6 +19,7 @@ module Roro
             ci: {},
             development: {},
             staging: {},
+            test: {},
             production: {}
           },
           preface: '',

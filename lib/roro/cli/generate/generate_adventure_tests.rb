@@ -9,7 +9,18 @@ module Roro
 
     def generate_adventure_tests(_kase = nil)
       reflector = Roro::Configurators::StackReflector.new
+      @manifest_names =[]
       reflector.adventures.values.each { |a| generate_test_stack(a) }
+      dest = 'test/roro/stacks'
+      @manifest_names.uniq.each do |name|
+          @env[:manifest_name] = name
+          src = 'stack/tests/tests/_manifest.yml'
+          if @manifest_names.first.eql?(name)
+            @env[:manifest_name] = 'stacks'
+            template(src, "#{dest}/_manifest.yml", @env)
+          end
+          template(src, "#{dest}/_manifest_#{name}.yml", @env)
+      end
     end
 
     no_commands do
@@ -26,12 +37,13 @@ module Roro
       def generate_test_stack(hash)
         @env = describe_block(hash)
         dest = 'test/roro/stacks'
+        @manifest_names += hash[:inflection_names]
         hash[:choices].each do |c|
           if c.eql?(hash[:choices][-1])
             src = 'stack/tests/tests'
-            directory(src, "#{dest}/#{c}", @env)
+            directory(src, "#{dest}/#{c.downcase}", @env)
           end
-          dest = "#{dest}/#{c}"
+          dest = "#{dest}/#{c.downcase}"
         end
       end
     end

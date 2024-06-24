@@ -8,6 +8,7 @@ module Roro
     map 'generate:key'   => 'generate_keys'
 
     def generate_keys(*environments)
+      # raise Roro::Error if environments.empty?
       key_writer = Roro::Crypto::KeyWriter.new
       key_writer.write_keyfiles(environments.uniq)
     end

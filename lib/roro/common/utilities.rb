@@ -206,7 +206,12 @@ module Roro
     end
 
     def read_yaml(yaml_file)
-      JSON.parse(YAML.load_file(yaml_file, aliases: true).to_json, symbolize_names: true)
+      begin
+        json = YAML.load_file(yaml_file, aliases: true).to_json
+        JSON.parse(json, symbolize_names: true)
+      rescue
+        raise RuntimeError, msg: "Trouble reading #{yaml_file}"
+      end
     end
 
     def adventure_name(location)

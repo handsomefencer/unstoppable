@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'base64', '~> 0.2.0'
   spec.add_dependency 'os', '~> 1.1', '>= 1.1.4'
-  spec.add_dependency 'rake', '~> 13.1'
+  spec.add_dependency 'rake'
   spec.add_dependency 'sshkit', '~> 1.22'
   spec.add_dependency 'thor', '~> 1.3', '>= 1.3.1'
   spec.add_dependency 'activesupport', '~> 7.1', '>= 7.1.3.2'

@@ -29,6 +29,7 @@ module Roro
         if environments.empty?
           environments = gather_environments(directory, '.env').uniq
         end
+        raise Roro::Error.new('missing envfironments') if environments.empty?
 
         environments.uniq.each { |environment| write_keyfile(environment, extension) }
       end
