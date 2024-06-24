@@ -19,7 +19,6 @@ describe Roro::TestHelpers::FilesTestHelper do
       end
 
       describe 'is empty' do
-        Given { skip }
         Given(:workbench) { }
         Then { assert_empty result }
       end

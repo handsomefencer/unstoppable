@@ -6,9 +6,9 @@ describe '4 Sass -> 4 SQLite -> 3 Importmaps -> 2 omakase' do
   Given(:workbench) {}
   
   Given do
-    skip
+    #skip
     debuggerer
   end
-
+#focus
   Then { assert_correct_manifest(__dir__) }
 end

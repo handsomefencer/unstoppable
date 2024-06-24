@@ -3,7 +3,6 @@
 require 'stack_test_helper'
 
 describe Roro::TestHelpers::ConfiguratorTestHelper do
-  Given { skip }
   describe "#rollon_options" do
     Given(:one) { rollon_options.dig(:debuggerer) }
     Given(:two) { rollon_options.dig(:rollon_loud) }
@@ -31,29 +30,15 @@ describe Roro::TestHelpers::ConfiguratorTestHelper do
     end
   end
 
-  describe '#assert_correct_manifest(dir)' do
-    Given { skip }
-    Given(:workbench) { }
-    Given { debuggerer }
-    Given(:dir) { [
-      Roro::CLI.test_root,
-      "fixtures/files/test_stacks/foxtrot",
-      "stacks/tailwind/sqlite/importmaps/omakase"
-      ].join('/')}
-    Given { use_fixture_stack('foxtrot') }
-    Then { assert_correct_manifest(dir)}
-
-  end
-
   describe '#evaluate_contents_hash' do
     Given(:dir) { "/usr/src/test/roro/stacks/tailwind/sqlite/importmaps/okonomi" }
     Given(:file) { :"#{dir}/dummy/docker-compose.development.yml" }
-    # Given(:actual) { read_yaml(file.to_s) }
     Given(:expected) {{ services: { prod!: {}, :dev=> {
             :container_name=>"dev",
             :profiles=>["development"]
     }}}}
     Given(:result) { evaluate_contents_hash('bar', file, expected) }
-    Then { assert_equal 'blah', result }
+    Then { assert_equal 'dev', result.dig(:services, :dev, :container_name) }
+    And { assert_equal 'development', result.dig(:services, :dev, :profiles, 0) }
   end
 end

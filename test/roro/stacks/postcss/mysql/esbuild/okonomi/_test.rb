@@ -6,9 +6,9 @@ describe '3 PostCSS -> 2 MySQL -> 2 ESBuild -> 1 okonomi' do
   Given(:workbench) {}
   
   Given do
-    skip
+    #skip
     debuggerer
   end
-
+#focus
   Then { assert_correct_manifest(__dir__) }
 end

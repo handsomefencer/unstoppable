@@ -6,9 +6,9 @@ describe '4 Sass -> 2 MySQL -> 2 ESBuild -> 2 omakase' do
   Given(:workbench) {}
   
   Given do
-    skip
+    #skip
     debuggerer
   end
-
+#focus
   Then { assert_correct_manifest(__dir__) }
 end
