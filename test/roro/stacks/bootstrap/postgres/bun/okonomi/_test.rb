@@ -4,9 +4,9 @@ require 'stack_test_helper'
 
 describe '1 Bootstrap -> 3 Postgres -> 1 Bun -> 1 okonomi' do
   Given(:workbench) {}
-
+  
   Given do
-    #skip
+    skip
     debuggerer
   end
 

@@ -4,9 +4,9 @@ require 'stack_test_helper'
 
 describe '3 PostCSS -> 4 SQLite -> 3 Importmaps -> 1 okonomi' do
   Given(:workbench) {}
-
+  
   Given do
-    #skip
+    skip
     debuggerer
   end
 

@@ -15,7 +15,8 @@ describe 'Roro::CLI#generate_exposed' do
 
   context 'when one environment specified' do
     describe 'must only expose matching files' do
-      Given { quiet { generate } }
+      # Given { quiet { generate } }
+      Given { generate  }
       Then  { assert_file 'roro/env/dummy.env' }
       And   { refute_file 'roro/env/smart.env' }
     end

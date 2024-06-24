@@ -11,7 +11,7 @@ minitest_options = {
   all_on_start: false,
   env: {
     'DEBUGGERER' => 'true',
-    'ROLLON_LOUD' => 'true'
+    # 'ROLLON_LOUD' => 'true'
   }
 }
 

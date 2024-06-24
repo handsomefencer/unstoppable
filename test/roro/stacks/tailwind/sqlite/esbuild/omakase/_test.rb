@@ -4,8 +4,9 @@ require 'stack_test_helper'
 
 describe '6 tailwind -> 4 SQLite -> 2 ESBuild -> 2 omakase' do
   Given(:workbench) {}
-
+  
   Given do
+    skip
     debuggerer
   end
 

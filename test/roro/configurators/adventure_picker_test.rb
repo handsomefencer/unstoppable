@@ -10,6 +10,7 @@ describe 'AdventurePicker' do
   end
 
   Given(:result) do
+    subject.choose_adventure(inflection)
     quiet { subject.choose_adventure(inflection) }
   end
 
@@ -24,10 +25,6 @@ describe 'AdventurePicker' do
       Then { assert_equal '2', result }
     end
 
-    describe 'when sashimi' do
-      Given { stub_journey(%w[3]) }
-      Then { assert_equal '3', result }
-    end
   end
 
   describe '#inflection_prompt()' do

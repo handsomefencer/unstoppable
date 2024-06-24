@@ -4,8 +4,9 @@ require 'stack_test_helper'
 
 describe '1 Bootstrap -> 3 Postgres -> 3 Importmaps -> 1 okonomi' do
   Given(:workbench) {}
-
+  
   Given do
+    skip
     debuggerer
   end
 

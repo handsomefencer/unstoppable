@@ -7,8 +7,7 @@ Given { skip }
   Given(:workbench) { 'crypto/roro' }
   Given(:envs)      { nil }
   Given(:generate)  { Roro::CLI.new.generate_environments(*envs) }
-  Given { generate }
-  # Given { quiet { generate } }
+  Given { quiet { generate } }
 
   context 'must generate default .env files' do
     describe 'for the project' do

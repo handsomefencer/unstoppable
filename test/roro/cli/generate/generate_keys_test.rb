@@ -7,12 +7,13 @@ describe 'Roro::CLI#generate_keys' do
   Given(:envs)      { nil }
   Given(:generate)  { Roro::CLI.new.generate_keys(*envs) }
 
-  before { stubs_answer('y') }
+  # before { stubs_answer('y') }
 
   context 'when no environments supplied and' do
     context 'when no .smart.env files' do
       When(:error) { Roro::Error }
-      Then { assert_raises(error) { quiet { generate } } }
+      focus
+      Then { assert_raises(error) {  generate  } }
     end
 
     context 'when one .smart.env file' do
@@ -32,7 +33,8 @@ describe 'Roro::CLI#generate_keys' do
 
   context 'when one environment supplied' do
     When(:envs) { ['dummy'] }
-    Given { quiet { generate } }
+    # Given { quiet { generate } }
+    Given { generate }
     Then  { assert_file('roro/keys/dummy.key') }
   end
 
