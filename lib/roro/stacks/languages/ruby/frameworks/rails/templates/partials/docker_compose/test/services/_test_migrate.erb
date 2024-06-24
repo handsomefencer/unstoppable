@@ -1,0 +1,9 @@
+  test-migrate:
+    <<: *test
+    command: ["bin/rails", "db:migrate"]
+    container_name: test-migrate
+    depends_on:
+      db-test:
+        condition: service_healthy
+    profiles:
+      - test

@@ -132,18 +132,23 @@ stacks:
   mise/keys/development.key:
   mise/keys/production.key:
   mise/scripts/build.builder.sh:
-    - /docker compose down/
     - /docker compose build --with-dependencies builder-cache/
   mise/scripts/build.development.sh:
-    - /\. mise\/scripts\/build\.builder\.sh/
-    - /docker compose build builder-development/
-    - /docker compose build dev/
+    - /. mise\/scripts\/build.builder.sh/
+    - /docker compose build development/
   mise/scripts/build.production.sh:
+    - /. mise\/scripts\/build.builder.sh/
+    - /docker compose build production/
   mise/scripts/build.test.sh:
-    - /\. mise\/scripts\/build\.builder\.sh/
+    - /. mise\/scripts\/build.builder.sh/
     - /docker compose build test/
   mise/scripts/docker.info.sh:
   mise/scripts/docker.prune.sh:
+    - /export COMPOSE_PROFILES=development,test,setup/
+  mise/scripts/up.development.sh:
+    - /. mise\/scripts\/build.development.sh/
+    - /. mise\/scripts\/build.test.sh/
+    - /export COMPOSE_PROFILES=development,test,setup/
   test/application_system_test_case.rb:
 
   .dockerignore:

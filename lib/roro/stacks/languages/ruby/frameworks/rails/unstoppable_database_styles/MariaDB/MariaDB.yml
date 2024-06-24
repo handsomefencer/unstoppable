@@ -2,24 +2,13 @@ preface: Similar to mariadb
 
 env:
   base:
-    db_flag:
-      value: mysql
-    db_pkg_development:
-      value: mariadb-dev
-    db_pkg_production: 
-      name: Alpine db pkg for production
-      value: mysql
+    db_healthcheck_test_command: 
+      name: Docker compose Database service healthcheck test command
+      value: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]   
     db_image:
       value: mariadb
     db_image_tag:
       value: '11.4'
-    db_healthcheck_test_command: 
-      name: Docker compose Database service healthcheck test command
-      value: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]   
-    db_dev_service_port:
-      value: 3306
-    db_test_service_port:
-      value: 3306
     db_vendor:
       value: mysql
     db_volume:
@@ -32,31 +21,17 @@ env:
         value: root
       MARIADB_USER:
         value: user
-      # MARIADB_RANDOM_ROOT_PASSWORD: 
-      #   value: "1"
 
   development: 
     db:
       MARIADB_DATABASE:
-        name: Rails database_url
         value: unstoppable_development
       MARIADB_HOST:
         value: db-dev
   
-    app: 
-      DATABASE_URL:
-        name: Rails database_url
-        value: mysql2://user:root@db-dev/unstoppable_development
-  
   test: 
-    app: 
-      DATABASE_URL:
-        name: Rails database_url
-        value: mysql2://user:root@db-test/unstoppable_test
-  
     db:
       MARIADB_DATABASE:
-        name: Rails database_url
         value: unstoppable_test
       MARIADB_HOST:
         value: db-test

@@ -1,5 +1,9 @@
 #!/bin/sh
 
+export COMPOSE_PROFILES=development,test,setup
+
+docker compose down 
+
 docker kill $(docker ps -aq -f name=<%= @env[:base][:app_name][:value] %>*)
 docker rm $(docker ps -aq -f name=<%= @env[:base][:app_name][:value] %>*)
 

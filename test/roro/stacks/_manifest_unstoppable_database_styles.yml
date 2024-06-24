@@ -58,17 +58,23 @@ postgres:
           - db_data_test:/var/lib/postgresql/data
 
 x-mysql: &mysql
+  mise/env/base.env:
+    - /db_flag=mysql/
+    - /db_pkg_development=mariadb-dev/
+    - /db_pkg_production=mysql/
   config/database.yml:
     default: 
       host: localhost
   mise/containers/app/env/development.env:
-    - /DATABASE_URL=mysql2:\/\/user:root@db-dev\/unstoppable_development/
+    - /DATABASE_URL=mysql2:\/\/root:root@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:
     - /DATABASE_URL=mysql2:\/\/root:root@db-test\/unstoppable_test/
   
-  
 mysql:
   <<: *mysql
+  mise/env/base.env:
+    - /db_image=mysql/
+    - /db_image_tag=8.4/
   mise/containers/db/env/base.env:
     - /MYSQL_PASSWORD=root/
     - /MYSQL_ROOT_PASSWORD=root/
@@ -95,17 +101,18 @@ mysql:
 
 mariadb:
   <<: *mysql
+  mise/env/base.env:
+    - /db_image=mariadb/
   mise/containers/db/env/base.env:
-    # - /MYSQL_PASSWORD=root/
-    # - /MYSQL_ROOT_PASSWORD=root/
-    # - /MYSQL_USER=user/
+    - /MARIADB_PASSWORD=root/
+    - /MARIADB_ROOT_PASSWORD=root/
+    - /MARIADB_USER=user/
   mise/containers/db/env/development.env:
-    # - /MYSQL_DATABASE=unstoppable_development/
-    # - /MYSQL_HOST=db-dev/
+    - /MARIADB_DATABASE=unstoppable_development/
+    - /MARIADB_HOST=db-dev/
   mise/containers/db/env/test.env:
-    # - /MYSQL_DATABASE=unstoppable_test/
-    # - /MYSQL_HOST=db-test/
-
+    - /MARIADB_DATABASE=unstoppable_test/
+    - /MARIADB_HOST=db-test/
   docker-compose.vendor.yml:
     services: 
       db-dev:

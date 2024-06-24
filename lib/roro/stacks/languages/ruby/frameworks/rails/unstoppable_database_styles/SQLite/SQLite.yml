@@ -2,15 +2,38 @@ preface: SQLite is a C-language library that implements a small, fast, self-cont
 
 env: 
   base:
+    db_flag:
+      value: sqlite
     alpine_version: 
-      name: alpine development version
       value: 3.18
     db_flag:
-      name: Rails new --database flag
       value: sqlite3
     db_pkg_development: 
-      name: Alpine db pkg for development
       value: sqlite-dev
     db_pkg_production: 
-      name: Alpine db pkg for production
       value: sqlite-dev
+    db_image:
+      value: nouchka/sqlite3
+    db_image_tag:
+      value: latest
+    db_healthcheck_test_command: 
+      value: none   
+    db_dev_service_port:
+      value: none
+    db_test_service_port:
+      value: none
+    db_vendor:
+      value: sqlite3
+    db_volume:
+      value: none
+
+  development: 
+    app: 
+      DATABASE_URL:
+        value: "sqlite3::memory:"
+    
+  test: 
+    app: 
+      DATABASE_URL:
+        value: "sqlite3::memory:"
+  

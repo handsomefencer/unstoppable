@@ -1,3 +1,42 @@
+env:
+  base:
+    db_flag:
+      value: mysql
+    db_pkg_development:
+      value: mariadb-dev
+    db_pkg_production: 
+      name: Alpine db pkg for production
+      value: mysql
+    db_image:
+      value: mysql
+    db_image_tag:
+      value: '8.4'
+    db_healthcheck_test_command: 
+      name: Docker compose Database service healthcheck test command
+      value: ["CMD", "mysqladmin", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD",  "ping", "-h", "$MYSQL_HOST"]   
+    db_dev_service_port:
+      value: 3306
+    db_test_service_port:
+      value: 3307
+    db_volume:
+      value: /var/lib/mysql
+
+  development: 
+    app: 
+      DATABASE_URL:
+        name: Rails database_url
+        value: mysql2://root:root@db-dev/unstoppable_development
+  
+  test: 
+    app: 
+      DATABASE_URL:
+        name: Rails database_url
+        value: mysql2://root:root@db-test/unstoppable_test
+  
+  production: 
+    db_pkg:
+      value: mysql-client
+  
 actions:
   - generate_mise_from_env
   - copy_layer('builder')
