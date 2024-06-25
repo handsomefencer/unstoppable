@@ -39,5 +39,4 @@ services:
     command: ['sh']
 
 volumes:
-volumes:
   gem_cache:  
