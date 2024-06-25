@@ -1,0 +1,7 @@
+  test-migrate:
+    <<: *test
+    command: ["bin/rails", "db:migrate"]
+    container_name: test-migrate
+
+    profiles:
+      - test

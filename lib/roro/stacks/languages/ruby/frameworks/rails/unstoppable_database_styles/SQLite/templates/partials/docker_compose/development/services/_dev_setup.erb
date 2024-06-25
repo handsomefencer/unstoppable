@@ -1,0 +1,6 @@
+  dev-setup:
+    <<: *development
+    command: ["bin/setup"]
+    container_name: dev-setup
+    profiles:
+      - setup
