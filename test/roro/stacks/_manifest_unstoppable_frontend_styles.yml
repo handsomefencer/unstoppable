@@ -48,7 +48,7 @@ vite:
   docker-compose.development.yml:  
     services:
       watch-js:
-        command: ["bin/vite", "dev"]
+        command: ["yarn!", "build!", "--watch!", "bin/vite", "dev"]
         environment:
           DEBUG: '*vite*'
           VITE_RUBY_HOST: 0.0.0.0

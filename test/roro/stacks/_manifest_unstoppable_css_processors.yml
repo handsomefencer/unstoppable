@@ -1,6 +1,5 @@
 stacks:
 
-
 css-processors: &css-processors
   docker-compose.development.yml: 
     services: 
@@ -16,25 +15,30 @@ bootstrap:
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--css=bootstrap/
 
-# bulma:
-#   <<: *css-processors
-#   app/assets/stylesheets/application.bulma.scss:
-#   mise/containers/app/Dockerfile.builder.railsnew:
-#     - /--css=bulma/
+bulma:
+  <<: *css-processors
+  app/assets/stylesheets/application.bulma.scss:
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--css=bulma/
 
-# postcss: 
-#   <<: *css-processors
-#   app/assets/stylesheets/application.postcss.css:
-#   mise/containers/app/Dockerfile.builder.railsnew:
-#     - /--css=postcss/
-#   postcss.config.js:
+postcss: 
+  <<: *css-processors
+  app/assets/stylesheets/application.postcss.css:
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--css=postcss/
+  postcss.config.js:
 
-# sass:
-#   docker-compose.development.yml: 
-#     services: 
-#       watch-css:
-#         container_name: watch-css
-#         command: ["bin/rails", "dartsass:watch"]
+sass:
+  docker-compose.development.yml: 
+    services: 
+      watch-css:
+        container_name: watch-css
+        command: ["bin/rails", "dartsass:watch"]
+
+skip_css:
+  docker-compose.development.yml: 
+    services: 
+      watch-css!:
 
 tailwind: 
   <<: *css-processors
