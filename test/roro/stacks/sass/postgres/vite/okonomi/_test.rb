@@ -9,6 +9,6 @@ describe '4 Sass -> 3 Postgres -> 4 Vite -> 1 okonomi' do
     #skip
     debuggerer
   end
-focus
+# focus
   Then { assert_correct_manifest(__dir__) }
 end

@@ -38,8 +38,8 @@ importmaps:
       watch-js!:
 
 vite: 
-  app/javascript/entrypoints/application.css:
-  app/javascript/entrypoints/application.js:
+  app/javascript/entrypoints/application.css!:
+  app/javascript/entrypoints/application.js!:
   app/views/layouts/application.html.erb:
     - /vite_client_tag/
     - /vite_javascript_tag/
@@ -57,5 +57,5 @@ vite:
   Gemfile:
     - /gem ["']vite_rails["']/
   mise/containers/app/Dockerfile.builder.railsnew:
-    - / --javascript=esbuild /
+    - /--skip-js/
   vite.config.ts:
