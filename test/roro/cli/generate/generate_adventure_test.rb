@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'stack_test_helper'
 
 describe 'Roro::CLI#generate_adventure' do
   Given(:workbench) { 'test_adventure/lib' }
