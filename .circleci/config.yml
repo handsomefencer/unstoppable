@@ -200,15 +200,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - "2204"
-                matrix:
-                    parameters:
-                        regex:
-                            - '**/postgres/**/7_0/**/*'
-                            - '**/postgres/**/6_1/**/*'
-                            - '**/mysql/**/7_0/**/*'
-                            - '**/mariadb/**/7_0/**/*'
-                            - ruby/omakase/
+                            - "2408"
                 requires:
                     - build
 

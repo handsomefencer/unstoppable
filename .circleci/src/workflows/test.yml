@@ -7,7 +7,7 @@ jobs:
     filters:
       branches:
         only:
-        - '2204'
+        - '2408'
     matrix:
       parameters:
           regex:

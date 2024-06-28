@@ -7,8 +7,8 @@ describe 'Roro::CLI#generate_adventure_tests' do
   Given(:case_test_file) { "#{dir}/_test.rb" }
   Given { use_fixture_stack('echo') }
   Given do
-      Roro::CLI.new.generate_adventure_tests
-    #  quiet { Roro::CLI.new.generate_adventure_tests }
+      # Roro::CLI.new.generate_adventure_tests
+     quiet { Roro::CLI.new.generate_adventure_tests }
   end
 
   describe 'when directory is ancestor base' do
