@@ -12,3 +12,5 @@ group :test do
 end
 
 gem 'minitest-ci', '~> 3.4'
+
+gem "minitest-reporters", "~> 1.7"

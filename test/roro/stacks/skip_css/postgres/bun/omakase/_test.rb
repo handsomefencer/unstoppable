@@ -2,7 +2,7 @@
 
 require 'stack_test_helper'
 
-describe '5 no_css_processor -> 3 Postgres -> 1 Bun -> 2 omakase' do
+describe '5 skip_css -> 3 Postgres -> 1 Bun -> 2 omakase' do
   Given(:workbench) {}
   
   Given do

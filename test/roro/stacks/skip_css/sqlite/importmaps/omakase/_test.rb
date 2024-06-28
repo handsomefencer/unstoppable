@@ -2,7 +2,7 @@
 
 require 'stack_test_helper'
 
-describe '5 no_css_processor -> 4 SQLite -> 3 Importmaps -> 2 omakase' do
+describe '5 skip_css -> 4 SQLite -> 3 Importmaps -> 2 omakase' do
   Given(:workbench) {}
   
   Given do

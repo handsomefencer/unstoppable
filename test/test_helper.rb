@@ -11,6 +11,7 @@ require 'minitest/hooks/default'
 require 'minitest/pride'
 require 'minitest/spec'
 require 'minitest/focus'
+require 'minitest/reporters'
 require 'mocha/minitest'
 require 'climate_control'
 require 'roro'
@@ -19,6 +20,10 @@ include Roro::Configurators
 include Roro::Crypto
 
 Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
+
+Minitest::Reporters.use!
+
+Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new, Minitest::Reporters::JUnitReporter.new]
 
 # include Roro::TestHelpers::RakeTaskTestHelper
 # include Roro::TestHelpers::ReflectionHelper

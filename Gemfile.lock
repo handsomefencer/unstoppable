@@ -25,8 +25,10 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
+    ansi (1.5.0)
     base64 (0.2.0)
     bigdecimal (3.1.6)
+    builder (3.3.0)
     climate_control (1.0.0)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
@@ -77,6 +79,11 @@ GEM
     minitest-hooks (1.5.0)
       minitest (> 5.3)
     minitest-profile (0.0.2)
+    minitest-reporters (1.7.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     mocha (1.13.0)
     mutex_m (0.2.0)
     nenv (0.3.0)
@@ -103,6 +110,7 @@ GEM
       psych (>= 4.0.0)
     reline (0.4.3)
       io-console (~> 0.5)
+    ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     shellany (0.0.1)
     sorcerer (2.0.1)
@@ -130,8 +138,9 @@ DEPENDENCIES
   minitest-given
   minitest-hooks
   minitest-profile
+  minitest-reporters (~> 1.7)
   mocha (~> 1.11, >= 1.11.2)
   roro!
 
 BUNDLED WITH
-   2.5.13
+   2.5.14

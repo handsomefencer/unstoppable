@@ -14,6 +14,8 @@ module Roro
       dest = 'test/roro/stacks'
       @manifest_names.uniq.each do |name|
           @env[:manifest_name] = name
+          @env[:force] = false
+
           src = 'stack/tests/tests/_manifest.yml'
           if @manifest_names.first.eql?(name)
             @env[:manifest_name] = 'stacks'
@@ -36,11 +38,14 @@ module Roro
 
       def generate_test_stack(hash)
         @env = describe_block(hash)
+        @env[:force] = true
+
         dest = 'test/roro/stacks'
         @manifest_names += hash[:inflection_names]
         hash[:choices].each do |c|
           if c.eql?(hash[:choices][-1])
             src = 'stack/tests/tests'
+            @env[:force] = true
             directory(src, "#{dest}/#{c.downcase}", @env)
           end
           dest = "#{dest}/#{c.downcase}"
