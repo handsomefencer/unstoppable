@@ -137,7 +137,6 @@ jobs:
         parallelism: 5
         steps:
             - checkout
-            - run: echo $CI_KEY
             - run:
                 command: |
                     docker compose build --with-dependencies test \
@@ -147,7 +146,7 @@ jobs:
             - store_test_results:
                 path: ~/project/test/reports
             - store_artifacts:
-                path: test/reports
+                path: ~/project/test/reports
 version: 2.1
 workflows:
     release-image:
