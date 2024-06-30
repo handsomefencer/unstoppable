@@ -74,7 +74,7 @@ executors:
     machine-ubuntu:
         machine:
             docker_layer_caching: true
-            image: ubuntu-2204:2024.01.1
+            image: ubuntu-2404:2024.05.1
     machine-ubuntu-no-caching:
         machine:
             docker_layer_caching: false
