@@ -141,7 +141,8 @@ jobs:
                 command: |
                     docker compose build --with-dependencies test \
                     && docker compose run --rm test bundle \
-                    && docker compose run --rm test bundle exec rake test:roro
+                    && circleci tests glob "test/roro/cli/**/*_test.rb" | circleci tests split > /tmp/tests-to-run \
+                    && docker compose run --rm test bundle exec rake test $(cat /tmp/tests-to-run)
                 when: always
             - store_test_results:
                 path: ~/project/test/reports
