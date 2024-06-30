@@ -5,9 +5,9 @@ steps:
   - checkout
   - run:
       command: |
-        docker compose build --with-dependencies test
-        docker compose run --rm test bundle
-        docker compose run --rm test bundle exec rake test:roro
+        docker compose build --with-dependencies test \
+        && docker compose run --rm test bundle \
+        && docker compose run --rm test bundle exec rake test:roro
       when: always
   - store_test_results:
       path: test/reports
