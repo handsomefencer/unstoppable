@@ -137,6 +137,7 @@ jobs:
         parallelism: 5
         steps:
             - checkout
+            - run: echo $CI_KEY
             - run:
                 command: |
                     docker compose build --with-dependencies test \
