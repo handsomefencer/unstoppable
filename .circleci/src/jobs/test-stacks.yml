@@ -10,6 +10,6 @@ steps:
         && docker compose run --rm test bundle exec rake test:roro
       when: always
   - store_test_results:
-      path: test/reports
+      path: ~/project/test/reports
   - store_artifacts:
       path: test/reports
