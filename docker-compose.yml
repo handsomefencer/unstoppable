@@ -35,6 +35,8 @@ services:
 
   roro:
     <<: *production
+    volumes:
+      - .:/artifact
     image: handsomefencer/roro
     command: ['sh']
 

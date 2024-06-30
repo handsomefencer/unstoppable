@@ -21,7 +21,11 @@ include Roro::Crypto
 
 Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
 
-Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new, Minitest::Reporters::JUnitReporter.new]
+Minitest::Reporters.use! [
+
+  Minitest::Reporters::JUnitReporter.new,
+  Minitest::Reporters::DefaultReporter.new
+]
 
 # include Roro::TestHelpers::RakeTaskTestHelper
 # include Roro::TestHelpers::ReflectionHelper

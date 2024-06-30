@@ -84,7 +84,6 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - restore-and-save-cache
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -110,11 +109,11 @@ jobs:
                 type: string
         steps:
             - checkout
-            - restore-and-save-cache
             - run:
                 command: |
-                    export DEBUGGERER='true'
-                    bundle exec rake test TEST="test/roro/stacks/<< parameters.regex >>_test.rb"
+                    docker compose build --with-dependencies test
+                    docker compose run --rm test bundle
+                    docker compose run --rm test bundle exec rake test:roro
             - store_test_results:
                 path: test/reports
     test-rubies:
@@ -143,9 +142,11 @@ jobs:
                 type: string
         steps:
             - checkout
-            - run: bundle check || bundle install
+            - restore-and-save-cache
             - run:
-                command: bundle exec rake test
+                command: |
+                    export DEBUGGERER='true'
+                    bundle exec rake test:roro
                 when: always
             - store_test_results:
                 path: test/reports
@@ -201,6 +202,14 @@ workflows:
                     branches:
                         only:
                             - "2408"
+                matrix:
+                    parameters:
+                        regex:
+                            - '**/postgres/**/7_0/**/*'
+                            - '**/postgres/**/6_1/**/*'
+                            - '**/mysql/**/7_0/**/*'
+                            - '**/mariadb/**/7_0/**/*'
+                            - ruby/omakase/
                 requires:
                     - build
 

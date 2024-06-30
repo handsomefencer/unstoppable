@@ -19,7 +19,6 @@ module Roro::TestHelpers::FilesTestHelper
   end
 
   def insert_dummy_env(filename = 'roro/env/dummy.env')
-
     insert_dummy filename
   end
 
@@ -31,8 +30,8 @@ module Roro::TestHelpers::FilesTestHelper
     insert_file 'dummy_env', filename
   end
 
-  def insert_dummy_key(filename = 'dummy.key')
-    insert_file 'dummy_key', "./roro/keys/#{filename}"
+  def insert_dummy_key(filename = 'dummy.key', keyholder="./roro/keys")
+    insert_file 'dummy_key', "#{keyholder}/#{filename}"
   end
 
   def dummy_key
