@@ -179,7 +179,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - development
+                            - main
                 matrix:
                     parameters:
                         regex:
@@ -195,7 +195,7 @@ workflows:
             - test-rubies:
                 filters:
                     branches:
-                        only: development
+                        only: main
                 matrix:
                     parameters:
                         folder:
@@ -215,6 +215,13 @@ workflows:
                     branches:
                         only:
                             - "2408"
+                requires:
+                    - build
+            - test-roro:
+                filters:
+                    branches:
+                        only:
+                            - development
                 requires:
                     - build
 

@@ -8,4 +8,11 @@ jobs:
       branches:
         only:
         - '2408'
-    
+- test-roro:
+    requires: 
+      - build
+    filters:
+      branches:
+        only:
+        - development
+       
