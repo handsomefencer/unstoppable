@@ -14,7 +14,7 @@ minitest_options = {
   ],
   all_after_pass: false,
   all_on_start: false,
-  cli: '-p -v',
+  cli: '',
   env: {
     'DEBUGGERER' => 'true',
     # 'ROLLON_LOUD' => 'true'
@@ -27,7 +27,7 @@ guard :minitest, minitest_options do
   watch(%r{^test/(.*)/?(.*)/shared_tests\.rb$}) { |m| "test/#{m[1]}" }
 
 
-  watch(%r{^lib/tasks/(.*/)?([^/]+)\.rake$})     { |m| "test/tasks/#{m[1]}#{m[2]}_test.rb" }
+  watch(%r{^rakelib/(.*/)?([^/]+)\.rake$})     { |m| "test/tasks/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }

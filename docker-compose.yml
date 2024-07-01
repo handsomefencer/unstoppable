@@ -23,6 +23,7 @@ services:
   guard:
     <<: *test
     command: bundle exec guard
+    container_name: guard
 
   production: &production
     extends:

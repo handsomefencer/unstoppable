@@ -5,26 +5,10 @@ require 'rake/testtask'
 require 'json'
 require 'yaml'
 require 'roro'
+require 'debug'
 
-Rake.add_rakelib 'lib/tasks/ci/prepare/workflows/test'
-
-# Rake.add_rakelib 'rakelib/ci'
-# Rake.add_rakelib 'rakelib/ci/config'
-# Rake.add_rakelib 'rakelib/ci/matrices/run'
-# Rake.add_rakelib 'rakelib/ci/matrices/test_rollon'
-# Rake.add_rakelib 'rakelib/ci/matrices/test_rubies'
-# Rake.add_rakelib 'rakelib/ci/prepare/config'
-# Rake.add_rakelib 'rakelib/ci/prepare/workflows'
-# Rake.add_rakelib 'rakelib/ci/prepare/workflows/test'
-# Rake.add_rakelib 'rakelib/ci/prepare'
-# Rake.add_rakelib 'rakelib/ci/test'
-# Rake.add_rakelib 'rakelib/ci/jobs'
-# Rake.add_rakelib 'rakelib/test'
-# Rake.add_rakelib 'rakelib/fixtures'
-# Rake.add_rakelib 'rakelib/fixtures/matrixes'
-# Rake.add_rakelib 'rakelib/docker/image'
-# Rake.add_rakelib 'rakelib/club'
-# Rake.add_rakelib 'rakelib/club/harvest'
+rakefiles = Dir.glob("#{Dir.pwd}/rakelib/**/*")
+Rake.add_rakelib *rakefiles
 
 Rake::TestTask.new('test') do |t|
   t.libs << 'test'
