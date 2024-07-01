@@ -1,0 +1,10 @@
+executor: machine-ubuntu
+parallelism: 5
+steps:
+  - checkout
+  - run:
+      command: |
+        export DEBUGGERER='true'
+        bundle exec rake test TEST="test/roro/stacks/<< parameters.regex >>_test.rb"
+  - store_test_results:
+      path: test/reports

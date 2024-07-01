@@ -84,6 +84,8 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
+            - run:
+                command: "docker compose build --with-dependencies test \\\n&& docker compose run --rm test bundle \n"
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -99,7 +101,7 @@ jobs:
             - run: |-
                 docker image push handsomefencer/roro:latest
                 docker image push handsomefencer/roro:${CIRCLE_SHA1}
-    test-roro:
+    test:
         executor: machine-ubuntu
         parallelism: 5
         parameters:
@@ -110,6 +112,17 @@ jobs:
         steps:
             - checkout
             - restore-and-save-cache
+            - run:
+                command: |
+                    export DEBUGGERER='true'
+                    bundle exec rake test TEST="test/roro/stacks/<< parameters.regex >>_test.rb"
+            - store_test_results:
+                path: test/reports
+    test-roro:
+        executor: machine-ubuntu
+        parallelism: 5
+        steps:
+            - checkout
             - run:
                 command: |
                     export DEBUGGERER='true'
@@ -195,14 +208,6 @@ workflows:
     test:
         jobs:
             - build
-            - test-roro:
-                filters:
-                    branches:
-                        only:
-                            - "development"
-                requires:
-                    - build
-
             - test-stacks:
                 filters:
                     branches:
