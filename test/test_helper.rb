@@ -21,11 +21,13 @@ include Roro::Crypto
 
 Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
 
-Minitest::Reporters.use! [
+# reporters = [Minitest::Reporters::ProgressReporter.new]
+reporters = %w[Spec]
+reporters << ENV['MINITEST_REPORTER']
+reporters.reject! { |r| r.nil? }
+reporters.map! { |r| "Minitest::Reporters::#{r.to_s}Reporter".constantize.new }
 
-  Minitest::Reporters::JUnitReporter.new,
-  Minitest::Reporters::DefaultReporter.new
-]
+Minitest::Reporters.use!(reporters)
 
 # include Roro::TestHelpers::RakeTaskTestHelper
 # include Roro::TestHelpers::ReflectionHelper
@@ -34,7 +36,7 @@ Minitest::Reporters.use! [
 
 
 # # frozen_string_literal: true
-      include Roro::TestHelpers::FileAssertionsTestHelper
+include Roro::TestHelpers::FileAssertionsTestHelper
 
 module Roro
   module TestHelpers

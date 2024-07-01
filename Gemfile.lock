@@ -101,6 +101,8 @@ GEM
       method_source (~> 1.0)
     psych (5.1.2)
       stringio
+    purdytest (2.0.0)
+      minitest (~> 5.5)
     rake (13.2.1)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
@@ -140,6 +142,7 @@ DEPENDENCIES
   minitest-profile
   minitest-reporters (~> 1.7)
   mocha (~> 1.11, >= 1.11.2)
+  purdytest (~> 2.0)
   roro!
 
 BUNDLED WITH

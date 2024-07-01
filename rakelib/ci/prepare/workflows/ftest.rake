@@ -1,9 +1,23 @@
+require 'debug'
+
 namespace :ci do
   namespace :prepare do
     namespace :workflows do
-      desc 'Prepare workflow test-rubies'
+      desc 'Prepare workflow test'
 
-      task 'stacks' do |task|
+      task 'test' do |task|
+        debugger
+        FileUtils.mkdir_p("#{Dir.pwd}/test/ci")
+        # def set_content(task)
+#       wf = "#{Dir.pwd}/.circleci/src/workflows/#{task.name.split(':').last}"
+#       @dest = "#{wf}.yml"
+#       @content = JSON.parse(YAML.load_file("#{wf}.yml.tt").to_json)
+#     end
+        # testfiles = Dir.glob("#{Dir.pwd}/test/roro/stacks/**/*_test.rb")
+
+        # puts 'barf'
+        # File.open("#{Dir.pwd}/test/ci/splits.txt", 'w') { |f| f.write(testfiles) }
+
 #         set_content(task)
 #         matrix = @content['jobs'][1]['test-stacks']['matrix']
 #         matrix['parameters']['database'] = %w[postgres]

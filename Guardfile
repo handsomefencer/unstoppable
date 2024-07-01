@@ -8,11 +8,13 @@ minitest_options = {
     # "roro/cli/**/*_test.rb",
     # "roro/common/**/*_test.rb",
     # "roro/configurators/**/*_test.rb",
-    "roro/crypto/**/*_test.rb",
+    "tasks/**/*_test.rb",
+    # "roro/crypto/**/*_test.rb",
     # "test_helper_tests/**/*_test.rb"
   ],
   all_after_pass: false,
   all_on_start: false,
+  cli: '-p -v',
   env: {
     'DEBUGGERER' => 'true',
     # 'ROLLON_LOUD' => 'true'
@@ -24,6 +26,8 @@ guard :minitest, minitest_options do
   watch(%r{^test/(.*)/?(.*)_test\.rb$})
   watch(%r{^test/(.*)/?(.*)/shared_tests\.rb$}) { |m| "test/#{m[1]}" }
 
+
+  watch(%r{^lib/tasks/(.*/)?([^/]+)\.rake$})     { |m| "test/tasks/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }

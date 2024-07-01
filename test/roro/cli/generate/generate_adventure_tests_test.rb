@@ -13,7 +13,6 @@ describe 'Roro::CLI#generate_adventure_tests' do
 
   describe 'when directory is ancestor base' do
     Given(:dir) { 'test/roro/stacks' }
-    focus
     Then do
       assert_content('test/roro/stacks/_manifest.yml', /stacks/)
       assert_content('test/roro/stacks/_manifest_auth_approaches.yml', /stacks/)

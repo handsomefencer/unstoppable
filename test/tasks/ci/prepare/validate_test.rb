@@ -4,8 +4,6 @@ require 'stack_test_helper'
 require 'rake'
 
 describe 'rake ci:config:validate' do
-  include RakeTaskTestHelper
-
   Given(:workbench) { '.circleci' }
   Given(:output) { capture_subprocess_io { run_task('ci:config:validate') }.first }
 
