@@ -99,7 +99,7 @@ jobs:
             - run: |-
                 docker image push handsomefencer/roro:latest
                 docker image push handsomefencer/roro:${CIRCLE_SHA1}
-    test:
+    test-roro:
         executor: machine-ubuntu
         parallelism: 5
         parameters:
@@ -195,6 +195,14 @@ workflows:
     test:
         jobs:
             - build
+            - test-roro:
+                filters:
+                    branches:
+                        only:
+                            - "development"
+                requires:
+                    - build
+
             - test-stacks:
                 filters:
                     branches:
