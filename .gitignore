@@ -9,8 +9,8 @@
 
 ## circleci
 process.yml
+test/reports/*
 !test/reports/.keep
-test/reports/
 
 ## roro
 roro/**/*.env
