@@ -5,6 +5,8 @@ steps:
   - run: 
       command: |
         export TEST_FILES="$(circleci tests split .circleci/splits/testfiles_roro.txt --split-by=timings)" \
+        && docker compose run --rm test bundle \
+        && docker compose build test \
         && docker compose run --rm -e TESTFILES="$TESTFILES" test bundle exec rake test:ci
       when: always
   - store_test_results:
