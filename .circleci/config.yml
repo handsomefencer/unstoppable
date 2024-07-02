@@ -154,6 +154,7 @@ jobs:
         parallelism: 5
         steps:
             - checkout
+            - run: docker-compose run --rm test bundle
             - run:
                 command: |
                     export TESTFILES=$(cat .circleci/splits/testfiles_stacks.txt | circleci tests split --split-by=timings)
