@@ -121,6 +121,7 @@ jobs:
         parallelism: 5
         steps:
             - checkout
+            - run: docker-compose build --with-dependencies --no-cache development
             - run:
                 command: |
                     cat .circleci/splits/testfiles_roro.txt | circleci tests split > /tmp/tests-to-run
