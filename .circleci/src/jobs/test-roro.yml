@@ -4,6 +4,7 @@ steps:
   - checkout
   - run: docker-compose build --with-dependencies test
   - run: docker-compose build test
+  ## does this create an image?
   - run: docker-compose run --rm test bundle
   - run: 
       command: |
@@ -11,8 +12,8 @@ steps:
           docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
       when: always
   - store_test_results:
-      path: ~/projects/test/reports
+      path: test/reports
 
   - store_artifacts:
-      path: ~/projects/test/reports
+      path: test/reports
 
