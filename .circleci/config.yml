@@ -1,0 +1,224 @@
+commands:
+    artifact-copy:
+        steps:
+            - run:
+                command: |
+                    docker cp $(sudo docker ps -aqf "name=${APP_NAME}"):/artifact ./${APP_NAME}
+                name: Artifact copy from container to host
+    artifact-generate:
+        steps:
+            - run:
+                command: |
+                    docker run \
+                      --name ${APP_NAME} \
+                      -v ${PWD}:/${APP_NAME} \
+                      -v /var/run/docker.sock:/var/run/docker.sock \
+                      -u 0 \
+                      -it handsomefencer/roro \
+                      sh -c "printf '${ANSWERS}\na\n' | roro rollon"
+                name: Artifact generate in roro container
+    artifact-up:
+        steps:
+            - run:
+                command: "cd ${APP_NAME} \ndocker-compose build app\ndocker-compose up -d app\n"
+                name: Artifact up using docker-compose
+    log-into-dockerhub:
+        steps:
+            - run:
+                command: docker-compose run -e CI_KEY=${CI_KEY} --rm roro roro generate:exposed
+                name: Expose credentials in mise/env/ci.env.enc
+            - run:
+                command: echo $(cat mise/env/ci.env) >> $BASH_ENV
+                name: Export credentials from mise/env/ci.env
+            - run:
+                command: |
+                    echo ${DOCKERHUB_TOKEN} | docker login \
+                      -u ${DOCKERHUB_USERNAME} \
+                      --password-stdin
+                name: Log into Docker Hub
+            - run:
+                command: "docker tag handsomefencer/roro handsomefencer/roro:latest \ndocker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
+                name: Tag image with latest and circle (git) sha
+            - run:
+                command: |-
+                    docker image push handsomefencer/roro:latest
+                    docker image push handsomefencer/roro:${CIRCLE_SHA1}
+                name: Push tagged images
+    restore-and-save-cache:
+        steps:
+            - restore_cache:
+                key: circlev2-{{ checksum "Gemfile.lock" }}
+            - run: bundle config set --local path 'vendor/bundle'
+            - run: bundle install --jobs=4 --retry=3
+            - save_cache:
+                key: circlev2-{{ checksum "Gemfile.lock" }}
+                paths:
+                    - vendor/bundle
+    roro-image-build:
+        steps:
+            - run:
+                command: docker-compose build roro
+                name: Build Roro image
+    set-variables:
+        steps:
+            - run:
+                command: echo "APP_NAME=${CIRCLE_JOB//\\n/_}-${CIRCLE_WORKFLOW_JOB_ID}" >> "$BASH_ENV"
+                name: Store answers and app_name variables
+executors:
+    docker-cimg-base:
+        docker:
+            - image: cimg/base:2023.06
+    docker-cimg-ruby:
+        docker:
+            - image: cimg/ruby:3.3
+    machine-ubuntu:
+        machine:
+            docker_layer_caching: true
+            image: ubuntu-2404:2024.05.1
+    machine-ubuntu-no-caching:
+        machine:
+            docker_layer_caching: false
+            image: ubuntu-2204:2024.01.1
+jobs:
+    build:
+        executor: machine-ubuntu
+        steps:
+            - checkout
+            - run:
+                command: "docker compose build --with-dependencies test \\\n&& docker compose run --rm test bundle \n"
+    roro-image-build:
+        executor: machine-ubuntu
+        steps:
+            - checkout
+            - roro-image-build
+    roro-image-push:
+        executor: machine-ubuntu
+        steps:
+            - checkout
+            - log-into-dockerhub
+            - roro-image-build
+            - run: "docker tag handsomefencer/roro handsomefencer/roro:latest \ndocker tag handsomefencer/roro handsomefencer/roro:${CIRCLE_SHA1} \n"
+            - run: |-
+                docker image push handsomefencer/roro:latest
+                docker image push handsomefencer/roro:${CIRCLE_SHA1}
+    test:
+        executor: machine-ubuntu
+        parallelism: 5
+        parameters:
+            regex:
+                default: '**/*'
+                description: regex for test file subsection
+                type: string
+        steps:
+            - checkout
+            - restore-and-save-cache
+            - run:
+                command: |
+                    export DEBUGGERER='true'
+                    bundle exec rake test TEST="test/roro/stacks/<< parameters.regex >>_test.rb"
+            - store_test_results:
+                path: test/reports
+    test-roro:
+        executor: machine-ubuntu
+        parallelism: 5
+        steps:
+            - checkout
+            - run:
+                command: |
+                    cat .circleci/splits/testfiles_roro.txt | circleci tests run --command="xargs bundle exec rake test" --verbose --split-by=timings
+            - store_test_results:
+                path: test/reports
+    test-rubies:
+        docker:
+            - image: cimg/ruby:<<parameters.version>>
+        parameters:
+            folder:
+                default: cli
+                description: folder in test/roro/<folder>
+                type: string
+            version:
+                default: "3.0"
+                description: version tag
+                type: string
+        steps:
+            - checkout
+            - run: bundle
+            - run: bundle exec rake test TEST=test/roro/<<parameters.folder>>/*_test.rb
+    test-stacks:
+        executor: machine-ubuntu
+        parallelism: 5
+        steps:
+            - checkout
+            - run:
+                command: |
+                    docker compose build --with-dependencies test \
+                    && docker compose run --rm test bundle \
+                    && circleci tests glob "test/roro/cli/**/*_test.rb" | circleci tests split --split-by=timings > /tmp/tests-to-run \
+                    && docker compose run --rm test bundle exec rake test $(cat /tmp/tests-to-run)
+                when: always
+            - store_test_results:
+                path: ~/project/test/reports
+            - store_artifacts:
+                path: ~/project/test/reports
+version: 2.1
+workflows:
+    release-image:
+        jobs:
+            - roro-image-push:
+                filters:
+                    branches:
+                        only:
+                            - main
+    rollon-tests:
+        jobs:
+            - build
+            - test:
+                filters:
+                    branches:
+                        only:
+                            - main
+                matrix:
+                    parameters:
+                        regex:
+                            - '**/postgres/**/7_0/**/*'
+                            - '**/postgres/**/6_1/**/*'
+                            - '**/mysql/**/7_0/**/*'
+                            - '**/mariadb/**/7_0/**/*'
+                            - ruby/omakase/
+                requires:
+                    - build
+    rubies:
+        jobs:
+            - test-rubies:
+                filters:
+                    branches:
+                        only: main
+                matrix:
+                    parameters:
+                        folder:
+                            - cli
+                            - common
+                            - configurators
+                            - crypto
+                        version:
+                            - "3.1"
+                            - "3.2"
+                            - "3.3"
+    test:
+        jobs:
+            - build
+            - test-stacks:
+                filters:
+                    branches:
+                        only:
+                            - "2408"
+                requires:
+                    - build
+            - test-roro:
+                filters:
+                    branches:
+                        only:
+                            - development
+                requires:
+                    - build
+
