@@ -9,7 +9,7 @@ namespace :ci do
         stacks = Dir.glob("test/roro/stacks/**/*_test.rb")
         roro = Dir.glob("test/**/*_test.rb") - fixtures - stacks
         FileUtils.mkdir_p("#{Dir.pwd}/.circleci/splits")
-        {roro: roro, stacks: stacks }.each do |k,v|
+        { roro: roro, stacks: stacks }.each do |k,v|
           File.open(".circleci/splits/testfiles_#{k.to_s}.txt", 'w') { |f| f.write(v.join(",\n")) }
         end
       end
