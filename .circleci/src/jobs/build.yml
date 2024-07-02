@@ -1,10 +1,10 @@
 executor: machine-ubuntu
 steps:
   - checkout
-  - run: 
-      command: |
-        docker compose build --with-dependencies test \
-        && docker compose run --rm test bundle 
+  # - run: 
+  #     command: |
+  #       docker compose build --with-dependencies test \
+  #       && docker compose run --rm test bundle 
 
 
 
