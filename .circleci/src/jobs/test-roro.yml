@@ -3,7 +3,7 @@ parallelism: 5
 steps:
   - checkout
   - run: docker-compose build --with-dependencies development
-  # - run: docker-compose build test
+  - run: docker-compose build test
   - run: 
       command: |
         cat .circleci/splits/testfiles_roro.txt | circleci tests split > /tmp/tests-to-run
