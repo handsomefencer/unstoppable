@@ -19,6 +19,7 @@ services:
 
   test: &test
     <<: *development
+    container_name: test
 
   guard:
     <<: *test
