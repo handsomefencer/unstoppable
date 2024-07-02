@@ -123,7 +123,6 @@ jobs:
         parallelism: 5
         steps:
             - checkout
-            - restore-and-save-cache
             - run:
                 command: |
                     export TEST_FILES="$(circleci tests split .circleci/splits/testfiles_roro.txt --split-by=timings)" \
