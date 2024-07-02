@@ -118,16 +118,14 @@ jobs:
                 path: test/reports
     test-roro:
         executor: machine-ubuntu
-        parallelism: 5
         steps:
             - checkout
-            - run: docker-compose build --with-dependencies test
-            - run: docker-compose run --rm test bundle
-            - run: docker-compose build test
             - run:
                 command: |
-                    cat .circleci/splits/testfiles_roro.txt | circleci tests split > /tmp/tests-to-run
-                    export TESTFILES=$(cat /tmp/tests-to-run)
+                    docker-compose build --with-dependencies test
+                    docker-compose run --rm test bundle
+                    docker-compose build test
+                    export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt)
                     docker compose run --rm -e TESTFILES="$TESTFILES" test bundle && bundle exec rake test:ci
                 when: always
             - store_test_results:
