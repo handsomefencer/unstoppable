@@ -6,6 +6,7 @@ ENV['RORO_ENV'] ||= 'test'
 require 'debug'
 require 'fileutils'
 require 'minitest/autorun'
+require 'minitest/ci'
 require 'minitest/given'
 require 'minitest/hooks/default'
 require 'minitest/spec'
@@ -25,6 +26,9 @@ reporters = %w[Progress]
 reporters << "JUnit" if ENV['CI']
 reporters.reject! { |r| r.nil? }
 reporters.map! { |r| "Minitest::Reporters::#{r.to_s}Reporter".constantize.new }
+
+report_directory = ENV['CIRCLE_TEST_REPORTS'] || 'foo'
+Minitest::Ci.report_dir = "test/reports/#{report_directory}"
 
 Minitest::Reporters.use!(reporters)
 

@@ -7,12 +7,10 @@ steps:
   - run:
       command: |
         export TESTFILES=$(cat .circleci/splits/testfiles_stacks.txt | circleci tests split --split-by=timings)
-        docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
+        docker compose run --rm -e TESTFILES="$TESTFILES" -e CIRCLE_TEST_REPORTS="stacks" test-ci
       when: always
   - store_test_results:
-      path: test/reports
-      destination: stacks
+      path: test/reports/stacks
 
   - store_artifacts:
-      path: test/reports
-      destination: stacks
+      path: test/reports/stacks

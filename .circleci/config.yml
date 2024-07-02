@@ -127,12 +127,12 @@ jobs:
             - run:
                 command: |
                     export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt)
-                    docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
+                    docker compose run --rm -e TESTFILES="$TESTFILES" -e CIRCLE_TEST_REPORTS="roro" test-ci
                 when: always
             - store_test_results:
-                path: test/reports
+                path: test/reports/roro
             - store_artifacts:
-                path: test/reports
+                path: test/reports/roro
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
@@ -158,14 +158,12 @@ jobs:
             - run:
                 command: |
                     export TESTFILES=$(cat .circleci/splits/testfiles_stacks.txt | circleci tests split --split-by=timings)
-                    docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
+                    docker compose run --rm -e TESTFILES="$TESTFILES" -e CIRCLE_TEST_REPORTS="stacks" test-ci
                 when: always
             - store_test_results:
-                destination: stacks
-                path: test/reports
+                path: test/reports/stacks
             - store_artifacts:
-                destination: stacks
-                path: test/reports
+                path: test/reports/stacks
 version: 2.1
 workflows:
     release-image:

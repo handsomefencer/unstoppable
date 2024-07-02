@@ -21,6 +21,14 @@ services:
     <<: *development
     container_name: test
 
+  test-ci: &test
+    <<: *development
+    command: "bundle exec rake test:ci"
+    environment: 
+      CI: "true"
+      CIRCLE_TEST_REPORTS: "stacks"
+    container_name: test
+
   guard:
     <<: *test
     command: bundle exec guard
