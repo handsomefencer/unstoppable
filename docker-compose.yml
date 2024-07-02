@@ -11,7 +11,7 @@ services:
     tty: true
     volumes:
       - .:/usr/src
-      - /var/run/docker.sock:/var/run/docker.sock
+      # - /var/run/docker.sock:/var/run/docker.sock
       - gem_cache:/usr/local/bundle/gems
 
   dev: 

@@ -14,4 +14,4 @@ RUN bundle update --bundler \
 
 
 RUN gem build roro.gemspec
-RUN rake install
+RUN bundle install && bundle exec rake install
