@@ -10,3 +10,30 @@ steps:
         && docker compose run --rm test bundle exec rake test $(cat /tmp/tests-to-run)
   - store_test_results:
       path: test/reports
+  - run:
+      command: |
+        cat .circleci/splits/testfiles_roro.txt | circleci tests run \
+              --command="xargs bundle exec rake test" \
+              --verbose \ 
+              --split-by=timings
+
+      # --command=">index0.txt xargs echo" \ 
+      # --index=0 \
+      # --split-by=name
+
+
+      # cat test_filenames.txt | 
+      # circleci tests run 
+      #   --command=">index0.txt xargs echo" 
+      #   --index=0 
+      #   --split-by=name
+
+
+      # command: |
+      #       circleci tests glob "spec/**/*_spec.rb" | 
+      #       circleci tests run 
+      #         --command="xargs bundle exec rspec 
+      #         --format progress
+      #         --format RspecJunitFormatter -o ~/rspec/rspec.xml" 
+      #         --verbose 
+      #         --split-by=timings
