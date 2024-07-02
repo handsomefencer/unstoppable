@@ -84,6 +84,9 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
+            - run: docker-compose build --with-dependencies test
+            - run: docker-compose build test
+            - run: docker-compose run --rm test bundle
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -120,9 +123,6 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - run: docker-compose build --with-dependencies test
-            - run: docker-compose build test
-            - run: docker-compose run --rm test bundle
             - run:
                 command: |
                     export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt)
@@ -153,9 +153,6 @@ jobs:
         parallelism: 5
         steps:
             - checkout
-            - run: docker-compose build --with-dependencies test
-            - run: docker-compose build test
-            - run: docker-compose run --rm test bundle
             - run:
                 command: |
                     export TESTFILES=$(cat .circleci/splits/testfiles_stacks.txt | circleci tests split --split-by=timings)
