@@ -8,7 +8,7 @@ steps:
       command: |
         cat .circleci/splits/testfiles_roro.txt | circleci tests split > /tmp/tests-to-run
         export TESTFILES=$(cat /tmp/tests-to-run)
-        docker compose run --rm -e TESTFILES="$TESTFILES" test bundle exec rake test:ci
+        docker compose run --rm -e TESTFILES="$TESTFILES" test bundle && bundle exec rake test:ci
       # command: |
       #   circleci tests split .circleci/splits/testfiles_roro.txt --split-by=timings)" \
       #   && docker compose run --rm -e TESTFILES="$TESTFILES" test bundle exec rake test:ci
