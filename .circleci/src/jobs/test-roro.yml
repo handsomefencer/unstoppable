@@ -6,8 +6,8 @@ steps:
   - run: docker-compose build test
   - run: 
       command: |
-          export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt)
-          docker compose run --rm -e TESTFILES="$TESTFILES" test bundle exec rake test:ci
+          export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt) \
+          && docker compose run --rm -e TESTFILES="$TESTFILES" test bundle exec rake test:ci
       when: always
   - store_test_results:
       path: ~/project/test/reports
