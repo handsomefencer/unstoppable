@@ -3,12 +3,12 @@ executor: machine-ubuntu
 steps:
   - checkout
   - run: docker-compose build --with-dependencies test
-  - run: docker-compose run --rm test bundle
   - run: docker-compose build test
+  - run: docker-compose run --rm test bundle
   - run: 
       command: |
-          export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt) \
-          && docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
+          export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt)
+          docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
       when: always
   - store_test_results:
       path: ~/projects/test/reports
