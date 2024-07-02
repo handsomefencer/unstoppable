@@ -1,4 +1,6 @@
 executor: machine-ubuntu
+working_directory: /tmp
+
 steps:
   - checkout
   - run: docker-compose build --with-dependencies test
@@ -10,6 +12,7 @@ steps:
           && docker compose run --rm -e TESTFILES="$TESTFILES" test bundle exec rake test:ci
       when: always
   - store_test_results:
-      path: ~/project/test/reports
+      path: /tmp/test/reports
+
   - store_artifacts:
-      path: ~/project/test/reports    
+      path: /tmp/test/reports    
