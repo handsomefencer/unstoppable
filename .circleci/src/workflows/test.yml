@@ -7,12 +7,12 @@ jobs:
     filters:
       branches:
         only:
-        - '2408'
+        - development
 - test-roro:
     requires: 
       - build
     filters:
       branches:
         only:
-        - development
+        - '2408'
        

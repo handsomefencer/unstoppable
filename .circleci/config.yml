@@ -153,17 +153,18 @@ jobs:
         parallelism: 5
         steps:
             - checkout
+            - run: docker-compose build --with-dependencies test
+            - run: docker-compose build test
+            - run: docker-compose run --rm test bundle
             - run:
                 command: |
-                    docker compose build --with-dependencies test \
-                    && docker compose run --rm test bundle \
-                    && circleci tests glob "test/roro/cli/**/*_test.rb" | circleci tests split --split-by=timings > /tmp/tests-to-run \
-                    && docker compose run --rm test bundle exec rake test $(cat /tmp/tests-to-run)
+                    export TESTFILES=$(cat .circleci/splits/testfiles_stacks.txt | circleci tests split --split-by=timings)
+                    docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
                 when: always
             - store_test_results:
-                path: ~/project/test/reports
+                path: test/reports
             - store_artifacts:
-                path: ~/project/test/reports
+                path: test/reports
 version: 2.1
 workflows:
     release-image:
@@ -219,14 +220,14 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - "2408"
+                            - development
                 requires:
                     - build
             - test-roro:
                 filters:
                     branches:
                         only:
-                            - development
+                            - "2408"
                 requires:
                     - build
 
