@@ -84,8 +84,7 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - run:
-                command: "docker compose build --with-dependencies test \\\n&& docker compose run --rm test bundle \n"
+            - restore-and-save-cache
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -123,10 +122,10 @@ jobs:
         parallelism: 5
         steps:
             - checkout
-            - run: bundle
+            - restore-and-save-cache
             - run:
-                command: |
-                    cat .circleci/splits/testfiles_roro.txt | circleci tests run --command="xargs bundle exec rake test" --verbose --split-by=timings
+                command: "TEST_FILES=\"$(circleci tests split .circleci/splits/testfiles_roro.txt --split-by=timings)\"\nbundle exec rails test $TEST_FILES            \n"
+                when: always
             - store_test_results:
                 path: ~/project/test/reports
             - store_artifacts:
