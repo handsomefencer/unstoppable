@@ -85,7 +85,7 @@ jobs:
         steps:
             - checkout
             - run:
-                command: "docker compose build --with-dependencies test\n&& docker compose run --rm test bundle \n"
+                command: "docker compose build --with-dependencies test \\\n&& docker compose run --rm test bundle \n"
     roro-image-build:
         executor: machine-ubuntu
         steps:
