@@ -17,7 +17,8 @@ Rake::TestTask.new('test') do |t|
 end
 
 Rake::TestTask.new('test:ci') do |t|
-  testfiles = ENV['TESTFILES']
+  testfiles = ENV['TESTFILES'].split(",\n")
+  # debugger
   # raise "$TESTFILES variable not set." unless testfiles
   t.libs << 'test'
   t.test_files = FileList[testfiles]
