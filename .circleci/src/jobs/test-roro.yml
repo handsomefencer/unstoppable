@@ -4,6 +4,6 @@ steps:
   - checkout
   - run:
       command: |
-        cat .circleci/splits/testfiles_roro.txt | circleci tests run --command="xargs bundle exec rake test" --verbose --split-by=timings
+        cat .circleci/splits/testfiles_roro.txt | circleci tests run --command="xargs docker compose run --rm test bundle exec rake test" --verbose --split-by=timings
   - store_test_results:
       path: test/reports

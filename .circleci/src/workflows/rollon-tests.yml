@@ -1,6 +1,10 @@
 ---
 jobs:
-- build
+- build:
+    filters:
+        branches:
+            only:
+                - main
 - test:
     requires: 
       - build
