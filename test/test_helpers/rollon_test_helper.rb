@@ -68,10 +68,6 @@ module Roro::TestHelpers
 
     def override_manifest_choice(h, override)
       override&.each do |k, v|
-        hash = h
-        key = k
-        file = k
-        value = v
         if k[-1] == '!'
           previous = :"#{key[0..-2]}"
           h[k] = h.delete(previous) if h.keys.include?(previous)

@@ -56,7 +56,7 @@ module Roro::TestHelpers::StackReflectorTestHelper
   def adventure_fixture
     generate_adventure_fixture_file
     file = "#{Roro::CLI.test_root}/fixtures/files/adventure.yml"
-    yaml = read_yaml(file)
+    read_yaml(file)
   end
 
   def assert_expected_adventure

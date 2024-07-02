@@ -13,7 +13,7 @@ module Roro
 
       def evaluate_contents_array(dir, file, matchers)
         matchers.each do |matcher|
-          msg = "#{file} in #{dir}/dummy/#{file} does not contain #{matcher}"
+          # msg = "#{file} in #{dir}/dummy/#{file} does not contain #{matcher}"
           if matcher.is_a?(Hash)
             assert_yaml(file, matcher)
           elsif matcher[-1].eql?('!')
@@ -95,7 +95,6 @@ module Roro
       end
 
       def evaluate_manifest_file_existence(f)
-        file = f
         f[-1].eql?('!') ? refute_file(f[0..-2]) : assert_file(f)
       end
 

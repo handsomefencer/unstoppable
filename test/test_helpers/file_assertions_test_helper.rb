@@ -19,11 +19,11 @@ module Roro::TestHelpers::FileAssertionsTestHelper
     evaluate_content(true, file, *contents)
   end
 
-  def refute_file(file, *contents)
-    refute(File.exist?(file), "Did not expect #{file} to exist")
+  # def refute_file(file, *contents)
+  #   refute(File.exist?(file), "Did not expect #{file} to exist")
 
-    evaluate_content(false, file, *contents)
-  end
+  #   evaluate_content(false, file, *contents)
+  # end
 
   def refute_content(file, *contents)
     evaluate_content(false, file, *contents)

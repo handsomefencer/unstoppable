@@ -6,10 +6,10 @@ minitest_options = {
     # "roro/**/*_test.rb",
     # "**/*_test.rb",
     # "roro/cli/**/*_test.rb",
-    # "roro/common/**/*_test.rb",
-    # "roro/configurators/**/*_test.rb",
+    "roro/common/**/*_test.rb",
+    "roro/configurators/**/*_test.rb",
     "tasks/**/*_test.rb",
-    # "roro/crypto/**/*_test.rb",
+    "roro/crypto/**/*_test.rb",
     # "test_helper_tests/**/*_test.rb"
   ],
   all_after_pass: false,

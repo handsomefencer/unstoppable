@@ -84,7 +84,8 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
-            - restore-and-save-cache
+            - run:
+                command: "docker compose build --with-dependencies test\n&& docker compose run --rm test bundle \n"
     roro-image-build:
         executor: machine-ubuntu
         steps:
@@ -124,7 +125,7 @@ jobs:
             - checkout
             - restore-and-save-cache
             - run:
-                command: "TEST_FILES=\"$(circleci tests split .circleci/splits/testfiles_roro.txt --split-by=timings)\"\nbundle exec rails test $TEST_FILES            \n"
+                command: "TEST_FILES=\"$(circleci tests split .circleci/splits/testfiles_roro.txt --split-by=timings)\"\ndocker compose run --rm -e TESTFILES=\"$TESTFILES\" test bundle exec rake test:ci        \n"
                 when: always
             - store_test_results:
                 path: ~/project/test/reports

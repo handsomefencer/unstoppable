@@ -8,7 +8,7 @@ require 'roro'
 require 'debug'
 
 rakefiles = Dir.glob("#{Dir.pwd}/rakelib/**/*")
-Rake.add_rakelib *rakefiles
+Rake.add_rakelib(*rakefiles)
 
 Rake::TestTask.new('test') do |t|
   t.libs << 'test'
@@ -16,6 +16,13 @@ Rake::TestTask.new('test') do |t|
                  .exclude('test/fixtures/dummies/**/*')
 end
 
+Rake::TestTask.new('test:ci') do |t|
+  testfiles = ENV['TESTFILES']
+  # raise "$TESTFILES variable not set." unless testfiles
+  t.libs << 'test'
+  t.test_files = FileList[testfiles]
+                 .exclude('test/fixtures/dummies/**/*')
+end
 Rake::TestTask.new('test:stacks') do |t|
   t.libs << 'test'
   t.test_files = FileList['test/roro/stacks/**/*_test.rb']

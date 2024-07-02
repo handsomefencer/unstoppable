@@ -55,7 +55,7 @@ module Roro
           end
           containers.uniq!.sort!
           generator.generate_containers(*containers.uniq.sort)
-          generator.generate_environments *environments
+          generator.generate_environments(*environments)
           populate_env_files(h)
           generator.generate_keys
 
