@@ -13,5 +13,8 @@ steps:
       when: always
   - store_test_results:
       path: test/reports
+      destination: stacks
+
   - store_artifacts:
       path: test/reports
+      destination: stacks

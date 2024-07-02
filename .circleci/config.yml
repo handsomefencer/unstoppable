@@ -162,8 +162,10 @@ jobs:
                     docker compose run --rm -e TESTFILES="$TESTFILES" -e CI="true" test bundle exec rake test:ci
                 when: always
             - store_test_results:
+                destination: stacks
                 path: test/reports
             - store_artifacts:
+                destination: stacks
                 path: test/reports
 version: 2.1
 workflows:
