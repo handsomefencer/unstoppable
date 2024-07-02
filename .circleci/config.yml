@@ -129,9 +129,9 @@ jobs:
                     && docker compose run --rm -e TESTFILES="$TESTFILES" test bundle exec rake test:ci
                 when: always
             - store_test_results:
-                path: ~/project/test/reports
+                path: test/reports
             - store_artifacts:
-                path: ~/project/test/reports
+                path: test/reports
     test-rubies:
         docker:
             - image: cimg/ruby:<<parameters.version>>
