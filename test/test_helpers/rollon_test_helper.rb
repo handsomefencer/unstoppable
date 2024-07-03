@@ -14,7 +14,7 @@ module Roro::TestHelpers
     def initialize(directory, options={})
       debuggerer = options&.dig(:debuggerer) || false
       @rollon_dummies = options&.dig(:rollon_dummies) || debuggerer
-      @rollon_loud = options&.dig(:rollon_loud) || debuggerer
+      @rollon_loud = ENV['ROLLON_LOUD'] || options&.dig(:rollon_loud) ||  'false'
       @dir = directory
       @reflector = Roro::Configurator::StackReflector.new
       @story_root = directory.split('/stacks').first
@@ -69,7 +69,7 @@ module Roro::TestHelpers
     def override_manifest_choice(h, override)
       override&.each do |k, v|
         if k[-1] == '!'
-          previous = :"#{key[0..-2]}"
+          previous = :"#{k[0..-2]}"
           h[k] = h.delete(previous) if h.keys.include?(previous)
         else
           previous = :"#{k}!"

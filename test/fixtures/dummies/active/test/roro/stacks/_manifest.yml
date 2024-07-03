@@ -1,11 +1,154 @@
 stacks: 
-  app/assets/stylesheets/application.tailwind.css:
+  config/database.yml:
+  docker-compose.builders.yml:
+    services: 
+      builder-base:
+      builder-development:
   docker-compose.development.yml:  
     services:
       dev:
+        build:
+          dockerfile: ./mise/containers/app/Dockerfile.development
+        command: sh -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
         container_name: dev
+        depends_on: 
+          db-dev:
+            condition: service_healthy
+        env_file: 
+          - ./mise/containers/app/env/base.env
+          - ./mise/containers/app/env/development.env
+        profiles: 
+          - development
+        shm_size: '256mb' 
+        stdin_open: true
+        tmpfs:
+          - /tmp
+        tty: true
+        user: root
+        volumes:
+          - .:/app
+          - gem_cache:/usr/local/bundle/gems
+          - node_modules:/app/node_modules
+      watch-js:
+        container_name: watch-js
+        command: ["yarn", "build", "--watch"]
+  docker-compose.production.yml:
+  docker-compose.test.yml:  
+    services: 
+      test-all:
+        build:
+          dockerfile: ./mise/containers/app/Dockerfile.test
+        command: ["bin/rails", "test:all"]
+        depends_on:
+          db-test:
+            condition: service_healthy
+        container_name: test-all
+        env_file: 
+          - ./mise/containers/app/env/base.env
+          - ./mise/containers/app/env/test.env
+        profiles: 
+          - test
+        shm_size: '256mb' 
+        stdin_open: true
+        tmpfs:
+          - /tmp
+        tty: true
+        user: root
+        volumes:
+          - .:/app
+          - gem_cache:/usr/local/bundle/gems
+          - node_modules:/app/node_modules
+      test-setup:
+        command: ["bin/rails", "db:create"]
+        container_name: test-setup
+        depends_on:
+          db-test:
+            condition: service_healthy
+      test:
+        command: ["bin/rails", "test"]
+        container_name: test
+
+  docker-compose.vendor.yml:
+    services: 
+      roro: 
+        image: handsomefencer/roro
+      db-dev:
+        container_name: db-dev
+        env_file:
+          - ./mise/containers/db/env/base.env
+          - ./mise/containers/db/env/development.env
+        profiles:
+          - development
+      db-test:
+        container_name: db-test
+        env_file:
+          - ./mise/containers/db/env/base.env
+          - ./mise/containers/db/env/test.env
+        profiles:
+          - test
+  docker-compose.yml:
+    volumes:
+      db_data:
+      db_data_test:
+      gem_cache:
+    secrets: 
+      base_key: 
+        file: ./mise/keys/base.key
+  Gemfile:
+    - /gem ["']rails["'], ["']~> 7.1.3/
+  mise/containers/app/Dockerfile.builder.base:
+    - /ruby:3.3-alpine3.19/
+  mise/containers/app/Dockerfile.builder.cache:
+    - /COPY Gemfile\* ./
+  mise/containers/app/Dockerfile.builder.deps.dev:
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /Gemfile/
+  mise/containers/app/Dockerfile.development:
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
+  mise/containers/app/Dockerfile.production:
+  mise/containers/app/Dockerfile.test:
+    - /chromium-chromedriver/
+    - /\/usr\/local\/bundle \/usr\/local\/bundle/
+    - /COPY Gemfile\* ./
   mise/containers/app/env/base.env:
-    - /FOO=foo/
-    - /BAR=bar/  
-    - /BAZ=baz/ !
-  
+    - /PARALLEL_WORKERS=4/
+    - /RAILS_MAX_THREADS=5/
+  mise/containers/app/env/development.env:
+    - /RAILS_ENV=development/
+  mise/containers/app/env/production.env:
+    - /RAILS_ENV=production/
+    - /MALLOC_ARENA_MAX=2/
+    - /RAILS_LOG_TO_STDOUT=true/
+    - /RAILS_SERVE_STATIC_FILES=true/
+  mise/containers/app/env/test.env:
+    - /RAILS_ENV=test/
+  mise/containers/db/env/development.env:
+  mise/env/base.env:
+  mise/env/development.env:
+  mise/env/production.env:
+  mise/keys/.keep:
+  mise/keys/base.key:
+  mise/keys/development.key:
+  mise/keys/production.key:
+  mise/scripts/build.builder.sh:
+    - /docker compose build --with-dependencies builder-cache/
+  mise/scripts/build.development.sh:
+    - /. mise\/scripts\/build.builder.sh/
+    - /docker compose build development/
+  mise/scripts/build.production.sh:
+    - /. mise\/scripts\/build.builder.sh/
+    - /docker compose build production/
+  mise/scripts/build.test.sh:
+    - /. mise\/scripts\/build.builder.sh/
+    - /docker compose build test/
+  mise/scripts/docker.info.sh:
+  mise/scripts/docker.prune.sh:
+    - /export COMPOSE_PROFILES=development,test,setup/
+  mise/scripts/up.development.sh:
+    - /. mise\/scripts\/build.development.sh/
+    - /. mise\/scripts\/build.test.sh/
+    - /export COMPOSE_PROFILES=development,test,setup/
+  test/application_system_test_case.rb:
+  .dockerignore:
+  .gitignore:

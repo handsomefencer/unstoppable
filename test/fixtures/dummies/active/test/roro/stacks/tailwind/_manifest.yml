@@ -1,13 +1,12 @@
-stacks: 
-  app/assets/stylesheets/application.tailwind.css!:
-  docker-compose.development.yml:  
-    services:
+stacks:
+
+importmaps: 
+  docker-compose.development.yml: 
+    services: 
       watch-css:
-        container_name: watch-css
-      watch-js:
-        container_name: watch-js      
-  mise/containers/app/env/base.env:
-    - /FOO=foo/
-    - /BAR=bar/ !  
-    - /BAZ=baz/  
-  mise/containers/app/env/development.env:
+        command: ["bin/rails", "tailwindcss:watch"]
+  mise/containers/app/Dockerfile.builder.cache:
+    - /yarn install/ !
+  mise/containers/app/Dockerfile.development:
+    - /yarn install/ !
+  package.json!:

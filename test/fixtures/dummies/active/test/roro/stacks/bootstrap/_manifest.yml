@@ -1,0 +1,9 @@
+bootstrap: 
+  docker-compose.development.yml: 
+    services: 
+      watch-css:
+        command: ["yarn", "build:css", "--watch"]
+
+importmaps: 
+  config/importmap.rb: 
+    - /bootstrap/

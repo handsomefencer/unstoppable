@@ -3,7 +3,7 @@
 module Roro::TestHelpers::StackTestHelper
   def debuggerer
     @rollon_dummies = true
-    @rollon_loud = true
+    @rollon_loud = ENV['ROLLON_LOUD'] || 'false'
   end
 
   def use_fixture_stack(stack = nil)

@@ -4,7 +4,7 @@ minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
     # "roro/**/*_test.rb",
-    # "**/*_test.rb",
+    "**/*_test.rb",
     # "roro/cli/**/*_test.rb",
     "roro/common/**/*_test.rb",
     "roro/configurators/**/*_test.rb",
@@ -17,7 +17,7 @@ minitest_options = {
   cli: '',
   env: {
     'DEBUGGERER' => 'true',
-    # 'ROLLON_LOUD' => 'true'
+    'ROLLON_LOUD' => 'false'
   }
 }
 

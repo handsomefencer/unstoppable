@@ -1,0 +1,61 @@
+stacks:
+
+bun: 
+  bun.config.js:
+  mise/containers/app/Dockerfile.builder.cache:
+    - /COPY package.json bun.lockb/
+    - /bun install/
+  mise/containers/app/Dockerfile.builder.deps.dev:
+    - /RUN npm install -g bun/
+  mise/containers/app/Dockerfile.development:
+    - /COPY package.json bun.lockb/
+    - /bun install/
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - / --javascript=bun /
+  docker-compose.development.yml:  
+    services: 
+      watch-js:
+        command: ["bun", "bun.config.js", "--watch"]
+        container_name: watch-js
+
+esbuild: 
+  mise/containers/app/Dockerfile.builder.cache:
+    - /COPY package.json yarn.lock/
+    - /yarn install/
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - / --javascript=esbuild /
+  mise/containers/app/Dockerfile.development:
+    - /COPY package.json yarn.lock/
+    - /yarn install/
+  package.json:
+    - /esbuild/
+
+importmaps: 
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--js/ !
+  docker-compose.development.yml:
+    services: 
+      watch-js!:
+
+vite: 
+  app/javascript/entrypoints/application.css!:
+  app/javascript/entrypoints/application.js!:
+  app/views/layouts/application.html.erb:
+    - /vite_client_tag/
+    - /vite_javascript_tag/
+  bin/vite:
+  config/vite.json:
+  docker-compose.development.yml:  
+    services:
+      watch-js:
+        command: ["yarn!", "build!", "--watch!", "bin/vite", "dev"]
+        environment:
+          DEBUG: '*vite*'
+          VITE_RUBY_HOST: 0.0.0.0
+        ports:
+          - 3036:3036
+  Gemfile:
+    - /gem ["']vite_rails["']/
+  mise/containers/app/Dockerfile.builder.railsnew:
+    - /--skip-js/
+  vite.config.ts:

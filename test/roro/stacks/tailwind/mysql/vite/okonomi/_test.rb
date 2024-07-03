@@ -6,9 +6,8 @@ describe '6 tailwind -> 2 MySQL -> 4 Vite -> 1 okonomi' do
   Given(:workbench) {}
 
   Given do
-    #skip
+
     debuggerer
   end
-focus
   Then { assert_correct_manifest(__dir__) }
 end

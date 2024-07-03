@@ -4,20 +4,32 @@ require 'rake_test_helper'
 
 describe 'rake ci:prepare:workflows:test' do
   Given(:workbench) { 'active/test' }
-  Given(:execute) { run_task('ci:prepare:workflows:test') }
-  Given(:splits) { ".circleci/splits/testfiles"}
   Given(:stacks) { ".circleci/splits/testfiles_stacks.txt"}
   Given(:roro) { ".circleci/splits/testfiles_roro.txt"}
-  Then do
-    execute
-    assert_equal 3, globdir('test/roro/stacks/**/*_test.rb').size
-    assert_equal 1, globdir(stacks).size
-    assert_equal 1, globdir(roro).size
-    assert_content stacks, /sqlite\/importmaps\/omakase/
-    # assert_content roro, /cli\/generate\/generate_exposed_test/
-    # refute_content stacks, /test\/fixtures/
-    # refute_content stacks, /cli\/generate\/generate_exposed_test/
-    # refute_content roro,  /sqlite\/importmaps\/omakase/
-    # refute_content roro, /test\/fixtures/
+  Given { Rake::TaskArguments.any_instance.stubs(:extras).returns(args) }
+  Given(:args) { nil }
+  Given(:execute) { run_task('ci:prepare:workflows:test', args) }
+
+  Given { execute }
+
+  describe 'without arguments' do
+    Then do
+      assert_equal 1, globdir(roro).size
+      assert_equal 1, globdir(stacks).size
+      assert_content stacks, /bootstrap\/sqlite\/importmaps\/okonomi/
+    end
+  end
+
+  describe 'without one argument' do
+    When(:args) { ['sqlite importmaps okonomi ; tailwind bun omakase'] }
+
+    Then do
+      assert_equal 1, globdir(stacks).size
+      assert_equal 1, globdir(roro).size
+      assert_content stacks, /bootstrap\/sqlite\/importmaps\/okonomi/
+      assert_content stacks, /tailwind\/sqlite\/importmaps\/okonomi/
+      assert_content stacks, /tailwind\/sqlite\/bun\/omakase/
+      refute_content stacks, /sass\/sqlite\/bun\/okonomi/
+    end
   end
 end
