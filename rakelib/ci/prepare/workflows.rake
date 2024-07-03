@@ -3,8 +3,12 @@ namespace :ci do
 
     desc 'prepare workflows in for .circleci/config.yml'
     task 'workflows' do
+      matchers = 'tailwind sqlite okonomi ; tailwind postgres importmaps okonomi'
+
+      args = Rake::TaskArguments.new([:matchers], [matchers])
+
       Rake::Task['ci:prepare:workflows:rubies'].execute
-      Rake::Task['ci:prepare:workflows:test'].execute
+      Rake::Task['ci:prepare:workflows:test'].execute(args)
     end
   end
 end

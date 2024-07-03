@@ -5,16 +5,16 @@ namespace :ci do
     namespace :workflows do
       desc 'Create split test files'
 
-      task :test do |task, args|
-        if args&.extras
+      task :test, [:matchers]  do |task, args|
+        if args.matchers.nil?
+          stacks = Dir.glob("test/roro/stacks/**/*_test.rb")
+        else
           stacks = []
-          args.extras.first.split(';').each do |array|
+          args.matchers.split(';').each do |array|
             candidates = Dir.glob("test/roro/stacks/**/*_test.rb")
             array.split.each { |m| candidates.select! { |c| c.match?(m) } }
             stacks += candidates
           end
-        else
-          stacks = Dir.glob("test/roro/stacks/**/*_test.rb")
         end
         fixtures = Dir.glob("test/fixtures/**/*_test.rb")
         roro = Dir.glob("test/**/*_test.rb") - fixtures - stacks
