@@ -1,5 +1,5 @@
-test/roro/stacks/tailwind/sqlite/bun/okonomi/_test.rb
-test/roro/stacks/tailwind/sqlite/esbuild/okonomi/_test.rb
-test/roro/stacks/tailwind/sqlite/importmaps/okonomi/_test.rb
-test/roro/stacks/tailwind/sqlite/vite/okonomi/_test.rb
+test/roro/stacks/skip_css/mariadb/importmaps/omakase/_test.rb
+test/roro/stacks/skip_css/mysql/importmaps/omakase/_test.rb
+test/roro/stacks/skip_css/postgres/importmaps/omakase/_test.rb
+test/roro/stacks/skip_css/sqlite/importmaps/omakase/_test.rb
 test/roro/stacks/tailwind/postgres/importmaps/okonomi/_test.rb

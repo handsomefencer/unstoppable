@@ -226,7 +226,7 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - "2408"
+                            - development
                 requires:
                     - build
 

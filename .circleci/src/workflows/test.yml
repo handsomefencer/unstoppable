@@ -14,5 +14,5 @@ jobs:
     filters:
       branches:
         only:
-        - '2408'
+        - development
        

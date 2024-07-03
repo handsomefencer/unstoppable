@@ -165,7 +165,6 @@ test/roro/stacks/skip_css/mariadb/bun/omakase/_test.rb
 test/roro/stacks/skip_css/mariadb/esbuild/okonomi/_test.rb
 test/roro/stacks/skip_css/mariadb/esbuild/omakase/_test.rb
 test/roro/stacks/skip_css/mariadb/importmaps/okonomi/_test.rb
-test/roro/stacks/skip_css/mariadb/importmaps/omakase/_test.rb
 test/roro/stacks/skip_css/mariadb/vite/okonomi/_test.rb
 test/roro/stacks/skip_css/mariadb/vite/omakase/_test.rb
 test/roro/stacks/skip_css/mysql/bun/okonomi/_test.rb
@@ -173,7 +172,6 @@ test/roro/stacks/skip_css/mysql/bun/omakase/_test.rb
 test/roro/stacks/skip_css/mysql/esbuild/okonomi/_test.rb
 test/roro/stacks/skip_css/mysql/esbuild/omakase/_test.rb
 test/roro/stacks/skip_css/mysql/importmaps/okonomi/_test.rb
-test/roro/stacks/skip_css/mysql/importmaps/omakase/_test.rb
 test/roro/stacks/skip_css/mysql/vite/okonomi/_test.rb
 test/roro/stacks/skip_css/mysql/vite/omakase/_test.rb
 test/roro/stacks/skip_css/postgres/bun/okonomi/_test.rb
@@ -181,7 +179,6 @@ test/roro/stacks/skip_css/postgres/bun/omakase/_test.rb
 test/roro/stacks/skip_css/postgres/esbuild/okonomi/_test.rb
 test/roro/stacks/skip_css/postgres/esbuild/omakase/_test.rb
 test/roro/stacks/skip_css/postgres/importmaps/okonomi/_test.rb
-test/roro/stacks/skip_css/postgres/importmaps/omakase/_test.rb
 test/roro/stacks/skip_css/postgres/vite/okonomi/_test.rb
 test/roro/stacks/skip_css/postgres/vite/omakase/_test.rb
 test/roro/stacks/skip_css/sqlite/bun/okonomi/_test.rb
@@ -189,7 +186,6 @@ test/roro/stacks/skip_css/sqlite/bun/omakase/_test.rb
 test/roro/stacks/skip_css/sqlite/esbuild/okonomi/_test.rb
 test/roro/stacks/skip_css/sqlite/esbuild/omakase/_test.rb
 test/roro/stacks/skip_css/sqlite/importmaps/okonomi/_test.rb
-test/roro/stacks/skip_css/sqlite/importmaps/omakase/_test.rb
 test/roro/stacks/skip_css/sqlite/vite/okonomi/_test.rb
 test/roro/stacks/skip_css/sqlite/vite/omakase/_test.rb
 test/roro/stacks/tailwind/mariadb/bun/okonomi/_test.rb
@@ -215,9 +211,13 @@ test/roro/stacks/tailwind/postgres/esbuild/omakase/_test.rb
 test/roro/stacks/tailwind/postgres/importmaps/omakase/_test.rb
 test/roro/stacks/tailwind/postgres/vite/okonomi/_test.rb
 test/roro/stacks/tailwind/postgres/vite/omakase/_test.rb
+test/roro/stacks/tailwind/sqlite/bun/okonomi/_test.rb
 test/roro/stacks/tailwind/sqlite/bun/omakase/_test.rb
+test/roro/stacks/tailwind/sqlite/esbuild/okonomi/_test.rb
 test/roro/stacks/tailwind/sqlite/esbuild/omakase/_test.rb
+test/roro/stacks/tailwind/sqlite/importmaps/okonomi/_test.rb
 test/roro/stacks/tailwind/sqlite/importmaps/omakase/_test.rb
+test/roro/stacks/tailwind/sqlite/vite/okonomi/_test.rb
 test/roro/stacks/tailwind/sqlite/vite/omakase/_test.rb
 test/tasks/ci/config/pack_test.rb
 test/tasks/ci/config/validate_test.rb
