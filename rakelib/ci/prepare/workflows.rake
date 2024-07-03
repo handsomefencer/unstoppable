@@ -4,7 +4,7 @@ namespace :ci do
     desc 'prepare workflows in for .circleci/config.yml'
     task 'workflows' do
       matchers = [
-        'tailwind sqlite okonomi',
+        'skip_css importmaps omakase',
         'tailwind postgres importmaps okonomi'
       ].join(' ; ')
 
