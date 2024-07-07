@@ -1,4 +1,5 @@
 executor: machine-ubuntu
+parallelism: 5
 
 steps:
   - checkout

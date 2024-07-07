@@ -122,6 +122,7 @@ jobs:
                 path: test/reports
     test-roro:
         executor: machine-ubuntu
+        parallelism: 5
         steps:
             - checkout
             - run: docker-compose run --rm test bundle
