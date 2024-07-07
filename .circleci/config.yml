@@ -124,6 +124,7 @@ jobs:
         executor: machine-ubuntu
         steps:
             - checkout
+            - run: docker-compose run --rm test bundle
             - run:
                 command: |
                     export TESTFILES=$(cat .circleci/splits/testfiles_roro.txt)

@@ -4,7 +4,7 @@ importmaps:
   docker-compose.development.yml: 
     services: 
       watch-css:
-        command: ["bin/rails", "tailwindcss:watch"]
+        command: ["yarn!", "build:css!", "--watch!", "bin/rails", "tailwindcss:watch"]
   mise/containers/app/Dockerfile.builder.cache:
     - /yarn install/ !
   mise/containers/app/Dockerfile.development:

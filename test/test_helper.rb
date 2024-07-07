@@ -22,7 +22,7 @@ include Roro::Crypto
 
 Dir["#{Dir.pwd}/test/test_helpers/**/*.rb"].each { |f| require f }
 
-reporters = %w[Progress]
+reporters = %w[Default]
 reporters << "JUnit" if ENV['CI']
 reporters.reject! { |r| r.nil? }
 reporters.map! { |r| "Minitest::Reporters::#{r.to_s}Reporter".constantize.new }
