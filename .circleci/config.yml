@@ -220,6 +220,7 @@ workflows:
                     branches:
                         only:
                             - development
+                            - stack-test-vcr
                 requires:
                     - build
             - test-roro:
