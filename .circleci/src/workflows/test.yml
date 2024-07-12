@@ -8,6 +8,7 @@ jobs:
       branches:
         only:
         - development
+        - stack-test-vcr
 - test-roro:
     requires: 
       - build
