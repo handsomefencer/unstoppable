@@ -10,8 +10,6 @@ css-processors: &css-processors
 bootstrap: 
   <<: *css-processors
   app/assets/stylesheets/application.bootstrap.scss:
-  app/javascript/application.js:
-    - /bootstrap/
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--css=bootstrap/
 

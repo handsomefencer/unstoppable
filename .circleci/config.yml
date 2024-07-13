@@ -219,8 +219,8 @@ workflows:
                 filters:
                     branches:
                         only:
-                            - development
                             - stack-test-vcr
+                            - "2408"
                 requires:
                     - build
             - test-roro:

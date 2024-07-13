@@ -38,6 +38,7 @@ importmaps:
       watch-js!:
 
 vite: 
+  app/javascript/application.js!:
   app/javascript/entrypoints/application.css!:
   app/javascript/entrypoints/application.js!:
   app/views/layouts/application.html.erb:

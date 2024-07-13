@@ -84,7 +84,8 @@ module Roro::TestHelpers
         end
       end
       options = {
-        merge_hash_arrays: true
+        merge_hash_arrays: true,
+        overwrite_arrays: true
       }
       h.deeper_merge!(override, options )
     end

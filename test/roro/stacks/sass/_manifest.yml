@@ -4,4 +4,4 @@ tailwind:
     services: 
       watch-css:
         container_name: watch-css
-        command: ["yarn", "build:css", "--watch"]
+        command: ["bun", "bun.config.js", "--watch"]

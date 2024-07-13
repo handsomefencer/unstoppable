@@ -4,8 +4,8 @@ namespace :ci do
     desc 'prepare workflows in for .circleci/config.yml'
     task 'workflows' do
       matchers = [
-        'skip_css importmaps omakase',
-        'tailwind postgres importmaps okonomi'
+      #   'skip_css importmaps omakase',
+      #   'tailwind postgres importmaps okonomi'
       ].join(' ; ')
 
       args = Rake::TaskArguments.new([:matchers], [matchers])
