@@ -3,8 +3,8 @@ require 'debug'
 minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
-    # "roro/**/*_test.rb",
-    "test/roro/stacks/**/*_test.rb",
+    "roro/**/*_test.rb",
+    # "test/roro/stacks/**/*_test.rb",
     # "roro/stacks/bootstrap/**/**/omakase**/*_test.rb",
     # "roro/stacks/sass/**/**/omakase**/*_test.rb",
     # "roro/stacks/bulma/**/**/omakase**/*_test.rb",

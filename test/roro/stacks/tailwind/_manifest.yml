@@ -10,3 +10,7 @@ importmaps:
   mise/containers/app/Dockerfile.development:
     - /yarn install/ !
   package.json!:
+  
+vite: 
+  vite.config.mts!:
+  vite.config.ts:

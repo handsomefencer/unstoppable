@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export app='greenfield'
-export sandbox_dir=~/sandbox/${app}
-export roro=~/work/handsomefencer/club/roro-stories-2204
+export sandbox_dir=~/work/sandbox/${app}
+export roro=~/work/handsomefencer/unstoppable
 
 # . mise/scripts/docker.prune.sh
 . mise/scripts/reference.remove.sh

@@ -8,7 +8,7 @@ jobs:
       branches:
         only:
         - stack-test-vcr
-        - '2408'
+        - '2408-release'
 - test-roro:
     requires: 
       - build
