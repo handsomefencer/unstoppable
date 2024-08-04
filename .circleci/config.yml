@@ -220,7 +220,7 @@ workflows:
                     branches:
                         only:
                             - stack-test-vcr
-                            - "2408"
+                            - 2408-release
                 requires:
                     - build
             - test-roro:
