@@ -1,5 +1,6 @@
 preface: some string
 
-# env:
-
-# actions:
+env:
+  base:
+    ruby_version:
+      value: '3.3'
