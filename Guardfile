@@ -3,14 +3,15 @@ require 'debug'
 minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
-    "roro/**/*_test.rb",
-    # "test/roro/stacks/**/*_test.rb",
+    # "roro/**/*_test.rb",
+    "test/roro/stacks/**/*_test.rb",
     # "roro/stacks/bootstrap/**/**/omakase**/*_test.rb",
     # "roro/stacks/sass/**/**/omakase**/*_test.rb",
     # "roro/stacks/bulma/**/**/omakase**/*_test.rb",
     # "roro/stacks/postcss/**/**/omakase**/*_test.rb",
     # "roro/stacks/skip_css/**/**/omakase**/*_test.rb",
-    # "roro/stacks/tailwind/sqlite/**/*_test.rb",
+    # "roro/stacks/tailwind/**/**/omakase/*_test.rb",
+    # "roro/stacks/tailwind/**/**/*_test.rb",
     # "**/*_test.rb",
     # "roro/cli/**/*_test.rb",
     # "roro/common/**/*_test.rb",
@@ -23,7 +24,7 @@ minitest_options = {
   all_on_start: false,
   cli: '',
   env: {
-    'DEBUGGERER' => 'true',
+    'DEBUGGERER' => 'false',
     'ROLLON_LOUD' => 'false'
   }
 }

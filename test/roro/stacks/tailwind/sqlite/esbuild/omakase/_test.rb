@@ -7,7 +7,7 @@ describe '6 tailwind -> 4 SQLite -> 2 ESBuild -> 2 omakase' do
   
   Given do
     # skip
-    debuggerer
+    # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

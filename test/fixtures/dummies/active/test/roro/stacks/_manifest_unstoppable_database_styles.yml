@@ -27,7 +27,7 @@ sqlite:
     - /sqlite-dev/
   mise/containers/db/env/base.env!:
   Gemfile:
-    - /gem ["']sqlite3["'], ["']~> 1.4/
+    - /gem ["']sqlite3["'], ["']>= 1.4/
 
 postgres: 
   mise/containers/app/env/base.env:
