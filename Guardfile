@@ -4,7 +4,7 @@ minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
     # "roro/**/*_test.rb",
-    "test/roro/stacks/**/*_test.rb",
+    "roro/stacks/**/*_test.rb",
     # "roro/stacks/bootstrap/**/**/omakase**/*_test.rb",
     # "roro/stacks/sass/**/**/omakase**/*_test.rb",
     # "roro/stacks/bulma/**/**/omakase**/*_test.rb",
@@ -24,7 +24,7 @@ minitest_options = {
   all_on_start: false,
   cli: '',
   env: {
-    'DEBUGGERER' => 'false',
+    'DEBUGGERER' => 'true',
     'ROLLON_LOUD' => 'false'
   }
 }
