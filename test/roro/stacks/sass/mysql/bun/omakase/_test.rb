@@ -7,7 +7,7 @@ describe '4 Sass -> 2 MySQL -> 1 Bun -> 2 omakase' do
   
   Given do
     # skip
-    debuggerer
+  # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

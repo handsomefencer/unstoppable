@@ -7,7 +7,7 @@ describe '6 tailwind -> 3 Postgres -> 2 ESBuild -> 1 okonomi' do
   
   Given do
     # skip
-    debuggerer
+  # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }
