@@ -22,7 +22,7 @@ stacks:
         shm_size: '256mb' 
         stdin_open: true
         tmpfs:
-          - /tmp
+          - /tmp:exec
         tty: true
         user: root
         volumes:
@@ -51,7 +51,7 @@ stacks:
         shm_size: '256mb' 
         stdin_open: true
         tmpfs:
-          - /tmp
+          - /tmp:exec
         tty: true
         user: root
         volumes:

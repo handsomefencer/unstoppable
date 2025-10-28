@@ -30,10 +30,10 @@ env:
   development: 
     app: 
       DATABASE_URL:
-        value: "sqlite3:///db/development.sqlite3"
+        value: "sqlite3:///storage/development.sqlite3"
     
   test: 
     app: 
       DATABASE_URL:
-        value: "sqlite3:///db/testt.sqlite3"
+        value: "sqlite3:///storage/test.sqlite3"
     
