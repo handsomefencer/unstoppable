@@ -9,6 +9,7 @@ RUN apk add --update --no-cache \
     file \
     git \
     ncurses \
+    yaml-dev \
     sudo
 
 RUN git config --global --add safe.directory /usr/src

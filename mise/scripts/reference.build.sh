@@ -13,6 +13,6 @@ docker run \
   -it handsomefencer/roro sh -c "printf '6\n4\n4\n2\na\n' | roro rollon"
   # -it handsomefencer/roro:latest roro rollon
 
-schown .
+sudo chown -R $USER:$USER .
 
 cd ${roro}

@@ -129,6 +129,7 @@ GEM
 
 PLATFORMS
   x86_64-linux
+  x86_64-linux-musl
 
 DEPENDENCIES
   bundler (~> 2.1, >= 2.1.4)
@@ -148,4 +149,4 @@ DEPENDENCIES
   roro!
 
 BUNDLED WITH
-   2.5.17
+   2.7.2

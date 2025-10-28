@@ -23,7 +23,7 @@ env:
       value: yarn
     rails_version:
       name: Ruby on Rails minor version
-      value: '7.1.3'
+      value: '7.1.5'
     
     app: 
       RAILS_MAX_THREADS:
