@@ -9,3 +9,6 @@ docker compose up -d dev-setup
 docker compose up -d test-setup
 docker compose up -d
 docker compose run --rm test
+git init .
+git add .
+git commit -m 'Initial commit'

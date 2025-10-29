@@ -2,10 +2,19 @@ stacks:
 
 sqlite: 
   docker-compose.development.yml:
+    x-development: 
+      volumes:
+        - db_data:/storage
+
     services:
       dev: 
         depends_on!:
+        volumes:
+        - db_data:/storage
   docker-compose.test.yml:
+    x-test: 
+      volumes:
+        - db_data:/storage
     services:
       test: 
         depends_on!:

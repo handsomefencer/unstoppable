@@ -44,7 +44,7 @@ guard :minitest, minitest_options do
 
   watch(%r{^test/test_helpers/(.*)_test_helper\.rb$}) { |m| "test/test_helper_tests/#{m[1]}_test_helper_test.rb"}
 
-  watch(%r{^test/roro/stacks/_manifest\.yml$})     {  "test/roro/stacks/tailwind/sqlite/vite/omakase/_test.rb" }
+  watch(%r{^test/roro/stacks/**\/**\/*_manifest_unstoppable_database_styles\.yml$})     {  "test/roro/stacks/tailwind/sqlite/vite/omakase/_test.rb" }
 end
 
 
