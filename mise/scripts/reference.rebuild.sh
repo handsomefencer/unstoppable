@@ -10,4 +10,8 @@ export roro=~/Work/handsomefencer/unstoppable
 . mise/scripts/reference.build.sh
 . mise/scripts/reference.up.sh
 
+git init .
+git add .
+git commit -m 'initial commit'
+
 
