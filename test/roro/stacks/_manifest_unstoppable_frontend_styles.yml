@@ -59,4 +59,5 @@ vite:
     - /gem ["']vite_rails["']/
   mise/containers/app/Dockerfile.builder.railsnew:
     - /--skip-js/
+  vite.config.ts:
   vite.config.mts:

@@ -26,7 +26,7 @@ minitest_options = {
   all_on_start: false,
   cli: '',
   env: {
-    'DEBUGGERER' => 'false',
+    'DEBUGGERER' => 'true',
     'ROLLON_LOUD' => 'false'
   }
 }
