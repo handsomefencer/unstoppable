@@ -7,7 +7,7 @@ describe '6 tailwind -> 2 MySQL -> 2 ESBuild -> 1 7_1' do
   
   Given do
     # skip
-    debuggerer
+  # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

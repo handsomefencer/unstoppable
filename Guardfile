@@ -4,8 +4,8 @@ minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
     # "roro/**/*_test.rb",
-    # "roro/stacks/**/*_test.rb",
-    "roro/stacks/**/omakase/_test.rb",
+    "roro/stacks/**/*_test.rb",
+    # "roro/stacks/**/omakase/_test.rb",
     # "roro/stacks/**/**/omakase**/*_test.rb",
     # "roro/stacks/bootstrap/**/**/omakase**/*_test.rb",
     # "roro/stacks/sass/**/**/omakase**/*_test.rb",
