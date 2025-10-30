@@ -4,7 +4,9 @@ minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
     # "roro/**/*_test.rb",
-    "roro/stacks/**/*_test.rb",
+    # "roro/stacks/**/*_test.rb",
+    "roro/stacks/**/omakase/_test.rb",
+    # "roro/stacks/**/**/omakase**/*_test.rb",
     # "roro/stacks/bootstrap/**/**/omakase**/*_test.rb",
     # "roro/stacks/sass/**/**/omakase**/*_test.rb",
     # "roro/stacks/bulma/**/**/omakase**/*_test.rb",
@@ -44,7 +46,6 @@ guard :minitest, minitest_options do
 
   watch(%r{^test/test_helpers/(.*)_test_helper\.rb$}) { |m| "test/test_helper_tests/#{m[1]}_test_helper_test.rb"}
 
-  watch(%r{^test/roro/stacks/**\/**\/*_manifest_unstoppable_database_styles\.yml$})     {  "test/roro/stacks/tailwind/sqlite/vite/omakase/_test.rb" }
 end
 
 

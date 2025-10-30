@@ -41,7 +41,7 @@ env:
     app: 
       DATABASE_URL:
         name: database url overrides variables in database.yml
-        value: "postgresql://postgres:password@db-dev/db_development"
+        value: "postgresql://postgres:password@db-dev/unstoppable_development"
     db_pkg:
       name: Name of alpine db pkgs in development
       value: postgresql-dev
@@ -53,4 +53,4 @@ env:
   test: 
     app: 
       DATABASE_URL:
-        value: "postgresql://postgres:password@db-test/db_test"
+        value: "postgresql://postgres:password@db-test/unstoppable_test"

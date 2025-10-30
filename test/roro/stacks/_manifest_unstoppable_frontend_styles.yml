@@ -47,6 +47,7 @@ vite:
   config/vite.json:
   docker-compose.development.yml:  
     services:
+      watch-css!:
       watch-js:
         command: ["yarn!", "build!", "--watch!", "bin/vite", "dev"]
         environment:

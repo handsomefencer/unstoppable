@@ -7,7 +7,7 @@ describe '5 skip_css -> 2 MySQL -> 4 Vite -> 2 omakase' do
   
   Given do
     # skip
-    debuggerer
+  # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

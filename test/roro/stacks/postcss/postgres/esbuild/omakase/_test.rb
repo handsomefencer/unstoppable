@@ -7,7 +7,7 @@ describe '3 PostCSS -> 3 Postgres -> 2 ESBuild -> 2 omakase' do
   
   Given do
     # skip
-    debuggerer
+  # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

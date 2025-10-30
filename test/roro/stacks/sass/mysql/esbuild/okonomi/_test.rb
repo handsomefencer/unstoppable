@@ -7,7 +7,7 @@ describe '4 Sass -> 2 MySQL -> 2 ESBuild -> 1 okonomi' do
   
   Given do
     # skip
-    debuggerer
+  # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

@@ -3,4 +3,4 @@ preface: some string
 env:
   base:
     ruby_version:
-      value: '3.3'
+      value: '3.3.6'

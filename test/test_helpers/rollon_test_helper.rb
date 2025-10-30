@@ -12,7 +12,7 @@ module Roro::TestHelpers
       :reflector, :story_root
 
     def initialize(directory, options={})
-      debuggerer = options&.dig(:debuggerer) || false
+    # debuggerer = options&.dig(:debuggerer) || false
       @rollon_dummies = options&.dig(:rollon_dummies) || debuggerer
       @rollon_loud = ENV['ROLLON_LOUD'] || options&.dig(:rollon_loud) ||  'false'
       @dir = directory
@@ -85,7 +85,7 @@ module Roro::TestHelpers
       end
       options = {
         merge_hash_arrays: true,
-        overwrite_arrays: true
+        overwrite_arrays: false
       }
       h.deeper_merge!(override, options )
     end

@@ -5,7 +5,7 @@ module Roro
     module ConfiguratorTestHelper
       def rollon_options
         {
-          debuggerer: ENV['DEBUGGERER'].eql?('true'),
+        # debuggerer: ENV['DEBUGGERER'].eql?('true'),
           rollon_dummies: @rollon_dummies || false,
           rollon_loud: @rollon_loud || false
         }

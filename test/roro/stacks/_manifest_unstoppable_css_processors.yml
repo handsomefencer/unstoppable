@@ -3,9 +3,9 @@ stacks:
 css-processors: &css-processors
   docker-compose.development.yml: 
     services: 
-      watch-css:
-        container_name: watch-css
-        command: ["yarn", "build:css", "--watch"]
+      # watch-css:
+        # container_name: watch-css
+        # command: ["yarn", "build:css", "--watch"]
 
 bootstrap: 
   <<: *css-processors
@@ -41,4 +41,8 @@ skip_css:
 tailwind: 
   <<: *css-processors
   app/assets/stylesheets/application.tailwind.css!:
+  docker-compose.development.yml: 
+    services: 
+      watch-js:
+        container_name: watch-js
 

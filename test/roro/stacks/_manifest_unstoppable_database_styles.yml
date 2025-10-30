@@ -27,9 +27,6 @@ sqlite:
       db-dev!: 
       db-test!: 
   mise/containers/db/env/development.env!:    
-  mise/containers/app/Dockerfile.builder.base:
-    - /ruby:3.3-alpine3.19/ !
-    - /ruby:3.3-alpine3.18/
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /sqlite-dev/
   mise/containers/app/Dockerfile.production:
@@ -41,9 +38,9 @@ sqlite:
 postgres: 
   mise/containers/app/env/base.env:
   mise/containers/app/env/development.env:
-    - /DATABASE_URL=postgresql:\/\/postgres:password@db-dev\/db_development/
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:
-    - /DATABASE_URL=postgresql:\/\/postgres:password@db-test\/db_test/
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-test\/unstoppable_test/
   mise/containers/db/env/base.env:
     - /POSTGRES_NAME=postgres/
     - /POSTGRES_PASSWORD=password/

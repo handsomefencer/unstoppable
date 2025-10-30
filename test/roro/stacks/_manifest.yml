@@ -31,7 +31,6 @@ stacks:
           - node_modules:/app/node_modules
       watch-js:
         container_name: watch-js
-        command: ["yarn", "build", "--watch"]
   docker-compose.production.yml:
   docker-compose.test.yml:  
     services: 
@@ -95,9 +94,9 @@ stacks:
       base_key: 
         file: ./mise/keys/base.key
   Gemfile:
-    - /gem ["']rails["'], ["']~> 7.1.5/
+    - /gem ["']rails["'], ["']~> 7.1.6/
   mise/containers/app/Dockerfile.builder.base:
-    - /ruby:3.3-alpine3.19/
+    - /ruby:3.3.6-alpine3.19/
   mise/containers/app/Dockerfile.builder.cache:
     - /COPY Gemfile\* ./
   mise/containers/app/Dockerfile.builder.deps.dev:
@@ -146,8 +145,6 @@ stacks:
   mise/scripts/docker.prune.sh:
     - /export COMPOSE_PROFILES=development,test,setup/
   mise/scripts/up.development.sh:
-    - /. mise\/scripts\/build.development.sh/
-    - /. mise\/scripts\/build.test.sh/
     - /export COMPOSE_PROFILES=development,test,setup/
   test/application_system_test_case.rb:
   .dockerignore:

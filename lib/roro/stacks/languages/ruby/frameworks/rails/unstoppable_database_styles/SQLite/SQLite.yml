@@ -3,10 +3,6 @@ preface: SQLite is a C-language library that implements a small, fast, self-cont
 env: 
   base:
     db_flag:
-      value: sqlite
-    alpine_version: 
-      value: 3.18
-    db_flag:
       value: sqlite3
     db_pkg_development: 
       value: sqlite-dev
