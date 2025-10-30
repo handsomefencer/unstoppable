@@ -11,5 +11,5 @@ docker compose build builder-cache
 docker compose build builder-development
 docker compose build builder-test
 
-docker compose up 
+docker compose up -d
 
