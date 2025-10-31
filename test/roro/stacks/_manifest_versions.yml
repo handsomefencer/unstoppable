@@ -11,3 +11,7 @@ stacks:
 "8_0":
   Gemfile:
     - /gem ["']rails["'], ["']~> 8.0.4/
+
+"8_1":
+  Gemfile:
+    - /gem ["']rails["'], ["']~> 8.1.1/
