@@ -4,6 +4,7 @@ FROM builder/base
 
 RUN apk add --update --no-cache \
   build-base \
+  yaml-dev \
   git
 
 <%= section('dockerfile/development/packages') %>
