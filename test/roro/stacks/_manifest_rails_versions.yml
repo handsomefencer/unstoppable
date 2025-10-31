@@ -1,17 +1,17 @@
 stacks:
 
-"7_1":
+"rails_7_1":
   Gemfile:
     - /gem ["']rails["'], ["']~> 7.1.6/
 
-"7_2":
+"rails_7_2":
   Gemfile:
     - /gem ["']rails["'], ["']~> 7.2.3/
 
-"8_0":
+"rails_8_0":
   Gemfile:
     - /gem ["']rails["'], ["']~> 8.0.4/
 
-"8_1":
+"rails_8_1":
   Gemfile:
     - /gem ["']rails["'], ["']~> 8.1.1/

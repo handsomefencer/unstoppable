@@ -1,1 +1,9 @@
 stacks:
+
+"ruby_3_3":
+  mise/containers/app/Dockerfile.builder.base:
+    - /ruby:3.3.6-alpine3.19/
+ 
+"ruby_3_4":
+  mise/containers/app/Dockerfile.builder.base:
+    - /ruby:3.4.7-alpine3.22/

@@ -7,8 +7,8 @@ describe '1 rails_7_1 -> 6 tailwind -> 4 SQLite -> 4 Vite -> 2 ruby_3_4' do
   
   Given do
     # skip
-    # debuggerer
+    debuggerer
   end
-  # focus
+  focus
   Then { assert_correct_manifest(__dir__) }
 end
