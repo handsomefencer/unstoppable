@@ -1,1 +1,7 @@
-      value: '8.0.4'
+preface: some string
+
+env:
+  base:
+    rails_version:
+      name: Ruby on Rails minor version
+      value: '8.1.1'
