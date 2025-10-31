@@ -8,7 +8,7 @@ env:
       value: unstoppable
     alpine_version: 
       name: alpine development version
-      value: 3.19
+      value: "3.22"
     css_flag:
       name: CSS processor flag for rails new
       value: postcss

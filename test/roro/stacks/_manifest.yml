@@ -94,7 +94,7 @@ stacks:
       base_key: 
         file: ./mise/keys/base.key
   mise/containers/app/Dockerfile.builder.base:
-    - /ruby:3.3.6-alpine3.19/
+    - /ruby:3.4.7-alpine3.22/
   mise/containers/app/Dockerfile.builder.cache:
     - /COPY Gemfile\* ./
   mise/containers/app/Dockerfile.builder.deps.dev:
