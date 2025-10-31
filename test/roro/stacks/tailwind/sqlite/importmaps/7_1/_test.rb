@@ -7,7 +7,7 @@ describe '6 tailwind -> 4 SQLite -> 3 Importmaps -> 1 7_1' do
   
   Given do
     # skip
-  # debuggerer
+    # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

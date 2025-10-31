@@ -7,7 +7,7 @@ describe '2 Bulma -> 4 SQLite -> 3 Importmaps -> 2 7_2' do
   
   Given do
     # skip
-  # debuggerer
+    # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

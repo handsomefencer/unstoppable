@@ -7,7 +7,7 @@ describe '3 PostCSS -> 3 Postgres -> 3 Importmaps -> 1 7_1' do
   
   Given do
     # skip
-  # debuggerer
+    # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }

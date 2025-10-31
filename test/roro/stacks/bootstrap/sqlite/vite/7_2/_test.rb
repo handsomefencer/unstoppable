@@ -9,6 +9,6 @@ describe '1 Bootstrap -> 4 SQLite -> 4 Vite -> 2 7_2' do
     # skip
     # debuggerer
   end
-  # foc
+  # focus
   Then { assert_correct_manifest(__dir__) }
 end

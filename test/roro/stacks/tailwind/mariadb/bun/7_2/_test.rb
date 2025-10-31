@@ -7,7 +7,7 @@ describe '6 tailwind -> 1 MariaDB -> 1 Bun -> 2 7_2' do
   
   Given do
     # skip
-  # debuggerer
+    # debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }
