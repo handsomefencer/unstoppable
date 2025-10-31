@@ -93,8 +93,6 @@ stacks:
     secrets: 
       base_key: 
         file: ./mise/keys/base.key
-  Gemfile:
-    - /gem ["']rails["'], ["']~> 7.1.6/
   mise/containers/app/Dockerfile.builder.base:
     - /ruby:3.3.6-alpine3.19/
   mise/containers/app/Dockerfile.builder.cache:

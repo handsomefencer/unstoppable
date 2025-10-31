@@ -70,7 +70,7 @@ x-mysql: &mysql
     - /db_pkg_production=mysql/
   config/database.yml:
     default: 
-      host: localhost
+      host: ["localhost"]
   mise/containers/app/env/development.env:
     - /DATABASE_URL=mysql2:\/\/root:root@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:

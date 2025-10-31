@@ -4,7 +4,7 @@ minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
     # "roro/**/*_test.rb",
-    "roro/stacks/**/*_test.rb",
+    "roro/stacks/**/**/*_test.rb",
     # "roro/stacks/**/omakase/_test.rb",
     # "roro/stacks/**/**/omakase**/*_test.rb",
     # "roro/stacks/bootstrap/**/**/omakase**/*_test.rb",
@@ -35,16 +35,18 @@ guard :minitest, minitest_options do
 
   watch(%r{^test/(.*)/?(.*)_test\.rb$})
   watch(%r{^test/(.*)/?(.*)/shared_tests\.rb$}) { |m| "test/#{m[1]}" }
-
-
+  
+  
   watch(%r{^rakelib/(.*/)?([^/]+)\.rake$})     { |m| "test/tasks/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }
-  watch(%r{^test/test_helpers/reflection_helper\.rb$}) { |m| 'test/roro/configurators/stack_reflector' }
-  watch(%r{^test/test_helpers/configurator_test_helper\.rb$}) { 'test' }
+  # watch(%r{^test/test_helpers/reflection_helper\.rb$}) { |m| 'test/roro/configurators/stack_reflector' }
+  # watch(%r{^test/test_helpers/configurator_test_helper\.rb$}) { 'test' }
+  
+  # watch(%r{^test/test_helpers/(.*)_test_helper\.rb$}) { |m| "test/test_helper_tests/#{m[1]}_test_helper_test.rb"}
+  watch(%r{^test/roro/stacks/(.*)_manifest(.*)\.yml$})  { 'test' }
 
-  watch(%r{^test/test_helpers/(.*)_test_helper\.rb$}) { |m| "test/test_helper_tests/#{m[1]}_test_helper_test.rb"}
 
 end
 
