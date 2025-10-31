@@ -33,7 +33,7 @@ sqlite:
     - /sqlite-dev/
   mise/containers/db/env/base.env!:
   Gemfile:
-    - /gem ["']sqlite3["'], ["']>= 1.4/
+    - /gem ["']sqlite3["']/
 
 postgres: 
   mise/containers/app/env/base.env:
@@ -70,7 +70,7 @@ x-mysql: &mysql
     - /db_pkg_production=mysql/
   config/database.yml:
     default: 
-      host: ["localhost"]
+      adapter: mysql2
   mise/containers/app/env/development.env:
     - /DATABASE_URL=mysql2:\/\/root:root@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:
