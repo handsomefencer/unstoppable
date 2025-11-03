@@ -7,7 +7,9 @@ jobs:
     filters:
       branches:
         only:
-        - development
+        - stack-test-vcr
+        - release-2408
+        - 2408-8_1
 - test-roro:
     requires: 
       - build

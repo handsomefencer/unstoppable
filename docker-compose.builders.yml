@@ -1,7 +1,7 @@
 x-base: &base
   build:
     args: 
-      RUBY_VERSION: 3.3
+      RUBY_VERSION: 3.4
     dockerfile: ./mise/containers/roro/Dockerfile.builder.ruby
   profiles: 
     - builder

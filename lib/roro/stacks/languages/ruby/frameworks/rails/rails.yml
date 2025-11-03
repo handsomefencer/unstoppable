@@ -8,7 +8,7 @@ env:
       value: unstoppable
     alpine_version: 
       name: alpine development version
-      value: 3.19
+      value: "3.19"
     css_flag:
       name: CSS processor flag for rails new
       value: postcss
@@ -23,7 +23,7 @@ env:
       value: yarn
     rails_version:
       name: Ruby on Rails minor version
-      value: '7.1.3'
+      value: '7.1.6'
     
     app: 
       RAILS_MAX_THREADS:

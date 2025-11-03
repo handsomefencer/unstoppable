@@ -2,10 +2,19 @@ stacks:
 
 sqlite: 
   docker-compose.development.yml:
+    x-development: 
+      volumes:
+        - db_data:/storage
+
     services:
       dev: 
         depends_on!:
+        volumes:
+        - db_data:/storage
   docker-compose.test.yml:
+    x-test: 
+      volumes:
+        - db_data:/storage
     services:
       test: 
         depends_on!:
@@ -18,23 +27,20 @@ sqlite:
       db-dev!: 
       db-test!: 
   mise/containers/db/env/development.env!:    
-  mise/containers/app/Dockerfile.builder.base:
-    - /ruby:3.3-alpine3.19/ !
-    - /ruby:3.3-alpine3.18/
   mise/containers/app/Dockerfile.builder.deps.dev:
     - /sqlite-dev/
   mise/containers/app/Dockerfile.production:
     - /sqlite-dev/
   mise/containers/db/env/base.env!:
   Gemfile:
-    - /gem ["']sqlite3["'], ["']~> 1.4/
+    - /gem ["']sqlite3["']/
 
 postgres: 
   mise/containers/app/env/base.env:
   mise/containers/app/env/development.env:
-    - /DATABASE_URL=postgresql:\/\/postgres:password@db-dev\/db_development/
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:
-    - /DATABASE_URL=postgresql:\/\/postgres:password@db-test\/db_test/
+    - /DATABASE_URL=postgresql:\/\/postgres:password@db-test\/unstoppable_test/
   mise/containers/db/env/base.env:
     - /POSTGRES_NAME=postgres/
     - /POSTGRES_PASSWORD=password/
@@ -64,7 +70,7 @@ x-mysql: &mysql
     - /db_pkg_production=mysql/
   config/database.yml:
     default: 
-      host: localhost
+      adapter: mysql2
   mise/containers/app/env/development.env:
     - /DATABASE_URL=mysql2:\/\/root:root@db-dev\/unstoppable_development/
   mise/containers/app/env/test.env:

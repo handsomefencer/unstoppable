@@ -1,0 +1,9 @@
+preface: some string
+
+env:
+  base:
+    alpine_version: 
+      name: alpine development version
+      value: "3.19"
+    ruby_version:
+      value: '3.3.6'

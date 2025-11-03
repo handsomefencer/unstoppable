@@ -1,11 +1,15 @@
 #!/bin/sh
 
-. mise/scripts/build.development.sh 
-. mise/scripts/build.test.sh 
-
 export COMPOSE_PROFILES=development,test,setup
 
-docker compose up -d dev-setup
-docker compose up -d test-setup
+# . mise/scripts/docker.prune.sh
+. mise/scripts/docker.info.sh
+
+docker compose build builder-base
+docker compose build builder-deps-dev
+docker compose build builder-cache
+docker compose build builder-development
+docker compose build builder-test
+
 docker compose up -d
-docker compose run --rm test
+

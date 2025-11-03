@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+
+require 'stack_test_helper'
+
+describe '1 rails_7_1 -> 6 tailwind -> 3 Postgres -> 1 Bun -> 2 ruby_3_4' do
+  Given(:workbench) {}
+  
+  Given do
+    # skip
+    # debuggerer
+  end
+  # focus
+  Then { assert_correct_manifest(__dir__) }
+end

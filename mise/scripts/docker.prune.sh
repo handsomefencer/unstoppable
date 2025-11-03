@@ -1,5 +1,7 @@
 #!/bin/sh
 
+docker system prune
+
 docker image rm -f $(docker images builder/*)
 docker image rm -f $(docker images roro/*)
 docker image rm -f $(docker images handsomefencer/*)

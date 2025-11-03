@@ -10,9 +10,9 @@ docker run \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -u 0 \
   -e APP_NAME=${PWD} \
-  -it handsomefencer/roro sh -c "printf '5\n4\n4\n1\na\n' | roro rollon"
-  # -it handsomefencer/roro:latest roro rollon
+  -it handsomefencer/roro:latest roro rollon
+  # -it handsomefencer/roro sh -c "printf '1\n6\n4\n4\n2\na\n' | roro rollon"
 
-schown .
+sudo chown -R $USER:$USER .
 
 cd ${roro}

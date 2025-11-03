@@ -4,7 +4,25 @@ minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
     # "roro/**/*_test.rb",
-    "**/*_test.rb",
+    # "roro/stacks/**/**/**/*_test.rb",
+    # "roro/stacks/rails_7_1/**/**/ruby_3_3/_test.rb",
+    # "roro/stacks/rails_7_2/**/**/ruby_3_3/_test.rb",
+    # "roro/stacks/rails_8_0/**/**/ruby_3_3/_test.rb",
+    # "roro/stacks/rails_8_1/**/**/ruby_3_3/_test.rb",
+    "roro/stacks/rails_7_1/**/**/ruby_3_4/_test.rb",
+    "roro/stacks/rails_7_2/**/**/ruby_3_4/_test.rb",
+    "roro/stacks/rails_8_0/**/**/ruby_3_4/_test.rb",
+    "roro/stacks/rails_8_1/**/**/ruby_3_4/_test.rb",
+    # "roro/stacks/**/omakase/_test.rb",
+    # "roro/stacks/**/**/omakase**/*_test.rb",
+    # "roro/stacks/bootstrap/**/**/omakase**/*_test.rb",
+    # "roro/stacks/sass/**/**/omakase**/*_test.rb",
+    # "roro/stacks/bulma/**/**/omakase**/*_test.rb",
+    # "roro/stacks/postcss/**/**/omakase**/*_test.rb",
+    # "roro/stacks/skip_css/**/**/omakase**/*_test.rb",
+    # "roro/stacks/tailwind/**/**/omakase/*_test.rb",
+    # "roro/stacks/tailwind/**/**/*_test.rb",
+    # "**/*_test.rb",
     # "roro/cli/**/*_test.rb",
     # "roro/common/**/*_test.rb",
     # "roro/configurators/**/*_test.rb",
@@ -25,16 +43,27 @@ guard :minitest, minitest_options do
 
   watch(%r{^test/(.*)/?(.*)_test\.rb$})
   watch(%r{^test/(.*)/?(.*)/shared_tests\.rb$}) { |m| "test/#{m[1]}" }
-
-
+  
+  
   watch(%r{^rakelib/(.*/)?([^/]+)\.rake$})     { |m| "test/tasks/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}#{m[2]}_test.rb" }
   watch(%r{^test/test_helper\.rb$})      { 'test' }
   watch(%r{^test/helpers/(.*)\.rb$}) { ['test'] }
-  watch(%r{^test/test_helpers/reflection_helper\.rb$}) { |m| 'test/roro/configurators/stack_reflector' }
-  watch(%r{^test/test_helpers/configurator_test_helper\.rb$}) { 'test' }
+  # watch(%r{^test/test_helpers/reflection_helper\.rb$}) { |m| 'test/roro/configurators/stack_reflector' }
+  # watch(%r{^test/test_helpers/configurator_test_helper\.rb$}) { 'test' }
+  
+  # watch(%r{^test/test_helpers/(.*)_test_helper\.rb$}) { |m| "test/test_helper_tests/#{m[1]}_test_helper_test.rb"}
+  watch(%r{^test/roro/stacks/(.*)_manifest(.*)\.yml$})  { 'test' }
 
-  watch(%r{^test/test_helpers/(.*)_test_helper\.rb$}) { |m| "test/test_helper_tests/#{m[1]}_test_helper_test.rb"}
 
-  watch(%r{^test/roro/(.+)/_manifest(.*)\.yml$})     {  "test/roro/stacks" }
+end
+
+
+Guard::Minitest::Runner.module_eval do
+  def run_all
+    paths = inspector.clean_all.reject do |p| 
+      p.include?('/fixtures/') 
+    end
+    run(paths, all: true)
+  end
 end

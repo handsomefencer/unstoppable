@@ -3,6 +3,10 @@
 FROM roro/base AS builder
 
 FROM builder
+RUN apk add --update --no-cache \
+    curl 
+
+RUN curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/main/install.sh | sh
 
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY --from=builder /usr/src/Gemfile* ./
