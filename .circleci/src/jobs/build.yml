@@ -1,6 +1,7 @@
 executor: machine-ubuntu
 steps:
-  - checkout
+  - checkout:
+      method: full
   - run: docker-compose build --with-dependencies test
   - run: docker-compose build test
   - run: docker-compose run --rm test bundle
