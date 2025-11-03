@@ -9,6 +9,7 @@ jobs:
         only:
         - stack-test-vcr
         - release-2408
+        - 2408-8_1
 - test-roro:
     requires: 
       - build

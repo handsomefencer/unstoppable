@@ -221,6 +221,7 @@ workflows:
                         only:
                             - stack-test-vcr
                             - release-2408
+                            - 2408-8_1
                 requires:
                     - build
             - test-roro:
