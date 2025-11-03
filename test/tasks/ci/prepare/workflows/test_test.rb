@@ -21,6 +21,7 @@ describe 'rake ci:prepare:workflows:test' do
   describe 'with one argument' do
     Given { args << 'sqlite importmaps okonomi ; tailwind bun omakase' }
     Given { execute }
+    focus
     Then do
       assert_equal 1, globdir(stacks).size
       assert_equal 1, globdir(roro).size
