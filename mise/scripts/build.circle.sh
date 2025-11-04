@@ -5,4 +5,4 @@ bundle exec rake ci:prepare
 git checkout 2408-8_1
 git add .
 git commit -m 'Test build'
-git push origin development
+git push origin 2408-8_1
