@@ -7,10 +7,10 @@ describe Roro::Configurators::StackReflector do
   Given(:adventure) { subject.adventure_for(*picks) }
 
   describe '[:pretty_tags]' do
-    Given(:picks) { %i[1 1 1 1] }
+    Given(:picks) { %i[1 1 1 1 1] }
     Given(:expected) { %w[
       Ruby_on_Rails Alpine_Linux Docker_Compose
-      Git RoRo Bootstrap MariaDB Bun Devise
+      Git RoRo Bootstrap MariaDB Bun
     ] }
     Then { assert_equal(expected, adventure.dig(:pretty_tags))}
   end
