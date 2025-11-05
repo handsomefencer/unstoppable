@@ -3,8 +3,8 @@ require 'debug'
 namespace :ci do
   namespace :prepare do
     namespace :workflows do
-      desc 'Create split test files'
 
+      desc 'Create split test files'
       task :test, [:matchers]  do |task, args|
         if args.matchers.nil?
           stacks = Dir.glob("test/roro/stacks/**/*_test.rb")

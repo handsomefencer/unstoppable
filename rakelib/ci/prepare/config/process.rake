@@ -1,6 +1,7 @@
 namespace :ci do
   namespace :prepare do
     namespace :config do
+      
       desc 'Process .circleci/config.yml into process.yml'
       task 'process' do |t|
         puts    'Creating process.yml'

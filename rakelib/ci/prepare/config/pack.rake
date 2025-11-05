@@ -2,6 +2,7 @@
 namespace :ci do
   namespace :prepare do
     namespace :config do
+      
       desc 'Pack .circleci/config.yml from .circleci/src files'
       task 'pack' do |t|
         puts   'Packing .circleci/config.yaml ...'
