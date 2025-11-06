@@ -3,7 +3,7 @@ require 'debug'
 minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
-    # "roro/**/*_test.rb",
+    "roro/**/*_test.rb",
     # "roro/stacks/**/**/**/*_test.rb",
     # "roro/stacks/rails_7_1/**/**/ruby_3_3/_test.rb",
     # "roro/stacks/rails_7_2/**/**/ruby_3_3/_test.rb",

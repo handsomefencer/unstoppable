@@ -14,8 +14,8 @@ describe Roro::TestHelpers::StackTestHelper do
     describe 'when workbench is called but unspecified' do
       Given(:workbench) { }
       Then do
-        refute_equal ENV['PWD'], Dir.pwd
-        assert_match /tmp/, Dir.pwd
+        refute_equal(ENV['PWD'], Dir.pwd)
+        assert_match(/tmp/, Dir.pwd)
         assert_empty files
       end
     end
@@ -23,8 +23,8 @@ describe Roro::TestHelpers::StackTestHelper do
     describe 'when workbench is called and specified' do
       Given(:workbench) { 'crypto' }
       Then do
-        refute_equal ENV['PWD'], Dir.pwd
-        assert_match /tmp/, Dir.pwd
+        refute_equal(ENV['PWD'], Dir.pwd)
+        assert_match(/tmp/, Dir.pwd)
         refute_empty files
       end
     end

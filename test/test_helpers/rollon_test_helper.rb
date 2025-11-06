@@ -53,12 +53,8 @@ module Roro::TestHelpers
     def manifest_for_story
       {}.tap do |h|
         manifests.each do |d|
-          foo = h 
-          bar = d 
           next unless read_yaml(d)
           choices.each do |c|
-            baz = c
-            # debugger if bar.match?('versions') && c.eql?("7_2")
             override_manifest_choice(h, read_yaml(d)[c.to_sym])
             begin
             rescue

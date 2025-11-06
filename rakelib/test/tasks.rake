@@ -1,7 +1,7 @@
 namespace :test do
   
   desc 'Run roro tests'
-  task :roro do
+  task :tasks do
     Rake::Task['test'].execute
   end
 end
