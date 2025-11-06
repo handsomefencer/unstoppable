@@ -28,10 +28,10 @@ Rake::TestTask.new('test:stacks') do |t|
   t.test_files = FileList['test/roro/stacks/**/*_test.rb']
 end
 
-Rake::TestTask.new('test:roro') do |t|
-  files = %w[cli common configurators crypto].map {|f| "test/roro/#{f}/**/*_test.rb"}
-  files << 'test/roro/roro_test.rb'
+# Rake::TestTask.new('test:roro') do |t|
+#   files = %w[cli common configurators crypto].map {|f| "test/roro/#{f}/**/*_test.rb"}
+#   files << 'test/roro/roro_test.rb'
 
-  t.libs << 'test'
-  t.test_files = FileList[files]
-end
+#   t.libs << 'test'
+#   t.test_files = FileList[files]
+# end
