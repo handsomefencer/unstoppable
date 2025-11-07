@@ -21,12 +21,12 @@ Rake::TestTask.new('test') do |t|
                  .exclude('test/fixtures/dummies/**/*')
 end
 
-# Rake::TestTask.new('test:ci') do |t|
-#   testfiles = ENV['TESTFILES'] || 'test/roro/stacks/**_test.rb'
-#   t.libs << 'test'
-#   t.test_files = FileList[testfiles.split("\n")]
-#                  .exclude('test/fixtures/dummies/**/*')
-# end
+Rake::TestTask.new('test:roro:stacks:ci') do |t|
+  testfiles = ENV['TESTFILES'] || 'test/roro/stacks/**_test.rb'
+  t.libs << 'test'
+  t.test_files = FileList[testfiles.split("\n")]
+                 .exclude('test/fixtures/dummies/**/*')
+end
 
 # Rake::TestTask.new('test:stacks') do |t|
 #   t.libs << 'test'

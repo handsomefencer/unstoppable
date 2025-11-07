@@ -23,7 +23,7 @@ services:
 
   test-ci: &test
     <<: *development
-    command: "bundle exec rake test:ci"
+    command: "bundle exec rake test:roro:stacks:ci"
     environment: 
       CI: "true"
       CIRCLE_TEST_REPORTS: "roro"
