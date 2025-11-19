@@ -115,10 +115,12 @@ module Roro
       def versions_from(chapters)
         {}.tap do |versions|
           chapters.each do |chapter|
-            next if stack_name(chapter).split('.').first.to_i.eql? 0
-
-            tool = stack_parent(stack_parent_path(stack_parent_path(chapter)))
-            versions[tool] = "#{stack_parent(chapter).gsub('_', '.')}"
+            next unless chapter.match?('version')
+            # next if stack_name(chapter).split('.').first.to_i.eql? 0
+            array = file_name(chapter).split('_')
+            tool = array.shift
+            version = array.join('.')
+            versions[tool] = version
           end
         end
       end

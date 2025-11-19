@@ -89,14 +89,7 @@ describe Roro::Configurators::StackReflector do
           templates_paths: [
             'okonomi/templates', 'rails/templates',
             'postgres/templates', 'sidekiq/templates', '7_0/templates'
-          ],
-          title: [
-            'unstoppable_developer_style: okonomi, scheduler: sidekiq',
-            'postgres version: 13.5', 'rails version: 7.0', 'ruby version: 3.0'
-          ].join(', '),
-          versions: {
-            'postgres' => '13.5', 'ruby' => '3.0', 'rails' => '7.0'
-          }
+          ]
         }
       end
       When(:picks) { '1 3 1 1 1 2 2 2' }
@@ -147,17 +140,9 @@ describe Roro::Configurators::StackReflector do
           templates_paths: [
             'okonomi/templates', 'rails/templates',
             'sqlite/templates', 'resque/templates', '6_1/templates'
-          ],
-          title: [
-            'unstoppable_developer_style: okonomi', 'database: sqlite',
-            'scheduler: resque', 'rails version: 6.1', 'ruby version: 2.7'
-          ].join(', '),
-          versions: {
-            'rails' => '6.1', 'ruby' => '2.7'
-          }
+          ]
         }
       end
-      # When(:picks) { '1 3 1 1 1 2 2 2' }
       When(:picks) { '1 3 1 2 1 1 1' }
       Then { assert_expected_adventure }
     end

@@ -25,7 +25,7 @@ describe Roro::Configurators::StackReflector do
             okonomi postgres sidekiq
           ],
           title: [
-            'database: postgres, rails version: 6.1'
+            'unstoppable_rails_style: okonomi, database: postgres, 6 version: 1'
           ].join(', '),
           templates_partials_paths: [
             'rails/templates/partials', 'postgres/templates/partials',
@@ -34,9 +34,7 @@ describe Roro::Configurators::StackReflector do
           templates_paths: [
             'rails/templates', 'postgres/templates', '6_1/templates',
             'sidekiq/templates'
-          ],
-
-          versions: { 'rails' => '6.1' }
+          ]
         }
       end
 

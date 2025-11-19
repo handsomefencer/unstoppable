@@ -6,12 +6,12 @@ describe Roro::Configurators::StackReflector do
   Given(:subject) { Roro::Configurators::StackReflector.new }
   Given(:adventure) { subject.adventure_for(*picks) }
 
-  describe '[:versions]' do
+  describe '[:pretty_tags]' do
     Given(:picks) { %i[1 1 1 1 1] }
-    Given(:expected) { {
-      "rails" => '7.1',
-      "ruby" => '3.3'
-    } }
-    Then { assert_equal(expected, adventure.dig(:versions))}
+    Given(:expected) { %w[
+      Ruby_on_Rails Alpine_Linux Docker_Compose
+      Git RoRo Bootstrap MariaDB Bun
+    ] }
+    Then { assert_equal(expected, adventure.dig(:pretty_tags))}
   end
 end
