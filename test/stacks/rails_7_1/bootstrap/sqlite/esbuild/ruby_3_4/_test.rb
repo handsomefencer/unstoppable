@@ -4,7 +4,7 @@ require 'stack_test_helper'
 
 describe '1 rails_7_1 -> 1 Bootstrap -> 4 SQLite -> 2 ESBuild -> 2 ruby_3_4' do
   Given(:workbench) {}
-  
+
   Given do
     # skip
     # debuggerer
