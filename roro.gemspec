@@ -42,7 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor', '~> 1.3', '>= 1.3.1'
   spec.add_dependency 'activesupport', '~> 7.1', '>= 7.1.3.2'
   spec.add_dependency 'rb-readline', '~> 0.5.5'
-  spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.4'
   spec.add_development_dependency 'climate_control'
   spec.add_development_dependency 'debug', '~> 1.9', '>= 1.9.1'
   spec.add_development_dependency 'guard'
