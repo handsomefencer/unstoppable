@@ -7,7 +7,7 @@ describe '4 rails_8_1 -> 1 Bootstrap -> 1 MariaDB -> 1 Bun -> 1 ruby_3_3' do
   
   Given do
     # skip
-    # debuggerer
+    debuggerer
   end
   # focus
   Then { assert_correct_manifest(__dir__) }
