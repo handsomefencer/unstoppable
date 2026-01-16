@@ -3,7 +3,7 @@ require 'debug'
 minitest_options = {
   test_folders: ['test'],
   test_file_patterns: [
-    "stacks/**/*_test.rb",
+    # "stacks/**/*_test.rb",
     # "roro/stacks/**/**/**/*_test.rb",
     # "roro/stacks/rails_7_1/**/**/ruby_3_3/_test.rb",
     # "roro/stacks/rails_7_2/**/**/ruby_3_3/_test.rb",
@@ -23,7 +23,7 @@ minitest_options = {
     # "roro/stacks/tailwind/**/**/omakase/*_test.rb",
     # "roro/stacks/tailwind/**/**/*_test.rb",
     # "**/*_test.rb",
-    # "roro/cli/**/*_test.rb",
+    "roro/cli/**/*_test.rb",
     # "roro/common/**/*_test.rb",
     # "roro/configurators/**/*_test.rb",
     # "roro/crypto/**/*_test.rb",

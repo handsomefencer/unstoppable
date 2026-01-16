@@ -1,16 +1,24 @@
-include:
-  - docker-compose.builders.yml  
 
+x-build: &build
+  args: 
+    RUBY_VERSION: 3.4
+  dockerfile: ./mise/containers/roro/Dockerfile
 services:
+  base:
+    build:
+      <<: *build
+      target: base
+    image: roro/base
 
-  development: &development 
-    extends:
-      file: docker-compose.builders.yml
-      service: roro-development
+  development: &development
+    build:
+      <<: *build
+      target: development
+    image: roro/development
     stdin_open: true
     tty: true
     volumes:
-      - .:/usr/src
+      - ../roro:/usr/src/roro
       - /var/run/docker.sock:/var/run/docker.sock
       - gem_cache:/usr/local/bundle/gems
 
@@ -21,34 +29,34 @@ services:
     <<: *development
     container_name: test
 
-  test-ci: &test
-    <<: *development
-    command: "bundle exec rake test:roro:stacks:ci"
-    environment: 
-      CI: "true"
-      CIRCLE_TEST_REPORTS: "roro"
-    container_name: test
+  # test-ci: &test
+  #   <<: *development
+  #   command: "bundle exec rake test:roro:stacks:ci"
+  #   environment: 
+  #     CI: "true"
+  #     CIRCLE_TEST_REPORTS: "roro"
+  #   container_name: test
 
   guard:
     <<: *test
     command: bundle exec guard
     container_name: guard
 
-  production: &production
-    extends:
-      file: docker-compose.builders.yml
-      service: roro-production
-    volumes:
-      - .:/usr/src
-      - /var/run/docker.sock:/var/run/docker.sock
-      - gem_cache:/usr/local/bundle/gems
+  # production: &production
+  #   extends:
+  #     file: docker-compose.builders.yml
+  #     service: roro-production
+  #   volumes:
+  #     - .:/usr/src
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - gem_cache:/usr/local/bundle/gems
 
-  roro:
-    <<: *production
-    volumes:
-      - .:/artifact
-    image: handsomefencer/roro
-    command: ['sh']
+  # roro:
+  #   <<: *production
+  #   volumes:
+  #     - .:/artifact
+  #   image: handsomefencer/roro
+  #   command: ['sh']
 
 volumes:
   gem_cache:  

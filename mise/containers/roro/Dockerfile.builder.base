@@ -15,8 +15,3 @@ RUN apk add --update --no-cache \
 RUN git config --global --add safe.directory /usr/src
 WORKDIR /usr/src
 
-COPY . .
-RUN bundle lock --add-platform x86_64-linux
-
-
-RUN bundle update --bundler
