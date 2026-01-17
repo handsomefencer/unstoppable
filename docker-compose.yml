@@ -2,7 +2,8 @@
 x-build: &build
   args: 
     RUBY_VERSION: 3.4
-  dockerfile: ./mise/containers/roro/Dockerfile
+  context: ../
+  dockerfile: ./unstoppable/mise/containers/roro/Dockerfile
 services:
   base:
     build:
@@ -10,10 +11,11 @@ services:
       target: base
     image: roro/base
 
-  development: &development
+  dev: &development
     build:
       <<: *build
       target: development
+    container_name: development
     image: roro/development
     stdin_open: true
     tty: true
@@ -21,21 +23,17 @@ services:
       - ../roro:/usr/src/roro
       - /var/run/docker.sock:/var/run/docker.sock
       - gem_cache:/usr/local/bundle/gems
-
-  dev: 
-    <<: *development
-
   test: &test
     <<: *development
     container_name: test
 
-  # test-ci: &test
-  #   <<: *development
-  #   command: "bundle exec rake test:roro:stacks:ci"
-  #   environment: 
-  #     CI: "true"
-  #     CIRCLE_TEST_REPORTS: "roro"
-  #   container_name: test
+  ci: 
+    <<: *test
+    command: "bundle exec rake test:roro:stacks:ci"
+    environment: 
+      CI: "true"
+      CIRCLE_TEST_REPORTS: "roro"
+    container_name: ci
 
   guard:
     <<: *test

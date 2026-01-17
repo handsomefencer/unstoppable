@@ -24,7 +24,7 @@ RUN gem update --system \
   
 FROM base AS development
 
-COPY . .
+COPY unstoppable .
 
 RUN bundle update --bundler
 RUN bundle lock --add-platform x86_64-linux
