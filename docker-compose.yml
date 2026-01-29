@@ -1,44 +1,52 @@
 
-x-build: &build
-  args: 
-    RUBY_VERSION: 3.4
-  context: ../
-  dockerfile: ./unstoppable/mise/containers/roro/Dockerfile
 services:
-  base:
-    build:
-      <<: *build
-      target: base
-    image: roro/base
 
-  dev: &development
+  development: &development
     build:
-      <<: *build
-      target: development
-    container_name: development
-    image: roro/development
-    stdin_open: true
-    tty: true
+      dockerfile: ./mise/containers/unstoppable/Dockerfile
+      target: unstoppable
+    image: unstoppable/development
     volumes:
-      - ../roro:/usr/src/roro
+      - .:/usr/src/unstoppable
       - /var/run/docker.sock:/var/run/docker.sock
       - gem_cache:/usr/local/bundle/gems
+ 
+
+  # base:
+  #   build:
+  #     <<: *build
+  #     target: base
+  #   image: roro/base
+
+  # dev: &development
+  #   build:
+  #     <<: *build
+  #     target: development
+  #   container_name: development
+  #   image: roro/development
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - ../roro:/usr/src/roro
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - gem_cache:/usr/local/bundle/gems
   test: &test
     <<: *development
+    command: bundle exec guard
     container_name: test
 
-  ci: 
-    <<: *test
-    command: "bundle exec rake test:roro:stacks:ci"
-    environment: 
-      CI: "true"
-      CIRCLE_TEST_REPORTS: "roro"
-    container_name: ci
+  # ci: 
+  #   <<: *test
+  #   command: "bundle exec rake test:roro:stacks:ci"
+  #   environment: 
+  #     CI: "true"
+  #     CIRCLE_TEST_REPORTS: "roro"
+  #   container_name: ci
 
-  guard:
-    <<: *test
-    command: bundle exec guard
-    container_name: guard
+  # guard:
+  #   <<: *test
+  #   command: bundle exec guard
+  #   container_name: guard
 
   # production: &production
   #   extends:

@@ -2,9 +2,7 @@ source "https://rubygems.org"
 
 # git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
-# Specify your gem's dependencies in roro.gemspec
-gemspec
-
+gem "roro", "0.3.34"
 group :development do
 end
 
